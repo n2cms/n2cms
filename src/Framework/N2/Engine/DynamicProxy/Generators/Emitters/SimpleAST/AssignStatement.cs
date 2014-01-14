@@ -14,24 +14,24 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System.Reflection.Emit;
+    using System.Reflection.Emit;
 
-	public class AssignStatement : Statement
-	{
-		private readonly Expression expression;
-		private readonly Reference target;
+    public class AssignStatement : Statement
+    {
+        private readonly Expression expression;
+        private readonly Reference target;
 
-		public AssignStatement(Reference target, Expression expression)
-		{
-			this.target = target;
-			this.expression = expression;
-		}
+        public AssignStatement(Reference target, Expression expression)
+        {
+            this.target = target;
+            this.expression = expression;
+        }
 
-		public override void Emit(IMemberEmitter member, ILGenerator gen)
-		{
-			ArgumentsUtil.EmitLoadOwnerAndReference(target.OwnerReference, gen);
-			expression.Emit(member, gen);
-			target.StoreReference(gen);
-		}
-	}
+        public override void Emit(IMemberEmitter member, ILGenerator gen)
+        {
+            ArgumentsUtil.EmitLoadOwnerAndReference(target.OwnerReference, gen);
+            expression.Emit(member, gen);
+            target.StoreReference(gen);
+        }
+    }
 }

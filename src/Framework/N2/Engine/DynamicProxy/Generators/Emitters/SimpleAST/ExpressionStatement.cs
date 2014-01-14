@@ -14,21 +14,21 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System.Reflection.Emit;
+    using System.Reflection.Emit;
 
-	public class ExpressionStatement : Statement
-	{
-		private readonly Expression expression;
+    public class ExpressionStatement : Statement
+    {
+        private readonly Expression expression;
 
-		public ExpressionStatement(Expression expression)
-		{
-			this.expression = expression;
-		}
+        public ExpressionStatement(Expression expression)
+        {
+            this.expression = expression;
+        }
 
-		public override void Emit(IMemberEmitter member, ILGenerator gen)
-		{
-			// TODO: Should it discard any possible return value with a pop?
-			expression.Emit(member, gen);
-		}
-	}
+        public override void Emit(IMemberEmitter member, ILGenerator gen)
+        {
+            // TODO: Should it discard any possible return value with a pop?
+            expression.Emit(member, gen);
+        }
+    }
 }

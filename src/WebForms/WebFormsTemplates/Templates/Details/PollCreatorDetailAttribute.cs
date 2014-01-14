@@ -37,7 +37,7 @@ namespace N2.Templates.Details
 
             TextBox tb = editor.FindControl(GetTextBoxName()) as TextBox;
             questionItem.Title = tb.Text;
-		
+        
             return base.UpdateItem(questionItem, editor);
         }
 
@@ -55,7 +55,7 @@ namespace N2.Templates.Details
         public override Control AddTo(Control container)
         {
             Control panel = AddPanel(container);
-			
+            
             Label label = new Label();
             label.ID = Name + "-Label";
             label.Text = QuestionText;

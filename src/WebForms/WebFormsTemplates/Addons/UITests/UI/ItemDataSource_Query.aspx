@@ -7,7 +7,7 @@
 	{
 		ItemDataSource1.Query = N2.Find.Items.Where.Name.Eq(CurrentPage.Name);
 		base.OnInit(e);
-	}
+	}
 	
 </script>
 

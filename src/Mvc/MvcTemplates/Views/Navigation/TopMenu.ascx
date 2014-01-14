@@ -7,7 +7,7 @@
 <div class="languageMenu">
 	<%foreach(var item in Model.Translations){%>
 	<a href="<%= item.Page.Url %>" class="language<%= item.Page == Model.CurrentItem ? " current" : "" %>" title="<%= item.Language.LanguageTitle %>">
-		<img src="<%= ResolveUrl(item.Language.FlagUrl) %>" alt="<%= item.Language.LanguageTitle %>" />
+		<span class="<%= item.Language.LanguageCode.Split('-').LastOrDefault().ToLower() %> sprite"></span>
 	</a>
 	<%}%>
 </div>

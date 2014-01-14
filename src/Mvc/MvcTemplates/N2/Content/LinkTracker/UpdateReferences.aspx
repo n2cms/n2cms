@@ -1,13 +1,13 @@
-<%@ Page Language="C#" MasterPageFile="../Framed.master" AutoEventWireup="true" CodeBehind="UpdateReferences.aspx.cs" Inherits="N2.Edit.LinkTracker.UpdateReferences" meta:resourcekey="PageResource1" %>
+﻿<%@ Page Language="C#" MasterPageFile="../Framed.master" AutoEventWireup="true" CodeBehind="UpdateReferences.aspx.cs" Inherits="N2.Edit.LinkTracker.UpdateReferences" meta:resourcekey="PageResource1" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <%@ Register Src="../AffectedItems.ascx" TagName="AffectedItems" TagPrefix="uc1" %>
 
 <asp:Content ContentPlaceHolderID="Toolbar" runat="server">
-    <asp:LinkButton ID="btnUpdate" meta:resourceKey="btnUpdate" runat="server" OnCommand="OnUpdateCommand" CssClass="command"><img src='../../Resources/Icons/link_edit.png' /> Update links</asp:LinkButton>
-	<edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Close</edit:CancelLink>
+    <asp:LinkButton ID="btnUpdate" meta:resourceKey="btnUpdate" runat="server" OnCommand="OnUpdateCommand" CssClass="command primary-action"><img src='../../Resources/Icons/link_edit.png' /> Update links</asp:LinkButton>
+	<edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel" CssClass="command cancel">Close</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
-	<div class="tabPanel">
+	<div class="tabPanel" data-flag="Management">
 
 		<asp:MultiView ID="mvPhase" runat="server" ActiveViewIndex="0">
 			<asp:View runat="server">
@@ -15,14 +15,14 @@
 					<asp:CheckBox runat="server" Text="Add permanent redirect at previous URL" ID="chkPermanentRedirect" meta:resourceKey="chkPermanentRedirect" />
 				</p>
 				<fieldset runat="server" id="fsReferences">
-					<legend><asp:Literal Text="These items linking to the moved page will be updateds" runat="server" meta:resourceKey="ltUpdatedLinks"></asp:Literal></legend>
+					<legend><asp:Literal Text="These referring items will be updated" runat="server" meta:resourceKey="ltUpdatedLinks"></asp:Literal></legend>
 		
 					<div style="margin:5px;">
 					<asp:Repeater runat="server" ID="rptReferencingItems">
 						<HeaderTemplate><div style="max-height:200px; overflow:auto;"></HeaderTemplate>
 						<ItemTemplate>
 							<div>
-								<a href='<%# Eval("Url") %>'><asp:Image ImageUrl='<%# ResolveUrl(Eval("IconUrl")) %>' runat="server" /><%# Eval("Title") %></a>
+								<edit:ItemLink DataSource='<%# Container.DataItem%>' InterfaceUrl="../Edit.aspx" runat="server" />
 							</div>
 						</ItemTemplate>
 						<FooterTemplate></div></FooterTemplate>
@@ -51,11 +51,11 @@
 			</asp:View>
 			<asp:View runat="server">
 				<fieldset>
-					<legend>Updatring references to:</legend>
+					<legend>Updating references to:</legend>
 					<asp:Repeater runat="server" ID="rptDescendants">
 						<ItemTemplate>
-							<div class="ItemToUpdate" data-id="<%# Eval("ID") %>" data-path="<%# Eval("Path") %>" data-title="<%# Eval("Title") %>">
-								<a href='<%# Eval("Url") %>'><asp:Image ImageUrl='<%# ResolveUrl(Eval("IconUrl")) %>' runat="server" /><%# Eval("Title") %></a>
+							<div class="ItemToUpdate" data-id="<%# Eval("ID")%>" data-path="<%# Eval("Path")%>" data-title="<%# Eval("Title")%>">
+								<edit:ItemLink DataSource='<%# Container.DataItem %>' runat="server" />
 							</div>
 						</ItemTemplate>
 					</asp:Repeater>

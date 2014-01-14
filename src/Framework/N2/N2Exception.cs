@@ -22,29 +22,29 @@ using System;
 
 namespace N2
 {
-	/// <summary>The base class for the N2 application exceptions.</summary>
+    /// <summary>The base class for the N2 application exceptions.</summary>
     public class N2Exception : ApplicationException
     {
-		/// <summary>Creates a new instance of the N2Exception, the base class for known N2 exceptions.</summary>
-		/// <param name="message">The exception message</param>
+        /// <summary>Creates a new instance of the N2Exception, the base class for known N2 exceptions.</summary>
+        /// <param name="message">The exception message</param>
         public N2Exception(string message) : base(message)
         {
         }
 
-		/// <summary>Creates a new instance of the N2Exception, the base class for known N2 exceptions.</summary>
-		/// <param name="messageFormat">The exception message format.</param>
-		/// <param name="args">The exception message arguments.</param>
-		public N2Exception(string messageFormat, params object[] args)
-			: base(string.Format(messageFormat, args))
-		{
-		}
+        /// <summary>Creates a new instance of the N2Exception, the base class for known N2 exceptions.</summary>
+        /// <param name="messageFormat">The exception message format.</param>
+        /// <param name="args">The exception message arguments.</param>
+        public N2Exception(string messageFormat, params object[] args)
+            : base(string.Format(messageFormat, args))
+        {
+        }
 
-		/// <summary>Creates a new instance of the N2Exception that encapsulates an underlying exception.</summary>
-		/// <param name="message">The exception message.</param>
-		/// <param name="innerException">The underlying exception.</param>
-		public N2Exception(string message, Exception innerException)
-			: base(message, innerException)
-		{
-		}
-	}
+        /// <summary>Creates a new instance of the N2Exception that encapsulates an underlying exception.</summary>
+        /// <param name="message">The exception message.</param>
+        /// <param name="innerException">The underlying exception.</param>
+        public N2Exception(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+    }
 }

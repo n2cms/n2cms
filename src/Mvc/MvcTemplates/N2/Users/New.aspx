@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="../Content/Framed.Master" AutoEventWireup="true" CodeBehind="New.aspx.cs" Inherits="N2.Edit.Membership.New" Title="New user" meta:resourcekey="PageResource1" %>
+﻿<%@ Page Language="C#" MasterPageFile="../Content/Framed.Master" AutoEventWireup="true" CodeBehind="New.aspx.cs" Inherits="N2.Edit.Membership.New" Title="New user" meta:resourcekey="PageResource1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="server">
 	<link rel="stylesheet" href="Css/membership.css" type="text/css" />
 </asp:Content>
@@ -37,13 +37,16 @@
 					<div>
 						<asp:Label ID="lblRoles" runat="server" AssociatedControlID="cblRoles" 
 							meta:resourcekey="lblRolesResource1">Roles</asp:Label>
-						<asp:CheckBoxList ID="cblRoles" runat="server" CssClass="cbl" 
-							DataSourceID="odsRoles" meta:resourcekey="cblRolesResource1" />
+						<div class="checkBoxList">
+							<asp:CheckBoxList ID="cblRoles" runat="server" CssClass="cbl" 
+							DataSourceID="odsRoles" meta:resourcekey="cblRolesResource1" RepeatLayout="Flow" />
+						</div>
 						<asp:ObjectDataSource ID="odsRoles" runat="server" TypeName="System.Web.Security.Roles" SelectMethod="GetAllRoles" />
 					</div>
 				</ContentTemplate>
 			</asp:CreateUserWizardStep>
-			<asp:CompleteWizardStep runat="server"></asp:CompleteWizardStep>
+			<asp:CompleteWizardStep runat="server">
+			</asp:CompleteWizardStep>
 		</WizardSteps>
 	</asp:CreateUserWizard>
 	</div>

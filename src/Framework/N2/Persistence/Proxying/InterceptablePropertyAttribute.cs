@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +10,7 @@ namespace N2.Persistence.Proxying
     /// Attribute used by the proxying system to enable proxying a property to a detail.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class InterceptablePropertyAttribute : InterceptableAttribute, IInterceptableProperty
+    public class InterceptablePropertyAttribute : Attribute, IInterceptableProperty
     {
         public InterceptablePropertyAttribute()
         {

@@ -4,14 +4,13 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Templates.Items
 {
-	[PartDefinition("Login", Name = "Login",
-		IconUrl = "~/Templates/UI/Img/key.png")]
+    [PartDefinition("Login", Name = "Login", IconUrl = "~/Templates/UI/Img/key.png")]
     [AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.SiteLeft, Zones.SiteRight, Zones.Left, Zones.Right)]
     [WithEditableTitle("Title", 10)]
     public class LoginItem : AbstractItem
     {
-		[DisplayableHeading(4)]
-		public override string Title
+        [DisplayableHeading(4)]
+        public override string Title
         {
             get { return base.Title; }
             set { base.Title = value; }
@@ -58,6 +57,15 @@ namespace N2.Templates.Items
             get { return (ContentItem)GetDetail("LoginPage"); }
             set { SetDetail("LoginPage", value); }
         }
+
+        [EditableCheckBox("Return to FormsAuthentication return url if possible", 150)]
+        public virtual bool ReturnToUrlIfPossible
+        {
+            get { return GetDetail<bool>(ReturnToUrlIfPossibleProperty, false); }
+            set { SetDetail(ReturnToUrlIfPossibleProperty, value); }
+        }
+        private const string ReturnToUrlIfPossibleProperty = "ReturnToUrlIfPossible";
+
 
         protected override string TemplateName
         {

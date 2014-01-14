@@ -1,6 +1,6 @@
-﻿namespace N2.Tests.Globalization.Items
+namespace N2.Tests.Globalization.Items
 {
-	public class TranslatedPage : ContentItem
-	{
-	}
+    public class TranslatedPage : ContentItem
+    {
+    }
 }

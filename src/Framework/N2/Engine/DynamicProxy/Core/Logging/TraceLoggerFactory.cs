@@ -15,49 +15,49 @@
 namespace Castle.Core.Logging
 {
 #if DOTNET40
-	using System.Security;
+    using System.Security;
 
 #endif
 
 #if !SILVERLIGHT
 
-	/// <summary>
-	///   Used to create the TraceLogger implementation of ILogger interface. See <see cref = "TraceLogger" />.
-	/// </summary>
-	public class TraceLoggerFactory : AbstractLoggerFactory
-	{
+    /// <summary>
+    ///   Used to create the TraceLogger implementation of ILogger interface. See <see cref = "TraceLogger" />.
+    /// </summary>
+    public class TraceLoggerFactory : AbstractLoggerFactory
+    {
 #if DOTNET40
-		[SecuritySafeCritical]
+        [SecuritySafeCritical]
 #endif
-		public override ILogger Create(string name)
-		{
-			return InternalCreate(name);
-		}
+        public override ILogger Create(string name)
+        {
+            return InternalCreate(name);
+        }
 
 #if DOTNET40
-		[SecurityCritical]
+        [SecurityCritical]
 #endif
-		private ILogger InternalCreate(string name)
-		{
-			return new TraceLogger(name);
-		}
+        private ILogger InternalCreate(string name)
+        {
+            return new TraceLogger(name);
+        }
 
 #if DOTNET40
-		[SecuritySafeCritical]
+        [SecuritySafeCritical]
 #endif
-		public override ILogger Create(string name, LoggerLevel level)
-		{
-			return InternalCreate(name, level);
-		}
+        public override ILogger Create(string name, LoggerLevel level)
+        {
+            return InternalCreate(name, level);
+        }
 
 #if DOTNET40
-		[SecurityCritical]
+        [SecurityCritical]
 #endif
-		private ILogger InternalCreate(string name, LoggerLevel level)
-		{
-			return new TraceLogger(name, level);
-		}
-	}
+        private ILogger InternalCreate(string name, LoggerLevel level)
+        {
+            return new TraceLogger(name, level);
+        }
+    }
 
 #endif
 }

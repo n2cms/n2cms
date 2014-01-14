@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace N2.Persistence.Serialization
 {
@@ -14,9 +14,9 @@ namespace N2.Persistence.Serialization
         OnlyDefinedDetails = 1,
         /// <summary>Don't export attachments.</summary>
         ExcludeAttachments = 2,
-		/// <summary>Don't export children that are not parts.</summary>
-		ExcludeParts = 4,
-		/// <summary>Don't export children that are not parts.</summary>
-		ExcludePages = 8
+        /// <summary>Don't export children that are not parts.</summary>
+        ExcludeParts = 4,
+        /// <summary>Don't export children that are not parts.</summary>
+        ExcludePages = 8
     }
 }

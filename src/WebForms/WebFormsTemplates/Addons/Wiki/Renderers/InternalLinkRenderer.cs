@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Web.UI.HtmlControls;
 using System.Web.UI;
 using N2.Web;
@@ -55,24 +55,24 @@ namespace N2.Addons.Wiki.Renderers
             {
                 return AppendImage(container, Url.Parse(uploadUrl).AppendSegment(name), fragments.Length > 1 ? fragments[1] : fragments[0], context.Article.WikiRoot.ImageWidth);
             }
-        	
-			string url = Url.Parse(context.Article.WikiRoot.Url).AppendSegment("Upload").AppendQuery("parameter", fragments[0].Trim()).AppendQuery("returnUrl", context.Article.Url);
-        	return AppendAnchor(container, name, url, false);
+            
+            string url = Url.Parse(context.Article.WikiRoot.Url).AppendSegment("Upload").AppendQuery("parameter", fragments[0].Trim()).AppendQuery("returnUrl", context.Article.Url);
+            return AppendAnchor(container, name, url, false);
         }
 
         private static Control AppendImage(Control container, string src, string alt, int width)
         {
-			HyperLink a = new HyperLink();
-        	a.NavigateUrl = src;
-			container.Controls.Add(a);
+            HyperLink a = new HyperLink();
+            a.NavigateUrl = src;
+            container.Controls.Add(a);
 
-			Image img = new Image();
+            Image img = new Image();
             img.AlternateText = alt;
             img.ImageUrl = src;
-			if (width > 0) img.Width = width;
-			a.Controls.Add(img);
+            if (width > 0) img.Width = width;
+            a.Controls.Add(img);
 
-			return a;
+            return a;
         }
 
         protected Control AppendWarning(Control container, string p)
@@ -88,7 +88,7 @@ namespace N2.Addons.Wiki.Renderers
         {
             string[] fragments = fragment.Split('|');
             ContentItem existingArticle = context.Article.WikiRoot.GetChild(fragments[0]);
-			if (existingArticle != null && !existingArticle.Equals(context.Article.WikiRoot))
+            if (existingArticle != null && !existingArticle.Equals(context.Article.WikiRoot))
             {
                 return AppendAnchor(container, fragments.Length > 1 ? fragments[1] : fragments[0], existingArticle.Url, true);
             }

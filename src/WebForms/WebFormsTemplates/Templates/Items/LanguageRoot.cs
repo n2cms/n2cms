@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Web.UI.WebControls;
 using N2.Engine.Globalization;
 using N2.Details;
@@ -11,21 +11,21 @@ using N2.Security;
 
 namespace N2.Templates.Items
 {
-	//[Definition("Language root", "LanguageRoot", "A starting point for translations of the start page.", "", 450)]
-	[PageDefinition("Language root",
-		Description = "A starting point for translations of the start page.",
-		SortOrder = 450,
-		IconUrl = "~/Templates/UI/Img/page_world.png")]
+    //[Definition("Language root", "LanguageRoot", "A starting point for translations of the start page.", "", 450)]
+    [PageDefinition("Language root",
+        Description = "A starting point for translations of the start page.",
+        SortOrder = 450,
+        IconUrl = "~/Templates/UI/Img/page_world.png")]
     [RecursiveContainer("SiteAreaContainer", 70,
-		RequiredPermission = Permission.Administer)]
+        RequiredPermission = Permission.Administer)]
     [TabContainer(LanguageRoot.SiteArea, "Site", 0, 
         ContainerName = "SiteAreaContainer")]
-	[RestrictParents(typeof(StartPage))]
-	[FieldSetContainer(StartPage.MiscArea, "Miscellaneous", 80, ContainerName = LanguageRoot.SiteArea)]
-	[FieldSetContainer(StartPage.LayoutArea, "Layout", 75, ContainerName = LanguageRoot.SiteArea)]
-	[ConventionTemplate("Start")]
-	public class LanguageRoot : AbstractContentPage, IStartPage, IStructuralPage, ILanguage
-	{
+    [RestrictParents(typeof(StartPage))]
+    [FieldSetContainer(StartPage.MiscArea, "Miscellaneous", 80, ContainerName = LanguageRoot.SiteArea)]
+    [FieldSetContainer(StartPage.LayoutArea, "Layout", 75, ContainerName = LanguageRoot.SiteArea)]
+    [ConventionTemplate("Start")]
+    public class LanguageRoot : AbstractContentPage, IStartPage, IStructuralPage, ILanguage
+    {
         public LanguageRoot()
         {
             Visible = false;
@@ -36,20 +36,6 @@ namespace N2.Templates.Items
         public const string MiscArea = "miscArea";
 
         #region ILanguage Members
-
-        public string FlagUrl
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(LanguageCode))
-                    return "";
-                else
-                {
-                    string[] parts = LanguageCode.Split('-');
-					return string.Format("~/N2/Resources/Img/Flags/{0}.png", parts[parts.Length - 1]);
-                }
-            }
-        }
 
         [EditableLanguagesDropDown("Language", 100, ContainerName = MiscArea)]
         public string LanguageCode
@@ -72,14 +58,14 @@ namespace N2.Templates.Items
         #endregion
 
 
-		[FileAttachment, EditableFileUploadAttribute("Top Image", 88, ContainerName = Tabs.Content, CssClass = "main")]
+        [FileAttachment, EditableFileUploadAttribute("Top Image", 88, ContainerName = Tabs.Content, CssClass = "main")]
         public virtual string TopImage
         {
             get { return (string)(GetDetail("TopImage") ?? string.Empty); }
             set { SetDetail("TopImage", value, string.Empty); }
         }
 
-		[FileAttachment, EditableFileUploadAttribute("Content Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
+        [FileAttachment, EditableFileUploadAttribute("Content Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
         public virtual string Image
         {
             get { return (string)(GetDetail("Image") ?? string.Empty); }
@@ -99,5 +85,5 @@ namespace N2.Templates.Items
             get { return (Top)GetDetail("Header"); }
             set { SetDetail("Header", value); }
         }
-	}
+    }
 }

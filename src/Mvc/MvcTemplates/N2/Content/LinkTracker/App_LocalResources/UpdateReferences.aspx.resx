@@ -124,7 +124,7 @@
     <value>Add permanent redirect at previous URL</value>
   </data>
   <data name="ltUpdatedLinks.Text" xml:space="preserve">
-    <value>These items linking to the moved page will be updateds</value>
+    <value>These referring items will be updated</value>
   </data>
   <data name="PageResource1.Title" xml:space="preserve">
     <value>Update References</value>

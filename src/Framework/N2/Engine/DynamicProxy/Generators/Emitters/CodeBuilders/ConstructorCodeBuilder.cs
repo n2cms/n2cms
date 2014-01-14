@@ -14,46 +14,46 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters.CodeBuilders
 {
-	using System;
-	using System.Reflection;
-	using System.Reflection.Emit;
+    using System;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
-	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+    using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
-	public class ConstructorCodeBuilder : AbstractCodeBuilder
-	{
-		private readonly Type baseType;
+    public class ConstructorCodeBuilder : AbstractCodeBuilder
+    {
+        private readonly Type baseType;
 
-		public ConstructorCodeBuilder(Type baseType, ILGenerator generator) : base(generator)
-		{
-			this.baseType = baseType;
-		}
+        public ConstructorCodeBuilder(Type baseType, ILGenerator generator) : base(generator)
+        {
+            this.baseType = baseType;
+        }
 
-		public void InvokeBaseConstructor()
-		{
-			var type = baseType;
-			if (type.ContainsGenericParameters)
-			{
-				type = type.GetGenericTypeDefinition();
-					// need to get generic type definition, otherwise the GetConstructor method might throw NotSupportedException
-			}
+        public void InvokeBaseConstructor()
+        {
+            var type = baseType;
+            if (type.ContainsGenericParameters)
+            {
+                type = type.GetGenericTypeDefinition();
+                    // need to get generic type definition, otherwise the GetConstructor method might throw NotSupportedException
+            }
 
-			var flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-			var baseDefaultCtor = type.GetConstructor(flags, null, new Type[0], null);
+            var flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+            var baseDefaultCtor = type.GetConstructor(flags, null, new Type[0], null);
 
-			InvokeBaseConstructor(baseDefaultCtor);
-		}
+            InvokeBaseConstructor(baseDefaultCtor);
+        }
 
-		public void InvokeBaseConstructor(ConstructorInfo constructor)
-		{
-			AddStatement(new ConstructorInvocationStatement(constructor));
-		}
+        public void InvokeBaseConstructor(ConstructorInfo constructor)
+        {
+            AddStatement(new ConstructorInvocationStatement(constructor));
+        }
 
-		public void InvokeBaseConstructor(ConstructorInfo constructor, params ArgumentReference[] arguments)
-		{
-			AddStatement(
-				new ConstructorInvocationStatement(constructor,
-				                                   ArgumentsUtil.ConvertArgumentReferenceToExpression(arguments)));
-		}
-	}
+        public void InvokeBaseConstructor(ConstructorInfo constructor, params ArgumentReference[] arguments)
+        {
+            AddStatement(
+                new ConstructorInvocationStatement(constructor,
+                                                   ArgumentsUtil.ConvertArgumentReferenceToExpression(arguments)));
+        }
+    }
 }

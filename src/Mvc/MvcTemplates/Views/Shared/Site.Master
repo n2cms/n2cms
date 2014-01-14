@@ -5,8 +5,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title></title>
 	<asp:PlaceHolder runat="server">
-		<link href="<%=ResolveUrl("~/App_Themes/" + (Start != null ? Start.Theme : "Default") + "/Style.css")%>" type="text/css" rel="stylesheet" />
+		<%= Html.ThemedStyleSheet("~/Content/Style.css") %>
 		<link rel="canonical" href="<%= Html.CurrentPage() != null ? Html.CurrentPage().Url : Request.RawUrl %>" />
+		<%= Html.Resources().JQuery() %>
+		<%= Html.Resources().StyleSheet(N2.Resources.Register.DefaultFlagsCssPath) %>
 	</asp:PlaceHolder>
 	<asp:ContentPlaceHolder ID="Head" runat="server" />
 </head>
@@ -29,12 +31,9 @@
 					<div id="menu" class="secondary">
 						<% Html.RenderAction("SubMenu", "Navigation", new { area = "" }); %>
 
-						<% Html.DroppableZone(Language, Zones.SiteLeft)
-                            .Render();%>
-						<% Html.DroppableZone(Zones.Left)
-                            .Render();%>
-						<% Html.DroppableZone(Zones.RecursiveLeft)
-                            .Render();%>
+						<% Html.DroppableZone(Language, Zones.SiteLeft).Render();%>
+						<% Html.DroppableZone(Zones.Left).Render();%>
+						<% Html.DroppableZone(Zones.RecursiveLeft).Render();%>
 					</div>
 				</asp:ContentPlaceHolder>
 				<div id="content" class="">
@@ -60,12 +59,9 @@
 						</div>
 						<asp:ContentPlaceHolder ID="Sidebar" runat="server">
 							<div id="extras" class="secondary">
-								<% Html.DroppableZone(Zones.RecursiveRight)
-                                    .Render();%>
-								<% Html.DroppableZone(Zones.Right)
-                                    .Render();%>
-								<% Html.DroppableZone(Language, Zones.SiteRight)
-                                    .Render();%>
+								<% Html.DroppableZone(Zones.RecursiveRight).Render();%>
+								<% Html.DroppableZone(Zones.Right).Render();%>
+								<% Html.DroppableZone(Language, Zones.SiteRight).Render();%>
 							</div>
 						</asp:ContentPlaceHolder>
 					</asp:ContentPlaceHolder>

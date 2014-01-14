@@ -1,4 +1,4 @@
-﻿namespace N2.Edit.Workflow
+namespace N2.Edit.Workflow
 {
     /// <summary>
     /// Base class for commands used by <see cref="CommandDispatcher"/>.

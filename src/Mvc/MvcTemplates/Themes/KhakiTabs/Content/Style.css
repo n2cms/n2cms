@@ -1,0 +1,117 @@
+@import url(../../../Content/Css/Layout.css);
+@import url(../../../Content/Css/Application.css);
+/********* GLOBALS *********/
+
+* {margin:0;padding:0}
+body {font-family:Arial,SansSerif;font-size:.9em;}
+a img,table {border:0}
+dl,ol,ul {list-style:none}
+button,select,textarea,input {font:100% serif}
+table {border-collapse:collapse}
+caption,th,td {text-align:left}
+h1,h2,h3,h4,h5,h6,p {margin:.35em 0;}
+h1,h2 {font-family:Georgia,"Times New Roman",Times,serif;font-weight:normal; }
+
+/* colors */
+a { color:#046380; text-decoration:none; }
+a:hover { text-decoration:underline; }
+a:visited { color:#002F2F; }
+
+
+#footer {margin-top:10px;color:#ccc;}
+	#footer .n2{color:#ccc;float:right;font-size:.8em;}
+
+
+/********* LAYOUT *********/
+
+body { margin:0; background:#FFF url(TopBg.gif) repeat-x; }
+	#wrap { width:900px; margin:0 auto; }
+		#header { margin-top:10px; height:90px; position:relative; padding:0 15px; }
+			#header .siteLogo { vertical-align:bottom; float:left; margin-right:20px; }
+			#header .siteHeader a { color:#fff; font-style:italic; font-weight:normal;}
+		#page { padding:15px; }
+			img.top { width:100%; margin-bottom:10px; }
+			#content { margin-left:180px; }
+				.secondary { width:170px; float:left; margin-bottom:1px; }
+				#main { width:500px; float:left; padding-bottom:15px; }
+					#extras { float:right; }
+				
+		#footer { padding:15px; }
+
+
+/*secondary*/
+.secondary .uc { margin-bottom:15px; }
+
+/*box*/
+.boxTitle,
+.secondary h4 { font-family:Georgia,"Times New Roman",Times,serif; font-style:italic;  font-weight:normal;  background:transparent url(SidebarLeftBg.gif) no-repeat 100% 0%; margin:0; padding:15px 10px 0 10px; color:#333; text-align:center; }
+.secondary .box { _height:1px; background:transparent url(SidebarLeftBg.gif) no-repeat 100% 100%; padding:10px 20px 20px 10px; }
+#extras .boxTitle,
+#extras h4 { background:transparent url(SidebarRightBg.gif) no-repeat 0% 0%; }
+#extras .box { background:transparent url(SidebarRightBg.gif) no-repeat 0% 100%; padding:10px 10px 20px 20px; }
+
+/*top*/
+#header div.top { padding-top:35px; }
+	#header div.top img { vertical-align:text-bottom; }
+	#header div.top h2 { display:inline; }
+
+/*menu*/
+.topMenu { position:absolute; bottom:0px; width:900px; }
+	.topMenu li { float:left; background:transparent url(MenuDimmed.gif) no-repeat 0% 0%; padding-left:10px; _width:100px; }
+	.topMenu a { display:block; padding:10px 14px 4px 4px; color:#333; background:transparent url(MenuDimmed.gif) no-repeat 100% 0%; height:16px; }
+	.topMenu li.current, 
+	.topMenu li.current a,
+	.topMenu li.trail, 
+	.topMenu li.trail a { background-image:url(MenuSelected.gif); }
+	.topMenu .current a,
+	.topMenu .trail a { font-weight:bold; }
+
+
+.languageMenu { position:absolute; bottom:5px; right:20px; }
+	.languageMenu a { opacity:.4;}
+	.languageMenu .current { cursor:default; opacity:1;}
+	.languageMenu a:hover { opacity:1;}
+
+.subMenu a { display:block; padding:2px 0; _height:1px; color:#333; }
+ul.subMenu ul { margin:0 0 5px 15px; }
+.subMenu .trail > a,
+.subMenu .current > a,
+.menu .trail > a,
+.menu .current > a { color:#046380; }
+.subMenu .current > a,
+.menu .current > a { font-weight:bold; }
+
+/* lists */
+.list .a0 { background: #f4f8ed; }
+.list { padding-bottom:6px; background-position:50% 100%; }
+.sidelist .item, .list .item { padding:5px; }
+
+
+/*path*/
+.path { margin-bottom:10px; font-size:.9em; color:#999; }
+.path a { color:#666 }
+.path .current { color:#333; }
+.path a.current:hover { cursor:default; text-decoration:none; }
+
+/*sitemap*/
+#main ul { list-style:circle; margin-left:20px; }
+
+/* content */
+.introduction { font-size:1.1em; font-style:italic; }
+
+/* date */
+.date { font-size:x-small; color:#333; display:block; }
+
+/*columns*/
+.columns .left { float:left; width:245px; }
+.columns .right { float:right; width:245px; }
+
+/* gallery */
+.thumbnail { opacity:.4; }
+.thumbnail:hover, .selected { opacity:1; }
+#thumbnails {padding-bottom:10px;}
+#thumbnails .text { display:none; }
+.thumbnail {margin-bottom:10px;margin-right:5px;}
+
+/* comments */
+.commentList { border-top:solid 1px #D0CFCB; margin-top:10px;}

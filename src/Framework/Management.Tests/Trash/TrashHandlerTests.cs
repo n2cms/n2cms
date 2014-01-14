@@ -23,9 +23,9 @@ namespace N2.Edit.Tests.Trash
         [Test]
         public void ThrownItem_IsMoved_ToTrashcan()
         {
-			TrashHandler th = CreateTrashHandler();
+            TrashHandler th = CreateTrashHandler();
 
-			th.Throw(item);
+            th.Throw(item);
 
             Assert.AreEqual(trash, item.Parent);
         }
@@ -36,7 +36,7 @@ namespace N2.Edit.Tests.Trash
             TrashHandler th = CreateTrashHandler();
             th.Throw(item);
 
-			item.Expires.ShouldBe(null);
+            item.Expires.ShouldBe(null);
         }
 
         [Test]
@@ -49,8 +49,8 @@ namespace N2.Edit.Tests.Trash
 
             th.Throw(item);
 
-			child1.State.ShouldBe(ContentState.Deleted);
-			child2.State.ShouldBe(ContentState.Deleted);
+            child1.State.ShouldBe(ContentState.Deleted);
+            child2.State.ShouldBe(ContentState.Deleted);
         }
 
         [Test]
@@ -65,38 +65,38 @@ namespace N2.Edit.Tests.Trash
 
             th.Restore(item);
 
-			child1.State.ShouldBe(ContentState.Published);
-			child2.State.ShouldBe(ContentState.Published);
+            child1.State.ShouldBe(ContentState.Published);
+            child2.State.ShouldBe(ContentState.Published);
         }
 
-		[Test]
-		public void Drafts_AreNotPublished_WhenRestored()
-		{
-			TrashHandler th = CreateTrashHandler();
+        [Test]
+        public void Drafts_AreNotPublished_WhenRestored()
+        {
+            TrashHandler th = CreateTrashHandler();
 
-			item.State = ContentState.Draft;
-			
-			th.Throw(item);
+            item.State = ContentState.Draft;
+            
+            th.Throw(item);
 
-			th.Restore(item);
+            th.Restore(item);
 
-			item.State.ShouldBe(ContentState.Draft);
-		}
+            item.State.ShouldBe(ContentState.Draft);
+        }
 
-		[Test]
-		public void DraftChildren_AreNotPublished_WhenRestored()
-		{
-			TrashHandler th = CreateTrashHandler();
+        [Test]
+        public void DraftChildren_AreNotPublished_WhenRestored()
+        {
+            TrashHandler th = CreateTrashHandler();
 
-			var child1 = CreateItem<ThrowableItem>(5, "child1", item);
-			child1.State = ContentState.Draft;
+            var child1 = CreateItem<ThrowableItem>(5, "child1", item);
+            child1.State = ContentState.Draft;
 
-			th.Throw(item);
+            th.Throw(item);
 
-			th.Restore(item);
+            th.Restore(item);
 
-			child1.State.ShouldBe(ContentState.Draft);
-		}
+            child1.State.ShouldBe(ContentState.Draft);
+        }
 
         [Test]
         public void ThrownItem_NameIsCleared()
@@ -115,19 +115,19 @@ namespace N2.Edit.Tests.Trash
 
             Assert.AreEqual("item", item[TrashHandler.FormerName]);
             Assert.AreEqual(root, item[TrashHandler.FormerParent]);
-            Assert.Less(DateTime.Now.AddSeconds(-10), (DateTime)item[TrashHandler.DeletedDate]);
+            Assert.Less(N2.Utility.CurrentTime().AddSeconds(-10), (DateTime)item[TrashHandler.DeletedDate]);
         }
 
         [Test]
         public void Throwing_IsIntercepted_InMediumTrust()
         {
-			IEngine engine = new ContentEngine(new MediumTrustServiceContainer(), new EventBroker(), new ContainerConfigurer());
-			engine.Initialize();
-			engine.Persister.Dispose();
+            IEngine engine = new ContentEngine(new MediumTrustServiceContainer(), new EventBroker(), new ContainerConfigurer());
+            engine.Initialize();
+            engine.Persister.Dispose();
 
-			var schemaCreator = new SchemaExport(engine.Resolve<IConfigurationBuilder>().BuildConfiguration());
-			var conn = engine.Resolve<ISessionProvider>().OpenSession.Session.Connection;
-			schemaCreator.Execute(false, true, false, conn, null);
+            var schemaCreator = new SchemaExport(engine.Resolve<IConfigurationBuilder>().BuildConfiguration());
+            var conn = engine.Resolve<ISessionProvider>().OpenSession.Session.Connection;
+            schemaCreator.Execute(false, true, false, conn, null);
 
             engine.SecurityManager.Enabled = false;
 
@@ -148,14 +148,14 @@ namespace N2.Edit.Tests.Trash
             Assert.That(root.Children[0], Is.TypeOf(typeof(TrashContainerItem)));
             Assert.That(root.Children[0].Children[0], Is.EqualTo(item));
 
-			engine.Resolve<ISessionProvider>().Dispose();
-			conn.Close();
+            engine.Resolve<ISessionProvider>().Dispose();
+            conn.Close();
         }
 
         [Test]
         public void ThrashHandler_Throw_WillInvokeEvents()
         {
-			var th = CreateTrashHandler();
+            var th = CreateTrashHandler();
 
             bool throwingWasInvoked = false;
             bool throwedWasInvoked = false;
@@ -170,62 +170,33 @@ namespace N2.Edit.Tests.Trash
         [Test]
         public void ThrashHandler_Throw_CanBeCancelled()
         {
-			var th = CreateTrashHandler();
+            var th = CreateTrashHandler();
 
             th.ItemThrowing += delegate(object sender, CancellableItemEventArgs args) { args.Cancel = true; };
             th.Throw(item);
 
-			Assert.That(item.Parent, Is.Not.EqualTo(trash));
+            Assert.That(item.Parent, Is.Not.EqualTo(trash));
         }
 
-		[Test]
-		public void ThrownItem_ChangesState_ToDeleted()
-		{
-			TrashHandler th = CreateTrashHandler();
-			th.Throw(item);
-
-			Assert.That(item.State, Is.EqualTo(ContentState.Deleted));
-		}
-
-		[Test]
-		public void RestoredItem_ChangesState_ToPreviousState()
-		{
-			item.State = ContentState.Published;
-
-			TrashHandler th = CreateTrashHandler();
-			th.Throw(item);
-			th.Restore(item);
-
-			Assert.That(item.State, Is.EqualTo(ContentState.Published));
-		}
-
-        #region Helper methods
-
-        private TrashHandler CreateTrashHandler()
+        [Test]
+        public void ThrownItem_ChangesState_ToDeleted()
         {
-			ContentActivator activator = new ContentActivator(null, null, null);
-            IPersister persister = MockPersister(root, trash, item);
-			Expect.Call(persister.Repository).Return(repository).Repeat.Any();
-            Expect.Call(delegate { persister.Move(null, null); }).IgnoreArguments()
-                .Do(new System.Action<ContentItem, ContentItem>(delegate(ContentItem source, ContentItem destination)
-                                                             {
-                                                                 source.AddTo(destination);
-                                                             })).Repeat.Any();
-			
-            mocks.ReplayAll();
+            TrashHandler th = CreateTrashHandler();
+            th.Throw(item);
 
-			return new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister.Repository, null, host, activator), new StateChanger(), new ThreadContext()) { UseNavigationMode = true };
+            Assert.That(item.State, Is.EqualTo(ContentState.Deleted));
         }
 
-        private IPersister MockPersister(ContentItem root, ContentItem trash, ContentItem item)
+        [Test]
+        public void RestoredItem_ChangesState_ToPreviousState()
         {
-            IPersister persister = mocks.StrictMock<IPersister>();
-            Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
-            Expect.Call(delegate { persister.Save(item); }).Repeat.Any();
-            return persister;
+            item.State = ContentState.Published;
+
+            TrashHandler th = CreateTrashHandler();
+            th.Throw(item);
+            th.Restore(item);
+
+            Assert.That(item.State, Is.EqualTo(ContentState.Published));
         }
-
-        #endregion
-
     }
 }

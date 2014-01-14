@@ -1,5 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Diagnose.aspx.cs" Inherits="N2.Edit.Install.Diagnose" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Diagnose.aspx.cs" Inherits="N2.Edit.Install.Diagnose" %>
 <%@ Import Namespace="System.Collections.Generic"%>
+<%@ Import Namespace="System.Reflection"%>
 <%@ Import Namespace="N2.Web"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -7,6 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="Head1" runat="server">
     <title>Diagnose N2</title>
+	<link href="../Resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="../Resources/Css/All.css" type="text/css" />
     <style type="text/css">
         label{font-weight:bold;margin:5px 10px 0 0;}
@@ -21,10 +23,10 @@
         .EnabledFalse { color:#999; }
         .IsDefinedFalse { color:Red; }
         a { color:Blue; }
-        .expandable { padding:1px; }
+        .expandable { padding:1px; position:relative; }
 			.expandable .opened { display:none; }
 			.expandable .opener { display:block; }
-			.expandable:hover .opened { display:block; }
+			.expandable:hover .opened { display:block; position:absolute; background:#fff; z-index:9999; }
 			.expandable:hover .opener { display:none; }
     </style>
 	<script type="text/javascript">
@@ -51,6 +53,15 @@
 					<tr><th>Connection</th><td><asp:Label ID="lblDbConnection" runat="server" /></td></tr>
 					<tr><th>Root item</th><td><asp:Label ID="lblRootNode" runat="server" /></td></tr>
 					<tr><th>Start page</th><td><asp:Label ID="lblStartNode" runat="server" /></td></tr>
+					<tr><th>N2 version (recorded)</th><td><%= Status.RecordedAssemblyVersion %> (<%= Status.RecordedFileVersion %>)</td></tr>
+					<tr><th>N2 file version (recorded)</th><td><%= Status.RecordedFileVersion %> (<%= Status.RecordedFileVersion %>)</td></tr>
+					<tr><th rowspan="<%= Status.RecordedFeatures.Length %>">Installed features (recorded)</th>
+						<% foreach (string feature in Status.RecordedFeatures){ %>
+						<td><%= feature %></td>
+						<% } %>
+					</tr>
+					<tr><th>Needs <a href="Upgrade.aspx">upgrade</a></th><td><%= Status.NeedsUpgrade %></td></tr>
+					<tr><th>Needs <a href="Rebase.aspx">rebase</a></th><td><%= Status.NeedsRebase %></td></tr>
 					<tr><th rowspan="<%= recentChanges.Length + 1 %>">Recent changes </th><td><asp:Label ID="lblChanges" runat="server" />
 						<% foreach (string change in recentChanges){ %>
 							<%= change %> </td></tr><tr><td>
@@ -59,8 +70,8 @@
 				</tbody>
 				<tbody>
 					<tr><th colspan="2"><h2>Key assemblies & types</h2></th></tr>
-					<tr><th>N2 version</th><td><asp:Label ID="lblN2Version" runat="server" /></td></tr>
-					<tr><th>N2.Management version</th><td><asp:Label ID="lblEditVersion" runat="server" /></td></tr>
+					<tr><th>N2 version</th><td><%= typeof(N2.Context).Assembly.GetName().Version %> (<%= N2.Management.Installation.InstallationUtility.GetFileVersion(typeof(N2.Context).Assembly)  %>)</td></tr>
+					<tr><th>N2.Management version</th><td><%= typeof(N2.Edit.Install.Diagnose).Assembly.GetName().Version %> (<%= N2.Management.Installation.InstallationUtility.GetFileVersion(typeof(N2.Edit.Install.Diagnose).Assembly) %>)</td></tr>
 <% try { %>
 					<tr><th>Engine type</th><td><%= Engine.GetType() %></td></tr>
 					<tr><th>IoC Container type</th><td><%= Engine.Container.GetType() %></td></tr>
@@ -75,9 +86,6 @@
 						</td>
 					</tr>
 <% } catch (Exception ex) { Response.Write("<tr><th>Error</th><td>" + ex.ToString() + "</td>"); } %>
-					<tr><th>Membership</th><td><%= System.Web.Security.Membership.Provider %></td></tr>
-					<tr><th>Roles</th><td><%= System.Web.Security.Roles.Provider %></td></tr>
-					<tr><th>Profile</th><td><%= System.Web.Profile.ProfileManager.Provider %></td></tr>
 				</tbody>
 				<tbody>
 					<tr><th colspan="2"><h2>Server</h2></th></tr>
@@ -94,6 +102,17 @@
 					<tr><th>UI Culture</th><td><%= UICulture %></td></tr>
 					<tr><th>Config culture</th><td><% try { Response.Write(((System.Web.Configuration.GlobalizationSection)System.Configuration.ConfigurationManager.GetSection("system.web/globalization")).Culture); } catch (Exception ex) { Response.Write(ex.Message); } %></td></tr>
 					<tr><th>Config UI culture</th><td><% try { Response.Write(((System.Web.Configuration.GlobalizationSection)System.Configuration.ConfigurationManager.GetSection("system.web/globalization")).UICulture); } catch (Exception ex) { Response.Write(ex.Message); } %></td></tr>
+				</tbody>
+				<tbody>
+					<tr><th colspan="2"><h2>Security</h2></th></tr>
+					<tr><th>Membership</th><td><%= System.Web.Security.Membership.Provider %></td></tr>
+					<tr><th>Roles</th><td><% try { Response.Write(System.Web.Security.Roles.Provider.ToString()); } catch(Exception ex) { Response.Write(ex.Message); } %></td></tr>
+					<tr><th>Profile</th><td><%= System.Web.Profile.ProfileManager.Provider %></td></tr>
+					<tr><th>User type</th><td><%= User %> <%= User.Identity %></td></tr>
+					<tr><th>User</th><td><%= User.Identity.Name %></td></tr>
+					<tr><th rowspan="3">Roles</th><td>Writers: <%= User.IsInRole("Writers") %></td></tr>
+					<tr><td>Editors: <%= User.IsInRole("Editors") %></td></tr>
+					<tr><td>Administrators: <%= User.IsInRole("Administrators") %></td></tr>
 				</tbody>
 				<tbody>
 					<tr><th colspan="2"><h2>Sites</h2></th></tr>
@@ -115,9 +134,9 @@
 				<tbody>
 					<tr><th colspan="2"><h2>MVC</h2></th></tr>
 <% try {%>
-					<tr><th rowspan="3">Versions</th><td><%= System.Reflection.Assembly.LoadWithPartialName("System.Web.Mvc").FullName %></td></tr>
-					<tr><td><%= System.Reflection.Assembly.LoadWithPartialName("System.Web.Abstractions").FullName %></td></tr>
-					<tr><td><%= System.Reflection.Assembly.LoadWithPartialName("System.Web.Routing").FullName %></td></tr>
+					<tr><th rowspan="3">Versions</th><td><%= Assembly.LoadWithPartialName("System.Web.Mvc").FullName %></td></tr>
+					<tr><td><%= Assembly.LoadWithPartialName("System.Web.Abstractions").FullName %></td></tr>
+					<tr><td><%= Assembly.LoadWithPartialName("System.Web.Routing").FullName %></td></tr>
 <% } catch (Exception ex) { Response.Write("<tr><td>" + ex + "</td></tr>"); } %>
 				</tbody>
 			</table>
@@ -224,15 +243,16 @@
 
             
             <asp:Repeater ID="rptAssembly" runat="server">
-                <HeaderTemplate><table class="t openable"><thead><tr><th colspan="6"><h2>Assemblies</h2></th></tr><tr><td>Assembly Name</td><td>Version</td><td>Culture</td><td>Public Key</td><td>References N2</td><td>Definitions</td></tr></thead><tbody></HeaderTemplate>
+                <HeaderTemplate><table class="t openable"><thead><tr><th colspan="7"><h2>Assemblies</h2></th></tr><tr><td>Assembly Name</td><td>Version</td><td>Culture</td><td>Public Key</td><td>File version</td><td>References N2</td><td>Definitions</td></tr></thead><tbody></HeaderTemplate>
                 <ItemTemplate><tr>
-                <asp:Repeater runat="server" DataSource="<%# ((System.Reflection.Assembly)Container.DataItem).FullName.Split(',') %>">
+                <asp:Repeater runat="server" DataSource="<%# ((Assembly)Container.DataItem).FullName.Split(',') %>">
 					<ItemTemplate>
 						<td><%# Container.DataItem %></td>
 					</ItemTemplate>
                 </asp:Repeater>
-                <td><%# Array.Find(((System.Reflection.Assembly)Container.DataItem).GetReferencedAssemblies(), delegate(System.Reflection.AssemblyName an) { return an.Name.StartsWith("N2"); }) != null %></td>
-				<td><%# GetDefinitions((System.Reflection.Assembly)Container.DataItem) %></td>
+                <td><%# N2.Management.Installation.InstallationUtility.GetFileVersion((Assembly)Container.DataItem) %></td>
+				<td><%# Array.Find(((Assembly)Container.DataItem).GetReferencedAssemblies(), delegate(AssemblyName an) { return an.Name.StartsWith("N2"); }) != null %></td>
+				<td><%# GetDefinitions((Assembly)Container.DataItem) %></td>
                 </tr></ItemTemplate>
                 <FooterTemplate></tbody></table></FooterTemplate>
             </asp:Repeater>
@@ -245,6 +265,49 @@
 			<% foreach (N2.Engine.ServiceInfo info in Engine.Container.Diagnose()) { %>
 				<tr><td><%= info.ServiceType %></td><td><%= info.ImplementationType %></td></tr>
 			<% } %>
+			</tbody></table>
+			<% } catch (Exception ex) { %>
+			<pre><%= ex %></pre>
+			<% } %>
+
+			
+			<% try { %>
+			<table class="t openable"><thead><tr><th colspan="2"><h2>Interface context</h2></th></tr></thead>
+			<tbody>
+				<% var ctx = Engine.Resolve<N2.Management.Api.InterfaceBuilder>().GetInterfaceDefinition(new System.Web.HttpContextWrapper(Context), new N2.Edit.SelectionUtility(Context, Engine)); %>
+				<tr><th colspan="2">MainMenu</th></tr>
+				<% foreach (var mi in ctx.MainMenu.Children) { %>
+				<tr>
+					<td><strong><%= mi.Current.Name %></strong></td>
+					<td>
+						<% foreach (var mi2 in mi.Children) { %>
+						<div><%= mi2.Current.Name %></div>
+						<% } %>
+					</td>
+			    </tr>
+				<% } %>
+				<tr><th colspan="2">ActionMenu</th></tr>
+				<% foreach (var mi in ctx.ActionMenu.Children) { %>
+				<tr>
+					<td><strong><%= mi.Current.Name %></strong></td>
+					<td>
+						<% foreach (var mi2 in mi.Children) { %>
+						<div><%= mi2.Current.Name %></div>
+						<% } %>
+					</td>
+			    </tr>
+				<% } %>
+				<tr><th colspan="2">ContextMenu</th></tr>
+				<% foreach (var mi in ctx.ContextMenu.Children) { %>
+				<tr>
+					<td><strong><%= mi.Current.Name %></strong></td>
+					<td>
+						<% foreach (var mi2 in mi.Children) { %>
+						<div><%= mi2.Current.Name %></div>
+						<% } %>
+					</td>
+			    </tr>
+				<% } %>
 			</tbody></table>
 			<% } catch (Exception ex) { %>
 			<pre><%= ex %></pre>

@@ -1,4 +1,4 @@
-﻿// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
+// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,22 +14,22 @@
 
 namespace Castle.DynamicProxy.Generators
 {
-	using System;
+    using System;
 
-	public abstract class MetaTypeElement
-	{
-		protected readonly Type sourceType;
+    public abstract class MetaTypeElement
+    {
+        protected readonly Type sourceType;
 
-		protected MetaTypeElement(Type sourceType)
-		{
-			this.sourceType = sourceType;
-		}
+        protected MetaTypeElement(Type sourceType)
+        {
+            this.sourceType = sourceType;
+        }
 
-		internal bool CanBeImplementedExplicitly
-		{
-			get { return sourceType != null && sourceType.IsInterface; }
-		}
+        internal bool CanBeImplementedExplicitly
+        {
+            get { return sourceType != null && sourceType.IsInterface; }
+        }
 
-		internal abstract void SwitchToExplicitImplementation();
-	}
+        internal abstract void SwitchToExplicitImplementation();
+    }
 }

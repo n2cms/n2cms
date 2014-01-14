@@ -11,7 +11,7 @@ using System.Web.UI.HtmlControls;
 
 namespace N2.Templates.UI.Parts
 {
-	public partial class Top : Web.UI.TemplateUserControl<ContentItem, Templates.Items.Top>
+    public partial class Top : Web.UI.TemplateUserControl<ContentItem, Templates.Items.Top>
     {
     }
 }

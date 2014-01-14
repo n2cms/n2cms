@@ -12,7 +12,7 @@ namespace N2.Addons.Tagging.UI
 {
 
 
-	public partial class TagContainer
-	{
-	}
+    public partial class TagContainer
+    {
+    }
 }

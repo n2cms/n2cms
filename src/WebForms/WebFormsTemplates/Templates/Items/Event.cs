@@ -9,12 +9,12 @@ using N2.Persistence;
 
 namespace N2.Templates.Items
 {
-	[PageDefinition("Event", 
-		Description = "An event in the event calendar.", 
-		SortOrder = 110,
-		IconUrl = "~/Templates/UI/Img/calendar_view_day.png")]
+    [PageDefinition("Event", 
+        Description = "An event in the event calendar.", 
+        SortOrder = 110,
+        IconUrl = "~/Templates/UI/Img/calendar_view_day.png")]
     [RestrictParents(typeof(Calendar))]
-	[ConventionTemplate("CalendarItem")]
+    [ConventionTemplate("CalendarItem")]
     public class Event : AbstractContentPage, ISyndicatable
     {
         public Event()
@@ -29,16 +29,16 @@ namespace N2.Templates.Items
             set { SetDetail("EventDate", value); }
         }
 
-    	public virtual string EventDateString
-    	{
-    		get
-    		{
-    			if (!EventDate.HasValue) return null;
-    			if (EventDate.Value.TimeOfDay.TotalSeconds == 0) return EventDate.Value.ToShortDateString();
-    			
-				return EventDate.Value.ToString();
-    		}
-    	}
+        public virtual string EventDateString
+        {
+            get
+            {
+                if (!EventDate.HasValue) return null;
+                if (EventDate.Value.TimeOfDay.TotalSeconds == 0) return EventDate.Value.ToShortDateString();
+                
+                return EventDate.Value.ToString();
+            }
+        }
 
         [EditableText("Introduction", 90, ContainerName = Tabs.Content, TextMode = TextBoxMode.MultiLine, Rows = 4, Columns = 80)]
         public virtual string Introduction
@@ -57,7 +57,7 @@ namespace N2.Templates.Items
             get { return Introduction; }
         }
 
-		[Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
-		public virtual bool Syndicate { get; set; }
+        [Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
+        public virtual bool Syndicate { get; set; }
     }
 }

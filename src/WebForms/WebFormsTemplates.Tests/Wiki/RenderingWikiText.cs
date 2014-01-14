@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 using System.Web.UI;
@@ -11,15 +11,15 @@ using Rhino.Mocks;
 
 namespace N2.Templates.Tests.Wiki
 {
-	using N2.Addons.Wiki;
-	using N2.Engine;
-	using N2.Web.Wiki;
+    using N2.Addons.Wiki;
+    using N2.Engine;
+    using N2.Web.Wiki;
 
     [TestFixture]
     public class RenderingWikiText : ItemTestsBase
     {
-		N2.Addons.Wiki.Items.Wiki wiki;
-		N2.Addons.Wiki.Items.WikiArticle article;
+        N2.Addons.Wiki.Items.Wiki wiki;
+        N2.Addons.Wiki.Items.WikiArticle article;
         WikiParser parser;
         WikiRenderer renderer;
 
@@ -29,13 +29,13 @@ namespace N2.Templates.Tests.Wiki
             base.SetUp();
 
             var urlParser = new FakeUrlParser();
-			wiki = new N2.Addons.Wiki.Items.Wiki();
+            wiki = new N2.Addons.Wiki.Items.Wiki();
             wiki.Name = "wiki";
-			((IInjectable<IUrlParser>)wiki).Set(urlParser);
-			article = new N2.Addons.Wiki.Items.WikiArticle();
+            ((IInjectable<IUrlParser>)wiki).Set(urlParser);
+            article = new N2.Addons.Wiki.Items.WikiArticle();
             article.Name = "existing-article";
             article.SavedBy = "admin";
-			((IInjectable<IUrlParser>)article).Set(urlParser);
+            ((IInjectable<IUrlParser>)article).Set(urlParser);
             article.AddTo(wiki);
 
             parser = new WikiParser();
@@ -225,7 +225,7 @@ namespace N2.Templates.Tests.Wiki
             {
                 string html = ParseAndRenderWikiText("[[Image:n2.png]]");
 
-				Assert.That(html.StartsWith("<a href=\"/Upload/Wiki/n2.png\"><img src=\"/Upload/Wiki/n2.png\" alt=\"n2.png\" style=\"width:500px"));
+                Assert.That(html.StartsWith("<a href=\"/Upload/Wiki/n2.png\"><img src=\"/Upload/Wiki/n2.png\" alt=\"n2.png\" style=\"width:500px"));
             }
             finally
             {
@@ -243,7 +243,7 @@ namespace N2.Templates.Tests.Wiki
             {
                 string html = ParseAndRenderWikiText("[[Image:n2.png|N2 CMS Logo]]");
 
-				Assert.That(html.StartsWith("<a href=\"/Upload/Wiki/n2.png\"><img src=\"/Upload/Wiki/n2.png\" alt=\"N2 CMS Logo\" style=\"width:500px"));
+                Assert.That(html.StartsWith("<a href=\"/Upload/Wiki/n2.png\"><img src=\"/Upload/Wiki/n2.png\" alt=\"N2 CMS Logo\" style=\"width:500px"));
             }
             finally
             {
@@ -407,32 +407,32 @@ Line 2
             Assert.That(output, Is.EqualTo("<h2>Heading</h2>"));
         }
 
-		[Test]
-		public void WillNotAdd_LineBreak_BetweenHeading_AndText()
-		{
-			string input = @"==Heading==
+        [Test]
+        public void WillNotAdd_LineBreak_BetweenHeading_AndText()
+        {
+            string input = @"==Heading==
 hello";
-			string output = ParseAndRenderWikiText(input);
-			Assert.That(output, Is.EqualTo("<h2>Heading</h2>hello"));
-		}
+            string output = ParseAndRenderWikiText(input);
+            Assert.That(output, Is.EqualTo("<h2>Heading</h2>hello"));
+        }
 
-		[Test]
-		public void WillNotAdd_LineBreak_AfterUnorderedList()
-		{
-			string input = @"* List
+        [Test]
+        public void WillNotAdd_LineBreak_AfterUnorderedList()
+        {
+            string input = @"* List
 ";
-			string output = ParseAndRenderWikiText(input);
-			Assert.That(output, Is.EqualTo("<ul><li>List</li></ul>"));
-		}
+            string output = ParseAndRenderWikiText(input);
+            Assert.That(output, Is.EqualTo("<ul><li>List</li></ul>"));
+        }
 
-		[Test]
-		public void WillNotAdd_LineBreak_BetweenUnorderedList_AndText()
-		{
-			string input = @"* List
+        [Test]
+        public void WillNotAdd_LineBreak_BetweenUnorderedList_AndText()
+        {
+            string input = @"* List
 hello";
-			string output = ParseAndRenderWikiText(input);
-			Assert.That(output, Is.EqualTo("<ul><li>List</li></ul>hello"));
-		}
+            string output = ParseAndRenderWikiText(input);
+            Assert.That(output, Is.EqualTo("<ul><li>List</li></ul>hello"));
+        }
 
         private string ParseAndRenderWikiText(string text)
         {

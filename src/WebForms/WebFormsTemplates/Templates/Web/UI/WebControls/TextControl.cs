@@ -1,61 +1,68 @@
+using System.Diagnostics;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using TextQuestion=N2.Templates.Items.TextQuestion;
+using Resources;
+using TextQuestion = N2.Templates.Items.TextQuestion;
 
 namespace N2.Templates.Web.UI.WebControls
 {
-    public class TextControl : Control, IQuestionControl
+    public sealed class TextControl : Control, IQuestionControl
     {
-        TextBox tb;
-        Label l;
-		RequiredFieldValidator rfv;
+        readonly TextBox _tb;
+        readonly Label _l;
+        readonly RequiredFieldValidator _rfv;
 
         public TextControl(TextQuestion question)
         {
-            tb = new TextBox();
-            tb.CssClass = "alternative";
-            tb.ID = "q" + question.ID;
+            _tb = new TextBox { CssClass = "alternative" };
+            if (question.ID > 0)
+                _tb.ID = "q" + question.ID;
+
             if (question.Rows > 1)
             {
-                tb.TextMode = TextBoxMode.MultiLine;
-                tb.Rows = question.Rows;
+                _tb.TextMode = TextBoxMode.MultiLine;
+                _tb.Rows = question.Rows;
             }
+
             if (question.Columns.HasValue)
             {
-                tb.Columns = question.Columns.Value;
+                _tb.Columns = question.Columns.Value;
             }
 
-            l = new Label();
-            l.CssClass = "label";
-            l.Text = question.Title;
-            l.AssociatedControlID = tb.ID;
+            _l = new Label { CssClass = "label", Text = question.Title };
+            if (question.ID > 0)
+                _l.AssociatedControlID = _tb.ID;
 
-            Controls.Add(l);
-			Controls.Add(tb);
+            Debug.Assert(Controls != null, "Controls != null");
+            Controls.Add(_l);
+            Controls.Add(_tb);
 
-			if (question.Required)
-			{
-				rfv = new RequiredFieldValidator { Display = ValidatorDisplay.Dynamic, Text = "*" }; 
-				rfv.ErrorMessage = question.Title + " is required";
-				rfv.ControlToValidate = tb.ID;
-				rfv.ValidationGroup = "Form";
-				this.Controls.Add(rfv);
-			}
+            if (!question.Required) return;
+
+            _rfv = new RequiredFieldValidator
+            {
+                Display = ValidatorDisplay.Dynamic,
+                Text = ControlPanel.RequiredField_DefaultText,
+                ErrorMessage = string.Format(ControlPanel.RequiredField_DefaultErrorMessage, question.Title),
+                ControlToValidate = _tb.ID,
+                ValidationGroup = "Form"
+            };
+            Controls.Add(_rfv);
         }
 
         public string AnswerText
         {
-            get { return tb.Text; }
+            get { return _tb.Text; }
         }
 
         public string Question
         {
-            get { return l.Text; }
+            get { return _l.Text; }
         }
 
         protected override void Render(HtmlTextWriter writer)
         {
-            writer.Write("<div class='row cf'>");
+            writer.Write(@"<div class=""row cf"">");
             base.Render(writer);
             writer.Write("</div>");
         }

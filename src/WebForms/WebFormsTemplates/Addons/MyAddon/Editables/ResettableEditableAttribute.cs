@@ -1,4 +1,4 @@
-﻿using System.Web.UI.WebControls;
+using System.Web.UI.WebControls;
 using N2.Details;
 
 namespace N2.Addons.MyAddon.Editables

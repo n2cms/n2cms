@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using N2.Configuration;
@@ -10,7 +10,7 @@ namespace N2.Edit.Install
 {
     public partial class FixClass : System.Web.UI.Page
     {
-        InstallationManager installer = N2.Context.Current.Resolve<InstallationManager>();
+        NHInstallationManager installer = N2.Context.Current.Resolve<NHInstallationManager>();
         string tablePrefix = N2.Context.Current.Resolve<DatabaseSection>().TablePrefix;
 
         protected override void OnInit(EventArgs e)

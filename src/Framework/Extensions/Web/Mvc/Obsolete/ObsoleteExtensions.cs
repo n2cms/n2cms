@@ -1,6 +1,6 @@
 namespace N2.Web.Mvc.Html
 {
-	public static class ObsoleteExtensions
+    public static class ObsoleteExtensions
     {
-	}
+    }
 }

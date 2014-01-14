@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>N2CMS.Bundles.Dinamico</id>
+		<version>{Version}</version>
+		<title>N2CMS-Bundle: Dinamico Templates</title>
+		<authors>Cristian Libardo</authors>
+		<owners>Cristian Libardo</owners>
+		<licenseUrl>http://n2cms.com/Project/License.aspx</licenseUrl>
+		<projectUrl>http://n2cms.com/</projectUrl>
+		<iconUrl>http://n2cms.com/Upload/logo-5.png</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>This package bundles the N2 CMS Framework, Management and Dinamico templates for speediest trial. Install dependencies individually to combine packages in different ways.</description>
+		<summary>N2 CMS is a lightweight CMS library that can be used as is, or in combination with many features out of the box using template pack for MVC2-4, Razor or WebForms.</summary>
+		<language>en-US</language>
+		<tags>N2 CMS, CMS, Bundle, Dinamico, MVC, Razor</tags>
+		<dependencies>
+			<dependency id="N2CMS.Config" version="2.5" />
+			<dependency id="N2CMS.Config.SQLite" version="{Version}" />
+			<dependency id="N2CMS.Library" version="{Version}" />
+			<dependency id="N2CMS.Management" version="{Version}" />
+			<dependency id="N2CMS.Dinamico" version="{Version}" />
+			<dependency id="N2CMS.Search.Lucene" version="{Version}" />
+		</dependencies>
+	</metadata>
+</package>

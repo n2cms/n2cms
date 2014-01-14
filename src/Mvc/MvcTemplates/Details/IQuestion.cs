@@ -1,14 +1,14 @@
-﻿using System.Web.Mvc;
+using System.Web.Mvc;
 
 namespace N2.Templates.Mvc.Details
 {
-	public interface IQuestion
-	{
-		MvcHtmlString CreateHtmlElement();
+    public interface IQuestion
+    {
+        MvcHtmlString CreateHtmlElement();
 
-		string QuestionText { get; }
-		string ElementID { get; }
+        string QuestionText { get; }
+        string ElementID { get; }
 
-		void AppendAnswer(AnswerContext context, string postedValue);
-	}
+        void AppendAnswer(AnswerContext context, string postedValue);
+    }
 }

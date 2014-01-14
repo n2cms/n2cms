@@ -22,24 +22,24 @@ using System;
 
 namespace N2.Edit
 {
-	/// <summary>An area in which to place edit mode plugins.</summary>
+    /// <summary>An area in which to place edit mode plugins.</summary>
     [Flags]
-	public enum ToolbarArea
-	{
-		None = 0,
-		/// <summary>The far left area above the navigation area.</summary>
-		Navigation = 1,
-		/// <summary>The far right area above the preview area.</summary>
-		Preview = 2,
-		/// <summary>Both panes. Used when referencing multiple panes in user interfaces.</summary>
-		Both = 3,
-		/// <summary>The central area above the preview area.</summary>
-		Operations = 4,
-		/// <summary>Before the search box, above the tool bar.</summary>
-		Options = 8,
-		/// <summary>Displayed across all management interfaces.</summary>
-		Management = 16,
-		/// <summary>Displayed on files.</summary>
-		Files = 32
-	}
+    public enum ToolbarArea
+    {
+        None = 0,
+        /// <summary>The far left area above the navigation area.</summary>
+        Navigation = 1,
+        /// <summary>The far right area above the preview area.</summary>
+        Preview = 2,
+        /// <summary>Both Navigation and Preview panes. Used when referencing multiple panes in user interfaces.</summary>
+        Both = 3,
+        /// <summary>The central area above the preview area.</summary>
+        Operations = 4,
+        /// <summary>Before the search box, above the tool bar.</summary>
+        Options = 8,
+        /// <summary>Displayed across all management interfaces.</summary>
+        Management = 16,
+        /// <summary>Displayed on files.</summary>
+        Files = 32
+    }
 }

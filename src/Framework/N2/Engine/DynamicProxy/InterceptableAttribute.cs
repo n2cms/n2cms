@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +9,7 @@ namespace Castle.DynamicProxy
     /// Attribute used by the proxying system to enable proxying a member.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method | AttributeTargets.Event)]
-    public class InterceptableAttribute : Attribute, IInterceptable
+    public class NonInterceptableAttribute : Attribute
     {
     }
 }

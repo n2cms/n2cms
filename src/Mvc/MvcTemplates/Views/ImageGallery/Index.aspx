@@ -1,9 +1,9 @@
-<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.master" AutoEventWireup="true" 
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.master" AutoEventWireup="true" 
 	Inherits="N2.Web.Mvc.ContentViewPage<ImageGalleryModel, ImageGallery>" Title="" %>
 <%@ Import Namespace="N2.Collections"%>
 <%@ Import Namespace="N2.Web.Drawing" %>
 <asp:Content ContentPlaceHolderID="Head" runat="server">
-	<script src="<%= ResolveClientUrl("~/Content/Galleria/galleria-1.2.7.min.js") %>" type="text/javascript"></script>
+	<script src="<%= ResolveClientUrl("~/Content/Galleria/galleria-1.2.9.min.js") %>" type="text/javascript"></script>
 	<link rel="Stylesheet" type="text/css" href="<%= ResolveClientUrl("~/Content/Galleria/themes/classic/galleria.classic.css") %>" />
 </asp:Content>
 <asp:Content ContentPlaceHolderID="ContentAndSidebar" runat="server">

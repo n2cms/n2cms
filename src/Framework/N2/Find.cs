@@ -14,24 +14,24 @@ using N2.Persistence.NH;
 
 namespace N2
 {
-	/// <summary>
-	/// Provides easy access to finder and commonly used items.
-	/// </summary>
-	public sealed class Find : Persistence.GenericFind<ContentItem,ContentItem>
-	{
-		public static IQueryable<ContentItem> Query()
-		{
-			return Context.Current.QueryItems();
-		}
+    /// <summary>
+    /// Provides easy access to finder and commonly used items.
+    /// </summary>
+    public sealed class Find : Persistence.GenericFind<ContentItem,ContentItem>
+    {
+        public static IQueryable<ContentItem> Query()
+        {
+            return Context.Current.QueryItems();
+        }
 
-		public static IQueryable<T> Query<T>()
-		{
-			return Context.Current.Query<T>();
-		}
+        public static IQueryable<T> Query<T>()
+        {
+            return Context.Current.Query<T>();
+        }
 
-		public static SessionContext NH
-		{
-			get { return Context.Current.Resolve<ISessionProvider>().OpenSession; }
-		}
-	}
+        public static SessionContext NH
+        {
+            get { return Context.Current.Resolve<ISessionProvider>().OpenSession; }
+        }
+    }
 }

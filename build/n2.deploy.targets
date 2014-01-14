@@ -1,61 +1,138 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
-	<!-- Deploy -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <!-- Deploy -->
 
-	<PropertyGroup>
-		<Framework-DeployFolder>$(DeployFolder)\$(DeployPrefix)Framework</Framework-DeployFolder>
-		<Framework-NugetFolder>$(DeployFolder)\$(DeployPrefix)Framework_Nuget</Framework-NugetFolder>
-		<Management-NugetFolder>$(DeployFolder)\$(DeployPrefix)Management_Nuget</Management-NugetFolder>
-		<Library-NugetFolder>$(DeployFolder)\$(DeployPrefix)Library_Nuget</Library-NugetFolder>
+  <PropertyGroup>
+    <Framework-DeployFolder>$(DeployFolder)\$(DeployPrefix)Framework</Framework-DeployFolder>
+    
+    <Config-NugetFolder>$(DeployFolder)\$(DeployPrefix)Config_Nuget</Config-NugetFolder>
+    <Framework-NugetFolder>$(DeployFolder)\$(DeployPrefix)Framework_Nuget</Framework-NugetFolder>
+    <Management-NugetFolderZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_Zip</Management-NugetFolderZip>
+		<Management-NugetFolderNoZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_NoZip</Management-NugetFolderNoZip>
+		<Management-LocalizedResourcesFolder>$(DeployFolder)\$(DeployPrefix)Management_LocalizedResources_Nuget</Management-LocalizedResourcesFolder>
+    <Library-NugetFolder>$(DeployFolder)\$(DeployPrefix)Library_Nuget</Library-NugetFolder>
+		<LuceneSearch-NugetFolder>$(DeployFolder)\$(DeployPrefix)LuceneSearch_Nuget</LuceneSearch-NugetFolder>
 		<SQLite-NugetFolder>$(DeployFolder)\$(DeployPrefix)SQLite_Nuget</SQLite-NugetFolder>
-		<Razor-NugetFolder>$(DeployFolder)\$(DeployPrefix)Razor_Nuget</Razor-NugetFolder>
-		<Windsor3-NugetFolder>$(DeployFolder)\$(DeployPrefix)Windsor3_Nuget</Windsor3-NugetFolder>
-	</PropertyGroup>
+    <Razor-NugetFolder>$(DeployFolder)\$(DeployPrefix)Razor_Nuget</Razor-NugetFolder>
+		<Mvc-NugetFolder>$(DeployFolder)\$(DeployPrefix)Mvc_Nuget</Mvc-NugetFolder>
+    <ReusableParts-NugetFolder>$(DeployFolder)\$(DeployPrefix)ReusableParts_Nuget</ReusableParts-NugetFolder>
+    <Windsor3-NugetFolder>$(DeployFolder)\$(DeployPrefix)Windsor3_Nuget</Windsor3-NugetFolder>
+    <MongoDB-NugetFolder>$(DeployFolder)\$(DeployPrefix)MongoDB_Nuget</MongoDB-NugetFolder>
+    <RemoteSearch-NugetFolder>$(DeployFolder)\$(DeployPrefix)RemoteSearch_Nuget</RemoteSearch-NugetFolder>
+</PropertyGroup>
 
-	<Target Name="Framework-Deploy" DependsOnTargets="Framework-CreateItemGroups">
+  <Target Name="Config-NuGet">
+    <Copy SourceFiles="@(nugetLibraryBinFiles)" DestinationFolder="$(Library-NugetFolder)\lib" />
+    <ItemGroup>
+      <configNugetIncludes Include="$(BuildFolder)\Nuget\Config\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(configNugetIncludes)" DestinationFolder="$(Config-NugetFolder)\%(RecursiveDir)" />
+    <FileUpdate Files="$(Config-NugetFolder)\N2.Config.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+    <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Config-NugetFolder)\" />
+  </Target>
+  
+  <Target Name="Framework-Deploy" DependsOnTargets="Framework-CreateItemGroups">
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Framework-DeployFolder)\bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Framework-DeployFolder)\N2\%(RecursiveDir)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Framework-DeployFolder)\N2\%(RecursiveDir)" SkipUnchangedFiles="true" UseHardlinksIfPossible="true" />
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Framework-DeployFolder)" />
+  </Target>
+
+	<Target Name="Framework-LocalizedResources-Nuget" DependsOnTargets="Framework-CreateItemGroups">
+		<ItemGroup>
+			<localizedResourcesIncludes Include="$(BuildFolder)\Nuget\ManagementLocalizedResources\**\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(localizedResourcesIncludes)" DestinationFolder="$(Management-LocalizedResourcesFolder)\%(RecursiveDir)" />
+
+		<Copy SourceFiles="@(Framework-LocalizedResources)" DestinationFolder="$(Management-LocalizedResourcesFolder)\Content\N2\%(RecursiveDir)" SkipUnchangedFiles="true" UseHardlinksIfPossible="true" />
+		<FileUpdate Files="$(Management-LocalizedResourcesFolder)\N2.Management.LocalizedResources.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-LocalizedResourcesFolder)\" />
 	</Target>
 
-	<Target Name="Library-NuGet" DependsOnTargets="Framework-Deploy">
+	<Target Name="Library-NuGet" DependsOnTargets="Config-NuGet;Framework-Deploy">
+    <ItemGroup>
+      <nugetLibraryBinFiles Include="$(ManagementFolder)\bin\N2.dll;
+                       $(ManagementFolder)\bin\N2.pdb;
+                       $(ManagementFolder)\bin\N2.xml;"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(nugetLibraryBinFiles)" DestinationFolder="$(Library-NugetFolder)\lib" />
+
+    <ItemGroup>
+      <libraryNugetIncludes Include="$(BuildFolder)\Nuget\Library\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(libraryNugetIncludes)" DestinationFolder="$(Library-NugetFolder)\%(RecursiveDir)" />
+    <FileUpdate Files="$(Library-NugetFolder)\N2.Library.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+    <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Library-NugetFolder)\" />
+  </Target>
+
+	<Target Name="LuceneSearch-NuGet" DependsOnTargets="Framework-Deploy">
 		<ItemGroup>
-			<nugetLibraryBinFiles Include="$(ManagementFolder)\bin\N2.dll;
-										   $(ManagementFolder)\bin\N2.pdb;
-										   $(ManagementFolder)\bin\N2.xml;"/>
+			<nugetLuceneSearchBinFiles Include="$(SrcFolder)\Framework\Search.Lucene\bin\$(Configuration)\N2.Search.Lucene.dll;"/>
 		</ItemGroup>
-		<Copy SourceFiles="@(nugetLibraryBinFiles)" DestinationFolder="$(Library-NugetFolder)\lib" />
+		<Copy SourceFiles="@(nugetLuceneSearchBinFiles)" DestinationFolder="$(LuceneSearch-NugetFolder)\lib" />
 
 		<ItemGroup>
-			<libraryNugetIncludes Include="$(BuildFolder)\Nuget\Library\**\*" />
+			<LuceneSearchNugetIncludes Include="$(BuildFolder)\Nuget\LuceneSearch\**\*" />
 		</ItemGroup>
-		<Copy SourceFiles="@(libraryNugetIncludes)" DestinationFolder="$(Library-NugetFolder)\%(RecursiveDir)" />
-		<FileUpdate Files="$(Library-NugetFolder)\N2.Library.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+		<Copy SourceFiles="@(LuceneSearchNugetIncludes)" DestinationFolder="$(LuceneSearch-NugetFolder)\%(RecursiveDir)" />
+		<FileUpdate Files="$(LuceneSearch-NugetFolder)\N2.Search.Lucene.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
-		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Library-NugetFolder)\" />
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(LuceneSearch-NugetFolder)\" />
 	</Target>
 
 	<Target Name="SQLite-NuGet">
-		<ItemGroup>
-			<sqliteNugetIncludes Include="$(BuildFolder)\Nuget\SQLite\**\*" />
-		</ItemGroup>
-		<Copy SourceFiles="@(sqliteNugetIncludes)" DestinationFolder="$(SQLite-NugetFolder)\%(RecursiveDir)" />
-		<FileUpdate Files="$(SQLite-NugetFolder)\N2.SQLite.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+    <ItemGroup>
+      <sqliteNugetIncludes Include="$(BuildFolder)\Nuget\SQLite\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(sqliteNugetIncludes)" DestinationFolder="$(SQLite-NugetFolder)\%(RecursiveDir)" />
+    <FileUpdate Files="$(SQLite-NugetFolder)\N2.SQLite.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
-		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(SQLite-NugetFolder)\" />
-	</Target>
+    <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(SQLite-NugetFolder)\" />
+  </Target>
 
-	<Target Name="Windsor3-NuGet">
-		<ItemGroup>
-			<windsor3NugetBinaries Include="$(SrcFolder)\Framework\IoC.Windsor\bin\$(Configuration)\N2.IoC.Windsor3.dll;"/>
-			<windsor3NugetIncludes Include="$(BuildFolder)\Nuget\IoC.Windsor3\**\*" />
-		</ItemGroup>
-		<Copy SourceFiles="@(windsor3NugetBinaries)" DestinationFolder="$(Windsor3-NugetFolder)\lib" />
-		<Copy SourceFiles="@(windsor3NugetIncludes)" DestinationFolder="$(Windsor3-NugetFolder)\%(RecursiveDir)" />
-		<FileUpdate Files="$(Windsor3-NugetFolder)\N2.Windsor3.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+  <Target Name="Windsor3-NuGet">
+    <ItemGroup>
+      <windsor3NugetBinaries Include="$(SrcFolder)\Framework\IoC.Windsor\bin\$(Configuration)\N2.IoC.Windsor3.dll;"/>
+      <windsor3NugetIncludes Include="$(BuildFolder)\Nuget\IoC.Windsor3\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(windsor3NugetBinaries)" DestinationFolder="$(Windsor3-NugetFolder)\lib" />
+    <Copy SourceFiles="@(windsor3NugetIncludes)" DestinationFolder="$(Windsor3-NugetFolder)\%(RecursiveDir)" />
+    <FileUpdate Files="$(Windsor3-NugetFolder)\N2.Windsor3.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
-		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Windsor3-NugetFolder)\" />
-	</Target>
+    <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Windsor3-NugetFolder)\" />
+  </Target>
+
+  <Target Name="MongoDB-NuGet">
+    <ItemGroup>
+      <mongoDBNugetBinaries Include="$(SrcFolder)\Framework\MongoDB\bin\$(Configuration)\N2.Persistence.MongoDB.dll;"/>
+      <mongoDBNugetIncludes Include="$(BuildFolder)\Nuget\MongoDB\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(mongoDBNugetBinaries)" DestinationFolder="$(MongoDB-NugetFolder)\lib" />
+    <Copy SourceFiles="@(mongoDBNugetIncludes)" DestinationFolder="$(MongoDB-NugetFolder)\%(RecursiveDir)" />
+    <FileUpdate Files="$(MongoDB-NugetFolder)\N2.Persistence.MongoDB.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+    <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(MongoDB-NugetFolder)\" />
+  </Target>
+
+  <Target Name="RemoteSearch-NuGet">
+    <ItemGroup>
+      <remoteSearchNugetBinaries Include="$(SrcFolder)\Framework\Search.Remote.Client\bin\$(Configuration)\N2.Search.Remote.Client.dll;"/>
+      <remoteSearchNugetIncludes Include="$(BuildFolder)\Nuget\RemoteSearch\**\*" />
+      <remoteSearchNugetServer Include="$(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.dll;
+                                        $(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.exe;
+                                        $(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.config;
+                                        $(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.manifest;
+                                        $(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.bat;
+                                        $(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.txt;"
+                               Exclude="$(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.vshost.*;"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(remoteSearchNugetBinaries)" DestinationFolder="$(RemoteSearch-NugetFolder)\lib" />
+    <Copy SourceFiles="@(remoteSearchNugetIncludes)" DestinationFolder="$(RemoteSearch-NugetFolder)\%(RecursiveDir)" />
+    <Copy SourceFiles="@(remoteSearchNugetServer)" DestinationFolder="$(RemoteSearch-NugetFolder)\Content\RemoteSearchServer" />
+    <FileUpdate Files="$(RemoteSearch-NugetFolder)\N2.Search.Remote.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+    <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(RemoteSearch-NugetFolder)\" />
+  </Target>
 
 	<Target Name="Razor-NuGet">
 		<ItemGroup>
@@ -69,106 +146,161 @@
 		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Razor-NugetFolder)\" />
 	</Target>
 
-	<Target Name="Management-NuGet" DependsOnTargets="Framework-Deploy;Library-NuGet;SQLite-NuGet;Razor-NuGet">
+	<Target Name="Mvc-NuGet">
 		<ItemGroup>
-			<nugetFrameworkBinFiles Include="$(ManagementFolder)\bin\N2*.dll;
-											 $(ManagementFolder)\bin\N2*.pdb;
-											 $(SrcFolder)\Framework\Packaging\bin\$(Configuration)\N2.Packaging.dll;"
-									Exclude="$(ManagementFolder)\bin\N2.???;
-											 $(ManagementFolder)\bin\N2.Security.*;
-											 $(ManagementFolder)\bin\N2.Templates.*;" />
-      <luceneBinFiles Include="$(SrcFolder)\packages\Lucene.Net.3.0.3-RC2\lib\**\Lucene.*" />
+			<mvcNugetIncludes Include="$(BuildFolder)\Nuget\Mvc\**\*" />
 		</ItemGroup>
-		<Copy SourceFiles="@(nugetFrameworkBinFiles)" DestinationFolder="$(Management-NugetFolder)\lib" />
+		<Copy SourceFiles="@(mvcNugetIncludes)" DestinationFolder="$(Mvc-NugetFolder)\%(RecursiveDir)" />
+		<FileUpdate Files="$(Mvc-NugetFolder)\N2.Mvc.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
-		<!-- Using DotNetZip since MSBuild Community Tasks Zip doesn't include directory entries -->
-		<Delete Files="$(Management-NugetFolder)\content\N2\N2.zip" Condition="Exists('$(Management-NugetFolder)\content\N2\N2.zip')" />
-		<Copy SourceFiles="$(Framework-DeployFolder)\N2\web.config"	DestinationFolder="$(Management-NugetFolder)\content\N2\" />
-		<Exec Command="$(BuildFolder)\lib\BuildSupport.exe ZipDirectory &quot;$(Management-NugetFolder)\content\N2\N2.zip&quot; &quot;$(Framework-DeployFolder)\N2&quot; &quot;N2&quot;" />
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Mvc-NugetFolder)\" />
+	</Target>
+
+	<Target Name="ReusableParts-NuGet">
+    <ItemGroup>
+      <reusablePartsNugetIncludes Include="$(BuildFolder)\Nuget\ReusableParts\**\*" />
+      <nugetReusablePartsBinFiles Include="$(SrcFolder)\Framework\ReusableParts\bin\$(Configuration)\N2.ReusableParts.*;" />
+    </ItemGroup>
+    <Copy SourceFiles="@(reusablePartsNugetIncludes)" DestinationFolder="$(ReusableParts-NugetFolder)\%(RecursiveDir)" />
+    <Copy SourceFiles="@(nugetReusablePartsBinFiles)" DestinationFolder="$(ReusableParts-NugetFolder)\lib\NET40" />
+    <FileUpdate Files="$(ReusableParts-NugetFolder)\N2.ReusableParts.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+    <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(ReusableParts-NugetFolder)\" />
+  </Target>
+
+  <!--common ItemGroups for the next 2 targets-->
+  <Target Name="Management-NuGet-ItemGroups" DependsOnTargets="Framework-Deploy;Library-NuGet;SQLite-NuGet;Razor-NuGet">
+    <Message Text="Management-NuGet-ItemGroups:" Importance="high" />
+    <ItemGroup>
+      <nugetFrameworkBinFiles
+        Include="$(ManagementFolder)\bin\N2*.dll;
+                 $(ManagementFolder)\bin\N2*.pdb;
+                 $(SrcFolder)\Framework\Packaging\bin\$(Configuration)\N2.Packaging.dll;"
+        Exclude="$(ManagementFolder)\bin\N2.???;
+                 $(ManagementFolder)\bin\N2.Security.*;
+                 $(ManagementFolder)\bin\N2.Templates.*;" />
+      <luceneBinFiles
+        Include="$(SrcFolder)\packages\Lucene.Net.3.0.3-RC2\lib\**\Lucene.*" />
+      <NoZipFrameworkDeployFiles
+        Include="$(Framework-DeployFolder)\N2\**\*"/>
+    </ItemGroup>
+  </Target>
+
+
+  <Target Name="Management-Zip-NuGet" DependsOnTargets="Management-NuGet-ItemGroups">
+    <Copy SourceFiles="@(nugetFrameworkBinFiles)" DestinationFolder="$(Management-NugetFolderZip)\lib" SkipUnchangedFiles="true" />
+
+    <!-- Using DotNetZip since MSBuild Community Tasks Zip doesn't include directory entries -->
+    <Delete Files="$(Management-NugetFolderZip)\content\N2\N2.zip" Condition="Exists('$(Management-NugetFolderZip)\content\N2\N2.zip')" />
+    <Copy SourceFiles="$(Framework-DeployFolder)\N2\web.config"	DestinationFolder="$(Management-NugetFolderZip)\content\N2\" />
+    <Exec Command="$(BuildFolder)\lib\BuildSupport.exe ZipDirectory &quot;$(Management-NugetFolderZip)\content\N2\N2.zip&quot; &quot;$(Framework-DeployFolder)\N2&quot; &quot;N2&quot;" />
 
     <ItemGroup>
-			<managementNugetIncludes Include="$(BuildFolder)\Nuget\Management\**\*" />
-		</ItemGroup>
-		<Copy SourceFiles="@(managementNugetIncludes)" DestinationFolder="$(Management-NugetFolder)\%(RecursiveDir)" />
-		<FileUpdate Files="$(Management-NugetFolder)\N2.Management.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+      <managementNugetIncludesZ Include="$(BuildFolder)\Nuget\ManagementZip\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(managementNugetIncludesZ)" DestinationFolder="$(Management-NugetFolderZip)\%(RecursiveDir)" />
+    <FileUpdate Files="$(Management-NugetFolderZip)\N2.Management.Zip.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+    <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-NugetFolderZip)\" />
+  </Target>
 
-		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-NugetFolder)\" />
+  <Target Name="Management-NoZip-NuGet" DependsOnTargets="Management-NuGet-ItemGroups" Condition="'@(NoZipFrameworkDeployFiles)' != ''">
+    <Message Text="Management-NoZip-NuGet:" Importance="high" />
+    <Copy SourceFiles="@(nugetFrameworkBinFiles)" DestinationFolder="$(Management-NugetFolderNoZip)\lib" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(NoZipFrameworkDeployFiles)" DestinationFolder="$(Management-NugetFolderNoZip)\content\N2\%(RecursiveDir)" UseHardlinksIfPossible="true" SkipUnchangedFiles="true" />
+
+    <ItemGroup>
+      <managementNugetIncludesN Include="$(BuildFolder)\Nuget\ManagementNoZip\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(managementNugetIncludesN)" DestinationFolder="$(Management-NugetFolderNoZip)\%(RecursiveDir)" />
+    <FileUpdate Files="$(Management-NugetFolderNoZip)\N2.Management.NoZip.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+    <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-NugetFolderNoZip)\" />
+  </Target>
+
+  <Target Name="Framework-NuGet" DependsOnTargets="Management-Zip-NuGet;Management-NoZip-NuGet">
+    <Message Text="Framework-NuGet:" Importance="high" />
+    <ItemGroup>
+      <frameworkNugetIncludes Include="$(BuildFolder)\Nuget\Framework\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(frameworkNugetIncludes)" DestinationFolder="$(Framework-NugetFolder)\%(RecursiveDir)" />
+    <FileUpdate Files="$(Framework-NugetFolder)\N2.Cms.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Framework-NugetFolder)\Content\N2\" />
+    <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Framework-NugetFolder)\" />
+  </Target>
+
+  <Target Name="Framework-ZipDeploy" DependsOnTargets="Framework-Deploy;Framework-Zip" />
+
+  <Target Name="Framework-Zip">
+    <ItemGroup>
+      <ZipDeploy-Framework Include="$(Framework-DeployFolder)\**" />
+    </ItemGroup>
+
+    <Error Condition="'@(ZipDeploy-Framework)' == ''" Text="Nothing in '$(Framework-DeployFolder)'. Do deploy first." />
+
+    <Zip Files="@(ZipDeploy-Framework)"       WorkingDirectory="$(Framework-DeployFolder).."              ZipFileName="$(Framework-DeployFolder).zip" />
+  </Target>
+
+  <Target Name="Deploy-OpenAll">
+    <ItemGroup>
+      <openLine Include="$(DeployPrefix)Dinamico_Mvc\N2CMS\Dinamico.csproj" />
+      <openLine Include="pause" />
+      <openLine Include="$(DeployPrefix)Example_CS\CSharp_Example.sln" />
+      <openLine Include="pause" />
+      <openLine Include="$(DeployPrefix)Example_Mvc\Mvc_Example.sln" />
+      <openLine Include="pause" />
+      <openLine Include="$(DeployPrefix)Example_VB\VisualBasic_Example.sln" />
+      <openLine Include="pause" />
+      <openLine Include="cd /d $(DeployPrefix)Source\build" />
+      <openLine Include="cmd /c build.bat /target:PrepareDependencies" />
+      <openLine Include="cd ..\.." />
+      <openLine Include="$(DeployPrefix)Source\N2.Everything.sln" />
+      <openLine Include="pause" />
+      <openLine Include="copy $(DeployPrefix)Templates_Mvc\Libraries\System.Data.SQLite.dll $(DeployPrefix)Templates_Mvc\N2CMS\bin\" />
+      <openLine Include="$(DeployPrefix)Templates_Mvc\N2CMS\N2.Templates.Mvc.sln" />
+      <openLine Include="pause" />
+      <openLine Include="copy $(DeployPrefix)Templates_WebForms\Libraries\System.Data.SQLite.dll $(DeployPrefix)Templates_WebForms\N2CMS\bin\" />
+      <openLine Include="$(DeployPrefix)Templates_WebForms\N2CMS\N2.Templates.sln" />
+    </ItemGroup>
+    <WriteLinesToFile Lines="@(openLine)" File="$(DeployFolder)\OpenAll.bat" Overwrite="true" />
+  </Target>
+
+  <Target Name="Deploy-BuildAll">
+    <ItemGroup>
+      <buildLine Include="msbuild $(DeployPrefix)Dinamico_Mvc\N2CMS\Dinamico.csproj" />
+      <buildLine Include="msbuild $(DeployPrefix)Example_CS\CSharp_Example.sln" />
+      <buildLine Include="msbuild $(DeployPrefix)Example_Mvc\Mvc_Example.sln" />
+      <buildLine Include="msbuild $(DeployPrefix)Example_VB\VisualBasic_Example.sln" />
+      <buildLine Include="cd /d $(DeployPrefix)Source\build" />
+      <buildLine Include="cmd /c build.bat /target:PrepareDependencies" />
+      <buildLine Include="cd ..\.." />
+      <buildLine Include="msbuild $(DeployPrefix)Source\N2.Everything.sln" />
+      <buildLine Include="copy $(DeployPrefix)Templates_Mvc\Libraries\System.Data.SQLite.dll $(DeployPrefix)Templates_Mvc\N2CMS\bin\" />
+      <buildLine Include="msbuild $(DeployPrefix)Templates_Mvc\N2CMS\N2.Templates.Mvc.sln" />
+      <buildLine Include="copy $(DeployPrefix)Templates_WebForms\Libraries\System.Data.SQLite.dll $(DeployPrefix)Templates_WebForms\N2CMS\bin\" />
+      <buildLine Include="msbuild $(DeployPrefix)Templates_WebForms\N2CMS\N2.Templates.sln" />
+    </ItemGroup>
+    <WriteLinesToFile Lines="@(buildLine)" File="$(DeployFolder)\BuildAll.bat" Overwrite="true" />
+  </Target>
+
+  <Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Mvc-NuGet;Dinamico-NuGet;Bundle-Dinamico-Nuget;Windsor3-NuGet;MongoDB-NuGet;RemoteSearch-NuGet;Framework-LocalizedResources-Nuget;ReusableParts-NuGet;LuceneSearch-NuGet">
+  </Target>
+
+	<Target Name="Publish-NuGet" DependsOnTargets="Push-NuGet">
+		<Warning Text="Publish-Nuget is deprecated; Use Push-Nuget"/>
 	</Target>
+	
+	<Target Name="Push-NuGet" DependsOnTargets="Build-NuGet">
+    <ItemGroup>
+      <nugetPackages Include="$(DeployFolder)\*.$(Version).nupkg" />
+    </ItemGroup>
+    <!--<Message Text="$(BuildFolder)\lib\NuGet.exe Push %(nugetPackages.Identity)" />-->
+    <Exec Command="$(BuildFolder)\lib\NuGet.exe Push %(nugetPackages.Identity)" ContinueOnError="true" />
+  </Target>
 
-	<Target Name="Framework-NuGet" DependsOnTargets="Management-NuGet">
+	<Target Name="Push-NuGet-Config" DependsOnTargets="Build-NuGet">
 		<ItemGroup>
-			<frameworkNugetIncludes Include="$(BuildFolder)\Nuget\Framework\**\*" />
+			<nugetConfigPackages Include="$(DeployFolder)\N2CMS.Config.*.nupkg" />
 		</ItemGroup>
-		<Copy SourceFiles="@(frameworkNugetIncludes)" DestinationFolder="$(Framework-NugetFolder)\%(RecursiveDir)" />
-		<FileUpdate Files="$(Framework-NugetFolder)\N2.Cms.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
-
-		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Framework-NugetFolder)\Content\N2\" />
-
-		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Framework-NugetFolder)\" />
-	</Target>
-
-	<Target Name="Framework-ZipDeploy" DependsOnTargets="Framework-Deploy;Framework-Zip" />
-
-	<Target Name="Framework-Zip">
-		<ItemGroup>
-			<ZipDeploy-Framework Include="$(Framework-DeployFolder)\**" />
-		</ItemGroup>
-
-		<Error Condition="'@(ZipDeploy-Framework)' == ''" Text="Nothing in '$(Framework-DeployFolder)'. Do deploy first." />
-
-		<Zip Files="@(ZipDeploy-Framework)"       WorkingDirectory="$(Framework-DeployFolder).."              ZipFileName="$(Framework-DeployFolder).zip" />
-	</Target>
-
-	<Target Name="Deploy-OpenAll">
-		<ItemGroup>
-			<openLine Include="$(DeployPrefix)Dinamico_Mvc\N2CMS\Dinamico.csproj" />
-			<openLine Include="pause" />
-			<openLine Include="$(DeployPrefix)Example_CS\CSharp_Example.sln" />
-			<openLine Include="pause" />
-			<openLine Include="$(DeployPrefix)Example_Mvc\Mvc_Example.sln" />
-			<openLine Include="pause" />
-			<openLine Include="$(DeployPrefix)Example_VB\VisualBasic_Example.sln" />
-			<openLine Include="pause" />
-			<openLine Include="cd /d $(DeployPrefix)Source\build" />
-			<openLine Include="cmd /c build.bat /target:PrepareDependencies" />
-			<openLine Include="cd ..\.." />
-			<openLine Include="$(DeployPrefix)Source\N2.Everything.sln" />
-			<openLine Include="pause" />
-			<openLine Include="copy $(DeployPrefix)Templates_Mvc\Libraries\System.Data.SQLite.dll $(DeployPrefix)Templates_Mvc\N2CMS\bin\" />
-			<openLine Include="$(DeployPrefix)Templates_Mvc\N2CMS\N2.Templates.Mvc.sln" />
-			<openLine Include="pause" />
-			<openLine Include="copy $(DeployPrefix)Templates_WebForms\Libraries\System.Data.SQLite.dll $(DeployPrefix)Templates_WebForms\N2CMS\bin\" />
-			<openLine Include="$(DeployPrefix)Templates_WebForms\N2CMS\N2.Templates.sln" />
-		</ItemGroup>
-		<WriteLinesToFile Lines="@(openLine)" File="$(DeployFolder)\OpenAll.bat" Overwrite="true" />
-	</Target>
-
-	<Target Name="Deploy-BuildAll">
-		<ItemGroup>
-			<buildLine Include="msbuild $(DeployPrefix)Dinamico_Mvc\N2CMS\Dinamico.csproj" />
-			<buildLine Include="msbuild $(DeployPrefix)Example_CS\CSharp_Example.sln" />
-			<buildLine Include="msbuild $(DeployPrefix)Example_Mvc\Mvc_Example.sln" />
-			<buildLine Include="msbuild $(DeployPrefix)Example_VB\VisualBasic_Example.sln" />
-			<buildLine Include="cd /d $(DeployPrefix)Source\build" />
-			<buildLine Include="cmd /c build.bat /target:PrepareDependencies" />
-			<buildLine Include="cd ..\.." />
-			<buildLine Include="msbuild $(DeployPrefix)Source\N2.Everything.sln" />
-			<buildLine Include="copy $(DeployPrefix)Templates_Mvc\Libraries\System.Data.SQLite.dll $(DeployPrefix)Templates_Mvc\N2CMS\bin\" />
-			<buildLine Include="msbuild $(DeployPrefix)Templates_Mvc\N2CMS\N2.Templates.Mvc.sln" />
-			<buildLine Include="copy $(DeployPrefix)Templates_WebForms\Libraries\System.Data.SQLite.dll $(DeployPrefix)Templates_WebForms\N2CMS\bin\" />
-			<buildLine Include="msbuild $(DeployPrefix)Templates_WebForms\N2CMS\N2.Templates.sln" />
-		</ItemGroup>
-		<WriteLinesToFile Lines="@(buildLine)" File="$(DeployFolder)\BuildAll.bat" Overwrite="true" />
-	</Target>
-
-	<Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Dinamico-NuGet;Windsor3-NuGet">
-	</Target>
-
-	<Target Name="Publish-NuGet" DependsOnTargets="Build-NuGet">
-		<ItemGroup>
-			<nugetPackages Include="$(DeployFolder)\*.nupkg" />
-		</ItemGroup>
-		<!--<Message Text="$(BuildFolder)\lib\NuGet.exe Push %(nugetPackages.Identity)" />-->
-		<Exec Command="$(BuildFolder)\lib\NuGet.exe Push %(nugetPackages.Identity)" />
+		<!--<Message Text="$(BuildFolder)\lib\NuGet.exe Push %(nugetConfigPackages.Identity)" />-->
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe Push %(nugetConfigPackages.Identity)" ContinueOnError="true" />
 	</Target>
 </Project>

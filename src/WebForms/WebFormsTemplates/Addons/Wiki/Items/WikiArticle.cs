@@ -7,38 +7,38 @@ using N2.Persistence;
 
 namespace N2.Addons.Wiki.Items
 {
-	[WithEditableTitle("Title", 10, Focus = true, ContainerName = Tabs.Content)]
-	[WithEditableName("Name", 20, ContainerName = Tabs.Content)]
-	[WithEditablePublishedRange("Published Between", 30, ContainerName = Tabs.Advanced, BetweenText = " and ")]
-	[TabContainer(Tabs.Content, "Content", Tabs.ContentIndex)]
-	[TabContainer(Tabs.Advanced, "Advanced", Tabs.AdvancedIndex)]
-	public abstract class WikiBase : ContentItem
-	{
-		[EditableFreeTextArea("Text", 100, ContainerName = Tabs.Content)]
-		public virtual string Text
-		{
-			get { return (string)(GetDetail("Text") ?? string.Empty); }
-			set { SetDetail("Text", value, string.Empty); }
-		}
+    [WithEditableTitle("Title", 10, Focus = true, ContainerName = Tabs.Content)]
+    [WithEditableName("Name", 20, ContainerName = Tabs.Content)]
+    [WithEditablePublishedRange("Published Between", 30, ContainerName = Tabs.Advanced, BetweenText = " and ")]
+    [TabContainer(Tabs.Content, "Content", Tabs.ContentIndex)]
+    [TabContainer(Tabs.Advanced, "Advanced", Tabs.AdvancedIndex)]
+    public abstract class WikiBase : ContentItem
+    {
+        [EditableFreeTextArea("Text", 100, ContainerName = Tabs.Content)]
+        public virtual string Text
+        {
+            get { return (string)(GetDetail("Text") ?? string.Empty); }
+            set { SetDetail("Text", value, string.Empty); }
+        }
 
-		[EditableCheckBox("Visible", 40, ContainerName = Tabs.Advanced)]
-		public override bool Visible
-		{
-			get { return base.Visible; }
-			set { base.Visible = value; }
-		}
-	}
+        [EditableCheckBox("Visible", 40, ContainerName = Tabs.Advanced)]
+        public override bool Visible
+        {
+            get { return base.Visible; }
+            set { base.Visible = value; }
+        }
+    }
 
-	[PageDefinition("Wiki Article", IconUrl = "~/Addons/Wiki/UI/Img/article_wiki.gif")]
+    [PageDefinition("Wiki Article", IconUrl = "~/Addons/Wiki/UI/Img/article_wiki.gif")]
     [RestrictParents(typeof(Wiki))]
-	[Template("~/Addons/Wiki/UI/Views/Article.aspx")]
+    [Template("~/Addons/Wiki/UI/Views/Article.aspx")]
     [Template("index", "~/Addons/Wiki/UI/Views/Article.aspx")]
     [Template("submit", "~/Addons/Wiki/UI/Views/Submit.aspx")]
     [Template("modify", "~/Addons/Wiki/UI/Views/Edit.aspx")]
     [Template("history", "~/Addons/Wiki/UI/Views/History.aspx")]
     [Template("upload", "~/Addons/Wiki/UI/Views/Upload.aspx")]
     [Template("version", "~/Addons/Wiki/UI/Views/Version.aspx")]
-	public class WikiArticle : WikiBase, IArticle, ISyndicatable, IContentPage
+    public class WikiArticle : WikiBase, IArticle, ISyndicatable, IContentPage
     {
         public WikiArticle()
         {
@@ -52,10 +52,10 @@ namespace N2.Addons.Wiki.Items
             set { base.Text = value; }
         }
 
-		public override ContentItem GetChild(string childName)
-		{
-			return base.GetChild(childName) ?? base.GetChild(childName.Replace(' ', '-'));
-		}
+        public override ContentItem GetChild(string childName)
+        {
+            return base.GetChild(childName) ?? base.GetChild(childName.Replace(' ', '-'));
+        }
 
         public string AppendUrl(string action)
         {
@@ -82,8 +82,8 @@ namespace N2.Addons.Wiki.Items
             int slashIndex = path.IndexOf('/');
             if (slashIndex < 0)
                 return new[] { path.ToLower(), string.Empty };
-        	
-			return new[] { path.Substring(0, slashIndex).ToLower(), path.Substring(slashIndex + 1) };
+            
+            return new[] { path.Substring(0, slashIndex).ToLower(), path.Substring(slashIndex + 1) };
         }
 
         public virtual IWiki WikiRoot
@@ -98,8 +98,8 @@ namespace N2.Addons.Wiki.Items
             get { return ""; }
         }
 
-		[Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
-		public virtual bool Syndicate { get; set; }
+        [Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
+        public virtual bool Syndicate { get; set; }
 
         #endregion
     }

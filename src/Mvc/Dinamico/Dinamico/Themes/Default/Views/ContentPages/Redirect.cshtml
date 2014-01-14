@@ -1,0 +1,54 @@
+﻿@model Dinamico.Models.ContentPage
+
+@* TODO: convert into page implementing IRedirect *@
+
+@{
+	Content.Define(re =>
+	{
+		re.Title = "Redirect";
+		re.IconUrl = "{IconsUrl}/link.png";
+		re.Url("Destination");
+		re.CheckBox("Permanent", "Write HTTP 301 (Permanent) redirect header").DefaultValue(false);
+		re.CheckBox("LocationReplace", "Javascript location.replace").DefaultValue(false);
+	});
+
+	var url = Model.GetDetail("Destination", "");
+	if (string.IsNullOrEmpty(url))
+	{
+		<div class="alert alert-warning">
+			<p>Cannot redirect to empty url. </p>
+		</div>
+	}
+	else if (url == Request.Url.ToString())
+	{
+		<div class="alert alert-warning">
+			<p>Cannot redirect to itself. </p>
+			<p><a href="@url">Continue to @url</a></p>
+		</div>
+	}
+	else if (Content.Engine.SecurityManager.IsEditor(Html.ViewContext.HttpContext.User))
+	{
+		<div class="alert alert-warning">
+			<p>Auto-redirect is disabled due to logged in editor. </p>
+			<p><a href="@url">Continue to @url</a></p>
+		</div>
+	}
+	else if (Html.IsRegistering()) 
+	{
+		<div class="alert alert-warning">
+			<p>Auto-redirect is disabled due to registering mode. </p>
+			<p><a href="@url">Continue to @url</a></p>
+		</div>	
+	}
+	else
+	{
+		var perm = Model.GetDetail("Permanent", false);
+		var js = Model.GetDetail("LocationReplace", false);
+
+		if (perm) { Response.RedirectPermanent(url); }
+		if (js) { <script type="text/javascript">location.replace('@url');</script> }
+		Response.Redirect(url);
+	}
+}
+
+@Html.Partial("LayoutPartials/Content")

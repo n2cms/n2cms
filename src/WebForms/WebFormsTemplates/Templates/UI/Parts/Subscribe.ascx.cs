@@ -2,7 +2,7 @@ using System.Web.UI.HtmlControls;
 
 namespace N2.Templates.UI.Parts
 {
-	public partial class Subscribe : Web.UI.TemplateUserControl<ContentItem, Templates.Items.Subscribe>
+    public partial class Subscribe : Web.UI.TemplateUserControl<ContentItem, Templates.Items.Subscribe>
     {
         protected override void OnInit(System.EventArgs e)
         {

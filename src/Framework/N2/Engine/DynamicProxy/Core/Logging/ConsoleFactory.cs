@@ -14,48 +14,48 @@
 
 namespace Castle.Core.Logging
 {
-	using System;
+    using System;
 
 #if SILVERLIGHT
-	public class ConsoleFactory : ILoggerFactory
+    public class ConsoleFactory : ILoggerFactory
 #else
-	[Serializable]
-	public class ConsoleFactory : MarshalByRefObject, ILoggerFactory
+    [Serializable]
+    public class ConsoleFactory : MarshalByRefObject, ILoggerFactory
 #endif
-	{
-		private LoggerLevel? level;
+    {
+        private LoggerLevel? level;
 
-		public ConsoleFactory()
-		{
-		}
+        public ConsoleFactory()
+        {
+        }
 
-		public ConsoleFactory(LoggerLevel level)
-		{
-			this.level = level;
-		}
+        public ConsoleFactory(LoggerLevel level)
+        {
+            this.level = level;
+        }
 
-		public ILogger Create(Type type)
-		{
-			return Create(type.FullName);
-		}
+        public ILogger Create(Type type)
+        {
+            return Create(type.FullName);
+        }
 
-		public ILogger Create(String name)
-		{
-			if (level.HasValue)
-			{
-				return Create(name, level.Value);
-			}
-			return new ConsoleLogger(name);
-		}
+        public ILogger Create(String name)
+        {
+            if (level.HasValue)
+            {
+                return Create(name, level.Value);
+            }
+            return new ConsoleLogger(name);
+        }
 
-		public ILogger Create(Type type, LoggerLevel level)
-		{
-			return new ConsoleLogger(type.Name, level);
-		}
+        public ILogger Create(Type type, LoggerLevel level)
+        {
+            return new ConsoleLogger(type.Name, level);
+        }
 
-		public ILogger Create(String name, LoggerLevel level)
-		{
-			return new ConsoleLogger(name, level);
-		}
-	}
+        public ILogger Create(String name, LoggerLevel level)
+        {
+            return new ConsoleLogger(name, level);
+        }
+    }
 }

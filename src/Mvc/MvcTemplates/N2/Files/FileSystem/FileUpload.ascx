@@ -3,6 +3,7 @@
 
 <div id="fileupload" class="droparea">
 	<div id="uploadcontrols">
+		<b class="n2-icon-upload"></b>
 		<p><strong><%= GetLocalResourceString("SelectFiles", "Select files to upload") %></strong></p>
 		<p>
 			<input id="fuAlternative" runat="server" type="file" name="files[]" multiple="multiple" />
@@ -17,6 +18,16 @@
     </div>
 </div>
         
+<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+<script src="../../Resources/jQuery-File-Upload-8.5.0/js/vendor/jquery.ui.widget.js"></script>
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="../../Resources/jQuery-File-Upload-8.5.0/js/jquery.iframe-transport.js"></script>
+<!-- The basic File Upload plugin -->
+<script src="../../Resources/jQuery-File-Upload-8.5.0/js/jquery.fileupload.js"></script>
+
+<%--
+<link rel="stylesheet" href="css/jquery.fileupload-ui.css">
+
 <script src="fileupload/tmpl.min.js" type="text/javascript"></script>
 <script src="fileupload/load-image.min.js" type="text/javascript"></script>
 <script src="fileupload/canvas-to-blob.min.js" type="text/javascript"></script>
@@ -26,13 +37,16 @@
 <script src="fileupload/js/jquery.fileupload-ui.js"></script><!-- The File Upload user interface plugin -->
 <script src="fileupload/js/locale.js"></script><!-- The localization script -->
 <script src="fileupload/js/main.js"></script><!-- The main application script -->
+--%>
 <script src="FileUpload.js"></script>
 
 <script type="text/javascript">
     var maxFileSize = <%= maxFileSize %>;
     var ticket = '<%= FormsAuthentication.Encrypt(new FormsAuthenticationTicket("SecureUpload-" + Guid.NewGuid(), false, 60)) %>';
     var selected = '<%= Selection.SelectedItem.Path %>';
-	var refreshFrames = function(){<%= Page.GetRefreshFramesScript(Selection.SelectedItem, N2.Edit.ToolbarArea.Navigation, true) %>;};
+	var refreshFrames = function(){
+		<%= Page.GetRefreshFramesScript(Selection.SelectedItem, N2.Edit.ToolbarArea.Navigation, true) %>;
+	};
     
 	$(function(){
 		n2.FileUpload(maxFileSize, ticket, selected, refreshFrames);
@@ -54,7 +68,7 @@
             </td>
             <td class="start">{% if (!o.options.autoUpload) { %}
                 <button class="btn btn-primary">
-                    <i class="icon-upload icon-white"></i>
+                    <i class="n2-icon-upload icon-white"></i>
                     <span>{%=locale.fileupload.start%}</span>
                 </button>
             {% } %}</td>

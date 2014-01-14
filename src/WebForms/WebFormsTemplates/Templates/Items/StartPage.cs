@@ -12,13 +12,13 @@ namespace N2.Templates.Items
     /// The initial page of the site.
     /// </summary>
     [PageDefinition("Start Page", 
-		Description = "A start page template. It displays a horizontal meny but no vertical menu.",
-		SortOrder = 440,
-		InstallerVisibility = InstallerHint.PreferredStartPage,
-		IconUrl = "~/Templates/UI/Img/page_world.png")]
-	[RestrictParents(typeof(IRootPage))]
+        Description = "A start page template. It displays a horizontal meny but no vertical menu.",
+        SortOrder = 440,
+        InstallerVisibility = InstallerHint.PreferredStartPage,
+        IconUrl = "~/Templates/UI/Img/page_world.png")]
+    [RestrictParents(typeof(IRootPage))]
     [AvailableZone("Site Wide Top", Zones.SiteTop), AvailableZone("Site Wide Left", Zones.SiteLeft), AvailableZone("Site Wide Right", Zones.SiteRight)]
-	public class StartPage : LanguageRoot, IFileSystemContainer, ISitesSource
+    public class StartPage : LanguageRoot, IFileSystemContainer, ISitesSource
     {
         public const string LayoutArea = "layoutArea";
 

@@ -14,10 +14,10 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System.Reflection.Emit;
+    using System.Reflection.Emit;
 
-	public interface IILEmitter
-	{
-		void Emit(IMemberEmitter member, ILGenerator gen);
-	}
+    public interface IILEmitter
+    {
+        void Emit(IMemberEmitter member, ILGenerator gen);
+    }
 }
