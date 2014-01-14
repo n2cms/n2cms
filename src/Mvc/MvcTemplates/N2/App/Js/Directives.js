@@ -60,7 +60,7 @@
 				restrict: "A",
 				link: function compile(scope, element, attrs) {
 					var code = key[k.toLowerCase()];
-					element.bind("keyup", function (e) {
+					element.bind("keyup", function(e) {
 						if (e.keyCode == code) {
 							e.preventDefault();
 							e.stopPropagation();
@@ -68,7 +68,7 @@
 						}
 					});
 				}
-			}
+			};
 		});
 	});
 
@@ -76,46 +76,46 @@
 		return {
 			restrict: "A",
 			link: function compile(scope, element, attrs) {
-				scope.$watch(function () {
+				scope.$watch(function() {
 					return scope.$eval(attrs.n2Focus);
-				}, function (focus) {
+				}, function(focus) {
 					if (focus) element.focus();
 				});
 			}
-		}
+		};
 	});
 
 	module.directive("evaluateHref", function ($interpolate) {
 		return {
 			restrict: "A",
 			link: function compile(scope, element, attrs) {
-				scope.$watch(attrs.evaluateHref, function (expr) {
+				scope.$watch(attrs.evaluateHref, function(expr) {
 					element.attr("href", expr && $interpolate(expr)(scope));
 				});
 			}
-		}
+		};
 	});
 
 	module.directive("evaluateTitle", function ($interpolate) {
 		return {
 			restrict: "A",
 			link: function compile(scope, element, attrs) {
-				scope.$watch(attrs.evaluateTitle, function (expr) {
+				scope.$watch(attrs.evaluateTitle, function(expr) {
 					element.attr("title", expr && $interpolate(expr)(scope));
 				});
 			}
-		}
+		};
 	});
 
 	module.directive("evaluateInnerHtml", function ($interpolate) {
 		return {
 			restrict: "A",
 			link: function compile(scope, element, attrs) {
-				scope.$watch(attrs.evaluateInnerHtml, function (expr) {
+				scope.$watch(attrs.evaluateInnerHtml, function(expr) {
 					element.html(expr && $interpolate(expr)(scope));
 				});
 			}
-		}
+		};
 	});
 
 	module.directive("pageActionLink", function ($interpolate) {
@@ -127,65 +127,65 @@
 				function watch(expr, scope, applicator) {
 					var factory = expr && $interpolate(expr);
 					if (factory) {
-						return scope.$watch(function () {
+						return scope.$watch(function() {
 							return factory(scope);
 						}, applicator);
 					} else
 						applicator(null);
 				}
 
-				scope.evaluateExpression = function (expr) {
+				scope.evaluateExpression = function(expr) {
 					return expr && $interpolate(expr)(scope);
 				};
-				scope.evalExpression = function (expr) {
+				scope.evalExpression = function(expr) {
 					expr && scope.$eval(expr);
 				};
 
 				var unwatchHref, unwatchTitle, unwatchInnerHtml, unwatchCurrent;
-				scope.$watch(attrs.pageActionLink, function (node) {
+				scope.$watch(attrs.pageActionLink, function(node) {
 					scope.node = node;
 
 					unwatchCurrent && unwatchCurrent();
-					unwatchCurrent = scope.$watch(function () { return node.Current }, function (current) {
-					    if (!current || current.Divider) {
-					        element.hide();
-					        return;
-					    } else
-					        element.show();
+					unwatchCurrent = scope.$watch(function() { return node.Current }, function(current) {
+						if (!current || current.Divider) {
+							element.hide();
+							return;
+						} else
+							element.show();
 
-					    if (!current.Target)
-					        current.Target = "preview";
-					    if (!current.Url && current.PreviewUrl)
-					        current.Url = current.PreviewUrl;
+						if (!current.Target)
+							current.Target = "preview";
+						if (!current.Url && current.PreviewUrl)
+							current.Url = current.PreviewUrl;
 
-					    unwatchHref && unwatchHref();
-					    unwatchHref = watch(current.Url, scope, function (value) { element.attr("href", value || "#"); });
+						unwatchHref && unwatchHref();
+						unwatchHref = watch(current.Url, scope, function(value) { element.attr("href", value || "#"); });
 
-					    unwatchTitle && unwatchTitle();
-					    unwatchTitle = watch(current.ToolTip, scope, function (value) { element.attr("title", value); });
+						unwatchTitle && unwatchTitle();
+						unwatchTitle = watch(current.ToolTip, scope, function(value) { element.attr("title", value); });
 
-					    unwatchInnerHtml && unwatchInnerHtml();
+						unwatchInnerHtml && unwatchInnerHtml();
 
-					    unwatchInnerHtml = watch(
-                            (current.IconClass ? ("<b class='ico " + current.IconClass + "'></b> ") : current.IconUrl ? ("<b class='ico ico-custom' style='background-image:url(" + current.IconUrl + ")'></b> ") : "")
-                            + "{{evaluateExpression(node.Current.Title)}}"
-                            + (current.Description ? "<br /><span>{{evaluateExpression(node.Current.Description)}}</span>" : ""), scope, function (value) { element.html(value); });
+						unwatchInnerHtml = watch(
+							(current.IconClass ? ("<b class='ico " + current.IconClass + "'></b> ") : current.IconUrl ? ("<b class='ico ico-custom' style='background-image:url(" + current.IconUrl + ")'></b> ") : "")
+								+ "{{evaluateExpression(node.Current.Title)}}"
+								+ (current.Description ? "<br /><span>{{evaluateExpression(node.Current.Description)}}</span>" : ""), scope, function(value) { element.html(value); });
 
-					    element.attr("target", current.Target);
+						element.attr("target", current.Target);
 
-					    element.attr("class", current.Description ? "page-action page-action-description" : "page-action");
+						element.attr("class", current.Description ? "page-action page-action-description" : "page-action");
 
-					    element.click(function (e) {
-					        if (current.ClientAction) {
-					            e.preventDefault();
-					            scope.$apply(node.Current.ClientAction);
-					        }
-					        scope.$emit("nodeclicked", node);
-					    });
+						element.click(function(e) {
+							if (current.ClientAction) {
+								e.preventDefault();
+								scope.$apply(node.Current.ClientAction);
+							}
+							scope.$emit("nodeclicked", node);
+						});
 					});
 				});
 			}
-		}
+		};
 	});
 
 	module.directive("backgroundImage", function () {
