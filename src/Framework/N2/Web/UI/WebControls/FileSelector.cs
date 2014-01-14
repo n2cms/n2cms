@@ -20,7 +20,7 @@ namespace N2.Web.UI.WebControls
             Page.JavaScript("$('#" + ClientID + "').n2autocomplete({ filter: 'io', selectableTypes:'" + SelectableTypes + "', selectableExtensions:'" + SelectableExtensions + "' });", ScriptPosition.Bottom, ScriptOptions.DocumentReady | ScriptOptions.ScriptTags);
         }
 
-        public static string ImageExtensions = ".bmp,.gif,.png,.jpg,.jpeg";
+        public static string ImageExtensions = ".bmp,.gif,.png,.jpg,.jpeg,.ico";
         public static string MovieExtensions = ".swf,.mpg,.mpeg,.mp4,.avi,.wmv";
         public static string AudioExtensions = ".aif,.m4a,.mid,.mp3,.wav,.wma";
     }

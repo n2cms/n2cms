@@ -10,11 +10,8 @@ namespace N2.Persistence.Search
         public string Path { get; set; }
         public Security.Permission AlteredPermissions { get; set; }
         public IEnumerable<string> AuthorizedRoles { get; set; }
-
         public int ID { get; set; }
-
         public ContentState State { get; set; }
-
         public bool Visible { get; set; }
     }
 

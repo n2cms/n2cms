@@ -10,7 +10,7 @@ namespace N2.Configuration
     public class WebElement : ConfigurationElement
     {
         /// <summary>The default extension used by the url parser.</summary>
-        [ConfigurationProperty("extension", DefaultValue = ".aspx")]
+        [ConfigurationProperty("extension", DefaultValue = "")]
         public string Extension
         {
             get { return (string)base["extension"]; }

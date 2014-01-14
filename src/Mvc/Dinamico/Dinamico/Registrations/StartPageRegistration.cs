@@ -41,6 +41,9 @@ namespace Dinamico.Dinamico.Registrations
             using (register.WithinContainer(Defaults.Containers.Metadata))
             {
                 register.RegisterEditable(new WithEditableTemplateSelectionAttribute());
+				register.On(sp => sp.Author).Meta();
+				register.On(sp => sp.Keywords).Meta();
+				register.On(sp => sp.Description).Meta();
             }
         }
     }

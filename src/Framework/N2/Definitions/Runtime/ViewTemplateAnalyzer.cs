@@ -49,10 +49,25 @@ namespace N2.Definitions.Runtime
                 {
                     logger.DebugFormat("Analyzing file {0}", file.VirtualPath);
 
-                    var registration = AnalyzeView(httpContext, file, source.ControllerName, source.ModelType);
-                    if (registration != null)
-                        registrations.Add(registration);
-                }
+					ContentRegistration registration = null;
+					if (httpContext.IsDebuggingEnabled)
+					{
+						registration = AnalyzeView(httpContext, file, source.ControllerName, source.ModelType);
+					}
+					else
+					{
+						try
+						{
+							registration = AnalyzeView(httpContext, file, source.ControllerName, source.ModelType);
+						}
+						catch (Exception ex)
+						{
+							logger.Error(ex);
+						}
+					}
+					if (registration != null)
+						registrations.Add(registration);
+				}
             }
             return registrations;
         }

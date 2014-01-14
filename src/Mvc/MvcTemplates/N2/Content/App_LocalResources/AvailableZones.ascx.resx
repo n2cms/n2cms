@@ -112,24 +112,24 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="boxZones.HeadingText" xml:space="preserve">
     <value>Zones</value>
   </data>
-  <data name="hlDelete.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
   <data name="hlDelete.ToolTip" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="hlNew.Text" xml:space="preserve">
-    <value>New</value>
+    <value>Move to trash</value>
   </data>
   <data name="hlNew.ToolTip" xml:space="preserve">
-    <value>Create new item</value>
+    <value>New item</value>
+  </data>
+  <data name="MoveItemDown.ToolTip" xml:space="preserve">
+    <value>Move down</value>
+  </data>
+  <data name="MoveItemUp.ToolTip" xml:space="preserve">
+    <value>Move up</value>
   </data>
 </root>

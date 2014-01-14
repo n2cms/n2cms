@@ -23,6 +23,8 @@ namespace N2.Web.Mvc
         /// <returns>The added content route instance.</returns>
         public static ContentRoute MapContentRoute(this RouteCollection routes, string name, IEngine engine, bool append = false, bool stopRewritableItems = true, string[] namespaces = null)
         {
+			RemoveExistingRouteWithName(routes, name);
+
             var cr = new ContentRoute(engine, null, null, null, namespaces) { StopRewritableItems = stopRewritableItems };
             if (append)
             {
@@ -40,6 +42,19 @@ namespace N2.Web.Mvc
             return cr;
         }
 
+		private static void RemoveExistingRouteWithName(RouteCollection routes, string name)
+		{
+			try
+			{
+				var existingRoute = routes[name];
+				if (existingRoute != null)
+					routes.Remove(existingRoute);
+			}
+			catch (Exception)
+			{
+			}
+		}
+
         /// <summary>Maps a content route to the route collection.</summary>
         /// <param name="routes">The route collection to extend.</param>
         /// <param name="name">The name of this route.</param>
@@ -49,7 +64,9 @@ namespace N2.Web.Mvc
         /// <returns>The added content route instance.</returns>
         public static ContentRoute MapContentRoute<T>(this RouteCollection routes, string name, IEngine engine, bool append = false)
         {
-            var cr = new ContentRoute<T>(engine);
+			RemoveExistingRouteWithName(routes, name);
+			
+			var cr = new ContentRoute<T>(engine);
             if (append)
             {
                 routes.Add(cr);

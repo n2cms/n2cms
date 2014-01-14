@@ -57,7 +57,7 @@ namespace N2.Persistence.Search
             }
             catch (Lucene.Net.Store.LockObtainFailedException)
             {
-                logger.Debug("Failed to obtain lock, deleting it and retrying.");
+                logger.Warn("Failed to obtain lock, deleting it and retrying.");
                 ClearLock();
                 return CreateWriterNoTry(d, a);
             }
@@ -66,7 +66,7 @@ namespace N2.Persistence.Search
         private IndexWriter CreateWriterNoTry(Directory d, Analyzer a)
         {
             var indexExists = IndexExists();
-            logger.Debug("Creating index writer, index exists: " + indexExists);
+			logger.Info("Creating index writer, indexExists=" + indexExists);
             var iw = new IndexWriter(d, a, create: !indexExists, mfl: IndexWriter.MaxFieldLength.UNLIMITED);
             iw.WriteLockTimeout = LockTimeout;
             return iw;
@@ -91,7 +91,10 @@ namespace N2.Persistence.Search
             lock (this)
             {
                 if (!System.IO.Directory.Exists(indexPath))
-                    System.IO.Directory.CreateDirectory(indexPath);
+				{
+					logger.Info("Creating directory: " + indexPath);
+					System.IO.Directory.CreateDirectory(indexPath);
+				}
                 
                 var d = directory ?? (directory = new SimpleFSDirectory(new DirectoryInfo(indexPath), new SimpleFSLockFactory()));
                 return d;
@@ -108,8 +111,11 @@ namespace N2.Persistence.Search
 
         protected virtual IndexSearcher CreateSearcher(Directory dir)
         {
-            if (!dir.FileExists("segments.gen"))
-                GetWriter().Commit();
+			if (!dir.FileExists("segments.gen"))
+			{
+				logger.Info("No segments.gen (whatever that means)");
+				GetWriter().Commit();
+			}
             var s = new IndexSearcher(dir, readOnly: true);
             return s;
         }
@@ -123,7 +129,8 @@ namespace N2.Persistence.Search
         {
             lock (this)
             {
-                searcher = null;
+				logger.Info("Disposing");
+				searcher = null;
                 directory = null;
             }
         }
@@ -145,7 +152,8 @@ namespace N2.Persistence.Search
 
         public virtual void ClearLock()
         {
-            var d = GetDirectory();
+			logger.Info("Clearing lock");
+			var d = GetDirectory();
             d.ClearLock("write.lock"); ;
         }
     }
