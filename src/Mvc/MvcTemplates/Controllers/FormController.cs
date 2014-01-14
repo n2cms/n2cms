@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Web.Mvc;
+using N2.Collections;
 using N2.Templates.Mvc.Details;
 using N2.Templates.Mvc.Models.Parts;
 using N2.Templates.Mvc.Models;
@@ -34,16 +36,11 @@ namespace N2.Templates.Mvc.Controllers
 
         private IEnumerable<IQuestion> GetQuestions()
         {
-            var questions = CurrentItem.GetChildren(Zones.Questions);
-
-            foreach (var q in questions)
-            {
-                if (q is IQuestion)
-                    yield return (IQuestion) q;
-            }
+	        var questions = CurrentItem.GetChildren(new ZoneFilter(Zones.Questions));
+	        return questions.OfType<IQuestion>();
         }
 
-        public ActionResult Submit(FormCollection collection)
+	    public ActionResult Submit(FormCollection collection)
         {
             AnswerContext ac = new AnswerContext();
 

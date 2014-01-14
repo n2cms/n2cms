@@ -70,5 +70,16 @@ namespace N2.Web.Mvc
             foreach (Type type in engine.Resolve<ITypeFinder>().Find(typeof(IController)).Where(t => !t.IsAbstract).Where(t => !t.IsInterface))
                 engine.Container.AddComponentLifeStyle(type.FullName.ToLower(), type, ComponentLifeStyle.Transient);
         }
+
+		/// <summary>
+		/// Gets a controller factory which uses N2 for service location.
+		/// </summary>
+		/// <param name="engine"></param>
+		/// <returns></returns>
+        public static IControllerFactory GetControllerFactory(this IEngine engine)
+		{
+			return engine.Resolve<ControllerFactoryConfigurator>().ControllerFactory;
+		}
+
     }
 }

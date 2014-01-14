@@ -21,6 +21,9 @@ namespace Dinamico.Controllers
                 if (language.Url.StartsWith("http"))
                     return Redirect(language.Url);
 
+				//if (language.Url != CurrentPage.Url)
+				//	return Redirect(language.Url);
+
                 return ViewPage(language);
             }
 

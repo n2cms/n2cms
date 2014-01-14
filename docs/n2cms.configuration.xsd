@@ -149,6 +149,8 @@
 							<xs:element name="resources" minOccurs="0">
 								<xs:complexType>
 									<xs:attribute name="debug" type="xs:boolean" use="optional" default="false" />
+									<xs:attribute name="angularFolderPath" type="xs:string" use="optional" />
+									<xs:attribute name="twitterBootstrapRoot" type="xs:string" use="optional" />
 									<xs:attribute name="jQueryPath" type="xs:string" use="optional" />
 									<xs:attribute name="jQueryUiPath" type="xs:string" use="optional" />
 									<xs:attribute name="jQueryPluginsPath" type="xs:string" use="optional" />
@@ -202,6 +204,11 @@
 									<xs:attribute name="senderName" type="xs:string" use="optional" />
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
 									<xs:attribute name="async" type="xs:boolean" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="htmlSanitize" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="encodeHtml" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
 						</xs:all>
@@ -362,7 +369,6 @@
 						<xs:attribute name="castleConfiguration" type="xs:string" use="optional" />
 						<xs:attribute name="multipleSitesConfiguration" type="xs:string" use="optional" />
 						<xs:attribute name="dynamicDiscovery" type="xs:boolean" use="optional" />
-						<xs:attribute name="defaultHtmlEscape" type="xs:boolean" use="optional" />
 						<xs:attribute name="castleSection" type="xs:string" use="optional" />
 						<xs:attribute name="engineType" type="xs:string" use="optional" />
 						<xs:attribute name="containerType" type="xs:string" use="optional" />

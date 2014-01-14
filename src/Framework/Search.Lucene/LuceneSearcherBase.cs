@@ -18,10 +18,14 @@ namespace N2.Persistence.Search
 
         public Result<T> Search(N2.Persistence.Search.Query query)
         {
-            if (!query.IsValid())
-                return Result<T>.Empty;
+			if (!query.IsValid())
+			{
+				logger.Warn("Invalid query");
+				return Result<T>.Empty;
+			}
 
             var luceneQuery = query.ToLuceneQuery();
+			logger.Warn("Prepared lucene query " + luceneQuery);
 
             var q = accessor.GetQueryParser().Parse(luceneQuery);
             var s = accessor.GetSearcher();

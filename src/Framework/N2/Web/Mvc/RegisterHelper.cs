@@ -23,6 +23,8 @@ namespace N2.Web.Mvc
         
         string ContainerName { get; set; }
 
+		Logger<RegisterHelper> logger;
+
         public RegisterHelper(HtmlHelper html)
         {
             this.Html = html;
@@ -35,7 +37,8 @@ namespace N2.Web.Mvc
             if (re != null)
             {
                 var displayable = re.Definition.Displayables[name] as T ?? new T { Name = name };
-                re.Add(displayable);
+				logger.DebugFormat("RegisterDisplayable<{0}> {1} with name {2}", typeof(T).Name, displayable, name);
+				re.Add(displayable);
             }
 
             return new Builder<T>(name, re);
@@ -44,7 +47,10 @@ namespace N2.Web.Mvc
         {
             var re = RegistrationExtensions.GetRegistrationExpression(Html);
             if (re != null)
-                re.Add(displayable);
+			{
+				logger.DebugFormat("RegisterDisplayable<{0}> {1} with name {2}", typeof(T).Name, displayable, displayable.Name);
+				re.Add(displayable);
+			}
             return new Builder<T>(displayable.Name, re);
         }
 
@@ -56,6 +62,7 @@ namespace N2.Web.Mvc
             if (re != null)
             {
                 var editable = re.Definition.Editables[name] as T ?? new T();
+				logger.DebugFormat("RegisterEditable<{0}> {1} with name {2}", typeof(T).Name, editable, editable.Name);
                 re.Add(editable, name, title);
             }
 
@@ -67,7 +74,8 @@ namespace N2.Web.Mvc
             var re = RegistrationExtensions.GetRegistrationExpression(Html);
             if (re != null)
             {
-                re.Add(editable, editable.Name, editable.Title);
+				logger.DebugFormat("RegisterEditable<{0}> {1} with name {2}", typeof(T).Name, editable, editable.Name);
+				re.Add(editable, editable.Name, editable.Title);
             }
 
             return RendererFactory.Create<T>(Rendering.RenderingContext.Create(Html, editable.Name), re);
@@ -79,7 +87,8 @@ namespace N2.Web.Mvc
             var re = RegistrationExtensions.GetRegistrationExpression(Html);
             if (re != null)
             {
-                re.Add(editable);
+				logger.DebugFormat("Register<{0}> {1} with name {2}", typeof(T).Name, editable, editable.Name);
+				re.Add(editable);
             }
 
             return new Builder<T>(editable.Name, re);
@@ -89,14 +98,20 @@ namespace N2.Web.Mvc
         {
             var re = RegistrationExtensions.GetRegistrationExpression(Html);
             if (re != null)
-                re.Definition.ContentTransformers.Add(modifier);
+			{
+				logger.DebugFormat("RegisterModifier {0}", modifier);
+				re.Definition.ContentTransformers.Add(modifier);
+			}
         }
 
         public Builder<T> RegisterRefiner<T>(T refiner) where T : ISortableRefiner
         {
             var re = RegistrationExtensions.GetRegistrationExpression(Html);
-            if (re != null)
-                return re.RegisterRefiner<T>(refiner);
+			if (re != null)
+			{
+				logger.DebugFormat("RegisterRefiner<{0}> {1}", typeof(T).Name, refiner);
+				return re.RegisterRefiner<T>(refiner);
+			}
             return new Builder<T>(null);
         }
 
@@ -105,12 +120,14 @@ namespace N2.Web.Mvc
         public IDisposable BeginContainer(string containerName)
         {
             this.ContainerName = containerName;
-            return new ResetOnDispose { PreviousContainerName = ContainerName, Helper = this };
+			logger.DebugFormat("BeginContainer {0}", containerName);
+			return new ResetOnDispose { PreviousContainerName = ContainerName, Helper = this };
         }
 
         public void EndContainer()
         {
-            this.ContainerName = null;
+			logger.DebugFormat("EndContainer {0}", ContainerName);
+			this.ContainerName = null;
         }
 
         #region class ResetOnDispose<T>

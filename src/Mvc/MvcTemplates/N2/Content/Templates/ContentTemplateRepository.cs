@@ -6,6 +6,7 @@ using N2.Definitions.Static;
 using N2.Edit;
 using N2.Engine;
 using N2.Persistence;
+using System.Linq;
 
 namespace N2.Management.Content.Templates
 {
@@ -63,13 +64,10 @@ namespace N2.Management.Content.Templates
         public IEnumerable<TemplateDefinition> GetAllTemplates()
         {
             TemplateContainer templates = container.GetBelowRoot();
-            if (templates == null)
-                yield break;
+			if (templates == null)
+				return new TemplateDefinition[0];
 
-            foreach (ContentItem child in templates.Children)
-            {
-                yield return CreateTemplateInfo(child);
-            }
+			return templates.Children.Select(t => CreateTemplateInfo(t)).ToArray();
         }
 
         public IEnumerable<TemplateDefinition> GetTemplates(Type contentType, IPrincipal user)
@@ -97,7 +95,12 @@ namespace N2.Management.Content.Templates
 
             templateItem.Name = null;
             templateItem.AddTo(templates);
-            repository.SaveOrUpdate(templateItem);
+
+			using (var tx = repository.BeginTransaction())
+			{
+				repository.SaveOrUpdate(templateItem);
+				tx.Commit();
+			}
         }
 
         public void RemoveTemplate(string templateKey)
@@ -110,7 +113,12 @@ namespace N2.Management.Content.Templates
             if (template == null)
                 return;
 
-            repository.Delete(template);            
+			using(var tx = repository.BeginTransaction())
+			{
+				template.AddTo(null);
+				repository.Delete(template);
+				tx.Commit();
+			}
         }
 
         #endregion

@@ -9,6 +9,11 @@ namespace N2.Web.Mvc.Html
     {
         const string RegistrationExpressionKey = "RegistrationExpression";
 
+		public static bool IsRegistering(this HtmlHelper html)
+		{
+			return GetRegistrationExpression(html) != null;
+		}
+
         public static ContentRegistration GetRegistrationExpression(HtmlHelper html)
         {
             return GetRegistrationExpression(html.ViewContext.HttpContext);

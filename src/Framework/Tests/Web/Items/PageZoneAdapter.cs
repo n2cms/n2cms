@@ -14,7 +14,7 @@ namespace N2.Tests.Web.Items
             if (inZoneNamed.EndsWith("All"))
                 return belowParentItem.GetChildren(new DelegateFilter(ci => ci.ZoneName != null));
 
-            return belowParentItem.GetChildren(inZoneNamed);
+			return belowParentItem.GetChildren(new ZoneFilter(inZoneNamed), new AccessFilter() /* TODO: remove AccessFilter if it is causing a problem */ );
         }
     }
 }

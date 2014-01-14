@@ -105,11 +105,11 @@ namespace N2.Configuration
             set { base["messaging"] = value; }
         }
 
-        [ConfigurationProperty("filelist")]
-        public FileListElement FileList
+        [ConfigurationProperty("htmlSanitize")]
+        public HtmlSanitizeElement HtmlSanitize
         {
-            get { return (FileListElement)base["filelist"]; }
-            set { base["filelist"] = value; }
+			get { return (HtmlSanitizeElement)base["htmlSanitize"]; }
+			set { base["htmlSanitize"] = value; }
         }
 
     }

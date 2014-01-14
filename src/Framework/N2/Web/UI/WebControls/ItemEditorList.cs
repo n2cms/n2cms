@@ -279,7 +279,7 @@ namespace N2.Web.UI.WebControls
         protected virtual ItemEditor CreateItemEditor(ContentItem item)
         {
             var itemPanel = new Panel { CssClass = "item" };
-            itemPanel.Controls.Add(new Hn { Level = 3, Text = "<span>" + Engine.Definitions.GetDefinition(item).Title + "</span>" });
+            itemPanel.Controls.Add(new Hn { Level = 3, Text = "<span>" + Engine.Definitions.GetDefinition(item).Title + "</span>", HtmlEncode = false });
             itemEditorsContainer.Controls.Add(itemPanel);
             
             var container = new Panel { CssClass = "delete" };
