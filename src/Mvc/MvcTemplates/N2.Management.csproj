@@ -1033,13 +1033,6 @@
     </Compile>
     <Compile Include="N2\Content\Versions\VersionInfo.cs" />
     <Compile Include="N2\Content\Wizard\WizardOptionProvider.cs" />
-    <Compile Include="N2\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="N2\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
     <Compile Include="N2\Content\Framed.master.cs">
       <DependentUpon>Framed.master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1081,13 +1074,6 @@
     </Compile>
     <Compile Include="N2\Content\ItemInfo.ascx.designer.cs">
       <DependentUpon>ItemInfo.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="N2\Empty.aspx.cs">
-      <DependentUpon>Empty.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="N2\Empty.aspx.designer.cs">
-      <DependentUpon>Empty.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Externals\External.ascx.cs">
       <DependentUpon>External.ascx</DependentUpon>
