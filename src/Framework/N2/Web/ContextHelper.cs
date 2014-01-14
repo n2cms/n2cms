@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,50 +7,67 @@ using N2.Engine;
 
 namespace N2.Web
 {
-	public class ContextHelper
-	{
-		IEngine engine;
-		private Func<PathData> PathGetter { get; set; }
+    public class ContextHelper
+    {
+        public ContextHelper(Func<IEngine> engineGetter, Func<PathData> pathGetter)
+        {
+            this.EngineGetter = engineGetter;
+            this.PathGetter = pathGetter;
+        }
 
-		public ContextHelper(IEngine engine, Func<PathData> pathGetter)
-		{
-			this.engine = engine;
-			this.PathGetter = pathGetter;
-		}
+        public Func<IEngine> EngineGetter { get; set; }
+        public Func<PathData> PathGetter { get; set; }
 
-		public PathData Path
-		{
-			get { return PathGetter() ?? PathData.Empty; }
-		}
+        public IEngine Engine 
+        { 
+            get { return EngineGetter(); }
+            set { EngineGetter = () => value; }
+        }
 
-		public ContentItem Page
-		{
-			get { return Path.CurrentPage; }
-		}
+        public PathData Path
+        {
+            get { return PathGetter() ?? PathData.Empty; }
+        }
 
-		public ContentItem Item
-		{
-			get { return Path.CurrentItem; }
-		}
+        public ContentItem Page
+        {
+            get { return Path.CurrentPage; }
+        }
 
-		public ContentItem Part
-		{
-			get { return Path.CurrentItem != null && !Path.CurrentItem.IsPage ? Path.CurrentItem : null; }
-		}
+        public ContentItem Item
+        {
+            get { return Path.CurrentItem; }
+        }
 
-		public ILanguage Language
-		{
-			get { return engine.Resolve<ILanguageGateway>().GetLanguage(Page); }
-		}
+        public ContentItem Part
+        {
+            get { return Path.CurrentItem != null && !Path.CurrentItem.IsPage ? Path.CurrentItem : null; }
+        }
 
-		public bool IsPage
-		{
-			get { return Item != null && Item.IsPage; }
-		}
+        public ILanguage Language
+        {
+            get { return EngineGetter().Resolve<ILanguageGateway>().GetLanguage(Page); }
+        }
 
-		public bool IsEmpty
-		{
-			get { return Item != null; }
-		}
-	}
+        public string LanguageCode
+        {
+            get
+            {
+                var lang = Language;
+                if (lang == null)
+                    return null;
+                return lang.LanguageCode;
+            }
+        }
+
+        public bool IsPage
+        {
+            get { return Item != null && Item.IsPage; }
+        }
+
+        public bool IsEmpty
+        {
+            get { return Item != null; }
+        }
+    }
 }

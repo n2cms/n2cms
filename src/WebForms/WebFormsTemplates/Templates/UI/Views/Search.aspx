@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="../Layouts/Top+SubMenu.master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Templates.UI.Views.Search" Title="Untitled Page" %>
+﻿<%@ Page Language="C#" MasterPageFile="../Layouts/Top+SubMenu.master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Templates.UI.Views.Search" Title="Untitled Page" %>
 <asp:Content ID="c" ContentPlaceHolderID="PostContent" runat="server">
     <asp:TextBox ID="txtQuery" runat="server"></asp:TextBox>
     <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" />

@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using Ionic.Zip;
 using N2.Edit.FileSystem.Items;
 using N2.Edit.Web;
 using N2.Engine;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace N2.Edit.FileSystem
 {
     public partial class Export : EditPage
-	{
+    {
         private IFileSystem fileSystem;
         private string rootPath;
 
@@ -23,7 +23,7 @@ namespace N2.Edit.FileSystem
         }
 
         protected void btnExport_Click(object sender, EventArgs e)
-		{
+        {
             var zipFileName = System.IO.Path.GetFileName(rootPath) + ".zip";
 
             var directory = Directory.New(fileSystem.GetDirectory(rootPath), null, Engine.Resolve<IDependencyInjector>());
@@ -45,7 +45,7 @@ namespace N2.Edit.FileSystem
         {
             foreach (var file in directory.GetFiles())
             {
-                zip.PutNextEntry(file.Url.Substring(rootPath.Length));
+                zip.PutNextEntry(new ZipEntry(file.Url.Substring(rootPath.Length + 1)));
                 fileSystem.ReadFileContents(file.Url, zip);
             }
 
@@ -66,7 +66,7 @@ namespace N2.Edit.FileSystem
                 for (var entry = zip.GetNextEntry(); entry != null; entry = zip.GetNextEntry())
                 {
                     if (entry.IsDirectory) continue;
-                    var path = rootPath + '/' + entry.FileName;
+                    var path = rootPath + '/' + entry.Name;
                     fileSystem.WriteFile(path, zip);
                     imported.Add(path);
                 }
@@ -77,7 +77,7 @@ namespace N2.Edit.FileSystem
 
             mvwImport.ActiveViewIndex = 1;
 
-			Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
+            Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
         }
-	}
+    }
 }

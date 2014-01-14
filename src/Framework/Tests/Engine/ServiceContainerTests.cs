@@ -1,202 +1,235 @@
-﻿using System.Linq;
+using System.Linq;
 using N2.Engine;
 using N2.Engine.Castle;
 using N2.Engine.MediumTrust;
 using N2.Plugin;
 using N2.Tests.Engine.Services;
 using NUnit.Framework;
+using Shouldly;
 
 namespace N2.Tests.Engine
 {
-	[TestFixture]
-	public class WindsorServiceContainerTests : ServiceContainerTests
-	{
-		[SetUp]
-		public void SetUp()
-		{
-			container = new WindsorServiceContainer();
-		}
-	}
+    [TestFixture]
+    public class WindsorServiceContainerTests : ServiceContainerTests
+    {
+        [SetUp]
+        public void SetUp()
+        {
+            container = new WindsorServiceContainer();
+        }
+    }
 
-	[TestFixture]
-	public class MediumTrustServiceContainerTests : ServiceContainerTests
-	{
-		[SetUp]
-		public void SetUp()
-		{
-			container = new MediumTrustServiceContainer();
-		}
-	}
+    [TestFixture]
+    public class MediumTrustServiceContainerTests : ServiceContainerTests
+    {
+        [SetUp]
+        public void SetUp()
+        {
+            container = new MediumTrustServiceContainer();
+        }
+    }
 
-	public abstract class ServiceContainerTests
-	{
-		protected IServiceContainer container;
+    [TestFixture]
+    public class TinyIoCServiceContainerTests : ServiceContainerTests
+    {
+        [SetUp]
+        public void SetUp()
+        {
+            container = new N2.Engine.TinyIoC.TinyIoCServiceContainer();
+        }
+    }
 
-		[Test]
-		public void Resolve_Service_Generic()
-		{
-			container.AddComponent("key", typeof(IService), typeof(InterfacedService));
+    public abstract class ServiceContainerTests
+    {
+        protected IServiceContainer container;
 
-			var service = container.Resolve<IService>();
+        [Test]
+        public void Resolve_Service_Generic()
+        {
+            container.AddComponent("key", typeof(IService), typeof(InterfacedService));
 
-			Assert.That(service, Is.InstanceOf<InterfacedService>());
-		}
+            var service = container.Resolve<IService>();
 
-		[Test]
-		public void Resolve_Service_WithParameter()
-		{
-			container.AddComponent("key", typeof(IService), typeof(InterfacedService));
+            Assert.That(service, Is.InstanceOf<InterfacedService>());
+        }
 
-			var service = container.Resolve(typeof(IService));
-			
-			Assert.That(service, Is.InstanceOf<InterfacedService>());
-		}
+        [Test]
+        public void Resolve_Service_WithParameter()
+        {
+            container.AddComponent("key", typeof(IService), typeof(InterfacedService));
 
-		[Test, Ignore]
-		public void RegisteringService_AlsoRegisters_ConcreteType()
-		{
-			container.AddComponent("key", typeof(AbstractService), typeof(ConcreteService));
+            var service = container.Resolve(typeof(IService));
+            
+            Assert.That(service, Is.InstanceOf<InterfacedService>());
+        }
 
-			var service = container.Resolve<ConcreteService>();
+        [Test, Ignore]
+        public void RegisteringService_AlsoRegisters_ConcreteType()
+        {
+            container.AddComponent("key", typeof(AbstractService), typeof(ConcreteService));
 
-			Assert.That(service, Is.InstanceOf<ConcreteService>());
-		}
+            var service = container.Resolve<ConcreteService>();
 
-		[Test]
-		public void ResolveAll_SingleServices()
-		{
-			container.AddComponent("key", typeof(IService), typeof(InterfacedService));
+            Assert.That(service, Is.InstanceOf<ConcreteService>());
+        }
 
-			var services = container.ResolveAll<IService>();
+        [Test]
+        public void ResolveAll_SingleServices()
+        {
+            container.AddComponent("key", typeof(IService), typeof(InterfacedService));
 
-			Assert.That(services.Count(), Is.EqualTo(1));
-			Assert.That(services.First(), Is.InstanceOf<InterfacedService>());
-		}
+            var services = container.ResolveAll<IService>();
 
-		[Test]
-		public void ResolveAll_MultipleServices_Generic()
-		{
-			container.AddComponent("keyA", typeof(Startable), typeof(ServiceA));
-			container.AddComponent("keyB", typeof(Startable), typeof(ServiceB));
-			container.AddComponent("keyC", typeof(Startable), typeof(ServiceC));
+            Assert.That(services.Count(), Is.EqualTo(1));
+            Assert.That(services.First(), Is.InstanceOf<InterfacedService>());
+        }
 
-			var services = container.ResolveAll<Startable>();
+        [Test]
+        public void ResolveAll_MultipleServices_Generic()
+        {
+            container.AddComponent("keyA", typeof(Startable), typeof(ServiceA));
+            container.AddComponent("keyB", typeof(Startable), typeof(ServiceB));
+            container.AddComponent("keyC", typeof(Startable), typeof(ServiceC));
 
-			Assert.That(services.Count(), Is.EqualTo(3));
-			Assert.That(services.Any(s => s.GetType() == typeof(ServiceA)));
-			Assert.That(services.Any(s => s.GetType() == typeof(ServiceB)));
-			Assert.That(services.Any(s => s.GetType() == typeof(ServiceC)));
-		}
+            var services = container.ResolveAll<Startable>();
 
-		[Test]
-		public void ResolveAll_MultipleServices_WithParameter()
-		{
-			container.AddComponent("keyA", typeof(Startable), typeof(ServiceA));
-			container.AddComponent("keyB", typeof(Startable), typeof(ServiceB));
-			container.AddComponent("keyC", typeof(Startable), typeof(ServiceC));
+            Assert.That(services.Count(), Is.EqualTo(3));
+            Assert.That(services.Any(s => s.GetType() == typeof(ServiceA)));
+            Assert.That(services.Any(s => s.GetType() == typeof(ServiceB)));
+            Assert.That(services.Any(s => s.GetType() == typeof(ServiceC)));
+        }
 
-			var services = container.ResolveAll(typeof(Startable)).OfType<object>();
+        [Test]
+        public void ResolveAll_MultipleServices_WithParameter()
+        {
+            container.AddComponent("keyA", typeof(Startable), typeof(ServiceA));
+            container.AddComponent("keyB", typeof(Startable), typeof(ServiceB));
+            container.AddComponent("keyC", typeof(Startable), typeof(ServiceC));
 
-			Assert.That(services.Count(), Is.EqualTo(3));
-			Assert.That(services.Any(s => s.GetType() == typeof(ServiceA)));
-			Assert.That(services.Any(s => s.GetType() == typeof(ServiceB)));
-			Assert.That(services.Any(s => s.GetType() == typeof(ServiceC)));
-		}
+            var services = container.ResolveAll(typeof(Startable)).OfType<object>();
 
-		[Test, Ignore("TODO")]
-		public void RegisterService_DecoratorChain()
-		{
-			container.AddComponent("decorator", typeof(IService), typeof(DecoratingService));
-			container.AddComponent("decorated", typeof(IService), typeof(InterfacedService));
+            Assert.That(services.Count(), Is.EqualTo(3));
+            Assert.That(services.Any(s => s.GetType() == typeof(ServiceA)));
+            Assert.That(services.Any(s => s.GetType() == typeof(ServiceB)));
+            Assert.That(services.Any(s => s.GetType() == typeof(ServiceC)));
+        }
 
-			var service = container.Resolve<IService>();
+        [Test, Ignore("TODO")]
+        public void RegisterService_DecoratorChain()
+        {
+            container.AddComponent("decorator", typeof(IService), typeof(DecoratingService));
+            container.AddComponent("decorated", typeof(IService), typeof(InterfacedService));
 
-			Assert.That(service, Is.InstanceOf<DecoratingService>());
-			Assert.That(((DecoratingService)service).decorated, Is.InstanceOf<InterfacedService>());
-		}
+            var service = container.Resolve<IService>();
 
-		public class Startable : IAutoStart
-		{
-			public static int counter = 0;
-			
-			public int startOrder = 0;
-			public bool started = false;
-			public bool stopped = false;
-			public int timesStarted = 0;
-			public int timesStopped = 0;
+            Assert.That(service, Is.InstanceOf<DecoratingService>());
+            Assert.That(((DecoratingService)service).decorated, Is.InstanceOf<InterfacedService>());
+        }
 
-			#region IAutoStart Members
+        public class Startable : IAutoStart
+        {
+            public static int counter = 0;
+            
+            public int startOrder = 0;
+            public bool started = false;
+            public bool stopped = false;
+            public int timesStarted = 0;
+            public int timesStopped = 0;
 
-			public void Start()
-			{
-				startOrder = ++counter;
-				started = true;
-				timesStarted++;
-			}
+            #region IAutoStart Members
 
-			public void Stop()
-			{
-				stopped = true;
-				timesStopped++;
-			}
+            public void Start()
+            {
+                startOrder = ++counter;
+                started = true;
+                timesStarted++;
+            }
 
-			#endregion
-		}
+            public void Stop()
+            {
+                stopped = true;
+                timesStopped++;
+            }
 
-		public class ServiceA : Startable
-		{
-		}
+            #endregion
+        }
 
-		public class ServiceB : Startable
-		{
-		}
+        public class ServiceA : Startable
+        {
+        }
 
-		public class ServiceC : Startable
-		{
-		}
+        public class ServiceB : Startable
+        {
+        }
 
-		[Test]
-		public void AutoStartServices_AreStarted()
-		{
-			container.AddComponent("key", typeof(Startable), typeof(Startable));
-			container.StartComponents();
-			var s = container.Resolve<Startable>();
+        public class ServiceC : Startable
+        {
+        }
 
-			Assert.That(s.started, Is.True);
-		}
+        public class ServiceABC
+        {
+            public Startable[] dependencies;
 
-		[Test]
-		public void AutoStartServices_RetrieveBeforeGeneralStart_AreSameInstance()
-		{
-			container.AddComponent("key", typeof(IAutoStart), typeof(Startable));
+            public ServiceABC(Startable[] dependencies)
+            {
+                this.dependencies = dependencies;
+            }
+        }
 
-			var s1 = container.Resolve<IAutoStart>();
-			container.StartComponents();
-			var s2 = container.Resolve<IAutoStart>();
+        [Test]
+        public void AutoStartServices_AreStarted()
+        {
+            container.AddComponent("key", typeof(Startable), typeof(Startable));
+            container.StartComponents();
+            var s = container.Resolve<Startable>();
 
-			Assert.That(s1, Is.SameAs(s2));
-		}
+            Assert.That(s.started, Is.True);
+        }
 
-		[Test]
-		public void AutoStartServices_AreStarted_WhenAddedAfterStartSignal()
-		{
-			container.StartComponents();
-			container.AddComponent("key", typeof(IAutoStart), typeof(Startable));
-			var s = (Startable)container.Resolve<IAutoStart>();
+        [Test]
+        public void AutoStartServices_RetrieveBeforeGeneralStart_AreSameInstance()
+        {
+            container.AddComponent("key", typeof(IAutoStart), typeof(Startable));
 
-			Assert.That(s.started, Is.True);
-		}
+            var s1 = container.Resolve<IAutoStart>();
+            container.StartComponents();
+            var s2 = container.Resolve<IAutoStart>();
 
-		[Test]
-		public void AutoStartServices_AreStarted_Once()
-		{
-			container.AddComponent("key", typeof(IAutoStart), typeof(Startable));
-			container.Resolve<IAutoStart>();
-			container.StartComponents();
-			container.Resolve<IAutoStart>();
-			var s = (Startable)container.Resolve<IAutoStart>();
+            Assert.That(s1, Is.SameAs(s2));
+        }
 
-			Assert.That(s.timesStarted, Is.EqualTo(1));
-		}
-	}
+        [Test]
+        public void AutoStartServices_AreStarted_WhenAddedAfterStartSignal()
+        {
+            container.StartComponents();
+            container.AddComponent("key", typeof(IAutoStart), typeof(Startable));
+            var s = (Startable)container.Resolve<IAutoStart>();
+
+            Assert.That(s.started, Is.True);
+        }
+
+        [Test]
+        public void AutoStartServices_AreStarted_Once()
+        {
+            container.AddComponent("key", typeof(IAutoStart), typeof(Startable));
+            container.Resolve<IAutoStart>();
+            container.StartComponents();
+            container.Resolve<IAutoStart>();
+            var s = (Startable)container.Resolve<IAutoStart>();
+
+            Assert.That(s.timesStarted, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void CanDepend_OnArrayOfServices()
+        {
+            container.AddComponent("key1", typeof(Startable), typeof(ServiceA));
+            container.AddComponent("key2", typeof(Startable), typeof(ServiceB));
+            container.AddComponent("key3", typeof(Startable), typeof(ServiceC));
+            container.AddComponent("key4", typeof(ServiceABC), typeof(ServiceABC));
+
+            var service = container.Resolve<ServiceABC>();
+            service.dependencies.Count().ShouldBe(3);
+        }
+    }
 }

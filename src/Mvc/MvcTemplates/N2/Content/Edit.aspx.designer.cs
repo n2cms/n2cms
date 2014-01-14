@@ -58,6 +58,15 @@ namespace N2.Edit {
         protected global::System.Web.UI.WebControls.HyperLink hlFuturePublish;
         
         /// <summary>
+        /// btnUnpublish control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnUnpublish;
+        
+        /// <summary>
         /// hlCancel control.
         /// </summary>
         /// <remarks>
@@ -74,6 +83,24 @@ namespace N2.Edit {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::N2.Edit.ItemInfo ucInfo;
+        
+        /// <summary>
+        /// ucVersions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Management.Content.Versions.RecentVersions ucVersions;
+        
+        /// <summary>
+        /// ucActivity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Management.Content.Activity.RecentActivity ucActivity;
         
         /// <summary>
         /// phSidebar control.

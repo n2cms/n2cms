@@ -1,12 +1,11 @@
 using System;
 using N2.Web;
-using log4net;
 
 namespace N2.Templates.UI.Views
 {
     public partial class Error500 : System.Web.UI.Page
     {
-    	private readonly ILog logger = LogManager.GetLogger(typeof (Error500));
+        private readonly Engine.Logger<Error500> logger;
 
         protected override void OnInit(EventArgs args)
         {
@@ -18,7 +17,7 @@ namespace N2.Templates.UI.Views
                 {
                     var wc = N2.Context.Current.Resolve<N2.Web.IWebContext>();
                     wc.CurrentPage = page;
-					Server.Execute(Url.Parse(page.FindPath(PathData.DefaultAction).RewrittenUrl).AppendQuery("postback", page.Url));
+                    Server.Execute(Url.Parse(page.FindPath(PathData.DefaultAction).GetRewrittenUrl()).AppendQuery("postback", page.Url));
                     Response.End();
                     return;
                 }

@@ -4,6 +4,7 @@ using N2.Persistence;
 using N2.Resources;
 using N2.Web;
 using N2.Web.Wiki;
+using N2.Edit.Versioning;
 
 namespace N2.Addons.Wiki.UI.Parts
 {
@@ -23,7 +24,7 @@ namespace N2.Addons.Wiki.UI.Parts
                 h1.Text = CurrentPage.Title;
                 txtText.Text = CurrentPage.Text;
             }
-        	txtText.EnableFreeTextArea = CurrentPage.WikiRoot.EnableFreeText;
+            txtText.EnableFreeTextArea = CurrentPage.WikiRoot.EnableFreeText;
             phSubmit.Visible = cvAuthorized.IsValid = IsAuthorized;
             if (!string.IsNullOrEmpty(Text))
             {
@@ -49,17 +50,17 @@ namespace N2.Addons.Wiki.UI.Parts
             Items.WikiArticle article = CurrentPage;
             if (IsNew)
             {
-				article = Engine.Resolve<ContentActivator>().CreateInstance<Items.WikiArticle>(CurrentPage);
+                article = Engine.Resolve<ContentActivator>().CreateInstance<Items.WikiArticle>(CurrentPage);
                 article.Title = filter.StripHtml(CurrentArguments);
-				article.Name = filter.CleanUrl(CurrentArguments);
+                article.Name = filter.CleanUrl(CurrentArguments);
             }
             else
             {
-                Engine.Resolve<IVersionManager>().SaveVersion(article);
+                Engine.Resolve<IVersionManager>().AddVersion(article);
             }
             article["SavedDate"] = DateTime.Now;
             article["SavedByAddress"] = Request.UserHostAddress;
-			article["Syndicatable"] = CurrentPage.WikiRoot["Syndicatable"];
+            article["Syndicatable"] = CurrentPage.WikiRoot["Syndicatable"];
             article.Text = filter.FilterHtml(txtText.Text);
             Engine.Persister.Save(article);
 

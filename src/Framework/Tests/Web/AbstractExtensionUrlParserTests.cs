@@ -1,4 +1,4 @@
-﻿using N2.Tests.Web.Items;
+using N2.Tests.Web.Items;
 using NUnit.Framework;
 
 namespace N2.Tests.Web
@@ -10,14 +10,14 @@ namespace N2.Tests.Web
         ContentItem item3_2;
         ContentItem ext2_2;
 
-		[SetUp]
+        [SetUp]
         public override void SetUp()
         {
             base.SetUp();
 
             CreateDefaultStructure();
 
-            ext2_2 = CreateOneItem<CustomExtensionPage>(9, "ext2_2", item2);
+            ext2_2 = CreateOneItem<CustomExtensionPage>(9, "ext2_2", page2);
             ext3 = CreateOneItem<CustomExtensionPage>(10, "ext3", startItem);
             ext3_1 = CreateOneItem<CustomExtensionPage>(11, "ext3_1", ext3);
             item3_2 = CreateOneItem<PageItem>(12, "item3_2", ext3);

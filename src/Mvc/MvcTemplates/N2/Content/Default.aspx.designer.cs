@@ -22,13 +22,13 @@ namespace N2.Edit {
         protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay NavigationPlugins;
         
         /// <summary>
-        /// PreviewPlugins control.
+        /// OptionsPlugins control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay PreviewPlugins;
+        protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay OptionsPlugins;
         
         /// <summary>
         /// OperationsPlugins control.
@@ -40,12 +40,12 @@ namespace N2.Edit {
         protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay OperationsPlugins;
         
         /// <summary>
-        /// OptionsPlugins control.
+        /// PagePlugins control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay OptionsPlugins;
+        protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay PagePlugins;
     }
 }

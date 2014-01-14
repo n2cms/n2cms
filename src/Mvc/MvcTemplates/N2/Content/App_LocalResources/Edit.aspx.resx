@@ -207,4 +207,7 @@
   <data name="ppPermitted.Text" xml:space="preserve">
     <value>You do not have sufficient permissions.</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>New</value>
+  </data>
 </root>

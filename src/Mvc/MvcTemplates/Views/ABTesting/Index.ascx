@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<ABTestingModel>" %>
 
-<% if (N2.Web.UI.WebControls.ControlPanel.GetState(ViewContext.HttpContext.User, ViewContext.HttpContext.Request.QueryString) == N2.Web.UI.WebControls.ControlPanelState.DragDrop) { %>
+<% if (N2.Web.UI.WebControls.ControlPanel.GetState(Html.ContentEngine()) == N2.Web.UI.WebControls.ControlPanelState.DragDrop) { %>
 	<% for (int i = 0; i < Model.Zones.Length; i++) {
 		if (Model.Percentages[i] <= 0) continue; %>
 		<fieldset>

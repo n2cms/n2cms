@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Caching;
@@ -8,131 +7,143 @@ using System.Web.Hosting;
 using N2.Definitions.Static;
 using N2.Engine;
 using N2.Persistence;
-using log4net;
+using N2.Web.Mvc.Html;
 
 namespace N2.Definitions.Runtime
 {
-	[Service(typeof(ITemplateProvider))]
-	public class ViewTemplateProvider : ITemplateProvider
-	{
-        private readonly ILog logger = LogManager.GetLogger(typeof(ViewTemplateProvider));
-		IProvider<HttpContextBase> httpContextProvider;
-		IProvider<VirtualPathProvider> vppProvider;
-		ContentActivator activator;
-		DefinitionBuilder builder;
-		ViewTemplateRegistrator registrator;
-		ViewTemplateAnalyzer analyzer;
-		List<ViewTemplateSource> sources = new List<ViewTemplateSource>();
-		bool rebuild = true;
+    [Service(typeof(ITemplateProvider))]
+    public class ViewTemplateProvider : ITemplateProvider
+    {
+        private readonly Logger<ViewTemplateProvider> logger;
+        IProvider<HttpContextBase> httpContextProvider;
+        IProvider<VirtualPathProvider> vppProvider;
+        ContentActivator activator;
+        DefinitionBuilder builder;
+        ViewTemplateRegistrator registrator;
+        ViewTemplateAnalyzer analyzer;
+        List<ViewTemplateSource> sources = new List<ViewTemplateSource>();
+        bool rebuild = true;
 
-		public ViewTemplateProvider(ViewTemplateRegistrator registrator, ViewTemplateAnalyzer analyzer, ContentActivator activator, DefinitionBuilder builder, IProvider<HttpContextBase> httpContextProvider, IProvider<VirtualPathProvider> vppProvider)
-		{
-			this.registrator = registrator;
-			this.analyzer = analyzer;
-			this.activator = activator;
-			this.builder = builder;
-			this.httpContextProvider = httpContextProvider;
-			this.vppProvider = vppProvider;
+        public ViewTemplateProvider(ViewTemplateRegistrator registrator, ViewTemplateAnalyzer analyzer, ContentActivator activator, DefinitionBuilder builder, IProvider<HttpContextBase> httpContextProvider, IProvider<VirtualPathProvider> vppProvider)
+        {
+            SortOrder = -1000;
 
-			registrator.RegistrationAdded += (s, a) => rebuild = true;
-		}
+            this.registrator = registrator;
+            this.analyzer = analyzer;
+            this.activator = activator;
+            this.builder = builder;
+            this.httpContextProvider = httpContextProvider;
+            this.vppProvider = vppProvider;
 
-		private void DequeueRegistrations()
-		{
-			while (registrator.QueuedRegistrations.Count > 0)
-			{
-				var source = registrator.QueuedRegistrations.Dequeue();
-				sources.Add(source);
-			}
-		}
+            registrator.RegistrationAdded += (s, a) => rebuild = true;
+        }
 
-		#region ITemplateProvider Members
+        private void DequeueRegistrations()
+        {
 
-		public IEnumerable<TemplateDefinition> GetTemplates(Type contentType)
-		{
-			var httpContext = httpContextProvider.Get();
-			if (httpContext == null)
-				return new TemplateDefinition[0];
+            while (registrator.QueuedRegistrations.Count > 0)
+            {
+                var source = registrator.QueuedRegistrations.Dequeue();
+                sources.Add(source);
+            }
+        }
 
-			try
-			{
-				httpContext.Request.GetType();
-			}
-			catch (Exception)
-			{
-				return new TemplateDefinition[0];
-			}
-			
-			const string cacheKey = "RazorDefinitions";
-			var definitions = httpContext.Cache[cacheKey] as IEnumerable<ItemDefinition>;
-			lock (this)
-			{
-				if (definitions == null || rebuild)
-				{
-					DequeueRegistrations();
+        #region ITemplateProvider Members
 
-					var vpp = vppProvider.Get();
-					var descriptions = analyzer.AnalyzeViews(vpp, httpContext, sources).ToList();
-					definitions = BuildDefinitions(descriptions);
+        public IEnumerable<TemplateDefinition> GetTemplates(Type contentType)
+        {
+            var httpContext = httpContextProvider.Get();
+            if (httpContext == null)
+            {
+                logger.Warn("Trying to get templates with no context");
+                return Enumerable.Empty<TemplateDefinition>();
+            }
 
-					var files = descriptions.SelectMany(p => p.TouchedPaths).Distinct().ToList();
-					//var dirs = files.Select(f => f.Substring(0, f.LastIndexOf('/'))).Distinct();
-					var cacheDependency = vpp.GetCacheDependency(files.FirstOrDefault(), files, DateTime.UtcNow);
+            try
+            {
+                httpContext.Request.GetType();
+            }
+            catch (Exception ex)
+            {
+                logger.Warn("Trying to get templates with invalid context", ex);
+                return Enumerable.Empty<TemplateDefinition>();
+            }
+            
+            const string cacheKey = "RazorDefinitions";
+            var definitions = httpContext.Cache[cacheKey] as IEnumerable<ItemDefinition>;
+            lock (this)
+            {
+                if (definitions == null || rebuild)
+                {
+                    logger.DebugFormat("Dequeuing {0} registrations", registrator.QueuedRegistrations.Count);
+                    
+                    DequeueRegistrations();
 
-					httpContext.Cache.Remove(cacheKey);
-					httpContext.Cache.Add(cacheKey, definitions, cacheDependency, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, new CacheItemRemovedCallback(delegate
-					{
-						logger.Debug("Razor template changed");
-					}));
-					rebuild = false;
-				}
-			}
+                    var vpp = vppProvider.Get();
+                    var descriptions = analyzer.AnalyzeViews(vpp, httpContext, sources).ToList();
+                    logger.DebugFormat("Got {0} descriptions", descriptions.Count);
+                    definitions = BuildDefinitions(descriptions).ToList();
+                    logger.Debug("Built definitions");
 
-			var templates = definitions.Where(d => d.ItemType == contentType).Select(d =>
-				{
-					var td = new TemplateDefinition();
-					td.Definition = d;
-					td.Description = d.Description;
-					td.Name = d.TemplateKey;
-					td.OriginalFactory = () => null;
-					td.TemplateFactory = () => activator.CreateInstance(d.ItemType, null, d.TemplateKey);
-					td.TemplateUrl = null;
-					td.Title = d.Title;
-					td.ReplaceDefault = "Index".Equals(d.TemplateKey, StringComparison.InvariantCultureIgnoreCase);
-					return td;
-				}).ToArray();
+                    var files = descriptions.SelectMany(p => p.Context.TouchedPaths).Distinct().ToList();
+                    logger.DebugFormat("Setting up cache dependency on {0} files", files.Count);
+                    var cacheDependency = vpp.GetCacheDependency(files.FirstOrDefault(), files, DateTime.UtcNow);
 
-			return templates;
-		}
+                    httpContext.Cache.Remove(cacheKey);
+                    httpContext.Cache.Add(cacheKey, definitions, cacheDependency, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, new CacheItemRemovedCallback(delegate
+                    {
+                        logger.Debug("Razor template changed");
+                    }));
+                    rebuild = false;
+                }
+            }
 
-		public TemplateDefinition GetTemplate(N2.ContentItem item)
-		{
-			var httpContext = httpContextProvider.Get();
-			if (httpContext != null)
-				if (N2.Web.Mvc.Html.RegistrationExtensions.GetRegistrationExpression(httpContext) != null)
-					return null;
+            var templates = definitions.Where(d => d.ItemType == contentType).Select(d =>
+                {
+                    var td = new TemplateDefinition();
+                    td.Definition = d;
+                    td.Description = d.Description;
+                    td.Name = d.TemplateKey;
+                    td.OriginalFactory = () => null;
+                    td.TemplateFactory = () => activator.CreateInstance(d.ItemType, null, d.TemplateKey);
+                    td.TemplateUrl = null;
+                    td.Title = d.Title;
+                    td.ReplaceDefault = "Index".Equals(d.TemplateKey, StringComparison.InvariantCultureIgnoreCase);
+                    return td;
+                }).ToArray();
 
-			string templateKey = item.TemplateKey;
-			if (templateKey == null)
-				return null;
+            return templates;
+        }
 
-			return GetTemplates(item.GetContentType()).Where(t => t.Name == templateKey).Select(t =>
-				{
-					t.OriginalFactory = t.TemplateFactory;
-					t.TemplateFactory = () => item;
-					return t;
-				}).FirstOrDefault();
-		}
+        public TemplateDefinition GetTemplate(ContentItem item)
+        {
+            var httpContext = httpContextProvider.Get();
+            if (httpContext != null)
+                if (RegistrationExtensions.GetRegistrationExpression(httpContext) != null)
+                    return null;
 
-		private IEnumerable<ItemDefinition> BuildDefinitions(List<ViewTemplateDescription> registrations)
-		{
-			var definitions = registrations.Select(r => r.Definition).ToList();
-			builder.ExecuteRefiners(definitions);
-			foreach (var registration in registrations)
-				registration.Registration.AppendToDefinition(registration.Definition);
-			return definitions;
-		}
+            string templateKey = item.TemplateKey;
+            if (templateKey == null)
+                return null;
 
-		#endregion
-	}
+            return GetTemplates(item.GetContentType()).Where(t => t.Name == templateKey).Select(t =>
+                {
+                    t.OriginalFactory = t.TemplateFactory;
+                    t.TemplateFactory = () => item;
+                    return t;
+                }).FirstOrDefault();
+        }
+
+        private IEnumerable<ItemDefinition> BuildDefinitions(List<ContentRegistration> registrations)
+        {
+            var definitions = registrations.Select(r => r.Definition).ToList();
+            builder.ExecuteRefiners(definitions);
+            return registrations.Select(r => r.Finalize()).ToList();
+        }
+
+        #endregion
+
+        /// <summary>The order this template provider should be invoked, default 0.</summary>
+        public int SortOrder { get; set; }
+    }
 }

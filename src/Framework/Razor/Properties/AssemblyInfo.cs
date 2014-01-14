@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -19,4 +19,4 @@ using System.Security;
 [assembly: Guid("f9b8ac8a-099f-40bc-ac93-9d97b6402489")]
 
 [assembly: CLSCompliant(true)]
-[assembly: AllowPartiallyTrustedCallers]
+//[assembly: AllowPartiallyTrustedCallers]

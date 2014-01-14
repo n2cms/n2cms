@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Configuration;
 using System.Web;
@@ -21,17 +21,17 @@ namespace N2.Edit.FileSystem.Editables
         }
         private class CompositeEditor : Control
         {
-			public HtmlInputFile Upload = new HtmlInputFile { ID = "u" };
-			public TextBox ChangeName = new TextBox { ID = "n" };
-			public RegularExpressionValidator ChangeNameExpressionValidator = new RegularExpressionValidator { ControlToValidate = "n", ValidationExpression = EditableFileUploadAttribute.ValidCharactersExpression, Display = ValidatorDisplay.Dynamic, ErrorMessage = "Invalid characters in file name" };
-			public RequiredFieldValidator ChangeNameRequiredValidator = new RequiredFieldValidator { ControlToValidate = "n", Display = ValidatorDisplay.Dynamic, ErrorMessage = "File name required" };
+            public HtmlInputFile Upload = new HtmlInputFile { ID = "u" };
+            public TextBox ChangeName = new TextBox { ID = "n" };
+            public RegularExpressionValidator ChangeNameExpressionValidator = new RegularExpressionValidator { ControlToValidate = "n", ValidationExpression = EditableFileUploadAttribute.ValidCharactersExpression, Display = ValidatorDisplay.Dynamic, ErrorMessage = "Invalid characters in file name" };
+            public RequiredFieldValidator ChangeNameRequiredValidator = new RequiredFieldValidator { ControlToValidate = "n", Display = ValidatorDisplay.Dynamic, ErrorMessage = "File name required" };
 
             protected override void OnInit(EventArgs e)
-			{
-				Controls.Add(Upload);
-				Controls.Add(ChangeName);
-				Controls.Add(ChangeNameExpressionValidator);
-				Controls.Add(ChangeNameRequiredValidator);
+            {
+                Controls.Add(Upload);
+                Controls.Add(ChangeName);
+                Controls.Add(ChangeNameExpressionValidator);
+                Controls.Add(ChangeNameRequiredValidator);
 
                 base.OnInit(e);
             }
@@ -44,16 +44,16 @@ namespace N2.Edit.FileSystem.Editables
             if (ce.Upload.PostedFile != null && ce.Upload.PostedFile.ContentLength > 0)
             {
                 f.Name = System.IO.Path.GetFileName(ce.Upload.PostedFile.FileName);
-            	f.WriteToDisk(ce.Upload.PostedFile.InputStream);
+                f.WriteToDisk(ce.Upload.PostedFile.InputStream);
 
                 return true;
             }
-        	if (ce.ChangeName.Text.Length > 0)
-        	{
-        		f.NewName = ce.ChangeName.Text;
-				return true;
-			}
-        	return false;
+            if (ce.ChangeName.Text.Length > 0)
+            {
+                f.NewName = ce.ChangeName.Text;
+                return true;
+            }
+            return false;
         }
 
         public override void UpdateEditor(ContentItem item, Control editor)
@@ -68,9 +68,9 @@ namespace N2.Edit.FileSystem.Editables
             }
             else
             {
-				ce.ChangeName.Visible = false;
-				ce.ChangeNameExpressionValidator.Enabled = false;
-				ce.ChangeNameRequiredValidator.Enabled = false;
+                ce.ChangeName.Visible = false;
+                ce.ChangeNameExpressionValidator.Enabled = false;
+                ce.ChangeNameRequiredValidator.Enabled = false;
             }
         }
 

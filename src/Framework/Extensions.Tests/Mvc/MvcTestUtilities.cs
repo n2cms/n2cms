@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Web.Mvc;
 using System.Web.Routing;
 using N2.Engine;
@@ -8,6 +8,7 @@ using N2.Web.Mvc.Html;
 using N2.Web.Rendering;
 using Rhino.Mocks;
 using N2.Security;
+using N2.Web;
 
 namespace N2.Extensions.Tests.Mvc
 {
@@ -18,11 +19,12 @@ namespace N2.Extensions.Tests.Mvc
         {
             var page = new ViewPage<T>();
             page.ViewData = new ViewDataDictionary<T>(model);
-			var ctx = new FakeHttpContext();
-			page.ViewContext = new ViewContext(new ControllerContext { HttpContext = ctx }, new WebFormView("~/page.aspx"), page.ViewData, new TempDataDictionary(), new StringWriter()) { HttpContext = ctx };
-			page.ViewContext.RouteData.DataTokens[ContentRoute.ContentItemKey] = model;
-			page.ViewContext.RouteData.DataTokens[ContentRoute.ContentEngineKey] = StubEngine();
-			return page;
+            var ctx = new FakeHttpContext();
+            var cc = new ControllerContext { HttpContext = ctx };
+            page.ViewContext = new ViewContext(cc, new WebFormView(cc, "~/page.aspx"), page.ViewData, new TempDataDictionary(), new StringWriter()) { HttpContext = ctx };
+            page.ViewContext.RouteData.ApplyCurrentPath(new Web.PathData(model));
+            page.ViewContext.RouteData.DataTokens[ContentRoute.ContentEngineKey] = StubEngine();
+            return page;
         }
 
         public static ContentViewPage<TModel, TItem> CreateContentViewPage<TModel, TItem>(TModel model, TItem item)
@@ -31,38 +33,33 @@ namespace N2.Extensions.Tests.Mvc
         {
             var page = new ContentViewPage<TModel, TItem>();
             page.ViewData = new ViewDataDictionary<TModel>(model);
-			var rd = new RouteData(new Route("anything", new MvcRouteHandler()), new MvcRouteHandler());
-			rd.DataTokens[ContentRoute.ContentEngineKey] = StubEngine();
-			var controllerContext = new ControllerContext
-			{ 
+            var rd = new RouteData(new Route("anything", new MvcRouteHandler()), new MvcRouteHandler());
+            rd.DataTokens[ContentRoute.ContentEngineKey] = StubEngine();
+            var controllerContext = new ControllerContext
+            { 
                 RouteData = rd,
                 Controller = new StubController(),
-				HttpContext = new FakeHttpContext("/")
+                HttpContext = new FakeHttpContext("/")
             };
-			controllerContext.RequestContext.RouteData.DataTokens[ContentRoute.ContentItemKey] = item;
+            controllerContext.RequestContext.RouteData.ApplyCurrentPath(new Web.PathData(item));
             controllerContext.Controller.ControllerContext = controllerContext;
 
-			page.ViewContext = new ViewContext(controllerContext, new WebFormView("~/page.aspx"), page.ViewData, new TempDataDictionary(), new StringWriter())
-			{
-				HttpContext = controllerContext.HttpContext
-			};
+            page.ViewContext = new ViewContext(controllerContext, new WebFormView(controllerContext, "~/page.aspx"), page.ViewData, new TempDataDictionary(), new StringWriter())
+            {
+                HttpContext = controllerContext.HttpContext
+            };
             return page;
         }
 
-		private static IEngine StubEngine()
-		{
-			var engine = MockRepository.GenerateStub<IEngine>();
-			engine.Expect(e => e.Resolve<ITemplateRenderer>())
-				.Return(new TemplateRenderer(MockRepository.GenerateStub<IControllerMapper>()))
-				.Repeat.Any();
-			engine.Expect(e => e.Resolve<DisplayableRendererSelector>())
-				.Return(new DisplayableRendererSelector(new IDisplayableRenderer[] { new WritingDisplayableRenderer(), new FallbackDisplayableRenderer() }))
-				.Repeat.Any();
-			engine.Expect(e => e.SecurityManager)
-				.Return(MockRepository.GenerateStub<ISecurityManager>())
-				.Repeat.Any();
-			return engine;
-		}
+        private static IEngine StubEngine()
+        {
+            var engine = new FakeEngine();
+            engine.AddComponentInstance<ITemplateRenderer>(new TemplateRenderer(MockRepository.GenerateStub<IControllerMapper>()));
+            engine.AddComponentInstance<DisplayableRendererSelector>(new DisplayableRendererSelector(new IDisplayableRenderer[] { new WritingDisplayableRenderer(), new FallbackDisplayableRenderer() }));
+            engine.AddComponentInstance<ISecurityManager>(new FakeSecurityManager());
+            engine.AddComponentInstance<IWebContext>(new ThreadContext());
+            return engine;
+        }
 
         private class StubController : Controller
         {

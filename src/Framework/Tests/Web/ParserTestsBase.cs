@@ -6,42 +6,48 @@ using NUnit.Framework;
 
 namespace N2.Tests.Web
 {
-	public abstract class ParserTestsBase : ItemPersistenceMockingBase
-	{
+    public abstract class ParserTestsBase : ParserTestsBase<PageItem, DataItem>
+    {
+    }
+
+    public abstract class ParserTestsBase<TPage, TPart> : ItemPersistenceMockingBase
+        where TPage : ContentItem
+        where TPart : ContentItem
+    {
         protected FakeWebContextWrapper wrapper;
-		protected IHost host;
-		protected IUrlParser parser;
-		protected PageItem startItem, item1, item1_1, item2, item2_1;
-		protected DataItem data1, data2, data3;
+        protected IHost host;
+        protected IUrlParser parser;
+        protected TPage startItem, page1, page1_1, page2, page2_1;
+        protected TPart part1, part2, part3;
 
-		[SetUp]
-		public override void SetUp()
-		{
-			base.SetUp();
+        [SetUp]
+        public override void SetUp()
+        {
+            base.SetUp();
 
-			wrapper = new FakeWebContextWrapper("http://www.n2cms.com/");
+            wrapper = new FakeWebContextWrapper("http://www.n2cms.com/");
 
-			host = new Host(wrapper, 1, 1);
+            host = new Host(wrapper, 1, 1);
             
             parser = CreateUrlParser();
-		}
+        }
 
         protected virtual UrlParser CreateUrlParser()
         {
-			return TestSupport.Setup(persister, wrapper, host);
+            return TestSupport.Setup(persister, wrapper, host);
         }
 
-		protected void CreateDefaultStructure()
-		{
-			startItem = CreateOneItem<PageItem>(1, "root", null);
-			item1 = CreateOneItem<PageItem>(2, "item1", startItem);
-			item1_1 = CreateOneItem<PageItem>(3, "item1_1", item1);
-			item2 = CreateOneItem<PageItem>(4, "item2", startItem);
-			item2_1 = CreateOneItem<PageItem>(5, "item2_1", item2);
+        protected void CreateDefaultStructure()
+        {
+            startItem = CreateOneItem<TPage>(1, "root", null);
+            page1 = CreateOneItem<TPage>(2, "item1", startItem);
+            page1_1 = CreateOneItem<TPage>(3, "item1_1", page1);
+            page2 = CreateOneItem<TPage>(4, "item2", startItem);
+            page2_1 = CreateOneItem<TPage>(5, "item2_1", page2);
 
-			data1 = CreateOneItem<DataItem>(6, "data1", startItem);
-			data2 = CreateOneItem<DataItem>(7, "data2", item2);
-			data3 = CreateOneItem<DataItem>(8, "data3", item2_1);
-		}
-	}
+            part1 = CreateOneItem<TPart>(6, "data1", startItem);
+            part2 = CreateOneItem<TPart>(7, "data2", page2);
+            part3 = CreateOneItem<TPart>(8, "data3", page2_1);
+        }
+    }
 }

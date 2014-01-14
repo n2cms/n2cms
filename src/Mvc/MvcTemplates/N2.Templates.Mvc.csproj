@@ -1,22 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1}</ProjectGuid>
-    <ProjectTypeGuids>{F85E285D-A4E0-4152-9332-AB1D724D3325};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>N2.Templates.Mvc</RootNamespace>
     <AssemblyName>N2.Templates.Mvc</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <UpgradeBackupLocation />
-    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,50 +58,70 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\Castle.Core.dll</HintPath>
+      <HintPath>..\..\packages\log4net.2.0.0\lib\net35-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.Windsor, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\Castle.Windsor.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate, Version=3.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\NHibernate.dll</HintPath>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.SQLite, Version=1.0.88.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\System.Data.SQLite.1.0.88.0\lib\net40\System.Data.SQLite.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.88.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\System.Data.SQLite.1.0.88.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web.Abstractions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\System.Web.Mvc.dll</HintPath>
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.2.0.20710.0\lib\net40\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_GlobalResources\Definitions.designer.cs">
@@ -115,17 +145,27 @@
       <DependentUpon>Zones.resx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Management\Controllers\ManageAnalyticsController.cs" />
+    <Compile Include="Areas\Tests\Controllers\PageInfoViewerController.cs" />
+    <Compile Include="Areas\Tests\Models\PageInfoViewerPart.cs" />
+    <Compile Include="Areas\Tests\Services\MarkovNameGenerator.cs" />
+    <Compile Include="Areas\Tests\Controllers\TestContentGeneratorController.cs" />
     <Compile Include="Areas\Tests\Controllers\ExternalTypedController.cs" />
     <Compile Include="Areas\Tests\Controllers\ExternalController.cs" />
     <Compile Include="Areas\Tests\Controllers\DemoController.cs" />
     <Compile Include="Areas\Tests\Controllers\QueryViewerController.cs" />
     <Compile Include="Areas\Tests\Controllers\StaticController.cs" />
-    <Compile Include="Areas\Tests\Controllers\TestContentController.cs" />
+    <Compile Include="Areas\Tests\Controllers\TestPageController.cs" />
     <Compile Include="Areas\Tests\Controllers\TestController.cs" />
+    <Compile Include="Areas\Tests\Controllers\TestPartController.cs" />
+    <Compile Include="Areas\Tests\Services\Words.cs" />
     <Compile Include="Areas\Tests\Demo\DemoFileSystem.cs" />
     <Compile Include="Areas\Tests\Demo\DemoInitializer.cs" />
+    <Compile Include="Areas\Tests\Models\TestContentGenerator.cs" />
+    <Compile Include="Areas\Tests\Models\FluentWebFormPart.cs" />
     <Compile Include="Areas\Tests\Models\DemoPart.cs" />
     <Compile Include="Areas\Tests\Models\DemoViewModel.cs" />
+    <Compile Include="Areas\Tests\Models\FluentPage.cs" />
+    <Compile Include="Areas\Tests\Models\FluentWebFormPage.cs" />
     <Compile Include="Areas\Tests\Models\QueryViewData.cs" />
     <Compile Include="Areas\Tests\Models\QueryViewerPart.cs" />
     <Compile Include="Areas\Tests\Models\TestItemBase.cs" />
@@ -140,6 +180,8 @@
     <Compile Include="Areas\Tests\Views\Forms\TestWebFormPart.ascx.designer.cs">
       <DependentUpon>TestWebFormPart.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\FreeFormController.cs" />
+    <Compile Include="Controllers\SlideshowController.cs" />
     <Compile Include="Details\AnswerContext.cs" />
     <Compile Include="Controllers\Resources\UserRegistration.Designer.cs">
       <DependentUpon>UserRegistration.resx</DependentUpon>
@@ -168,6 +210,7 @@
     <Compile Include="Models\ContentModelBase.cs" />
     <Compile Include="Models\NewsContainerModel.cs" />
     <Compile Include="Models\Parts\ABTestingContainer.cs" />
+    <Compile Include="Models\Parts\FreeForm.cs" />
     <Compile Include="Models\Parts\TagCloud.cs" />
     <Compile Include="Models\Parts\Questions\FileAttachmentQuestion.cs" />
     <Compile Include="Models\Parts\Questions\MultipleSelect.cs" />
@@ -179,7 +222,10 @@
     <Compile Include="Services\WebForms\MvcOnWebFormPartAdapter.cs" />
     <Compile Include="Tabs.cs" />
     <Compile Include="Areas\Tests\WebFormOnMvcPartAdapter.cs" />
-    <Compile Include="Services\ThemedMasterViewEngine.cs" />
+    <Compile Include="Upgrade\MigrateHomeRedirect.cs" />
+    <Compile Include="Upgrade\MigrateIntroduction.cs" />
+    <Compile Include="Upgrade\MigrateEventDate.cs" />
+    <Compile Include="Upgrade\MigrateTopParts.cs" />
     <Compile Include="Views\Shared\PageTemplates\App_LocalResources\News.aspx.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -213,7 +259,6 @@
     </Compile>
     <Compile Include="Details\LayoutSelectorAttribute.cs" />
     <Compile Include="Details\PollCreatorDetailAttribute.cs" />
-    <Compile Include="Details\ThemeSelectorAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -286,7 +331,6 @@
     <Compile Include="Services\SeoConcern.cs" />
     <Compile Include="Services\WebForms\LanguageConcern.cs" />
     <Compile Include="Services\WebForms\MasterPageConcern.cs" />
-    <Compile Include="Services\WebForms\ThemeConcern.cs" />
     <Compile Include="Views\Shared\Site.master.cs">
       <DependentUpon>Site.master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -297,12 +341,40 @@
     <Compile Include="Models\Translation.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Themes\Default\Content\Style.css" />
+    <Content Include="Themes\Default\Thumbnail.jpg" />
+    <Content Include="Areas\Tests\Models\FluentWebFormPart.ascx" />
+    <Content Include="Areas\Tests\Models\FluentWebFormPage.aspx" />
+    <Content Include="Areas\Tests\Uc.ascx" />
+    <Content Include="Areas\Tests\Views\PageInfoViewer\Index.ascx" />
+    <Content Include="Areas\Tests\Views\TestContentGenerator\Index.ascx" />
     <Content Include="Areas\Tests\Views\ExternalTyped\About.aspx" />
     <Content Include="Areas\Tests\Views\ExternalTyped\Index.aspx" />
     <Content Include="Areas\Tests\Views\External\Index.aspx" />
-    <Content Include="Areas\Tests\Views\TestContent\Test.aspx" />
+    <Content Include="Areas\Tests\Views\TestPage\Test.aspx" />
+    <Content Include="Areas\Tests\Views\TestPart\Test.ascx" />
     <Content Include="Areas\Tests\Views\Test\Index.aspx" />
     <Content Include="Areas\Tests\Views\Test\Test.aspx" />
+    <Content Include="Content\Galleria\galleria-1.2.9.js" />
+    <Content Include="Content\Galleria\galleria-1.2.9.min.js" />
+    <Content Include="Content\Galleria\plugins\flickr\flickr-demo.html" />
+    <Content Include="Content\Galleria\plugins\flickr\flickr-loader.gif" />
+    <Content Include="Content\Galleria\plugins\flickr\galleria.flickr.js" />
+    <Content Include="Content\Galleria\plugins\flickr\galleria.flickr.min.js" />
+    <Content Include="Content\Galleria\plugins\flickr\loader.gif" />
+    <Content Include="Content\Galleria\plugins\history\galleria.history.js" />
+    <Content Include="Content\Galleria\plugins\history\galleria.history.min.js" />
+    <Content Include="Content\Galleria\plugins\history\history-demo.html" />
+    <Content Include="Content\Galleria\plugins\picasa\galleria.picasa.js" />
+    <Content Include="Content\Galleria\plugins\picasa\galleria.picasa.min.js" />
+    <Content Include="Content\Galleria\plugins\picasa\loader.gif" />
+    <Content Include="Content\Galleria\plugins\picasa\picasa-demo.html" />
+    <Content Include="Content\Galleria\themes\classic\classic-demo.html" />
+    <Content Include="Content\Galleria\themes\classic\classic-loader.gif" />
+    <Content Include="Content\Galleria\themes\classic\classic-map.png" />
+    <Content Include="Content\Galleria\themes\classic\galleria.classic.css" />
+    <Content Include="Content\Galleria\themes\classic\galleria.classic.js" />
+    <Content Include="Content\Galleria\themes\classic\galleria.classic.min.js" />
     <Content Include="Content\Img\application_view_columns.png" />
     <Content Include="Content\Img\bubble_left.gif" />
     <Content Include="Content\Img\bubble_left.png" />
@@ -376,13 +448,11 @@
     <Content Include="Content\Img\user_add.png" />
     <Content Include="Content\Img\yahoomyweb.png" />
     <Content Include="Content\Img\zoom.png" />
-    <Content Include="Content\Scripts\jquery-1.3.2-vsdoc.js" />
-    <Content Include="Content\Scripts\jquery-1.3.2.js" />
-    <Content Include="Content\Scripts\jquery-1.3.2.min-vsdoc.js" />
-    <Content Include="Content\Scripts\jquery-1.3.2.min.js" />
-    <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Views\ABTesting\Index.ascx" />
+    <Content Include="Views\FreeForm\Submitted.ascx" />
+    <Content Include="Views\FreeForm\Form.ascx" />
+    <Content Include="Views\FreeForm\Index.ascx" />
     <Content Include="Views\RssAggregator\Index.ascx" />
     <EmbeddedResource Include="Views\Shared\PageTemplates\App_LocalResources\News.aspx.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -390,24 +460,10 @@
     </EmbeddedResource>
     <Content Include="Views\Shared\Empty.ascx" />
     <Content Include="Views\Shared\PartTemplates\TagCloud.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Author.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Breadcrumb.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Changes.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Children.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Detail.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\FirstChild.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\NextSibling.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Parent.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\PreviousSibling.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Published.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Search.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Siblings.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\StartPage.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\TOC.ascx" />
+    <Content Include="Views\Slideshow\Index.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\n2_host.config" />
     <Content Include="Views\Shared\Error.aspx" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
@@ -419,6 +475,10 @@
     <ProjectReference Include="..\..\Framework\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\ReusableParts\N2.ReusableParts.csproj">
+      <Project>{2f45b409-52cd-4fb9-963a-d20e0b113d26}</Project>
+      <Name>N2.ReusableParts</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -432,14 +492,14 @@
     <None Include="App_Data\KhakiTabs_SampleData.gz" />
     <None Include="App_Data\Plain_SampleData.gz" />
     <Content Include="Areas\Tests\Views\Web.config" />
-    <Content Include="App_Themes\ContentFocus\content_bottom.gif" />
-    <Content Include="App_Themes\ContentFocus\content_top.gif" />
-    <Content Include="App_Themes\ContentFocus\list_dark.gif" />
-    <Content Include="App_Themes\ContentFocus\list_light.gif" />
-    <Content Include="App_Themes\ContentFocus\secondary_borders.gif" />
-    <Content Include="App_Themes\ContentFocus\secondary_header.gif" />
-    <Content Include="App_Themes\ContentFocus\Style.css" />
-    <Content Include="App_Themes\ContentFocus\top.gif" />
+    <Content Include="Themes\ContentFocus\Content\content_bottom.gif" />
+    <Content Include="Themes\ContentFocus\Content\content_top.gif" />
+    <Content Include="Themes\ContentFocus\Content\list_dark.gif" />
+    <Content Include="Themes\ContentFocus\Content\list_light.gif" />
+    <Content Include="Themes\ContentFocus\Content\secondary_borders.gif" />
+    <Content Include="Themes\ContentFocus\Content\secondary_header.gif" />
+    <Content Include="Themes\ContentFocus\Content\Style.css" />
+    <Content Include="Themes\ContentFocus\Content\top.gif" />
     <Content Include="Content\Css\Layout.css" />
     <Content Include="Content\Img\SocialBookmarks\Blinklist_16x16.png" />
     <Content Include="Content\Img\SocialBookmarks\BlogMarks_16x16.png" />
@@ -475,7 +535,10 @@
     <Content Include="Views\Shared\Site.master" />
     <Content Include="Views\Start\Index.aspx" />
     <Content Include="Views\Shared\WebForms.master" />
-    <Content Include="App_Themes\Web.config" />
+    <Content Include="Themes\Web.config" />
+    <Content Include="packages.config" />
+    <None Include="Content\Galleria\LICENSE" />
+    <Content Include="N2.Templates.Mvc.wpp.targets" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CommentInput\App_LocalResources\Index.ascx.resx">
@@ -530,55 +593,55 @@
     <Content Include="App_Data\DarkStrips_SampleData.gz.txt" />
     <Content Include="App_Data\KhakiTabs_SampleData.gz.txt" />
     <Content Include="App_Data\Plain_SampleData.gz.txt" />
-    <Content Include="App_Themes\Concrete\Style.css" />
-    <Content Include="App_Themes\Concrete\Thumbnail.jpg" />
-    <Content Include="App_Themes\ContentFocus\Thumbnail.jpg" />
-    <Content Include="App_Themes\Corporate\amazed.gif" />
-    <Content Include="App_Themes\Corporate\body_bg.gif" />
-    <Content Include="App_Themes\Corporate\happy.gif" />
-    <Content Include="App_Themes\Corporate\logo.gif" />
-    <Content Include="App_Themes\Corporate\manic.gif" />
-    <Content Include="App_Themes\Corporate\menuselection_bg.gif" />
-    <Content Include="App_Themes\Corporate\menu_bg.gif" />
-    <Content Include="App_Themes\Corporate\page_bg.gif" />
-    <Content Include="App_Themes\Corporate\Style.css" />
-    <Content Include="App_Themes\Corporate\tab_bg.gif" />
-    <Content Include="App_Themes\Corporate\tab_item.gif" />
-    <Content Include="App_Themes\Corporate\tab_item2.gif" />
-    <Content Include="App_Themes\Corporate\Thumbnail.jpg" />
-    <Content Include="App_Themes\KhakiTabs\MenuDimmed.gif" />
-    <Content Include="App_Themes\KhakiTabs\MenuSelected.gif" />
-    <Content Include="App_Themes\KhakiTabs\SidebarLeftBg.gif" />
-    <Content Include="App_Themes\KhakiTabs\SidebarRightBg.gif" />
-    <Content Include="App_Themes\KhakiTabs\Style.css" />
-    <Content Include="App_Themes\KhakiTabs\Thumbnail.jpg" />
-    <Content Include="App_Themes\KhakiTabs\TopBg.gif" />
-    <Content Include="App_Themes\n2cms\bg.gif" />
-    <Content Include="App_Themes\n2cms\body_bg.gif" />
-    <Content Include="App_Themes\n2cms\line_bg.gif" />
-    <Content Include="App_Themes\n2cms\logo.gif" />
-    <Content Include="App_Themes\n2cms\menu_selected.gif" />
-    <Content Include="App_Themes\n2cms\Style.css" />
-    <Content Include="App_Themes\Plain\Style.css" />
-    <Content Include="App_Themes\Plain\Thumbnail.jpg" />
-    <Content Include="App_Themes\SkyTabs\MenuDimmed.gif" />
-    <Content Include="App_Themes\SkyTabs\MenuSelected.gif" />
-    <Content Include="App_Themes\SkyTabs\SidebarLeftBg.gif" />
-    <Content Include="App_Themes\SkyTabs\SidebarRightBg.gif" />
-    <Content Include="App_Themes\SkyTabs\Style.css" />
-    <Content Include="App_Themes\SkyTabs\TopBg.gif" />
-    <Content Include="App_Themes\Stripes\bg.gif" />
-    <Content Include="App_Themes\Stripes\main_bg.gif" />
-    <Content Include="App_Themes\Stripes\menu_bg.gif" />
-    <Content Include="App_Themes\Stripes\page_bottom.gif" />
-    <Content Include="App_Themes\Stripes\page_top.gif" />
-    <Content Include="App_Themes\Stripes\secondary_bg.gif" />
-    <Content Include="App_Themes\Stripes\sidebar_bg.gif" />
-    <Content Include="App_Themes\Stripes\Style.css" />
-    <Content Include="App_Themes\Stripes\Thumbnail.jpg" />
-    <Content Include="App_Themes\Stripes\top_bg.gif" />
-    <Content Include="App_Themes\Stripes\top_bg.png" />
-    <Content Include="App_Themes\Stripes\top_bottom_bg.gif" />
+    <Content Include="Themes\Concrete\Content\Style.css" />
+    <Content Include="Themes\Concrete\Thumbnail.jpg" />
+    <Content Include="Themes\ContentFocus\Thumbnail.jpg" />
+    <Content Include="Themes\Corporate\Content\amazed.gif" />
+    <Content Include="Themes\Corporate\Content\body_bg.gif" />
+    <Content Include="Themes\Corporate\Content\happy.gif" />
+    <Content Include="Themes\Corporate\Content\logo.gif" />
+    <Content Include="Themes\Corporate\Content\manic.gif" />
+    <Content Include="Themes\Corporate\Content\menuselection_bg.gif" />
+    <Content Include="Themes\Corporate\Content\menu_bg.gif" />
+    <Content Include="Themes\Corporate\Content\page_bg.gif" />
+    <Content Include="Themes\Corporate\Content\Style.css" />
+    <Content Include="Themes\Corporate\Content\tab_bg.gif" />
+    <Content Include="Themes\Corporate\Content\tab_item.gif" />
+    <Content Include="Themes\Corporate\Content\tab_item2.gif" />
+    <Content Include="Themes\Corporate\Thumbnail.jpg" />
+    <Content Include="Themes\KhakiTabs\Content\MenuDimmed.gif" />
+    <Content Include="Themes\KhakiTabs\Content\MenuSelected.gif" />
+    <Content Include="Themes\KhakiTabs\Content\SidebarLeftBg.gif" />
+    <Content Include="Themes\KhakiTabs\Content\SidebarRightBg.gif" />
+    <Content Include="Themes\KhakiTabs\Content\Style.css" />
+    <Content Include="Themes\KhakiTabs\Thumbnail.jpg" />
+    <Content Include="Themes\KhakiTabs\Content\TopBg.gif" />
+    <Content Include="Themes\n2cms\Content\bg.gif" />
+    <Content Include="Themes\n2cms\Content\body_bg.gif" />
+    <Content Include="Themes\n2cms\Content\line_bg.gif" />
+    <Content Include="Themes\n2cms\Content\logo.gif" />
+    <Content Include="Themes\n2cms\Content\menu_selected.gif" />
+    <Content Include="Themes\n2cms\Content\Style.css" />
+    <Content Include="Themes\Plain\Content\Style.css" />
+    <Content Include="Themes\Plain\Thumbnail.jpg" />
+    <Content Include="Themes\SkyTabs\Content\MenuDimmed.gif" />
+    <Content Include="Themes\SkyTabs\Content\MenuSelected.gif" />
+    <Content Include="Themes\SkyTabs\Content\SidebarLeftBg.gif" />
+    <Content Include="Themes\SkyTabs\Content\SidebarRightBg.gif" />
+    <Content Include="Themes\SkyTabs\Content\Style.css" />
+    <Content Include="Themes\SkyTabs\Content\TopBg.gif" />
+    <Content Include="Themes\Stripes\Content\bg.gif" />
+    <Content Include="Themes\Stripes\Content\main_bg.gif" />
+    <Content Include="Themes\Stripes\Content\menu_bg.gif" />
+    <Content Include="Themes\Stripes\Content\page_bottom.gif" />
+    <Content Include="Themes\Stripes\Content\page_top.gif" />
+    <Content Include="Themes\Stripes\Content\secondary_bg.gif" />
+    <Content Include="Themes\Stripes\Content\sidebar_bg.gif" />
+    <Content Include="Themes\Stripes\Content\Style.css" />
+    <Content Include="Themes\Stripes\Thumbnail.jpg" />
+    <Content Include="Themes\Stripes\Content\top_bg.gif" />
+    <Content Include="Themes\Stripes\Content\top_bg.png" />
+    <Content Include="Themes\Stripes\Content\top_bottom_bg.gif" />
     <Content Include="Areas\Tests\Demo\lav.jpg" />
     <Content Include="Areas\Tests\Demo\lime.jpg" />
     <Content Include="Areas\Tests\Demo\logo_white.png" />
@@ -589,10 +652,10 @@
     <Content Include="Areas\Tests\Views\Forms\TestWebFormPart.ascx" />
     <Content Include="Areas\Tests\Views\QueryViewer\Index.ascx" />
     <Content Include="Areas\Tests\Views\Static\Index.aspx" />
-    <Content Include="Areas\Tests\Views\TestContent\Dictionary.ascx" />
-    <Content Include="Areas\Tests\Views\TestContent\Partial.ascx" />
-    <Content Include="Areas\Tests\Views\TestContent\Index.aspx" />
-    <Content Include="Areas\Tests\Views\TestContent\Urls.ascx" />
+    <Content Include="Areas\Tests\Views\Shared\Dictionary.ascx" />
+    <Content Include="Areas\Tests\Views\TestPart\Index.ascx" />
+    <Content Include="Areas\Tests\Views\TestPage\Index.aspx" />
+    <Content Include="Areas\Tests\Views\Shared\Urls.ascx" />
     <Content Include="Content\Css\Application.css" />
     <Content Include="favicon.ico" />
     <Content Include="Views\Calendar\App_LocalResources\Index.aspx.resx">
@@ -614,7 +677,6 @@
     <Content Include="Views\Shared\PartTemplates\Comment.ascx" />
     <Content Include="Views\Shared\PartTemplates\CommentList.ascx" />
     <Content Include="Views\Shared\PartTemplates\Faq.ascx" />
-    <Content Include="Views\Shared\PartTemplates\Login.ascx" />
     <Content Include="Views\Shared\PartTemplates\RandomImage.ascx" />
     <Content Include="Views\Shared\PartTemplates\Subscribe.ascx" />
     <Content Include="Views\Shared\PartTemplates\Teaser.ascx" />
@@ -622,37 +684,13 @@
     <Content Include="Views\Shared\PartTemplates\Top.ascx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Galleria\themes\classic\classic-loader.gif" />
-    <Content Include="Content\Galleria\themes\classic\classic-map.png" />
-    <Content Include="Content\Galleria\themes\classic\galleria.classic.css" />
-    <Content Include="Content\Galleria\themes\classic\galleria.classic.js" />
-    <Content Include="Content\Galleria\themes\dots\dot.png" />
-    <Content Include="Content\Galleria\themes\dots\galleria.dots.css" />
-    <Content Include="Content\Galleria\themes\dots\galleria.dots.js" />
-    <Content Include="Content\Galleria\themes\dots\l.png" />
-    <Content Include="Content\Galleria\themes\dots\loader.gif" />
-    <Content Include="Content\Galleria\themes\dots\nav.png" />
-    <Content Include="Content\Galleria\themes\dots\r.png" />
-    <Content Include="Content\Galleria\themes\fullscreen\b.png" />
-    <Content Include="Content\Galleria\themes\fullscreen\down.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\fix.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\galleria.fullscreen.css" />
-    <Content Include="Content\Galleria\themes\fullscreen\galleria.fullscreen.js" />
-    <Content Include="Content\Galleria\themes\fullscreen\i.png" />
-    <Content Include="Content\Galleria\themes\fullscreen\l.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\loader.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\n.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\p.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\r.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\up.gif" />
-    <Content Include="Content\Galleria\jquery.galleria.js" />
     <Content Include="Views\NewsContainer\Index.aspx" />
     <Content Include="Views\NewsContainer\Range.ascx" />
     <Content Include="Views\Poll\App_LocalResources\Index.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Tests\Views\Shared\" />
     <Folder Include="Upload\" />
+    <Folder Include="Views\Shared\PartTemplates\App_LocalResources\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controllers\Resources\UserRegistration.resx">
@@ -675,15 +713,14 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Search\App_LocalResources\Index.aspx.resx" />
-    <Content Include="Views\Shared\PartTemplates\App_LocalResources\Login.ascx.fr.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Views\Shared\PartTemplates\App_LocalResources\Login.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -700,4 +737,5 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

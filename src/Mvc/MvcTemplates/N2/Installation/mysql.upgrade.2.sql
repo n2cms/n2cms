@@ -9,3 +9,11 @@ alter table n2Item
 
 alter table n2Item 
     add column AlteredPermissions int(11);
+	
+alter table n2Item 
+    add column TemplateKey varchar(50);
+	
+alter table n2Item 
+    add column TranslationKey int(11);
+	
+	

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -7,58 +7,69 @@ using N2.Web.UI;
 
 namespace N2.Web.Mvc
 {
-	/// <summary>
-	/// Enables output cache as configured in the n2/host/outputCache configuration 
-	/// esction with cache dependency. This functionality is enabled by default when
-	/// inheriting from <see cref="ContentController"/>.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
-	public class ContentOutputCacheAttribute : ActionFilterAttribute
-	{
-		public override void OnResultExecuting(ResultExecutingContext filterContext)
-		{
-			if (filterContext == null)
-				throw new ArgumentNullException("filterContext");
+    /// <summary>
+    /// Enables output cache as configured in the n2/host/outputCache configuration 
+    /// esction with cache dependency. This functionality is enabled by default when
+    /// inheriting from <see cref="ContentController"/>.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
+    public class ContentOutputCacheAttribute : ActionFilterAttribute
+    {
+        private bool adhereToConfig;
 
-			if (filterContext.IsChildAction)
-				return;
+        public ContentOutputCacheAttribute()
+        {
+        }
 
-			ProcessOutputCache(filterContext.RequestContext);
-		}
+        public ContentOutputCacheAttribute(bool adhereToConfig)
+        {
+            this.adhereToConfig = adhereToConfig;
+        }
 
-		private static void ProcessOutputCache(RequestContext requestContext)
-		{
-			if (HttpContext.Current == null)
-				return;
+        public override void OnResultExecuting(ResultExecutingContext filterContext)
+        {
+            if (filterContext == null)
+                throw new ArgumentNullException("filterContext");
 
-			var user = requestContext.HttpContext.User;
-			if (user == null || user.Identity.IsAuthenticated)
-				return;
+            if (filterContext.IsChildAction)
+                return;
 
-			ICacheManager cacheManager = RouteExtensions.ResolveService<ICacheManager>(requestContext.RouteData);
-			if (!cacheManager.Enabled)
-				return;
+            ProcessOutputCache(filterContext.RequestContext);
+        }
 
-			var page = new OutputCachedPage(cacheManager.GetOutputCacheParameters());
-			page.ProcessRequest(HttpContext.Current);
-			cacheManager.AddCacheInvalidation(HttpContext.Current.Response);
-		}
+        private void ProcessOutputCache(RequestContext requestContext)
+        {
+            if (HttpContext.Current == null)
+                return;
 
-		private sealed class OutputCachedPage : Page
-		{
-			private OutputCacheParameters _cacheSettings;
+            var user = requestContext.HttpContext.User;
+            if (user == null || user.Identity.IsAuthenticated)
+                return;
 
-			public OutputCachedPage(OutputCacheParameters cacheSettings)
-			{
-				this.ID = Guid.NewGuid().ToString();
-				this._cacheSettings = cacheSettings;
-			}
+            ICacheManager cacheManager = RouteExtensions.ResolveService<ICacheManager>(requestContext.RouteData);
+            if (adhereToConfig && !cacheManager.Enabled)
+                return;
 
-			protected override void FrameworkInitialize()
-			{
-				base.FrameworkInitialize();
-				this.InitOutputCache(this._cacheSettings);
-			}
-		}
-	}
+            var page = new OutputCachedPage(cacheManager.GetOutputCacheParameters());
+            page.ProcessRequest(HttpContext.Current);
+            cacheManager.AddCacheInvalidation(HttpContext.Current.Response);
+        }
+
+        private sealed class OutputCachedPage : Page
+        {
+            private OutputCacheParameters _cacheSettings;
+
+            public OutputCachedPage(OutputCacheParameters cacheSettings)
+            {
+                this.ID = Guid.NewGuid().ToString();
+                this._cacheSettings = cacheSettings;
+            }
+
+            protected override void FrameworkInitialize()
+            {
+                base.FrameworkInitialize();
+                this.InitOutputCache(this._cacheSettings);
+            }
+        }
+    }
 }

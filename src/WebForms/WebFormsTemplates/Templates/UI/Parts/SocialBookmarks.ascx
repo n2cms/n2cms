@@ -1,61 +1,62 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="SocialBookmarks.ascx.cs" Inherits="N2.Templates.UI.Parts.SocialBookmarks" %>
-<script runat="server">
-	public class Bookmark
-	{
-		private string urlFormat;
-		private string imageName;
-		private string text;
 
-		public Bookmark(string urlFormat, string imageName, string text)
-		{
-			this.urlFormat = urlFormat;
-			this.imageName = imageName;
-			this.text = text;
-		}
+<div style="min-height:30px;">
+	<%= CurrentItem.Title %>
+	
+	<% if(CurrentItem.Facebook) { %>
+	<div id="fb-root"></div>
+	<script>
+		(function (d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) return;
+			js = d.createElement(s); js.id = id;
+			js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+			fjs.parentNode.insertBefore(js, fjs);
+		} (document, 'script', 'facebook-jssdk'));
 
-		public string UrlFormat
-		{
-			get { return urlFormat; }
-			set { urlFormat = value; }
-		}
+		$(document).ready(function () {
+			function push(type, targetUrl) {
+				if (typeof _gaq !== "undefined" && _gaq.push)
+					_gaq.push(['_trackSocial', 'facebook', type, targetUrl]);
+			};
+			function subscribe() {
+				if (typeof FB !== 'undefined' && FB.Event && FB.Event.subscribe) {
+					FB.Event.subscribe('edge.create', function (targetUrl) {
+						push('like', targetUrl);
+					});
 
-		public string ImageName
-		{
-			get { return imageName; }
-			set { imageName = value; }
-		}
+					FB.Event.subscribe('edge.remove', function (targetUrl) {
+						push('unlike', targetUrl);
+					});
 
-		public string Text
-		{
-			get { return text; }
-			set { text = value; }
-		}
-	}
+					FB.Event.subscribe('message.send', function (targetUrl) {
+						push('send', targetUrl);
+					});
+				}
+			};
 
-	protected Bookmark[] bookmarks = new Bookmark[]{
-		new Bookmark("http://delicious.com/save?jump=yes&amp;v=4&amp;noui&amp;url={0}&amp;title={1}", "delicious.png", "del.icio.us"),
-		new Bookmark("http://digg.com/submit?phase=2&amp;url={0}&amp;title={1}", "digg.png", "Digg it"),
-		new Bookmark("http://www.dotnetkicks.com/kick/?url={0}", "dotnetkicks.png", "Dotnetkicks"),
-		new Bookmark("http://www.dzone.com/links/add.html?url={0}&amp;title={1}", "dzone.png", "DZone"),
-		new Bookmark("http://www.google.com/bookmarks/mark?op=edit&amp;output=popup&amp;bkmk={0}&amp;title={1}", "google.png", "Google"),
-		new Bookmark("https://favorites.live.com/quickadd.aspx?url={0}&amp;title={1}", "live.png", "Live"),
-		new Bookmark("http://www.netscape.com/submit/?U={0}&amp;T={1}", "netscape.gif", "Netscape"),
-		new Bookmark("http://reddit.com/submit?url={0}&amp;title={1}", "reddit.png", "Reddit"),
-		new Bookmark("http://slashdot.org/bookmark.pl?url={0}&amp;title={1}", "slashdot.png", "Slashdot"),
-		new Bookmark("http://technorati.com/faves?sub=addfavbtn&amp;add={0}", "technorati.png", "Technorati"),
-		new Bookmark("http://myweb2.search.yahoo.com/myresults/bookmarklet?t={1}&amp;u={0}", "yahoomyweb.png", "Yahoo MyWeb")
-	};
-</script>
+			if (typeof _gaq === "undefined" || typeof FB == 'undefined')
+				setTimeout(subscribe, 2500);
+			else
+				subscribe();
+		});
+	</script>
+	<div class="fb-like" data-href="<%= GetUrl() %>" data-send="true" data-layout="button_count" data-show-faces="false" data-font="arial" style="margin:10px 0"></div>
+	<% } %>
 
-<n2:EditableDisplay runat="server" PropertyName="Title" />
 
-<n2:Box runat="server">
-	<asp:Repeater runat="server" DataSource="<%# bookmarks %>">
-		<ItemTemplate>
-			<a href="<%# string.Format((string)Eval("UrlFormat"), BookmarkUrl, BookmarkTitle) %>">
-				<img src="<%# N2.Utility.ToAbsolute("~/Templates/UI/Img/" + Eval("ImageName")) %>" alt="<%# Eval("Text") %>" />
-				<%# CurrentItem.ShowText ? Eval("Text") : null %>
-			</a>
-		</ItemTemplate>
-	</asp:Repeater>
-</n2:Box>
+	<% if(CurrentItem.GooglePlus1) { %>
+	<div class="g-plusone" data-size="medium" data-annotation="inline" data-href="<%= GetUrl() %>" style="margin:10px 0"></div>
+
+	<script type="text/javascript">
+		(function () {
+			var po = document.createElement('script');
+			po.type = 'text/javascript';
+			po.async = true;
+			po.src = 'https://apis.google.com/js/plusone.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(po, s);
+		})();
+	</script>
+	<% } %>
+</div>

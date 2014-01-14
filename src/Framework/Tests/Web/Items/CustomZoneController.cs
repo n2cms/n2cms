@@ -3,9 +3,9 @@ using N2.Web.Parts;
 
 namespace N2.Tests.Web.Items
 {
-	[Adapts(typeof(CustomItem))]
-	public class CustomZoneController : PartsAdapter
-	{
+    [Adapts(typeof(CustomItem))]
+    public class CustomZoneController : PartsAdapter
+    {
 
-	}
+    }
 }

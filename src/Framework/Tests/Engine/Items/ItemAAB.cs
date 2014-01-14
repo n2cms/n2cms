@@ -1,6 +1,6 @@
 namespace N2.Tests.Engine.Items
 {
-	public class ItemAAB : ItemAA
-	{
-	}
+    public class ItemAAB : ItemAA
+    {
+    }
 }

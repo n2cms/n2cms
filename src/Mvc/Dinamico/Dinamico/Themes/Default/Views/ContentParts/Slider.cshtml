@@ -1,7 +1,11 @@
 ﻿@model Dinamico.Models.ContentPart
 		   
 @{ 
-	Content.Define(ie => ie.Title = "Parts Slider");
+	Content.Define(ie => 
+	{
+		ie.Title = "Parts Slider";
+		ie.IconUrl = "{IconsUrl}/photos.png";
+	});
 	string uniqueId = Html.UniqueID("s");
 }
 

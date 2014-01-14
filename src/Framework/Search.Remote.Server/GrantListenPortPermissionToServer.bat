@@ -1,0 +1,1 @@
+netsh http add urlacl url=http://*:7850/ user=%USERDOMAIN%\%USERNAME%

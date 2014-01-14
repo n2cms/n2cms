@@ -1,4 +1,4 @@
-﻿namespace N2.Plugin.Scheduling
+namespace N2.Plugin.Scheduling
 {
     /// <summary>
     /// Specifies the unit of a duration integer.

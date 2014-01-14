@@ -1,45 +1,41 @@
-<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.master" AutoEventWireup="true" 
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.master" AutoEventWireup="true" 
 	Inherits="N2.Web.Mvc.ContentViewPage<ImageGalleryModel, ImageGallery>" Title="" %>
 <%@ Import Namespace="N2.Collections"%>
+<%@ Import Namespace="N2.Web.Drawing" %>
 <asp:Content ContentPlaceHolderID="Head" runat="server">
-	<script src="<%= ResolveClientUrl("~/Content/Galleria/jquery.galleria.js") %>" type="text/javascript"></script>
+	<script src="<%= ResolveClientUrl("~/Content/Galleria/galleria-1.2.9.min.js") %>" type="text/javascript"></script>
+	<link rel="Stylesheet" type="text/css" href="<%= ResolveClientUrl("~/Content/Galleria/themes/classic/galleria.classic.css") %>" />
 </asp:Content>
 <asp:Content ContentPlaceHolderID="ContentAndSidebar" runat="server">
 
+	<% var fs = Html.ResolveService<N2.Edit.FileSystem.IFileSystem>(); %>
 	<%=ContentHtml.DisplayContent(m => m.Text)%>
-
-	<div id="galleria" class="bgDark">
+	<div id="galleria" class="bgDark" style="height:542px">
 		<%foreach(var item in Model.GalleryItems){ %>
-			<a id="t<%= item.ID %>" href="<%= ResolveUrl(item.GetResizedImageUrl(Html.ResolveService<N2.Edit.FileSystem.IFileSystem>())) %>" class="thumbnail">
-				<img alt="<%= item.Title %>" src="<%= ResolveUrl(item.GetThumbnailImageUrl(Html.ResolveService<N2.Edit.FileSystem.IFileSystem>())) %>" />
+			<a id="t<%= item.ID %>" href="<%= ResolveUrl(ImagesUtility.GetExistingImagePath(fs, item.ImageUrl, "wide")) %>" class="thumbnail">
+				<img alt="<%= item.Title %>" src="<%= ResolveUrl(ImagesUtility.GetExistingImagePath(fs, item.ImageUrl, "thumb")) %>" 
+					data-big="<%= ResolveUrl(ImagesUtility.GetExistingImagePath(fs, item.ImageUrl, "original")) %>" 
+					data-title="<%= HttpUtility.HtmlAttributeEncode(item.Title) %>" 
+					data-description="<%= HttpUtility.HtmlAttributeEncode(item.Text) %>"/>
 			</a>
-			<div class="text">
-				<h2><%=item.Title%></h2>
-				<div><%=item.Text%></div>
-			</div>
 		<%}%>
-	</div>
-	<div id="preview">
 	</div>
 
 	<script type="text/javascript">
 		Galleria.loadTheme('<%= ResolveClientUrl("~/Content/Galleria/themes/classic/galleria.classic.js") %>');
 
 		$(document).ready(function () {
-			// run galleria and add some options
-			$('#galleria').galleria({
-				image_crop: true, // crop all images to fit
+
+			Galleria.run('#galleria', {
 				thumb_crop: true, // crop all thumbnails to fit
-				transition: 'fade', // crossfade photos
-				transition_speed: 250, // slow down the crossfade
-				data_config: function(img) {
-					// will extract and return image captions from the source:
-					var $texts = $(img).parent().next('.text');
-					return {
-						title: $texts.children("h2").html(),
-						description: $texts.children("div").html()
-					};
-				},
+//				data_config: function(img) {
+//					// will extract and return image captions from the source:
+//					var $texts = $(img).parent().next('.text');
+//					return {
+//						title: $texts.children("h2").html(),
+//						description: $texts.children("div").html()
+//					};
+//				},
 				extend: function() {
 					this.bind(Galleria.IMAGE, function(e) {
 						// bind a click event to the active image

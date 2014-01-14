@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,35 +7,46 @@ using N2.Collections;
 
 namespace N2.Tests.Details.Models
 {
-	public class DecoratedItem : ContentItem
-	{
-		[EditableChildren("Children", "Children", 100)]
-		public ItemList EditableChildren
-		{
-			get { return null; }
-		}
 
-		[EditableChildren("GenericChildren", "GenericChildren", 100)]
-		public IList<BaseItem> GenericChildren
-		{
-			get { return null; }
-		}
+    public class DecoratedItem2 : DecoratedItem
+    {
+        [EditableItem(DefaultChildName = "OtherChildName")]
+        public virtual OtherItem EditableItemWithDefaultChildName { get; set; }
 
-		public override ItemList GetChildren(string childZoneName)
-		{
-			return base.GetChildren(new ZoneFilter(childZoneName));
-		}
-	}
+        [EditableItem(DefaultChildZoneName = "OtherZone")]
+        public virtual OtherItem EditableItemWithDefaultChildZoneName { get; set; }
+    }
 
-	public class OtherItem : ContentItem
-	{
-	}
+    [WithEditableTitle]
+    [WithEditableName]
+    public class DecoratedItem : ContentItem
+    {
+        [EditableChildren("Children", "Children", 100)]
+        public virtual ItemList EditableChildren { get; set; }
 
-	public class BaseItem : ContentItem
-	{
-	}
+        [EditableChildren]
+        public virtual IList<BaseItem> GenericChildren { get; set; }
 
-	public class SuperficialItem : BaseItem
-	{
-	}
+        [EditableItem]
+        public virtual OtherItem TheItem { get; set; }
+
+        public override ItemList GetChildren(string childZoneName)
+        {
+            return base.GetChildren(new ZoneFilter(childZoneName));
+        }
+    }
+
+    [WithEditableTitle]
+    [WithEditableName]
+    public class OtherItem : ContentItem
+    {
+    }
+
+    public class BaseItem : ContentItem
+    {
+    }
+
+    public class SuperficialItem : BaseItem
+    {
+    }
 }

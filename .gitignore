@@ -4,9 +4,12 @@
 # Links
 src/WebForms/WebFormsTemplates/N2/
 src/WebForms/WebFormsTemplates/App_Data/SearchIndex/
+src/WebForms/WebFormsTemplates/App_Data/Temp/
 src/Mvc/Dinamico/N2/
 src/Mvc/Dinamico/App_Data/SearchIndex/
+src/Mvc/Dinamico/App_Data/Temp/
 src/Mvc/MvcTemplates/App_Data/SearchIndex/
+src/Mvc/MvcTemplates/App_Data/Temp/
 src/Framework/Tests/App_Data/
 src/Framework/Extensions.Tests/App_Data/
 examples/MinimalCSharp/wwwroot/App_Data/SearchIndex/
@@ -15,6 +18,9 @@ examples/Mvc/wwwroot/App_Data/SearchIndex/Pages/
 examples/Mvc/RavenTest/N2/
 lib/*.pdb
 examples/*/wwwroot/N2/
+src/Framework/Search.Remote.Server/App_Data/SearchIndex/
+#src/Mvc/*/*/SQLite.Interop.dll
+#src/WebForms/*/*/SQLite.Interop.dll
 
 # User-specific files
 *.suo
@@ -30,6 +36,7 @@ Release/
 TestResult.xml
 output/
 *.vshost.exe
+*.Publish.xml
 
 # ReSharper is a .NET coding add-in
 _ReSharper*
@@ -62,7 +69,16 @@ stylecop.*
 *.dbmdl
 *.log
 *.log.20*
+AssemblyCache.config
+Thumbs.db
+*.ncrunchsolution
 
 # Git files to ignore
 *.orig
 src/N2.Sources.6.0.ReSharper
+src/Mvc/MvcTemplates/App_Data/ContentItemsXml/
+src/Framework/Extensions/x64/
+packages/
+src/packages/
+src/Framework/Extensions/x86/
+.DS_Store

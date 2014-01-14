@@ -1,4 +1,4 @@
-﻿#if DEBUG
+#if DEBUG
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,18 +14,22 @@ using System.Web.UI.HtmlControls;
 
 namespace N2.Templates.Mvc.Areas.Tests
 {
-	[Adapts(typeof(Models.TestWebFormPart))]
-	public class WebFormOnMvcPartAdapter : MvcAdapter
-	{
-		public override void RenderTemplate(HtmlHelper html, ContentItem item)
-		{
-			ContentPage page = new ContentPage();
-			page.CurrentPage = html.CurrentPage();
+    public interface IWebFormPart
+    {
+    }
 
-			N2.Web.UI.ItemUtility.AddUserControl(page, item);
+    [Adapts(typeof(IWebFormPart))]
+    public class WebFormOnMvcPartAdapter : PartsAdapter
+    {
+        public override void RenderPart(HtmlHelper html, ContentItem part, System.IO.TextWriter writer = null)
+        {
+            ContentPage page = new ContentPage();
+            page.CurrentPage = html.CurrentPage();
 
-			page.RenderControl(new HtmlTextWriter(html.ViewContext.Writer));
-		}
-	}
+            Engine.ResolveAdapter<PartsAdapter>(page.CurrentPage).AddChildPart(part, page);
+
+            page.RenderControl(new HtmlTextWriter(html.ViewContext.Writer));
+        }
+    }
 }
 #endif

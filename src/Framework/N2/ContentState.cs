@@ -1,4 +1,4 @@
-﻿namespace N2
+namespace N2
 {
     /// <summary>
     /// The current state of a content item
@@ -18,6 +18,6 @@
         /// <summary>The item was previously published.</summary>
         Unpublished = 32,
         /// <summary>The item is deleted and resides in the trash can.</summary>
-        Deleted = 64
+        Deleted = 64,
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,13 +9,12 @@ using System.Web.Configuration;
 using N2.Resources;
 using N2.Edit;
 using N2.Edit.FileSystem;
-using log4net;
 
 namespace N2.Management.Files.FileSystem
 {
     public partial class FileUpload : System.Web.UI.UserControl
     {
-    	private readonly ILog logger = LogManager.GetLogger(typeof (FileUpload));
+        private readonly Engine.Logger<FileUpload> logger;
         protected int maxFileSize = 4096 * 1024 - 10000;
         protected SelectionUtility Selection { get; set; }
 
@@ -39,7 +38,7 @@ namespace N2.Management.Files.FileSystem
             }
             catch (Exception ex)
             {
-				logger.Error(ex);
+                logger.Error(ex);
             }
         }
 

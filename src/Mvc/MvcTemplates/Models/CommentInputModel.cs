@@ -3,84 +3,88 @@ using System.ComponentModel;
 using N2.Templates.Mvc.Models.Parts;
 using N2.Web.Mvc;
 using N2.Web.UI;
+using System.ComponentModel.DataAnnotations;
 
 namespace N2.Templates.Mvc.Models
 {
-	public class CommentInputModel : IItemContainer<CommentInput>, IDataErrorInfo
-	{
-		public CommentInputModel()
-		{
-		}
+    public class CommentInputModel : IItemContainer<CommentInput>, IDataErrorInfo
+    {
+        public CommentInputModel()
+        {
+        }
 
-		public CommentInputModel(CommentInput currentItem)
-		{
-			Update(currentItem);
-		}
+        public CommentInputModel(CommentInput currentItem)
+        {
+            Update(currentItem);
+        }
 
-		public string Text { get; set; }
+        public string Text { get; set; }
 
-		public string Url { get; set; }
+        public string Url { get; set; }
 
-		public string Email { get; set; }
+        public string Email { get; set; }
 
-		public string Name { get; set; }
+        public string Name { get; set; }
 
-		public string Title { get; set; }
+        public string Title { get; set; }
 
-		#region IDataErrorInfo Members
+        [RegularExpression("^$", ErrorMessage = "Clear this must be empty")]
+        public string Trap { get; set; }
 
-		public string this[string columnName]
-		{
-			get { return Validate(columnName); }
-		}
+        #region IDataErrorInfo Members
 
-		public string Error
-		{
-			get { return String.Empty; }
-		}
+        public string this[string columnName]
+        {
+            get { return Validate(columnName); }
+        }
 
-		#endregion
+        public string Error
+        {
+            get { return String.Empty; }
+        }
 
-		#region IItemContainer<CommentInput> Members
+        #endregion
 
-		public CommentInput CurrentItem { get; private set; }
+        #region IItemContainer<CommentInput> Members
 
-		ContentItem IItemContainer.CurrentItem
-		{
-			get { return CurrentItem; }
-		}
+        public CommentInput CurrentItem { get; private set; }
 
-		#endregion
+        ContentItem IItemContainer.CurrentItem
+        {
+            get { return CurrentItem; }
+        }
 
-		public CommentInputModel Update(CommentInput currentItem)
-		{
-			CurrentItem = currentItem;
+        #endregion
 
-			return this;
-		}
+        public CommentInputModel Update(CommentInput currentItem)
+        {
+            CurrentItem = currentItem;
 
-		private string Validate(string propertyName)
-		{
-			switch (propertyName.ToLower())
-			{
-				case "title":
-					if (String.IsNullOrEmpty(Title))
-						return "Title cannot be empty";
-					break;
-				case "name":
-					if (String.IsNullOrEmpty(Name))
-						return "Name cannot be empty";
-					break;
-				case "text":
-					if (String.IsNullOrEmpty(Text))
-						return "Text cannot be empty";
-					break;
-				case "email":
-					if (String.IsNullOrEmpty(Email))
-						return "Email cannot be empty";
-					break;
-			}
-			return String.Empty;
-		}
-	}
+            return this;
+        }
+
+        private string Validate(string propertyName)
+        {
+            switch (propertyName.ToLower())
+            {
+                case "title":
+                    if (String.IsNullOrEmpty(Title))
+                        return "Title cannot be empty";
+                    break;
+                case "name":
+                    if (String.IsNullOrEmpty(Name))
+                        return "Name cannot be empty";
+                    break;
+                case "text":
+                    if (String.IsNullOrEmpty(Text))
+                        return "Text cannot be empty";
+                    break;
+                case "email":
+                    if (String.IsNullOrEmpty(Email))
+                        return "Email cannot be empty";
+                    break;
+            }
+            return String.Empty;
+        }
+    }
 }

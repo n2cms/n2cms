@@ -40,6 +40,15 @@ namespace N2.Edit {
         protected global::N2.Edit.Web.UI.Controls.PermissionPanel ppPermitted;
         
         /// <summary>
+        /// cvRemoved control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator cvRemoved;
+        
+        /// <summary>
         /// cvDelete control.
         /// </summary>
         /// <remarks>
@@ -92,6 +101,15 @@ namespace N2.Edit {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink hlReferencingItems;
+        
+        /// <summary>
+        /// affectedItems control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Edit.Web.UI.Controls.FieldSet affectedItems;
         
         /// <summary>
         /// itemsToDelete control.

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Text;
 using N2.Persistence;
 using System.Reflection;
+using N2.Edit.Versioning;
 
 namespace N2.Addons.UITests.UI
 {

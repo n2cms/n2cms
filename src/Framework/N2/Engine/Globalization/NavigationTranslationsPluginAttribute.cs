@@ -3,13 +3,14 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using N2.Edit;
 using N2.Web;
+using System.Linq;
 
 namespace N2.Engine.Globalization
 {
     /// <summary>
     /// Adds language icons to the right-click menu in the navigation pane.
     /// </summary>
-	public class NavigationTranslationsPluginAttribute : NavigationSeparatorPluginAttribute
+    public class NavigationTranslationsPluginAttribute : NavigationSeparatorPluginAttribute
     {
         public NavigationTranslationsPluginAttribute(string name, int sortOrder)
             : base(name, sortOrder)
@@ -32,18 +33,23 @@ namespace N2.Engine.Globalization
 
             foreach (ILanguage language in gateway.GetAvailableLanguages())
             {
-				Url url = Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Content/Globalization/Translate.aspx");
+                Url url = Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Content/Globalization/Translate.aspx");
                 url = url.AppendQuery("language", language.LanguageCode);
                 url = url.AppendQuery(SelectionUtility.SelectedQueryKey + "={selected}");
 
                 HyperLink h = new HyperLink();
                 h.ID = language.LanguageCode.Replace('-', '_').Replace(' ', '_');
                 h.Target = Targets.Preview;
-				h.NavigateUrl = context.Rebase(context.Format(url, true));
+                h.NavigateUrl = context.Rebase(context.Format(url, true));
                 h.CssClass = "templatedurl language";
                 h.ToolTip = language.LanguageTitle;
-                h.Text = string.Format("<img src='{0}' alt=''/>", Url.ToAbsolute(language.FlagUrl));
-				h.Attributes["data-url-template"] = context.Rebase(url);
+                
+                // [bherila] use CSS sprite instead of flag image here
+                //h.Text = string.Format("<img src='{0}' alt=''/>", Url.ToAbsolute(language.FlagUrl));
+                string[] parts = language.LanguageCode.Split('-');
+                h.Text = string.Format(@"<span class=""{0} sprite""></span>", parts.LastOrDefault().ToLower());
+
+                h.Attributes["data-url-template"] = context.Rebase(url);
                 div.Controls.Add(h);
             }
 

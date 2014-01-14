@@ -22,65 +22,70 @@ namespace N2.Edit.Tests.Trash
         {
             base.SetUp();
 
-			persister = TestSupport.SetupFakePersister();
-			persister.Save(root);
+            persister = TestSupport.SetupFakePersister();
+            persister.Save(root);
         }
 
         [Test]
         public void DeletedItem_IsThrownInTrash()
         {
-			var th = CreateTrashHandler();
-			th.UseNavigationMode = true;
+            var th = CreateTrashHandler();
+            th.UseNavigationMode = true;
 
             DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
             interceptor.Start();
 
-			persister.Delete(item);
+            persister.Delete(item);
 
-			item.Parent.ShouldBeTypeOf<TrashContainerItem>();
+            item.Parent.ShouldBeTypeOf<TrashContainerItem>();
         }
 
         [Test]
         public void NonThrowableItem_IsNotMovedToTrashcan()
         {
-			var th = CreateTrashHandler();
+            var nonThrowable = CreateItem<NonThrowableItem>(4, "neverInTrash", root);
+            var nonThrowable2 = CreateItem<LegacyNonThrowableItem>(5, "neverInTrash2", root);
+
+            var th = CreateTrashHandler();
             DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
             interceptor.Start();
 
-			persister.Delete(nonThrowable);
+            persister.Delete(nonThrowable);
             
             Assert.That(trash.Children.Count, Is.EqualTo(0));
-		}
+        }
 
-		[Test]
-		[Obsolete]
-		public void NonThrowableItem_IsNotMovedToTrashcan_LegacyAttribute()
-		{
-			var th = CreateTrashHandler();
-			DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
-			interceptor.Start();
+        [Test]
+        [Obsolete]
+        public void NonThrowableItem_IsNotMovedToTrashcan_LegacyAttribute()
+        {
+            var nonThrowable = CreateItem<NonThrowableItem>(4, "neverInTrash", root);
 
-			persister.Delete(nonThrowable);
-			
-			Assert.That(trash.Children.Count, Is.EqualTo(0));
-		}
+            var th = CreateTrashHandler();
+            DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
+            interceptor.Start();
+
+            persister.Delete(nonThrowable);
+            
+            Assert.That(trash.Children.Count, Is.EqualTo(0));
+        }
 
         [Test]
         public void TrashedItem_MovedFromTrashcan_IsUnexpired()
         {
             PutItemInTrash();
 
-			var th = CreateTrashHandler();
-			th.UseNavigationMode = true;
+            var th = CreateTrashHandler();
+            th.UseNavigationMode = true;
             th.RestoreValues(item);
-			DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
+            DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
             interceptor.Start();
 
-			// now restore through drag&drop
-			persister.Move(item, root);
+            // now restore through drag&drop
+            persister.Move(item, root);
 
-			item.Parent.ShouldBe(root);
-			item[TrashHandler.DeletedDate].ShouldBe(null);
+            item.Parent.ShouldBe(root);
+            item[TrashHandler.DeletedDate].ShouldBe(null);
         }
 
         [Test]
@@ -88,36 +93,36 @@ namespace N2.Edit.Tests.Trash
         {
             PutItemInTrash();
 
-			var th = CreateTrashHandler();
-			th.UseNavigationMode = true;
+            var th = CreateTrashHandler();
+            th.UseNavigationMode = true;
             th.RestoreValues(item);
-			DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
+            DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
             interceptor.Start();
 
-			var copy = persister.Copy(item, root);
+            var copy = persister.Copy(item, root);
 
-			copy.Parent.ShouldBe(root);
-			copy[TrashHandler.DeletedDate].ShouldBe(null);
+            copy.Parent.ShouldBe(root);
+            copy[TrashHandler.DeletedDate].ShouldBe(null);
         }
 
         private void PutItemInTrash()
         {
             item.AddTo(trash);
-            item[TrashHandler.DeletedDate] = DateTime.Now;
+            item[TrashHandler.DeletedDate] = N2.Utility.CurrentTime();
         }
 
         [Test]
         public void Item_MovedIntoTrash_IsNeutralized()
         {
-			var th = CreateTrashHandler();
-			th.UseNavigationMode = true;
+            var th = CreateTrashHandler();
+            th.UseNavigationMode = true;
             th.ExpireTrashedItem(item);
-			DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
+            DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
             interceptor.Start();
 
-			persister.Move(item, trash);
+            persister.Move(item, trash);
 
-			item[TrashHandler.DeletedDate].ShouldNotBe(null);
+            item[TrashHandler.DeletedDate].ShouldNotBe(null);
         }
     }
 }

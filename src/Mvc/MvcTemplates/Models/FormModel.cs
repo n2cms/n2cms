@@ -7,24 +7,24 @@ using N2.Web.UI;
 
 namespace N2.Templates.Mvc.Models
 {
-	public class FormModel : IItemContainer<Form>
-	{
-		public FormModel(Form currentItem, IEnumerable<IQuestion> elements)
-		{
-			CurrentItem = currentItem;
-			Elements = elements;
-		}
+    public class FormModel : IItemContainer<Form>
+    {
+        public FormModel(Form currentItem, IEnumerable<IQuestion> elements)
+        {
+            CurrentItem = currentItem;
+            Elements = elements;
+        }
 
-		/// <summary>Gets the item associated with the item container.</summary>
-		ContentItem IItemContainer.CurrentItem
-		{
-			get { return CurrentItem; }
-		}
+        /// <summary>Gets the item associated with the item container.</summary>
+        ContentItem IItemContainer.CurrentItem
+        {
+            get { return CurrentItem; }
+        }
 
-		public Form CurrentItem { get; private set; }
+        public Form CurrentItem { get; private set; }
 
-		public IEnumerable<IQuestion> Elements { get; private set; }
+        public IEnumerable<IQuestion> Elements { get; private set; }
 
-		public bool FormSubmitted { get; set; }
-	}
+        public bool FormSubmitted { get; set; }
+    }
 }

@@ -206,7 +206,7 @@ $.layout = {
 ,	cssNum: function ($E, prop) {
 		if (!$E.jquery) $E = $($E);
 		var CSS = $.layout.showInvisibly($E);
-		var val = parseInt($.curCSS($E[0], prop, true), 10) || 0;
+		var val = parseInt($.css($E[0], prop, true), 10) || 0;
 		$E.css( CSS ); // RESET
 		return val;
 	}
@@ -214,7 +214,7 @@ $.layout = {
 ,	borderWidth: function (el, side) {
 		if (el.jquery) el = el[0];
 		var b = "border"+ side.substr(0,1).toUpperCase() + side.substr(1); // left => Left
-		return $.curCSS(el, b+"Style", true) == "none" ? 0 : (parseInt($.curCSS(el, b+"Width", true), 10) || 0);
+		return $.css(el, b+"Style", true) == "none" ? 0 : (parseInt($.css(el, b+"Width", true), 10) || 0);
 	}
 
 	/**
@@ -811,7 +811,7 @@ $.fn.layout = function (opts) {
 	var _cssNum = function ($E, prop) {
 		if (!$E.jquery) $E = $($E);
 		var CSS = _showInvisibly($E);
-		var val = parseInt($.curCSS($E[0], prop, true), 10) || 0;
+		var val = parseInt($.css($E[0], prop, true), 10) || 0;
 		$E.css( CSS ); // RESET
 		return val;
 	};
@@ -824,7 +824,7 @@ $.fn.layout = function (opts) {
 	var _borderWidth = function (E, side) {
 		if (E.jquery) E = E[0];
 		var b = "border"+ side.substr(0,1).toUpperCase() + side.substr(1); // left => Left
-		return $.curCSS(E, b+"Style", true) == "none" ? 0 : (parseInt($.curCSS(E, b+"Width", true), 10) || 0);
+		return $.css(E, b+"Style", true) == "none" ? 0 : (parseInt($.css(E, b+"Width", true), 10) || 0);
 	};
 
 	/**

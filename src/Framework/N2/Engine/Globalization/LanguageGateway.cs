@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using N2.Collections;
@@ -16,63 +16,63 @@ namespace N2.Engine.Globalization
     /// <summary>
     /// Globalization handler.
     /// </summary>
-	[Service(typeof(ILanguageGateway))]
-	public class LanguageGateway : ILanguageGateway
-	{
-		public const string TranslationKey = "TranslationKey";
+    [Service(typeof(ILanguageGateway))]
+    public class LanguageGateway : ILanguageGateway
+    {
+        public const string TranslationKey = "TranslationKey";
 
-		readonly IPersister persister;
-		readonly IEditUrlManager editUrlManager;
-		readonly IDefinitionManager definitions;
-		readonly IHost host;
-    	readonly ISecurityManager security;
-    	readonly IWebContext context;
-		readonly StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache;
-		readonly DescendantItemFinder descendantFinder;
+        readonly IPersister persister;
+        readonly IEditUrlManager editUrlManager;
+        readonly IDefinitionManager definitions;
+        readonly IHost host;
+        readonly ISecurityManager security;
+        readonly IWebContext context;
+        readonly StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache;
+        readonly DescendantItemFinder descendantFinder;
         bool enabled = true;
 
-		public LanguageGateway(
-			IPersister persister,
-			IEditUrlManager editUrlManager,
-			IDefinitionManager definitions,
-			IHost host,
-			ISecurityManager security,
-			IWebContext context,
-			StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache,
-			DescendantItemFinder descendantFinder,
-			EngineSection config)
-		{
-			this.persister = persister;
-			this.editUrlManager = editUrlManager;
-			this.definitions = definitions;
-			this.host = host;
-			this.security = security;
-			this.context = context;
-			this.languagesCache = languagesCache;
-			this.descendantFinder = descendantFinder;
-			Enabled = config.Globalization.Enabled;
-		}
+        public LanguageGateway(
+            IPersister persister,
+            IEditUrlManager editUrlManager,
+            IDefinitionManager definitions,
+            IHost host,
+            ISecurityManager security,
+            IWebContext context,
+            StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache,
+            DescendantItemFinder descendantFinder,
+            EngineSection config)
+        {
+            this.persister = persister;
+            this.editUrlManager = editUrlManager;
+            this.definitions = definitions;
+            this.host = host;
+            this.security = security;
+            this.context = context;
+            this.languagesCache = languagesCache;
+            this.descendantFinder = descendantFinder;
+            Enabled = config.Globalization.Enabled;
+        }
 
-    	public bool Enabled
+        public bool Enabled
         {
             get { return enabled; }
             set { enabled = value; }
         }
 
-		public ILanguage GetLanguage(ContentItem item)
-		{
-			foreach (ContentItem ancestor in Find.EnumerateParents(item, null, true))
-			{
-				if (ancestor is ILanguage)
-				{
-					ILanguage language = ancestor as ILanguage;
-					if (string.IsNullOrEmpty(language.LanguageCode))
-                        continue;
-                    return language;
-				}
-			}
-			return null;
-		}
+        public ILanguage GetLanguage(ContentItem item)
+        {
+            var infos = GetLanguageInfos();
+            foreach (ContentItem ancestor in Find.EnumerateParents(item, lastAncestor: null, includeSelf: true))
+            {
+                if (ancestor is ILanguage)
+                {
+                    var info = infos.FirstOrDefault(li => li.ID == ancestor.ID);
+                    if (info != null)
+                        return info;
+                }
+            }
+            return null;
+        }
 
         /// <summary>Gets the language with a certain language code.</summary>
         /// <param name="languageCode">The language code to find a matching language for.</param>
@@ -82,125 +82,142 @@ namespace N2.Engine.Globalization
             return GetLanguageWithCode(GetAvailableLanguages(), languageCode);
         }
 
-		public IEnumerable<ILanguage> GetAvailableLanguages()
-		{
-			var languages = languagesCache.GetValue(host.CurrentSite.RootItemID, FindLanguagesRecursive);
-			foreach(var language in languages)
-			{
-				yield return persister.Get(language.ID) as ILanguage;
-			}
-		}
+        public IEnumerable<ILanguage> GetAvailableLanguages()
+        {
+            var languages = GetLanguageInfos();
+            foreach(var language in languages)
+            {
+                yield return language;
+            }
+        }
 
-		private LanguageInfo[] FindLanguagesRecursive(int rootNodeID)
-		{
-			List<LanguageInfo> languages = new List<LanguageInfo>();
-			foreach (ILanguage language in descendantFinder.Find<ILanguage>(persister.Get(rootNodeID)))
-			{
-				if (!string.IsNullOrEmpty(language.LanguageCode))
-				{
-					var languageItem = language as ContentItem;
-					if (languageItem != null && languageItem.ID > 0)
-						languages.Add(new LanguageInfo { ID = languageItem.ID, LanguageCode = language.LanguageCode });
-				}
-			}
-			return languages.ToArray();
-		}
+        private LanguageInfo[] GetLanguageInfos()
+        {
+            return languagesCache.GetValue(host.CurrentSite.RootItemID, FindLanguagesRecursive);
+        }
 
-    	public IEnumerable<ContentItem> FindTranslations(ContentItem item)
-		{
+        private LanguageInfo[] FindLanguagesRecursive(int rootNodeID)
+        {
+            List<LanguageInfo> languages = new List<LanguageInfo>();
+            foreach (ILanguage language in descendantFinder.Find<ILanguage>(persister.Get(rootNodeID)))
+            {
+                if (!string.IsNullOrEmpty(language.LanguageCode))
+                {
+                    var languageItem = language as ContentItem;
+                    int languageID = languageItem.ID;
+                    if (languageItem != null && languageItem.ID > 0)
+                        languages.Add(new LanguageInfo { ID = languageID, LanguageCode = language.LanguageCode, LanguageTitle = language.LanguageTitle, Translation = () => persister.Get(languageID) });
+                }
+            }
+            return languages.ToArray();
+        }
+
+        public IEnumerable<ContentItem> FindTranslations(ContentItem item)
+        {
             if (item == null) 
                 return new ContentItem[0];
 
-			if (item is ILanguage)
-			{
-				List<ContentItem> languages = new List<ContentItem>();
-				foreach (ILanguage language in GetAvailableLanguages())
-				{
-					languages.Add(language as ContentItem);
-				}
-				return languages;
-			}
+            if (item is ILanguage)
+            {
+                List<ContentItem> languages = new List<ContentItem>();
+                foreach (ILanguage language in GetAvailableLanguages())
+                {
+                    languages.Add(GetTranslation(language));
+                }
+                return languages;
+            }
 
-			if (item.TranslationKey == null)
-				return new ContentItem[0];
+            if (item.TranslationKey == null)
+                return new ContentItem[0];
 
-			return persister.Repository.Find(TranslationKey, item.TranslationKey)
-				.Where(new AccessFilter(context.User, security))
-				.Where(Content.Is.Not(Content.Is.DescendantOf<ITrashCan>()));
-		}
+            return persister.Repository.Find(TranslationKey, item.TranslationKey)
+                .Where(new AccessFilter(context.User, security))
+                .Where(Content.Is.Not(Content.Is.DescendantOf<ITrashCan>()))
+                ;//.Where(i => i.TranslationKey == item.TranslationKey); // filtering again since translation key might have been cleared in the same transaction
+        }
 
-		public IEnumerable<TranslateSpecification> GetEditTranslations(ContentItem item, bool includeCurrent, bool generateNonTranslated)
-		{
-			ILanguage itemlanguage = GetLanguage(item);
-			if (itemlanguage == null)
-				yield break;
+        public IEnumerable<TranslateSpecification> GetEditTranslations(ContentItem item, bool includeCurrent, bool generateNonTranslated)
+        {
+            ILanguage itemlanguage = GetLanguage(item);
+            if (itemlanguage == null)
+                yield break;
 
-			IEnumerable<ContentItem> translations = FindTranslations(item);
-			IEnumerable<ILanguage> languages = GetAvailableLanguages();
+            IEnumerable<ContentItem> translations = FindTranslations(item);
+            IEnumerable<ILanguage> languages = GetAvailableLanguages();
 
             var itemSite = host.GetSite(item);
-			foreach (ILanguage language in languages)
-			{
-				if (language != itemlanguage || includeCurrent)
-				{
-					ContentItem translation = GetTranslation(translations, language);
-					if (translation == null && language == itemlanguage)
-						translation = item;
+            foreach (ILanguage language in languages)
+            {
+                if (language != itemlanguage || includeCurrent)
+                {
+                    ContentItem translation = GetTranslation(translations, language);
+                    if (translation == null && language == itemlanguage)
+                        translation = item;
 
-					ItemDefinition definition = definitions.GetDefinition(item);
-					if (translation != null)
-					{
-						string url = editUrlManager.GetEditExistingItemUrl(translation);
+                    ItemDefinition definition = definitions.GetDefinition(item);
+                    if (translation != null)
+                    {
+                        string url = editUrlManager.GetEditExistingItemUrl(translation);
                         yield return new TranslateSpecification(url, language, translation, definition, host.GetSite(translation));
-					}
-					else
-					{
-						ContentItem translatedParent = GetTranslatedParent(item, language);
+                    }
+                    else
+                    {
+                        ContentItem translatedParent = GetTranslatedParent(item, language);
 
-						if (translatedParent == null)
-						{
-							if (generateNonTranslated)
-							{
-                                yield return new TranslateSpecification("#", language, translation, definition, host.GetSite(language as ContentItem))
-								{
-									IsTranslatable = false
-								};
-							}
-							continue;
-						}
+                        if (translatedParent == null)
+                        {
+                            if (generateNonTranslated)
+                            {
+                                yield return new TranslateSpecification("#", language, translation, definition, host.GetSite(GetTranslation(language)))
+                                {
+                                    IsTranslatable = false
+                                };
+                            }
+                            continue;
+                        }
 
-						Url url = editUrlManager.GetEditNewPageUrl(translatedParent, definition, item.ZoneName, CreationPosition.Below);
-						url = url.AppendQuery(TranslationKey, item.TranslationKey ?? item.ID);
+                        Url url = editUrlManager.GetEditNewPageUrl(translatedParent, definition, item.ZoneName, CreationPosition.Below);
+                        url = url.AppendQuery(TranslationKey, item.TranslationKey ?? item.ID);
 
                         yield return new TranslateSpecification(url, language, translation, definition, host.GetSite(translatedParent));
-					}
-				}
-			}
-		}
+                    }
+                }
+            }
+        }
 
-		private ContentItem GetTranslatedParent(ContentItem item, ILanguage language)
-		{
-			ContentItem parent = item.Parent;
-			IEnumerable<ContentItem> translationsOfParent = FindTranslations(parent);
-			ContentItem translatedParent = GetTranslation(translationsOfParent, language);
-			return translatedParent;
-		}
+        private ContentItem GetTranslation(ILanguage language)
+        {
+            if (language is LanguageInfo)
+                return (language as LanguageInfo).Translation();
+            else if (language is ContentItem)
+                return language as ContentItem;
+            else
+                throw new InvalidOperationException("Can't get translation of " + language);
+        }
 
-		public ContentItem GetTranslation(ContentItem item, ILanguage language)
-		{
-			return GetTranslation(FindTranslations(item), language);
-		}
+        private ContentItem GetTranslatedParent(ContentItem item, ILanguage language)
+        {
+            ContentItem parent = item.Parent;
+            IEnumerable<ContentItem> translationsOfParent = FindTranslations(parent);
+            ContentItem translatedParent = GetTranslation(translationsOfParent, language);
+            return translatedParent;
+        }
 
-		private ContentItem GetTranslation(IEnumerable<ContentItem> translations, ILanguage language)
-		{
-			foreach (ContentItem translation in translations)
-			{
-				ILanguage translationLanguage = GetLanguage(translation);
-				if (language == translationLanguage)
-					return translation;
-			}
-			return null;
-		}
+        public ContentItem GetTranslation(ContentItem item, ILanguage language)
+        {
+            return GetTranslation(FindTranslations(item), language);
+        }
+
+        private ContentItem GetTranslation(IEnumerable<ContentItem> translations, ILanguage language)
+        {
+            foreach (ContentItem translation in translations)
+            {
+                ILanguage translationLanguage = GetLanguage(translation);
+                if (language == translationLanguage)
+                    return translation;
+            }
+            return null;
+        }
 
         /// <summary>Associate these items from different language branches as the same translated page. If a language branch already contains an associated item that item will be de-associated and be removed as a translation.</summary>
         /// <param name="items">The translations to associate with each other.</param>
@@ -209,9 +226,13 @@ namespace N2.Engine.Globalization
             EnsureNoLanguageRoots(items);
 
             ContentItem appointedMaster = AppointMaster(items);
-            foreach (ContentItem itemToSave in UpdateLanguageKeys(items, appointedMaster))
+            using (var tx = persister.Repository.BeginTransaction())
             {
-                persister.Save(itemToSave);
+                foreach (ContentItem itemToSave in UpdateLanguageKeys(items, appointedMaster))
+                {
+                    persister.Repository.SaveOrUpdate(itemToSave);
+                }
+                tx.Commit();
             }
         }
 
@@ -221,20 +242,24 @@ namespace N2.Engine.Globalization
         /// <param name="item">The item to remove as translation.</param>
         public void Unassociate(ContentItem item)
         {
-			if (item.TranslationKey != null)
-			{
-				item.TranslationKey = null;
-				persister.Repository.SaveOrUpdate(item);
-			}
+            if (item.TranslationKey != null)
+            {
+                item.TranslationKey = null;
+                using (var tx = persister.Repository.BeginTransaction())
+                {
+                    persister.Repository.SaveOrUpdate(item);
+                    tx.Commit();
+                }
+            }
         }
 
-		/// <summary>Gets indication whether a certain item is the root item of a language branch.</summary>
-		/// <param name="item">The item to check.</param>
-		/// <returns>True if the item is the root item of a language branch.</returns>
-		public bool IsLanguageRoot(ContentItem item)
-		{
-			return item is ILanguage;
-		}
+        /// <summary>Gets indication whether a certain item is the root item of a language branch.</summary>
+        /// <param name="item">The item to check.</param>
+        /// <returns>True if the item is the root item of a language branch.</returns>
+        public bool IsLanguageRoot(ContentItem item)
+        {
+            return item is ILanguage && !string.IsNullOrEmpty((item as ILanguage).LanguageCode);
+        }
 
         /// <summary>Throws an exception if any of the items is a language root.</summary>
         /// <param name="items"></param>
@@ -292,7 +317,7 @@ namespace N2.Engine.Globalization
                 item.TranslationKey = appointedMaster.TranslationKey;
                 yield return item;
             }
-		}
+        }
 
         /// <summary>Gets the language with a certain language code.</summary>
         /// <param name="languages">The languages to select between.</param>
@@ -304,5 +329,5 @@ namespace N2.Engine.Globalization
 
             return languages.FirstOrDefault(l => languageCode.Equals(l.LanguageCode, StringComparison.InvariantCultureIgnoreCase));
         }
-	}
+    }
 }

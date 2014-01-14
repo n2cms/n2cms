@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Web;
 
 namespace N2.Web
@@ -16,6 +17,7 @@ namespace N2.Web
 		/// <summary>The token used for resolving the management url.</summary>
 		public const string ManagementUrlToken = "{ManagementUrl}";
 		public const string ThemesUrlToken = "{ThemesUrl}";
+        public const string SelectedQueryKeyToken = "{SelectedQueryKey}";
 
 		static readonly string[] querySplitter = new[] {"&amp;", Amp};
 		static readonly char[] slashes = new char[] { '/' };
@@ -23,7 +25,15 @@ namespace N2.Web
 		static string defaultExtension = ".aspx";
 		static string defaultDocument = "Default.aspx";
 
-		static Dictionary<string, string> replacements = new Dictionary<string, string> { { ManagementUrlToken, "~/N2" }, { ThemesUrlToken, "~/App_Themes/" } };
+		private static readonly HashSet<string> contentParameters = new HashSet<string>
+		{
+			PathData.ItemQueryKey,
+			PathData.PageQueryKey,
+			"action",
+			"arguments"
+		};
+
+        static Dictionary<string, string> replacements = new Dictionary<string, string> { { ManagementUrlToken, "~/N2" }, { ThemesUrlToken, "~/App_Themes/" }, { SelectedQueryKeyToken, "selected" } };
 
 		string scheme;
 		string authority;
@@ -70,7 +80,7 @@ namespace N2.Web
 			{
 				int queryIndex = QueryIndex(url);
 				int hashIndex = url.IndexOf('#', queryIndex > 0 ? queryIndex : 0);
-				int authorityIndex = url.IndexOf("://");
+				int authorityIndex = url.IndexOf(System.Uri.SchemeDelimiter); // jamestharpe
 				if (queryIndex >= 0 && authorityIndex > queryIndex)
 					authorityIndex = -1;
 
@@ -92,12 +102,25 @@ namespace N2.Web
 			fragment = null;
 		}
 
+		void EnsureTrailingSlashOnPath()
+		{
+			// Addition by James Tharpe w/ Rollins, Inc.
+			// --------------------------------------------------------------------------------
+			// If current.Extension is blank, include a trailing slash so that URLs remain
+			// consistent. Keeping URLs consistent is important for SEO reasons (specifically,
+			// to avoid the appearance of duplicate content. See discussion at
+			// http://n2cms.codeplex.com/discussions/277160.
+
+			if (Extension == null && !path.EndsWith("/")) //TODO: Add a forceTralingSlash option?
+				path += "/";
+		}
+
 		void LoadSiteRelativeUrl(string url, int queryIndex, int hashIndex)
 		{
 			scheme = null;
 			authority = null;
-            if (url.StartsWith("~"))
-                url = ToAbsolute(url);
+			if (url.StartsWith("~"))
+				url = ToAbsolute(url);
 
 			if (queryIndex >= 0)
 				path = url.Substring(0, queryIndex);
@@ -107,21 +130,25 @@ namespace N2.Web
 				path = url;
 			else
 				path = "";
+
+			EnsureTrailingSlashOnPath(); // jamestharpe
 		}
 
 		void LoadBasedUrl(string url, int queryIndex, int hashIndex, int authorityIndex)
 		{
-			scheme = url.Substring(0, authorityIndex);
+			scheme = url.Substring(0, authorityIndex); // e.g. "http://"
 			int slashIndex = url.IndexOf('/', authorityIndex + 3);
-			if (slashIndex > 0)
+			if (slashIndex > 0) // http://site.com/ or http://site.com/foo or http://site.com/foo/bar
 			{
-				authority = url.Substring(authorityIndex + 3, slashIndex - authorityIndex - 3);
+				authority = url.Substring(authorityIndex + 3, slashIndex - authorityIndex - 3); // site.com
 				if (queryIndex >= slashIndex)
-					path = url.Substring(slashIndex, queryIndex - slashIndex);
+					path = url.Substring(slashIndex, queryIndex - slashIndex); // http://site.com/foo/bar?q=v -> /foo/bar
 				else if (hashIndex >= 0)
-					path = url.Substring(slashIndex, hashIndex - slashIndex);
+					path = url.Substring(slashIndex, hashIndex - slashIndex); // http://site.com/foo/bar#hash -> /foo/bar
 				else
-					path = url.Substring(slashIndex);
+					path = url.Substring(slashIndex); // http://site.com/foo/bar -> /foo/bar
+
+				EnsureTrailingSlashOnPath(); // jamestharpe
 			}
 			else
 			{
@@ -173,6 +200,18 @@ namespace N2.Web
 			get { return scheme; }
 		}
 
+        /// <summary>The domain name information.</summary>
+        public string Domain
+        {
+            get { return authority != null ? authority.Split(':')[0] : null; }
+        }
+
+        /// <summary>The port information.</summary>
+        public int Port
+        {
+            get { return authority != null ? int.Parse(authority.Split(':').Skip(1).FirstOrDefault() ?? "80") : 80; }
+        }
+
 		/// <summary>The domain name and port information.</summary>
 		public string Authority
 		{
@@ -184,6 +223,16 @@ namespace N2.Web
 		{
 			get { return path; }
 		}
+
+        public string[] Segments
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(path) || path == "/")
+                    return new string[0];
+                return path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            }
+        }
 
 		public string ApplicationRelativePath
 		{
@@ -266,6 +315,18 @@ namespace N2.Web
 		public static implicit operator Url(string url)
 		{
 			return Parse(url);
+		}
+
+		public static explicit operator Uri(Url u)
+		{
+			if (u == null)
+				return null;
+			return new Uri(u.ToString(), UriKind.RelativeOrAbsolute);
+		}
+
+		public static implicit operator Url(Uri uri)
+		{
+			return Parse(uri.ToString());
 		}
 
 		/// <summary>Retrieves the path part of an url, e.g. /path/to/page.aspx.</summary>
@@ -492,7 +553,7 @@ namespace N2.Web
 
 		public Url SetExtension(string extension)
 		{
-			return new Url(scheme, authority, PathWithoutExtension + extension, query, fragment);
+			return new Url(scheme, authority, PathWithoutExtension.TrimEnd('/') + extension, query, fragment);
 		}
 
 
@@ -524,6 +585,13 @@ namespace N2.Web
 					newPath = path + "/" + segment + extension;
 			}
 			else if (path.EndsWith("/"))
+			{
+				if (segment.StartsWith("/"))
+					newPath = path + segment.TrimStart('/');
+				else
+					newPath = path + segment;
+			}
+			else if (segment.StartsWith("/"))
 				newPath = path + segment;
 			else
 				newPath = path + "/" + segment;
@@ -531,11 +599,19 @@ namespace N2.Web
 			return new Url(scheme, authority, newPath, query, fragment);
 		}
 
+		public Url Append(Url url)
+		{
+			return AppendSegment(url.PathWithoutExtension, url.Extension);
+		}
+
 		public Url AppendSegment(string segment)
 		{
 			if (string.IsNullOrEmpty(Path) || Path == "/")
 				return AppendSegment(segment, DefaultExtension);
-			
+
+			if (string.IsNullOrEmpty(segment) || segment == "/")
+				return this;
+
 			return AppendSegment(segment, Extension);
 		}
 
@@ -546,16 +622,19 @@ namespace N2.Web
 
 		public Url PrependSegment(string segment, string extension)
 		{
+			if (string.IsNullOrEmpty(segment))
+				return this;
+
 			string newPath;
 			if (string.IsNullOrEmpty(path) || path == "/")
-				newPath = "/" + segment + extension;
+				newPath = "/" + segment.TrimStart('/') + extension;
 			else if (extension != Extension)
 			{
 				newPath = "/" + segment + PathWithoutExtension + extension;
 			}
 			else
 			{
-				newPath = "/" + segment + path;
+				newPath = "/" + segment.Trim('/') + "/" + path.TrimStart('/');
 			}
 
 			return new Url(scheme, authority, newPath, query, fragment);
@@ -606,7 +685,7 @@ namespace N2.Web
 		/// <returns>An url with it's extension removed.</returns>
 		public Url RemoveExtension(params string[] validExtensions)
 		{
-			var pathExtension = Array.Find(validExtensions, x => path.EndsWith(x, StringComparison.InvariantCultureIgnoreCase));
+			var pathExtension = Array.Find(validExtensions, x => string.IsNullOrEmpty(x) == false && path.EndsWith(x, StringComparison.InvariantCultureIgnoreCase));
 			if (pathExtension == null)
 				return this;
 			return new Url(scheme, authority, path.Substring(0, path.Length - pathExtension.Length), query, fragment);
@@ -676,8 +755,8 @@ namespace N2.Web
 			{
 				if (applicationPath == null)
 				{
-                    if(HttpContext.Current == null)
-                        return "/";
+					if(HttpContext.Current == null)
+						return "/";
 
 					try
 					{
@@ -693,23 +772,23 @@ namespace N2.Web
 			set { applicationPath = value; }
 		}
 
-	    private static string fallbackServerUrl;
+		private static string fallbackServerUrl;
 		/// <summary>The address to the server where the site is running.</summary>
 		public static string ServerUrl
 		{
 			get
 			{
-                // we need get the server url of current request, it can't be cached in multiple-sites environment 
-			    var webContext = Context.Current.RequestContext;
-                if (webContext == null)
-                    return null;
-                if(webContext.IsWeb)
-                {
-                    if(fallbackServerUrl == null)
-                        fallbackServerUrl = webContext.Url.HostUrl;
-                    return webContext.Url.HostUrl;
-                }
-                return fallbackServerUrl; // fallback for ThreadContext
+				// we need get the server url of current request, it can't be cached in multiple-sites environment 
+				var webContext = Context.Current.RequestContext;
+				if (webContext == null)
+					return null;
+				if(webContext.IsWeb)
+				{
+					if(fallbackServerUrl == null)
+						fallbackServerUrl = webContext.Url.HostUrl;
+					return webContext.Url.HostUrl;
+				}
+				return fallbackServerUrl; // fallback for ThreadContext
 			}
 		}
 
@@ -727,6 +806,21 @@ namespace N2.Web
 
 			return path.Substring(0, index);
 		}
+
+        /// <summary>Gets the file extension from the path (if any).</summary>
+        /// <param name="path">The path to find the extension of.</param>
+        /// <returns>An extension including . or null if no extnesion was found</returns>
+        public static string GetExtension(string path)
+        {
+            int index = path.LastIndexOfAny(dotsAndSlashes);
+
+            if (index < 0)
+                return null;
+            if (path[index] == '/')
+                return null;
+
+            return path.Substring(index);
+        }
 
 		/// <summary>Removes the last part from the url segments.</summary>
 		/// <returns></returns>
@@ -859,7 +953,7 @@ namespace N2.Web
 		/// <returns>A dictionary of the query parts.</returns>
 		public static IDictionary<string, string> ParseQueryString(string query)
 		{
-			var dictionary = new Dictionary<string, string>();
+            var dictionary = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 			if (query == null)
 				return dictionary;
 
@@ -918,6 +1012,7 @@ namespace N2.Web
 			if (string.IsNullOrEmpty(urlFormat))
 				return urlFormat;
 
+            //TODO: Use a nicer method for replacing tokens. Doesn't work if token values contain other tokens.
 			foreach (var kvp in replacements)
 				urlFormat = urlFormat.Replace(kvp.Key, kvp.Value);
 			return ToAbsolute(urlFormat);
@@ -928,6 +1023,25 @@ namespace N2.Web
 		public Url ResolveTokens()
 		{
 			return new Url(ResolveTokens(ToString()));
+		}
+
+		/// <summary>
+		/// Removes anything from the url that doesn't affect the content to be returned.
+		/// </summary>
+		/// <param name="url"></param>
+		/// <returns>Normalized url.</returns>
+		public Url GetNormalizedContentUrl()
+		{
+			var clonedUrl = new Url(this);
+
+			// Normalize the url remove parameters we don't care about
+			foreach (var queryParameter in GetQueries())
+			{
+				if (!contentParameters.Contains(queryParameter.Key.ToLowerInvariant()))
+					clonedUrl = RemoveQuery(queryParameter.Key);
+			}
+
+			return clonedUrl;
 		}
 	}
 }

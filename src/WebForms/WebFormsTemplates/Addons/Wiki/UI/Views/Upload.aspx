@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="Fallback.master" AutoEventWireup="true" CodeBehind="Upload.aspx.cs" Inherits="N2.Addons.Wiki.UI.Views.Upload" Title="Untitled Page" %>
+﻿<%@ Page Language="C#" MasterPageFile="Fallback.master" AutoEventWireup="true" CodeBehind="Upload.aspx.cs" Inherits="N2.Addons.Wiki.UI.Views.Upload" Title="Untitled Page" %>
 <%@ Import Namespace="N2.Addons.Wiki.UI.Views"%>
 <asp:Content ID="Content1" ContentPlaceHolderID="TextContent" runat="server">
     <h1>Upload '<%= FileName%></h1>

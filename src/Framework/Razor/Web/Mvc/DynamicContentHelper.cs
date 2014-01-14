@@ -1,111 +1,80 @@
-﻿using System.Web;
+using System.Web;
 using System.Web.Mvc;
+using N2.Engine;
+using System;
 
 namespace N2.Web.Mvc
 {
-	/// <remarks>This code is here since it has dependencies on ASP.NET 3.0 which isn't a requirement for N2 in general.</remarks>
-	public class DynamicContentHelper : ViewContentHelper
-	{
-		public DynamicContentHelper(HtmlHelper html)
-			: base(html)
-		{
-		}
+    /// <remarks>This code is here since it has dependencies on ASP.NET 3.0 which isn't a requirement for N2 in general.</remarks>
+    public class DynamicContentHelper : ViewContentHelper
+    {
+        public DynamicContentHelper(HtmlHelper html)
+            : base(html)
+        {
+        }
 
-		public dynamic Display
-		{
-			get { return new DisplayHelper { Html = Html, Current = Current.Item }; }
-		}
+        public DynamicContentHelper(HtmlHelper html, Func<IEngine> engine, Func<PathData> pathGetter)
+            : base(html, engine, pathGetter)
+        {
+        }
 
-		public dynamic Has
-		{
-			get { return new HasValueHelper(HasValue); }
-		}
+        public dynamic Display
+        {
+            get { return new DisplayHelper { Html = Html, Current = Current.Item }; }
+        }
 
-		public dynamic Data
-		{
-			get
-			{
-				if (Current.Item == null)
-					return new DataHelper(() => Current.Item);
+        public dynamic Has
+        {
+            get { return new HasValueHelper(HasValue); }
+        }
 
-				string key = "DataHelper" + Current.Item.ID;
-				var data = Html.ViewContext.ViewData[key] as DataHelper;
-				if (data == null)
-					Html.ViewContext.ViewData[key] = data = new DataHelper(() => Current.Item);
-				return data;
-			}
-		}
+        public dynamic Data
+        {
+            get
+            {
+                if (Current.Item == null)
+                    return new DataHelper(() => Current.Item);
 
-		public TranslateHelper Translate
-		{
-			get { return new TranslateHelper(); }
-		}
+                string key = "DataHelper" + Current.Item.ID;
+                var data = Html.ViewContext.ViewData[key] as DataHelper;
+                if (data == null)
+                    Html.ViewContext.ViewData[key] = data = new DataHelper(() => Current.Item);
+                return data;
+            }
+        }
 
-		// Room for future improvement.
-		public class TranslateHelper
-		{
-			public IHtmlString this[string key]
-			{
-				get { return Html(key); }
-			}
+        public TranslateHelper Translate
+        {
+            get { return new TranslateHelper(); }
+        }
 
-			public IHtmlString Html(string key)
-			{
-				return new HtmlString(key);
-			}
+        // Room for future improvement.
+        public class TranslateHelper
+        {
+            public IHtmlString this[string key]
+            {
+                get { return Html(key); }
+            }
 
-			public string Text(string key)
-			{
-				return key;
-			}
-		}
+            public IHtmlString Html(string key)
+            {
+                return new HtmlString(key);
+            }
 
-		//// obsolete stuff from 2.2 remains here for a while (uncomment to use)
+            public string Text(string key)
+            {
+                return key;
+            }
+        }
 
-		//[Obsolete("Use Html.UniqueID")]
-		//public string UniqueID(string prefix = null)
-		//{
-		//    if (string.IsNullOrEmpty(prefix))
-		//        return "_" + Current.Page.ID;
+        /// <summary>Gives a content helper that with the given item in scope. The scope of the surrouding page is not changed.</summary>
+        /// <param name="otherContentItem">The content item to operate on.</param>
+        /// <returns>A content helper with a different scope than the surrounding page.</returns>
+        public new virtual DynamicContentHelper At(ContentItem otherContentItem)
+        {
+            EnsureAuthorized(otherContentItem);
 
-		//    return prefix + Current.Page.ID;
-		//}
-
-		//[Obsolete("Use Html.Tree")]
-		//public Tree TreeFrom(int skipLevels = 0, int takeLevels = 3, bool rootless = false, Func<ContentItem, string> cssGetter = null, ItemFilter filter = null)
-		//{
-		//    return TreeFrom(Traverse.AncestorAtLevel(skipLevels), takeLevels, rootless, cssGetter, filter);
-		//}
-
-		//[Obsolete("Use Html.Tree")]
-		//public Tree TreeFrom(ContentItem item, int takeLevels = 3, bool rootless = false, Func<ContentItem, string> cssGetter = null, ItemFilter filter = null)
-		//{
-		//    if (item == null)
-		//        return Tree.Using(new NoHierarchyBuilder());
-
-		//    if (cssGetter == null)
-		//        cssGetter = GetNavigationClass;
-
-		//    return Tree.Using(new TreeHierarchyBuilder(item, takeLevels))
-		//        .ExcludeRoot(rootless)
-		//        .LinkWriter((n, w) => LinkTo(n.Current).Class(cssGetter(n.Current)).WriteTo(w))
-		//        .Filters(filter ?? N2.Content.Is.Navigatable());
-		//}
-
-		//[Obsolete]
-		//public string GetNavigationClass(ContentItem item)
-		//{
-		//    return Current.Page == item ? "current" : Traverse.Ancestors().Contains(item) ? "trail" : "";
-		//}
-
-		//[Obsolete("Use Html.Link")]
-		//public ILinkBuilder LinkTo(ContentItem item)
-		//{
-		//    if (item == null) return Link.To(item);
-
-		//    var lb = Link.To(item);
-		//    lb.Class(GetNavigationClass(item));
-		//    return lb;
-		//}
-	}
+            return new DynamicContentHelper(Html, Current.EngineGetter, () => new PathData { CurrentItem = otherContentItem, CurrentPage = otherContentItem.IsPage ? otherContentItem : Current.Page });
+        }
+    }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using N2.Definitions;
@@ -8,214 +8,260 @@ using N2.Integrity;
 using N2.Persistence;
 using N2.Security;
 using N2.Web;
+using N2.Plugin;
+using N2.Persistence.NH;
+using N2.Details;
+using N2.Persistence.Sources;
+using N2.Persistence.Proxying;
 
 namespace N2.Tests.Fakes
 {
-	public class FakeEngine : IEngine
-	{
-		public FakeServiceContainer container = new FakeServiceContainer();
+    public class FakeEngine : IEngine
+    {
+        public FakeServiceContainer container = new FakeServiceContainer();
 
-		#region IEngine Members
+        public FakeEngine()
+        {
+        }
 
-		public N2.Persistence.IPersister Persister
-		{
-			get { return container.Resolve<IPersister>(); }
-		}
+        public FakeEngine(params Type[] types)
+        {
+            AddComponentInstance<ITypeFinder>(new FakeTypeFinder(types));
+            var definitionManager = TestSupport.SetupDefinitions(types.Where(t => typeof(ContentItem).IsAssignableFrom(t)).ToArray());
+            AddComponentInstance<IDefinitionManager>(definitionManager);
+            var adapterProvider = new ContentAdapterProvider(this, Resolve<ITypeFinder>());
+            AddComponentInstance<IContentAdapterProvider>(adapterProvider);
+            var itemRepository = new FakeContentItemRepository();
+            AddComponentInstance<IRepository<ContentItem>>(itemRepository);
+            AddComponentInstance<IContentItemRepository>(itemRepository);
+            var webContext = new ThreadContext();
+            AddComponentInstance<IWebContext>(webContext);
+            var host = new Host(webContext, 1, 1);
+            AddComponentInstance<IHost>(host);
+            var security = new FakeSecurityManager();
+            AddComponentInstance<ISecurityManager>(security);
+            var source = new ContentSource(security, new [] { new DatabaseSource(host, itemRepository) });
+            AddComponentInstance(source);
+            AddComponentInstance<IPersister>(new ContentPersister(source, itemRepository));
+            AddComponentInstance<IWebContext>(webContext);
+            var proxyFactory = new InterceptingProxyFactory();
+            AddComponentInstance<IProxyFactory>(proxyFactory);
+            var activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), new ItemNotifier(), proxyFactory);
+            AddComponentInstance<ContentActivator>(activator);
+            activator.Initialize(definitionManager.GetDefinitions());
+        }
 
-		public N2.Web.IUrlParser UrlParser
-		{
-			get { return container.Resolve<IUrlParser>(); }
-		}
+        #region IEngine Members
 
-		public IDefinitionManager Definitions
-		{
-			get { return container.Resolve<IDefinitionManager>(); }
-		}
+        public N2.Persistence.IPersister Persister
+        {
+            get { return container.Resolve<IPersister>(); }
+        }
 
-		public N2.Integrity.IIntegrityManager IntegrityManager
-		{
-			get { return container.Resolve<IIntegrityManager>(); }
-		}
+        public N2.Web.IUrlParser UrlParser
+        {
+            get { return container.Resolve<IUrlParser>(); }
+        }
 
-		public N2.Security.ISecurityManager SecurityManager
-		{
-			get { return container.Resolve<ISecurityManager>(); }
-		}
+        public IDefinitionManager Definitions
+        {
+            get { return container.Resolve<IDefinitionManager>(); }
+        }
 
-		public N2.Edit.IEditManager EditManager
-		{
-			get { return container.Resolve<IEditManager>(); }
-		}
+        public N2.Integrity.IIntegrityManager IntegrityManager
+        {
+            get { return container.Resolve<IIntegrityManager>(); }
+        }
 
-		public N2.Edit.IEditUrlManager ManagementPaths
-		{
-			get { return container.Resolve<IEditUrlManager>(); }
-		}
+        public N2.Security.ISecurityManager SecurityManager
+        {
+            get { return container.Resolve<ISecurityManager>(); }
+        }
 
-		public N2.Web.IWebContext RequestContext
-		{
-			get { return container.Resolve<IWebContext>(); }
-		}
+        public N2.Edit.IEditManager EditManager
+        {
+            get { return container.Resolve<IEditManager>(); }
+        }
 
-		public N2.Web.IHost Host
-		{
-			get { return container.Resolve<IHost>(); }
-		}
+        public N2.Edit.IEditUrlManager ManagementPaths
+        {
+            get { return container.Resolve<IEditUrlManager>(); }
+        }
 
-		public IServiceContainer Container
-		{
-			get { return container; }
-		}
+        public N2.Web.IWebContext RequestContext
+        {
+            get { return container.Resolve<IWebContext>(); }
+        }
 
-		public void Initialize()
-		{
-			throw new NotImplementedException();
-		}
+        public N2.Web.IHost Host
+        {
+            get { return container.Resolve<IHost>(); }
+        }
 
-		public void Attach(EventBroker application)
-		{
-			throw new NotImplementedException();
-		}
+        public IServiceContainer Container
+        {
+            get { return container; }
+        }
 
-		public T Resolve<T>() where T : class
-		{
-			return Container.Resolve<T>();
-		}
+        public void Initialize()
+        {
+            container.StartComponents();
+        }
 
-		public object Resolve(Type serviceType)
-		{
-			return Container.Resolve(serviceType);
-		}
+        public void Attach(EventBroker application)
+        {
+            throw new NotImplementedException();
+        }
 
-		public object Resolve(string key)
-		{
-			throw new NotImplementedException();
-		}
+        public T Resolve<T>() where T : class
+        {
+            return Container.Resolve<T>();
+        }
 
-		[Obsolete("Use Container.AddComponent")]
-		public void AddComponent(string key, Type serviceType)
-		{
-			AddComponent(key, serviceType, serviceType);
-		}
+        public object Resolve(Type serviceType)
+        {
+            return Container.Resolve(serviceType);
+        }
 
-		[Obsolete("Use Container.AddComponent")]
-		public void AddComponent(string key, Type serviceType, Type classType)
-		{
-			AddComponentInstance(key, serviceType, Activator.CreateInstance(classType));
-		}
+        public object Resolve(string key)
+        {
+            throw new NotImplementedException();
+        }
 
-		[Obsolete("Use Container.AddComponentInstance")]
-		public void AddComponentInstance(string key, Type serviceType, object instance)
-		{
-			container.AddComponentInstance(key, serviceType, instance);
-		}
+        [Obsolete("Use Container.AddComponent")]
+        public void AddComponent(string key, Type serviceType)
+        {
+            AddComponent(key, serviceType, serviceType);
+        }
 
-		[Obsolete("Use Container.AddComponentLifeStyle")]
-		public void AddComponentLifeStyle(string key, Type serviceType, ComponentLifeStyle lifeStyle)
-		{
-			container.AddComponent(key, serviceType, serviceType);
-		}
+        [Obsolete("Use Container.AddComponent")]
+        public void AddComponent(string key, Type serviceType, Type classType)
+        {
+            AddComponentInstance(key, serviceType, Activator.CreateInstance(classType));
+        }
 
-		[Obsolete("Not supportable by all service containers. Use the specific IServiceContainer implementation", true)]
-		public void AddFacility(string key, object facility)
-		{
-			throw new NotImplementedException();
-		}
+        [Obsolete("Use Container.AddComponentInstance")]
+        public void AddComponentInstance(string key, Type serviceType, object instance)
+        {
+            container.AddComponentInstance(key, serviceType, instance);
+        }
 
-		[Obsolete("Use Container.Release")]
-		public void Release(object instance)
-		{
-			throw new NotImplementedException();
-		}
+        [Obsolete("Use Container.AddComponentLifeStyle")]
+        public void AddComponentLifeStyle(string key, Type serviceType, ComponentLifeStyle lifeStyle)
+        {
+            container.AddComponent(key, serviceType, serviceType);
+        }
 
-		public ContentHelperBase Content
-		{
-			get { return new ContentHelperBase(this, () => RequestContext.CurrentPath); }
-		}
+        [Obsolete("Not supportable by all service containers. Use the specific IServiceContainer implementation", true)]
+        public void AddFacility(string key, object facility)
+        {
+            throw new NotImplementedException();
+        }
 
-		#endregion
+        [Obsolete("Use Container.Release")]
+        public void Release(object instance)
+        {
+            throw new NotImplementedException();
+        }
 
-		public class FakeServiceContainer : IServiceContainer
-		{
-			Dictionary<Type, object> services = new Dictionary<Type, object>();
+        public ContentHelperBase Content
+        {
+            get { return new ContentHelperBase(() => this, () => RequestContext.CurrentPath); }
+        }
 
-			#region IServiceContainer Members
+        public N2.Configuration.ConfigurationManagerWrapper Config
+        {
+            get { return Resolve<N2.Configuration.ConfigurationManagerWrapper>(); }
+        }
 
-			public void AddComponent(string key, Type serviceType, Type classType)
-			{
-				services[serviceType] = Activator.CreateInstance(classType);
-			}
+        #endregion
 
-			public void AddComponentInstance(string key, Type serviceType, object instance)
-			{
-				services[serviceType] = instance;
-			}
+        public class FakeServiceContainer : IServiceContainer
+        {
+            Dictionary<Type, object> services = new Dictionary<Type, object>();
 
-			public void AddComponentLifeStyle(string key, Type serviceType, ComponentLifeStyle lifeStyle)
-			{
-				throw new NotImplementedException();
-			}
+            #region IServiceContainer Members
 
-			public void AddComponentWithParameters(string key, Type serviceType, Type classType, IDictionary<string, string> properties)
-			{
-				throw new NotImplementedException();
-			}
+            public void AddComponent(string key, Type serviceType, Type classType)
+            {
+                services[serviceType] = Activator.CreateInstance(classType);
+            }
 
-			public T Resolve<T>()
-			{
-				if(services.ContainsKey(typeof(T)) == false)
-					throw new InvalidOperationException("No component for service " + typeof(T).Name + " registered");
+            public void AddComponentInstance(string key, Type serviceType, object instance)
+            {
+                services[serviceType] = instance;
+            }
 
-				return (T)services[typeof(T)];
-			}
+            public void AddComponentLifeStyle(string key, Type serviceType, ComponentLifeStyle lifeStyle)
+            {
+                throw new NotImplementedException();
+            }
 
-			public T Resolve<T>(string key)
-			{
-				return (T)services[typeof(T)];
-			}
+            public void AddComponentWithParameters(string key, Type serviceType, Type classType, IDictionary<string, string> properties)
+            {
+                throw new NotImplementedException();
+            }
 
-			public object Resolve(Type type)
-			{
-				return services[type];
-			}
+            public T Resolve<T>() where T: class
+            {
+                if(services.ContainsKey(typeof(T)) == false)
+                    throw new InvalidOperationException("No component for service " + typeof(T).Name + " registered");
 
-			public void Release(object instance)
-			{
-			}
+                return (T)services[typeof(T)];
+            }
 
-			public Array ResolveAll(Type serviceType)
-			{
-				if (!this.services.ContainsKey(serviceType))
-					return new object[0];
+            public T Resolve<T>(string key) where T : class
+            {
+                return (T)services[typeof(T)];
+            }
 
-				return new object[] { Resolve(serviceType) };
-			}
+            public object Resolve(Type type)
+            {
+                return services[type];
+            }
 
-			public IEnumerable<ServiceInfo> Diagnose()
-			{
-				yield break;
-			}
+            public void Release(object instance)
+            {
+            }
 
-			public T[] ResolveAll<T>()
-			{
-				if (!this.services.ContainsKey(typeof(T)))
-					return new T[0];
+            public IEnumerable<object> ResolveAll(Type serviceType)
+            {
+                if (!this.services.ContainsKey(serviceType))
+                    return new object[0];
 
-				return new T[] { Resolve<T>() };
-			}
+                return new object[] { Resolve(serviceType) };
+            }
 
-			public N2.Engine.Configuration.IServiceContainerConfigurer ServiceContainerConfigurer
-			{
-				get { throw new NotImplementedException(); }
-			}
+            public IEnumerable<ServiceInfo> Diagnose()
+            {
+                yield break;
+            }
 
-			public void StartComponents()
-			{
-				throw new NotImplementedException();
-			}
+            public IEnumerable<T> ResolveAll<T>() where T: class
+            {
+                if (!this.services.ContainsKey(typeof(T)))
+                    return new T[0];
 
-			#endregion
-		}
+                return new T[] { Resolve<T>() };
+            }
 
-	}
+            public N2.Engine.Configuration.IServiceContainerConfigurer ServiceContainerConfigurer
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public void StartComponents()
+            {
+                foreach (var component in this.services.Values.OfType<IAutoStart>().ToList())
+                    component.Start();
+            }
+
+            #endregion
+        }
+
+        public void AddComponentInstance<T>(T instance)
+        {
+            Container.AddComponentInstance(instance.GetType().FullName, typeof(T), instance);
+        }
+    }
 }

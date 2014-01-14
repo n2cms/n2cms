@@ -2,7 +2,7 @@
 	var isDragging = false;
 	var dialog = null;
 
-	window.n2DragDrop = function (urls, messages) {
+	window.n2DragDrop = function(urls, messages, context) {
 		this.urls = $.extend({
 			copy: 'copy.n2.ashx',
 			move: 'move.n2.ashx',
@@ -14,8 +14,9 @@
 			deleting: 'Do you really want to delete?',
 			helper: "Drop on a highlighted area"
 		}, messages);
+		this.context = context;
 		this.init();
-	}
+	};
 
 	window.n2DragDrop.prototype = {
 
@@ -23,48 +24,67 @@
 			var self = this;
 			this.makeDraggable();
 			$(document.body).addClass("dragDrop");
-			$('.titleBar a.command').live('click', function (e) {
-				e.preventDefault();
-				e.stopPropagation();
-				self.showDialog($(this).attr('href'));
-			});
+			//$(document).on('click', '.titleBar a.command', function (e) {
+			//	e.preventDefault();
+			//	e.stopPropagation();
+			//	self.showDialog($(this).attr('href'));
+			//});
 			var host = window.location.protocol + "//" + window.location.host + "/";
 			$("a").filter(function () { return this.href.indexOf(host) == 0; })
-				.filter(function () { return this.parentNode.className.indexOf('control') != 0; })
+				.filter(function () { return this.parentNode.className.indexOf('control') < 0; })
+				.filter(function () { return !this.target || this.target == "_self"; })
 				.each(function () {
-					this.href += (this.href.indexOf('?') >= 0 ? '&' : '?') + "edit=drag";
+					var hashIndex = this.href.indexOf("#");
+					if (hashIndex >= 0)
+						this.href = this.href.substr(0, hashIndex) + ((this.href.indexOf('?') >= 0 ? '&' : '?') + "edit=drag") + this.href.substr(hashIndex);
+					else
+						this.href += (this.href.indexOf('?') >= 0 ? '&' : '?') + "edit=drag";
 				});
 
 			self.makeEditable();
 			self.scroll();
 		},
 
-		showDialog: function (href, dialogOptions) {
-			window.scrollTop = 0;
-			if (dialog) dialog.remove();
-			dialog = $('<div id="editorDialog" />').hide();
-			$(document).append(dialog);
-			var iframe = document.createElement('iframe');
-			dialog.append(iframe);
-			iframe.src = href;
-			$(iframe).load(function () {
-				var doc = $(iframe.contentWindow.document);
-				doc.find('#toolbar a.cancel').click(function () {
-					dialog.dialog('close');
-				});
-			});
+		//showDialog: function (href, dialogOptions) {
+		//	href += (href.indexOf('?') >= 0 ? '&' : "?") + "modal=true";
+		//	if (dialog) dialog.remove();
+		//	dialog = $('<div id="editorDialog" />').appendTo(document.body).hide();
+		//	var iframe = document.createElement('iframe');
+		//	dialog.append(iframe);
+		//	iframe.src = href;
+		//	$(iframe).load(function () {
+		//		var doc = $(iframe.contentWindow.document);
+		//		doc.find('#toolbar a.cancel').click(function () {
+		//			dialog.dialog('close');
+		//		});
+		//	});
 
-			dialog.dialog($.extend({
-				modal: true,
-				width: Math.min(1000, $(window).width() - 50),
-				height: Math.min(800, $(window).height() - 50),
-				closeOnEscape: true,
-				resizable: true
-			}, dialogOptions));
-		},
+		//	dialog.dialog($.extend({
+		//		modal: true,
+		//		width: Math.min(1000, $(window).width() - 50),
+		//		height: Math.min(800, $(window).height() - 100),
+		//		closeOnEscape: true,
+		//		resizable: true
+		//	}, dialogOptions));
+
+		//	window.n2ScrollBack = (function (x, y) {
+		//		return function () {
+		//			// workaround to maintain scroll position
+		//			setTimeout(function () { window.scrollTo(x, y); }, 10);
+		//		}
+		//	})(window.pageXOffset, window.pageYOffset);
+		//},
 
 		makeDraggable: function () {
-			var $draggables = $('.zoneItem,.definition').draggable({
+			$('.definition').draggable({
+				dragPrevention: 'a,input,textarea,select,img',
+				helper: this.makeDragHelper,
+				cursorAt: { top: 8, left: 8 },
+				scroll: true,
+				stop: this.stopDragging,
+				start: this.startDragging
+			}).data("handler", this);
+			$('.zoneItem').draggable({
 				handle: "> .titleBar",
 				dragPrevention: 'a,input,textarea,select,img',
 				helper: this.makeDragHelper,
@@ -72,28 +92,33 @@
 				scroll: true,
 				stop: this.stopDragging,
 				start: this.startDragging
-			})
-			$draggables.data("handler", this);
+			}).data("handler", this);
+		},
+
+		appendSelection: function (url, command) {
+			return url
+				+ (url.indexOf("?") >= 0 ? "&" : "?") + (n2SelectedQueryKey || "selected") + "=" + command.below
+				+ (this.context.isMasterVersion ? "" : "&versionIndex=" + this.context.versionIndex)
+				+ (!command.versionKey ? "" : "&versionKey=" + command.versionKey);
 		},
 
 		makeEditable: function () {
 			var self = this;
 			$(".editable").each(function () {
 				var $t = $(this);
-				var url = self.urls.editsingle
-					+ "?" + n2SelectedQueryKey + "=" + $t.attr("data-path")
+				var url = self.appendSelection(self.urls.editsingle, { below: $t.attr("data-path") })
 					+ "&property=" + $t.attr("data-property")
-					+ "&returnUrl=" + encodeURIComponent(window.location.pathname + window.location.search);
-				var openDialog = function (e) {
-					e.preventDefault();
-					e.stopPropagation();
-					self.showDialog(url /* + encodeURIComponent(window.location.search.indexOf("scroll=") < 0 ? ("&scroll=" + window.pageYOffset) : "")*/, { width: 700, height: 520 });
-				};
-				$(this).dblclick(openDialog).each(function () {
+					+ "&versionKey=" + $t.attr("data-versionKey")
+					+ "&returnUrl=" + encodeURIComponent(window.location.pathname + window.location.search)
+					+ "&edit=drag";
+				
+				$(this).dblclick(function (e) {
+					window.location = url;
+				}).each(function () {
 					if ($(this).closest("a").length > 0)
-						$(this).click(function (e) { console.log(this); e.preventDefault(); e.stopPropagation(); });
+						$(this).click(function (e) { e.preventDefault(); e.stopPropagation(); });
 				});
-				$("<a class='editor' href='" + url + "'>Edit</a>").click(openDialog).appendTo(this);
+				$("<a class='editor n2-icon-pencil' href='" + url + "'></a>").appendTo(this);
 			});
 		},
 		scroll: function () {
@@ -172,23 +197,36 @@
 				$draggable.html("");
 				$droppable.append("<div class='dropping'/>");
 
+				var $next = $droppable.filter(".before").next();
 				var data = {
 					ctrlKey: e.ctrlKey,
 					item: $draggable.attr("data-item"),
+					versionKey: $draggable.attr("data-versionKey"),
+					versionIndex: $draggable.attr("data-versionIndex") || n2ddcp.context.versionIndex,
 					discriminator: $draggable.attr("data-type"),
 					template: $draggable.attr("data-template"),
-					before: $droppable.filter(".before").next().attr("data-item") || "",
+					before: ($next.attr("data-versionKey") ? "" : $next.attr("data-item")) || "", // data-item may be page+index+key when new part
+					beforeSortOrder: $next.attr("data-sortOrder") || "",
 					below: $droppable.closest(".dropZone").attr("data-item"),
 					zone: $droppable.closest(".dropZone").attr("data-zone"),
 					returnUrl: window.location.href,
 					dropped: true
 				};
+				if ($droppable.closest(".dropZone").attr("data-versionIndex")) {
+					data.belowVersionIndex = $droppable.closest(".dropZone").attr("data-versionIndex");
+					data.belowVersionKey = $droppable.closest(".dropZone").attr("data-versionKey");
+				}
+				if ($next.attr("data-versionKey")) {
+					data.beforeVersionKey = $next.attr("data-versionKey");
+					data.beforeVersionIndex = $next.attr("data-versionIndex");
+				}
 
 				handler.process(data);
 			}
 		},
 
 		stopDragging: function (e, ui) {
+			n2SlidingCurtain.fadeIn();
 			$(this).html($(this).data("html")); // restore html removed by jquery ui
 			$(this).removeClass("dragged");
 			$(".dropPoint").remove();
@@ -197,6 +235,7 @@
 		},
 
 		startDragging: function (e, ui) {
+			n2SlidingCurtain.fadeOut();
 			$(this).data("html", $(this).html());
 			var dragged = this;
 			var handler = $(dragged).data("handler");
@@ -232,13 +271,15 @@
 			command.random = Math.random();
 
 			var url = self.urls[command.action];
+			url = self.appendSelection(url, command);
 
 			var reloaded = false;
 			$.post(url, command, function (data) {
 				reloaded = true;
-				if (data.redirect && command.action == "create" && data.dialog !== "no")
-					self.showDialog(data.redirect);
-				else if (data.redirect)
+				//if (data.redirect && command.action == "create" && data.dialog !== "no")
+				//	self.showDialog(data.redirect);
+				//else
+				if (data.redirect)
 					window.location = data.redirect;
 				else
 					window.location.reload();
@@ -270,7 +311,7 @@
 
 		recalculate: function () {
 			var $sc = $(this.selector)
-			this.closedPos = { top: (30 - $sc.height()) + "px", left: (20 - $sc.width()) + "px" };
+			this.closedPos = { top: (33 - $sc.height()) + "px", left: (5 - $sc.width()) + "px" };
 			if (!this.isOpen()) $sc.css(this.closedPos);
 		},
 
@@ -281,40 +322,88 @@
 		init: function (selector, startsOpen) {
 			this.selector = selector;
 			var $sc = $(selector);
-			this.recalculate();
 			var self = this;
 
-			var curtain = {
-				open: function (e) {
-					if (e) {
-						$sc.animate(self.openPos);
-					} else {
-						$sc.css(self.openPos);
-					}
-					$sc.addClass("opened");
-					$.cookie("sc_open", "true", { expires: 1 });
-				},
-				close: function (e) {
-					if (e) {
-						$sc.animate(self.closedPos);
-					} else {
-						$sc.css(self.closedPos);
-					}
-					$sc.removeClass("opened");
-					$.cookie("sc_open", null);
+			$(function () {
+				self.recalculate();
+				setTimeout(function () { self.recalculate(); }, 100);
+			});
+
+			self.open = function (e) {
+				if (e) {
+					$sc.animate(self.openPos);
+				} else {
+					$sc.css(self.openPos);
 				}
+				$sc.addClass("opened");
+				$.cookie("sc_open", "true", { expires: 1 });
+			};
+			self.close = function (e) {
+				if (e) {
+					$sc.animate(self.closedPos);
+				} else {
+					$sc.css(self.closedPos);
+				}
+				$sc.removeClass("opened");
+				$.cookie("sc_open", null);
+			};
+			self.fadeIn = function (e) {
+				$sc.fadeIn();
+			};
+			self.fadeOut = function (e) {
+				$sc.fadeOut();
 			};
 
 			if (startsOpen) {
 				$sc.animate(self.openPos).addClass("opened");
 			} else if (this.isOpen()) {
-				curtain.open();
+				self.open();
 			} else {
-				curtain.close();
+				self.close();
 			}
 
-			$sc.find(".close").click(curtain.close);
-			$sc.find(".open").click(curtain.open);
+			$sc.find(".close").click(self.close);
+			$sc.find(".open").click(self.open);
 		}
 	};
+
+	window.frameInteraction = {
+		location: "Organize",
+		ready: true,
+		getActions: function() {
+
+			function create(commandElement) {
+				return {
+					Title: $(commandElement).attr('title'),
+					Id: commandElement.id,
+					Selector: '#' + commandElement.id,
+					Href: commandElement.href,
+					CssClass: commandElement.className,
+					IconClass: $(commandElement).attr('data-icon-class')
+				};
+			};
+			var actions = [];
+			var idCounter = 0;
+			$('.controlPanel .plugins .control > a').not('.cpView, .cpAdminister, .cpOrganize, .complementary, .authorizedFalse').each(function() {
+				if (!this.id)
+					this.id = "action" + ++idCounter;
+				actions.push({ Current: create(this) });
+			});
+
+			if (actions.length == 0)
+				return actions;
+			return [{
+				Current: actions[0].Current,
+				Children: actions.slice(1)
+			}];
+		},
+		hideToolbar: function(force) {
+			$('.controlPanel .plugins .control > a').not('.cpView, .cpAdminister, .cpOrganize, .complementary, .authorizedFalse')
+				.parent().hide();
+		},
+		execute: function(selector) {
+			window.location = $(selector).attr('href');
+		}
+	};
+
 })(jQuery);

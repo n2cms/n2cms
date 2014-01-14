@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace N2.Tests.Globalization.Items
 {
@@ -11,11 +11,16 @@ namespace N2.Tests.Globalization.Items
             get { throw new NotImplementedException(); }
         }
 
-		public N2.Edit.Trash.TrashPurgeInterval PurgeInterval
-		{
-			get { throw new NotImplementedException(); }
-		}
+        public N2.Edit.Trash.TrashPurgeInterval PurgeInterval
+        {
+            get { throw new NotImplementedException(); }
+        }
 
-		#endregion
-	}
+        public bool AsyncTrashPurging
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion
+    }
 }

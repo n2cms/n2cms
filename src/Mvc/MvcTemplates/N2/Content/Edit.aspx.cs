@@ -1,8 +1,10 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.UI.WebControls;
 using N2.Definitions;
+using N2.Edit.Versioning;
 using N2.Edit.Web;
 using N2.Edit.Workflow;
 using N2.Persistence;
@@ -10,27 +12,34 @@ using N2.Persistence.Finder;
 using N2.Security;
 using N2.Web;
 using N2.Web.UI.WebControls;
+using N2.Edit.Activity;
+using N2.Management.Activity;
+using N2.Edit.AutoPublish;
 
 namespace N2.Edit
 {
-	[NavigationLinkPlugin("Edit", "edit", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 20, 
-		GlobalResourceClassName = "Navigation", 
-		RequiredPermission = Permission.Write)]
+	[NavigationLinkPlugin("Edit", "edit", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 20,
+		GlobalResourceClassName = "Navigation",
+		RequiredPermission = Permission.Write,
+		IconClass = "n2-icon-edit-sign",
+		Legacy = true)]
 	[ToolbarPlugin("EDIT", "edit", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 50, ToolTip = "edit",
-		GlobalResourceClassName = "Toolbar", 
-		RequiredPermission = Permission.Write)]
-	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "Edit page", 50, ControlPanelState.Visible, 
-		RequiredPermission = Permission.Write)]
-	[ControlPanelLink("cpEditPreview", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing, 
-		RequiredPermission = Permission.Write)]
-	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 20, 
-		RequiredPermission = Permission.Publish)]
-	[ControlPanelPreviewDiscard("Irrecoverably delete the currently displayed version.", 30,
+		GlobalResourceClassName = "Toolbar",
+		RequiredPermission = Permission.Write,
+		OptionProvider = typeof(EditOptionProvider),
+		Legacy = true)]
+	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}&versionIndex={Selected.VersionIndex}", "Edit page", 50, ControlPanelState.Visible | ControlPanelState.DragDrop,
+		CssClass = "complementary",
+		RequiredPermission = Permission.Write,
+		IconClass = "n2-icon-edit-sign")]
+	[ControlPanelPreviewPublish("Publish draft", 70,
 		RequiredPermission = Permission.Publish)]
 	[ControlPanelEditingSave("Save changes", 10,
 		RequiredPermission = Permission.Write)]
-    [ControlPanelLink("cpEditingCancel", "{ManagementUrl}/Resources/icons/cancel.png", "{Selected.Url}", "Cancel changes", 20, ControlPanelState.Editing, 
-		UrlEncode = false)]
+	[ControlPanelLink("cpEditingCancel", "{ManagementUrl}/Resources/icons/cancel.png", "{Selected.Url}", "Cancel changes", 20, ControlPanelState.Editing,
+		UrlEncode = false,
+		IconClass = "n2-icon-check-minus")]
+	[N2.Management.Activity.ActivityNotification]
 	public partial class Edit : EditPage, IItemEditor
 	{
 		protected PlaceHolder phPluginArea;
@@ -46,6 +55,7 @@ namespace N2.Edit
 		protected CommandDispatcher Commands;
 		protected IEditManager EditManager;
 		protected IEditUrlManager ManagementPaths;
+		protected ContentVersionRepository Repository;
 
 		protected override void OnPreInit(EventArgs e)
 		{
@@ -56,14 +66,15 @@ namespace N2.Edit
 			Commands = Engine.Resolve<CommandDispatcher>();
 			EditManager = Engine.EditManager;
 			ManagementPaths = Engine.ManagementPaths;
+			Repository = Engine.Resolve<ContentVersionRepository>();
 		}
 
 		protected override void OnInit(EventArgs e)
 		{
 			N2.Resources.Register.JQueryUi(this);
 
-			if(Request["refresh"] == "true")
-                Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
+			if (Request["refresh"] == "true")
+				Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
 
 			InitPlugins();
 			InitItemEditor();
@@ -75,29 +86,37 @@ namespace N2.Edit
 
 		private void InitButtons()
 		{
-            if (Request["cancel"] == "reloadTop")
-                hlCancel.NavigateUrl = "javascript:window.top.location.reload();";
-            else
-                hlCancel.NavigateUrl = CancelUrl();
+			if (Request["cancel"] == "reloadTop")
+				hlCancel.NavigateUrl = "javascript:window.top.location.reload();";
+			else
+				hlCancel.NavigateUrl = CancelUrl();
 
-            bool isPublicableByUser = Security.IsAuthorized(User, ie.CurrentItem, Permission.Publish);
+			bool isPublicableByUser = Security.IsAuthorized(User, ie.CurrentItem, Permission.Publish);
+			bool isPublicableItem = ie.CurrentItem.IsPage || !ie.CurrentItem.IsVersionable();
 			bool isVersionable = Versions.IsVersionable(ie.CurrentItem);
-            bool isWritableByUser = Security.IsAuthorized(User, Selection.SelectedItem, Permission.Write);
-            bool isExisting = ie.CurrentItem.ID != 0;
+			bool isWritableByUser = Security.IsAuthorized(User, Selection.SelectedItem, Permission.Write);
+			bool isExisting = ie.CurrentItem.ID != 0;
 
-            btnSavePublish.Enabled = isPublicableByUser;
-            btnPreview.Enabled = isVersionable && isWritableByUser;
-            btnSaveUnpublished.Enabled = isVersionable && isWritableByUser;
-			hlFuturePublish.Enabled = isVersionable && isPublicableByUser;
+			btnSavePublish.Visible = isPublicableItem && isPublicableByUser;
+			if (btnSavePublish.Visible)
+				btnSavePublish.CssClass += " primary-action";
+			else
+				btnPreview.CssClass += " primary-action";
+			btnPreview.Visible = isVersionable && isWritableByUser;
+			btnSaveUnpublished.Visible = isVersionable && isWritableByUser;
+			hlFuturePublish.Visible = isVersionable && isPublicableByUser;
+			btnUnpublish.Visible = isExisting && isPublicableByUser && ie.CurrentItem.IsPublished();
 		}
 
 		protected override void OnLoad(EventArgs e)
 		{
 			LoadZones();
 			LoadInfo();
+			LoadActivity();
+			LoadVersions();
 
 			if (!IsPostBack)
-                RegisterSetupToolbarScript(Selection.SelectedItem);
+				RegisterSetupToolbarScript(Selection.SelectedItem);
 
 			base.OnLoad(e);
 		}
@@ -105,100 +124,117 @@ namespace N2.Edit
 		protected override void OnPreRender(EventArgs e)
 		{
 			CheckRelatedVersions(ie.CurrentItem);
-			
+
 			base.OnPreRender(e);
 		}
 
 
 
-        protected void OnPublishCommand(object sender, CommandEventArgs e)
+		protected void OnPublishCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = ie.CreateCommandContext();
-			ctx.Parameters["MoveBefore"] = Request["before"];
-			ctx.Parameters["MoveAfter"] = Request["after"];
+			ApplySortInfo(ctx);
 			Commands.Publish(ctx);
+
+			Engine.AddActivity(new ManagementActivity { Operation = "Publish", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
 
 			HandleResult(ctx, Request["returnUrl"], Engine.GetContentAdapter<NodeAdapter>(ctx.Content).GetPreviewUrl(ctx.Content));
 		}
 
-    	protected void OnPreviewCommand(object sender, CommandEventArgs e)
+		private void ApplySortInfo(CommandContext ctx)
+		{
+			ctx.Parameters["MoveBefore"] = Request["before"];
+			ctx.Parameters["MoveBeforeVersionKey"] = Request["beforeVersionKey"];
+			ctx.Parameters["BelowVersionKey"] = Request["belowVersionKey"];
+			ctx.Parameters["MoveAfter"] = Request["after"];
+			ctx.Parameters["MoveBeforeSortOrder"] = Request["beforeSortOrder"];
+		}
+
+		protected void OnPreviewCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = ie.CreateCommandContext();
+			ApplySortInfo(ctx);
 			Commands.Save(ctx);
 
-			string returnUrl = Request["returnUrl"];
-			if (!string.IsNullOrEmpty(returnUrl))
-			{
-				returnUrl = Url.Parse(returnUrl).AppendQuery("preview", ctx.Content.ID);
-			}
+			var page = Find.ClosestPage(ctx.Content);
+			Url previewUrl = Engine.GetContentAdapter<NodeAdapter>(page).GetPreviewUrl(page);
+			if (Request["edit"] == "drag")
+				previewUrl = previewUrl.SetQueryParameter("edit", "drag");
 
-			Url previewUrl = Engine.GetContentAdapter<NodeAdapter>(ctx.Content).GetPreviewUrl(ctx.Content);
-			previewUrl = previewUrl.AppendQuery("preview", ctx.Content.ID);
-			if(ctx.Content.VersionOf != null)
-				previewUrl = previewUrl.AppendQuery("original", ctx.Content.VersionOf.ID);
+			Engine.AddActivity(new ManagementActivity { Operation = "Preview", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
 
-			HandleResult(ctx, returnUrl, previewUrl);
+			HandleResult(ctx, previewUrl);
 		}
 
 		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = ie.CreateCommandContext();
-            Commands.Save(ctx);
+			Commands.Save(ctx);
 
 			Url redirectTo = ManagementPaths.GetEditExistingItemUrl(ctx.Content);
 			if (!string.IsNullOrEmpty(Request["returnUrl"]))
 				redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
-			
-			HandleResult(ctx, redirectTo);
-        }
 
-        protected void OnSaveFuturePublishCommand(object sender, CommandEventArgs e)
-        {
-            Validate();
-            if (IsValid)
-            {
-                ContentItem savedVersion = SaveVersionForFuturePublishing();
+			HandleResult(ctx, redirectTo);
+		}
+
+		protected void OnUnpublishCommand(object sender, CommandEventArgs e)
+		{
+			var item = ie.CurrentItem;
+			item.State = ContentState.Unpublished;
+			Engine.Persister.Save(item);
+			Refresh(item, ToolbarArea.Both);
+		}
+
+		protected void OnSaveFuturePublishCommand(object sender, CommandEventArgs e)
+		{
+			Validate();
+			if (IsValid)
+			{
+				ContentItem savedVersion = SaveVersionForFuturePublishing();
+
+				Engine.AddActivity(new ManagementActivity { Operation = "FuturePublish", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
+
 				Url redirectUrl = ManagementPaths.GetEditExistingItemUrl(savedVersion);
 				Response.Redirect(redirectUrl.AppendQuery("refresh=true"));
 			}
-        }
+		}
 
 
 
 
-        private void HandleResult(CommandContext ctx, params string[] redirectSequence)
-        {
-            if (ctx.Errors.Count > 0)
-            {
-                string message = string.Empty;
-                foreach (var ex in ctx.Errors)
-                {
-                    Engine.Resolve<IErrorNotifier>().Notify(ex);
-                    message += ex.Message + "<br/>";
-                }
-                FailValidation(message);
-            }
-			else if(ctx.ValidationErrors.Count == 0)
+		private void HandleResult(CommandContext ctx, params string[] redirectSequence)
+		{
+			if (ctx.Errors.Count > 0)
 			{
-				foreach (string redirectUrl in redirectSequence)
+				string message = string.Empty;
+				foreach (var ex in ctx.Errors)
 				{
-					if (!string.IsNullOrEmpty(redirectUrl))
-					{
-						Refresh(ctx.Content, redirectUrl);
-						return;
-					}
+					Engine.Resolve<IErrorNotifier>().Notify(ex);
+					message += ex.Message + "<br/>";
 				}
+				FailValidation(message);
 			}
-        }
+			else if (ctx.ValidationErrors.Count == 0)
+			{
+				string redirectUrl = redirectSequence.FirstOrDefault(u => !string.IsNullOrEmpty(u));
 
-        void FailValidation(string message)
-        {
-            cvException.IsValid = false;
-            cvException.ErrorMessage = message;
-        }
-		
-		
-		
+				if (ctx.RedirectUrl != null)
+					Response.Redirect(ctx.RedirectUrl.ToUrl().AppendQuery("returnUrl", redirectUrl, unlessNull: true));
+
+				Refresh(ctx.Content, ToolbarArea.Navigation);
+				Refresh(ctx.Content, redirectUrl ?? Engine.GetContentAdapter<NodeAdapter>(ctx.Content).GetPreviewUrl(ctx.Content));
+			}
+		}
+
+		void FailValidation(string message)
+		{
+			cvException.IsValid = false;
+			cvException.ErrorMessage = message;
+		}
+
+
+
 		protected override string GetToolbarSelectScript(string toolbarPluginName)
 		{
 			if (CreatingNew)
@@ -212,27 +248,27 @@ namespace N2.Edit
 			hlNewerVersion.Visible = false;
 			hlOlderVersion.Visible = false;
 
-			if (item.VersionOf != null)
+			if (!item.IsPage)
+				return;
+
+			if (item.VersionOf.HasValue)
 			{
 				DisplayThisIsVersionInfo(item.VersionOf);
 			}
 			else
 			{
-				IList<ContentItem> unpublishedVersions = Engine.Resolve<IItemFinder>()
-					.Where.VersionOf.Eq(item)
-					.And.Updated.Gt(item.Updated)
-					.OrderBy.Updated.Desc.MaxResults(1).Select();
-
-				if(unpublishedVersions.Count > 0 && unpublishedVersions[0].Updated > item.Updated)
+				var page = Find.ClosestPage(item);
+				var version = Engine.Resolve<N2.Edit.Versioning.DraftRepository>().FindDrafts(page).FirstOrDefault();
+				if (version != null && version.Saved > item.Updated)
 				{
-					DisplayThisHasNewerVersionInfo(unpublishedVersions[0]);
+					DisplayThisHasNewerVersionInfo(version.Version.FindPartVersion(item));
 				}
 			}
 		}
 
 		private void DisplayThisHasNewerVersionInfo(ContentItem itemToLink)
 		{
-            string url = Url.ToAbsolute(ManagementPaths.GetEditExistingItemUrl(itemToLink));
+			string url = Url.ToAbsolute(ManagementPaths.GetEditExistingItemUrl(itemToLink));
 			hlNewerVersion.NavigateUrl = url;
 			hlNewerVersion.Visible = true;
 		}
@@ -257,21 +293,21 @@ namespace N2.Edit
 
 		private void InitTitle()
 		{
-			if (ie.CurrentItem.ID == 0)
+			if (ie.CurrentItem.ID == 0 && !ie.CurrentItem.VersionOf.HasValue)
 			{
 				ItemDefinition definition = Definitions.GetDefinition(ie.CurrentItemType);
 				string definitionTitle = GetGlobalResourceString("Definitions", definition.Discriminator + ".Title") ?? definition.Title;
 				string format = GetLocalResourceString("EditPage.TitleFormat.New", "New \"{0}\"");
-				
+
 				string template = Request["template"];
 				if (!string.IsNullOrEmpty(template))
 				{
-					var info = Definitions.GetTemplate(definition.ItemType, template);
+					var info = Engine.Resolve<ITemplateAggregator>().GetTemplate(definition.ItemType, template);
 					definitionTitle = info.Title;
 				}
 
 				Title = string.Format(format, definitionTitle);
-				
+
 			}
 			else
 			{
@@ -287,32 +323,32 @@ namespace N2.Edit
 			string dataType = Request["dataType"];
 			string discriminator = Request["discriminator"];
 			string template = Request["template"];
-			
+
 			if (!string.IsNullOrEmpty(discriminator))
 			{
 				ie.Initialize(discriminator, template, Selection.SelectedItem);
 			}
 			else if (!string.IsNullOrEmpty(dataType))
 			{
-                Type t = Type.GetType(dataType);
-                if (t == null)
-                    throw new ArgumentException("Couldn't load a type of the given parameter '" + dataType + "'", "dataType");
-                ItemDefinition d = Definitions.GetDefinition(discriminator);
-                if(d == null)
-                    throw new N2Exception("Couldn't find any definition for type '" + t + "'");
-                ie.Discriminator = d.Discriminator;
+				Type t = Type.GetType(dataType);
+				if (t == null)
+					throw new ArgumentException(String.Format("Couldn't load a type of the given parameter '{0}'", dataType), "dataType");
+				ItemDefinition d = Definitions.GetDefinition(discriminator);
+				if (d == null)
+					throw new N2Exception("Couldn't find any definition for type '" + t + "'");
+				ie.Discriminator = d.Discriminator;
 				ie.ParentPath = Selection.SelectedItem.Path;
 			}
 			else
 			{
 				ie.Definition = Definitions.GetDefinition(Selection.SelectedItem);
-                ie.CurrentItem = Selection.SelectedItem;
+				ie.CurrentItem = Selection.SelectedItem;
 			}
 			if (Request["zoneName"] != null)
 			{
 				ie.ZoneName = Request["zoneName"];
 			}
-            dpFuturePublishDate.SelectedDate = ie.CurrentItem.Published;
+			dpFuturePublishDate.SelectedDate = ie.CurrentItem.Published;
 		}
 
 		private void LoadZones()
@@ -328,23 +364,33 @@ namespace N2.Edit
 			ucInfo.DataBind();
 		}
 
-        private ContentItem SaveVersionForFuturePublishing()
-        {
-            // Explicitly setting the current versions FuturePublishDate.
-            // The database will end up with two new rows in the detail table.
-            // On row pointing to the master and one to the latest/new version.
+		private void LoadActivity()
+		{
+			ucActivity.CurrentItem = ie.CurrentItem;
+			ucActivity.DataBind();
+		}
+
+		private void LoadVersions()
+		{
+			ucVersions.CurrentItem = ie.CurrentItem;
+			ucVersions.DataBind();
+		}
+
+		private ContentItem SaveVersionForFuturePublishing()
+		{
+			// Explicitly setting the current versions FuturePublishDate.
+			// The database will end up with two new rows in the detail table.
+			// On row pointing to the master and one to the latest/new version.
 			var cc = ie.CreateCommandContext();
 			Commands.Save(cc);
 
-			var item = cc.Content;
-			if (item.VersionOf == null)
-				item.Published = dpFuturePublishDate.SelectedDate;
-			else
-				item["FuturePublishDate"] = dpFuturePublishDate.SelectedDate;
-			Engine.Resolve<StateChanger>().ChangeTo(item, ContentState.Waiting);
-			Engine.Persister.Save(item);
-			return item;
-        }
+			if (dpFuturePublishDate.SelectedDate.HasValue)
+			{
+				Engine.Resolve<PublishScheduledAction>().MarkForFuturePublishing(cc.Content, dpFuturePublishDate.SelectedDate.Value);
+				Engine.Persister.Save(cc.Content);
+			}
+			return cc.Content;
+		}
 
 		#region IItemEditor Members
 

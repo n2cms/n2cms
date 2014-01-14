@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,135 +15,145 @@ using N2.Edit.FileSystem;
 
 namespace N2.Management.Content.Export
 {
-	public partial class ItemXmlImport : EditUserControl
-	{
-		public string UploadedFilePath
-		{
-			get { return (string)(ViewState["UploadedFilePath"] ?? ""); }
-			set { ViewState["UploadedFilePath"] = value; }
-		}
+    public partial class ItemXmlImport : EditUserControl
+    {
+        public string UploadedFilePath
+        {
+            get { return (string)(ViewState["UploadedFilePath"] ?? ""); }
+            set { ViewState["UploadedFilePath"] = value; }
+        }
 
-		public void ContinueWithImport(string tempFile)
-		{
-			UploadedFilePath = tempFile;
+        public void ContinueWithImport(string tempFile)
+        {
+            UploadedFilePath = tempFile;
 
-			try
-			{
-				IImportRecord record = Engine.Resolve<Importer>().Read(UploadedFilePath);
-				importedItems.CurrentItem = record.RootItem;
-				rptAttachments.DataSource = record.Attachments;
-				ShowErrors(record);
-			}
-			catch (WrongVersionException)
-			{
-				using (Stream s = File.OpenRead(UploadedFilePath))
-				{
-					N2XmlReader xr = new N2XmlReader(N2.Context.Current);
-					importedItems.CurrentItem = xr.Read(s);
-				}
-			}
+            try
+            {
+                IImportRecord record = Engine.Resolve<Importer>().Read(UploadedFilePath);
+                importedItems.CurrentItem = record.RootItem;
+                rptAttachments.DataSource = record.Attachments;
+                if (Selection.SelectedItem.Children.FindNamed(record.RootItem.Name) != null)
+                {
+                    pnlNewName.Visible = true;
+                    txtNewName.Text = record.RootItem.Name;
+                }
+                ShowErrors(record);
+            }
+            catch (WrongVersionException)
+            {
+                using (Stream s = File.OpenRead(UploadedFilePath))
+                {
+                    N2XmlReader xr = new N2XmlReader(N2.Context.Current);
+                    importedItems.CurrentItem = xr.Read(s);
+                }
+            }
 
-			DataBind();
-		}
+            DataBind();
+        }
 
-		protected void btnImportUploaded_Click(object sender, EventArgs e)
-		{
-			Importer importer = Engine.Resolve<Importer>();
+        protected void btnImportUploaded_Click(object sender, EventArgs e)
+        {
+            Importer importer = Engine.Resolve<Importer>();
 
-			IImportRecord record;
-			try
-			{
-				record = importer.Read(UploadedFilePath);
-				ShowErrors(record);
-			}
-			catch (WrongVersionException)
-			{
-				N2XmlReader xr = new N2XmlReader(N2.Context.Current);
-				ContentItem item = xr.Read(File.OpenRead(UploadedFilePath));
-				record = CreateRecord(item);
-			}
+            IImportRecord record;
+            try
+            {
+                record = importer.Read(UploadedFilePath);
+                ShowErrors(record);
+            }
+            catch (WrongVersionException)
+            {
+                N2XmlReader xr = new N2XmlReader(N2.Context.Current);
+                ContentItem item = xr.Read(File.OpenRead(UploadedFilePath));
+                record = CreateRecord(item);
+            }
 
-			Import(importer, record);
-		}
+            Import(importer, record);
+        }
 
-		private static IImportRecord CreateRecord(ContentItem item)
-		{
-			ReadingJournal rj = new ReadingJournal();
-			rj.Report(item);
-			return rj;
-		}
+        private static IImportRecord CreateRecord(ContentItem item)
+        {
+            ReadingJournal rj = new ReadingJournal();
+            rj.Report(item);
+            return rj;
+        }
 
-		private void Import(Importer importer, IImportRecord record)
-		{
-			try
-			{
-				if (chkSkipRoot.Checked)
-				{
-					importer.Import(record, Selection.SelectedItem, ImportOption.Children);
-					Refresh(Selection.SelectedItem, ToolbarArea.Both);
-				}
-				else
-				{
-					importer.Import(record, Selection.SelectedItem, ImportOption.All);
-					Refresh(record.RootItem, ToolbarArea.Both);
-				}
+        private void Import(Importer importer, IImportRecord record)
+        {
+            try
+            {
+                if (pnlNewName.Visible)
+                {
+                    record.RootItem.Name = txtNewName.Text;
+                }
 
-				ShowErrors(record);
-			}
-			catch (N2Exception ex)
-			{
-				cvImport.ErrorMessage = ex.Message;
-				cvImport.IsValid = false;
-				btnImportUploaded.Enabled = false;
-			}
-			finally
-			{
-				if (File.Exists(UploadedFilePath))
-					File.Delete(UploadedFilePath);
-			}
-		}
+                if (chkSkipRoot.Checked)
+                {
+                    importer.Import(record, Selection.SelectedItem, ImportOption.Children);
+                    Refresh(Selection.SelectedItem, ToolbarArea.Both);
+                }
+                else
+                {
+                    importer.Import(record, Selection.SelectedItem, ImportOption.All);
+                    Refresh(record.RootItem, ToolbarArea.Both);
+                }
 
-		void ShowErrors(IImportRecord record)
-		{
-			if (record.Errors.Count > 0)
-			{
-				StringBuilder errorText = new StringBuilder("<ul>");
-				foreach (Exception ex in record.Errors)
-				{
-					errorText.Append("<li>").Append(ex.Message).Append("</li>");
-				}
-				errorText.Append("</ul>");
+                ShowErrors(record);
+            }
+            catch (N2Exception ex)
+            {
+                cvImport.ErrorMessage = ex.Message;
+                cvImport.IsValid = false;
+                btnImportUploaded.Enabled = false;
+            }
+            finally
+            {
+                if (File.Exists(UploadedFilePath))
+                    File.Delete(UploadedFilePath);
+            }
+        }
 
-				cvImport.IsValid = false;
-				cvImport.ErrorMessage = errorText.ToString();
-			}
-		}
+        void ShowErrors(IImportRecord record)
+        {
+            if (record.Errors.Count > 0)
+            {
+                StringBuilder errorText = new StringBuilder("<ul>");
+                foreach (Exception ex in record.Errors)
+                {
+                    errorText.Append("<li>").Append(ex.Message).Append("</li>");
+                }
+                errorText.Append("</ul>");
 
-		internal void ImportNow(HttpPostedFile postedFile)
-		{
-			Importer importer = Engine.Resolve<Importer>();
+                cvImport.IsValid = false;
+                cvImport.ErrorMessage = errorText.ToString();
+            }
+        }
 
-			IImportRecord record;
-			try
-			{
-				record = importer.Read(postedFile.InputStream, postedFile.FileName);
-			}
-			catch (WrongVersionException)
-			{
-				N2XmlReader xr = new N2XmlReader(N2.Context.Current);
-				ContentItem item = xr.Read(postedFile.InputStream);
-				record = CreateRecord(item);
-				ShowErrors(record);
-			}
+        internal void ImportNow(HttpPostedFile postedFile)
+        {
+            Importer importer = Engine.Resolve<Importer>();
 
-			Import(importer, record);
-		}
+            IImportRecord record;
+            try
+            {
+                record = importer.Read(postedFile.InputStream, postedFile.FileName);
+            }
+            catch (WrongVersionException)
+            {
+                N2XmlReader xr = new N2XmlReader(N2.Context.Current);
+                ContentItem item = xr.Read(postedFile.InputStream);
+                record = CreateRecord(item);
+                ShowErrors(record);
+            }
 
-		protected string CheckExists(string url)
-		{
-			if (Engine.Resolve<IFileSystem>().FileExists(url))
-				return "(existing file will be overwritten)";
-			return string.Empty;
-		}
-	}
+            Import(importer, record);
+        }
+
+        protected string CheckExists(string url)
+        {
+            if (Engine.Resolve<IFileSystem>().FileExists(url))
+                return "(existing file will be overwritten)";
+            return string.Empty;
+        }
+    }
 }

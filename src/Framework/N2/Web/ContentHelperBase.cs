@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,156 +11,167 @@ using N2.Security;
 
 namespace N2.Web
 {
-	/// <summary>
-	/// Provides quick acccess to often used APIs.
-	/// </summary>
-	public class ContentHelperBase
-	{
-		public ContentHelperBase(IEngine engine, Func<PathData> pathGetter)
-		{
-			Engine = engine;
-			PathGetter = pathGetter;
-		}
+    /// <summary>
+    /// Provides quick acccess to often used APIs.
+    /// </summary>
+    public class ContentHelperBase
+    {
+        public ContentHelperBase(Func<IEngine> engineGetter, Func<PathData> pathGetter)
+        {
+            Current = new ContextHelper(engineGetter, pathGetter);
+        }
 
-		// accessors
+        // accessors
 
-		public IEngine Engine { get; protected set; }
+        public IEngine Engine { get { return Current.EngineGetter(); } }
 
-		public virtual IServiceContainer Services
-		{
-			get { return Engine.Container; }
-		}
+        public virtual IServiceContainer Services
+        {
+            get { return Current.Engine.Container; }
+        }
 
-		protected Func<PathData> PathGetter { get; set; }
+        /// <summary>Traverse the content hieararchy.</summary>
+        public virtual TraverseHelper Traverse
+        {
+            get { return new TraverseHelper(Current.EngineGetter, Is, Current.PathGetter); }
+        }
 
-		/// <summary>Traverse the content hieararchy.</summary>
-		public virtual TraverseHelper Traverse
-		{
-			get { return new TraverseHelper(Engine, Is, PathGetter); }
-		}
+        /// <summary>Filter collections of items.</summary>
+        public virtual FilterHelper Is
+        {
+            get { return new FilterHelper(Current.EngineGetter); }
+        }
 
-		/// <summary>Filter collections of items.</summary>
-		public virtual FilterHelper Is
-		{
-			get { return new FilterHelper(Engine); }
-		}
+        /// <summary>Search for content stored in the system.</summary>
+        public SearchHelper Search
+        {
+            get { return new SearchHelper(Current.EngineGetter); }
+        }
 
-		/// <summary>Search for content stored in the system.</summary>
-		public SearchHelper Search
-		{
-			get { return new SearchHelper(Engine); }
-		}
+        /// <summary>Access items in the current context.</summary>
+        public ContextHelper Current { get; protected set; }
 
-		/// <summary>Access items in the current context.</summary>
-		public ContextHelper Current
-		{
-			get { return new ContextHelper(Engine, PathGetter); }
-		}
+        /// <summary>Get a content helper for an alternative scope.</summary>
+        /// <param name="otherContentItem">The current item of the alternative scope.</param>
+        /// <returns>Another content helper with a different scope.</returns>
+        public virtual ContentHelperBase At(ContentItem otherContentItem)
+        {
+            EnsureAuthorized(otherContentItem);
 
-		/// <summary>Get a content helper for an alternative scope.</summary>
-		/// <param name="otherContentItem">The current item of the alternative scope.</param>
-		/// <returns>Another content helper with a different scope.</returns>
-		public virtual ContentHelperBase At(ContentItem otherContentItem)
-		{
-			EnsureAuthorized(otherContentItem);
+            return new ContentHelperBase(Current.EngineGetter, () => new PathData { CurrentItem = otherContentItem, CurrentPage = Current.Page });
+        }
 
-			return new ContentHelperBase(Engine, () => new PathData { CurrentItem = otherContentItem, CurrentPage = Current.Page});
-		}
+        /// <summary>Begins a new scope using the current content helper.</summary>
+        /// <param name="newCurrentItem">The current item to use in the new scope.</param>
+        /// <returns>An object that restores the scope upon disposal.</returns>
+        public IDisposable BeginScope(ContentItem newCurrentItem)
+        {
+            if (newCurrentItem == null) return new EmptyDisposable();
 
-		/// <summary>Begins a new scope using the current content helper.</summary>
-		/// <param name="newCurrentItem">The current item to use in the new scope.</param>
-		/// <returns>An object that restores the scope upon disposal.</returns>
-		public IDisposable BeginScope(ContentItem newCurrentItem)
-		{
-			if (newCurrentItem == null) return new EmptyDisposable();
+            return new ContentScope(newCurrentItem, this);
+        }
 
-			return new ContentScope(newCurrentItem, this);
-		}
+        /// <summary>Begins a new scope using the current content helper.</summary>
+        /// <param name="newCurrentPath">The current path to use in the new scope.</param>
+        /// <returns>An object that restores the scope upon disposal.</returns>
+        public IDisposable BeginScope(PathData newCurrentPath)
+        {
+            if (newCurrentPath == null) return new EmptyDisposable();
 
-		private void EnsureAuthorized(ContentItem newCurrentItem)
-		{
-			if (!IsAuthorized(newCurrentItem))
-				throw new PermissionDeniedException(newCurrentItem);
-		}
+            return new ContentScope(newCurrentPath, this);
+        }
 
-		private bool IsAuthorized(ContentItem item)
-		{
-			var user = Services.Resolve<IWebContext>().User;
-			return Engine.SecurityManager.IsAuthorized(item, user);
-		}
+        protected virtual void EnsureAuthorized(ContentItem newCurrentItem)
+        {
+            if (!IsAuthorized(newCurrentItem))
+                throw new PermissionDeniedException(newCurrentItem);
+        }
 
-		/// <summary>Begins a new scope using the current content helper.</summary>
-		/// <param name="newCurrentItemUrlOrId">A string that is parsed as an item id or item url.</param>
-		/// <returns>An object that restores the scope upon disposal.</returns>
-		public IDisposable BeginScope(string newCurrentItemUrlOrId)
-		{
-			if (newCurrentItemUrlOrId != null)
-			{
-				ContentItem item = Parse(newCurrentItemUrlOrId);
+        private bool IsAuthorized(ContentItem item)
+        {
+            var user = Services.Resolve<IWebContext>().User;
+            return Current.Engine.SecurityManager.IsAuthorized(item, user);
+        }
 
-				if (item != null)
-					return BeginScope(item);
-			}
-			return new EmptyDisposable();
-		}
+        /// <summary>Begins a new scope using the current content helper.</summary>
+        /// <param name="newCurrentItemUrlOrId">A string that is parsed as an item id or item url.</param>
+        /// <returns>An object that restores the scope upon disposal.</returns>
+        public IDisposable BeginScope(string newCurrentItemUrlOrId)
+        {
+            if (newCurrentItemUrlOrId != null)
+            {
+                ContentItem item = Parse(newCurrentItemUrlOrId);
 
-		/// <summary>Tries to parse the given string as an item id, or an item url.</summary>
-		/// <param name="itemUrlOrId">An id, or the url to an item.</param>
-		/// <returns>An item or, null if no match was found.</returns>
-		/// <remarks>If the logged on user isn't authoriezd towards the item null is returned.</remarks>
-		public ContentItem Parse(string itemUrlOrId)
-		{
-			if (string.IsNullOrEmpty(itemUrlOrId))
-				return null;
+                if (item != null)
+                    return BeginScope(item);
+            }
+            return new EmptyDisposable();
+        }
 
-			int id;
-			ContentItem item = null;
-			if (int.TryParse(itemUrlOrId, out id))
-				item = Engine.Persister.Get(id);
+        /// <summary>Tries to parse the given string as an item id, or an item url.</summary>
+        /// <param name="itemUrlOrId">An id, or the url to an item.</param>
+        /// <returns>An item or, null if no match was found.</returns>
+        /// <remarks>If the logged on user isn't authoriezd towards the item null is returned.</remarks>
+        public ContentItem Parse(string itemUrlOrId)
+        {
+            if (string.IsNullOrEmpty(itemUrlOrId))
+                return null;
 
-			if (item == null)
-				item = Services.Resolve<IUrlParser>().Parse(itemUrlOrId);
+            int id;
+            ContentItem item = null;
+            if (int.TryParse(itemUrlOrId, out id))
+                item = Current.Engine.Persister.Get(id);
 
-			if (!IsAuthorized(item))
-				return null;
+            if (item == null)
+                item = Services.Resolve<IUrlParser>().Parse(itemUrlOrId);
 
-			return item;
-		}
+            if (item == null || !IsAuthorized(item))
+                return null;
 
-		/// <summary>Begins a new scope using the current content helper.</summary>
-		/// <param name="newCurrentItemUrlOrId">A string that is parsed as an item id or item url.</param>
-		/// <param name="reallyBeginScope">Option to keep the current scope when the paramter is false.</param>
-		/// <returns>An object that restores the scope upon disposal.</returns>
-		public IDisposable BeginScope(string newCurrentItemUrlOrId, bool reallyBeginScope)
-		{
-			if (!reallyBeginScope)
-				return new EmptyDisposable();
+            return item;
+        }
 
-			return BeginScope(newCurrentItemUrlOrId);
-		}
+        /// <summary>Begins a new scope using the current content helper.</summary>
+        /// <param name="newCurrentItemUrlOrId">A string that is parsed as an item id or item url.</param>
+        /// <param name="reallyBeginScope">Option to keep the current scope when the paramter is false.</param>
+        /// <returns>An object that restores the scope upon disposal.</returns>
+        public IDisposable BeginScope(string newCurrentItemUrlOrId, bool reallyBeginScope)
+        {
+            if (!reallyBeginScope)
+                return new EmptyDisposable();
 
-		#region class ContentScope
-		class ContentScope : IDisposable
-		{
-			ContentHelperBase contentHelper;
-			Func<PathData> previousGetter;
+            return BeginScope(newCurrentItemUrlOrId);
+        }
 
-			public ContentScope(ContentItem newCurrentItem, ContentHelperBase contentHelper)
-			{
-				this.contentHelper = contentHelper;
-				previousGetter = contentHelper.PathGetter;
-				contentHelper.PathGetter = () => new PathData { CurrentItem = newCurrentItem, CurrentPage = newCurrentItem.IsPage ? newCurrentItem : previousGetter().CurrentPage };
-			}
+        #region class ContentScope
+        class ContentScope : IDisposable
+        {
+            ContentHelperBase contentHelper;
+            Func<PathData> previousGetter;
 
-			#region IDisposable Members
+            public ContentScope(PathData newCurrentPath, ContentHelperBase contentHelper)
+            {
+                this.contentHelper = contentHelper;
+                previousGetter = contentHelper.Current.PathGetter;
+                contentHelper.Current.PathGetter = () => newCurrentPath;
+            }
 
-			public void Dispose()
-			{
-				contentHelper.PathGetter = previousGetter;
-			}
+            public ContentScope(ContentItem newCurrentItem, ContentHelperBase contentHelper)
+            {
+                this.contentHelper = contentHelper;
+                previousGetter = contentHelper.Current.PathGetter;
+                contentHelper.Current.PathGetter = () => new PathData { CurrentItem = newCurrentItem, CurrentPage = newCurrentItem.IsPage ? newCurrentItem : previousGetter().CurrentPage };
+            }
 
-			#endregion
-		}
-		#endregion
-	}
+            #region IDisposable Members
+
+            public void Dispose()
+            {
+                contentHelper.Current.PathGetter = previousGetter;
+            }
+
+            #endregion
+        }
+        #endregion
+    }
 }

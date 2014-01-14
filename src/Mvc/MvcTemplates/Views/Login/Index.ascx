@@ -20,7 +20,7 @@
 				<label for="remember"><%=GetLocalResourceObject("RememberMe") %></label>
 			</div>
 			<div class="bf">
-				<%=Html.AntiForgeryToken("login")%>
+				<%=Html.AntiForgeryToken()%>
 				<input value="Login" type="submit" />
 				<%=Html.ValidationMessage("Login.Failed")%>
                 <% if (CurrentItem.RegisterPage != null) { %>

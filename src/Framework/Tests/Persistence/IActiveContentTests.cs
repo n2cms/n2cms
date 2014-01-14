@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,51 +10,51 @@ using Shouldly;
 
 namespace N2.Tests.Persistence
 {
-	[TestFixture]
-	public class IActiveContentTests
-	{
-		private ContentPersister persister;
-		private ActiveContentItem item;
+    [TestFixture]
+    public class IActiveContentTests
+    {
+        private ContentPersister persister;
+        private ActiveContentItem item;
 
-		[SetUp]
-		public void SetUp()
-		{
-			persister = TestSupport.SetupFakePersister();
-			item = new ActiveContentItem();
-		}
+        [SetUp]
+        public void SetUp()
+        {
+            persister = TestSupport.SetupFakePersister();
+            item = new ActiveContentItem();
+        }
 
-		[Test]
-		public void Save_InvokesActiveContent()
-		{
-			persister.Save(item);
+        [Test]
+        public void Save_InvokesActiveContent()
+        {
+            persister.Save(item);
 
-			item.Actions.Single().ShouldBe("Save");
-		}
+            item.Actions.Single().ShouldBe("Save");
+        }
 
-		[Test]
-		public void Delete_InvokesActiveContent()
-		{
-			persister.Delete(item);
+        [Test]
+        public void Delete_InvokesActiveContent()
+        {
+            persister.Delete(item);
 
-			item.Actions.Single().ShouldBe("Delete");
-		}
+            item.Actions.Single().ShouldBe("Delete");
+        }
 
-		[Test]
-		public void Move_InvokesActiveContent()
-		{
-			var newParent = new ActiveContentItem();
-			persister.Move(item, newParent);
+        [Test]
+        public void Move_InvokesActiveContent()
+        {
+            var newParent = new ActiveContentItem();
+            persister.Move(item, newParent);
 
-			item.Actions.Single().ShouldBe("MoveTo " + newParent);
-		}
+            item.Actions.Single().ShouldBe("MoveTo " + newParent);
+        }
 
-		[Test]
-		public void Copy_InvokesActiveContent()
-		{
-			var newParent = new ActiveContentItem();
-			persister.Copy(item, newParent);
+        [Test]
+        public void Copy_InvokesActiveContent()
+        {
+            var newParent = new ActiveContentItem();
+            persister.Copy(item, newParent);
 
-			item.Actions.Single().ShouldBe("CopyTo " + newParent);
-		}
-	}
+            item.Actions.Single().ShouldBe("CopyTo " + newParent);
+        }
+    }
 }

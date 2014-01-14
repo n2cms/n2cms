@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace N2
 {
@@ -28,22 +29,15 @@ namespace N2
     /// </summary>
     public class ItemEventArgs : EventArgs
     {
-        private ContentItem affectedItem;
-
-        
         /// <summary>Creates a new instance of the ItemEventArgs.</summary>
         /// <param name="item">The item the associated with these event arguments.</param>
         public ItemEventArgs(ContentItem item)
         {
-            this.affectedItem = item;
+            AffectedItem = item;
         }
 
 
         /// <summary>Gets or sets the item associated with these arguments.</summary>
-        public ContentItem AffectedItem
-        {
-            get { return affectedItem; }
-            set { affectedItem = value; }
-        }
+        public ContentItem AffectedItem { get; set; }
     }
 }

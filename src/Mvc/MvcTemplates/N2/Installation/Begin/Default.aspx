@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
 	<title>Install N2</title>
+	<link href="../../Resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 	<link rel="stylesheet" type="text/css" href="../../Resources/Css/all.css" />
 	<link rel="stylesheet" type="text/css" href="../../Resources/Css/framed.css" />
 	<link rel="stylesheet" type="text/css" href="../../Resources/Css/themes/default.css" />
@@ -22,22 +23,34 @@
 <body>
 	<form id="form1" runat="server">
 	<div>
-		<ul class="tabs">
-			<li class="tab selected"><a href="#">0. Prepare yourself</a></li>
-			<li class="tab"><a href="<%= continueUrl %>">1-3. Continue installation</a></li>
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#">0. Prepare yourself</a></li>
+			<li><a href="<%= continueUrl %>">1-3. Continue installation</a></li>
 		</ul>
-		<div class="tabPanel">
-			<asp:CustomValidator ID="cvSave" runat="server" />
+		<div class="tab-content">
+			<asp:CustomValidator ID="cvSave" runat="server" CssClass="alert alert-error" Display="Dynamic" />
+			<pre runat="server" visible="false" id="preManualConfig"></pre>
+
 			<% if (!installationAllowed) { %>
 				<%= N2.Management.Installation.InstallationUtility.InstallationUnallowedHtml %>
 			<% } else if (needsPasswordChange && !autoLogin) { %>
 				<h1>Welcome to <a href="http://n2cms.com/">N2 CMS</a></h1>
-				<p>Please give a new password for the user <strong>admin</strong>.</p>
-				<p><asp:Label Text="User Name" AssociatedControlID="lblUserName" runat="server" /><asp:Label Text="admin" ID="lblUserName" runat="server" /></p>
-				<p><asp:Label Text="Password" AssociatedControlID="txtPassword" runat="server" /><asp:TextBox TextMode="Password" ID="txtPassword" runat="server" /><asp:RequiredFieldValidator ID="RequiredFieldValidator1" ControlToValidate="txtPassword" Text="Password is required" runat="server" /></p>
-				<p><asp:Label Text="Repeat Password" AssociatedControlID="txtPassword" runat="server" /><asp:TextBox TextMode="Password" ID="txtRepeatPassword" runat="server" /><asp:RequiredFieldValidator ControlToValidate="txtRepeatPassword" runat="server" /><asp:CompareValidator ControlToValidate="txtRepeatPassword" ControlToCompare="txtPassword" Text="Passwords doesn't match" runat="server" /></p>
-				<p><asp:CheckBox ID="chkLoginUrl" Checked="true" Text="Use N2 to sign in on this site" ToolTip="Checking this box will update web.config forms element" runat="server" /></p>
-				<p><asp:Button runat="server" Text="OK" OnCommand="OkCommand" /></p>
+				<p>
+					<asp:CheckBox OnCheckedChanged="chkLoginUrl_CheckedChanged" AutoPostBack="true" ID="chkLoginUrl" Checked="true" Text="Use N2 to sign in on this site" ToolTip="Checking this box will update web.config forms element and membership providers. You can reconfigure this later in web.config." runat="server" />
+					<em>(Recommended! You most likely need this to log in)</em>
+				</p>
+				<asp:Panel runat="server" ID="pnlPassword">
+					<p>Please select a secure password for the <strong>N2 CMS Superadmin</strong>. Other administrators and editors can be created later.</p>
+					<p><asp:Label Text="User Name" AssociatedControlID="lblUserName" runat="server" /><asp:Label Text="admin" ID="lblUserName" runat="server" Font-Bold="true" /></p>
+					<p><asp:Label Text="Password" AssociatedControlID="txtPassword" runat="server" /><asp:TextBox TextMode="Password" ID="txtPassword" runat="server" /><asp:RequiredFieldValidator ID="RequiredFieldValidator1" ControlToValidate="txtPassword" Text="Password is required" runat="server" /></p>
+					<p><asp:Label Text="Repeat Password" AssociatedControlID="txtPassword" runat="server" /><asp:TextBox TextMode="Password" ID="txtRepeatPassword" runat="server" /><asp:RequiredFieldValidator ControlToValidate="txtRepeatPassword" runat="server" /><asp:CompareValidator ControlToValidate="txtRepeatPassword" ControlToCompare="txtPassword" Text="Passwords doesn't match" runat="server" /></p>
+					<p>
+						<asp:Button runat="server" Text="OK" OnCommand="OkCommand" CssClass="btn btn-primary" />
+					</p>
+				</asp:Panel>
+				<asp:Panel runat="server" ID="pnlNoPassword" Visible="false">
+					<p><a href="<%= continueUrl %>">Continue anyway</a></p>
+				</asp:Panel>
 			<%} else if (action == "install"){%>
 				<h1>Welcome to <a href="http://n2cms.com/">N2 CMS</a> Installation Wizard</h1>
 				<% if (autoLogin) { %>
@@ -79,8 +92,8 @@
 				<p><a href="<%= N2.Web.Url.ResolveTokens(config.RebaseUrl) %>"><strong>Rebase</strong> links from another virtual directory &raquo;</a></p>
 			<%}%>
 			<hr />
-			<p><strong>Already done this?</strong> There might be problems connecting to the database. To prevent this screen from appearing modify web.config:</p>
-			<code><pre>&lt;n2&gt;&lt;edit&gt;&lt;installer checkInstallationStatus="<strong>false</strong>"/&gt;</pre></code>
+			<p><strong>Already installed?</strong> There might be problems connecting to the database. To prevent this screen from appearing modify web.config:</p>
+			<pre>&lt;n2&gt;&lt;edit&gt;&lt;installer checkInstallationStatus="<strong>false</strong>"/&gt;</pre>
 		</div>
 	</div>
 	</form>

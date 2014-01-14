@@ -1,4 +1,4 @@
-﻿using N2.Engine;
+using N2.Engine;
 using N2.Engine.Castle;
 using N2.Engine.MediumTrust;
 using N2.Persistence;
@@ -10,80 +10,89 @@ using N2.Security;
 
 namespace N2.Tests.Persistence
 {
-	[TestFixture]
-	public class WindsorContentDependencyInjectorTests : ContentDependencyInjectorTests
-	{
-		public override IServiceContainer GetContainer()
-		{
-			return new WindsorServiceContainer();
-		}
-	}
+    [TestFixture]
+    public class WindsorContentDependencyInjectorTests : ContentDependencyInjectorTests
+    {
+        public override IServiceContainer GetContainer()
+        {
+            return new WindsorServiceContainer();
+        }
+    }
 
-	[TestFixture]
-	public class MediumTrustContentDependencyInjectorTests : ContentDependencyInjectorTests
-	{
-		public override IServiceContainer GetContainer()
-		{
-			return new MediumTrustServiceContainer();
-		}
-	}
+    [TestFixture]
+    public class MediumTrustContentDependencyInjectorTests : ContentDependencyInjectorTests
+    {
+        public override IServiceContainer GetContainer()
+        {
+            return new MediumTrustServiceContainer();
+        }
+    }
 
-	public class InjectableItem : ContentItem,
-		IInjectable<IItemNotifier>,
-		IInjectable<IServiceContainer>
-	{
-		public IItemNotifier dependency1;
-		public IServiceContainer dependency2;
+    [TestFixture]
+    public class TinyIoCContentDependencyInjectorTests : ContentDependencyInjectorTests
+    {
+        public override IServiceContainer GetContainer()
+        {
+            return new N2.Engine.TinyIoC.TinyIoCServiceContainer();
+        }
+    }
 
-		#region IDependentEntity<IItemNotifier> Members
+    public class InjectableItem : ContentItem,
+        IInjectable<IItemNotifier>,
+        IInjectable<IServiceContainer>
+    {
+        public IItemNotifier dependency1;
+        public IServiceContainer dependency2;
 
-		public void Set(IItemNotifier dependency)
-		{
-			dependency1 = dependency;
-		}
+        #region IDependentEntity<IItemNotifier> Members
 
-		#endregion
+        public void Set(IItemNotifier dependency)
+        {
+            dependency1 = dependency;
+        }
 
-		#region IDependentEntity<IServiceContainer> Members
+        #endregion
 
-		public void Set(IServiceContainer dependency)
-		{
-			dependency2 = dependency;
-		}
+        #region IDependentEntity<IServiceContainer> Members
 
-		#endregion
-	}
+        public void Set(IServiceContainer dependency)
+        {
+            dependency2 = dependency;
+        }
 
-	public abstract class ContentDependencyInjectorTests
-	{
-		public abstract IServiceContainer GetContainer();
-		ContentDependencyInjector injector;
-		ItemNotifier notifier;
+        #endregion
+    }
 
-		[SetUp]
-		public void SetUp()
-		{
-			notifier = new ItemNotifier();
+    public abstract class ContentDependencyInjectorTests
+    {
+        public abstract IServiceContainer GetContainer();
+        ContentDependencyInjector injector;
+        ItemNotifier notifier;
 
-			var container = GetContainer();
-			container.AddComponent("", typeof(EntityDependencySetter<>), typeof(EntityDependencySetter<>));
-			container.AddComponentInstance("", typeof(IUrlParser), MockRepository.GenerateStub<IUrlParser>());
-			container.AddComponentInstance("", typeof(IServiceContainer), container);
-			container.AddComponentInstance("", typeof(IItemNotifier), notifier);
+        [SetUp]
+        public void SetUp()
+        {
+            notifier = new ItemNotifier();
 
-			injector = new ContentDependencyInjector(container, TestSupport.SetupDefinitions(typeof(InjectableItem)), notifier);
-			injector.Start();
-		}
+            var container = GetContainer();
+            container.AddComponent("a", typeof(EntityDependencySetter<>), typeof(EntityDependencySetter<>));
+            container.AddComponentInstance("b", typeof(IUrlParser), MockRepository.GenerateStub<IUrlParser>());
+            container.AddComponentInstance("c", typeof(IServiceContainer), container);
+            container.AddComponentInstance("d", typeof(IItemNotifier), notifier);
 
-		[Test]
-		public void Dependencies_AreInjected()
-		{
-			var item = new InjectableItem();
-			var changed = notifier.NotifiyCreated(item);
+            injector = new ContentDependencyInjector(container, TestSupport.SetupDefinitions(typeof(InjectableItem)), notifier);
+            injector.Start();
+        }
 
-			Assert.That(changed, Is.True);
-			Assert.That(item.dependency1, Is.Not.Null);
-			Assert.That(item.dependency2, Is.Not.Null);
-		}
-	}
+        [Test]
+        public void Dependencies_AreInjected()
+        {
+            var item = new InjectableItem();
+            var changed = notifier.NotifiyCreated(item);
+
+            Assert.That(changed, Is.True);
+            Assert.That(item.dependency1, Is.Not.Null);
+            Assert.That(item.dependency2, Is.Not.Null);
+        }
+    }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -25,20 +25,20 @@ namespace N2.Management.Search
 
         protected void OnClear(object sender, CommandEventArgs args)
         {
-            Engine.Resolve<IIndexer>().Clear();
+            Engine.Resolve<IContentIndexer>().Clear();
         }
         protected void OnIndex(object sender, CommandEventArgs args)
         {
-            Engine.Resolve<IAsyncIndexer>().ReindexDescendants(Engine.Content.Traverse.RootPage, false);
+            Engine.Resolve<IAsyncIndexer>().ReindexDescendants(Engine.Content.Traverse.RootPage.ID, false);
         }
         protected void OnReindex(object sender, CommandEventArgs args)
         {
-            Engine.Resolve<IAsyncIndexer>().ReindexDescendants(Engine.Content.Traverse.RootPage, true);
+            Engine.Resolve<IAsyncIndexer>().ReindexDescendants(Engine.Content.Traverse.RootPage.ID, true);
         }
 
         protected void OnSearch(object sender, CommandEventArgs args)
         {
-            rptSearch.DataSource = Engine.Resolve<ITextSearcher>()
+            rptSearch.DataSource = Engine.Resolve<IContentSearcher>()
                 .Search(Query.For(txtSearch.Text))
                 .Hits.Where(h => h.Content.IsAuthorized(Page.User));
             rptSearch.DataBind();
@@ -49,7 +49,7 @@ namespace N2.Management.Search
             base.OnPreRender(e);
 
             Status = Engine.Resolve<IAsyncIndexer>().GetCurrentStatus();
-            Statistics = Engine.Resolve<IIndexer>().GetStatistics();
+            Statistics = Engine.Resolve<IContentIndexer>().GetStatistics();
         }
     }
 }

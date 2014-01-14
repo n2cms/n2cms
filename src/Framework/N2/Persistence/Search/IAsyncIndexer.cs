@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 namespace N2.Persistence.Search
 {
     public class IndexStatus
@@ -7,7 +7,7 @@ namespace N2.Persistence.Search
 
         public int WorkerCount { get; set; }
 
-        public int ErrorQueueCount { get; set; }
+        public int QueueSize { get; set; }
     }
 
     /// <summary>
@@ -30,6 +30,7 @@ namespace N2.Persistence.Search
 
         /// <summary>Reindexes an item and it's descendants.</summary>
         /// <param name="root"></param>
-        void ReindexDescendants(N2.ContentItem root, bool clearBeforeReindex);
+        /// <param name="clearBeforeReindex"></param>
+        void ReindexDescendants(int rootID, bool clearBeforeReindex);
     }
 }

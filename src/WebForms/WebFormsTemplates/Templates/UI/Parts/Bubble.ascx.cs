@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using N2.Templates.Items;
 
 namespace N2.Templates.UI.Parts
@@ -8,7 +8,7 @@ namespace N2.Templates.UI.Parts
         protected override void OnInit(EventArgs e)
         {
             Resources.Register.StyleSheet(Page, "~/Templates/UI/Css/Faq.css");
-			
+            
             base.OnInit(e);
         }
     }

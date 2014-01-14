@@ -14,426 +14,461 @@ using N2.Plugin;
 using N2.Resources;
 using N2.Web.Parts;
 using N2.Security;
+using System.Linq;
 
 namespace N2.Web.UI.WebControls
 {
-	/// <summary>
-	/// A control panel for on page editing. The control displays buttons for 
-	/// start editing and saving changes.
-	/// </summary>
-	[PersistChildren(false)]
-	[ParseChildren(true)]
-	[ControlPanelLink("cpOrganize", "{ManagementUrl}/Resources/icons/layout_edit.png", "{Selected.Url}", "Organize parts", -10
-		, ControlPanelState.Visible,
-		UrlEncode = false,
-		NavigateQuery = "edit=drag")]
-	[ControlPanelLink("cpUnorganize", "{ManagementUrl}/Resources/icons/page_refresh.png", "{Selected.Url}", "Done", -10,
-		ControlPanelState.DragDrop,
-		UrlEncode = false,
-		Title = "Done")]
-	public class ControlPanel : Control, IItemContainer
-	{
-		private const string ArrayKey = "ControlPanel.arrays";
+    /// <summary>
+    /// A control panel for on page editing. The control displays buttons for 
+    /// start editing and saving changes.
+    /// </summary>
+    [PersistChildren(false)]
+    [ParseChildren(true)]
+    [OrganizeSwitch]
+    public class ControlPanel : Control, IItemContainer
+    {
+        private const string ArrayKey = "ControlPanel.arrays";
 
-		#region Properties
+        #region Properties
 
-		public bool EnableEditInterfaceIntegration
-		{
-			get { return (bool) (ViewState["EnableEditInterfaceIntegration"] ?? true); }
-			set { ViewState["EnableEditInterfaceIntegration"] = value; }
-		}
+        public bool EnableEditInterfaceIntegration
+        {
+            get { return (bool) (ViewState["EnableEditInterfaceIntegration"] ?? true); }
+            set { ViewState["EnableEditInterfaceIntegration"] = value; }
+        }
 
-		/// <summary>Gets or sets the url to a style sheet added to the page when editing.</summary>
-		public string StyleSheetUrl
-		{
-			get { return (string) (ViewState["StyleSheetUrl"] ?? "{ManagementUrl}/Resources/Css/edit.css"); }
-			set { ViewState["StyleSheetUrl"] = value; }
-		}
+        /// <summary>Gets or sets the url to a style sheet added to the page when editing.</summary>
+        public string StyleSheetUrl
+        {
+            get { return (string) (ViewState["StyleSheetUrl"] ?? "{ManagementUrl}/Resources/Css/edit.css"); }
+            set { ViewState["StyleSheetUrl"] = value; }
+        }
 
-		public string DragDropScriptUrl
-		{
-			get { return (string) (ViewState["DragDropScriptUrl"] ?? "{ManagementUrl}/Resources/Js/parts.js"); }
-			set { ViewState["DragDropScriptUrl"] = value; }
-		}
+        public string DragDropScriptUrl
+        {
+            get { return (string) (ViewState["DragDropScriptUrl"] ?? "{ManagementUrl}/Resources/Js/parts.js"); }
+            set { ViewState["DragDropScriptUrl"] = value; }
+        }
 
-		public string DragDropStyleSheetUrl
-		{
-			get { return (string) (ViewState["DragDropStyleSheetUrl"] ?? "{ManagementUrl}/Resources/Css/Parts.css"); }
-			set { ViewState["DragDropStyleSheetUrl"] = value; }
-		}
+        public string DragDropStyleSheetUrl
+        {
+            get { return (string) (ViewState["DragDropStyleSheetUrl"] ?? "{ManagementUrl}/Resources/Css/Parts.css"); }
+            set { ViewState["DragDropStyleSheetUrl"] = value; }
+        }
 
-		protected virtual IEngine Engine
-		{
-			get { return N2.Context.Current; }
-		}
+        protected virtual IEngine Engine
+        {
+            get { return N2.Context.Current; }
+        }
 
-		protected virtual PartsAdapter ZoneAdapter
-		{
-			get { return Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(CurrentItem); }
-		}
+        protected virtual PartsAdapter ZoneAdapter
+        {
+            get { return Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(CurrentItem); }
+        }
 
-		private ContentItem currentItem;
-		public virtual ContentItem CurrentItem
-		{
-			get
-			{
-				if (currentItem != null)
-					return currentItem;
+        private ContentItem currentItem;
+        public virtual ContentItem CurrentItem
+        {
+            get
+            {
+                if (currentItem != null)
+                    return currentItem;
 
-				int selectedItemID;
-				if (int.TryParse(Page.Request["item"], out selectedItemID))
-				{
-					return currentItem = Engine.Persister.Get(selectedItemID);
-				}
+                int selectedItemID;
+                if (int.TryParse(Page.Request["item"], out selectedItemID))
+                {
+                    return currentItem = Engine.Persister.Get(selectedItemID);
+                }
 
-				return currentItem = Find.ClosestItem(Parent);
-			}
-			set
-			{
-				currentItem = value;
-			}
-		}
+                return currentItem = Find.ClosestItem(Parent);
+            }
+            set
+            {
+                currentItem = value;
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Page Methods
+        #region Page Methods
 
-		private const string switchScriptFormat =
-			@"
+        private const string switchScriptFormat =
+            @"
 jQuery(document).ready(function(){{
     if(window.n2ctx){{
-		n2ctx.refresh({{ path: '{0}', navigationUrl: '{2}', permission: '{3}', force:false }});
-		if(n2ctx.hasTop()) jQuery('.cpAdminister').hide();
-		else jQuery('.cpView').hide();
-	}}
-	if(window.n2SlidingCurtain) n2SlidingCurtain.recalculate();
+        n2ctx.refresh({{ path: '{0}', navigationUrl: '{2}', permission: '{3}', force:{4}, mode:'{5}' }});
+        if (n2ctx.hasTop()) $('.complementary').hide();
+        else $('.cpView').hide();
+    }}
+    if(window.n2SlidingCurtain) n2SlidingCurtain.recalculate();
 }});";
 
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
-			Page.InitComplete += Page_InitComplete;
-		}
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            Page.InitComplete += Page_InitComplete;
+        }
 
-		private void Page_InitComplete(object sender, EventArgs e)
-		{
-			EnsureChildControls();
-		}
+        private void Page_InitComplete(object sender, EventArgs e)
+        {
+            EnsureChildControls();
+        }
 
-		protected override void CreateChildControls()
-		{
-			ControlPanelState state = GetState(Page.GetEngine().SecurityManager, Page.User, Page.Request.QueryString);
+        protected override void CreateChildControls()
+        {
+            ControlPanelState state = GetState(Page.GetEngine());
 
-			if (state == ControlPanelState.Hidden)
-			{
-				AppendDefinedTemplate(HiddenTemplate, this);
-			}
-			else if (state == ControlPanelState.Visible)
-			{
-				AppendDefinedTemplate(VisibleHeaderTemplate, this);
-				AddPlugins(state);
-				AppendDefinedTemplate(VisibleFooterTemplate, this);
-			}
-			else if (state == ControlPanelState.DragDrop)
-			{
-				AppendDefinedTemplate(DragDropHeaderTemplate, this);
-				AddPlugins(state);
-				AddDefinitions(this);
-				AppendDefinedTemplate(DragDropFooterTemplate, this);
-				RegisterDragDropStyles();
-				RegisterDragDropScripts();
+            if (state.IsFlagSet(ControlPanelState.Hidden))
+            {
+                AppendDefinedTemplate(HiddenTemplate, this);
+                return;
+            }
 
-				//Page.Response.CacheControl = "no-cache";
-			}
-			else if (state == ControlPanelState.Editing)
-			{
-				AppendDefinedTemplate(EditingHeaderTemplate, this);
-				AddPlugins(state);
-				Register.JQuery(Page);
-				Register.StyleSheet(Page, Url.ToAbsolute(StyleSheetUrl), Media.All);
-				AppendDefinedTemplate(EditingFooterTemplate, this);
-			}
-			else if (state == ControlPanelState.Previewing)
-			{
-				AppendDefinedTemplate(PreviewingHeaderTemplate, this);
-				AddPlugins(state);
-				AppendDefinedTemplate(PreviewingFooterTemplate, this);
-			}
-			else
-				throw new N2Exception("Unknown control panel state: " + state);
+            Register.StyleSheet(Page, Register.DefaultIconsCssPath);
 
-			base.CreateChildControls();
-		}
 
-		protected virtual void AddDefinitions(Control container)
-		{
-			var definitions = new HtmlGenericControl("div");
-			definitions.Attributes["class"] = "definitions";
-			container.Controls.Add(definitions);
+            if (state.IsFlagSet(ControlPanelState.Visible))
+                AppendDefinedTemplate(VisibleHeaderTemplate, this);
+            if (state.IsFlagSet(ControlPanelState.DragDrop))
+                AppendDefinedTemplate(DragDropHeaderTemplate, this);
+            if (state.IsFlagSet(ControlPanelState.Editing))
+                AppendDefinedTemplate(EditingHeaderTemplate, this);
+            if (state.IsFlagSet(ControlPanelState.Previewing))
+                AppendDefinedTemplate(PreviewingHeaderTemplate, this);
 
-			var sortedDefinitions = GetPartDefinitions(ZoneAdapter, CurrentItem, Page.Items[Zone.PageKey] as IList<Zone>, Page.User);
+            AddPlugins(state);
 
-			foreach (ItemDefinition definition in sortedDefinitions)
-			{
-				var div = new HtmlGenericControl("div");
-				div.Attributes["title"] = definition.ToolTip;
-				div.Attributes["id"] = definition.Discriminator;
-				div.Attributes[PartUtilities.TypeAttribute] = definition.Discriminator;
-				div.Attributes["class"] = "definition " + definition.Discriminator;
-				div.InnerHtml = FormatImageAndText(Url.ResolveTokens(definition.IconUrl), definition.Title);
-				definitions.Controls.Add(div);
-			}
-		}
+            if (state.IsFlagSet(ControlPanelState.DragDrop))
+            {
+                AddDefinitions(this);
+                RegisterDragDropStyles();
+                RegisterDragDropScripts();
+            }
+            if (state.IsFlagSet(ControlPanelState.Editing))
+            {
+                Register.JQuery(Page);
+                Register.StyleSheet(Page, Url.ToAbsolute(StyleSheetUrl), Media.All);
+            }
 
-		/// <summary>Gets part definitions that can be added to the given page.</summary>
-		/// <param name="adapter"></param>
-		/// <param name="item"></param>
-		/// <param name="pageZones"></param>
-		/// <param name="user"></param>
-		/// <returns></returns>
-		public static IEnumerable<ItemDefinition> GetPartDefinitions(PartsAdapter adapter, ContentItem item, IEnumerable<Zone> pageZones, IPrincipal user)
-		{
-			IEnumerable<ItemDefinition> availableDefinitions;
+            if (state.IsFlagSet(ControlPanelState.Previewing))
+                AppendDefinedTemplate(PreviewingFooterTemplate, this);
+            if (state.IsFlagSet(ControlPanelState.Editing))
+                AppendDefinedTemplate(EditingFooterTemplate, this);
+            if (state.IsFlagSet(ControlPanelState.DragDrop))
+                AppendDefinedTemplate(DragDropFooterTemplate, this);
+            if (state.IsFlagSet(ControlPanelState.Visible))
+                AppendDefinedTemplate(VisibleFooterTemplate, this);
 
-			if (pageZones == null)
-				availableDefinitions = adapter.GetAllowedDefinitions(item, user);
-			else
-				availableDefinitions = GetPossibleDefinitions(adapter, pageZones, user);
+            base.CreateChildControls();
+        }
 
-			var sortedDefinitions = new List<ItemDefinition>();
-			sortedDefinitions.AddRange(availableDefinitions);
-			sortedDefinitions.Sort();
-			return sortedDefinitions;
-		}
+        protected virtual void AddDefinitions(Control container)
+        {
+            var definitions = new HtmlGenericControl("div");
+            definitions.Attributes["class"] = "definitions";
+            container.Controls.Add(definitions);
 
-		private static List<ItemDefinition> GetPossibleDefinitions(PartsAdapter adapter, IEnumerable<Zone> pageZones, IPrincipal user)
-		{
-			var availableDefinitions = new List<ItemDefinition>();
-			foreach (Zone z in pageZones)
-			{
-				ContentItem item = z.CurrentItem;
-				string zoneName = z.ZoneName;
-				if (item == null || string.IsNullOrEmpty(zoneName)) continue;
+            var sortedDefinitions = GetPartDefinitions(ZoneAdapter, CurrentItem, Page.Items[Zone.PageKey] as IList<Zone>, Page.User);
 
-				foreach (ItemDefinition definition in adapter.GetAllowedDefinitions(item, zoneName, user))
-				{
-					if (!availableDefinitions.Contains(definition))
-						availableDefinitions.Add(definition);
-				}
-			}
-			return availableDefinitions;
-		}
+            foreach (ItemDefinition definition in sortedDefinitions)
+            {
+                var div = new HtmlGenericControl("div");
+                div.Attributes["title"] = definition.ToolTip;
+                div.Attributes["id"] = definition.Discriminator;
+                div.Attributes[PartUtilities.TypeAttribute] = definition.Discriminator;
+                div.Attributes["class"] = "definition " + definition.Discriminator;
+                div.InnerHtml = FormatImageAndText(Url.ResolveTokens(definition.IconUrl), definition.IconClass, definition.Title);
+                definitions.Controls.Add(div);
+            }
+        }
 
-		private void RegisterDragDropStyles()
-		{
-			Register.StyleSheet(Page, DragDropStyleSheetUrl, Media.All);
-		}
+        /// <summary>Gets part definitions that can be added to the given page.</summary>
+        /// <param name="adapter"></param>
+        /// <param name="item"></param>
+        /// <param name="pageZones"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public static IEnumerable<ItemDefinition> GetPartDefinitions(PartsAdapter adapter, ContentItem item, IEnumerable<Zone> pageZones, IPrincipal user)
+        {
+            IEnumerable<ItemDefinition> availableDefinitions;
 
-		private void RegisterDragDropScripts()
-		{
-			Register.JavaScript(Page, Register.SelectedQueryKeyRegistrationScript(), ScriptPosition.Header, ScriptOptions.ScriptTags | ScriptOptions.Prioritize);
-			Register.JQueryUi(Page);
-			Register.JavaScript(Page, DragDropScriptUrl);
+            if (pageZones == null)
+                availableDefinitions = adapter.GetAllowedDefinitions(item, user);
+            else
+                availableDefinitions = GetPossibleDefinitions(adapter, pageZones, user);
 
-			Register.JavaScript(Page, DragDropScriptInitialization(), ScriptOptions.DocumentReady);
-		}
+            return from x in availableDefinitions
+                orderby x ascending, x.SortOrder ascending
+                select x;
+        }
 
-		protected virtual void AddPlugins(ControlPanelState state)
-		{
-			var pluginPanel = new Panel();
-			pluginPanel.CssClass = "plugins";
-			Controls.Add(pluginPanel);
+        private static List<ItemDefinition> GetPossibleDefinitions(PartsAdapter adapter, IEnumerable<Zone> pageZones, IPrincipal user)
+        {
+            var availableDefinitions = new List<ItemDefinition>();
+            foreach (Zone z in pageZones)
+            {
+                ContentItem item = z.CurrentItem;
+                string zoneName = z.ZoneName;
+                if (item == null || string.IsNullOrEmpty(zoneName)) continue;
 
-			ContentItem start = Engine.Resolve<IUrlParser>().StartPage;
-			ContentItem root = Engine.Persister.Repository.Get(Engine.Resolve<IHost>().CurrentSite.RootItemID);
-			foreach (IControlPanelPlugin plugin in Engine.Resolve<IPluginFinder>().GetPlugins<IControlPanelPlugin>())
-			{
-				var span = new HtmlGenericControl("span");
-				span.Attributes["class"] = "control";
-				pluginPanel.Controls.Add(span);
+                foreach (ItemDefinition definition in adapter.GetAllowedDefinitions(item, zoneName, user))
+                {
+                    if (!availableDefinitions.Contains(definition))
+                        availableDefinitions.Add(definition);
+                }
+            }
+            return availableDefinitions;
+        }
 
-				plugin.AddTo(span, new PluginContext(new SelectionUtility(CurrentItem, null), start, root, state, Engine, new HttpContextWrapper(Context)));
-			}
-		}
+        private void RegisterDragDropStyles()
+        {
+            Register.StyleSheet(Page, DragDropStyleSheetUrl, Media.All);
+        }
 
-		protected void AppendDefinedTemplate(ITemplate template, Control container)
-		{
-			if (template != null)
-			{
-				Control templateContainer = new SimpleTemplateContainer();
-				container.Controls.Add(templateContainer);
+        private void RegisterDragDropScripts()
+        {
+            Register.JavaScript(Page, Register.SelectedQueryKeyRegistrationScript(), ScriptPosition.Header, ScriptOptions.ScriptTags | ScriptOptions.Prioritize);
+            Register.JQueryUi(Page);
+            Register.JavaScript(Page, DragDropScriptUrl);
 
-				template.InstantiateIn(templateContainer);
-			}
-		}
+            Register.JavaScript(Page, DragDropScriptInitialization(CurrentItem), ScriptOptions.DocumentReady);
+        }
 
-		protected override void Render(HtmlTextWriter writer)
-		{
-			IDictionary<string, IList<string>> arrays = GetArrays(Page);
-			writer.WriteLineNoTabs(@"<script type='text/javascript'>//<!--");
-			if (arrays.Count > 0)
-			{
-				foreach (var pair in arrays)
-				{
-					IList<string> array = pair.Value;
-					writer.Write("var " + pair.Key + " = [" + array[0]);
-					for (int i = 1; i < array.Count; i++)
-					{
-						writer.Write("," + array[i]);
-					}
-					writer.WriteLineNoTabs("];");
-				}
-			}
-			if (EnableEditInterfaceIntegration)
-			{
-				writer.WriteLineNoTabs("if(window.n2ctx){");
-				writer.WriteLineNoTabs("n2ctx.select('preview');");
-				if (CurrentItem != null)
-				{
-					var adapter = Engine.GetContentAdapter<NodeAdapter>(CurrentItem);
-					string navigationUrl = Engine.ManagementPaths.GetNavigationUrl(CurrentItem);
-					string previewUrl = adapter.GetPreviewUrl(CurrentItem);
-					string script = string.Format(switchScriptFormat, CurrentItem.Path, previewUrl, navigationUrl, adapter.GetMaximumPermission(CurrentItem));
-					writer.WriteLineNoTabs(script);
-				}
-				writer.WriteLineNoTabs("}");
-			}
+        protected virtual void AddPlugins(ControlPanelState state)
+        {
+            var pluginPanel = new Panel();
+            pluginPanel.CssClass = "plugins";
+            Controls.Add(pluginPanel);
 
-			writer.Write(@"//--></script>");
+            ContentItem start = Engine.Resolve<IUrlParser>().StartPage;
+            ContentItem root = Engine.Persister.Repository.Get(Engine.Resolve<IHost>().CurrentSite.RootItemID);
+            foreach (IControlPanelPlugin plugin in Engine.Resolve<IPluginFinder>().GetPlugins<IControlPanelPlugin>())
+            {
+                plugin.AddTo(pluginPanel, new PluginContext(new SelectionUtility(CurrentItem, null), start, root, state, Engine, new HttpContextWrapper(Context)));
+            }
+        }
 
-			writer.Write("<div class='controlPanel'>");
-			base.Render(writer);
-			writer.Write("</div>");
-		}
+        protected void AppendDefinedTemplate(ITemplate template, Control container)
+        {
+            if (template != null)
+            {
+                Control templateContainer = new SimpleTemplateContainer();
+                container.Controls.Add(templateContainer);
 
-		#endregion
+                template.InstantiateIn(templateContainer);
+            }
+        }
 
-		#region Methods
+        protected override void Render(HtmlTextWriter writer)
+        {
+            IDictionary<string, IList<string>> arrays = GetArrays(Page);
+            writer.WriteLineNoTabs(@"<script type='text/javascript'>//<!--");
+            if (arrays.Count > 0)
+            {
+                foreach (var pair in arrays)
+                {
+                    IList<string> array = pair.Value;
+                    writer.Write("var " + pair.Key + " = [" + array[0]);
+                    for (int i = 1; i < array.Count; i++)
+                    {
+                        writer.Write("," + array[i]);
+                    }
+                    writer.WriteLineNoTabs("];");
+                }
+            }
+            if (EnableEditInterfaceIntegration)
+            {
+                writer.WriteLineNoTabs("if(window.n2ctx){");
+                writer.WriteLineNoTabs("n2ctx.select('preview');");
+                if (CurrentItem != null)
+                {
+                    var adapter = Engine.GetContentAdapter<NodeAdapter>(CurrentItem);
+                    string navigationUrl = Engine.ManagementPaths.GetNavigationUrl(CurrentItem);
+                    string previewUrl = adapter.GetPreviewUrl(CurrentItem);
+                    string script = string.Format(switchScriptFormat, 
+                        CurrentItem.Path, // 0
+                        previewUrl, // 1
+                        navigationUrl, // 2
+                        adapter.GetMaximumPermission(CurrentItem), // 3
+                        (Page.Request["refresh"] == "true").ToString().ToLower(), // 4
+                        GetState(Page.GetEngine()).ToString());
+                    writer.WriteLineNoTabs(script);
+                }
+                writer.WriteLineNoTabs("}");
+            }
 
-		protected bool OriginatesFromEdit()
-		{
-			if (Page.Request.UrlReferrer == null)
-				return false;
+            writer.Write(@"//--></script>");
 
-			string editUrl = N2.Context.Current.ManagementPaths.GetEditInterfaceUrl();
-			string currentUrl = Page.Request.UrlReferrer.PathAndQuery;
-			return currentUrl.StartsWith(editUrl, StringComparison.InvariantCultureIgnoreCase);
-		}
+            writer.Write("<div class='controlPanel state" + CurrentItem.State.ToString() + "'>");
+            base.Render(writer);
+            writer.Write("</div>");
+        }
 
-		/// <summary>Gets the url for editing the page directly.</summary>
-		public virtual string GetQuickEditUrl(string editParameter)
-		{
-			return Url.Parse(Page.Request.RawUrl).SetQueryParameter("edit", editParameter);
-		}
+        #endregion
 
-		#endregion
+        #region Methods
 
-		#region Static Methods
+        protected bool OriginatesFromEdit()
+        {
+            if (Page.Request.UrlReferrer == null)
+                return false;
 
-		public static ControlPanelState GetState(Control control)
-		{
-			if (HttpContext.Current != null)
-				return GetState(control.Page.GetEngine().SecurityManager, control.Page.User, control.Page.Request.QueryString);
+            string editUrl = N2.Context.Current.ManagementPaths.GetEditInterfaceUrl();
+            string currentUrl = Page.Request.UrlReferrer.PathAndQuery;
+            return currentUrl.StartsWith(editUrl, StringComparison.InvariantCultureIgnoreCase);
+        }
 
-			return ControlPanelState.Unknown;
-		}
-		
-		[Obsolete("Use overload with security parameter")]
-		public static ControlPanelState GetState(IPrincipal user, NameValueCollection queryString)
-		{
-			return GetState(N2.Context.Current.SecurityManager, user, queryString);
-		}
+        /// <summary>Gets the url for editing the page directly.</summary>
+        public virtual string GetQuickEditUrl(string editParameter)
+        {
+            return Url.Parse(Page.Request.RawUrl).SetQueryParameter("edit", editParameter);
+        }
 
-		public static ControlPanelState GetState(ISecurityManager security, IPrincipal user, NameValueCollection queryString)
-		{
-			if (security.IsEditor(user))
-			{
-				if (queryString["edit"] == "true")
-					return ControlPanelState.Editing;
-				if (queryString["edit"] == "drag")
-					return ControlPanelState.DragDrop;
-				if (!string.IsNullOrEmpty(queryString["preview"]))
-					return ControlPanelState.Previewing;
+        #endregion
 
-				return ControlPanelState.Visible;
-			}
-			return ControlPanelState.Hidden;
-		}
+        #region Static Methods
 
-		public static string FormatImageAndText(string iconUrl, string text)
-		{
-			return string.Format("<img src='{0}' alt=''/>{1}", iconUrl, text);
-		}
+        public static ControlPanelState GetState(Control control)
+        {
+            if (HttpContext.Current != null)
+                return GetState(HttpContext.Current.GetEngine());
 
-		public static void RegisterArrayValue(Page page, string key, string value)
-		{
-			IList<string> array = GetArray(key, page);
-			array.Add(value);
-		}
+            return ControlPanelState.Unknown;
+        }
 
-		private static IList<string> GetArray(string key, Page page)
-		{
-			IDictionary<string, IList<string>> arrays = GetArrays(page);
+        [Obsolete("Use overload with IWebContext parameter")]
+        public static ControlPanelState GetState(ISecurityManager security, IPrincipal user, NameValueCollection queryString)
+        {
+            return GetState(security, HttpContext.Current.GetEngine().RequestContext);
+        }
 
-			IList<string> array;
-			if (arrays.ContainsKey(key))
-				array = arrays[key];
-			else
-				arrays[key] = array = new List<string>();
-			return array;
-		}
+        [Obsolete("Use overload with ISecurityManager, IWebContext, ContentItem and IPrincipal parameters")]
+        public static ControlPanelState GetState(IPrincipal user, NameValueCollection queryString)
+        {
+            return GetState(HttpContext.Current.GetEngine());
+        }
 
-		private static IDictionary<string, IList<string>> GetArrays(Page page)
-		{
-			var arrays = page.Items[ArrayKey] as IDictionary<string, IList<string>>;
-			if (arrays == null)
-				page.Items[ArrayKey] = arrays = new Dictionary<string, IList<string>>();
-			return arrays;
-		}
+        [Obsolete("Use overload with ISecurityManager, IWebContext, ContentItem and IPrincipal parameters")]
+        public static ControlPanelState GetState(ISecurityManager security, IWebContext request)
+        {
+            return GetState(security, request.Url.GetQueries().ToNameValueCollection(), request.CurrentPath.CurrentItem, request.User);
+        }
 
-		#endregion
+        public static ControlPanelState GetState(IEngine engine)
+        {
+            var request = engine.RequestContext;
+            return GetState(engine.SecurityManager, request.Url.GetQueries().ToNameValueCollection(), request.CurrentPath.CurrentItem, request.User);
+        }
 
-		#region Templates
-		[DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
-		 TemplateContainer(typeof (SimpleTemplateContainer))]
-		public virtual ITemplate HiddenTemplate { get; set; }
+        public static ControlPanelState GetState(ISecurityManager security, NameValueCollection queryString, ContentItem item, IPrincipal user)
+        {
+            if (!security.IsEditor(user))
+                return ControlPanelState.Hidden;
 
-		[DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
-		 TemplateContainer(typeof (SimpleTemplateContainer))]
-		public virtual ITemplate VisibleHeaderTemplate { get; set; }
+            var state = ControlPanelState.Visible;
 
-		[DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
-		 TemplateContainer(typeof (SimpleTemplateContainer))]
-		public virtual ITemplate VisibleFooterTemplate { get; set; }
+            if (queryString["edit"] == "true")
+                state |= ControlPanelState.Editing;
+            if (queryString["edit"] == "drag")
+                state |= ControlPanelState.DragDrop;
+            if (item != null && (item.State == ContentState.Draft || item.VersionOf.HasValue))
+                state |= ControlPanelState.Previewing;
 
-		[DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
-		 TemplateContainer(typeof (SimpleTemplateContainer))]
-		public virtual ITemplate EditingHeaderTemplate { get; set; }
+            return state;
 
-		[DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
-		 TemplateContainer(typeof (SimpleTemplateContainer))]
-		public virtual ITemplate EditingFooterTemplate { get; set; }
+        }
 
-		[DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
-		 TemplateContainer(typeof (SimpleTemplateContainer))]
-		public virtual ITemplate PreviewingHeaderTemplate { get; set; }
+        public static string FormatImageAndText(string iconUrl, string iconClass, string text)
+        {
+            const string C_SPRITE = "sprite:";
+            string icon = "";
+            if (!string.IsNullOrEmpty(iconUrl))
+            {
+                if (iconUrl.StartsWith(C_SPRITE))
+                    icon = string.Format(@"<span class=""{0} sprite""></span>", (iconUrl.Split('-').LastOrDefault() ?? string.Empty).ToLower());
+                else
+                    icon = string.Format(@"<img src=""{0}"" alt=""icon"" />", iconUrl);
+            }
+            else if (!string.IsNullOrEmpty(iconClass))
+            {
+                icon = string.Format(@"<b class=""{0}""></b>", iconClass);
+            }
+            
+            if (string.IsNullOrEmpty(text))
+                return icon;
+            else
+                return icon + " " + text;
+        }
 
-		[DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
-		 TemplateContainer(typeof (SimpleTemplateContainer))]
-		public virtual ITemplate PreviewingFooterTemplate { get; set; }
+        public static void RegisterArrayValue(Page page, string key, string value)
+        {
+            IList<string> array = GetArray(key, page);
+            array.Add(value);
+        }
 
-		[DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
-		 TemplateContainer(typeof (SimpleTemplateContainer))]
-		public virtual ITemplate DragDropHeaderTemplate { get; set; }
+        private static IList<string> GetArray(string key, Page page)
+        {
+            IDictionary<string, IList<string>> arrays = GetArrays(page);
 
-		[DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
-		 TemplateContainer(typeof (SimpleTemplateContainer))]
-		public virtual ITemplate DragDropFooterTemplate { get; set; }
-		#endregion
+            IList<string> array;
+            if (arrays.ContainsKey(key))
+                array = arrays[key];
+            else
+                arrays[key] = array = new List<string>();
+            return array;
+        }
 
-		public static string DragDropScriptInitialization()
-		{
-			return string.Format(@"window.n2ddcp = new n2DragDrop({{ copy:'{0}/Resources/Js/copy.n2.ashx', move:'{0}/Resources/Js/move.n2.ashx', remove:'{0}/Resources/Js/remove.n2.ashx', create:'{0}/Resources/Js/create.n2.ashx', editsingle:'{0}/Content/EditSingle.aspx' }});", Url.ResolveTokens("{ManagementUrl}"));
-		}
-	}
+        private static IDictionary<string, IList<string>> GetArrays(Page page)
+        {
+            var arrays = page.Items[ArrayKey] as IDictionary<string, IList<string>>;
+            if (arrays == null)
+                page.Items[ArrayKey] = arrays = new Dictionary<string, IList<string>>();
+            return arrays;
+        }
+
+        #endregion
+
+        #region Templates
+        [DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
+         TemplateContainer(typeof (SimpleTemplateContainer))]
+        public virtual ITemplate HiddenTemplate { get; set; }
+
+        [DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
+         TemplateContainer(typeof (SimpleTemplateContainer))]
+        public virtual ITemplate VisibleHeaderTemplate { get; set; }
+
+        [DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
+         TemplateContainer(typeof (SimpleTemplateContainer))]
+        public virtual ITemplate VisibleFooterTemplate { get; set; }
+
+        [DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
+         TemplateContainer(typeof (SimpleTemplateContainer))]
+        public virtual ITemplate EditingHeaderTemplate { get; set; }
+
+        [DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
+         TemplateContainer(typeof (SimpleTemplateContainer))]
+        public virtual ITemplate EditingFooterTemplate { get; set; }
+
+        [DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
+         TemplateContainer(typeof (SimpleTemplateContainer))]
+        public virtual ITemplate PreviewingHeaderTemplate { get; set; }
+
+        [DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
+         TemplateContainer(typeof (SimpleTemplateContainer))]
+        public virtual ITemplate PreviewingFooterTemplate { get; set; }
+
+        [DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
+         TemplateContainer(typeof (SimpleTemplateContainer))]
+        public virtual ITemplate DragDropHeaderTemplate { get; set; }
+
+        [DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
+         TemplateContainer(typeof (SimpleTemplateContainer))]
+        public virtual ITemplate DragDropFooterTemplate { get; set; }
+        #endregion
+
+        public static string DragDropScriptInitialization(ContentItem item)
+        {
+            return string.Format(@"window.n2ddcp = new n2DragDrop({{ copy:'{0}/Resources/Js/copy.n2.ashx', move:'{0}/Resources/Js/move.n2.ashx', remove:'{0}/Resources/Js/remove.n2.ashx', create:'{0}/Resources/Js/create.n2.ashx', editsingle:'{0}/Content/EditSingle.aspx'}}, {{}},{{versionIndex:{1}, isMasterVersion:{2}, pagePath: '{3}'}});", Url.ResolveTokens("{ManagementUrl}"), item.VersionIndex, !item.VersionOf.HasValue ? "true" : "false", Find.ClosestPage(item).Path);
+        }
+    }
 }

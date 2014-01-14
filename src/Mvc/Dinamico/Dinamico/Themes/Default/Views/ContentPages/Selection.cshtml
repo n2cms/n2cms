@@ -1,0 +1,28 @@
+﻿@using N2
+@using N2.Linq
+@model Dinamico.Models.ContentPage
+
+@{
+	Content.Define(re => 
+	{
+		re.Title = "Selection";
+		re.IconUrl = "{IconsUrl}/page_link.png";
+		re.MultipleItemSelection("SelectFrom", typeof(Dinamico.Models.ContentPage));
+	});
+}
+
+@Html.Partial("LayoutPartials/Content")
+@{ 
+	Content.Register.FreeText("NewsFooter", "News item footer").Help("Text displayed as footer for each news item");
+	Content.Register.RegisterDisplayable<N2.Details.DisplayableTokensAttribute>("NewsFooter");
+}
+
+@{
+    IEnumerable<ContentItem> items = Content.Current.Item.GetDetailCollection("SelectFrom", true).ToList<ContentItem>();
+}
+@Html.Loop(items,
+	template: @<div class="list-item">
+		@Html.Partial("Partials/ContentLink", item.Data)
+	</div>,
+	wrapper: @<div class="list">@item.RenderContents()</div>,
+	empty: @<p>No items</p>)

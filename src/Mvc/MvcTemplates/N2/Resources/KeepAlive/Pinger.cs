@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Configuration;
 using N2.Plugin.Scheduling;
 using System.Diagnostics;
@@ -7,14 +7,13 @@ using System.Net;
 using N2.Web;
 using N2.Configuration;
 using System.Security;
-using log4net;
 
 namespace N2.Edit.KeepAlive
 {
     [ScheduleExecution(1, TimeUnit.Minutes)]
     public class Pinger : ScheduledAction
     {
-        private readonly ILog logger = LogManager.GetLogger(typeof (Pinger));
+        private readonly Engine.Logger<Pinger> logger;
 
         IEngine engine = null;
         EngineSection config = null;
@@ -29,9 +28,6 @@ namespace N2.Edit.KeepAlive
                 return;
             }
 
-            if (Debugger.IsAttached)
-                return;
-            
             try
             {
                 Url url = Url.ServerUrl;
@@ -41,17 +37,18 @@ namespace N2.Edit.KeepAlive
                 using (WebClient wc = new WebClient())
                 {
                     wc.Headers["N2KeepAlive"] = "true";
-                    url = url.SetPath(config.Scheduler.KeepAlivePath);
+                    url = url.SetPath(config.Scheduler.KeepAlivePath.ResolveUrlTokens());
+
+                    logger.Debug("Pinging " + url);
                     string response = wc.DownloadString(url);
-                    Debug.WriteLine("Ping " + url + ": " + response);
-                    logger.Debug("Ping " + url + ": " + response);
+                    logger.Debug("Pinged " + url + ": " + response);
                 }
             }
-			catch(SecurityException ex)
-			{
-				Trace.TraceWarning("Stopping keep-alive after exception (probably medium trust environemtn): " + ex);
-				Repeat = Repeat.Once;
-			}
+            catch(SecurityException ex)
+            {
+                N2.Engine.Logger.Warn("Stopping keep-alive after exception (probably medium trust environment): ", ex);
+                Repeat = Repeat.Once;
+            }
         }
     }
 }

@@ -11,28 +11,30 @@
 		<ItemGroup>
 			<Source-Files Include="$(MSBuildProjectDirectory)\..\**\*"
 						  Exclude="$(MSBuildProjectDirectory)\..\**\.svn\**\*;
-											 $(MSBuildProjectDirectory)\..\**\.git\**\*;
-											 $(MSBuildProjectDirectory)\..\output\**\*;
-											 $(MSBuildProjectDirectory)\..\**\_*\**\*;
-											 $(MSBuildProjectDirectory)\..\**\*WebSetup\**\*;
-											 $(MSBuildProjectDirectory)\..\**\*VsTemplate\**\*;
-											 $(MSBuildProjectDirectory)\..\**\obj\**\*;
-											 $(MSBuildProjectDirectory)\..\**\bin\**\*;
-											 $(MSBuildProjectDirectory)\..\**\PrecompiledWeb\**\*;
-											 $(MSBuildProjectDirectory)\..\**\Ankh.Load;
-											 $(MSBuildProjectDirectory)\..\**\*.sln.cache;
-											 $(MSBuildProjectDirectory)\..\**\*.resharper;
-											 $(MSBuildProjectDirectory)\..\**\*.suo;
-											 $(MSBuildProjectDirectory)\..\**\*.user;
-											 $(MSBuildProjectDirectory)\..\*.xml;
-											 $(MSBuildProjectDirectory)\..\**\*.Publish.xml;
-											 $(MSBuildProjectDirectory)\..\**\Thumbs.db;
-											 $(DeployFolder)\**\*;
-											 $(Templates-SourceFolder)\N2\**\*;
-											 $(Dinamico-SourceFolder)\N2\**\*;
-											 $(Examples-Folder)\**\N2\**\*;
-											 $(LibFolder)\*.xml;
-											 $(LibFolder)\*.pdb" />
+								   $(MSBuildProjectDirectory)\..\**\.git\**\*;
+								   $(MSBuildProjectDirectory)\..\output\**\*;
+								   $(MSBuildProjectDirectory)\..\**\_*\**\*;
+								   $(MSBuildProjectDirectory)\..\**\*WebSetup\**\*;
+								   $(MSBuildProjectDirectory)\..\**\*VsTemplate\**\*;
+								   $(MSBuildProjectDirectory)\..\**\obj\**\*;
+								   $(MSBuildProjectDirectory)\..\**\bin\**\*;
+								   $(MSBuildProjectDirectory)\..\**\PrecompiledWeb\**\*;
+								   $(MSBuildProjectDirectory)\..\**\Ankh.Load;
+								   $(MSBuildProjectDirectory)\..\**\*.sln.cache;
+								   $(MSBuildProjectDirectory)\..\**\*.resharper;
+								   $(MSBuildProjectDirectory)\..\**\*.suo;
+								   $(MSBuildProjectDirectory)\..\**\*.user;
+								   $(MSBuildProjectDirectory)\..\*.xml;
+								   $(MSBuildProjectDirectory)\..\**\*.Publish.xml;
+								   $(MSBuildProjectDirectory)\..\**\Thumbs.db;
+								   $(MSBuildProjectDirectory)\..\*.log;
+								   $(MSBuildProjectDirectory)\..\**\SearchIndex\**\*;
+								   $(DeployFolder)\**\*;
+								   $(Templates-SourceFolder)\N2\**\*;
+								   $(Dinamico-SourceFolder)\N2\**\*;
+								   $(Examples-Folder)\**\N2\**\*;
+								   $(LibFolder)\*.xml;
+								   $(LibFolder)\*.pdb" />
 		</ItemGroup>
 
 		<Copy SourceFiles="@(Source-Files)" DestinationFolder="$(Source-DeployFolder)\%(RecursiveDir)"  />

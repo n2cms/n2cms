@@ -1,4 +1,4 @@
-﻿using N2.Plugin.Scheduling;
+using N2.Plugin.Scheduling;
 
 namespace N2.Addons.MyAddon.Services
 {

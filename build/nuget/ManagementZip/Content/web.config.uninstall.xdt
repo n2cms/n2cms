@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<n2 xmlns="http://n2cms.com/schemas/configuration/v3">
+		<host>
+			<vpp>
+				<zips>
+					<add name="n2.management" xdt:Transform="Remove" xdt:Locator="Match(name)" />
+				</zips>
+			</vpp>
+		</host>
+	</n2>
+</configuration>

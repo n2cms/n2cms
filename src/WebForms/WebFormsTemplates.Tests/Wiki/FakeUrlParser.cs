@@ -5,17 +5,19 @@ namespace N2.Templates.Tests.Wiki
 {
     public class FakeUrlParser : IUrlParser
     {
-		public FakeUrlParser()
-		{
-			PageNotFound += delegate { };
-		}
+        public FakeUrlParser()
+        {
+            PageNotFound += delegate { };
+            BuiltUrl += delegate { };
+        }
 
         public event EventHandler<PageNotFoundEventArgs> PageNotFound;
+        public event EventHandler<UrlEventArgs> BuiltUrl;
 
-		public void InvokePageNotFound(PageNotFoundEventArgs e)
-		{
-			PageNotFound(this, e);
-		}
+        public void InvokePageNotFound(PageNotFoundEventArgs e)
+        {
+            PageNotFound(this, e);
+        }
 
         public string Extension
         {
@@ -37,7 +39,7 @@ namespace N2.Templates.Tests.Wiki
             get { throw new NotImplementedException(); }
         }
 
-        public string BuildUrl(ContentItem item)
+        public Url BuildUrl(ContentItem item)
         {
             Url url = "/" + item.Name + ".aspx";
             foreach (ContentItem parent in N2.Templates.Find.EnumerateParents(item))
@@ -52,6 +54,11 @@ namespace N2.Templates.Tests.Wiki
             throw new NotImplementedException();
         }
 
+        public PathData FindPath(Url url, ContentItem startNode = null, string remainingPath = null)
+        {
+            throw new NotImplementedException();
+        }
+
         public ContentItem Parse(string url)
         {
             throw new NotImplementedException();
@@ -62,14 +69,16 @@ namespace N2.Templates.Tests.Wiki
             throw new NotImplementedException();
         }
 
-		public PathData ResolvePath(Url url)
-		{
-			throw new NotImplementedException();
-		}
+        public string StripDefaultDocument(string path)
+        {
+            return path;
+        }
 
-		public string StripDefaultDocument(string path)
-		{
-			return path;
-		}
-	}
+        public event EventHandler<UrlEventArgs> BuildingUrl;
+
+        public PathData ResolvePath(Url url, ContentItem startNode = null, string remainingPath = null)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,39 +11,39 @@ using N2.Definitions;
 
 namespace N2.Management.Content.Export
 {
-	public partial class Export : EditPage
-	{
-		protected AffectedItems exportedItems;
+    public partial class Export : EditPage
+    {
+        protected AffectedItems exportedItems;
 
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
 
-			tpImport.NavigateUrl = "Default.aspx?selected=" + Selection.SelectedItem.Path;
+            tpImport.NavigateUrl = "Default.aspx?selected=" + Selection.SelectedItem.Path;
 
-			if (Selection.SelectedItem is IFileSystemNode)
-			{
-				Response.Redirect("../../Files/FileSystem/Export.aspx?path=" + Server.UrlEncode(Selection.SelectedItem.Path) + "#ctl00_ctl00_Frame_Content_tpExport");
-			}
-		}
+            if (Selection.SelectedItem is IFileSystemNode)
+            {
+                Response.Redirect("../../Files/FileSystem/Export.aspx?path=" + Server.UrlEncode(Selection.SelectedItem.Path) + "#ctl00_ctl00_Frame_Content_tpExport");
+            }
+        }
 
-		protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
 
-			exportedItems.CurrentItem = Selection.SelectedItem;
-			tpExport.DataBind();
-		}
+            exportedItems.CurrentItem = Selection.SelectedItem;
+            tpExport.DataBind();
+        }
 
-		protected void btnExport_Command(object sender, CommandEventArgs e)
-		{
-			ExportOptions options = ExportOptions.Default;
-			if (chkDefinedDetails.Checked)
-				options |= ExportOptions.OnlyDefinedDetails;
-			if (chkAttachments.Checked)
-				options |= ExportOptions.ExcludeAttachments;
+        protected void btnExport_Command(object sender, CommandEventArgs e)
+        {
+            ExportOptions options = ExportOptions.Default;
+            if (chkDefinedDetails.Checked)
+                options |= ExportOptions.OnlyDefinedDetails;
+            if (chkAttachments.Checked)
+                options |= ExportOptions.ExcludeAttachments;
 
-			Engine.Resolve<Exporter>().Export(Selection.SelectedItem, options, Response);
-		}
-	}
+            Engine.Resolve<Exporter>().Export(Selection.SelectedItem, options, Response);
+        }
+    }
 }

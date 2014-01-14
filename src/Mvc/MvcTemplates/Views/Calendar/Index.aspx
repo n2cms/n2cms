@@ -10,7 +10,7 @@
 			<div class="item i<%= i++ %> a<%= i % 2 %>">
 				<span class="date"><%= result.EventDateString %></span>
 				<a href='<%= result.Url %>'><%=result.Title%></a>
-				<p><%=result.Introduction%></p>
+				<p><%=result.Summary%></p>
 			</div>
 		<%} %>
 		</div>

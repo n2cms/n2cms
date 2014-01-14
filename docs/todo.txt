@@ -1,5 +1,32 @@
-- Click on files leads to disappearings (discussions/284350)
-- Own IUrlParser (discussions/284638)
+- module signing
+- dinamico bootstrap
+-    <add key="ValidationSettings:UnobtrusiveValidationMode" value="None" />
+- double encoding when using embedded parts
+- upload tab ckeditor
+- https://github.com/bherila/n2cms/issues
+- Det va en static prop med en private getter i en content item
+- merge mongo stuff
+- mobile support
+- redesign
+- ckeditor
+- upload tab ckeditor
+- smart redirect to language-localized page when URL is specified with no language (i.e. language root missing)
+- refresh without control panel
+- full mongo support
+- Optimize number of items loaded when saving (http://n2cms.codeplex.com/discussions/395905)
+- Weird discriminator (discussions/358438)
+- Translate close (discussions/356447)
+- security exception discussions/354170
+- non-persistent items searchable
+- placeholder
+- required [EditableMediaUpload] (discussions/346532)
+- windsor 3 - http://n2cms.codeplex.com/discussions/340758
+- permission map issues http://n2cms.codeplex.com/workitem/32291
+- dbfs in virtual dir (discussions/287370)
+- Pushstate
+- PdfBox http://pdfbox.apache.org/userguide/dot_net.html (discussions/285609)
+- ContentState after installation (discussions/285006)
+- Document security (discussions/282764)
 - Bulk adding from rss (discussions/272297)
 - restrict page deletion (discussions/282410)
 - .aspx on MVC (discussions/281400)

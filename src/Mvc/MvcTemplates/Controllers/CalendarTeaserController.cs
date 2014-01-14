@@ -6,20 +6,32 @@ using N2.Templates.Mvc.Models;
 using N2.Web;
 using N2.Web.Mvc;
 using N2.Templates.Mvc.Models.Pages;
+using N2.Linq;
+using N2.Persistence;
 
 namespace N2.Templates.Mvc.Controllers
 {
-	[Controls(typeof(CalendarTeaser))]
-	public class CalendarTeaserController : ContentController<CalendarTeaser>
-	{
-		public override ActionResult Index()
-		{
-			var container = CurrentItem.Container;
-			var hits = container != null
-				? container.GetEvents().Where(e => e.EventDate > DateTime.Today)
-				: new Event[0];
+    [Controls(typeof(CalendarTeaser))]
+    public class CalendarTeaserController : ContentController<CalendarTeaser>
+    {
+        private IContentItemRepository repository;
+        public CalendarTeaserController(IContentItemRepository repository)
+        {
+            this.repository = repository;
+        }
 
-			return PartialView(new CalendarTeaserModel(CurrentItem, hits.Take(5).ToList()));
-		}
-	}
+        public override ActionResult Index()
+        {
+            var parameters = Parameter.TypeEqual(typeof(Event).Name)
+                & Parameter.GreaterOrEqual("EventDate", N2.Utility.CurrentTime());
+
+            if (CurrentItem.Container != null)
+                parameters.Add(Parameter.BelowOrSelf(CurrentItem.Container));
+
+            var hits = repository.Find(parameters.OrderBy("EventDate").Take(5))
+                .OfType<Event>().ToList();
+
+            return PartialView(new CalendarTeaserModel(CurrentItem, hits));
+        }
+    }
 }

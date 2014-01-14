@@ -21,21 +21,24 @@
 	<Target Name="Templates-Deploy" DependsOnTargets="Templates-Build;Framework-CreateItemGroups">
 		<ItemGroup>
 			<templatesTempFiles Include="$(Templates-SourceFolder)\**\*;
-																	 $(BuildFolder)\deploy\WebFormTemplates\**\*"
-													 Exclude="$(Templates-SourceFolder)\**\.svn\**\*;
-																		$(Templates-SourceFolder)\**\.git\**\*;
-																		$(Templates-SourceFolder)\**\obj\**\*;
-																		$(Templates-SourceFolder)\**\bin\*.pdb;
-																		$(Templates-SourceFolder)\**\Ankh.Load;
-																		$(Templates-SourceFolder)\**\*.sln.cache;
-																		$(Templates-SourceFolder)\**\*.resharper;
-																		$(Templates-SourceFolder)\**\*.suo;
-																		$(Templates-SourceFolder)\**\*.user;
-																		$(Templates-SourceFolder)\**\*.Publish.xml;
-																		$(Templates-SourceFolder)\**\Thumbs.db;
-																		$(Templates-SourceFolder)\App_Data\SearchIndex\**\*;
-																		$(Templates-SourceFolder)\N2\**\*;
-																		$(Templates-SourceFolder)\N2.Management.*" />
+										 $(BuildFolder)\deploy\WebFormTemplates\**\*"
+								Exclude="$(Templates-SourceFolder)\**\.svn\**\*;
+										 $(Templates-SourceFolder)\**\.git\**\*;
+										 $(Templates-SourceFolder)\**\obj\**\*;
+										 $(Templates-SourceFolder)\**\bin\*.pdb;
+										 $(Templates-SourceFolder)\**\Ankh.Load;
+										 $(Templates-SourceFolder)\**\*.sln.cache;
+										 $(Templates-SourceFolder)\**\*.resharper;
+										 $(Templates-SourceFolder)\**\*.suo;
+										 $(Templates-SourceFolder)\**\*.user;
+										 $(Templates-SourceFolder)\**\*.Publish.xml;
+										 $(Templates-SourceFolder)\**\Thumbs.db;
+										 $(Templates-SourceFolder)\App_Data\SearchIndex\**\*;
+										 $(Templates-SourceFolder)\App_Data\Temp\**\*;
+										 $(Templates-SourceFolder)\N2\**\*;
+										 $(Templates-SourceFolder)\N2.Management.*;
+										 $(Templates-SourceFolder)\bin\Demo.*;
+										 $(Templates-SourceFolder)\bin\*.Tests.*" />
 		</ItemGroup>
 
 		<Copy SourceFiles="@(templatesTempFiles)"						DestinationFolder="$(Templates-DeployFolder-Path)\%(RecursiveDir)" />
@@ -49,6 +52,9 @@
 
 	<Target Name="Templates-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-SourceFolder)\bin" />
+
+		<Copy SourceFiles="@(Framework-DependencyBinaries)" DestinationFolder="$(Templates-SourceFolder)\bin\" />
+		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFiles="$(Templates-SourceFolder)\%(RecursiveDir)\%(FileName)%(Extension)" ContinueOnError="true" />
 
 		<Message Text="Skipping mklink (folder exists): $(Templates-SourceFolder)\N2\" Condition="Exists('$(Templates-SourceFolder)\N2\')" Importance="high" />
 		<Exec Command="mklink /D $(Templates-SourceFolder)\N2\ $(EditFolder)\" Condition="!Exists('$(Templates-SourceFolder)\N2\')" ContinueOnError="true" />

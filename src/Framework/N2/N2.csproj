@@ -23,7 +23,7 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -40,13 +40,16 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NET3_5;NH2_1;</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DOTNET;DOTNET40;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
@@ -58,7 +61,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NET3_5;NH2_1;</DefineConstants>
+    <DefineConstants>TRACE;DOTNET;DOTNET40;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\N2.XML</DocumentationFile>
@@ -66,28 +69,12 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Windsor, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\Castle.Windsor.dll</HintPath>
-    </Reference>
     <Reference Include="Iesi.Collections">
-      <HintPath>..\..\..\lib\Iesi.Collections.dll</HintPath>
+      <HintPath>..\..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\..\..\lib\log4net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NHibernate, Version=3.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\NHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate.Caches.SysCache2, Version=3.0.0.3000, Culture=neutral, PublicKeyToken=6876f2ea66c9f443, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\NHibernate.Caches.SysCache2.dll</HintPath>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NHibernate">
+      <HintPath>..\..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -98,21 +85,45 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\System.Web.Mvc.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\AccessFilter.cs" />
     <Compile Include="Collections\ChildFactoryDelegate.cs" />
+    <Compile Include="Collections\CollectionState.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\ContentListOfT.cs" />
     <Compile Include="Collections\AccessiblePageFilter.cs" />
     <Compile Include="Collections\AnyFilter.cs" />
+    <Compile Include="Collections\DetailCollectionList.cs" />
+    <Compile Include="Collections\NumericHashtable.cs" />
     <Compile Include="Collections\StateFilter.cs" />
     <Compile Include="Collections\PartFilter.cs" />
     <Compile Include="Collections\ParallelRootHierarchyBuilder.cs" />
@@ -135,6 +146,50 @@
     <Compile Include="Collections\IZonedListOfT.cs" />
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
+    <Compile Include="Configuration\ChildrenElement.cs" />
+    <Compile Include="Configuration\CkEditorElement.cs" />
+    <Compile Include="Configuration\ClientElement.cs" />
+    <Compile Include="Configuration\CollaborationElement.cs" />
+    <Compile Include="Configuration\FileListElement.cs" />
+    <Compile Include="Configuration\DocViewerElement.cs" />
+    <Compile Include="Configuration\HtmlSanitizeElement.cs" />
+    <Compile Include="Configuration\TargetingCollection.cs" />
+    <Compile Include="Configuration\TargetingElement.cs" />
+    <Compile Include="Configuration\ExceptionResolutionMode.cs" />
+    <Compile Include="Configuration\ServerElement.cs" />
+    <Compile Include="Definitions\DefinitionEventArgs.cs" />
+    <Compile Include="Definitions\IPlaceholder.cs" />
+    <Compile Include="Web\IStyleable.cs" />
+    <Compile Include="Definitions\ITemplateAggregator.cs" />
+    <Compile Include="Definitions\TemplateAggregator.cs" />
+    <Compile Include="Details\EditableDirectUrlAttribute.cs" />
+    <Compile Include="Edit\Api\ApiExtensions.cs" />
+    <Compile Include="Edit\Api\ApiHandlerDispatcher.cs" />
+    <Compile Include="Edit\Api\ContentHandler.cs" />
+    <Compile Include="Edit\Api\ContextBuilder.cs" />
+    <Compile Include="Edit\Api\ContextHandler.cs" />
+    <Compile Include="Edit\Api\IApiHandler.cs" />
+    <Compile Include="Edit\Api\InterfaceBuilder.cs" />
+    <Compile Include="Edit\Api\InterfaceFlagsAttribute.cs" />
+    <Compile Include="Edit\Api\IProfileRepository.cs" />
+    <Compile Include="Edit\Api\ManagementModule.cs" />
+    <Compile Include="Edit\Api\ProfileHandler.cs" />
+    <Compile Include="Edit\ISafeContentRenderer.cs" />
+    <Compile Include="Edit\SafeContentRenderer.cs" />
+    <Compile Include="Edit\Installation\InstallationExtensions.cs" />
+    <Compile Include="Edit\Installation\MigrationAttribute.cs" />
+    <Compile Include="Edit\MetaInfo.cs" />
+    <Compile Include="Definitions\GroupChildrenAttribute.cs" />
+    <Compile Include="Definitions\GroupChildrenMode.cs" />
+    <Compile Include="Edit\SlugGenerator.cs" />
+    <Compile Include="Edit\Versioning\ContentVersionCleanup.cs" />
+    <Compile Include="Edit\Versioning\VersioningExtensions.cs" />
+    <Compile Include="Edit\Versioning\DraftRepository.cs" />
+    <Compile Include="Edit\Versioning\VersionsChangedEventArgs.cs" />
+    <Compile Include="Edit\ViewPreference.cs" />
+    <Compile Include="Configuration\LinkTrackerElement.cs" />
+    <Compile Include="Configuration\MessageTargetElement.cs" />
+    <Compile Include="Configuration\MessagingElement.cs" />
     <Compile Include="Configuration\PathsElement.cs" />
     <Compile Include="Configuration\ContentConfigurationSectionBase.cs" />
     <Compile Include="Configuration\FilesElement.cs" />
@@ -144,10 +199,264 @@
     <Compile Include="Configuration\ExternalsElement.cs" />
     <Compile Include="Configuration\MembershipElement.cs" />
     <Compile Include="Configuration\ResourcesElement.cs" />
+    <Compile Include="Configuration\ScheduledActionElement.cs" />
     <Compile Include="Configuration\SearchElement.cs" />
+    <Compile Include="Configuration\SearchIndexType.cs" />
+    <Compile Include="Configuration\MessageTargetsCollection.cs" />
+    <Compile Include="Configuration\TokensElement.cs" />
     <Compile Include="Configuration\VppElement.cs" />
     <Compile Include="Configuration\ZipVppElement.cs" />
     <Compile Include="Configuration\ZipVppCollection.cs" />
+    <Compile Include="Definitions\PropertyDefinition.cs" />
+    <Compile Include="Definitions\Runtime\ContainerBuilder.cs" />
+    <Compile Include="Definitions\Runtime\FluentRegistrationExtensions.cs" />
+    <Compile Include="Definitions\Runtime\IFluentRegisterer.cs" />
+    <Compile Include="Definitions\Runtime\Registration.cs" />
+    <Compile Include="Definitions\Runtime\FluentRegisterer.cs" />
+    <Compile Include="Definitions\Runtime\IPropertyRegistration.cs" />
+    <Compile Include="Definitions\Runtime\PropertyRegistration.cs" />
+    <Compile Include="Definitions\Runtime\PropertyRegistrationExtensions.cs" />
+    <Compile Include="Definitions\Runtime\RegistrationConventions.cs" />
+    <Compile Include="Details\EditableItemSelectionAttribute.cs" />
+    <Compile Include="Details\EditableItemSelectionFilter.cs" />
+    <Compile Include="Edit\Activity\ActivityBase.cs" />
+    <Compile Include="Edit\Activity\ActivityExtensions.cs" />
+    <Compile Include="Edit\Activity\ActivityRepository.cs" />
+    <Compile Include="Edit\Activity\ActivityUser.cs" />
+    <Compile Include="Edit\Versioning\ContentVersionRepository.cs" />
+    <Compile Include="Edit\Versioning\ContentVersion.cs" />
+    <Compile Include="Edit\Workflow\CommandProcessEventArgs.cs" />
+    <Compile Include="Edit\Workflow\Commands\SaveOnPageVersionCommand.cs" />
+    <Compile Include="Edit\Workflow\Commands\UpdateReferencesCommand.cs" />
+    <Compile Include="Engine\DynamicProxy\AbstractInvocation.cs" />
+    <Compile Include="Engine\DynamicProxy\AllMethodsHook.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\ClassMembersCollector.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\ClassProxyInstanceContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\ClassProxyTargetContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\ClassProxyWithTargetTargetContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\CompositeTypeContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\DelegateProxyTargetContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\Delegates.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\DelegateTypeGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\ForwardingMethodGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InterfaceMembersCollector.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InterfaceMembersOnClassCollector.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InterfaceProxyInstanceContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InterfaceProxyTargetContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InterfaceProxyWithOptionalTargetContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InterfaceProxyWithoutTargetContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InterfaceProxyWithTargetInterfaceTargetContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InvocationWithDelegateContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InvocationWithGenericDelegateContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\ITypeContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\MembersCollector.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\MinimialisticMethodGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\MixinContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\OptionallyForwardingMethodGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\ProxyInstanceContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\WrappedClassMembersCollector.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Internal\AttributesUtil.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\CollectionExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\ILockHolder.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Internal\InterfaceAttributeUtil.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\IUpgradeableLockHolder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\Lock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\NoOpLock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\PermissionUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Internal\SlimReadLockHolder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\SlimReadWriteLock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\SlimUpgradeableReadLockHolder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\SlimWriteLockHolder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextProperties.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextStack.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextStacks.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Logging\IExtendedLogger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Logging\ILogger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Logging\NullLogger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\DefaultProxyBuilder.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\AttributeDisassembler.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\AttributesToAvoidReplicating.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\BaseProxyGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\CacheKey.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\ClassProxyGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\ClassProxyWithTargetGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\CompositionInvocationTypeGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\DelegateMembersCollector.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\DelegateProxyGenerationHook.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\DelegateProxyGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\AbstractTypeEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\ArgumentsUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\ClassEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\CodeBuilders\AbstractCodeBuilder.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\CodeBuilders\ConstructorCodeBuilder.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\CodeBuilders\MethodCodeBuilder.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\ConstructorCollection.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\ConstructorEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\EventCollection.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\EventEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\GenericUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\IMemberEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\LdcOpCodesDictionary.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\LdindOpCodesDictionary.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\MethodCollection.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\MethodEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\NestedClassCollection.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\NestedClassEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\OpCodeUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\PropertiesCollection.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\PropertyEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\AddressOfReferenceExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ArgumentReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\AssignArgumentStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\AssignArrayStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\AssignStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\AsTypeReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\BindDelegateExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ByRefReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ConstReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ConstructorInvocationStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ConvertExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\DefaultValueExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\EndExceptionBlockStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\Expression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ExpressionStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\FieldReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\FinallyStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\IfNullExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\IILEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\IndirectReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\LiteralIntExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\LoadArrayElementExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\LoadRefArrayElementExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\LocalReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\MethodInvocationExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\MethodTokenExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\MultiStatementExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\NewArrayExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\NewInstanceExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\NopStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\NullCoalescingOperatorExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\NullExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\Reference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ReferenceExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ReferencesToObjectArrayExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ReturnStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\SelfReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\Statement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ThrowStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\TryStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\TypeReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\TypeTokenExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\StindOpCodesDictionary.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\StrongNameUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\TypeConstructorEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\TypeUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\GeneratorException.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\GeneratorUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\IGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\IInvocationCreationContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\INamingScope.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\InheritanceInvocationTypeGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\InterfaceProxyWithoutTargetGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\InterfaceProxyWithTargetGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\InterfaceProxyWithTargetInterfaceGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\InvocationTypeGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MetaEvent.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MetaMethod.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MetaProperty.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MetaType.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MetaTypeElement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MethodFinder.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MethodGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MethodSignatureComparer.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MethodWithInvocationGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\NamingScope.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\TypeElementCollection.cs" />
+    <Compile Include="Engine\DynamicProxy\IAttributeDisassembler.cs" />
+    <Compile Include="Engine\DynamicProxy\IChangeProxyTarget.cs" />
+    <Compile Include="Engine\DynamicProxy\IInterceptor.cs" />
+    <Compile Include="Engine\DynamicProxy\IInterceptorSelector.cs" />
+    <Compile Include="Engine\DynamicProxy\IInvocation.cs" />
+    <Compile Include="Engine\DynamicProxy\Internal\AttributeUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Internal\CompositionInvocation.cs" />
+    <Compile Include="Engine\DynamicProxy\Internal\InheritanceInvocation.cs" />
+    <Compile Include="Engine\DynamicProxy\Internal\InternalsUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Internal\InvocationHelper.cs" />
+    <Compile Include="Engine\DynamicProxy\InvalidMixinConfigurationException.cs" />
+    <Compile Include="Engine\DynamicProxy\InvalidProxyConstructorArgumentsException.cs" />
+    <Compile Include="Engine\DynamicProxy\IProxyBuilder.cs" />
+    <Compile Include="Engine\DynamicProxy\IProxyGenerationHook.cs" />
+    <Compile Include="Engine\DynamicProxy\IProxyTargetAccessor.cs" />
+    <Compile Include="Engine\DynamicProxy\MixinData.cs" />
+    <Compile Include="Engine\DynamicProxy\ModuleScope.cs" />
+    <Compile Include="Engine\DynamicProxy\PersistentProxyBuilder.cs" />
+    <Compile Include="Engine\DynamicProxy\ProxyGenerationException.cs" />
+    <Compile Include="Engine\DynamicProxy\ProxyGenerationOptions.cs" />
+    <Compile Include="Engine\DynamicProxy\ProxyGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\ProxyUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Serialization\CacheMappingsAttribute.cs" />
+    <Compile Include="Engine\DynamicProxy\Serialization\ProxyObjectReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Serialization\ProxyTypeConstants.cs" />
+    <Compile Include="Engine\DynamicProxy\StandardInterceptor.cs" />
+    <Compile Include="Engine\DynamicProxy\Tokens\DelegateMethods.cs" />
+    <Compile Include="Engine\DynamicProxy\Tokens\FormatterServicesMethods.cs" />
+    <Compile Include="Engine\DynamicProxy\Tokens\InvocationMethods.cs" />
+    <Compile Include="Engine\DynamicProxy\Tokens\MethodBaseMethods.cs" />
+    <Compile Include="Engine\DynamicProxy\Tokens\SerializationInfoMethods.cs" />
+    <Compile Include="Engine\DynamicProxy\Tokens\TypeBuilderMethods.cs" />
+    <Compile Include="Engine\DynamicProxy\Tokens\TypeMethods.cs" />
+    <Compile Include="Engine\DynamicProxy\Tokens\TypeUtilMethods.cs" />
+    <Compile Include="Engine\IDecorator.cs" />
+    <Compile Include="Engine\MediumTrust\MediumTrustEngine.cs" />
+    <Compile Include="Engine\MediumTrust\MediumTrustServiceContainer.cs" />
+    <Compile Include="Engine\MediumTrust\MediumTrustTypeFinder.cs" />
+    <Compile Include="Engine\MediumTrust\StaticDefaultServiceContainerConfigurer.cs" />
+    <Compile Include="Engine\TinyIoC\EventArgs.cs" />
+    <Compile Include="Engine\TinyIoC\TinyIoC.cs" />
+    <Compile Include="Engine\TinyIoC\TinyIoCAspNetExtensions.cs" />
+    <Compile Include="Engine\TinyIoC\TinyIoCServiceContainer.cs" />
+    <Compile Include="Engine\TypeCache.cs" />
+    <Compile Include="Engine\AttributedType.cs" />
+    <Compile Include="Engine\Logger.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Linq\FindExtensions.cs" />
+    <Compile Include="Persistence\Behaviors\IBehavior.cs" />
+    <Compile Include="Persistence\Behaviors\IDeletingBehavior.cs" />
+    <Compile Include="Persistence\Behaviors\IRemovingBehavior.cs" />
+    <Compile Include="Edit\Workflow\CommandCreatedEventArgs.cs" />
+    <Compile Include="Persistence\Behaviors\IAddingBehavior.cs" />
     <Compile Include="Definitions\DefinitionExtensions.cs" />
     <Compile Include="Definitions\IActiveChildren.cs" />
     <Compile Include="Definitions\IFileSystemFile.cs" />
@@ -158,12 +467,14 @@
     <Compile Include="Definitions\ITemplateable.cs" />
     <Compile Include="Definitions\IWebFormsAddable.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateAnalyzer.cs" />
-    <Compile Include="Definitions\Runtime\ViewTemplateDescription.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateProvider.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateRegistrator.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateSource.cs" />
     <Compile Include="Definitions\AttributeTransformerBaseOfTIn.cs" />
+    <Compile Include="Definitions\SortBy.cs" />
+    <Compile Include="Definitions\SyncChildCollectionStateAttribute.cs" />
     <Compile Include="Definitions\TransformerBaseOfTOut.cs" />
+    <Compile Include="Details\EditableMultipleItemSelectionAttribute.cs" />
     <Compile Include="Details\EditableImageUploadAttribute.cs" />
     <Compile Include="Details\EditableFolderSelectionAttribute.cs" />
     <Compile Include="Details\EditableMediaUploadAttribute.cs" />
@@ -213,6 +524,7 @@
     <Compile Include="Edit\IPlaceHolderAccessor.cs" />
     <Compile Include="Edit\TreeNode.cs" />
     <Compile Include="Edit\UploadFolderSource.cs" />
+    <Compile Include="Engine\Globalization\CachingLanguageGatewayDecorator.cs" />
     <Compile Include="Engine\Globalization\LanguageGatewaySelector.cs" />
     <Compile Include="Engine\Globalization\SiteFilteringLanguageGateway.cs" />
     <Compile Include="Engine\Providers\ViewContentHelperProvider.cs" />
@@ -223,8 +535,9 @@
     <Compile Include="Engine\Providers\ViewEngineCollectionProvider.cs" />
     <Compile Include="Engine\Providers\VirtualPathProviderProvider.cs" />
     <Compile Include="Engine\ServiceInfo.cs" />
+    <Compile Include="Definitions\SiblingInsertionAttribute.cs" />
     <Compile Include="Integrity\RestrictCardinalityAttribute.cs" />
-    <Compile Include="Obsolete\BooleanDetail.cs" />
+    <Compile Include="Persistence\Behaviors\BehaviorInvoker.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
     <Compile Include="Details\DisplayableHeadingAttribute.cs" />
     <Compile Include="Details\DisplayableLiteralAttribute.cs" />
@@ -232,13 +545,8 @@
     <Compile Include="Details\EditableUrlAttribute.cs" />
     <Compile Include="Details\WithEditableAttribute.cs" />
     <Compile Include="Details\DisplayableAttribute.cs" />
-    <Compile Include="Obsolete\DoubleDetail.cs" />
-    <Compile Include="Obsolete\IntegerDetail.cs" />
     <Compile Include="Details\EditableFreeTextAreaAttribute.cs" />
     <Compile Include="Details\EditableTextAttribute.cs" />
-    <Compile Include="Obsolete\StringDetail.cs" />
-    <Compile Include="Obsolete\DateTimeDetail.cs" />
-    <Compile Include="Obsolete\ObjectDetail.cs" />
     <Compile Include="Edit\EditUrlManager.cs" />
     <Compile Include="Edit\IEditUrlManager.cs" />
     <Compile Include="Edit\Installation\AppPathRebaser.cs" />
@@ -262,34 +570,83 @@
     <Compile Include="DestinationEventArgs.cs" />
     <Compile Include="Persistence\ContentActivator.cs" />
     <Compile Include="Edit\IExternalContentRepository.cs" />
+    <Compile Include="Persistence\Behaviors\BehaviorContext.cs" />
+    <Compile Include="Persistence\ContentBuilder.cs" />
+    <Compile Include="Persistence\FilesystemTransaction.cs" />
+    <Compile Include="Persistence\NH\DetailCollectionFactory.cs" />
+    <Compile Include="Persistence\NH\PersistentDetailCollectionList.cs" />
+    <Compile Include="Persistence\Serialization\Html\ItemHtmlWriter.cs" />
+    <Compile Include="Persistence\Serialization\Html\ItemHtmlReader.cs" />
     <Compile Include="Persistence\IContentItemRepository.cs" />
-    <Compile Include="Persistence\IParameter.cs" />
+    <Compile Include="Persistence\Behaviors\ISavingBehavior.cs" />
+    <Compile Include="Persistence\IPersistableProperty.cs" />
     <Compile Include="Persistence\NH\ContentItemRepository.cs" />
+    <Compile Include="Persistence\NH\ContentListFactoryOfT.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\NH\Finder\FinderExtensions.cs" />
+    <Compile Include="Persistence\NH\Finder\PropertyNotInHqlProvider.cs" />
+    <Compile Include="Persistence\NH\NHExtensions.cs" />
+    <Compile Include="Persistence\NH\SysCache2\CacheDependenciesElement.cs" />
+    <Compile Include="Persistence\NH\SysCache2\CacheRegionCollection.cs" />
+    <Compile Include="Persistence\NH\SysCache2\CacheRegionElement.cs" />
+    <Compile Include="Persistence\NH\SysCache2\CommandCacheDependencyCollection.cs" />
+    <Compile Include="Persistence\NH\SysCache2\CommandCacheDependencyElement.cs" />
+    <Compile Include="Persistence\NH\SysCache2\ConfigConnectionStringProvider.cs" />
+    <Compile Include="Persistence\NH\SysCache2\GlobalSuppressions.cs" />
+    <Compile Include="Persistence\NH\SysCache2\ICacheDependencyEnlister.cs" />
+    <Compile Include="Persistence\NH\SysCache2\IConnectionStringProvider.cs" />
+    <Compile Include="Persistence\NH\SysCache2\NullableTimeSpanValidator.cs" />
+    <Compile Include="Persistence\NH\SysCache2\SqlCommandCacheDependencyEnlister.cs" />
+    <Compile Include="Persistence\NH\SysCache2\SqlTableCacheDependencyEnlister.cs" />
+    <Compile Include="Persistence\NH\SysCache2\StaticConnectionStringProvider.cs" />
+    <Compile Include="Persistence\NH\SysCache2\SysCacheProvider.cs" />
+    <Compile Include="Persistence\NH\SysCache2\SysCacheRegion.cs" />
+    <Compile Include="Persistence\NH\SysCache2\SysCacheSection.cs" />
+    <Compile Include="Persistence\NH\SysCache2\TableCacheDependencyCollection.cs" />
+    <Compile Include="Persistence\NH\SysCache2\TableCacheDependencyElement.cs" />
+    <Compile Include="Persistence\NH\NHInterceptorFactory.cs" />
+    <Compile Include="Persistence\NH\RelationConfigurationBuilderParticipator.cs" />
+    <Compile Include="Persistence\PersistenceExtensions.cs" />
+    <Compile Include="Engine\DynamicProxy\InterceptableAttribute.cs" />
+    <Compile Include="Persistence\Proxying\InterceptablePropertyAttribute.cs" />
+    <Compile Include="Persistence\NH\SubTransaction.cs" />
+    <Compile Include="Persistence\Proxying\IValueAccessor.cs" />
+    <Compile Include="Persistence\RelationOfT.cs" />
+    <Compile Include="Persistence\Search\AsyncIndexer.cs" />
+    <Compile Include="Persistence\Search\ContentChangeTracker.cs" />
+    <Compile Include="Persistence\Search\EmptyIndexer.cs" />
+    <Compile Include="Persistence\IParameter.cs" />
     <Compile Include="Persistence\Order.cs" />
     <Compile Include="Persistence\ParameterCollection.cs" />
     <Compile Include="Persistence\PersistenceExtensions.cs" />
     <Compile Include="Persistence\Range.cs" />
     <Compile Include="Persistence\Search\IAsyncIndexer.cs" />
+    <Compile Include="Persistence\Search\IIndexer.cs" />
+    <Compile Include="Persistence\Search\IndexableDocument.cs" />
+    <Compile Include="Persistence\Search\ContentIndexer.cs" />
+    <Compile Include="Persistence\Search\SortFieldData.cs" />
+    <Compile Include="Persistence\Serialization\ChildXmlReader.cs" />
+    <Compile Include="Persistence\Serialization\Html\XmlRepository.cs" />
+    <Compile Include="Persistence\Serialization\UnresolvedLink.cs" />
     <Compile Include="Persistence\Sources\ContentSource.cs" />
     <Compile Include="Persistence\Finder\INullableCriteriaOfT.cs" />
     <Compile Include="Persistence\Finder\IUntypedCriteria.cs" />
-    <Compile Include="Persistence\FindingTextSearcher.cs" />
+    <Compile Include="Persistence\Search\FindingContentSearcher.cs" />
     <Compile Include="Engine\IDependencyInjector.cs" />
     <Compile Include="Persistence\IPersister.cs" />
     <Compile Include="Persistence\Proxying\IInterceptorBuilder.cs" />
     <Compile Include="Persistence\SearchHelper.cs" />
     <Compile Include="Persistence\Search\IIndexableProperty.cs" />
     <Compile Include="Persistence\Search\IIndexableType.cs" />
-    <Compile Include="Persistence\Search\IIndexer.cs" />
+    <Compile Include="Persistence\Search\IContentIndexer.cs" />
     <Compile Include="Persistence\Search\IndexableAttribute.cs" />
-    <Compile Include="Persistence\Search\IndexableContent.cs" />
     <Compile Include="Persistence\Search\IndexableDefinitionExtractor.cs" />
     <Compile Include="Persistence\Search\SearchableTypeAttribute.cs" />
     <Compile Include="Persistence\Search\ITextExtractor.cs" />
-    <Compile Include="Persistence\Search\ITextSearcher.cs" />
+    <Compile Include="Persistence\Search\IContentSearcher.cs" />
     <Compile Include="Persistence\NH\ConfigurationBuilderParticipator.cs" />
     <Compile Include="Persistence\NH\ContentItemListFactoryOfT.cs" />
-    <Compile Include="Persistence\NH\ContentListFactoryOfT.cs" />
     <Compile Include="Persistence\NH\Finder\DetailNullHqlProvider.cs" />
     <Compile Include="Persistence\NH\Finder\PropertyNullHqlProvider.cs" />
     <Compile Include="Persistence\NH\PersistentContentItemListOfT.cs" />
@@ -303,6 +660,7 @@
     <Compile Include="Persistence\Serialization\PersistablePropertyXmlReader.cs" />
     <Compile Include="Persistence\Serialization\PersistablePropertyXmlWriter.cs" />
     <Compile Include="Persistence\Sources\ContentSourceAttribute.cs" />
+    <Compile Include="Persistence\Sources\VersionSource.cs" />
     <Compile Include="Persistence\Sources\SourceBase.cs" />
     <Compile Include="Persistence\NH\DatabaseSource.cs" />
     <Compile Include="Persistence\Sources\ActiveContentSource.cs" />
@@ -319,6 +677,7 @@
     <Compile Include="Security\ISecurityManager.cs" />
     <Compile Include="Security\PermissionDeniedException.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="Web\CacheWrapper.cs" />
     <Compile Include="Web\Compilation\CodeExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\CurrentPageExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\N2ExpressionBuilder.cs" />
@@ -326,17 +685,40 @@
     <Compile Include="Web\ContextHelper.cs" />
     <Compile Include="Web\CssCompilerHandler.cs" />
     <Compile Include="Web\CurrentPageProvider.cs" />
+    <Compile Include="Web\DefaultExceptionFilter.cs" />
     <Compile Include="Web\EmptyDisposable.cs" />
     <Compile Include="Web\ErrorEventArgs.cs" />
+    <Compile Include="Definitions\IUrlSource.cs" />
+    <Compile Include="Web\DocViewerUtility.cs" />
+    <Compile Include="Web\IExceptionFilter.cs" />
     <Compile Include="Web\JsonWriter.cs" />
+    <Compile Include="Web\Messaging\Envelope.cs" />
+    <Compile Include="Web\Messaging\IChannel.cs" />
+    <Compile Include="Web\Messaging\ISender.cs" />
+    <Compile Include="Web\Messaging\IReceiver.cs" />
+    <Compile Include="Web\Messaging\MessageBroker.cs" />
+    <Compile Include="Web\Messaging\MessageTarget.cs" />
+    <Compile Include="Web\Messaging\MessagingExtensions.cs" />
+    <Compile Include="Web\Messaging\ReceivedEventArgs.cs" />
+    <Compile Include="Web\Messaging\ReceiverAttribute.cs" />
+    <Compile Include="Web\Messaging\ReceiverBase.cs" />
+    <Compile Include="Web\Messaging\HttpRequestChannel.cs" />
     <Compile Include="Web\MultipleSitesInitializer.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />
     <Compile Include="Web\Mvc\ContentControllerOfT.cs" />
     <Compile Include="Web\Mvc\ControllerContentHelper.cs" />
+    <Compile Include="Web\Mvc\ControllerFactoryConfigurator.cs" />
+    <Compile Include="Web\Mvc\Html\DroppableZoneExtensions.cs" />
+    <Compile Include="Web\Mvc\Html\DroppableZoneHelper.cs" />
     <Compile Include="Web\Mvc\Html\HtmlExtensions.cs" />
+    <Compile Include="Web\Mvc\Html\ZoneExtensions.cs" />
+    <Compile Include="Web\Mvc\Html\ZoneHelper.cs" />
     <Compile Include="Web\Mvc\MvcExtensions.cs" />
+    <Compile Include="Web\Mvc\RegisterExtensions.cs" />
     <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />
+    <Compile Include="Web\Mvc\ServiceLocatingControllerFactory.cs" />
+    <Compile Include="Web\Mvc\ThemeViewLocationCache.cs" />
     <Compile Include="Web\Mvc\ViewContentHelper.cs" />
     <Compile Include="Web\Mvc\ContentOutputCacheAttribute.cs" />
     <Compile Include="Web\Mvc\ContentRoute.cs" />
@@ -356,16 +738,46 @@
     <Compile Include="Web\Mvc\RenderHelper.cs" />
     <Compile Include="Web\Mvc\ThemeViewEngine.cs" />
     <Compile Include="Collections\TraverseHelper.cs" />
+    <Compile Include="Web\NonRewritableAttribute.cs" />
     <Compile Include="Web\Parsing\AnalyzerBase.cs" />
+    <Compile Include="Web\Parsing\ElementAnalyzer.cs" />
+    <Compile Include="Web\Parsing\HtmlCommentAnalyzer.cs" />
     <Compile Include="Web\Parsing\Token.cs" />
     <Compile Include="Web\Parsing\TokenType.cs" />
+    <Compile Include="Web\Parts\IIntegerityManager.cs" />
+    <Compile Include="Web\Parts\PartsExtensions.cs" />
+    <Compile Include="Web\Rendering\ContentRendererAttribute.cs" />
+    <Compile Include="Web\Rendering\ContentRendererSelector.cs" />
+    <Compile Include="Web\Rendering\ContentRendererBaseOfTModel.cs" />
     <Compile Include="Web\Rendering\DisplayableTokenRenderer.cs" />
+    <Compile Include="Web\Rendering\IContentRenderer.cs" />
     <Compile Include="Web\Rendering\RenderingExtensions.cs" />
+    <Compile Include="Web\Slug.cs" />
     <Compile Include="Web\TagWrapper.cs" />
+    <Compile Include="Web\Rendering\DisplayableToken.cs" />
+    <Compile Include="Web\Targeting\DetectorAttribute.cs" />
+    <Compile Include="Web\Targeting\DetectorBase.cs" />
+    <Compile Include="Web\Targeting\Detectors\Authenticated.cs" />
+    <Compile Include="Web\Targeting\Detectors\Anonymous.cs" />
+    <Compile Include="Web\Targeting\Detectors\Manager.cs" />
+    <Compile Include="Web\Targeting\Detectors\MobileDevice.cs" />
+    <Compile Include="Web\Targeting\TargetingRadar.cs" />
+    <Compile Include="Web\Targeting\TargetingContext.cs" />
+    <Compile Include="Web\Targeting\TargetingExtensions.cs" />
+    <Compile Include="Web\Tokens\TokenDefinition.cs" />
+    <Compile Include="Web\Tokens\TokenDefinitionFinder.cs" />
+    <Compile Include="Web\Tokens\TokenOption.cs" />
+    <Compile Include="Web\Tokens\TokenParser.cs" />
     <Compile Include="Web\UI\FormsContentHelper.cs" />
+    <Compile Include="Web\UI\IContentPageConcern.cs" />
     <Compile Include="Web\UI\RecursiveContainerAttribute.cs" />
+    <Compile Include="Web\UI\WebControls\MultiSelect.cs" />
+    <Compile Include="Web\UI\WebControls\OrganizeSwitchAttribute.cs" />
+    <Compile Include="Web\UI\WebControls\RequireEitherFieldValidator.cs" />
     <Compile Include="Web\UI\WebControls\SelectingUploadCompositeControl.cs" />
     <Compile Include="Web\UI\WebControls\WebControlsExtensions.cs" />
+    <Compile Include="Web\UrlEventArgs.cs" />
+    <Compile Include="Web\DirectUrlInjector.cs" />
     <Compile Include="Web\WebExtensions.cs" />
     <Compile Include="Web\Wiki\Analyzers\BoldAnalyzer.cs" />
     <Compile Include="Web\Wiki\Analyzers\BoldItalicsAnalyzer.cs" />
@@ -438,7 +850,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\PublicSiteMapProvider.cs" />
     <Compile Include="Web\UI\IItemContainer.cs" />
-    <Compile Include="Obsolete\IPageItemContainer.cs" />
     <Compile Include="Web\UI\MasterPage.generic.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -478,7 +889,6 @@
     <Compile Include="Details\EditableUserControlAttribute.cs" />
     <Compile Include="Details\DetailCollection.cs" />
     <Compile Include="Details\IDisplayable.cs" />
-    <Compile Include="Obsolete\LinkDetail.cs" />
     <Compile Include="Definitions\NotAllowedParentException.cs" />
     <Compile Include="Edit\IEditManager.cs" />
     <Compile Include="Edit\Web\EditPage.cs">
@@ -679,7 +1089,7 @@
     <Compile Include="Edit\Workflow\Commands\UpdateContentStateCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\UpdateObjectCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\UseMasterCommand.cs" />
-    <Compile Include="Edit\Workflow\Commands\UseNewVersionCommand.cs" />
+    <Compile Include="Edit\Workflow\Commands\UseDraftCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\ValidateCommand.cs" />
     <Compile Include="ContentState.cs" />
     <Compile Include="Edit\Workflow\IContentFormOfT.cs" />
@@ -691,7 +1101,6 @@
     <Compile Include="Edit\Workflow\StopExecutionException.cs" />
     <Compile Include="Edit\Workflow\ValidationError.cs" />
     <Compile Include="Engine\AdaptsAttribute.cs" />
-    <Compile Include="Engine\Castle\WindsorServiceContainer.cs" />
     <Compile Include="Engine\ContainerConfigurer.cs" />
     <Compile Include="Engine\ServiceProvider.cs" />
     <Compile Include="Persistence\EntityDependencySetter.cs" />
@@ -767,9 +1176,6 @@
     <Compile Include="Engine\Globalization\LanguageInfo.cs" />
     <Compile Include="Engine\IServiceContainer.cs" />
     <Compile Include="Engine\IWorker.cs" />
-    <Compile Include="Engine\MediumTrust\MediumTrustEngine.cs" />
-    <Compile Include="Engine\MediumTrust\MediumTrustServiceContainer.cs" />
-    <Compile Include="Engine\Configuration\StaticDefaultServiceContainerConfigurer.cs" />
     <Compile Include="Engine\ServiceAttribute.cs" />
     <Compile Include="Engine\ServiceContainerBase.cs" />
     <Compile Include="Engine\ServiceRegistrator.cs" />
@@ -797,7 +1203,6 @@
     <Compile Include="Engine\Globalization\Scope.cs" />
     <Compile Include="Engine\Globalization\TranslateSpecification.cs" />
     <Compile Include="Engine\IContentAdapterProvider.cs" />
-    <Compile Include="Engine\MediumTrust\MediumTrustTypeFinder.cs" />
     <Compile Include="Engine\Singleton.cs" />
     <Compile Include="Obsolete\DragDropControlPanel.cs" />
     <Compile Include="Obsolete\Page.generic.cs">
@@ -872,7 +1277,7 @@
     <Compile Include="Integrity\RestrictParentsAttribute.cs" />
     <Compile Include="Obsolete\ItemAttribute.cs" />
     <Compile Include="Persistence\NH\ConfigurationBuilder.cs" />
-    <Compile Include="Persistence\ContentPersister.cs" />
+    <Compile Include="Persistence\NH\ContentPersister.cs" />
     <Compile Include="Persistence\NH\SessionProvider.cs" />
     <Compile Include="Plugin\IAutoStart.cs" />
     <Compile Include="Plugin\IPluginFinder.cs" />
@@ -893,7 +1298,6 @@
     <Compile Include="Web\ConventionTemplateAttribute.cs" />
     <Compile Include="Web\ConventionTemplateDirectoryAttribute.cs" />
     <Compile Include="Web\PathDictionary.cs" />
-    <Compile Include="Web\GoogleSiteMapHandler.cs" />
     <Compile Include="Web\Parts\IAddablePart.cs" />
     <Compile Include="Web\RequestAdapter.cs" />
     <Compile Include="Web\AdaptiveContext.cs" />
@@ -950,18 +1354,17 @@
     <Compile Include="Web\UI\WebControls\SlidingCurtain.cs" />
     <Compile Include="Web\UI\WebControls\DragToolbar.cs" />
     <Compile Include="Persistence\GenericFind.cs" />
-    <Compile Include="Persistence\IVersionManager.cs" />
+    <Compile Include="Edit\Versioning\IVersionManager.cs" />
     <Compile Include="Persistence\NH\Finder\AbstractInHqlProvider.cs" />
     <Compile Include="Persistence\NH\Finder\DetailInHqlProvider.cs" />
     <Compile Include="Persistence\NH\Finder\PropertyInHqlProvider.cs" />
-    <Compile Include="Persistence\VersionManager.cs" />
+    <Compile Include="Edit\Versioning\VersionManager.cs" />
     <Compile Include="Plugin\AutoInitializeAttribute.cs" />
     <Compile Include="Plugin\InitializerCreatingAttribute.cs" />
     <Compile Include="Plugin\IPluginDefinition.cs" />
     <Compile Include="Resources\Media.cs" />
     <Compile Include="Resources\ScriptOptions.cs" />
     <Compile Include="Resources\ScriptPosition.cs" />
-    <Compile Include="Security\Authorization.cs" />
     <Compile Include="Security\ISecurable.cs" />
     <Compile Include="Definitions\RootContainer.cs" />
     <Compile Include="Definitions\EditableHierarchyBuilder.cs" />
@@ -1042,6 +1445,9 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Engine\DynamicProxy\License.txt" />
+    <Content Include="Engine\TinyIoC\licence.txt" />
+    <Content Include="Persistence\NH\SysCache2\NHibernate.Caches.SysCache2.csproj" />
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1063,8 +1469,17 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Persistence\NH\SysCache2\Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Engine\DynamicProxy\DynProxy.snk" />
+    <None Include="packages.config" />
+    <None Include="Persistence\NH\SysCache2\NHibernate.Caches.snk" />
+  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

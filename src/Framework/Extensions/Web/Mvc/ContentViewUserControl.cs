@@ -1,4 +1,4 @@
-﻿using System.Web.Mvc;
+using System.Web.Mvc;
 using N2.Web.Mvc.Html;
 using N2.Web.UI;
 
@@ -20,16 +20,16 @@ namespace N2.Web.Mvc
 
         ContentItem IItemContainer.CurrentItem
         {
-            get { return Content; }
+            get { return CurrentItem; }
         }
 
         #endregion
 
-        public TItem content;
-        public TItem Content
+        public TItem currentItem;
+        public TItem CurrentItem
         {
-            get { return content ?? (content = ViewContext.CurrentItem<TItem>()); }
-            set { content = value; }
+            get { return currentItem ?? (currentItem = ViewContext.RouteData.CurrentItem() as TItem); }
+            set { currentItem = value; }
         }
 
         HtmlHelper<TItem> contentHtml;

@@ -6,7 +6,7 @@
 		var from = dragMemory;
 		parent.preview.location = "../paste.aspx?action=" + action
 								+ "&memory=" + encodeURIComponent(from)
-								+ "&" + n2SelectedQueryKey + "=" + encodeURIComponent(to);
+								+ "&" + (n2SelectedQueryKey || "selected") + "=" + encodeURIComponent(to);
 	};
 	var onStart = function (e, ui) {
 		dragMemory = $(this).attr("data-path");
@@ -32,18 +32,37 @@
 		}
 	});
 
-	jQuery("#nav").click(function (e) {
-		var $a = $(e.target);
-		if (!$a.is("a"))
-			$a = $a.closest("a");
+	jQuery("#nav").on("focus", "a", function (e) {
+		var $a = $(this);
 
-		if (!$a.is("a") || $a.is(".toggler"))
+
+		var type = $a.attr("data-type");
+		var permission = $a.attr("data-permission");
+
+		if ($(document.documentElement).is(".filesselectionLocation")) {
+			if (type == "Directory" && (permission == "Write" || permission == "Add" || permission == "Publish" || permission == "Administer")) {
+				$(".FileUpload:not(:visible)").slideDown();
+			} else {
+				$(".FileUpload:visible").slideUp();
+			}
+		}
+
+		document.body.className = document.body.className.replace(/\w+Selected?/g, type + "Selected");
+		document.body.className = document.body.className.replace(/\w+Permission?/g, permission + "Permission");
+
+		jQuery(".focused").removeClass("focused");
+		$a.addClass("focused");
+	});
+
+	jQuery("#nav").on("click", "a", function (e) {
+		var $a = $(this);
+		if ($a.is(".toggler"))
 			return;
 
 		var handler = n2nav.handlers[$a.attr("data-type")] || n2nav.handlers["fallback"];
 		handler.call($a[0], e);
 
-		document.body.className = document.body.className.replace(/\w+Selected ?/g, $a.attr("data-type") + "Selected");
+		$a.focus();
 	});
 
 	window.onNavigating = function (options) {
@@ -69,12 +88,28 @@
 		right: function (e, ctx) {
 			ctx.focused().siblings(".folder-close > .toggler").click();
 		},
-		esc: function () { $("#contextMenu").n2hide(); },
-		del: function () { $("#contextMenu a.delete").n2trigger(); },
-		c: function () { $("#contextMenu a.copy").n2trigger(); },
-		n: function () { $("#contextMenu a.new").n2trigger(); },
-		v: function () { $("#contextMenu a.paste").n2trigger(); },
-		x: function () { $("#contextMenu a.move").n2trigger(); },
-		enter: function () { ctx.focused().click(); }
+		esc: function (e) {
+			if (e.altKey || e.ctrlKey) return;
+			$("#contextMenu").n2hide();
+		},
+		del: function (e) {
+			if (e.altKey || e.ctrlKey) return;
+			$("#contextMenu a.delete").n2trigger();
+		},
+		c: function () {
+			$("#contextMenu a.copy").n2trigger();
+		},
+		n: function () {
+			$("#contextMenu a.new").n2trigger();
+		},
+		v: function () {
+			$("#contextMenu a.paste").n2trigger();
+		},
+		x: function () {
+			$("#contextMenu a.move").n2trigger();
+		},
+		enter: function () {
+			ctx.focused().click();
+		}
 	}, ".selected");
 });
