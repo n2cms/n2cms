@@ -1,0 +1,138 @@
+To v2.1:
+Make a complete backup (including database), delete /n2, /edit and /bin, drop upgrade files and recompile your solution.
+
+Breaking changes:
+* LINQ doesn't currently work (as well as before)
+* Shared[Parts|Pages] -> Shared/[Part|Page]Templates (changes convention)
+* SMTP settings are no longer configured on the root page, use the standard .NET configuration instead, e.g.:
+	<system.net>
+	   <mailSettings>
+		  <smtp from="someaddress@somehost.com">
+			 <network host="mail.somehost.com" password="xxxxxx" port="25" userName="someaddress@somehost.com"/>
+		  </smtp>
+	   </mailSettings>
+	</system.net>
+
+
+To v2.0:
+Make a complete backup (including database), delete /edit and /bin, drop upgrade files and recompile your solution.
+
+Breaking changes:
+- .NET 3.5 (or greater) is now required
+- N2.Web.HtmlHelper is now deprecated and renamed to FormsHelper (to avoid conflicts with MVC)
+- Adapters are not decorated with [Adapts] attribute rather than [Controls] and are not shared between instances
+- Management interface is moved from /edit to /n2/content
+- N2.Edit has been renamed to N2.Management
+- Action<T> and Function<T> have been replaced with their equivalent in .NET 3.5
+- Some namespaces have changed (e.g. Castle, Installation)
+- The Alpha MVC templates have undergone a lot of changes (see http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=208270)
+
+
+To v1.5:
+Upgrade hints:
+- PageDefinition & PartDefinition are now recommended for defining pages and parts
+- [Page/PartDefinition("The Title", TemplateUrl = "/path/to/the/template.as?x")] is preferred for referincing the template
+
+Possibly breaking changes:
+- Overriding ContentItem.IconUrl now only works in the tree. Use [PageDefinition("the title", IconUrl = "/path/to/the/icon.gif")] or [PartDefinition...] to change the new item screen.
+- The user "admin" may have less permissions than before in some cases. Please create a membership user with roles instead.
+- [ReplacesParentDefinition] now defaults to remove the parent definition and assume it's discriminator (use parameters to maintain old behaviour where the parent was just disabled)
+
+
+To v1.4.5:
+Instructions:
+- Delete /App_Browsers/MaintainPostbackUrl.browser
+- Add to web.config in /configuration/system.web/pages:
+			<tagMapping>
+				<!-- This maintains the friendly urls during postbacks -->
+				<add tagType="System.Web.UI.HtmlControls.HtmlForm"  mappedTagType="N2.Web.UI.WebControls.RawUrlForm"/>
+			</tagMapping>
+
+Breaking changes:
+- ContentItem.AddTo(Control) is removed, implement N2.Web.Parts.
+- Zone.AddedItemTemplate and Zone.GettingItemTemplate are now frowned upon, they still work but disable the parts adapter
+
+
+To v1.4.4:
+Breaking changes:
+- GetChild is no longer used to find items and cannot be used to modify the current item: Use FindPath instead
+- MVC content items now requires [RouteActionResolver] to handle actions: add [RouteActionResolver] to your base class
+- Control panel no longer expose buttons for external modification: remove stuff like <n2:ControlPanel SaveButton-Visible="false"
+- Service editable can no longer be used
+
+
+To v1.4.3:
+- Major rearrangements of the templates project has been done running 
+  these commands from the wwwroot directory should clear things up:
+
+mkdir bak
+move App_GlobalResources/* bak
+move bin/N2.Templates.UI.dll bak
+move advertisement bak
+move calendar bak
+move Faq bak
+move form bak
+move ImageGallery bak
+move Img bak
+move Js bak
+move Layouts bak
+move News bak
+move Parts bak
+move poll bak
+move rss bak
+move scrum bak
+move Search bak
+move Secured bak
+move TabPanel bak
+move UI bak
+move Wiki bak
+move Image.ashx bak
+
+
+To v1.4.2:
+- Recompile
+
+
+To v1.4.1:
+- Remove /bin/N2.Templates.Survey.dll
+- Update configuration (see example.web.config and defaults.web.config)
+	- in <configSections><section name="n2"...
+		- remove <section name="installer"...
+		- remove <section name="globalization"
+	- in <n2>...
+		- move <n2><globalizatoin... to <n2><engine><globalization...
+		- move <n2><installer... to <n2><edit><installer...
+	- in <httpModules>
+		- remove <add name="n2.installer" type="N2.Installation.InstallerModule, N2" />
+- Rename base class:
+	- N2.Web.UI.Page<T> -> ContentPage<T>
+	- N2.Web.UI.UserControl<T> -> ContentUserControl<T>
+- Recompile. Depending on your integration level this could be painless (some namespaces changed, removing explicit namespace and ctrl+. should help you find the new location)
+- Please ask about other problems in the forum
+
+
+To v1.4.0:
+- Change configuration (see example.web.config)
+	- create <configSections><section name="n2"...
+	- create <n2> section and update settings from the castle section
+	- remove <configSections><section name="castle"...
+	- remove <castle> section
+
+
+To v1.3.5:
+- Remove deprecated assemblies:
+	- N2.MediumTrust.dll
+	- N2.Templates.Security.dll
+	- N2.Templates.Syndication.dll
+	- N2.templates.SEO.dll
+- Update nhibernate configuration remove "hibernate." from configuration keys, e.g.
+	- "hibernate.connection.provider" -> "connection.provider"
+
+
+To v1.3.2:
+
+- Remove deprecated assemblies:
+	- N2.Trashcan.dll
+	- N2.Installation.dll
+	- N2.Xml.dll
+	- N2.Edit.*.dll

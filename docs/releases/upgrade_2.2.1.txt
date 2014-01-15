@@ -1,0 +1,55 @@
+Upgrade N2 CMS Framework TO 2.2.1
+* Upgrade N2 CMS Framework TO 2.2 (below)
+* Navigate to /n2/installation/upgrade.aspx and execute migrations 
+
+Upgrade N2 CMS Framework TO 2.2
+* Make a complete backup (including database)
+* Delete /n2, and /bin
+* Copy upgrade files (found in n2cms_2.2_Framework.zip)
+* In web.config enable <n2><edit><installer checkInstallationStatus="true" />
+#if using custom login solution
+* Temporarily set loginUrl to n2/login.aspx in web.config
+* Temporarily restore admin user in system.web/authentication/forms/credentials
+#endif
+#if using N2.Templates.Mvc:
+* Remove or exclude /Areas/Management/* except for Root.aspx and Models/RootPage.cs
+* Modify /Global.asax.cs: engine.RegisterControllers(typeof(StartController).Assembly) -> engine.RegisterAllControllers())
+#endif
+* Recompile your solution
+* Browse to the site (you are redirected to /n2/installation/upgrade.aspx)
+* Log in as an administrator
+* Click "update tables and run migrations"
+* That's it!
+
+UPGRADE MvcTemplates to 2.2
+* Upgrade N2 CMS Framework TO 2.2 (above)
+* If you have made modifications you should stop here and reconsider.
+  Read "Modifying vs. Extending" in the Developer Documentation.
+  If you go on all your changes may be overwritten.
+* Copy new files (found in n2cms_2.2_Templates_Mvc.zip) and overwrite existing except for web.config
+* That's it!
+
+UPGRADE WebFormTemplates (no changes) 2.0 to 2.2.1.1
+* Make a complete backup of the site including the database
+* If you have made _no_ changes you can copy and replace your site from from "N2 CMS 2.2.1 ASP.NET WebForms Templates Pack" (except web.config and /upload/)
+* Compile and launch the site, you are redirected to the upgrade wizard
+* Click "update tables and run migrations"
+
+UPGRADE WebFormTemplates (with changes) 2.0 to 2.2.1.1
+* Make a complete backup of the site including the database
+* If you have made changes you don't want to re-apply you can to the latest version...
+* Copy files from "N2 CMS 2.2.1 Framework and Management UI (for upgrade)"
+* Copy Addons/* and bin/AddonCatalogd.dll, TabPanel.dll, Tagging.dll, Wiki.dll from "N2 CMS 2.2.1 ASP.NET WebForms Templates Pack"
+* Open the project
+* Remove the following files from the project:
+	* Templates/Services/IFeed.cs
+	* Templates/Services/ISyndicatable.cs
+	* Templates/Web/UI/WebControls/Box.cs
+	* Templates/Web/MasterPageConcern.cs
+* Find and replace "global::N2.Templates.Web.UI.WebControls.Box" with "N2.Web.UI.WebControls.Box" 
+* Compile the project
+* Add "using N2.Definitions;" to the files causing compilation errors
+* Compile the project again
+* Add "public bool Syndicate { get; set; }" to the files causing compilation errors
+* Compile and launch the site, you are redirected to the upgrade wizard
+* Click "update tables and run migrations"

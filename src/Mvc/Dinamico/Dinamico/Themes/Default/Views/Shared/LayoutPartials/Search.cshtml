@@ -1,0 +1,6 @@
+﻿@{using (Html.BeginForm("Search", null, new { id = "search", item = Content.Traverse.StartPage }, FormMethod.Get, new { id = "searchform" }))
+  {
+	<input name="q" value="@Content.Translate["Search"]"/>
+	<button type="submit"></button>
+  }
+}

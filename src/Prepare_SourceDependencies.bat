@@ -1,3 +1,3 @@
 @echo off
-cd ..\build
-cmd /c "build.bat /t:Prepare-Framework /t:Prepare-Templates-Mvc /t:Prepare-Templates-WebForms" & pause & exit 
+cd /d %~dp0..\build
+cmd /c "build.bat /t:Source-PrepareDependencies" & cd ..\src & pause & exit /b

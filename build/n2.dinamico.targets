@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+
+	<!-- MVC TEMPLATES -->
+
+	<PropertyGroup>
+		<Dinamico-SourceFolder>$(SrcFolder)\Mvc\Dinamico</Dinamico-SourceFolder>
+		<Dinamico-DeployFolder>$(DeployFolder)\$(DeployPrefix)Dinamico_Mvc</Dinamico-DeployFolder>
+		<Dinamico-DeployFolder-Path>$(Dinamico-DeployFolder)\N2CMS</Dinamico-DeployFolder-Path>
+		<Dinamico-NugetFolder>$(DeployFolder)\$(DeployPrefix)Dinamico_Nuget</Dinamico-NugetFolder>
+		<Bundle-Dinamico-NugetFolder>$(DeployFolder)\$(DeployPrefix)BundleDinamico_Nuget</Bundle-Dinamico-NugetFolder>
+	</PropertyGroup>
+
+	<Target Name="Dinamico-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
+		<Copy SourceFiles="$(SrcFolder)\Framework\Extensions\bin\$(Configuration)\N2.Extensions.dll;"
+					DestinationFolder="$(Dinamico-SourceFolder)\bin" />
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Dinamico-SourceFolder)\bin" />
+
+		<Copy SourceFiles="@(Framework-DependencyBinaries)" DestinationFolder="$(Dinamico-SourceFolder)\bin\" />
+		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFiles="$(Dinamico-SourceFolder)\%(RecursiveDir)\%(FileName)%(Extension)" ContinueOnError="true" />
+		
+		<Message Text="Skipping mklink (folder exists): $(Dinamico-SourceFolder)\N2\" Condition="Exists('$(Dinamico-SourceFolder)\N2\')" />
+		<Exec Command="mklink /D $(Dinamico-SourceFolder)\N2\ $(EditFolder)\" Condition="!Exists('$(Dinamico-SourceFolder)\N2\')" ContinueOnError="true" />
+		<MSBuild Projects="n2.proj" Targets="CopyManagementFilesToManagementFilesDestination" Properties="ManagementFilesDestination=$(Dinamico-SourceFolder)\N2" Condition="!Exists('$(Dinamico-SourceFolder)\N2\')" />
+	</Target>
+
+	<Target Name="Dinamico-Build">
+		<MSBuild Projects="$(Dinamico-SourceFolder)\Dinamico.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
+	</Target>
+
+	<Target Name="Dinamico-CreateItemGroups">
+		<ItemGroup>
+			<dinamicoFiles Include="$(Dinamico-SourceFolder)\**\*"
+							   Exclude="$(Dinamico-SourceFolder)\**\.svn\**\*;
+												$(Dinamico-SourceFolder)\**\.git\**\*;
+												$(Dinamico-SourceFolder)\**\obj\**\*;
+												$(Dinamico-SourceFolder)\**\bin\*.pdb;
+												$(Dinamico-SourceFolder)\**\Ankh.Load;
+												$(Dinamico-SourceFolder)\**\*.sln.cache;
+												$(Dinamico-SourceFolder)\**\*.resharper;
+												$(Dinamico-SourceFolder)\**\*.suo;
+												$(Dinamico-SourceFolder)\**\*.user;
+												$(Dinamico-SourceFolder)\**\*.Publish.xml;
+												$(Dinamico-SourceFolder)\**\*.log;
+												$(Dinamico-SourceFolder)\**\Thumbs.db;
+												$(Dinamico-SourceFolder)\App_Data\SearchIndex\**\*;
+												$(Dinamico-SourceFolder)\App_Data\Temp\**\*;
+												$(Dinamico-SourceFolder)\N2\**\*;
+												$(Dinamico-SourceFolder)\N2.Management.*" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="Dinamico-Deploy" DependsOnTargets="Framework-CreateItemGroups;Framework-Deploy;Dinamico-CreateItemGroups">
+		<PropertyGroup>
+			<VppZipConfig>&lt;vpp&gt;&lt;zips&gt;&lt;add name="n2.management" observedPath="~/N2/" filePath="~/N2/N2.zip"/&gt;&lt;/zips&gt;&lt;/vpp&gt;</VppZipConfig>
+		</PropertyGroup>
+
+		<Copy SourceFiles="@(dinamicoFiles)"								DestinationFolder="$(Dinamico-DeployFolder-Path)\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-BinFiles)"						DestinationFolder="$(Dinamico-DeployFolder-Path)\bin\" />
+
+		<Copy SourceFiles="$(Framework-DeployFolder)\N2\web.config"	DestinationFolder="$(Dinamico-DeployFolder-Path)\N2\" />
+		<FileUpdate Files="$(Dinamico-DeployFolder-Path)\web.config" Regex="&lt;vpp /&gt;" ReplacementText="$(VppZipConfig)" />
+		<!-- Using DotNetZip since MSBuild Community Tasks Zip doesn't include directory entries -->
+		<Delete Files="$(Dinamico-DeployFolder-Path)\N2\N2.zip" Condition="Exists('$(Dinamico-DeployFolder-Path)\N2\N2.zip')" />
+		<Exec Command="$(BuildFolder)\lib\BuildSupport.exe ZipDirectory &quot;$(Dinamico-DeployFolder-Path)\N2\N2.zip&quot; &quot;$(Framework-DeployFolder)\N2&quot; &quot;N2&quot;" />
+		
+		<Copy SourceFiles="@(TextFiles)"										DestinationFolder="$(Dinamico-DeployFolder)\" />
+		<Copy SourceFiles="@(Snippets)"											DestinationFolder="$(Dinamico-DeployFolder)\Snippets" />
+		<CallTarget Targets="Dinamico-RemoveProjectReferences" />
+	</Target>
+
+	<Target Name="Bundle-Dinamico-Nuget">
+		<RemoveDir Directories="$(Bundle-Dinamico-NugetFolder)" Condition="Exists('$(Bundle-Dinamico-NugetFolder)')" ContinueOnError="true" />
+
+		<ItemGroup>
+			<bundlesDinamicoNugetIncludes Include="$(BuildFolder)\Nuget\BundlesDinamico\**\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(bundlesDinamicoNugetIncludes)" DestinationFolder="$(Bundle-Dinamico-NugetFolder)\%(RecursiveDir)" />
+		<FileUpdate Files="$(Bundle-Dinamico-NugetFolder)\N2.Bundles.Dinamico.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Bundle-Dinamico-NugetFolder)\" />
+	</Target>
+
+	<Target Name="Dinamico-Nuget" DependsOnTargets="Dinamico-CreateItemGroups;">
+		<RemoveDir Directories="$(Dinamico-NugetFolder)" Condition="Exists('$(Dinamico-NugetFolder)')" ContinueOnError="true" />
+		<ItemGroup>
+			<dinamicoFilesWithExceptions Include="@(dinamicoFiles)" 
+										 Exclude="$(Dinamico-SourceFolder)\bin\**\*;
+												  $(Dinamico-SourceFolder)\Global.*;
+												  $(Dinamico-SourceFolder)\Dinamico.*;
+												  $(Dinamico-SourceFolder)\*.config;
+												  $(Dinamico-SourceFolder)\Properties\*;
+												  $(Dinamico-SourceFolder)\*.log;
+												  $(Dinamico-SourceFolder)\*.user;
+												  $(Dinamico-SourceFolder)\**\*.orig;
+												  $(Dinamico-SourceFolder)\x*\*;
+												  $(Dinamico-SourceFolder)\App_Data\*.sdf;
+												  $(Dinamico-SourceFolder)\App_Data\*.db;
+												  $(Dinamico-SourceFolder)\App_Data\*.log;" />
+		</ItemGroup>
+		<Copy SourceFiles="@(dinamicoFilesWithExceptions)" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension)" />
+
+		<ItemGroup>
+			<dinamicoNugetIncludes Include="$(BuildFolder)\Nuget\Dinamico\**\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(dinamicoNugetIncludes)" DestinationFolder="$(Dinamico-NugetFolder)\%(RecursiveDir)" />
+		<FileUpdate Files="$(Dinamico-NugetFolder)\N2.Dinamico.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Dinamico-NugetFolder)\" />
+	</Target>
+	
+	<Target Name="Dinamico-ZipDeploy" DependsOnTargets="Dinamico-Deploy;Dinamico-Zip">
+	</Target>
+
+	<Target Name="Dinamico-PrepareZip">
+		<ItemGroup>
+			<ZipDeploy-Dinamico-Includes Include="$(BuildFolder)\deploy\*" />
+			<ZipDeploy-Dinamico-Libs Include="$(RootFolder)\lib\MySql.Data.dll;$(RootFolder)\lib\System.Data.SQLite.dll;" />
+		</ItemGroup>
+		<Delete Files="$(Dinamico-DeployFolder-Path)\bin\System.Data.SQLite.dll" Condition="Exists('$(Dinamico-DeployFolder-Path)\bin\System.Data.SQLite.dll')" />
+		<Copy SourceFiles="@(ZipDeploy-Dinamico-Libs)" DestinationFolder="$(Dinamico-DeployFolder)\Libraries" />
+		<Copy SourceFiles="@(ZipDeploy-Dinamico-Includes)" DestinationFolder="$(Dinamico-DeployFolder)" />
+	</Target>
+
+	<Target Name="Dinamico-Zip" DependsOnTargets="Dinamico-PrepareZip">
+		<ItemGroup>
+			<ZipDeploy-Dinamico Include="$(Dinamico-DeployFolder)\**" />
+		</ItemGroup>
+
+		<Error Condition="'@(ZipDeploy-Dinamico)' == ''" Text="Nothing in '$(Dinamico-DeployFolder)'. Do deploy first." />
+
+		<Zip Files="@(ZipDeploy-Dinamico)" WorkingDirectory="$(Dinamico-DeployFolder)"	ZipFileName="$(Dinamico-DeployFolder).zip" />
+	</Target>
+
+	<Target Name="Dinamico-RemoveProjectReferences">
+		<PropertyGroup>
+			<SourceFile>$(Dinamico-SourceFolder)\Dinamico.csproj</SourceFile>
+			<DestinationFile>$(Dinamico-DeployFolder-Path)\Dinamico.csproj</DestinationFile>
+		</PropertyGroup>
+		<PropertyGroup>
+			<Code>
+				<![CDATA[
+public static string Rehint(Match m)
+{
+	if (!m.Groups["Contents"].Success || !m.Groups["Contents"].Value.Contains("<HintPath"))
+		return m.Value;
+
+	return @"<Reference Include=""${Name}""><SpecificVersion>False</SpecificVersion><HintPath>bin\${Name}.dll</HintPath></Reference>".Replace("${Name}", m.Groups["Name"].Value);
+}
+public static string ScriptMain() {
+	string lines = File.ReadAllText(@"$(SourceFile)");
+	
+	string pattern = "<ProjectReference.*?<Name>(?<Name>[^<]*).*?</ProjectReference>";
+	string replacement = @"<Reference Include=""${Name}""><SpecificVersion>False</SpecificVersion><HintPath>bin\${Name}.dll</HintPath></Reference>";
+	lines = Regex.Replace(lines, pattern, replacement, RegexOptions.Singleline);
+
+	string pattern2 = "<Reference Include=\"(?<Name>[^,\"]*)(,[^\"]*)?\">(?<Contents>.*?)</Reference>";
+	lines = Regex.Replace(lines, pattern2, Rehint, RegexOptions.Singleline);
+	
+	return Regex.Replace(lines, @"([($]+LibPath[)])|([\.\\]+lib)", "bin");
+}
+			]]>
+			</Code>
+		</PropertyGroup>
+		<Script Code="$(Code)" Language="C#">
+			<Output TaskParameter="ReturnValue" PropertyName="FileContents" />
+		</Script>
+		<WriteLinesToFile File="$(DestinationFile)" Lines="$(FileContents)" Overwrite="true" />
+	</Target>
+</Project>

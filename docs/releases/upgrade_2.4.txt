@@ -1,0 +1,45 @@
+Upgrade N2 CMS Framework TO 2.4
+* Make a complete backup (including database)
+* Delete /n2, and /bin
+* Change to .NET 4 from project settings
+* Install the following NuGet packages:
+** N2 CMS Management
+** N2 CMS - Castle Windsor 3
+* Recompile your solution
+* Browse to the site (you are redirected to /n2/installation/upgrade.aspx)
+* Log in as an administrator
+* Click "update tables and run migrations"
+* That's it!
+
+SIGNIFICATNT CHANGES
+* .NET 4 required
+* New versioning scheme calls for migration from upgrade page
+
+UPGRADE N2.Templates.Mvc to 2.4
+* Upgrade N2 CMS Framework to 2.4 (above)
+* If you have made modifications you should stop here and reconsider.
+  Read "Modifying vs. Extending" in the Developer Documentation.
+  If you go on all your changes may be overwritten.
+* Copy new files (found in n2cms_2.4_Templates_Mvc.zip) and overwrite existing except for web.config
+* That's it!
+
+UPGRADING from N2 2.2 with MVC Templates
+* Project properties, change Target Framework to 4.0
+* Add reference to System.ServiceModel
+* Remove /Areas/Tests
+* Install ASP.NET MVC 4 using nuget (nuget.org)
+* Search and replace "System.Web.Mvc, Version=2.0" for "System.Web.Mvc, Version=4.0" in entire project
+* Compile
+* Remove Salt=... in UserRegistrationController, and parameter from Html.AntiForgeryToken() in /views/login/index.ascx
+* In Site.master.cs, row 52 change to var wfv = new WebFormView(ctrlctx, Request.CurrentExecutionFilePath);
+* Remove /N2/
+* Install N2CMS.Management using nuget
+* Remove bin/NHibernate.Caches.SysCache2.dll
+* In web.config remove cacheProviderClass="NHibernate.Caches.SysCache2.SysCacheProvider, NHibernate.Caches.SysCache2"  from n2/database section
+* In App_Data/n2_host.config append to the <hosts> element: <vpp><zips><add name="n2.management" observedPath="~/N2/" filePath="~/N2/N2.zip"/></zips></vpp>
+* Compile and run (Ctrl+F5)
+* Make sure you have the "admin" user configured in web.config: /system.web/authentication/forms/credentials and log in
+* Use the wizard to continue to /n2/installation/upgrade.aspx
+* Click "Update tables and run migrations"
+* Enable pop-ups to run "migrate versions"
+* Phew! That's it.

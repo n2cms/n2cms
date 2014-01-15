@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{250D978B-3C2C-4151-9A69-B36F3F53E8B8}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>N2</RootNamespace>
+    <AssemblyName>N2.Templates.UI.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <TargetFrameworkProfile />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Extensions.Design" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\N2\N2.csproj">
+      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+      <Name>N2</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="N2.Templates.csproj">
+      <Project>{D42D096E-399D-4618-AEB4-9B023BA1316D}</Project>
+      <Name>N2.Templates</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Addons\UITests\Items\AdaptiveRequestAdapter.cs" />
+    <Compile Include="Addons\UITests\Items\AdaptiveItemPage.cs" />
+    <Compile Include="Addons\UITests\Items\QueryViewerItem.cs" />
+    <Compile Include="Addons\UITests\Items\UITestItemItem.cs" />
+    <Compile Include="Addons\UITests\UI\AdaptiveItem.aspx.cs">
+      <DependentUpon>AdaptiveItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\AdaptiveItem.aspx.designer.cs">
+      <DependentUpon>AdaptiveItem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\ContentCreator.ascx.cs">
+      <DependentUpon>ContentCreator.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\ContentCreator.ascx.designer.cs">
+      <DependentUpon>ContentCreator.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\EditableUc2.ascx.cs">
+      <DependentUpon>EditableUc2.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\EditableUc2.ascx.designer.cs">
+      <DependentUpon>EditableUc2.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\Events.aspx.cs">
+      <DependentUpon>Events.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\Events.aspx.designer.cs">
+      <DependentUpon>Events.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\GridViewTest.aspx.cs">
+      <DependentUpon>GridViewTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\GridViewTest.aspx.designer.cs">
+      <DependentUpon>GridViewTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\Item.ascx.cs">
+      <DependentUpon>Item.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\Item.ascx.designer.cs">
+      <DependentUpon>Item.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\ItemEditor.aspx.cs">
+      <DependentUpon>ItemEditor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\ItemEditor.aspx.designer.cs">
+      <DependentUpon>ItemEditor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\ItemEditorList.aspx.cs">
+      <DependentUpon>ItemEditorList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\ItemEditorList.aspx.designer.cs">
+      <DependentUpon>ItemEditorList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\PageMethods.aspx.cs">
+      <DependentUpon>PageMethods.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\PageMethods.aspx.designer.cs">
+      <DependentUpon>PageMethods.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\QueryViewer.ascx.cs">
+      <DependentUpon>QueryViewer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\QueryViewer.ascx.designer.cs">
+      <DependentUpon>QueryViewer.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\UITestItem.ascx.cs">
+      <DependentUpon>UITestItem.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\UITestItem.ascx.designer.cs">
+      <DependentUpon>UITestItem.ascx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Addons\UITests\UI\AdaptiveItem.aspx" />
+    <Content Include="Addons\UITests\UI\Languages.aspx" />
+    <Content Include="Addons\UITests\UI\StaticPage_PostContent.aspx" />
+    <Content Include="Addons\UITests\UI\EditableUc1.ascx" />
+    <Content Include="Addons\UITests\UI\EditableUc2.ascx" />
+    <Content Include="Addons\UITests\UI\GridViewTest.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Addons\UITests\UI\ControlDesigners.aspx" />
+    <Content Include="Addons\UITests\UI\ControlPanel.aspx" />
+    <Content Include="Addons\UITests\UI\ControlPanel_NoZones.aspx" />
+    <Content Include="Addons\UITests\UI\ControlPanel_Templates.aspx" />
+    <Content Include="Addons\UITests\UI\Error_Exception.aspx" />
+    <Content Include="Addons\UITests\UI\ItemDataSource_NavigationFilter.aspx" />
+    <Content Include="Addons\UITests\UI\ItemDataSource_Zone.aspx" />
+    <Content Include="Addons\UITests\UI\ItemDataSource_Path.aspx" />
+    <Content Include="Addons\UITests\UI\ItemDataSource_PageFilter.aspx" />
+    <Content Include="Addons\UITests\UI\ItemDataSource_SortBy.aspx" />
+    <Content Include="Addons\UITests\UI\ItemEditor.aspx" />
+    <Content Include="Addons\UITests\UI\ItemEditorList.aspx" />
+    <Content Include="Addons\UITests\UI\PageMethods.aspx" />
+    <Content Include="Addons\UITests\UI\RegionAll.aspx" />
+    <Content Include="Addons\UITests\UI\RegionSidebar.aspx" />
+    <Content Include="Addons\UITests\UI\RegionPostContent.aspx" />
+    <Content Include="Addons\UITests\UI\RegionTextContent.aspx" />
+    <Content Include="Addons\UITests\UI\RegionContent.aspx" />
+    <Content Include="Addons\UITests\UI\RegionPreContent.aspx" />
+    <Content Include="Addons\UITests\UI\RegionContentAndSidebar.aspx" />
+    <Content Include="Addons\UITests\UI\RegionMenu.aspx" />
+    <Content Include="Addons\UITests\UI\RegionPageTop.aspx" />
+    <Content Include="Addons\UITests\UI\RegionPageWrapper.aspx" />
+    <Content Include="Addons\UITests\UI\RegionTop.aspx" />
+    <Content Include="Addons\UITests\UI\RegionHead.aspx" />
+    <Content Include="Addons\UITests\UI\RegionNone.aspx" />
+    <Content Include="Addons\UITests\UI\SiteMap.aspx" />
+    <Content Include="Addons\UITests\UI\UpdatePanel.aspx" />
+    <Content Include="Templates\UI\Layouts\Top+SubMenu.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Addons\UITests\UI\ContentCreator.ascx" />
+    <Content Include="Addons\UITests\UI\ControlPanel_WithZones.aspx" />
+    <Content Include="Addons\UITests\UI\ItemDataSource_Query.aspx" />
+    <Content Include="Addons\UITests\UI\Item.ascx" />
+    <Content Include="Addons\UITests\UI\JsTests.aspx" />
+    <Content Include="Addons\UITests\UI\UITestItem.ascx" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Addons\UITests\UI\Css.aspx" />
+    <Content Include="Addons\UITests\UI\Events.aspx" />
+    <Content Include="Addons\UITests\UI\Html_Tree.Between.aspx" />
+    <Content Include="Addons\UITests\UI\Html_Link.To.aspx" />
+    <Content Include="Addons\UITests\UI\Displayable_DataBind.aspx" />
+    <Content Include="Addons\UITests\UI\Displayable.aspx" />
+    <Content Include="Addons\UITests\UI\Html_Tree.From.aspx" />
+    <Content Include="Addons\UITests\UI\QueryViewer.ascx" />
+    <Content Include="Addons\UITests\UI\Tabs.aspx" />
+    <Content Include="Addons\UITests\UI\ZoneLoading.aspx" />
+    <Content Include="Addons\UITests\UI\System.Web.Extensions\1.0.61025.0\MicrosoftAjax.js" />
+    <Content Include="Addons\UITests\UI\System.Web.Extensions\1.0.61025.0\MicrosoftAjaxTimer.js" />
+    <Content Include="Addons\UITests\UI\System.Web.Extensions\1.0.61025.0\MicrosoftAjaxWebForms.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>62438</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+</Project>

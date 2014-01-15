@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
 
 	<!-- GENERAL -->
 
@@ -15,31 +15,38 @@
 		<SnippetsFolder>$(RootFolder)\snippets</SnippetsFolder>
 
 		<SrcFolder>$(RootFolder)\src</SrcFolder>
-		<WebFolder>$(RootFolder)\src\wwwroot</WebFolder>
-		<ManagementFolder>$(SrcFolder)\N2.Templates.Mvc\</ManagementFolder>
-		<EditFolder>$(RootFolder)\src\N2.Templates.Mvc\N2</EditFolder>
+		<PackagesFolder>$(RootFolder)\src\Packages</PackagesFolder>
+		<WebFolder>$(SrcFolder)\WebForms\WebFormsTemplates</WebFolder>
+		<ManagementFolder>$(SrcFolder)\Mvc\MvcTemplates\</ManagementFolder>
+		<EditFolder>$(RootFolder)\src\Mvc\MvcTemplates\N2</EditFolder>
 
 		<Examples-Folder>$(RootFolder)\examples</Examples-Folder>
 
-		<DeployPrefix>n2cms_2.1rc_</DeployPrefix>
+		<Version Condition="'$(Version)' == ''">2.5.14</Version>
+		<DeployPrefix>n2cms_$(Version)_</DeployPrefix>
 		<DeployFolder>$(RootFolder)\output</DeployFolder>
 		<TempFolder>$(RootFolder)\output\temp\</TempFolder>
-		
+
 		<Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+		<Platform Condition="'$(Platform)' == ''">Any CPU</Platform>
+		<Platform Condition="'$(Platform)' == 'X64'">Any CPU</Platform>
+		<Platform Condition="'$(Platform)' == 'MCD'">Any CPU</Platform>
+		<Platform Condition="'$(Platform)' == 'BPC'">Any CPU</Platform>
 		
 		<MSBuildCommunityTasksPath>$(RootFolder)\lib</MSBuildCommunityTasksPath>
 	</PropertyGroup>
 
-	<Import Project="$(RootFolder)\lib\MSBuild.Community.Tasks.Targets"/>
+	<Import Project="$(RootFolder)\build\lib\MSBuild.Community.Tasks.targets"/>
 	<Import Project="n2.framework.targets"/>
 	<Import Project="n2.templates.webforms.targets"/>
 	<Import Project="n2.templates.mvc.targets"/>
+	<Import Project="n2.dinamico.targets"/>
 	<Import Project="n2.examples.targets"/>
 	<Import Project="n2.sources.targets"/>
+	<Import Project="n2.deploy.targets"/>
 
 	<Target Name="Build">
 		<Message Text="Building Everything"/>
-
 		<CallTarget Targets="Framework-Build"/>
 		<CallTarget Targets="Examples-Build"/>
 	</Target>
@@ -49,26 +56,20 @@
 			<_SolutionFiles Include="$(RootFolder)\**\*.sln" />
 		</ItemGroup>
 
-		<MSBuild Projects="@(_SolutionFiles)" />
+		<MSBuild Projects="@(_SolutionFiles)" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
 	</Target>
 
 	<!-- Clean -->
 
 	<Target Name="Clean" DependsOnTargets="Source-Clean;Examples-Clean;">
-		<MSBuild Projects="$(RootFolder)\N2.Everything-vs2008.sln" Targets="Clean" Properties="Configuration=Debug" />
-		<MSBuild Projects="$(RootFolder)\N2.Everything-vs2008.sln" Targets="Clean" Properties="Configuration=Release" />
+		<MSBuild Projects="$(RootFolder)\N2.Everything.sln" Targets="Clean" Properties="Configuration=Debug" />
+		<MSBuild Projects="$(RootFolder)\N2.Everything.sln" Targets="Clean" Properties="Configuration=Release" />
 	</Target>
 
 	<!-- Deploy -->
 
-	<Target Name="Deploy" DependsOnTargets="Clean-Output">
-		<Message Text="Deploying Everything"/>
-
-		<CallTarget Targets="Framework-Deploy"/>
-		<CallTarget Targets="Templates-Deploy"/>
-		<CallTarget Targets="Templates-Mvc-Deploy"/>
-		<CallTarget Targets="Examples-Deploy"/>
-		<CallTarget Targets="Source-Deploy"/>
+	<Target Name="Deploy" DependsOnTargets="Clean-Output;Framework-Deploy;Templates-Deploy;Templates-Mvc-Deploy;Dinamico-Deploy;Examples-Deploy;Source-Deploy">
+		<Message Text="Deployed Everything"/>
 		<RemoveDir Directories="$(DeployFolder)\temp" ContinueOnError="true" />
 	</Target>
 
@@ -76,18 +77,18 @@
 
 	<Target Name="ZipDeploy" DependsOnTargets="Deploy;Zip">
 		<ItemGroup>
-			<zips Include="$(DeployFolder)\*.zip" />
+			<_zips Include="$(DeployFolder)\*.zip" />
 		</ItemGroup>
-		<Message Text="Deployed: %(zips.filename)%(zips.extension)" />
+		<Message Text="Deployed: %(_zips.filename)%(_zips.extension)" />
 	</Target>
 
-	<Target Name="Zip">
-		<CallTarget Targets="Framework-Zip;Source-Zip;Templates-Zip;Templates-Mvc-Zip;Examples-Zip" />
+	<Target Name="Zip" DependsOnTargets="Framework-Zip;Source-Zip;Templates-Zip;Templates-Mvc-Zip;Dinamico-Zip;Examples-Zip">
+		<Message Text="Zipped Everything"/>
 	</Target>
 
 	<!-- Clean sources -->
 
-	<Target Name="PrepareDependencies" DependsOnTargets="Prepare-Framework;Examples-PrepareDependencies;Prepare-Templates-Mvc;Prepare-Templates-WebForms">
+	<Target Name="PrepareDependencies" DependsOnTargets="Framework-PrepareDependencies;Examples-PrepareDependencies;Source-PrepareDependencies">
 	</Target>
 
 	<Target Name="Clean-Output">
@@ -95,14 +96,20 @@
 	</Target>
 
 	<Target Name="Test" DependsOnTargets="Framework-Build">
+		<Message Text="Configuration: $(Configuration)"/>
+		<Message Text="Platform: $(Platform)"/>
 		<ItemGroup>
-			<AssembliesToTest Include="$(SrcFolder)\*Tests\bin\$(Configuration)\*.Tests.dll;"/>
+			<AssembliesToTest Include="$(SrcFolder)\Framework\Tests\bin\$(Configuration)\*.Tests.dll;"/>
+			<AssembliesToTest Include="$(SrcFolder)\Framework\Management.Tests\bin\$(Configuration)\N2.Management.Tests.dll;"/>
+			<AssembliesToTest Include="$(SrcFolder)\Framework\Extensions.Tests\bin\$(Configuration)\N2.Extensions.Tests.dll;"/>
+			<AssembliesToTest Include="$(SrcFolder)\Mvc\MvcTemplates.Tests\bin\$(Configuration)\N2.Templates.Mvc.Tests.dll;"/>
+			<AssembliesToTest Include="$(SrcFolder)\WebForms\WebFormsTemplates.Tests\bin\$(Configuration)\N2.Templates.Tests.dll;"/>
 		</ItemGroup>
 		<PropertyGroup>
-			<Exe>$(RootFolder)\lib\nunit-console-x86.exe %(AssembliesToTest.FullPath)</Exe>
+			<Exe></Exe>
 		</PropertyGroup>
-		<Message Text="$(Exe)" />
-		<Exec Command="$(Exe)" />
+		<Message Text="$(PackagesFolder)\NUnit.Runners.2.6.3\tools\nunit-console-x86.exe %(AssembliesToTest.FullPath) /framework:net-4.0" />
+		<Exec Command="$(PackagesFolder)\NUnit.Runners.2.6.3\tools\nunit-console-x86.exe %(AssembliesToTest.FullPath) /framework:net-4.0" />
 	</Target>
 
 
@@ -120,45 +127,9 @@
 		<MvcOutDir>$(RootFolder)\Output\Templates\Mvc\</MvcOutDir>
 	</PropertyGroup>
 	<ItemGroup>
-		<Framework-Dependencies Include="$(LibFolder)\**\System.Data.SQLite.dll;
-																		 $(LibFolder)\**\NHibernate*.dll;
-																		 $(LibFolder)\**\Castle*.dll;
-																		 $(LibFolder)\**\Antlr3.Runtime.dll;
-																		 $(LibFolder)\**\Iesi.Collections.dll;
-																		 $(LibFolder)\**\log4net.dll;
-																		 $(LibFolder)\**\System*.dll;
-																		 " />
+		<Framework-DependencyBinaries Include="$(PackagesFolder)\System.Data.SQLite.*\lib\net40\System.Data.SQLite*.dll;" />
+		<Framework-Dependencies Include="$(PackagesFolder)\System.Data.SQLite.1.0.88.0\content\net40\**\*;" />
 	</ItemGroup>
-
-	<!-- Copy dependencies to example folders -->
-	<Target Name="Prepare-Examples-CSharp" DependsOnTargets="Define-Framework">
-		<Copy SourceFiles="@(FrameworkFiles)" DestinationFolder="$(Examples-CS-SourceFolder)\wwwroot\%(RecursiveDir)" SkipUnchangedFiles="true" />
-		<Copy SourceFiles="@(FrameworkBinaries)" DestinationFolder="$(Examples-CS-SourceFolder)\wwwroot\bin\" SkipUnchangedFiles="true" />
-	</Target>
-	<Target Name="Prepare-Examples-VisualBasic" DependsOnTargets="Define-Framework">
-		<Copy SourceFiles="@(FrameworkFiles)" DestinationFolder="$(Examples-VB-SourceFolder)\wwwroot\%(RecursiveDir)" SkipUnchangedFiles="true" />
-		<Copy SourceFiles="@(FrameworkBinaries)" DestinationFolder="$(Examples-VB-SourceFolder)\wwwroot\bin\" SkipUnchangedFiles="true" />
-	</Target>
-	<Target Name="Prepare-Examples-Mvc" DependsOnTargets="Define-Framework">
-		<Copy SourceFiles="@(FrameworkFiles)" DestinationFolder="$(Examples-Mvc-SourceFolder)\wwwroot\%(RecursiveDir)" SkipUnchangedFiles="true" />
-		<Copy SourceFiles="@(FrameworkBinaries)" DestinationFolder="$(Examples-Mvc-SourceFolder)\wwwroot\bin\" SkipUnchangedFiles="true" />
-	</Target>
-	<Target Name="Prepare-Examples-TemplatesSite" DependsOnTargets="Define-Templates-WebForms">
-		<Copy SourceFiles="@(FrameworkFiles)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\%(RecursiveDir)" SkipUnchangedFiles="true" />
-		<Copy SourceFiles="@(FrameworkBinaries)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\bin\" SkipUnchangedFiles="true" />
-		<Copy SourceFiles="@(WebFormsFiles)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\%(RecursiveDir)" SkipUnchangedFiles="true" />
-		<Copy SourceFiles="@(WebFormsBinaries)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\bin\" SkipUnchangedFiles="true" />
-	</Target>
-	<!--Copy dependencies to sources-->
-	<Target Name="Prepare-Templates-WebForms" DependsOnTargets="Define-Framework">
-		<Copy SourceFiles="@(FrameworkFiles)" DestinationFolder="$(Templates-SourceFolder)\%(RecursiveDir)" SkipUnchangedFiles="true" />
-		<Copy SourceFiles="@(FrameworkBinaries)" DestinationFolder="$(Templates-SourceFolder)\bin\" SkipUnchangedFiles="true" />
-	</Target>
-	<Target Name="Prepare-Templates-Mvc" DependsOnTargets="Prepare-Framework">
-	</Target>
-	<Target Name="Prepare-Framework">
-		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFolder="$(ManagementFolder)\bin" />
-	</Target>
 
 	<!-- Create item groups used for copy dependencies for examples -->
 	<Target Name="Define-Framework" DependsOnTargets="Deploy-Framework">
@@ -186,17 +157,24 @@
 
 	<!-- Deploy sources to output folder -->
 	<Target Name="Deploy-Framework">
-		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2010.sln" RebaseOutputs="true" 
-						 Properties="OutDir=$(FrameworkOutDir);Configuration=ReleaseFramework" />
-		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFolder="$(FrameworkOutDir)" />
+		<MSBuild Projects="$(SrcFolder)\N2.Sources.sln" RebaseOutputs="true" 
+						 Properties="OutDir=$(FrameworkOutDir);Configuration=ReleaseFramework;Platform=$(Platform)" />
+		<Copy SourceFiles="@(Framework-DependencyBinaries)" DestinationFolder="$(FrameworkOutDir)" />
 	</Target>
 	<Target Name="Deploy-Templates-WebForms">
-		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2010.sln" RebaseOutputs="true"
-						 Properties="OutDir=$(WebFormsOutDir);Configuration=ReleaseWebForms" />
+		<MSBuild Projects="$(SrcFolder)\N2.Sources.sln" RebaseOutputs="true"
+						 Properties="OutDir=$(WebFormsOutDir);Configuration=ReleaseWebForms;Platform=$(Platform)" />
 	</Target>
 	<Target Name="Deploy-Templates-Mvc">
-		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2010.sln" RebaseOutputs="true"
-						 Properties="OutDir=$(MvcOutDir);Configuration=ReleaseMvc" />
+		<MSBuild Projects="$(SrcFolder)\N2.Sources.sln" RebaseOutputs="true"
+						 Properties="OutDir=$(MvcOutDir);Configuration=ReleaseMvc;Platform=$(Platform)" />
+	</Target>
+
+	<Target Name="Prepare-Development">
+		<ItemGroup>
+			<TemplateFiles Include="$(BuildFolder)\templates\**\*"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(TemplateFiles)" DestinationFolder="$(SrcFolder)\%(RecursiveDir)" SkipUnchangedFiles="true" />
 	</Target>
 
 	<!--<Target Name="X">

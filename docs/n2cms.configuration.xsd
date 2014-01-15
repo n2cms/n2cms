@@ -24,6 +24,19 @@
 				<xs:element name="host">
 					<xs:complexType>
 						<xs:all>
+							<xs:element name="targeting" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
+										<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="enabled" default="true"/>
+								</xs:complexType>
+							</xs:element>
 							<xs:element name="sites" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
@@ -46,9 +59,20 @@
 														<xs:complexType>
 															<xs:sequence>
 																<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
+																<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:attribute name="path" type="xs:string" use="required"/>
+																	</xs:complexType>
+																</xs:element>
 																<xs:element name="add" maxOccurs="unbounded">
 																	<xs:complexType>
+																		<xs:all>
+																			<xs:element name="readers" minOccurs="0" type="tns:permissionElement" />
+																			<xs:element name="writers" minOccurs="0" type="tns:permissionElement" />
+																		</xs:all>
+																		<xs:attribute name="title" type="xs:string" />
 																		<xs:attribute name="path" type="xs:string" use="required" />
+																		<xs:attribute name="urlPrefix" type="xs:string" />
 																	</xs:complexType>
 																</xs:element>
 															</xs:sequence>
@@ -95,8 +119,8 @@
 									<xs:attribute name="rewrite" use="optional">
 										<xs:simpleType>
 											<xs:restriction base="xs:string">
-												<xs:enumeration value="RewriteRequest"/>
-												<xs:enumeration value="TransferRequest"/>
+												<xs:enumeration value="BeginRequest"/>
+												<xs:enumeration value="SurroundMapRequestHandler"/>
 												<xs:enumeration value="None"/>
 											</xs:restriction>
 										</xs:simpleType>
@@ -104,6 +128,14 @@
 									<xs:attribute name="observedExtensions" type="xs:string" use="optional" />
 									<xs:attribute name="observeEmptyExtension" type="xs:boolean" use="optional" />
 									<xs:attribute name="ignoreExistingFiles" type="xs:boolean" use="optional" />
+									<xs:attribute name="permissionDeniedHttpCode" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:int">
+												<xs:enumeration value="401"/>
+												<xs:enumeration value="404"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="outputCache" minOccurs="0">
@@ -114,11 +146,77 @@
 									<xs:attribute name="cacheProfile" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="resources" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="debug" type="xs:boolean" use="optional" default="false" />
+									<xs:attribute name="angularFolderPath" type="xs:string" use="optional" />
+									<xs:attribute name="twitterBootstrapRoot" type="xs:string" use="optional" />
+									<xs:attribute name="jQueryPath" type="xs:string" use="optional" />
+									<xs:attribute name="jQueryUiPath" type="xs:string" use="optional" />
+									<xs:attribute name="jQueryPluginsPath" type="xs:string" use="optional" />
+									<xs:attribute name="ckEditorPath" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="vpp" minOccurs="0">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="zips" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="add" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:attribute name="name" type="xs:string" use="required" />
+															<xs:attribute name="observedPath" type="xs:string" use="required" />
+															<xs:attribute name="filePath" type="xs:string" use="required" />
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="staticFileExtensions" type="xs:string" use="optional" default=".js,.css,.gif,.png,.jpg,.htm,.html,.swf" />
+											</xs:complexType>
+										</xs:element>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="tokens" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="builtInEnabled" type="xs:boolean" use="optional" default="true" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="messaging" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="targets" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:attribute name="name" type="xs:string" use="required" />
+															<xs:attribute name="address" type="xs:string" use="required" />
+															<xs:attribute name="exceptFromMachineNamed" type="xs:string" use="optional" />
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="onlyFromMachineNamed" type="xs:string" use="optional" />
+												<xs:attribute name="sharedSecret" type="xs:string" use="optional" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="senderName" type="xs:string" use="optional" />
+									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+									<xs:attribute name="async" type="xs:boolean" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="htmlSanitize" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="encodeHtml" type="xs:boolean" use="optional" />
+								</xs:complexType>
+							</xs:element>
 						</xs:all>
-						<xs:attribute name="rootID" type="xs:integer" use="optional" />
-						<xs:attribute name="startPageID" type="xs:integer" use="optional" />
-						<xs:attribute name="multipleSites" type="xs:boolean" use="optional" />
-						<xs:attribute name="wildcards" type="xs:boolean" use="optional" />
+						<xs:attribute name="rootID" type="xs:integer" use="optional" default="1" />
+						<xs:attribute name="startPageID" type="xs:integer" use="optional" default="1" />
+						<xs:attribute name="multipleSites" type="xs:boolean" use="optional" default="false" />
+						<xs:attribute name="dynamicSites" type="xs:boolean" use="optional" default="true" />
+						<xs:attribute name="wildcards" type="xs:boolean" use="optional" default="false" />
 						<xs:attribute name="configSource" type="xs:string" use="optional" />
 					</xs:complexType>
 				</xs:element>
@@ -128,23 +226,40 @@
 							<xs:element name="assemblies" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="add" maxOccurs="unbounded">
+										<xs:element name="clear" minOccurs="0" maxOccurs="1" />
+										<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="assembly" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
 											<xs:complexType>
 												<xs:attribute name="assembly" type="xs:string" use="required" />
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
+									<xs:attribute name="restrictToLoadingPattern" type="xs:string" use="optional" />
+									<xs:attribute name="skipLoadingPattern" type="xs:string" use="optional" />
+									<xs:attribute name="enableTypeCache" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="globalization" minOccurs="0">
 								<xs:complexType>
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+									<xs:attribute name="languagesPerSite" type="xs:boolean" use="optional" />
 									<xs:attribute name="autoDeleteTranslations" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="errors" minOccurs="0">
 								<xs:complexType>
-									<xs:attribute name="action" type="xs:string" use="optional" />
+									<xs:attribute name="action" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="None"/>
+												<xs:enumeration value="Email"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
 									<xs:attribute name="mailTo" type="xs:string" use="optional" />
 									<xs:attribute name="mailFrom" type="xs:string" use="optional" />
 									<xs:attribute name="maxErrorReportsPerHour" type="xs:integer" use="optional" />
@@ -153,16 +268,34 @@
 							</xs:element>
 							<xs:element name="scheduler" minOccurs="0">
 								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="clear" minOccurs="0" maxOccurs="1" />
+										<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required" />
+												<xs:attribute name="repeat" type="xs:boolean" use="optional" />
+												<xs:attribute name="executeOnMachineNamed" type="xs:string" use="optional" />
+												<xs:attribute name="interval" type="xs:time" use="optional" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+									<xs:attribute name="asyncActions" type="xs:boolean" use="optional" />
 									<xs:attribute name="interval" type="xs:integer" use="optional" />
 									<xs:attribute name="keepAlive" type="xs:boolean" use="optional" />
 									<xs:attribute name="keepAlivePath" type="xs:string" use="optional" />
+									<xs:attribute name="executeOnMachineNamed" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="components" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="add" maxOccurs="unbounded">
+										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
 											<xs:complexType>
 												<xs:attribute name="service" type="xs:string" use="required" />
 												<xs:attribute name="implementation" type="xs:string" use="required" />
@@ -224,11 +357,12 @@
 												<xs:attribute name="sortOrder" type="xs:int" />
 												<xs:attribute name="toolTip" type="xs:string" />
 												<xs:attribute name="description" type="xs:string" />
-												<xs:attribute name="engineType" type="xs:string" />
 												<xs:attribute name="dynamicDiscovery" type="xs:boolean" />
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
+									<xs:attribute name="defaultContainerName" default="Content" type="xs:string" />
+									<xs:attribute name="defineUnattributedTypes" default="false" type="xs:boolean" />
 								</xs:complexType>
 							</xs:element>
 						</xs:all>
@@ -237,6 +371,7 @@
 						<xs:attribute name="dynamicDiscovery" type="xs:boolean" use="optional" />
 						<xs:attribute name="castleSection" type="xs:string" use="optional" />
 						<xs:attribute name="engineType" type="xs:string" use="optional" />
+						<xs:attribute name="containerType" type="xs:string" use="optional" />
 						<xs:attribute name="configSource" type="xs:string" use="optional" />
 					</xs:complexType>
 				</xs:element>
@@ -246,7 +381,7 @@
 							<xs:element name="hibernateProperties" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="add" maxOccurs="unbounded">
+										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
 											<xs:complexType>
 												<xs:attribute name="name" type="xs:string" use="required" />
 												<xs:attribute name="value" type="xs:string" use="required" />
@@ -255,12 +390,101 @@
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="mappings" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="search" minOccurs="0">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="client" minOccurs="0">
+											<xs:complexType>
+												<xs:attribute name="url" type="xs:string" use="optional" default="http://localhost:7850/" />
+												<xs:attribute name="searchTimeout" type="xs:int" use="optional" default="10000" />
+												<xs:attribute name="indexTimeout" type="xs:int" use="optional" default="100000" />
+												<xs:attribute name="sharedSecret" type="xs:string" use="optional" />
+												<xs:attribute name="instanceName" type="xs:string" use="optional" />
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="server" minOccurs="0">
+											<xs:complexType>
+												<xs:attribute name="urlPrefix" type="xs:string" use="optional" default="http://*:7850/" />
+												<xs:attribute name="sharedSecret" type="xs:string" use="optional" />
+											</xs:complexType>
+										</xs:element>
+									</xs:all>
+									<xs:attribute name="indexPath" type="xs:string" use="optional" default="~/App_Data/SearchIndex/" />
+									<xs:attribute name="asyncIndexing" type="xs:boolean" use="optional" default="true" />
+									<xs:attribute name="enabled" type="xs:boolean" use="optional" default="true" />
+									<xs:attribute name="type" use="optional" default="Lucene">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Database"/>
+												<xs:enumeration value="Lucene"/>
+												<xs:enumeration value="RemoteServer"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="handleErrors" type="xs:boolean" use="optional" default="true" />
+									<xs:attribute name="indexOnMachineNamed" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="files" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="storageLocation" use="optional" default="Disk">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Disk"/>
+												<xs:enumeration value="Database"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="children" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="laziness" use="optional" default="Extra">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Lazy"/>
+												<xs:enumeration value="NoLazy"/>
+												<xs:enumeration value="Extra"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="cascade" use="optional" default="None">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="None"/>
+												<xs:enumeration value="Persist"/>
+												<xs:enumeration value="Refresh"/>
+												<xs:enumeration value="Merge"/>
+												<xs:enumeration value="Remove"/>
+												<xs:enumeration value="Detach"/>
+												<xs:enumeration value="ReAttach"/>
+												<xs:enumeration value="DeleteOrphans"/>
+												<xs:enumeration value="All"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="batch" use="optional" default="false" type="xs:boolean"/>
+								</xs:complexType>
+							</xs:element>
 						</xs:all>
 						<xs:attribute name="caching" type="xs:boolean" use="optional" />
 						<xs:attribute name="tryLocatingHbmResources" type="xs:boolean" use="optional" />
 						<xs:attribute name="cacheProviderClass" type="xs:string" use="optional" />
+						<xs:attribute name="sqlCacheDependency" type="xs:string" use="optional" />
+						<xs:attribute name="cacheRegion" type="xs:string" use="optional" />
 						<xs:attribute name="connectionStringName" type="xs:string" use="optional" />
-						<xs:attribute name="flavour" use="required">
+						<xs:attribute name="flavour" use="optional">
 							<xs:simpleType>
 								<xs:restriction base="xs:string">
 									<xs:enumeration value="SqlServer2008"/>
@@ -280,8 +504,23 @@
 							</xs:simpleType>
 						</xs:attribute>
 						<xs:attribute name="hibernateMapping" type="xs:string" use="optional" />
+						<xs:attribute name="tablePrefix" type="xs:string" use="optional" default="n2" />
 						<xs:attribute name="configSource" type="xs:string" use="optional" />
 						<xs:attribute name="batchSize" type="xs:int" use="optional" default="25" />
+						<xs:attribute name="isolation" use="optional">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="Unspecified"/>
+									<xs:enumeration value="Chaos"/>
+									<xs:enumeration value="ReadUncommitted"/>
+									<xs:enumeration value="ReadCommitted"/>
+									<xs:enumeration value="RepeatableRead"/>
+									<xs:enumeration value="Serializable"/>
+									<xs:enumeration value="Snapshot"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="autoStartTransaction" type="xs:boolean" use="optional" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="edit">
@@ -290,6 +529,16 @@
 							<xs:element name="installer" minOccurs="0">
 								<xs:complexType>
 									<xs:attribute name="checkInstallationStatus" type="xs:boolean" use="optional" />
+									<xs:attribute name="allowInstallation" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Administrator"/>
+												<xs:enumeration value="AnonymousUser"/>
+												<xs:enumeration value="No"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="installedVersion" type="xs:string" use="optional" />
 									<xs:attribute name="installUrl" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
@@ -307,13 +556,49 @@
 										</xs:element>
 										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
 											<xs:complexType>
+												<xs:all>
+													<xs:element name="readers" minOccurs="0" type="tns:permissionElement" />
+													<xs:element name="writers" minOccurs="0" type="tns:permissionElement" />
+												</xs:all>
+												<xs:attribute name="title" type="xs:string" />
 												<xs:attribute name="path" type="xs:string" use="required" />
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>
-							<xs:element name="tinyMCE" minOccurs="0">
+							<xs:element name="ckeditor" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="settings" minOccurs="0" maxOccurs="1">
+											<xs:complexType>
+												<xs:sequence>
+													<!--<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
+													<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:attribute name="key" type="xs:string" use="required"/>
+														</xs:complexType>
+													</xs:element>-->
+													<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:attribute name="key" type="xs:string" use="required" />
+															<xs:attribute name="value" type="xs:string" use="required" />
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:all>
+									<xs:attribute name="ckConfigJsPath" type="xs:string" use="optional" default="~/N2/Resources/ckeditor/config.js" />
+                  <xs:attribute name="overwriteStylesSet" type="xs:string" use="optional" default="default" />
+                  <xs:attribute name="overwriteFormatTags" type="xs:string" use="optional" default="p;h1;h2;h3;pre" />
+                  <xs:attribute name="contentsCssPath" type="xs:string" use="optional" default="~/N2/Resources/ckeditor/contents.css" />
+									<xs:attribute name="advancedMenus" type="xs:boolean" use="optional" default="false" />
+									<xs:attribute name="allowedContent" type="xs:boolean" use="optional" />
+                  <xs:attribute name="overwriteLanguage" type="xs:string" use="optional" default="en" />
+								</xs:complexType>
+							</xs:element>
+							<!--<xs:element name="tinyMCE" minOccurs="0">
 								<xs:complexType>
 									<xs:all>
 										<xs:element name="settings">
@@ -338,7 +623,7 @@
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
 									<xs:attribute name="cssUrl" type="xs:string" use="optional" />
 								</xs:complexType>
-							</xs:element>
+							</xs:element>-->
 							<xs:element name="nameEditor" minOccurs="0">
 								<xs:complexType>
 									<xs:all>
@@ -384,11 +669,41 @@
 								<xs:complexType>
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
 									<xs:attribute name="maximumPerItem" type="xs:int" default="100" />
+									<xs:attribute name="defaultViewMode">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Draft"/>
+												<xs:enumeration value="Published"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="fileSystem" minOccurs="0">
 								<xs:complexType>
 									<xs:attribute name="textFileExtensions" type="xs:string" use="optional" default=".cs,.vb,.js,.html,.htm,.xml,.aspx,.ascx,.ashx,.php,.txt" />
+									<xs:attribute name="imageFileExtensions" type="xs:string" use="optional" default=".jpg,.gif,.jpeg,.png,.bmp" />
+									<xs:attribute name="uploadFilenameStrip" type="xs:string" use="optional" default="+," />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="docviewer" minOccurs="0">
+								<xs:complexType>
+										<xs:sequence>
+											<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
+											<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+												<xs:complexType>
+													<xs:attribute name="extensions" type="xs:string" use="required"/>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
+												<xs:complexType>
+													<xs:attribute name="extensions" type="xs:string" use="required" />
+													<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+													<xs:attribute name="url" type="xs:string" use="optional" />
+													<xs:attribute name="maxsize" type="xs:string" use="optional" />
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="images" minOccurs="0">
@@ -408,12 +723,16 @@
 															<xs:attribute name="name" type="xs:string" use="required" />
 															<xs:attribute name="width" type="xs:int" use="required" />
 															<xs:attribute name="height" type="xs:int" use="required" />
+															<xs:attribute name="quality" type="xs:int" use="optional" default="90" />
 															<xs:attribute name="replace" type="xs:boolean"/>
 															<xs:attribute name="resizeOnUpload" type="xs:boolean"/>
+															<xs:attribute name="announced" type="xs:boolean"/>
+															<xs:attribute name="description" type="xs:string"/>
 															<xs:attribute name="mode">
 																<xs:simpleType>
 																	<xs:restriction base="xs:string">
 																		<xs:enumeration value="Fit"/>
+																		<xs:enumeration value="FitCenterOnTransparent"/>
 																		<xs:enumeration value="Fill"/>
 																		<xs:enumeration value="Stretch"/>
 																	</xs:restriction>
@@ -429,24 +748,44 @@
 									<xs:attribute name="resizeUploadedImages" type="xs:boolean" use="optional" default="true" />
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="membership" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="userType" type="xs:string" use="optional" default="N2.Security.Items.User, N2.Management" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="externals" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="externalItemType" type="xs:string" use="optional" default="N2.Management.Externals.ExternalItem, N2.Management" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="paths" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="selectedQueryKey" type="xs:string" use="optional" default="selected" />
+									<xs:attribute name="managementInterfaceUrl" type="xs:string" use="optional" default="~/N2/" />
+									<xs:attribute name="editTreeUrl" type="xs:string" use="optional" />
+									<xs:attribute name="editPreviewUrlFormat" type="xs:string" use="optional" />
+									<xs:attribute name="uploadFolderUrl" type="xs:string" use="optional" />
+									<xs:attribute name="editItemUrl" type="xs:string" use="optional" />
+									<xs:attribute name="editInterfaceUrl" type="xs:string" use="optional" />
+									<xs:attribute name="newItemUrl" type="xs:string" use="optional" />
+									<xs:attribute name="deleteItemUrl" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
 						</xs:all>
 						<xs:attribute name="theme" type="xs:string" use="optional" />
-						<xs:attribute name="editTreeUrl" type="xs:string" use="optional" />
-						<xs:attribute name="editPreviewUrlFormat" type="xs:string" use="optional" />
-						<xs:attribute name="uploadFolderUrl" type="xs:string" use="optional" />
-						<xs:attribute name="editItemUrl" type="xs:string" use="optional" />
-						<xs:attribute name="editInterfaceUrl" type="xs:string" use="optional" />
-						<xs:attribute name="newItemUrl" type="xs:string" use="optional" />
-						<xs:attribute name="deleteItemUrl" type="xs:string" use="optional" />
 						<xs:attribute name="configSource" type="xs:string" use="optional" />
-						<xs:attribute name="managementInterfaceUrl" type="xs:string" use="optional" default="~/N2/" />
+						<xs:attribute name="legacy" type="xs:boolean" use="optional" />
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="templates">
+				<xs:element name="web">
 					<xs:complexType>
-						<xs:attribute name="mailConfiguration" type="xs:string" use="optional" />
-						<xs:attribute name="masterPageFile" type="xs:string" use="optional" />
-						<xs:attribute name="imageHandlerPath" type="xs:string" use="optional" />
+						<xs:all>
+							<xs:element name="filelist" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:attribute name="ignoreFiles" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
 					</xs:complexType>
 				</xs:element>
 			</xs:all>

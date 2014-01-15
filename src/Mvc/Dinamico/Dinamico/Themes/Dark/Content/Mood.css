@@ -1,0 +1,42 @@
+@import "../../Default/Content/Mood.css";
+
+html { background:#444; }
+h1 { color: #46351C; }
+	div#top {
+		background-color:#555;
+		border-bottom-left-radius: 5px 5px; border-bottom-right-radius: 5px 5px;
+	}
+		div#top a { color: #fff; }
+		div#top input { color: #999; background-color:#444; border: solid 1px #333; }
+		div#top input:focus { color: #FFF; border-color: #666; }
+	div#header .topmenu {
+		background-color:#fff;
+		border-radius: 5px 5px;
+	}
+		div#header ul.topmenu li a { background:transparent; }
+	img.main { width:920px; margin:20px auto 0 auto; display:block; }
+	div#main {
+		background-color:#fff;
+		border-radius: 5px 5px;
+		overflow:hidden;
+	}
+		div#main ul.submenu { padding:0; margin:0; border-bottom:solid 1px #CCC; }
+			div#main ul.submenu li { display:inline-block; }
+				div#main ul.submenu li a { display:block; padding: 10px 10px 10px 20px; }
+	div#footer {
+		background:#333; margin-top:-4px; z-index:-1; position:absolute; width:921px; 
+		border-bottom-left-radius: 5px 5px; border-bottom-right-radius: 5px 5px;
+	}
+		div#footer > table { margin:1em; }
+
+/* elements */
+
+.dropmenu {
+	border-bottom-left-radius: 5px 5px;  border-bottom-right-radius: 5px 5px;
+}
+
+/* features */
+
+.wideSize, .wideSize img { border-radius: 5px 5px; }
+.halfSize img, img.main { border-radius: 3px 3px; }
+.thumbSize img { border-radius: 1px 1px; }

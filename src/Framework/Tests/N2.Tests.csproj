@@ -1,0 +1,550 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4B026365-D03B-40B4-862B-11608BA756B0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>N2.Tests</RootNamespace>
+    <AssemblyName>N2.Tests</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <PublishUrl>http://localhost/N2.Tests/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NET3_5;NH2_1;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NET3_5;NH2_1;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Castle.Core.3.2.1\lib\net40-client\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Castle.Windsor.3.2.1\lib\net40-client\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks, Version=3.4.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="Shouldly, Version=1.1.1.1, Culture=neutral, PublicKeyToken=6042cbcb05cbc941, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Shouldly.1.1.1.1\lib\35\Shouldly.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\..\packages\System.Data.SQLite.1.0.88.0\lib\net40\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq">
+      <HintPath>..\..\packages\System.Data.SQLite.1.0.88.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Collections\AccessFilterTests.cs" />
+    <Compile Include="Collections\ChildCollectionStateTests.cs" />
+    <Compile Include="Collections\CompositeFilterTests.cs" />
+    <Compile Include="Collections\FilterCompositionTests.cs" />
+    <Compile Include="Collections\FilterTests.cs" />
+    <Compile Include="Collections\ItemListTests.cs" />
+    <Compile Include="Collections\Items\FirstPart.cs" />
+    <Compile Include="Collections\PublishedFilterTests.cs" />
+    <Compile Include="Collections\NavigationFilterTests.cs" />
+    <Compile Include="Collections\VisibleFilterTests.cs" />
+    <Compile Include="Collections\CountFilterTests.cs" />
+    <Compile Include="Collections\NonPageItem.cs" />
+    <Compile Include="Collections\DuplicateFilterTests.cs" />
+    <Compile Include="Collections\FilterTestsBase.cs" />
+    <Compile Include="Collections\InverseFilterTests.cs" />
+    <Compile Include="Collections\ItemComparerTests.cs" />
+    <Compile Include="Collections\ItemHierarchyBuilderTests.cs" />
+    <Compile Include="Collections\ItemHierarchyTests.cs" />
+    <Compile Include="Collections\PageFilterTests.cs" />
+    <Compile Include="Collections\ParentFilterTests.cs" />
+    <Compile Include="Collections\Items\SecondItem.cs" />
+    <Compile Include="Collections\Items\FirstItem.cs" />
+    <Compile Include="Collections\TypeFilterTests.cs" />
+    <Compile Include="Collections\ZoneFilterTests.cs" />
+    <Compile Include="Configuration\LazyRemovableCollectionTests.cs" />
+    <Compile Include="Content\AnItem.cs" />
+    <Compile Include="Content\ContentItemTests.cs" />
+    <Compile Include="Definitions\AllowedDefinitionFilterTests.cs" />
+    <Compile Include="Definitions\AttributeTransformerTests.cs" />
+    <Compile Include="Definitions\Runtime\FluentRegistratorTests.cs" />
+    <Compile Include="Definitions\SiblingInsertionTests.cs" />
+    <Compile Include="Definitions\RestrictCardinalityTests.cs" />
+    <Compile Include="Definitions\DefinitionConfigurationTests.cs" />
+    <Compile Include="Definitions\DetailRemoveTests.cs" />
+    <Compile Include="Definitions\Runtime\ContentRegistrationTests.cs" />
+    <Compile Include="Definitions\SortChildrenTests.cs" />
+    <Compile Include="Definitions\Static\DescribablePage.cs" />
+    <Compile Include="Definitions\Static\DescribablePart.cs" />
+    <Compile Include="Definitions\Static\DefinitionTableTests.cs" />
+    <Compile Include="Definitions\Static\PartDescriptionTests.cs" />
+    <Compile Include="Definitions\Items\TitleTransformer.cs" />
+    <Compile Include="Details\ContentDetailTests.cs" />
+    <Compile Include="Details\PersistentDetailCollecetionTests.cs" />
+    <Compile Include="Details\TemporaryDetailCollectionTests.cs" />
+    <Compile Include="Details\EditableItemTest.cs" />
+    <Compile Include="Details\DisplayableTokensTest.cs" />
+    <Compile Include="Details\DetailCollectionTests.cs" />
+    <Compile Include="Details\EditableChildrenTest.cs" />
+    <Compile Include="Details\Models\EnumableItem.cs" />
+    <Compile Include="Details\EditableEnumTests.cs" />
+    <Compile Include="Details\Models\Multiple.cs" />
+    <Compile Include="Edit\Api\InterfaceBuilderTests.cs" />
+    <Compile Include="Edit\ContainerRepositoryTests.cs" />
+    <Compile Include="Edit\EditUrlManagerTests.cs" />
+    <Compile Include="Edit\FileSystem\DefaultFolderFinderTest.cs" />
+    <Compile Include="Edit\Items\ItemWithSecuredContainer.cs" />
+    <Compile Include="Edit\Items\NotVersionableItem.cs" />
+    <Compile Include="Edit\Items\WidthType.cs" />
+    <Compile Include="Edit\NodeAdapterTests.cs" />
+    <Compile Include="Edit\Versioning\ContentVersionRepositoryTests.cs" />
+    <Compile Include="Edit\WhileDealingWithVersions.cs" />
+    <Compile Include="Edit\WhileEditingContentData.cs" />
+    <Compile Include="Edit\EditUrlManagerTests_Editing.cs" />
+    <Compile Include="Edit\EditUrlManagerTests_Managing.cs" />
+    <Compile Include="Engine\TypeCacheTests.cs" />
+    <Compile Include="Engine\TypeFinderTests.cs" />
+    <Compile Include="Fakes\FakeCacheWrapper.cs" />
+    <Compile Include="Fakes\FakeProvider.cs" />
+    <Compile Include="Installation\ImageSizesMigrationTests.cs" />
+    <Compile Include="PersistenceTestHelper.cs" />
+    <Compile Include="Persistence\ChildrenTests.cs" />
+    <Compile Include="Persistence\ContentActivatorTests.cs" />
+    <Compile Include="Engine\Items\AdapterIInterfaced.cs" />
+    <Compile Include="Engine\Items\ItemAC.cs" />
+    <Compile Include="Engine\ServiceContainerTests.cs" />
+    <Compile Include="Engine\Services\Services.cs" />
+    <Compile Include="Fakes\FakeDatabaseStatusCache.cs" />
+    <Compile Include="Fakes\FakeDependencyInjector.cs" />
+    <Compile Include="Fakes\FakeDescendantItemFinder.cs" />
+    <Compile Include="Fakes\FakeEditUrlManager.cs" />
+    <Compile Include="Fakes\FakeMappedFileSystem.cs" />
+    <Compile Include="Fakes\FakeMemoryFileSystem.cs" />
+    <Compile Include="Fakes\FakeHttpContext.cs" />
+    <Compile Include="Fakes\FakeHttpRequest.cs" />
+    <Compile Include="Fakes\FakeHttpResponse.cs" />
+    <Compile Include="Fakes\FakeHttpServerUtility.cs" />
+    <Compile Include="Fakes\FakeHttpSessionState.cs" />
+    <Compile Include="Fakes\FakeItemFinder.cs" />
+    <Compile Include="Fakes\FakeVersionManager.cs" />
+    <Compile Include="Fakes\FakeVppFileSystem.cs" />
+    <Compile Include="Installation\AppPathRebaseTests.cs" />
+    <Compile Include="Linq\ExpressionBuildingUtils.cs" />
+    <Compile Include="Linq\ExpressionQueryableExtensionsTests.cs" />
+    <Compile Include="Linq\Models\LinqItem.cs" />
+    <Compile Include="Linq\LinqTestsBase.cs" />
+    <Compile Include="Linq\VanillaLinqingTests.cs" />
+    <Compile Include="Persistence\ContentDependencyInjectorTests.cs" />
+    <Compile Include="Persistence\ContentPersister_ContentSourcesTests.cs" />
+    <Compile Include="Persistence\Definitions\ActiveContentItem.cs" />
+    <Compile Include="Persistence\IActiveContentTests.cs" />
+    <Compile Include="Persistence\NH\ClonedProxiedItemsTest.cs" />
+    <Compile Include="Persistence\NH\ItemRepositoryTests_Find.cs" />
+    <Compile Include="Persistence\NH\PersisterLinksTests.cs" />
+    <Compile Include="Persistence\Proxying\InterceptionFactoryTests.cs" />
+    <Compile Include="Persistence\NH\TagsRepositoryTests.cs" />
+    <Compile Include="Persistence\SearchHelperTests.cs" />
+    <Compile Include="Persistence\Sources\ContentSourceTests.cs" />
+    <Compile Include="Plugin\Scheduling\Actions.cs" />
+    <Compile Include="Types.cs" />
+    <Compile Include="Web\SlugTests.cs" />
+    <Compile Include="Web\Targeting\TargetingTests.cs" />
+    <Compile Include="Web\UrlParser_IUrlSource_VirtualDirectory.cs" />
+    <Compile Include="Web\UrlParser_IUrlSource_MultipleSites.cs" />
+    <Compile Include="Web\Items\UrlSourcePage.cs" />
+    <Compile Include="Web\UrlParser_Events.cs" />
+    <Compile Include="Web\UrlParser_IUrlSource.cs" />
+    <Compile Include="Web\Drawing\ImageResizerTests.cs" />
+    <Compile Include="Web\HostTests.cs" />
+    <Compile Include="Web\ImageResizerTests.cs" />
+    <Compile Include="Fakes\FakeWorker.cs" />
+    <Compile Include="Web\Messaging\MessagingTests.cs" />
+    <Compile Include="Web\Mvc\ContentHelperTests.cs" />
+    <Compile Include="Web\Parsing\Extensions.cs" />
+    <Compile Include="Web\Parsing\WikiParserTests.cs" />
+    <Compile Include="Web\Parsing\TokenizerTests.cs" />
+    <Compile Include="Web\Parts\ItemCopyerTests.cs" />
+    <Compile Include="Web\Parts\ItemMoverTests.cs" />
+    <Compile Include="Web\Parts\CreateUrlProviderTests.cs" />
+    <Compile Include="Web\Parts\PartsExtensionsTests.cs" />
+    <Compile Include="Web\PathDataTests.cs" />
+    <Compile Include="Web\WebControls\DatePickerTests.cs" />
+    <Compile Include="Web\JsonWriterTests.cs" />
+    <Compile Include="Web\WebExtensionsTests.cs" />
+    <Compile Include="Workflow\CommandFactoryTestsBase.cs" />
+    <Compile Include="Workflow\CommandFactory_PublishingTests.cs" />
+    <Compile Include="Workflow\CommandFactory_SavingTests.cs" />
+    <Compile Include="Engine\ContentAdapterProviderTest.cs" />
+    <Compile Include="Engine\ContainerSanityTests.cs" />
+    <Compile Include="Engine\Items\AdapterA.cs" />
+    <Compile Include="Engine\Items\AdapterAA.cs" />
+    <Compile Include="Engine\Items\AdapterAAA.cs" />
+    <Compile Include="Engine\Items\ItemAA.cs" />
+    <Compile Include="Engine\Items\ItemAAA.cs" />
+    <Compile Include="Engine\Items\ItemAAB.cs" />
+    <Compile Include="Engine\Items\ItemAB.cs" />
+    <Compile Include="Engine\MultipleSitesContentEngineTests.cs" />
+    <Compile Include="Definitions\AttributeReference.cs" />
+    <Compile Include="Definitions\DefinitionFixture.cs" />
+    <Compile Include="Definitions\Definitions\Details\CustomizedEditableAttribute.cs" />
+    <Compile Include="Definitions\Definitions\ItemInZone1Or2.cs" />
+    <Compile Include="Definitions\Definitions\ItemWithDetails.cs" />
+    <Compile Include="Definitions\Definitions\ItemWithFieldSet.cs" />
+    <Compile Include="Definitions\Definitions\ItemWithNestedContainers.cs" />
+    <Compile Include="Definitions\Definitions\ItemWithoutZones.cs" />
+    <Compile Include="Definitions\Definitions\SideshowItem.cs" />
+    <Compile Include="Definitions\Definitions\SubItemWithDetails.cs" />
+    <Compile Include="Definitions\DefinitionTests.cs" />
+    <Compile Include="Definitions\EditableExplorerTests.cs" />
+    <Compile Include="Definitions\Items\DefinitionItems.cs" />
+    <Compile Include="Edit\Items\ComplexContainersItem.cs" />
+    <Compile Include="Edit\Items\ItemWithModification.cs" />
+    <Compile Include="Edit\Items\ItemWithRequiredProperty.cs" />
+    <Compile Include="Edit\Items\NormalItem.cs" />
+    <Compile Include="Edit\Items\NormalPage.cs" />
+    <Compile Include="Edit\Items\SeveralPlugins.cs" />
+    <Compile Include="Edit\NavigatorTests.cs" />
+    <Compile Include="Edit\WhileSortingTreeOfPages.cs" />
+    <Compile Include="Edit\WhileSortingTreeOfPagesAndItems.cs" />
+    <Compile Include="Engine\ContentEngineTests.cs" />
+    <Compile Include="Engine\ServiceDiscovererTests.cs" />
+    <Compile Include="Engine\SingletonTests.cs" />
+    <Compile Include="Workflow\ContentStateTests.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Fakes\FakeEngine.cs" />
+    <Compile Include="Fakes\FakeErrorHandler.cs" />
+    <Compile Include="Fakes\FakeRepository.cs" />
+    <Compile Include="Fakes\FakeRequestLifeCycleHandler.cs" />
+    <Compile Include="Fakes\FakeSecurityManager.cs" />
+    <Compile Include="Fakes\FakeSessionProvider.cs" />
+    <Compile Include="Fakes\FakeTypeFinder.cs" />
+    <Compile Include="Fakes\StaticContextAccessor.cs" />
+    <Compile Include="Fakes\TimeCapsule.cs" />
+    <Compile Include="Globalization\FlatLanguageStructureTests.cs" />
+    <Compile Include="Globalization\IntermixedLanguageStructureTests.cs" />
+    <Compile Include="Globalization\Items\LanguageRoot.cs" />
+    <Compile Include="Globalization\Items\TranslatedPage.cs" />
+    <Compile Include="Globalization\GlobalizationTests.cs" />
+    <Compile Include="Globalization\Items\TranslatedPageWithAuthorization.cs" />
+    <Compile Include="Globalization\Items\TrashCan.cs" />
+    <Compile Include="MediumTrust\EngineTests.cs" />
+    <Compile Include="MediumTrust\MediumTrustPage.cs" />
+    <Compile Include="MSBuildTests.cs" />
+    <Compile Include="NodeTests.cs" />
+    <Compile Include="Persistence\Definitions\NonVirtualItem.cs" />
+    <Compile Include="Persistence\FindTests.cs" />
+    <Compile Include="ExceptionAssert.cs" />
+    <Compile Include="Persistence\NH\PerformanceTests.cs" />
+    <Compile Include="Persistence\NH\MappingGeneratorTests.cs" />
+    <Compile Include="Persistence\NH\PersisterIntegrityTests.cs" />
+    <Compile Include="Persistence\NH\PersisterTestsBase.cs" />
+    <Compile Include="Persistence\NH\TrailTrackerTests.cs" />
+    <Compile Include="Edit\Versioning\VersionManagerTests.cs" />
+    <Compile Include="Plugin\PlugIn3.cs" />
+    <Compile Include="Plugin\PlugIn2.cs" />
+    <Compile Include="Plugin\PluginFinderTests.cs" />
+    <Compile Include="Plugin\Scheduling\SchedulingTests.cs" />
+    <Compile Include="Plugin\SomeException.cs" />
+    <Compile Include="Plugin\ThrowingPlugin1.cs" />
+    <Compile Include="Plugin\ThrowingPlugin2.cs" />
+    <Compile Include="SchemaExporting\Cat.cs" />
+    <Compile Include="SchemaExporting\UpgradeTest.cs" />
+    <Compile Include="Security\DynamicPermissionMapTests.cs" />
+    <Compile Include="Security\PermissionMapTests.cs" />
+    <Compile Include="Serialization\ExportImportTests.cs" />
+    <Compile Include="Serialization\Items\FakeAttachment.cs" />
+    <Compile Include="Serialization\SerializationTestsBase.cs" />
+    <Compile Include="Serialization\XmlReaderTests.cs" />
+    <Compile Include="TestSupport.cs" />
+    <Compile Include="TypeAssert.cs" />
+    <Compile Include="TypeFindingBase.cs" />
+    <Compile Include="Utility\UtilityItem.cs" />
+    <Compile Include="Utility\UtilityTests.cs" />
+    <Compile Include="WebControlAssert.cs" />
+    <Compile Include="Edit\EditManagerTests.cs" />
+    <Compile Include="Integrity\Definitions\IntegrityPage.cs" />
+    <Compile Include="Integrity\Definitions\IntegrityAlternativePage.cs" />
+    <Compile Include="Integrity\Definitions\IntegrityRoot.cs" />
+    <Compile Include="Integrity\Definitions\IntegrityAlternativeStartPage.cs" />
+    <Compile Include="Integrity\Definitions\IntegritySubPage.cs" />
+    <Compile Include="Integrity\Definitions\IntegrityStartPage.cs" />
+    <Compile Include="Integrity\IntegrityFixture.cs" />
+    <Compile Include="Integrity\IntegrityTests.cs" />
+    <Compile Include="ItemPersistenceMockingBase.cs" />
+    <Compile Include="ItemTestsBase.cs" />
+    <Compile Include="EnumerableAssert.cs" />
+    <Compile Include="Fakes\FakeWebContextWrapper.cs" />
+    <Compile Include="NewVersion\FactoryFixture.cs" />
+    <Compile Include="PersistenceAwareBase.cs" />
+    <Compile Include="Installation\InstallFixture.cs" />
+    <Compile Include="Fakes\FakeIntegrityManager.cs" />
+    <Compile Include="Fakes\WebDisconnectedPersister.cs" />
+    <Compile Include="Persistence\DatabasePreparingBase.cs" />
+    <Compile Include="Persistence\Definitions\PersistableItem1.cs" />
+    <Compile Include="Persistence\Definitions\PersistableItem2.cs" />
+    <Compile Include="Persistence\FinderFixture.cs" />
+    <Compile Include="Persistence\NH\ItemFinderTests.cs" />
+    <Compile Include="Persistence\NH\ItemRepositoryTests.cs" />
+    <Compile Include="Persistence\NH\PersisterTests.cs" />
+    <Compile Include="Persistence\PersistFixture.cs" />
+    <Compile Include="Plugin\PlugIn1.cs" />
+    <Compile Include="Plugin\PlugInInitializerInvokerTests.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SecurityUtilities.cs" />
+    <Compile Include="Security\Items\SecurityPage.cs" />
+    <Compile Include="Security\SecurityManagerTests.cs" />
+    <Compile Include="Web\Items\CustomExtensionItem.cs" />
+    <Compile Include="Web\Items\CustomRequestAdapter.cs" />
+    <Compile Include="Web\Items\CustomZoneController.cs" />
+    <Compile Include="Web\DynamicSitesProviderTests.cs" />
+    <Compile Include="Engine\Items\ItemA.cs" />
+    <Compile Include="Web\Items\ConventionTemplatePage.cs" />
+    <Compile Include="Web\Items\OtherCustomController.cs" />
+    <Compile Include="Web\Items\OtherCustomItem.cs" />
+    <Compile Include="Web\Items\PageZoneAdapter.cs" />
+    <Compile Include="Web\Items\ParticularCustomItem.cs" />
+    <Compile Include="Web\Items\SpecialCustomAdapter.cs" />
+    <Compile Include="Web\Items\SpecialCustomItem.cs" />
+    <Compile Include="Web\PathFinderTests.cs" />
+    <Compile Include="Web\RequestDispatcherTests.cs" />
+    <Compile Include="Web\Items\CustomItem.cs" />
+    <Compile Include="Web\Items\CustomExtensionPage.cs" />
+    <Compile Include="Web\Items\DataItem.cs" />
+    <Compile Include="Web\Items\PageItem.cs" />
+    <Compile Include="Web\Items\SiteProvidingItem.cs" />
+    <Compile Include="Web\LinkTests.cs" />
+    <Compile Include="Web\MspxExtensionUrlParserTests.cs" />
+    <Compile Include="Web\ParserTestsBase.cs" />
+    <Compile Include="Web\MultipleHostUrlParserTests.cs" />
+    <Compile Include="Web\ParsingUrlsWithActions.cs" />
+    <Compile Include="Web\PluginContextTests.cs" />
+    <Compile Include="Web\SlashExtensionUrlParserTests.cs" />
+    <Compile Include="Fakes\StaticSitesProvider.cs" />
+    <Compile Include="Web\TreeNodeTests.cs" />
+    <Compile Include="Web\TreeTests.cs" />
+    <Compile Include="Web\UrlParserPathAndQueryTests.cs" />
+    <Compile Include="Web\UrlParser_ParsePageTests.cs" />
+    <Compile Include="Web\UrlParser_BuildDataUrlTests.cs" />
+    <Compile Include="Web\UrlParser_BuildPageUrlTests.cs" />
+    <Compile Include="Web\UrlParser_ParseDataTests.cs" />
+    <Compile Include="Web\UrlParsing\CachingUrlParserTests.cs" />
+    <Compile Include="Web\UrlParsing\CachingUrlParserTests_WithMultipleHostsUrlParser.cs" />
+    <Compile Include="Web\MoreRequestDispatcherTests.cs" />
+    <Compile Include="Serialization\Items\XmlableItem.cs" />
+    <Compile Include="Serialization\XmlWriterTests.cs" />
+    <Compile Include="Web\UrlTests.cs" />
+    <Compile Include="Web\AbstractExtensionUrlParserTests.cs" />
+    <Compile Include="Web\WebControls\ControlPanelTests_EditingState.cs" />
+    <Compile Include="Web\WebControls\ControlPanelTests_DragDropState.cs" />
+    <Compile Include="Web\WebControls\DateRangeTests.cs" />
+    <Compile Include="Web\WebControls\WebControlTestsBase.cs" />
+    <Compile Include="Web\WebControls\ControlPanelTests_HiddenState.cs" />
+    <Compile Include="Web\WhileBuildingUrlsWhenMultipleSites.cs" />
+    <Compile Include="Web\WhileDealingWithHostNames.cs" />
+    <Compile Include="Web\WhileParsingUrlsWhenMultipleSites.cs" />
+    <Compile Include="Web\PartsAdapterTest.cs" />
+    <Compile Include="Workflow\Items\StatefulItem.cs" />
+    <Compile Include="Workflow\SHould.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IoC.Windsor\N2.IoC.Windsor3.csproj">
+      <Project>{7a9c0479-64af-4df1-818c-118866db8a3d}</Project>
+      <Name>N2.IoC.Windsor3</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\N2\N2.csproj">
+      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+      <Name>N2</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Serialization\TestFile.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\Drawing\ajax-loader.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\Drawing\bullet_star.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\Drawing\copter_icon.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\Drawing\copter_original.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\Drawing\lav.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\Drawing\n2logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="x64\SQLite.Interop.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="x86\SQLite.Interop.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

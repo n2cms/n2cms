@@ -1,3 +1,81 @@
+- module signing
+- dinamico bootstrap
+-    <add key="ValidationSettings:UnobtrusiveValidationMode" value="None" />
+- double encoding when using embedded parts
+- upload tab ckeditor
+- https://github.com/bherila/n2cms/issues
+- Det va en static prop med en private getter i en content item
+- merge mongo stuff
+- mobile support
+- redesign
+- ckeditor
+- upload tab ckeditor
+- smart redirect to language-localized page when URL is specified with no language (i.e. language root missing)
+- refresh without control panel
+- full mongo support
+- Optimize number of items loaded when saving (http://n2cms.codeplex.com/discussions/395905)
+- Weird discriminator (discussions/358438)
+- Translate close (discussions/356447)
+- security exception discussions/354170
+- non-persistent items searchable
+- placeholder
+- required [EditableMediaUpload] (discussions/346532)
+- windsor 3 - http://n2cms.codeplex.com/discussions/340758
+- permission map issues http://n2cms.codeplex.com/workitem/32291
+- dbfs in virtual dir (discussions/287370)
+- Pushstate
+- PdfBox http://pdfbox.apache.org/userguide/dot_net.html (discussions/285609)
+- ContentState after installation (discussions/285006)
+- Document security (discussions/282764)
+- Bulk adding from rss (discussions/272297)
+- restrict page deletion (discussions/282410)
+- .aspx on MVC (discussions/281400)
+- zone writer (prepend, append, wrap, separate)
+discussions/279124
+http://dl.dropbox.com/u/18069810/SafeUrlEnforcer.cs
+- Multiple item editor (discussions/273083)
+- Take a look at misc utils (discussions/277160)
+- Container nodes without url segment (discussions/277009)
+- Investigate memory usage for many small sites (discussions/276419)
+- Make content route not route before up and running
+- Fix problem with cascade saving of proxied items (discussions/276267)
+- Module guidance (discussions/273235)
+- DefaultValue on programmatically added editables (discussions/273892)
+- Updated minimal MVC example to MVC3 (discussions/273372)
+- Antipspam on form (discussions/273271)
+- Change "selected" query string (discussions/83451)
+- Date time picker time warning missing (discussions/272907)
+- database file system chunking
+- database file system event broker connection
+- Closed session when checking installation status (discussions/267048)
+- Restrict upload folders shown for EditableImage (discussions/268170)
+- languages associated to sites (discussions/264798)
+- linq default values (discussions/250998)
+- anti-spam and required on forms (discussions/273271)
+- select query strings breaks with url scan discussions/266434
+- recursive quickener
+- nhibernate method not found (discussions/265951)
+- reproduce lucene problems (discussions/262292) - fix fist-time installation lucene error leaving lock
+- allowed zones in dinamico view templates (discussions/263700)
+- master page in themes directory
+- save&preview and editablechildren (workitem/30541)
+- nuget issues http://n2cms.codeplex.com/discussions/260635
+- contenttype from model discussions/259496
+- extend user screen (discussions/257790)
+- document security (http://n2cms.codeplex.com/discussions/257790)
+- tokens
+	- image carousel
+	- tracking link
+	- facebook like
+	- twitter
+	- youtube
+- index template replaces default
+- static parts
+- fix wiki (ThreadId=243022)
+- property interception avoid proceeding unecessarily
+- show path in screens
+- modal file selectors
+- change to ordinal string comparisons
 - SQL timeout exception (ThreadId=234907)
 - Add no-sql support
 - IOrderBy.Detail does sorting (ThreadId=234194)
@@ -6,7 +84,6 @@
 - relocate virtual directory (ThreadId=232683)
 - translation fallback (ThreadId=230288)
 - MVC
-	- Css/Js registration
 	- Remove master page code behind
 	- reduce number of parts (e.g. top)
 	- Add all images in folder to gallery
@@ -55,14 +132,6 @@ v2
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=81825
 - http://n2cms.codeplex.com/WorkItem/View.aspx?WorkItemId=26023
 - default container (put all editables in one container)
-- extend user object: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=73897
-	/n2/
-	/n2/content/
-	/n2/files/
-	/n2/installation/
-	/n2/users/
-	/n2/myself/
-- allow custom user type
 - interfaces concept
 	- management
 	- browsing

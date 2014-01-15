@@ -1,0 +1,2 @@
+<img src="../../Themes/Corporate/Thumbnail.jpg" style="float:left;"/>
+<b>Corporate Theme</b> with Example Content

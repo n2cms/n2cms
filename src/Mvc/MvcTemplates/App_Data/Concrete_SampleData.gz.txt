@@ -1,0 +1,2 @@
+<img src="../../Themes/Concrete/Thumbnail.jpg" style="float:left;"/>
+<b>Concrete Theme</b> (2 column layout) with Example Content

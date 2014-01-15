@@ -14,12 +14,12 @@
 
 
 	<entry type="application">
-		<productId>N2CMSMVCTemplates21rc</productId>
-		<title>N2 CMS 2.1 release candidate ASP.NET MVC Templates Pack</title>
-		<version>2.1 release candidate (mvc)</version>
+		<productId>N2CMSMVCTemplates211</productId>
+		<title>N2 CMS 2.1.1 ASP.NET MVC Templates Pack</title>
+		<version>2.1.1 (mvc)</version>
 
 		<summary>Templates Pack using ASP.NET MVC and the N2 CMS Framework.</summary>
-		<id>http://n2cms.codeplex.com/releases/view/55245#DownloadId=164800</id>
+		<id>http://n2cms.codeplex.com/releases/view/58473#DownloadId=193225</id>
 		<updated>2010-10-10T13:00:00Z</updated>
 		<published>2010-10-10T13:00:00Z</published>
 		<longSummary>
@@ -32,7 +32,7 @@
 
 		<productFamily>Releases</productFamily>
 
-		<link href="http://n2cms.codeplex.com/releases/view/55245#DownloadId=164800" />
+		<link href="http://n2cms.codeplex.com/releases/view/58473#DownloadId=193225" />
 
 		<author>
 			<name>N2 CMS</name>
@@ -52,10 +52,10 @@
 				<id>1</id>
 				<languageId>en</languageId>
 				<installerFile>
-					<fileSize>7678</fileSize>
-					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=164800</installerURL>
+					<fileSize>7221</fileSize>
+					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=198510</installerURL>
 
-					<sha1>C206931C6ABD0C0C5ECB2A678B70FB1F0DE90B02</sha1>
+					<sha1>9E0A81E3FD55E7EB7C8FAF77C4452E7AB7C44F6D</sha1>
 				</installerFile>
 				<helpLink>http://n2cms.codeplex.com/discussions/</helpLink>
 				<msDeploy>
@@ -67,12 +67,12 @@
 	</entry>
 
 	<entry type="application">
-		<productId>N2CMSWFTemplates21rc</productId>
-		<title>N2 CMS 2.1 release candidate WebForms Templates Pack</title>
-		<version>2.1 release candidate (wf)</version>
+		<productId>N2CMSWFTemplates211</productId>
+		<title>N2 CMS 2.1.1 WebForms Templates Pack</title>
+		<version>2.1.1 (wf)</version>
 
 		<summary>Templates Pack using ASP.NET WebForms and the N2 CMS Framework.</summary>
-		<id>http://n2cms.codeplex.com/releases/view/55245#DownloadId=164801</id>
+		<id>http://n2cms.codeplex.com/releases/view/58473#DownloadId=193226</id>
 		<updated>2010-10-10T14:00:00Z</updated>
 		<published>2010-10-10T14:00:00Z</published>
 		<longSummary>
@@ -84,7 +84,7 @@
 
 		<productFamily>Releases</productFamily>
 
-		<link href="http://n2cms.codeplex.com/releases/view/55245#DownloadId=164801" />
+		<link href="http://n2cms.codeplex.com/releases/view/58473#DownloadId=193226" />
 
 		<author>
 			<name>N2 CMS</name>
@@ -104,112 +104,9 @@
 				<id>1</id>
 				<languageId>en</languageId>
 				<installerFile>
-					<fileSize>7013</fileSize>
-					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=164801</installerURL>
-					<sha1>3D194B1FA875B3806A83ED884F6A35458838B796</sha1>
-				</installerFile>
-				<helpLink>http://n2cms.codeplex.com/discussions/</helpLink>
-				<msDeploy>
-					<startPage>n2/installation/begin/default.aspx?action=install</startPage>
-				</msDeploy>
-			</installer>
-		</installers>
-	</entry>
-
-
-
-	<entry type="application">
-		<productId>N2CMSMVCTemplates21b</productId>
-		<title>N2 CMS 2.1 beta ASP.NET MVC Templates Pack</title>
-		<version>2.1 beta (mvc)</version>
-
-		<summary>Templates Pack using ASP.NET MVC and the N2 CMS Framework.</summary>
-		<id>http://n2cms.codeplex.com/releases/view/53739#DownloadId=156524</id>
-		<updated>2010-10-10T13:00:00Z</updated>
-		<published>2010-10-10T13:00:00Z</published>
-		<longSummary>
-			Support for auto-implemented properties ({get;set;}, based on contribution by And Poulsen).
-			File manager improvements (multiple file upload, resize images to fit).
-			MVC templates improvements (new image gallery, infinite scroll paging on news).
-			A bunch of bugs are gone.
-		</longSummary>
-
-		<productFamily>Releases</productFamily>
-
-		<link href="http://n2cms.codeplex.com/releases/view/53739" />
-
-		<author>
-			<name>N2 CMS</name>
-			<uri>http://n2cms.com/</uri>
-		</author>
-
-		<images>
-			<icon>http://www.microsoft.com/web/handlers/webpi.ashx?command=getimage&amp;guid=b11eea8e-617e-42d7-b5cc-df329f640856</icon>
-		</images>
-
-		<dependency>
-			<productId>NETFramework35</productId>
-		</dependency>
-
-		<installers>
-			<installer>
-				<id>1</id>
-				<languageId>en</languageId>
-				<installerFile>
-					<fileSize>7799</fileSize>
-					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=156524</installerURL>
-
-					<sha1>0FB1C5C03CE0FAACE12BAAB0FB83476A022B014C</sha1>
-				</installerFile>
-				<helpLink>http://n2cms.codeplex.com/discussions/</helpLink>
-				<msDeploy>
-					<startPage>n2/installation/begin/default.aspx?action=install</startPage>
-				</msDeploy>
-			</installer>
-		</installers>
-
-	</entry>
-
-	<entry type="application">
-		<productId>N2CMSWFTemplates21b</productId>
-		<title>N2 CMS 2.1 beta WebForms Templates Pack</title>
-		<version>2.1 beta (wf)</version>
-
-		<summary>Templates Pack using ASP.NET WebForms and the N2 CMS Framework.</summary>
-		<id>http://n2cms.codeplex.com/releases/view/53739#DownloadId=156525</id>
-		<updated>2010-10-10T14:00:00Z</updated>
-		<published>2010-10-10T14:00:00Z</published>
-		<longSummary>
-			Support for auto-implemented properties ({get;set;}, based on contribution by And Poulsen).
-			File manager improvements (multiple file upload, resize images to fit).
-			A bunch of bugs are gone.
-		</longSummary>
-
-		<productFamily>Releases</productFamily>
-
-		<link href="http://n2cms.codeplex.com/releases/view/53739" />
-
-		<author>
-			<name>N2 CMS</name>
-			<uri>http://n2cms.com/</uri>
-		</author>
-
-		<images>
-			<icon>http://www.microsoft.com/web/handlers/webpi.ashx?command=getimage&amp;guid=b11eea8e-617e-42d7-b5cc-df329f640856</icon>
-		</images>
-
-		<dependency>
-			<productId>NETFramework35</productId>
-		</dependency>
-
-		<installers>
-			<installer>
-				<id>1</id>
-				<languageId>en</languageId>
-				<installerFile>
-					<fileSize>8036</fileSize>
-					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=156525</installerURL>
-					<sha1>C14AB69E8B1CC4B81E65CE1566E26A60E52EEBD8</sha1>
+					<fileSize>6836</fileSize>
+					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=198511</installerURL>
+					<sha1>15D2F87CF6F42E5F1258500382737B94D9799EBD</sha1>
 				</installerFile>
 				<helpLink>http://n2cms.codeplex.com/discussions/</helpLink>
 				<msDeploy>
@@ -237,7 +134,7 @@
 					<groupingId>AppGalleryToolsFamilyGrouping</groupingId>
 
 					<recommended>
-						<productId>N2CMSMVCTemplates21rc</productId>
+						<productId>N2CMSMVCTemplates211</productId>
 					</recommended>
 				</pillar>
 			</pillarTab>

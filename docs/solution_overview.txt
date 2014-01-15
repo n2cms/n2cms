@@ -32,5 +32,5 @@ files, content search functionality and content syndication functionality.
 * N2.Templates.Mvc
 MVC templates contributed by Steve Mason.
 
-* N2.Tests, N2.Extensions.Tests, N2.Edit.Tests, N2.Templates.Tests, N2.Templates.Mvc.Tests
+* N2.Tests, N2.Extensions.Tests, N2.Management.Tests, N2.Templates.Tests, N2.Templates.Mvc.Tests
 Unit tests for the N2 library.

@@ -1,0 +1,9 @@
+﻿@model string
+@if (Model != null)
+{
+	var segments = Model.Split('|');
+	using (Content.BeginScope(segments.Length > 1 ? segments[1] : null))
+	{
+		@Content.Current.Item[segments[0]]
+	}
+}

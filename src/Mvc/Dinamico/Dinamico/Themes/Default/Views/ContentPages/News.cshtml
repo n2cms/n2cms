@@ -1,0 +1,18 @@
+﻿@model Dinamico.Models.ContentPage
+
+@{
+	Content.Define(re => 
+	{
+		re.Title = "News page";
+		re.IconUrl = "{IconsUrl}/newspaper.png";
+		re.DefaultValue("Visible", false);
+		re.RestrictParents("Container");
+		re.Sort(N2.Definitions.SortBy.PublishedDescending);
+	});
+}
+
+@Html.Partial("LayoutPartials/BlogContent")
+@using (Content.BeginScope(Content.Traverse.Parent()))
+{
+	@Content.Render.Tokens("NewsFooter")
+}

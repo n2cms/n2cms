@@ -4,31 +4,41 @@
 	<!-- TEMPLATES -->
 
 	<PropertyGroup>
-		<Templates-SourceFolder>$(SrcFolder)\wwwroot</Templates-SourceFolder>
+		<Templates-SourceFolder>$(SrcFolder)\WebForms\WebFormsTemplates</Templates-SourceFolder>
 		<Templates-DeployFolder>$(DeployFolder)\$(DeployPrefix)Templates_WebForms</Templates-DeployFolder>
 		<Templates-DeployFolder-Path>$(Templates-DeployFolder)\N2CMS</Templates-DeployFolder-Path>
 	</PropertyGroup>
 
 
 	<Target Name="Templates-Build">
-		<MSBuild Projects="$(WebFolder)\N2.Templates.csproj" Properties="Configuration=$(Configuration);" />
+		<PropertyGroup>
+			<_WebFormProperties>Configuration=$(Configuration);Platform=AnyCPU;</_WebFormProperties>
+		</PropertyGroup>
+		<Message Text="$(_WebFormProperties)" Importance="high" />
+		<MSBuild Projects="$(WebFolder)\N2.Templates.csproj" Properties="$(_WebFormProperties)" />
 	</Target>
 
 	<Target Name="Templates-Deploy" DependsOnTargets="Templates-Build;Framework-CreateItemGroups">
 		<ItemGroup>
-			<templatesTempFiles Include="$(Templates-SourceFolder)\**\*"
-													 Exclude="$(Templates-SourceFolder)\**\.svn\**\*;
-																		$(Templates-SourceFolder)\**\obj\**\*;
-																		$(Templates-SourceFolder)\**\bin\*.pdb;
-																		$(Templates-SourceFolder)\**\Ankh.Load;
-																		$(Templates-SourceFolder)\**\*.sln.cache;
-																		$(Templates-SourceFolder)\**\*.resharper;
-																		$(Templates-SourceFolder)\**\*.suo;
-																		$(Templates-SourceFolder)\**\*.user;
-																		$(Templates-SourceFolder)\**\*.Publish.xml;
-																		$(Templates-SourceFolder)\**\Thumbs.db;
-																		$(Templates-SourceFolder)\N2\**\*;
-																		$(Templates-SourceFolder)\N2.Management.*" />
+			<templatesTempFiles Include="$(Templates-SourceFolder)\**\*;
+										 $(BuildFolder)\deploy\WebFormTemplates\**\*"
+								Exclude="$(Templates-SourceFolder)\**\.svn\**\*;
+										 $(Templates-SourceFolder)\**\.git\**\*;
+										 $(Templates-SourceFolder)\**\obj\**\*;
+										 $(Templates-SourceFolder)\**\bin\*.pdb;
+										 $(Templates-SourceFolder)\**\Ankh.Load;
+										 $(Templates-SourceFolder)\**\*.sln.cache;
+										 $(Templates-SourceFolder)\**\*.resharper;
+										 $(Templates-SourceFolder)\**\*.suo;
+										 $(Templates-SourceFolder)\**\*.user;
+										 $(Templates-SourceFolder)\**\*.Publish.xml;
+										 $(Templates-SourceFolder)\**\Thumbs.db;
+										 $(Templates-SourceFolder)\App_Data\SearchIndex\**\*;
+										 $(Templates-SourceFolder)\App_Data\Temp\**\*;
+										 $(Templates-SourceFolder)\N2\**\*;
+										 $(Templates-SourceFolder)\N2.Management.*;
+										 $(Templates-SourceFolder)\bin\Demo.*;
+										 $(Templates-SourceFolder)\bin\*.Tests.*" />
 		</ItemGroup>
 
 		<Copy SourceFiles="@(templatesTempFiles)"						DestinationFolder="$(Templates-DeployFolder-Path)\%(RecursiveDir)" />
@@ -36,14 +46,19 @@
 		<Copy SourceFiles="@(Framework-BinFiles)"						DestinationFolder="$(Templates-DeployFolder-Path)\bin\" />
 		<Copy SourceFiles="@(Framework-EditFiles)"					DestinationFolder="$(Templates-DeployFolder-Path)\N2\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)"										DestinationFolder="$(Templates-DeployFolder)" />
-		<Copy SourceFiles="$(SrcFolder)\AssemblyVersion.cs" DestinationFiles="$(Templates-DeployFolder)\AssemblyVersion.cs" />
 		<Copy SourceFiles="@(Snippets)"											DestinationFolder="$(Templates-DeployFolder)\Snippets" />
 		<CallTarget Targets="Templates-RemoveProjectReferences" />
 	</Target>
 
-	<Target Name="Templates-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
+	<Target Name="Templates-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-SourceFolder)\bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-SourceFolder)\N2\%(RecursiveDir)" SkipUnchangedFiles="true" />
+
+		<Copy SourceFiles="@(Framework-DependencyBinaries)" DestinationFolder="$(Templates-SourceFolder)\bin\" />
+		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFiles="$(Templates-SourceFolder)\%(RecursiveDir)\%(FileName)%(Extension)" ContinueOnError="true" />
+
+		<Message Text="Skipping mklink (folder exists): $(Templates-SourceFolder)\N2\" Condition="Exists('$(Templates-SourceFolder)\N2\')" Importance="high" />
+		<Exec Command="mklink /D $(Templates-SourceFolder)\N2\ $(EditFolder)\" Condition="!Exists('$(Templates-SourceFolder)\N2\')" ContinueOnError="true" />
+		<MSBuild Projects="n2.proj" Targets="CopyManagementFilesToManagementFilesDestination" Properties="ManagementFilesDestination=$(Templates-SourceFolder)\N2" Condition="!Exists('$(Templates-SourceFolder)\N2\')" />
 	</Target>
 
 	<Target Name="Templates-ZipDeploy" DependsOnTargets="Templates-Deploy;Templates-Zip">
@@ -52,7 +67,8 @@
 	<Target Name="Templates-PrepareZip">
 		<ItemGroup>
 			<ZipDeploy-Templates-Includes Include="$(BuildFolder)\deploy\*" />
-			<ZipDeploy-Templates-Libs Include="$(RootFolder)\lib\MySql.Data.dll;$(RootFolder)\lib\System.Data.SQLite.dll;" />
+			<ZipDeploy-Templates-Libs Include="$(RootFolder)\lib\MySql.Data.dll;
+																				 $(RootFolder)\lib\System.Data.SQLite.dll;" />
 		</ItemGroup>
 		<Delete Files="$(Templates-DeployFolder-Path)\bin\System.Data.SQLite.dll" Condition="Exists('$(Templates-DeployFolder-Path)\bin\System.Data.SQLite.dll')" />
 		<Copy SourceFiles="@(ZipDeploy-Templates-Libs)" DestinationFolder="$(Templates-DeployFolder)\Libraries" />
@@ -104,7 +120,7 @@ public static string ScriptMain() {
 	</Target>
 
 	<Target Name="AddonCatalog-Build">
-		<MSBuild Projects="$(WebFolder)\AddonCatalog.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
+		<MSBuild Projects="$(WebFolder)\AddonCatalog.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform);OutDir=$(TempFolder)" />
 	</Target>
 	<Target Name="AddonCatalog-Deploy" DependsOnTargets="AddonCatalog-Build">
 		<ItemGroup>
@@ -115,7 +131,7 @@ public static string ScriptMain() {
 	</Target>
 
 	<Target Name="Wiki-Build">
-		<MSBuild Projects="$(WebFolder)\Wiki.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
+		<MSBuild Projects="$(WebFolder)\Wiki.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform);OutDir=$(TempFolder)" />
 	</Target>
 	
 	<Target Name="Wiki-Deploy" DependsOnTargets="Wiki-Build">
@@ -127,7 +143,7 @@ public static string ScriptMain() {
 	</Target>
 
 	<Target Name="Tagging-Build">
-		<MSBuild Projects="$(WebFolder)\Tagging.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
+		<MSBuild Projects="$(WebFolder)\Tagging.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform);OutDir=$(TempFolder)" />
 	</Target>
 
 	<Target Name="Tagging-Deploy" DependsOnTargets="Tagging-Build">
@@ -139,7 +155,7 @@ public static string ScriptMain() {
 	</Target>
 
 	<Target Name="TabPanel-Build">
-		<MSBuild Projects="$(WebFolder)\TabPanel.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
+		<MSBuild Projects="$(WebFolder)\TabPanel.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform);OutDir=$(TempFolder)" />
 	</Target>
 
 	<Target Name="TabPanel-Deploy" DependsOnTargets="TabPanel-Build">

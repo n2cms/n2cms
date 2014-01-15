@@ -1,0 +1,37 @@
+/* forms, buttons and widgets */
+
+.updated { color:#999; }
+.author { color:#666; font-style:italic; margin-right:1em; }
+.tags { margin-right:1em; }
+	.tags label { color:#aaa; }
+	.tags #tags { color:#666; font-style:italic; }
+
+a.opener { text-decoration:none }
+	a.opener span { background: transparent url(/N2/Resources/icons/bullet_arrow_down.png) no-repeat 0 1px; display:inline-block; height:16px; width:16px; }
+	a.open span { background-image: url(/N2/Resources/icons/bullet_arrow_up.png); }
+
+.dropmenu { min-width:200px; min-height:2em; background-color:#fff; margin-top:.5em; padding:1em 2em 2em 0; z-index:100;
+	-webkit-box-shadow: 0 2px 2px #999;
+	box-shadow: 0 2px 2px #999;
+}
+	.dropmenu .closer { text-decoration:none; position:absolute; right:8px; width:16px; height:16px; display:block; background:transparent url(../../../../n2/resources/icons/cross.png) no-repeat 50% 50%; }
+	.dropmenu ul { list-style-type:none; padding:0 1em; margin:0; }
+
+.separator { border-top:solid 1px #eee; padding-top:20px; }
+
+.list-item { padding-bottom:10px; border-bottom:solid 1px #eee; margin-bottom:10px; }
+.list-item:last-child { border-bottom:none; }
+
+.pager { text-align:center; border-top: solid 1px #eee; padding-top:10px; margin-top:10px; }
+	.pager .previous { float:left; }
+	.pager .next { float:right; }
+	
+.part { margin:20px; }
+
+.highlight { background:yellow; }
+
+form fieldset { border:solid 1px silver; padding:19px; }
+form fieldset legend { background-color:#fff; font-style:italic; }
+form .editor-label { float:left; clear:left; min-width:150px; margin-bottom:1em; }
+form .editor-field { float:left; margin-bottom:5px; }
+form p { clear:both; }

@@ -1,0 +1,24 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" MasterPageFile="Site.Master" Inherits="N2.Templates.Mvc.Views.Shared.Site" %>
+<asp:Content ContentPlaceHolderID="Content" runat="server">
+	<form runat="server">
+		<asp:ContentPlaceHolder ID="Content" runat="server">
+			<% Html.RenderAction("Breadcrumb", "Navigation"); %>
+			<%=Html.DisplayContent("Image").SwallowExceptions()%>
+			<asp:ContentPlaceHolder ID="TextContent" runat="server">
+				<% if (Html.ValueEquals("ShowTitle", true)) { %>
+				<%=    Html.DisplayContent("Title").SwallowExceptions()%>
+				<% } %>
+				<%=Html.DisplayContent("Text").SwallowExceptions()%>
+			</asp:ContentPlaceHolder>
+		</asp:ContentPlaceHolder>
+	</form>
+</asp:Content>
+<asp:Content ContentPlaceHolderID="Sidebar" runat="server">
+	<asp:ContentPlaceHolder ID="Sidebar" runat="server">
+		<div id="extras" class="secondary">
+			<% Html.DroppableZone(Zones.RecursiveRight).Render();%>
+			<% Html.DroppableZone(Zones.Right).Render();%>
+			<% Html.DroppableZone(Language, Zones.SiteRight).Render();%>
+		</div>
+	</asp:ContentPlaceHolder>
+</asp:Content>

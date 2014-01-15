@@ -1,0 +1,2 @@
+<img src="../../Themes/ContentFocus/Thumbnail.jpg" style="float:left;"/>
+<b>Content Focus Theme</b> with Example Content

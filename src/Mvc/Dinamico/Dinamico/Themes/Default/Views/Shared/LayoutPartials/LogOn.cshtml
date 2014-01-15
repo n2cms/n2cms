@@ -1,0 +1,9 @@
+﻿@if(Request.IsAuthenticated) 
+{
+	<a href="@Url.Action("LogOff", "Membership")">@Content.Translate["Log off"] <strong>@Context.User.Identity.Name</strong></a>
+}
+else
+{
+	var returnUrl = Request["returnUrl"] ?? Content.Data.Url ?? Content.Traverse.StartPage.Url;
+	@Html.ActionLink(Content.Translate.Text("Log on"), "LogOn", new { controller = "Membership", returnUrl = returnUrl })
+}

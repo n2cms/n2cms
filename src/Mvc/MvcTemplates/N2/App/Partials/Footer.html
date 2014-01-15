@@ -1,0 +1,4 @@
+﻿<div class="alert" ng-show="Notify.visible" ng-class="{ 'alert-error':Alert.type == 'error', 'alert-success':Alert.type == 'success', 'alert-info':Alert.type == 'info', 'alert-block': Alert.Block }" ng-controller="NotifyCtrl">
+	<button type="button" class="close" data-dismiss="alert" translate="footer.close">×</button>
+	{{Notify.message}}
+</div>

@@ -1,0 +1,23 @@
+﻿/* clearfix */
+.cf:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+.cf { *display: inline-block; }
+* html .cf { height: 1px; }
+a img { border:none; vertical-align:middle; }
+.menu,.menu ul { list-style-type:none;}
+
+.inputForm .row { margin-bottom:5px; }
+.inputForm .label { width:120px; float:left; }
+.secondary .label { display:block; }
+.inputForm .alternatives * { vertical-align:middle }
+.inputForm .alternatives label { margin-right:10px; }
+.inputForm textarea { width:340px; height:120px; }
+.inputForm .tb { width:240px; }
+
+.commentInput .box { display:none; }
+
+#textContent { position:relative; }
+
+.vs { background-color:#ffc; outline: solid 1px red; padding:5px; margin-bottom:10px; }
+
+/* editing */
+.editable.DisplayableHeadingAttribute { display:block; }

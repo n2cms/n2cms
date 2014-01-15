@@ -1,0 +1,2 @@
+<img src="../../Themes/KhakiTabs/Thumbnail.jpg" style="float:left;"/>
+<b>Khaki Tabs Theme</b> with Example Content

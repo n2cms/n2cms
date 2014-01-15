@@ -1,0 +1,10 @@
+﻿@model Dinamico.Models.ContentPart
+		   
+@{ Content.Define(ie =>
+	   {
+			ie.Title = "Text";
+			ie.IconUrl = "{IconsUrl}/page_white_text.png";
+	   }); }
+<div class="part text">
+@Content.Register.FreeText("Text")
+</div>

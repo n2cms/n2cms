@@ -1,0 +1,21 @@
+﻿@{
+	Content.PrependDefinition(re => 
+	{
+		re.Container(Dinamico.Defaults.Containers.Metadata, e =>
+		{
+			e.Name();
+		});
+	});
+}
+@Content.Register.Title().Container("Content").Configure(e => e.CssClass = "entry-title").Display()
+@{ Content.Register.Summary("Summary", source: "Text"); }
+<span class="updated">@Content.Register.PublishedRange().Container("Advanced").Display()</span>
+<div class="entry-content">
+	@Content.Display.Text
+</div>
+<span class="author">@Content.Current.Item.SavedBy</span>
+@{ Content.Register.Tags("Tags"); }
+@if (Content.Has.Tags)
+{
+	<span class="tags"><label for="tags">@Content.Translate["Tags:"]</label> <span id="tags">@Content.Display.Tags</span></span>
+}

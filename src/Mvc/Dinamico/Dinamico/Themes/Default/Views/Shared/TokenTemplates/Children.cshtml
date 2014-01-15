@@ -1,0 +1,5 @@
+﻿@model string
+@using (Content.BeginScope(Model))
+{
+@Html.UnorderedList(Content.Traverse.Children(Content.Current.Item, Content.Is.Page()), @<span>@Html.Link(item.Data)</span>)
+}

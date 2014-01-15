@@ -1,0 +1,27 @@
+﻿@model Dinamico.Models.ContentPart
+
+@{ string uniqueId = Html.UniqueID("gma"); }
+
+<div id="@uniqueId">
+	@Content.Data.Location
+</div>
+<script type="text/javascript">
+	$(document).ready(function () {
+		var mapOptions = { zoom: @(Content.Data.Zoom ?? 10), mapTypeId: google.maps.MapTypeId['@(Content.Data.MapType ?? "ROADMAP")'] };
+		var map = new google.maps.Map(document.getElementById("@uniqueId"), mapOptions);
+		
+		var geocoder = new google.maps.Geocoder();
+		geocoder.geocode({ 'address': '@Content.Data.Address' }, function (results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				var location = results[0].geometry.location;
+				map.setCenter(location);
+				var marker = '@Content.Data.MarkerText';
+				if (marker) {
+					var marker = new google.maps.Marker({ position: location, map: map, title: marker });
+				}
+			} else {
+				$("#@uniqueId").html("Error looking up '@Content.Data.Address'");
+			}
+		});
+	});
+</script>

@@ -1,0 +1,4 @@
+﻿@model string
+@Html.Loop(@Content.Traverse.AncestorsBetween(0, 10), @<span>
+	@Html.Link(item.Data).Class(item.Data == Content.Current.Item ? "current" : "crumb")
+</span>, separator:@<span class="separator"> / </span>)

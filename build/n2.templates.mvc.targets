@@ -4,25 +4,30 @@
 	<!-- MVC TEMPLATES -->
 
 	<PropertyGroup>
-		<Templates-Mvc-SourceFolder>$(SrcFolder)\N2.Templates.Mvc</Templates-Mvc-SourceFolder>
+		<Templates-Mvc-SourceFolder>$(SrcFolder)\Mvc\MvcTemplates</Templates-Mvc-SourceFolder>
 		<Templates-Mvc-DeployFolder>$(DeployFolder)\$(DeployPrefix)Templates_Mvc</Templates-Mvc-DeployFolder>
 		<Templates-Mvc-DeployFolder-Path>$(Templates-Mvc-DeployFolder)\N2CMS</Templates-Mvc-DeployFolder-Path>
 	</PropertyGroup>
 
-	<Target Name="Templates-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
-		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\$(Configuration)\N2.Extensions.dll;"
+	<Target Name="Templates-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
+		<Copy SourceFiles="@(Framework-DependencyBinaries)" DestinationFolder="$(Templates-Mvc-SourceFolder)\bin\" />
+		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFiles="$(Templates-Mvc-SourceFolder)\%(RecursiveDir)\%(FileName)%(Extension)" ContinueOnError="true" />
+		
+		<Copy SourceFiles="$(SrcFolder)\Framework\Extensions\bin\$(Configuration)\N2.Extensions.dll;"
 					DestinationFolder="$(Templates-Mvc-SourceFolder)\bin" />
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-SourceFolder)\bin" />
 	</Target>
 
 	<Target Name="Templates-Mvc-Build">
-		<MSBuild Projects="$(Templates-Mvc-SourceFolder)\N2.Templates.Mvc.csproj" Properties="Configuration=$(Configuration);" />
+		<MSBuild Projects="$(Templates-Mvc-SourceFolder)\N2.Templates.Mvc.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
 	</Target>
 
 	<Target Name="Templates-Mvc-Deploy" DependsOnTargets="Framework-CreateItemGroups">
 		<ItemGroup>
-			<templatesMvcFiles Include="$(Templates-Mvc-SourceFolder)\**\*"
+			<templatesMvcFiles Include="$(Templates-Mvc-SourceFolder)\**\*;
+																  $(BuildFolder)\deploy\MvcTemplates\**\*"
 							   Exclude="$(Templates-Mvc-SourceFolder)\**\.svn\**\*;
+												$(Templates-Mvc-SourceFolder)\**\.git\**\*;
 												$(Templates-Mvc-SourceFolder)\**\obj\**\*;
 												$(Templates-Mvc-SourceFolder)\**\bin\*.pdb;
 												$(Templates-Mvc-SourceFolder)\**\Ankh.Load;
@@ -32,6 +37,8 @@
 												$(Templates-Mvc-SourceFolder)\**\*.user;
 												$(Templates-Mvc-SourceFolder)\**\*.Publish.xml;
 												$(Templates-Mvc-SourceFolder)\**\Thumbs.db;
+												$(Templates-Mvc-SourceFolder)\App_Data\SearchIndex\**\*;
+												$(Templates-Mvc-SourceFolder)\App_Data\Temp\**\*;
 												$(Templates-Mvc-SourceFolder)\N2\**\*;
 												$(Templates-Mvc-SourceFolder)\N2.Management.*" />
 		</ItemGroup>

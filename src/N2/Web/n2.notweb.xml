@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<castle>
-	<components>
-		<component id="n2.notWebRequestContext" service="N2.Web.IWebContext, N2" type="N2.Web.ThreadContext, N2"/>
-	</components>
-</castle>

@@ -1,0 +1,741 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>N2.Templates.Mvc</RootNamespace>
+    <AssemblyName>N2.Templates.Mvc</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;DEMO</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Demo|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEMO</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\log4net.2.0.0\lib\net35-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.SQLite, Version=1.0.88.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\System.Data.SQLite.1.0.88.0\lib\net40\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.88.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\System.Data.SQLite.1.0.88.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web.Abstractions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.2.0.20710.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_GlobalResources\Definitions.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Definitions.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\EditableContainers.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditableContainers.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Editables.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Editables.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Zones.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Zones.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Management\Controllers\ManageAnalyticsController.cs" />
+    <Compile Include="Areas\Tests\Controllers\PageInfoViewerController.cs" />
+    <Compile Include="Areas\Tests\Models\PageInfoViewerPart.cs" />
+    <Compile Include="Areas\Tests\Services\MarkovNameGenerator.cs" />
+    <Compile Include="Areas\Tests\Controllers\TestContentGeneratorController.cs" />
+    <Compile Include="Areas\Tests\Controllers\ExternalTypedController.cs" />
+    <Compile Include="Areas\Tests\Controllers\ExternalController.cs" />
+    <Compile Include="Areas\Tests\Controllers\DemoController.cs" />
+    <Compile Include="Areas\Tests\Controllers\QueryViewerController.cs" />
+    <Compile Include="Areas\Tests\Controllers\StaticController.cs" />
+    <Compile Include="Areas\Tests\Controllers\TestPageController.cs" />
+    <Compile Include="Areas\Tests\Controllers\TestController.cs" />
+    <Compile Include="Areas\Tests\Controllers\TestPartController.cs" />
+    <Compile Include="Areas\Tests\Services\Words.cs" />
+    <Compile Include="Areas\Tests\Demo\DemoFileSystem.cs" />
+    <Compile Include="Areas\Tests\Demo\DemoInitializer.cs" />
+    <Compile Include="Areas\Tests\Models\TestContentGenerator.cs" />
+    <Compile Include="Areas\Tests\Models\FluentWebFormPart.cs" />
+    <Compile Include="Areas\Tests\Models\DemoPart.cs" />
+    <Compile Include="Areas\Tests\Models\DemoViewModel.cs" />
+    <Compile Include="Areas\Tests\Models\FluentPage.cs" />
+    <Compile Include="Areas\Tests\Models\FluentWebFormPage.cs" />
+    <Compile Include="Areas\Tests\Models\QueryViewData.cs" />
+    <Compile Include="Areas\Tests\Models\QueryViewerPart.cs" />
+    <Compile Include="Areas\Tests\Models\TestItemBase.cs" />
+    <Compile Include="Areas\Tests\Models\TestPage.cs" />
+    <Compile Include="Areas\Tests\Models\TestPart.cs" />
+    <Compile Include="Areas\Tests\Models\TestWebFormPart.cs" />
+    <Compile Include="Areas\Tests\TestsAreaRegistration.cs" />
+    <Compile Include="Areas\Tests\Views\Forms\TestWebFormPart.ascx.cs">
+      <DependentUpon>TestWebFormPart.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Areas\Tests\Views\Forms\TestWebFormPart.ascx.designer.cs">
+      <DependentUpon>TestWebFormPart.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\FreeFormController.cs" />
+    <Compile Include="Controllers\SlideshowController.cs" />
+    <Compile Include="Details\AnswerContext.cs" />
+    <Compile Include="Controllers\Resources\UserRegistration.Designer.cs">
+      <DependentUpon>UserRegistration.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Controllers\Resources\Redirect.Designer.cs">
+      <DependentUpon>Redirect.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Controllers\Resources\RssAggregator.Designer.cs">
+      <DependentUpon>RssAggregator.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Controllers\Resources\Poll.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Poll.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Find.cs" />
+    <Compile Include="Controllers\ABTestingController.cs" />
+    <Compile Include="Controllers\NewsContainerController.cs" />
+    <Compile Include="Models\ABTestingModel.cs" />
+    <Compile Include="Models\ContentModelBase.cs" />
+    <Compile Include="Models\NewsContainerModel.cs" />
+    <Compile Include="Models\Parts\ABTestingContainer.cs" />
+    <Compile Include="Models\Parts\FreeForm.cs" />
+    <Compile Include="Models\Parts\TagCloud.cs" />
+    <Compile Include="Models\Parts\Questions\FileAttachmentQuestion.cs" />
+    <Compile Include="Models\Parts\Questions\MultipleSelect.cs" />
+    <Compile Include="Models\Parts\Questions\OptionSelectQuestion.cs" />
+    <Compile Include="Models\Parts\Questions\Question.cs" />
+    <Compile Include="Models\Parts\Questions\SingleSelect.cs" />
+    <Compile Include="Models\Parts\Questions\TextQuestion.cs" />
+    <Compile Include="Services\IViewConcern.cs" />
+    <Compile Include="Services\WebForms\MvcOnWebFormPartAdapter.cs" />
+    <Compile Include="Tabs.cs" />
+    <Compile Include="Areas\Tests\WebFormOnMvcPartAdapter.cs" />
+    <Compile Include="Upgrade\MigrateHomeRedirect.cs" />
+    <Compile Include="Upgrade\MigrateIntroduction.cs" />
+    <Compile Include="Upgrade\MigrateEventDate.cs" />
+    <Compile Include="Upgrade\MigrateTopParts.cs" />
+    <Compile Include="Views\Shared\PageTemplates\App_LocalResources\News.aspx.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>News.aspx.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Zones.cs" />
+    <Compile Include="Controllers\CalendarController.cs" />
+    <Compile Include="Controllers\CalendarTeaserController.cs" />
+    <Compile Include="Controllers\CommentInputController.cs" />
+    <Compile Include="Controllers\SharedPagesController.cs" />
+    <Compile Include="Controllers\SharedPartsController.cs" />
+    <Compile Include="Controllers\FormController.cs" />
+    <Compile Include="Controllers\ImageGalleryController.cs" />
+    <Compile Include="Controllers\StartController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\TemplatesControllerBase.cs" />
+    <Compile Include="Controllers\NavigationController.cs" />
+    <Compile Include="Controllers\NewsListController.cs" />
+    <Compile Include="Controllers\PollController.cs" />
+    <Compile Include="Controllers\RedirectController.cs" />
+    <Compile Include="Controllers\RssAggregatorController.cs" />
+    <Compile Include="Controllers\RssFeedController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\SocialBookmarksController.cs" />
+    <Compile Include="Controllers\TrackingController.cs" />
+    <Compile Include="Controllers\UserRegistrationController.cs" />
+    <Compile Include="Details\DropDownAttribute.cs" />
+    <Compile Include="Details\EditableOptionsAttribute.cs" />
+    <Compile Include="Details\IQuestion.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Details\LayoutSelectorAttribute.cs" />
+    <Compile Include="Details\PollCreatorDetailAttribute.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Image.ashx.cs">
+      <DependentUpon>Image.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Pages\ContentPageBase.cs" />
+    <Compile Include="Areas\Management\Models\RootPage.cs" />
+    <Compile Include="Models\Parts\PartBase.cs" />
+    <Compile Include="Models\Pages\PageBase.cs" />
+    <Compile Include="Models\Pages\SearchBase.cs" />
+    <Compile Include="Models\Parts\BoxedTextItem.cs" />
+    <Compile Include="Models\Parts\BubbleItem.cs" />
+    <Compile Include="Models\Pages\Calendar.cs" />
+    <Compile Include="Models\Parts\CalendarTeaser.cs" />
+    <Compile Include="Models\Parts\Columns.cs" />
+    <Compile Include="Models\Parts\Comment.cs" />
+    <Compile Include="Models\Parts\CommentInput.cs" />
+    <Compile Include="Models\Parts\CommentList.cs" />
+    <Compile Include="Models\Parts\ControlPanel.cs" />
+    <Compile Include="Models\Pages\DatabaseSearch.cs" />
+    <Compile Include="Models\Pages\Event.cs" />
+    <Compile Include="Models\Parts\Faq.cs" />
+    <Compile Include="Models\Pages\FaqList.cs" />
+    <Compile Include="Models\Parts\Form.cs" />
+    <Compile Include="Models\Pages\FormPage.cs" />
+    <Compile Include="Models\Pages\GalleryItem.cs" />
+    <Compile Include="Models\Pages\ImageGallery.cs" />
+    <Compile Include="Models\Pages\ISurvey.cs" />
+    <Compile Include="Models\Pages\LanguageRoot.cs" />
+    <Compile Include="Models\Parts\LoginItem.cs" />
+    <Compile Include="Models\Pages\News.cs" />
+    <Compile Include="Models\Pages\NewsContainer.cs" />
+    <Compile Include="Models\Parts\NewsList.cs" />
+    <Compile Include="Models\Parts\Option.cs" />
+    <Compile Include="Models\Parts\Poll.cs" />
+    <Compile Include="Models\Parts\RandomImage.cs" />
+    <Compile Include="Models\Pages\Redirect.cs" />
+    <Compile Include="Models\Parts\RssAggregator.cs" />
+    <Compile Include="Models\Pages\RssFeed.cs" />
+    <Compile Include="Models\Parts\SidebarItem.cs" />
+    <Compile Include="Models\Pages\SiteMap.cs" />
+    <Compile Include="Models\Parts\SocialBookmarks.cs" />
+    <Compile Include="Models\Pages\StartPage.cs" />
+    <Compile Include="Models\Parts\Subscribe.cs" />
+    <Compile Include="Models\Parts\Teaser.cs" />
+    <Compile Include="Models\Parts\TextItem.cs" />
+    <Compile Include="Models\Pages\TextPage.cs" />
+    <Compile Include="Models\Parts\Top.cs" />
+    <Compile Include="Models\Parts\Tracking.cs" />
+    <Compile Include="Models\Parts\UserRegistration.cs" />
+    <Compile Include="Models\CalendarModel.cs" />
+    <Compile Include="Models\CalendarTeaserModel.cs" />
+    <Compile Include="Models\CommentInputModel.cs" />
+    <Compile Include="Models\FormModel.cs" />
+    <Compile Include="Models\ImageGalleryModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\RssItem.cs" />
+    <Compile Include="Models\SearchModel.cs" />
+    <Compile Include="Models\SocialBookmarksModel.cs" />
+    <Compile Include="Models\SubMenuModel.cs" />
+    <Compile Include="Models\TopMenuModel.cs" />
+    <Compile Include="Models\UserRegistrationModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\NotFoundHandler.cs" />
+    <Compile Include="Services\PermissionDeniedHandler.cs" />
+    <Compile Include="Services\SeoDefinitionAppender.cs" />
+    <Compile Include="Services\SyndicatableDefinitionAppender.cs" />
+    <Compile Include="Services\TemplatesPartsAdapter.cs" />
+    <Compile Include="Services\SeoConcern.cs" />
+    <Compile Include="Services\WebForms\LanguageConcern.cs" />
+    <Compile Include="Services\WebForms\MasterPageConcern.cs" />
+    <Compile Include="Views\Shared\Site.master.cs">
+      <DependentUpon>Site.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Shared\Site.master.designer.cs">
+      <DependentUpon>Site.master</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Translation.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Themes\Default\Content\Style.css" />
+    <Content Include="Themes\Default\Thumbnail.jpg" />
+    <Content Include="Areas\Tests\Models\FluentWebFormPart.ascx" />
+    <Content Include="Areas\Tests\Models\FluentWebFormPage.aspx" />
+    <Content Include="Areas\Tests\Uc.ascx" />
+    <Content Include="Areas\Tests\Views\PageInfoViewer\Index.ascx" />
+    <Content Include="Areas\Tests\Views\TestContentGenerator\Index.ascx" />
+    <Content Include="Areas\Tests\Views\ExternalTyped\About.aspx" />
+    <Content Include="Areas\Tests\Views\ExternalTyped\Index.aspx" />
+    <Content Include="Areas\Tests\Views\External\Index.aspx" />
+    <Content Include="Areas\Tests\Views\TestPage\Test.aspx" />
+    <Content Include="Areas\Tests\Views\TestPart\Test.ascx" />
+    <Content Include="Areas\Tests\Views\Test\Index.aspx" />
+    <Content Include="Areas\Tests\Views\Test\Test.aspx" />
+    <Content Include="Content\Galleria\galleria-1.2.9.js" />
+    <Content Include="Content\Galleria\galleria-1.2.9.min.js" />
+    <Content Include="Content\Galleria\plugins\flickr\flickr-demo.html" />
+    <Content Include="Content\Galleria\plugins\flickr\flickr-loader.gif" />
+    <Content Include="Content\Galleria\plugins\flickr\galleria.flickr.js" />
+    <Content Include="Content\Galleria\plugins\flickr\galleria.flickr.min.js" />
+    <Content Include="Content\Galleria\plugins\flickr\loader.gif" />
+    <Content Include="Content\Galleria\plugins\history\galleria.history.js" />
+    <Content Include="Content\Galleria\plugins\history\galleria.history.min.js" />
+    <Content Include="Content\Galleria\plugins\history\history-demo.html" />
+    <Content Include="Content\Galleria\plugins\picasa\galleria.picasa.js" />
+    <Content Include="Content\Galleria\plugins\picasa\galleria.picasa.min.js" />
+    <Content Include="Content\Galleria\plugins\picasa\loader.gif" />
+    <Content Include="Content\Galleria\plugins\picasa\picasa-demo.html" />
+    <Content Include="Content\Galleria\themes\classic\classic-demo.html" />
+    <Content Include="Content\Galleria\themes\classic\classic-loader.gif" />
+    <Content Include="Content\Galleria\themes\classic\classic-map.png" />
+    <Content Include="Content\Galleria\themes\classic\galleria.classic.css" />
+    <Content Include="Content\Galleria\themes\classic\galleria.classic.js" />
+    <Content Include="Content\Galleria\themes\classic\galleria.classic.min.js" />
+    <Content Include="Content\Img\application_view_columns.png" />
+    <Content Include="Content\Img\bubble_left.gif" />
+    <Content Include="Content\Img\bubble_left.png" />
+    <Content Include="Content\Img\bubble_right.gif" />
+    <Content Include="Content\Img\bubble_right.png" />
+    <Content Include="Content\Img\bullet_feed.png" />
+    <Content Include="Content\Img\bullet_star.png" />
+    <Content Include="Content\Img\bullet_toggle_plus.png" />
+    <Content Include="Content\Img\calendar.png" />
+    <Content Include="Content\Img\calendar_view_day.png" />
+    <Content Include="Content\Img\calendar_view_month.png" />
+    <Content Include="Content\Img\chart_curve.png" />
+    <Content Include="Content\Img\chart_curve_add.png" />
+    <Content Include="Content\Img\chart_curve_delete.png" />
+    <Content Include="Content\Img\chart_curve_edit.png" />
+    <Content Include="Content\Img\chart_curve_error.png" />
+    <Content Include="Content\Img\chart_curve_go.png" />
+    <Content Include="Content\Img\chart_curve_link.png" />
+    <Content Include="Content\Img\chart_line.png" />
+    <Content Include="Content\Img\chart_line_add.png" />
+    <Content Include="Content\Img\chart_line_delete.png" />
+    <Content Include="Content\Img\chart_line_edit.png" />
+    <Content Include="Content\Img\chart_line_error.png" />
+    <Content Include="Content\Img\chart_line_link.png" />
+    <Content Include="Content\Img\chart_organisation.png" />
+    <Content Include="Content\Img\chart_organisation_add.png" />
+    <Content Include="Content\Img\chart_organisation_delete.png" />
+    <Content Include="Content\Img\chart_pie.png" />
+    <Content Include="Content\Img\chart_pie_add.png" />
+    <Content Include="Content\Img\chart_pie_delete.png" />
+    <Content Include="Content\Img\chart_pie_edit.png" />
+    <Content Include="Content\Img\chart_pie_error.png" />
+    <Content Include="Content\Img\comment.png" />
+    <Content Include="Content\Img\comments.png" />
+    <Content Include="Content\Img\comment_add.png" />
+    <Content Include="Content\Img\controller.png" />
+    <Content Include="Content\Img\delicious.png" />
+    <Content Include="Content\Img\digg.png" />
+    <Content Include="Content\Img\dotnetkicks.png" />
+    <Content Include="Content\Img\dzone.png" />
+    <Content Include="Content\Img\eye.png" />
+    <Content Include="Content\Img\feed.png" />
+    <Content Include="Content\Img\feed_link.png" />
+    <Content Include="Content\Img\google.png" />
+    <Content Include="Content\Img\heart.png" />
+    <Content Include="Content\Img\help.png" />
+    <Content Include="Content\Img\information.png" />
+    <Content Include="Content\Img\key.png" />
+    <Content Include="Content\Img\live.png" />
+    <Content Include="Content\Img\netscape.gif" />
+    <Content Include="Content\Img\newspaper.png" />
+    <Content Include="Content\Img\newspaper_go.png" />
+    <Content Include="Content\Img\newspaper_link.png" />
+    <Content Include="Content\Img\page.png" />
+    <Content Include="Content\Img\page_go.png" />
+    <Content Include="Content\Img\page_white.png" />
+    <Content Include="Content\Img\page_white_link.png" />
+    <Content Include="Content\Img\page_white_star.png" />
+    <Content Include="Content\Img\page_world.png" />
+    <Content Include="Content\Img\photo.png" />
+    <Content Include="Content\Img\photos.png" />
+    <Content Include="Content\Img\reddit.png" />
+    <Content Include="Content\Img\report.png" />
+    <Content Include="Content\Img\rss.png" />
+    <Content Include="Content\Img\sitemap.png" />
+    <Content Include="Content\Img\slashdot.png" />
+    <Content Include="Content\Img\tab.png" />
+    <Content Include="Content\Img\technorati.png" />
+    <Content Include="Content\Img\text_align_left.png" />
+    <Content Include="Content\Img\text_columns.png" />
+    <Content Include="Content\Img\user_add.png" />
+    <Content Include="Content\Img\yahoomyweb.png" />
+    <Content Include="Content\Img\zoom.png" />
+    <Content Include="Global.asax" />
+    <Content Include="Views\ABTesting\Index.ascx" />
+    <Content Include="Views\FreeForm\Submitted.ascx" />
+    <Content Include="Views\FreeForm\Form.ascx" />
+    <Content Include="Views\FreeForm\Index.ascx" />
+    <Content Include="Views\RssAggregator\Index.ascx" />
+    <EmbeddedResource Include="Views\Shared\PageTemplates\App_LocalResources\News.aspx.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>News.aspx.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Content Include="Views\Shared\Empty.ascx" />
+    <Content Include="Views\Shared\PartTemplates\TagCloud.ascx" />
+    <Content Include="Views\Slideshow\Index.ascx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Shared\Error.aspx" />
+    <Content Include="Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Extensions\N2.Extensions.csproj">
+      <Project>{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}</Project>
+      <Name>N2.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\N2\N2.csproj">
+      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+      <Name>N2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\ReusableParts\N2.ReusableParts.csproj">
+      <Project>{2f45b409-52cd-4fb9-963a-d20e0b113d26}</Project>
+      <Name>N2.ReusableParts</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Image.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App_Data\Concrete_SampleData.gz" />
+    <None Include="App_Data\ContentFocus_SampleData.gz" />
+    <None Include="App_Data\Corporate_SampleData.gz" />
+    <None Include="App_Data\DarkStrips_SampleData.gz" />
+    <None Include="App_Data\KhakiTabs_SampleData.gz" />
+    <None Include="App_Data\Plain_SampleData.gz" />
+    <Content Include="Areas\Tests\Views\Web.config" />
+    <Content Include="Themes\ContentFocus\Content\content_bottom.gif" />
+    <Content Include="Themes\ContentFocus\Content\content_top.gif" />
+    <Content Include="Themes\ContentFocus\Content\list_dark.gif" />
+    <Content Include="Themes\ContentFocus\Content\list_light.gif" />
+    <Content Include="Themes\ContentFocus\Content\secondary_borders.gif" />
+    <Content Include="Themes\ContentFocus\Content\secondary_header.gif" />
+    <Content Include="Themes\ContentFocus\Content\Style.css" />
+    <Content Include="Themes\ContentFocus\Content\top.gif" />
+    <Content Include="Content\Css\Layout.css" />
+    <Content Include="Content\Img\SocialBookmarks\Blinklist_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\BlogMarks_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\delicious_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\Digg_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\Diigo_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\FaceBook_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\Favorite_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\FeedBurner_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\Feed_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\Flickr_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\Furl_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\Google_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\Magnolia_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\Misterwong_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\MySpace_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\Netvibes_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\Newsvine_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\Reddit_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\Simpy_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\Stumbleupon_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\Technorati_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\Twitter_16x16.png" />
+    <Content Include="Content\Img\SocialBookmarks\Youtube_16x16.png" />
+    <Content Include="Views\Navigation\TopMenu.ascx" />
+    <Content Include="Views\CalendarTeaser\Index.ascx" />
+    <Content Include="Views\CommentInput\Index.ascx" />
+    <Content Include="Views\NewsList\BoxedList.ascx" />
+    <Content Include="Views\NewsList\List.ascx" />
+    <Content Include="Views\RssAggregator\List.ascx" />
+    <Content Include="Views\SocialBookmarks\Index.ascx" />
+    <Content Include="Views\Navigation\SubMenu.ascx" />
+    <Content Include="Views\Shared\Site.master" />
+    <Content Include="Views\Start\Index.aspx" />
+    <Content Include="Views\Shared\WebForms.master" />
+    <Content Include="Themes\Web.config" />
+    <Content Include="packages.config" />
+    <None Include="Content\Galleria\LICENSE" />
+    <Content Include="N2.Templates.Mvc.wpp.targets" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CommentInput\App_LocalResources\Index.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Form\App_LocalResources\Index.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Navigation\Breadcrumb.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Definitions.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Definitions.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\EditableContainers.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>EditableContainers.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\Editables.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Editables.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\Zones.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Zones.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Calendar\Index.aspx" />
+    <Content Include="Views\ImageGallery\Index.aspx" />
+    <Content Include="Views\Search\Index.aspx" />
+    <Content Include="Views\UserRegistration\Index.ascx" />
+    <Content Include="Views\Form\Index.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CalendarTeaser\App_LocalResources\Index.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Tracking\Index.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\Concrete_SampleData.gz.txt" />
+    <Content Include="App_Data\ContentFocus_SampleData.gz.txt" />
+    <Content Include="App_Data\Corporate_SampleData.gz.txt" />
+    <Content Include="App_Data\DarkStrips_SampleData.gz.txt" />
+    <Content Include="App_Data\KhakiTabs_SampleData.gz.txt" />
+    <Content Include="App_Data\Plain_SampleData.gz.txt" />
+    <Content Include="Themes\Concrete\Content\Style.css" />
+    <Content Include="Themes\Concrete\Thumbnail.jpg" />
+    <Content Include="Themes\ContentFocus\Thumbnail.jpg" />
+    <Content Include="Themes\Corporate\Content\amazed.gif" />
+    <Content Include="Themes\Corporate\Content\body_bg.gif" />
+    <Content Include="Themes\Corporate\Content\happy.gif" />
+    <Content Include="Themes\Corporate\Content\logo.gif" />
+    <Content Include="Themes\Corporate\Content\manic.gif" />
+    <Content Include="Themes\Corporate\Content\menuselection_bg.gif" />
+    <Content Include="Themes\Corporate\Content\menu_bg.gif" />
+    <Content Include="Themes\Corporate\Content\page_bg.gif" />
+    <Content Include="Themes\Corporate\Content\Style.css" />
+    <Content Include="Themes\Corporate\Content\tab_bg.gif" />
+    <Content Include="Themes\Corporate\Content\tab_item.gif" />
+    <Content Include="Themes\Corporate\Content\tab_item2.gif" />
+    <Content Include="Themes\Corporate\Thumbnail.jpg" />
+    <Content Include="Themes\KhakiTabs\Content\MenuDimmed.gif" />
+    <Content Include="Themes\KhakiTabs\Content\MenuSelected.gif" />
+    <Content Include="Themes\KhakiTabs\Content\SidebarLeftBg.gif" />
+    <Content Include="Themes\KhakiTabs\Content\SidebarRightBg.gif" />
+    <Content Include="Themes\KhakiTabs\Content\Style.css" />
+    <Content Include="Themes\KhakiTabs\Thumbnail.jpg" />
+    <Content Include="Themes\KhakiTabs\Content\TopBg.gif" />
+    <Content Include="Themes\n2cms\Content\bg.gif" />
+    <Content Include="Themes\n2cms\Content\body_bg.gif" />
+    <Content Include="Themes\n2cms\Content\line_bg.gif" />
+    <Content Include="Themes\n2cms\Content\logo.gif" />
+    <Content Include="Themes\n2cms\Content\menu_selected.gif" />
+    <Content Include="Themes\n2cms\Content\Style.css" />
+    <Content Include="Themes\Plain\Content\Style.css" />
+    <Content Include="Themes\Plain\Thumbnail.jpg" />
+    <Content Include="Themes\SkyTabs\Content\MenuDimmed.gif" />
+    <Content Include="Themes\SkyTabs\Content\MenuSelected.gif" />
+    <Content Include="Themes\SkyTabs\Content\SidebarLeftBg.gif" />
+    <Content Include="Themes\SkyTabs\Content\SidebarRightBg.gif" />
+    <Content Include="Themes\SkyTabs\Content\Style.css" />
+    <Content Include="Themes\SkyTabs\Content\TopBg.gif" />
+    <Content Include="Themes\Stripes\Content\bg.gif" />
+    <Content Include="Themes\Stripes\Content\main_bg.gif" />
+    <Content Include="Themes\Stripes\Content\menu_bg.gif" />
+    <Content Include="Themes\Stripes\Content\page_bottom.gif" />
+    <Content Include="Themes\Stripes\Content\page_top.gif" />
+    <Content Include="Themes\Stripes\Content\secondary_bg.gif" />
+    <Content Include="Themes\Stripes\Content\sidebar_bg.gif" />
+    <Content Include="Themes\Stripes\Content\Style.css" />
+    <Content Include="Themes\Stripes\Thumbnail.jpg" />
+    <Content Include="Themes\Stripes\Content\top_bg.gif" />
+    <Content Include="Themes\Stripes\Content\top_bg.png" />
+    <Content Include="Themes\Stripes\Content\top_bottom_bg.gif" />
+    <Content Include="Areas\Tests\Demo\lav.jpg" />
+    <Content Include="Areas\Tests\Demo\lime.jpg" />
+    <Content Include="Areas\Tests\Demo\logo_white.png" />
+    <Content Include="Areas\Tests\Demo\skal.jpg" />
+    <Content Include="Areas\Tests\Demo\thorn.jpg" />
+    <Content Include="Areas\Tests\Views\Demo\Authenticated.ascx" />
+    <Content Include="Areas\Tests\Views\Demo\Unauthenticated.ascx" />
+    <Content Include="Areas\Tests\Views\Forms\TestWebFormPart.ascx" />
+    <Content Include="Areas\Tests\Views\QueryViewer\Index.ascx" />
+    <Content Include="Areas\Tests\Views\Static\Index.aspx" />
+    <Content Include="Areas\Tests\Views\Shared\Dictionary.ascx" />
+    <Content Include="Areas\Tests\Views\TestPart\Index.ascx" />
+    <Content Include="Areas\Tests\Views\TestPage\Index.aspx" />
+    <Content Include="Areas\Tests\Views\Shared\Urls.ascx" />
+    <Content Include="Content\Css\Application.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Views\Calendar\App_LocalResources\Index.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Poll\Index.ascx" />
+    <Content Include="Views\RssFeed\Preview.aspx" />
+    <Content Include="Views\Login\Index.ascx" />
+    <Content Include="Views\Shared\PageTemplates\Event.aspx" />
+    <Content Include="Views\Shared\PageTemplates\FaqList.aspx" />
+    <Content Include="Views\Shared\PageTemplates\FormPage.aspx" />
+    <Content Include="Views\Shared\PageTemplates\GalleryItem.aspx" />
+    <Content Include="Views\Shared\PageTemplates\News.aspx" />
+    <Content Include="Views\Shared\PageTemplates\SiteMap.aspx" />
+    <Content Include="Views\Shared\PageTemplates\TextPage.aspx" />
+    <Content Include="Views\Shared\PartTemplates\BoxedTextItem.ascx" />
+    <Content Include="Views\Shared\PartTemplates\BubbleItem.ascx" />
+    <Content Include="Views\Shared\PartTemplates\Columns.ascx" />
+    <Content Include="Views\Shared\PartTemplates\Comment.ascx" />
+    <Content Include="Views\Shared\PartTemplates\CommentList.ascx" />
+    <Content Include="Views\Shared\PartTemplates\Faq.ascx" />
+    <Content Include="Views\Shared\PartTemplates\RandomImage.ascx" />
+    <Content Include="Views\Shared\PartTemplates\Subscribe.ascx" />
+    <Content Include="Views\Shared\PartTemplates\Teaser.ascx" />
+    <Content Include="Views\Shared\PartTemplates\TextItem.ascx" />
+    <Content Include="Views\Shared\PartTemplates\Top.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\NewsContainer\Index.aspx" />
+    <Content Include="Views\NewsContainer\Range.ascx" />
+    <Content Include="Views\Poll\App_LocalResources\Index.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Upload\" />
+    <Folder Include="Views\Shared\PartTemplates\App_LocalResources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controllers\Resources\UserRegistration.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserRegistration.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\Resources\Redirect.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Redirect.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\Resources\RssAggregator.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RssAggregator.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\Resources\Poll.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Poll.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Content Include="Views\Login\App_LocalResources\Index.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Search\App_LocalResources\Index.aspx.resx" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target> -->
+  <Target Name="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(ProjectDir)\..\$(ProjectName)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+</Project>

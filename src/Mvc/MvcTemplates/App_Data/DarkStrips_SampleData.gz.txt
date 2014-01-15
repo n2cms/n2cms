@@ -1,0 +1,2 @@
+<img src="../../Themes/Stripes/Thumbnail.jpg" style="float:left;"/>
+<b>Dark Stripes Theme</b> with Example Content
