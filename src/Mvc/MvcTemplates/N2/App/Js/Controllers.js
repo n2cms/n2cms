@@ -199,7 +199,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			Eventually(function () {
 				Profile.save({}, user, function(data){
 				});
-			}, 20000);
+			}, 10000);
 		}, true);
 	});
 
@@ -584,8 +584,10 @@ function PageInfoCtrl($scope, Content) {
 	$scope.exctractLanguage = function(language) {
 		return language && language.replace(/[(].*?[)]/, "");
 	};
+	$scope.$parent.showInfo = $scope.Context.User.Settings.ShowInfo;
 	$scope.toggleInfo = function() {
 		$scope.$parent.showInfo = !$scope.$parent.showInfo;
+		$scope.Context.User.Settings.ShowInfo = $scope.$parent.showInfo;
 	};
 	$scope.definitions = {};
 	Content.definitions({}, function (data) {
