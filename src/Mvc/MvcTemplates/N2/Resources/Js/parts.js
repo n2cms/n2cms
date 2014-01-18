@@ -2,7 +2,7 @@
 	var isDragging = false;
 	var dialog = null;
 
-	window.n2DragDrop = function (urls, messages, context) {
+	window.n2DragDrop = function(urls, messages, context) {
 		this.urls = $.extend({
 			copy: 'copy.n2.ashx',
 			move: 'move.n2.ashx',
@@ -16,7 +16,7 @@
 		}, messages);
 		this.context = context;
 		this.init();
-	}
+	};
 
 	window.n2DragDrop.prototype = {
 
@@ -370,7 +370,8 @@
 	window.frameInteraction = {
 		location: "Organize",
 		ready: true,
-		getActions: function () {
+		getActions: function() {
+
 			function create(commandElement) {
 				return {
 					Title: $(commandElement).attr('title'),
@@ -383,7 +384,7 @@
 			};
 			var actions = [];
 			var idCounter = 0;
-			$('.controlPanel .plugins .control > a').not('.cpView, .cpAdminister, .cpOrganize, .complementary, .authorizedFalse').each(function () {
+			$('.controlPanel .plugins .control > a').not('.cpView, .cpAdminister, .cpOrganize, .complementary, .authorizedFalse').each(function() {
 				if (!this.id)
 					this.id = "action" + ++idCounter;
 				actions.push({ Current: create(this) });
@@ -396,13 +397,13 @@
 				Children: actions.slice(1)
 			}];
 		},
-		hideToolbar: function (force) {
+		hideToolbar: function(force) {
 			$('.controlPanel .plugins .control > a').not('.cpView, .cpAdminister, .cpOrganize, .complementary, .authorizedFalse')
 				.parent().hide();
 		},
-		execute: function(selector){
+		execute: function(selector) {
 			window.location = $(selector).attr('href');
 		}
-	}
+	};
 
 })(jQuery);
