@@ -212,6 +212,16 @@ namespace N2.Web.Mvc.Html
             return registration.RegisterRefiner<RestrictChildrenAttribute>(new RestrictChildrenAttribute(AllowedTypes.All) { TemplateNames = allowedChildTemplateKeys });
         }
 
+        public static Builder<AllowedZonesAttribute> AllowedZones(this IContentRegistration registration, params string[] zoneNames)
+        {
+            return registration.RegisterRefiner(new AllowedZonesAttribute(zoneNames));
+        }
+
+        public static Builder<AllowedZonesAttribute> AllowedZones(this IContentRegistration registration, AllowedZones allowedIn, params string[] zoneNames)
+        {
+            return registration.RegisterRefiner(new AllowedZonesAttribute(allowedIn) { ZoneNames = zoneNames });
+        }
+
         public static Builder<IDefinitionRefiner> Sort(this IContentRegistration registration, SortBy sortingOrder, string expression = null)
         {
             return registration.RegisterRefiner<IDefinitionRefiner>(new AppendAttributeRefiner(new SiblingInsertionAttribute(sortingOrder) { SortExpression = expression }));
