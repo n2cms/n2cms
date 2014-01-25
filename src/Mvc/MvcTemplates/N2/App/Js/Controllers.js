@@ -244,10 +244,11 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			return;
 		var branch = findBranch($scope.Context.Content, path);
 		for (var i in branch) {
-			branch[i].Expanded = true;
+			if (i == 0)
+				$scope.Context.SelectedNode = branch[0];
+			else
+				branch[i].Expanded = true;
 		}
-		if (branch.length)
-			$scope.Context.SelectedNode = branch[0];
 	}
 
 	$scope.select = function (nodeOrPath, versionIndex, keepFlags, forceContextRefresh, preventReload, disregardNodeUrl) {
