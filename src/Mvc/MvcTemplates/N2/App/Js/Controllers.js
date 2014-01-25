@@ -11,11 +11,34 @@
 	$routeProvider.otherwise({ templateUrl: "App/Partials/Framework.html", controller: "ManagementCtrl", reloadOnSearch: false });
 }))
 
+function findBranch(node, selectedPath) {
+	if (!node)
+		return null;
+	if (node.Current.Path == selectedPath) {
+		return [node];
+	}
+	if (selectedPath.indexOf(node.Current.Path) < 0) {
+		return null;
+	}
+	
+	for (var i in node.Children) {
+		var n = findBranch(node.Children[i], selectedPath);
+		if (n) {
+			n.push(node);
+			return n;
+		}
+	}
+	return null;
+}
+
 function findNodeRecursive(node, selectedPath) {
 	if (!node)
 		return null;
 	if (node.Current.Path == selectedPath) {
 		return node;
+	}
+	if (selectedPath.indexOf(node.Current.Path) < 0) {
+		return null;
 	}
 
 	for (var i in node.Children) {
@@ -106,6 +129,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	};
 
 	decorate(FrameContext, "refresh", function (ctx) {
+		console.log("refresh", ctx);
 		// legacy refresh call from frame
 		if (ctx.force) {
 			$scope.reloadChildren(ctx.path);
@@ -121,15 +145,14 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 
 		if (!findNodeRecursive($scope.Context.Content, ctx.path)) {
 			$scope.reloadChildren(getParentPath(ctx.path), function () {
-				$scope.select(ctx.path, ctx.versionIndex, /*keepFlags*/false, /*forceContextRefresh*/false, /*preventReload*/false, /*disregardNodeUrl*/true);
+				//$scope.select(ctx.path, ctx.versionIndex, /*keepFlags*/false, /*forceContextRefresh*/false, /*preventReload*/false, /*disregardNodeUrl*/true);
+				if (ctx.force) {
+					$scope.expandTo(ctx.path, /*select*/true);
+				}
 			});
+		} else if (ctx.force) {
+			$scope.expandTo(ctx.path, /*select*/true);
 		}
-
-		//if (!$scope.select(ctx.path, ctx.versionIndex, /*keepFlags*/false, /*forceContextRefresh*/false, /*preventReload*/false, /*disregardNodeUrl*/true)) {
-		//	$scope.reloadChildren(getParentPath(ctx.path), function () {
-		//		$scope.select(ctx.path, ctx.versionIndex, /*keepFlags*/!ctx.force, /*forceContextRefresh*/false, /*preventReload*/false, /*disregardNodeUrl*/true);
-		//	});
-		//}
 	});
 
 	var viewMatch = window.location.search.match(/[?&]view=([^?&]+)/);
@@ -215,7 +238,20 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		});
 	};
 
-	$scope.select = function(nodeOrPath, versionIndex, keepFlags, forceContextRefresh, preventReload, disregardNodeUrl) {
+	$scope.expandTo = function (nodeOrPath, select) {
+		var path = typeof nodeOrPath == "string" ? nodeOrPath : nodeOrPath && nodeOrPath.Current && nodeOrPath.Current.Path;
+		if (!path)
+			return;
+		var branch = findBranch($scope.Context.Content, path);
+		for (var i in branch) {
+			branch[i].Expanded = true;
+		}
+		if (branch.length)
+			$scope.Context.SelectedNode = branch[0];
+	}
+
+	$scope.select = function (nodeOrPath, versionIndex, keepFlags, forceContextRefresh, preventReload, disregardNodeUrl) {
+		console.log("select", "nodeOrPath ", nodeOrPath, "vi: ", versionIndex, ", kf:", keepFlags, ", fcr: ", forceContextRefresh, ", pr: ", preventReload, ", dnu: ", disregardNodeUrl)
 		if (typeof nodeOrPath == "string") {
 			var path = nodeOrPath;
 			var node = findNodeRecursive($scope.Context.Content, path);
