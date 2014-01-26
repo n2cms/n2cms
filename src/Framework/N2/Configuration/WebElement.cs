@@ -18,7 +18,7 @@ namespace N2.Configuration
         }
 
         /// <summary>The query string key used to identify the page.</summary>
-        [ConfigurationProperty("pageQueryKey", DefaultValue = "page")]
+        [ConfigurationProperty("pageQueryKey", DefaultValue = "n2pagendx")]
         public string PageQueryKey
         {
             get { return (string)base["pageQueryKey"]; }
