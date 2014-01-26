@@ -7,6 +7,8 @@ using NUnit.Framework;
 
 using N2.Web;
 using Shouldly;
+using N2.Tests.Fakes;
+using System.IO;
 
 namespace N2.Tests.Web
 {
@@ -52,5 +54,20 @@ namespace N2.Tests.Web
             testEnum.IsFlagSet(TestEnumWithFlags.Have).ShouldBe(true);
             testEnum.IsFlagSet(TestEnumWithFlags.Flags).ShouldBe(false);
         }
+
+		[Test]
+		public void PostingJson_GetRequestValueAccessor_UsesJsonAsSource()
+		{
+			var ctx = new FakeHttpContext();
+			ctx.request.httpMethod = "POST";
+			ctx.request.ContentType = "application/json";
+			ctx.request.input = "{ hello: 'world', one: 1 }";
+			ctx.request.contentLength = ctx.request.input.Length;
+			
+			var accessor = ctx.GetRequestValueAccessor();
+			
+			accessor("hello").ShouldBe("world");
+			accessor("one").ShouldBe("1");
+		}
     }
 }

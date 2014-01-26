@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Specialized;
+using System.IO;
 using System.Web;
 
 namespace N2.Tests.Fakes
@@ -65,5 +66,38 @@ namespace N2.Tests.Fakes
             foreach (var kvp in N2.Web.Url.ParseQueryString(queryString))
                 query[kvp.Key] = kvp.Value;
         }
-    }
+
+		public string input;
+		public override System.IO.Stream InputStream
+		{
+			get 
+			{ 
+				var ms = new MemoryStream();
+				var sw = new StreamWriter(ms);
+				sw.Write(input);
+				sw.Flush();
+				ms.Position = 0;
+				return ms; 
+			}
+		}
+
+		public int contentLength = 0;
+		public override int ContentLength
+		{
+			get { return contentLength; }
+		}
+
+		public string httpMethod = "GET";
+		public override string HttpMethod
+		{
+			get { return httpMethod; }
+		}
+
+		string contentType;
+		public override string ContentType
+		{
+			get { return contentType; }
+			set { contentType = value; }
+		}
+	}
 }
