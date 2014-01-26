@@ -129,7 +129,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	};
 
 	decorate(FrameContext, "refresh", function (ctx) {
-		console.log("refresh", ctx);
 		// legacy refresh call from frame
 		if (ctx.force) {
 			$scope.reloadChildren(ctx.path);
@@ -252,7 +251,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	}
 
 	$scope.select = function (nodeOrPath, versionIndex, keepFlags, forceContextRefresh, preventReload, disregardNodeUrl) {
-		console.log("select", "nodeOrPath ", nodeOrPath, "vi: ", versionIndex, ", kf:", keepFlags, ", fcr: ", forceContextRefresh, ", pr: ", preventReload, ", dnu: ", disregardNodeUrl)
 		if (typeof nodeOrPath == "string") {
 			var path = nodeOrPath;
 			var node = findNodeRecursive($scope.Context.Content, path);
