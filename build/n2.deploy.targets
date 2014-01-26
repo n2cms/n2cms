@@ -19,9 +19,13 @@
     <Windsor3-NugetFolder>$(DeployFolder)\$(DeployPrefix)Windsor3_Nuget</Windsor3-NugetFolder>
     <MongoDB-NugetFolder>$(DeployFolder)\$(DeployPrefix)MongoDB_Nuget</MongoDB-NugetFolder>
     <RemoteSearch-NugetFolder>$(DeployFolder)\$(DeployPrefix)RemoteSearch_Nuget</RemoteSearch-NugetFolder>
-</PropertyGroup>
+	</PropertyGroup>
 
-  <Target Name="Config-NuGet">
+	<ItemGroup>
+		<nugetFxTargets Include="net40;net45"/>
+	</ItemGroup>
+
+	<Target Name="Config-NuGet">
     <Copy SourceFiles="@(nugetLibraryBinFiles)" DestinationFolder="$(Library-NugetFolder)\lib" />
     <ItemGroup>
       <configNugetIncludes Include="$(BuildFolder)\Nuget\Config\**\*" />
@@ -54,7 +58,7 @@
                        $(ManagementFolder)\bin\N2.pdb;
                        $(ManagementFolder)\bin\N2.xml;"/>
     </ItemGroup>
-    <Copy SourceFiles="@(nugetLibraryBinFiles)" DestinationFolder="$(Library-NugetFolder)\lib" />
+    <Copy SourceFiles="@(nugetLibraryBinFiles)" DestinationFolder="$(Library-NugetFolder)\lib\%(nugetFxTargets.Identity)\" />
 
     <ItemGroup>
       <libraryNugetIncludes Include="$(BuildFolder)\Nuget\Library\**\*" />
@@ -140,7 +144,7 @@
 			<nugetRazorBinFiles Include="$(SrcFolder)\Framework\Razor\bin\$(Configuration)\N2.Razor.*;" />
 		</ItemGroup>
 		<Copy SourceFiles="@(razorNugetIncludes)" DestinationFolder="$(Razor-NugetFolder)\%(RecursiveDir)" />
-		<Copy SourceFiles="@(nugetRazorBinFiles)" DestinationFolder="$(Razor-NugetFolder)\lib\NET40" />
+		<Copy SourceFiles="@(nugetRazorBinFiles)" DestinationFolder="$(Razor-NugetFolder)\lib\%(nugetFxTargets.Identity)\" />
 		<FileUpdate Files="$(Razor-NugetFolder)\N2.Razor.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
 		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Razor-NugetFolder)\" />
