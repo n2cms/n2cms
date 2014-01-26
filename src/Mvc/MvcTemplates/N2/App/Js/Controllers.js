@@ -131,6 +131,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	decorate(FrameContext, "refresh", function (ctx) {
 		// legacy refresh call from frame
 		if (ctx.force) {
+			$scope.reloadNode(ctx.path);
 			$scope.reloadChildren(ctx.path);
 			if (ctx.previewUrl) {
 				$scope.previewUrl(ctx.previewUrl);
@@ -144,7 +145,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 
 		if (!findNodeRecursive($scope.Context.Content, ctx.path)) {
 			$scope.reloadChildren(getParentPath(ctx.path), function () {
-				//$scope.select(ctx.path, ctx.versionIndex, /*keepFlags*/false, /*forceContextRefresh*/false, /*preventReload*/false, /*disregardNodeUrl*/true);
 				if (ctx.force) {
 					$scope.expandTo(ctx.path, /*select*/true);
 				}
