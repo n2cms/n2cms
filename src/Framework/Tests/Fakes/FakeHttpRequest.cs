@@ -99,5 +99,15 @@ namespace N2.Tests.Fakes
 			get { return contentType; }
 			set { contentType = value; }
 		}
+
+		public void CreatePost(string url, string contentType, string input)
+		{
+			httpMethod = "POST";
+			rawUrl = url;
+			ContentType = contentType;
+			this.input = input;
+			contentLength = input.Length;
+
+		}
 	}
 }
