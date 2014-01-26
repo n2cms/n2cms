@@ -118,6 +118,23 @@
 		};
 	});
 
+	module.directive("pageActionIconClass", function () {
+		return {
+			restrict: "A",
+			link: function (scope, element, attrs) {
+				if (attrs.pageActionIconClass)
+					scope.$watch(function () {
+						var i = scope.$eval(attrs.pageActionIconClass);
+						return i && i.Current && (i.Current.IconClass || i.Current.IconUrl)
+					}, function (icon) {
+						element.addClass(icon ? "page-action-iconified" : "page-action-plain");
+					});
+				else
+					element.addClass("page-action-iconified");
+			}
+		}
+	});
+
 	module.directive("pageActionLink", function ($interpolate) {
 		return {
 			restrict: "A",
@@ -173,7 +190,7 @@
 
 						element.attr("target", current.Target);
 
-						element.attr("class", current.Description ? "page-action page-action-description" : "page-action");
+						element.attr("class", (current.Description ? "page-action page-action-description" : "page-action") + (current.IconClass || current.IconUrl ? " page-action-iconified" : " page-action-plain"));
 
 						element.click(function(e) {
 							if (current.ClientAction) {

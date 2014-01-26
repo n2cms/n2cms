@@ -211,9 +211,12 @@ a[disabled=disabled]:hover {
 
 
 @media (max-width: 919px) {
-	#menu > ul > li > .page-action,
-	#menu > ul > li > .page-action span {
+	#menu > ul > li > .page-action-iconified,
+	#menu > ul > li > .page-action-iconified span {
 		font-size:0;
+	}
+	#menu > ul > li .page-action-description.page-action-iconified {
+		padding-left:10px;
 	}
 }
 
