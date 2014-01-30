@@ -1,3 +1,4 @@
+using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Collections;
@@ -8,7 +9,8 @@ namespace N2.Tests.Web.Items
     [PartDefinition]
     public class DataItem : N2.ContentItem, IAddablePart
     {
-        public override ItemList GetChildren(string childZoneName)
+        [Obsolete]
+		public override ItemList GetChildren(string childZoneName)
         {
             return GetChildren(new ZoneFilter(childZoneName));
         }

@@ -46,17 +46,6 @@ namespace N2.Configuration
             set { base["dynamicDiscovery"] = value; }
         }
 
-        /// <summary>
-        /// Default to escape HTML in titles and other single-entry fields.
-        /// </summary>
-        [ConfigurationProperty("defaultHtmlEscape", DefaultValue = false)]
-        public bool DefaultHtmlEscape
-        {
-            get { return (bool)base["defaultHtmlEscape"]; }
-            set { base["defaultHtmlEscape"] = value; }
-        }
-
-
         /// <summary>Additional assemblies assemblies investigated while investigating the environemnt, e.g. to find item definitions.</summary>
         [ConfigurationProperty("assemblies")]
         public AssemblyCollection Assemblies

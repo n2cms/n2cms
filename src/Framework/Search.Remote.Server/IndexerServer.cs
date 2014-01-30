@@ -266,5 +266,16 @@ namespace N2.Search.Remote.Server
         {
             Stop();
         }
-    }
+
+		public Result<LightweightHitData> Search(string instanceName, string query)
+		{
+			var q = Query.For(query);
+			return CreateServices(instanceName).searcher.Search(q);
+		}
+
+		internal IndexStatistics Statistics(string instanceName)
+		{
+			return CreateServices(instanceName).indexer.GetStatistics();
+		}
+	}
 }

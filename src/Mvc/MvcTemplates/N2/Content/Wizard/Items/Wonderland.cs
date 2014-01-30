@@ -13,7 +13,8 @@ namespace N2.Edit.Wizard.Items
     [Throwable(AllowInTrash.No)]
     [Indexable(IsIndexable = false)]
     [RestrictParents(typeof(IRootPage))]
-    public class Wonderland : ManagementItem, ISystemNode
+	[Versionable(AllowVersions.No)]
+	public class Wonderland : ManagementItem, ISystemNode
     {
     }
 }

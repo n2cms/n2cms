@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="Fallback.master" AutoEventWireup="true" CodeBehind="History.aspx.cs" Inherits="N2.Addons.Wiki.UI.Views.History" Title="Untitled Page" %>
+﻿<%@ Page Language="C#" MasterPageFile="Fallback.master" AutoEventWireup="true" CodeBehind="History.aspx.cs" Inherits="N2.Addons.Wiki.UI.Views.History" Title="Untitled Page" %>
 <%@ Import Namespace="N2.Addons.Wiki.UI.Views"%>
 <asp:Content ID="Content9" ContentPlaceHolderID="TextContent" runat="server">
     <div class="controls"><a href="<%= CurrentPage.Url %>">View</a>

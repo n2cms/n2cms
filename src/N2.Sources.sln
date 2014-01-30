@@ -140,6 +140,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{4508EBF5
 		..\build\nuget\ManagementLocalizedResources\N2.Management.LocalizedResources.nuspec = ..\build\nuget\ManagementLocalizedResources\N2.Management.LocalizedResources.nuspec
 		..\build\nuget\ManagementNoZip\N2.Management.NoZip.nuspec = ..\build\nuget\ManagementNoZip\N2.Management.NoZip.nuspec
 		..\build\nuget\ManagementZip\N2.Management.Zip.nuspec = ..\build\nuget\ManagementZip\N2.Management.Zip.nuspec
+		..\build\nuget\Mvc\N2.Mvc.nuspec = ..\build\nuget\Mvc\N2.Mvc.nuspec
 		..\build\nuget\MongoDB\N2.Persistence.MongoDB.nuspec = ..\build\nuget\MongoDB\N2.Persistence.MongoDB.nuspec
 		..\build\nuget\Razor\N2.Razor.nuspec = ..\build\nuget\Razor\N2.Razor.nuspec
 		..\build\nuget\ReusableParts\N2.ReusableParts.nuspec = ..\build\nuget\ReusableParts\N2.ReusableParts.nuspec

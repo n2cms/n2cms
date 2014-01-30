@@ -19,14 +19,11 @@ namespace N2.Resources
             JQueryPath = "{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".min.js";
             JQueryUiPath = "{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + JQueryVersion;
             JQueryPluginsPath = "{ManagementUrl}/Resources/Js/plugins.ashx?v=" + JQueryVersion;
-            AngularPath = "{ManagementUrl}/Resources/angular-1.1.5/angular.min.js";
-            AngularResourcesPath = "{ManagementUrl}/Resources/angular-1.1.5/angular-resource.min.js";
+			AngularRoot = "{ManagementUrl}/Resources/angular-1.2.8/";
             CKEditorPath = "{ManagementUrl}/Resources/ckeditor/ckeditor.js?v=" + JQueryVersion;
             PartsJsPath = "{ManagementUrl}/Resources/Js/parts.js?v=" + JQueryVersion;
             PartsCssPath = "{ManagementUrl}/Resources/Css/parts.css?v=" + JQueryVersion;
-            TwitterBootstrapJsPath = DefaultBootstrapJsPath;
-            TwitterBootstrapCssPath = DefaultBootstrapCssPath;
-            TwitterBootstrapResponsiveCssPath = DefaultBootstrapResponsiveCssPath;
+			TwitterBootstrapRoot = "{ManagementUrl}/Resources/bootstrap/";
             IconsCssPath = DefaultIconsCssPath;
         }
 
@@ -41,10 +38,10 @@ namespace N2.Resources
         /// <summary>The jQuery version used by N2.</summary>
         public const string JQueryVersion = N2.Configuration.ResourcesElement.JQueryVersion;
 
-        public const string DefaultBootstrapRoot = "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/";
-        public const string DefaultBootstrapJsPath = DefaultBootstrapRoot + "js/bootstrap.min.js";
-        public const string DefaultBootstrapResponsiveCssPath = DefaultBootstrapRoot + "css/bootstrap-responsive.min.css";
-        public const string DefaultBootstrapCssPath = DefaultBootstrapRoot + "css/bootstrap.min.css";
+		//public const string DefaultBootstrapRoot = "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/";
+		//public const string DefaultBootstrapJsPath = DefaultBootstrapRoot + "js/bootstrap.min.js";
+		//public const string DefaultBootstrapResponsiveCssPath = DefaultBootstrapRoot + "css/bootstrap-responsive.min.css";
+		//public const string DefaultBootstrapCssPath = DefaultBootstrapRoot + "css/bootstrap.min.css";
         public const string DefaultFancyboxPath = "{ManagementUrl}/Resources/fancybox/";
         public const string DefaultIconsCssPath = "{ManagementUrl}/Resources/font-awesome/css/font-awesome.min.css";
         public const string DefaultFlagsCssPath = "{ManagementUrl}/Resources/icons/flags.css";
@@ -58,11 +55,16 @@ namespace N2.Resources
         /// <summary>The path to the jquery plugins used by N2.</summary>
         public static string JQueryPluginsPath { get; set; }
 
-        /// <summary> The path to angularjs used by N2. </summary>
-        public static string AngularPath { get; set; }
+		/// <summary> The path to angularjs folder used by N2. </summary>
+		public static string AngularRoot { get; set; }
+
+		/// <summary> The path to angularjs used by N2. </summary>
+		public static string AngularPath { get { return AngularRoot + "angular.min.js"; } }
 
         /// <summary> The path to angular-resources used by N2. </summary>
-        public static string AngularResourcesPath { get; set; }
+		public static string AngularResourcePath { get { return AngularRoot + "angular-resource.min.js"; } }
+		[Obsolete("Use AngularResourcePath")]
+		public static string AngularResourcesPath { get { return AngularRoot + "angular-resource.min.js"; } }
         
         /// <summary>The path to the CKeditor script</summary>
         public static string CKEditorPath { get; set; }
@@ -73,14 +75,17 @@ namespace N2.Resources
         /// <summary>The path to the parts css.</summary>
         public static string PartsCssPath { get; set; }
 
+        /// <summary>The path to the root of Twitter Bootstrap library.</summary>
+        public static string TwitterBootstrapRoot { get; set; }
+
         /// <summary>The path to Twitter Bootstrap CSS library.</summary>
-        public static string TwitterBootstrapCssPath { get; set; }
+		public static string TwitterBootstrapCssPath { get { return TwitterBootstrapRoot + "css/bootstrap.min.css"; } }
 
         /// <summary>The path to Twitter Bootstrap Responsive CSS library.</summary>
-        public static string TwitterBootstrapResponsiveCssPath { get; set; }
+		public static string TwitterBootstrapResponsiveCssPath { get { return TwitterBootstrapRoot + "css/bootstrap-responsive.min.css"; } }
 
         /// <summary>The path to Twitter Bootstrap JS library.</summary>
-        public static string TwitterBootstrapJsPath { get; set; }
+		public static string TwitterBootstrapJsPath { get { return TwitterBootstrapRoot + "js/bootstrap.min.js"; } }
 
         /// <summary>The path to the icon css classes.</summary>
         public static string IconsCssPath { get; set; }

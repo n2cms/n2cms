@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Web.UI;
 using System.Xml.Linq;
 using N2.Definitions;
@@ -15,11 +15,22 @@ using N2.Web.Parts;
 
 namespace N2.Web
 {
+	/// <summary>
+	/// Base class for a MenuPart.
+	/// </summary>
 	public abstract class MenuPartBase : ContentItem
 	{
 		public const string CssContainerName = "cssContainer";
 		public const string NestingContainerName = "nestingContainer";
 
+		public enum SiblingDisplayOptions
+		{
+			Always,
+			Never,
+			OnlyIfItemHasNoChildren
+		}
+
+		[Obsolete("Please use SiblingDisplayOptions instead")]
 		public enum SibilingDisplayOptions
 		{
 			Always,
@@ -34,37 +45,138 @@ namespace N2.Web
 			None
 		}
 
+		/// <summary>
+		/// Gets or sets the menu title display mode.
+		/// </summary>
+		/// <value>
+		/// The menu title display mode.
+		/// </value>
 		public abstract TitleDisplayOptions MenuTitleDisplayMode { get; set; }
+
+		/// <summary>
+		/// Gets or sets the menu title heading level.
+		/// </summary>
+		/// <value>
+		/// The menu title heading level.
+		/// </value>
 		public abstract HeadingLevel MenuTitleHeadingLevel { get; set; }
+
+		/// <summary>
+		/// Gets or sets the number of child levels.
+		/// </summary>
+		/// <value>
+		/// The number of child levels.
+		/// </value>
 		public abstract int MenuNumChildLevels { get; set; }
+
+		/// <summary>
+		/// Gets or sets the menu starting level.
+		/// </summary>
+		/// <value>
+		/// The menu starting level.
+		/// </value>
 		public abstract int MenuStartFromLevel { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating whether the root node of the tree should be shown (rendered).
+		/// </summary>
+		/// <value>
+		///   <c>true</c> if the root node of the tree should be shown (rendered); otherwise, <c>false</c>.
+		/// </value>
 		public abstract bool MenuShowTreeRoot { get; set; }
-		public abstract SibilingDisplayOptions MenuShowSibilings { get; set; }
+		[Obsolete("Please use MenuShowSiblings instead")]
+		public SiblingDisplayOptions MenuShowSibilings
+		{
+			get { return MenuShowSiblings; }
+			set { MenuShowSiblings = value; }
+		}
+
+		/// <summary>
+		/// Expands the navigation tree so that sibling pages of the current page are always shown.
+		/// </summary>
+		public abstract SiblingDisplayOptions MenuShowSiblings { get; set; }
+
+		/// <summary>
+		/// If this property is set to True, second-level items in the navigation tree are
+		/// inserted as siblings of the top-level item(s).
+		/// </summary>
 		public abstract bool MenuFlattenTopLevel { get; set; }
+
+		/// <summary>
+		/// Prevents the top-level item from ever being hyperlinked. This is useful if you want
+		/// the top-level item to be a static heading.
+		/// </summary>
 		public abstract bool MenuDontLinkTopLevel { get; set; }
+
+		/// <summary>
+		/// Defines whether a 'caret' suffix is appended to the text of items with children. 
+		/// The HTML code for the caret can be overridden by setting the CaretHtml property.
+		/// </summary>
 		public abstract bool MenuShowCaretOnItemsWithChildren { get; set; }
+
+		/// <summary>
+		/// Defines the CSS class that is applied to the top level UL element.
+		/// </summary>
 		public abstract string MenuOuterUlCssClass { get; set; }
+
+		/// <summary>
+		/// Defines the CSS class that is applied to all UL elements below the top level UL.
+		/// </summary>
 		public abstract string MenuInnerUlCssClass { get; set; }
+
+		/// <summary>
+		/// Determines the base CSS class that is applied to all menu items.
+		/// </summary>
 		public abstract string MenuLiCssClass { get; set; }
+
+		/// <summary>
+		/// Determines the CSS class of the menu item for the currently selected page.
+		/// </summary>
 		public abstract string MenuSelectedLiCssClass { get; set; }
+
+		/// <summary>
+		/// Defines the CSS class of menu items for ancestor elements of the current page. 
+		/// </summary>
 		public abstract string MenuAncestorLiCssClass { get; set; }
+
+		/// <summary>
+		/// Determines if the menu will show the current item even if it wouldn't normally be shown.
+		/// </summary>
 		public abstract bool MenuShowCurrentItemIfHidden { get; set; }
+
+		/// <summary>Determines if items with "Visible in Navigation" (visible property) set to False will be shown in the menu anyways.</summary>
 		public abstract bool MenuShowInvisible { get; set; }
+
+		/// <summary>
+		/// Determines if child ULs are nested.
+		/// </summary>
 		public abstract bool MenuNestChildUls { get; set; }
+
+		/// <summary>
+		/// Defines the HTML code that is written out for items with children. Set this to NULL and the MenuShowCaretOnItemsWithChildren
+		/// property to True to render the default Twitter Bootstrap-compatible caret code.
+		/// </summary>
+		public abstract string MenuCaretCustomHtml { get; set; }
 	}
 
 	/// <summary>
-	/// Provides navigation across child and sibiling pages. Ideal for sidebars. 
+	/// Provides navigation across child and sibling pages. Ideal for sidebars.
 	/// </summary>
 	[PartDefinition(Title = "Menu", IconClass = "n2-icon-list-ul", RequiredPermission = N2.Security.Permission.Administer)]
 	[WithEditableTitle]
-    [WithEditableName(HelpText = "The name will be used to set the HTML id of the part")]
+	[WithEditableName(HelpText = "The name will be used to set the HTML id of the part")]
 	[FieldSetContainer(NestingContainerName, "Hierarchy View Settings", 400)]
 	[FieldSetContainer(CssContainerName, "Developer: Stylesheets", 500)]
 	public class MenuPart : MenuPartBase, IPart
 	{
 		#region Title Display
 
+		/// <summary>
+		/// Gets or sets the menu title display mode.
+		/// </summary>
+		/// <value>
+		/// The menu title display mode.
+		/// </value>
 		[EditableEnum("Title Display Mode", 100, typeof(TitleDisplayOptions))]
 		public override TitleDisplayOptions MenuTitleDisplayMode
 		{
@@ -72,6 +184,12 @@ namespace N2.Web
 			set { SetDetail("TitleDisplay", value); }
 		}
 
+		/// <summary>
+		/// Gets or sets the menu title heading level.
+		/// </summary>
+		/// <value>
+		/// The menu title heading level.
+		/// </value>
 		[EditableEnum("Title Heading Format", 150, typeof(HeadingLevel))]
 		public override HeadingLevel MenuTitleHeadingLevel
 		{
@@ -82,15 +200,27 @@ namespace N2.Web
 		#endregion
 
 
-        #region Hierarchy Options
+		#region Hierarchy Options
 
-        [EditableNumber("Num Child Levels", 400, MinimumValue = "0", Required = true, ContainerName = NestingContainerName)]
+		/// <summary>
+		/// Gets or sets the number of child levels the menu renders.
+		/// </summary>
+		/// <value>
+		/// The number of child levels (recursion depth).
+		/// </value>
+		[EditableNumber("Num Child Levels", 400, MinimumValue = "0", Required = true, ContainerName = NestingContainerName)]
 		public override int MenuNumChildLevels
 		{
 			get { return GetDetail("Levels", 1); }
 			set { SetDetail("Levels", value); }
 		}
 
+		/// <summary>
+		/// Gets or sets the menu start from level.
+		/// </summary>
+		/// <value>
+		/// The menu start from level.
+		/// </value>
 		[EditableNumber("Start from Level", 420,
 			Required = true,
 			HelpText = "Positive values are absolute from root; negative values are relative-up from current item.",
@@ -101,28 +231,45 @@ namespace N2.Web
 			set { SetDetail("StartLevel", value); }
 		}
 
+		/// <summary>
+		/// Gets or sets a value indicating whether the root node of the tree should be shown (rendered).
+		/// </summary>
+		/// <value>
+		///   <c>true</c> if the root node of the tree should be shown (rendered); otherwise, <c>false</c>.
+		/// </value>
 		[EditableCheckBox("Show the root node of the tree.", 460, ContainerName = NestingContainerName,
-			HelpText = "Disabling the root node of a tree can be usefull when configuring the menu from a positive start level and only wanting to see its children on the root page of the menu.")]
+			HelpText = "Disabling the root node of a tree can be useful when configuring the menu from a positive start level and only wanting to see its children on the root page of the menu.")]
 		public override bool MenuShowTreeRoot
 		{
 			get { return GetDetail("ShowTreeRoot", true); }
 			set { SetDetail("ShowTreeRoot", value); }
 		}
 
-		[EditableEnum(typeof(SibilingDisplayOptions), Title = "Show Sibilings", ContainerName = NestingContainerName)]
-		public override SibilingDisplayOptions MenuShowSibilings
+		/// <summary>
+		/// Expands the navigation tree so that sibling pages of the current page are always shown.
+		/// </summary>
+		[EditableEnum(typeof(SiblingDisplayOptions), Title = "Show Siblings", ContainerName = NestingContainerName)]
+		public override SiblingDisplayOptions MenuShowSiblings
 		{
-			get { return GetDetail("ShowSibilings", SibilingDisplayOptions.OnlyIfItemHasNoChildren); }
-			set { SetDetail("ShowSibilings", value); }
+			get { return GetDetail("ShowSiblings", SiblingDisplayOptions.OnlyIfItemHasNoChildren); }
+			set { SetDetail("ShowSiblings", value); }
 		}
 
+		/// <summary>
+		/// If this property is set to True, second-level items in the navigation tree are
+		/// inserted as siblings of the top-level item(s).
+		/// </summary>
 		[EditableCheckBox("Flatten top-level items to list-headers", 460, ContainerName = NestingContainerName)]
 		public override bool MenuFlattenTopLevel
 		{
 			get { return GetDetail("ftl", false); }
-			set { SetDetail("ftl", value); }
+			set { SetDetail("ftl", value, false); }
 		}
 
+		/// <summary>
+		/// Prevents the top-level item from ever being hyperlinked. This is useful if you want
+		/// the top-level item to be a static heading.
+		/// </summary>
 		[EditableCheckBox("Do not link top-level items", 470, ContainerName = NestingContainerName)]
 		public override bool MenuDontLinkTopLevel
 		{
@@ -130,32 +277,56 @@ namespace N2.Web
 			set { SetDetail("nll", value); }
 		}
 
+		/// <summary>
+		/// Defines whether a 'caret' suffix is appended to the text of items with children.
+		/// The HTML code for the caret can be overridden by setting the CaretHtml property.
+		/// </summary>
 		[EditableCheckBox("Show caret on items with children", 480, ContainerName = NestingContainerName)]
 		public override bool MenuShowCaretOnItemsWithChildren
 		{
 			get { return GetDetail("sc", false); }
-			set { SetDetail("sc", value); }
+			set { SetDetail("sc", value, false); }
 		}
 
+		/// <summary>
+		/// Determines if the menu will show the current item even if it wouldn't normally be shown.
+		/// </summary>
 		[EditableCheckBox("Show current item even if item is hidden", 490, ContainerName = NestingContainerName)]
 		public override bool MenuShowCurrentItemIfHidden
 		{
 			get { return GetDetail("MenuShowCurrentItemIfHidden", false); }
-			set { SetDetail("MenuShowCurrentItemIfHidden", value); }
+			set { SetDetail("MenuShowCurrentItemIfHidden", value, false); }
 		}
 
+		/// <summary>
+		/// Determines if items with "Visible in Navigation" (visible property) set to False will be shown in the menu anyways.
+		/// </summary>
 		[EditableCheckBox("Show items that aren't normally visible in navigation", 491, ContainerName = NestingContainerName)]
 		public override bool MenuShowInvisible
 		{
 			get { return GetDetail("ShowInvisible", false); }
-			set { SetDetail("ShowInvisible", value); }
+			set { SetDetail("ShowInvisible", value, false); }
 		}
 
+		/// <summary>
+		/// Determines if child ULs are nested.
+		/// </summary>
 		[EditableCheckBox("Nest child UL elements inside the parent LI element", 495, ContainerName = NestingContainerName)]
 		public override bool MenuNestChildUls
 		{
 			get { return GetDetail("NestChildUls", false); }
-			set { SetDetail("NestChildUls", value); }
+			set { SetDetail("NestChildUls", value, false); }
+		}
+
+		/// <summary>
+		/// Defines the HTML code that is written out for items with children. Set this to NULL and the MenuShowCaretOnItemsWithChildren
+		/// property to True to render the default Twitter Bootstrap-compatible caret code.
+		/// </summary>
+		[EditableText("Caret HTML", 500, HelpText = "Overrides the HTML code for the caret; by default, renders a Twitter Bootstrap caret.", Columns = 20, Rows = 4, TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine, Required = false)]
+		public override string MenuCaretCustomHtml
+		{
+			get { return GetDetail("MenuCaretCustomHtml", string.Empty); }
+			set { SetDetail("MenuCaretCustomHtml", value, string.Empty); }
 		}
 
 		#endregion
@@ -163,6 +334,9 @@ namespace N2.Web
 
 		#region CSS Overrides
 
+		/// <summary>
+		/// Defines the CSS class that is applied to the top level UL element.
+		/// </summary>
 		[EditableText("Outer UL CssClass", 500, ContainerName = CssContainerName)]
 		public override string MenuOuterUlCssClass
 		{
@@ -170,6 +344,9 @@ namespace N2.Web
 			set { SetDetail("OuterUlClass", value); }
 		}
 
+		/// <summary>
+		/// Defines the CSS class that is applied to all UL elements below the top level UL.
+		/// </summary>
 		[EditableText("Inner UL CssClass", 510, ContainerName = CssContainerName)]
 		public override string MenuInnerUlCssClass
 		{
@@ -177,6 +354,9 @@ namespace N2.Web
 			set { SetDetail("InnerUlClass", value); }
 		}
 
+		/// <summary>
+		/// Determines the base CSS class that is applied to all menu items.
+		/// </summary>
 		[EditableText("Item CssClass", 520, ContainerName = CssContainerName)]
 		public override string MenuLiCssClass
 		{
@@ -184,6 +364,9 @@ namespace N2.Web
 			set { SetDetail("LiCssClass", value); }
 		}
 
+		/// <summary>
+		/// Determines the CSS class of the menu item for the currently selected page.
+		/// </summary>
 		[EditableText("Selected Item CssClass", 530, ContainerName = CssContainerName)]
 		public override string MenuSelectedLiCssClass
 		{
@@ -191,6 +374,9 @@ namespace N2.Web
 			set { SetDetail("SelectedLiCssClass", value); }
 		}
 
+		/// <summary>
+		/// Defines the CSS class of menu items for ancestor elements of the current page.
+		/// </summary>
 		[EditableText("Acestor Item CssClass", 540, ContainerName = CssContainerName)]
 		public override string MenuAncestorLiCssClass
 		{
@@ -202,7 +388,7 @@ namespace N2.Web
 
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Renders the SubNavigation part using the ASP.NET MVC framework.
 	/// </summary>
 	[Adapts(typeof(MenuPart))]
@@ -210,7 +396,7 @@ namespace N2.Web
 	{
 		public override void RenderPart(System.Web.Mvc.HtmlHelper html, ContentItem part, TextWriter writer = null)
 		{
-		    var menuPart = part as MenuPart;
+			var menuPart = part as MenuPart;
 			if (part == null)
 				throw new ArgumentException("part");
 
@@ -225,7 +411,7 @@ namespace N2.Web
 
 	//TODO: Write a WebForms compatible adapter for MenuPart.
 
-
+	/// <summary>Handles rendering of MenuParts for both MVC and Webforms.</summary>
 	public sealed class MenuPartRenderer
 	{
 
@@ -248,29 +434,60 @@ namespace N2.Web
 
 		private readonly List<ContentTreeNode> database;
 		private readonly MenuPart menuPart;
-		private int cId;
+		private readonly int currentPageId;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MenuPartRenderer"/> class.
+		/// </summary>
+		/// <param name="menuPart">The menu part to be rendered.</param>
 		public MenuPartRenderer(MenuPart menuPart)
 		{
 			this.menuPart = menuPart;
-			database = BuildNavTree();
+			var page = Context.CurrentPage;
+
+			// Need the current page ID regardless of cached database or not to render selected page correctly.
+			currentPageId = page == null ? 0 : page.ID;
+
+
+		    if (page != null)
+		    {
+		        var cacheKey = String.Concat(page.ID.ToString(), "+", menuPart.AncestralTrail);
+		        var cacheData = System.Web.Hosting.HostingEnvironment.Cache.Get(cacheKey);
+		        if (cacheData == null)
+		        {
+		            cacheData = BuildNavigationTree(page);
+		            System.Web.Hosting.HostingEnvironment.Cache.Add(cacheKey, cacheData, null, DateTime.Now.AddSeconds(15),
+		                System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, null);
+		        }
+		        database = (List<ContentTreeNode>) cacheData;
+		    }
+		    else
+		    {
+		        database = new List<ContentTreeNode>();
+		    }
 		}
 
+		/// <summary>
+		/// Generates HTML code for the given <c>MenuPart</c>.
+		/// </summary>
+		/// <returns>HTML code as a string</returns>
 		public string GetHtml()
 		{
-
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 			using (var sw = new StringWriter(sb))
 			using (var xml = new XhtmlTextWriter(sw))
 				WriteHtml(xml);
 			return sb.ToString();
 		}
 
-
+		/// <summary>
+		/// Writes the HTML for the given <c>MenuPart</c> to the specified <c>HtmlTextWriter</c>.
+		/// </summary>
+		/// <param name="xml">The <c>HtmlTextWriter</c> to write the output.</param>
 		public void WriteHtml(HtmlTextWriter xml)
 		{
 			xml.AddAttribute("id", String.IsNullOrEmpty(menuPart.Name) ? "menu" + menuPart.ID : menuPart.Name);
-            xml.AddAttribute("class", "menuNavPart");
+			xml.AddAttribute("class", "menuNavPart");
 			xml.RenderBeginTag("div");
 
 			switch (menuPart.MenuTitleDisplayMode)
@@ -280,7 +497,7 @@ namespace N2.Web
 					break;
 				case MenuPartBase.TitleDisplayOptions.CurrentPageTitle:
 					xml.WriteLine(HeadingLevelUtility.DoTitle(menuPart.MenuTitleHeadingLevel, Content.Current.Page.Title));
-                    break;
+					break;
 				case MenuPartBase.TitleDisplayOptions.None:
 					break;
 			}
@@ -297,25 +514,29 @@ namespace N2.Web
 			xml.RenderEndTag(); // </div>
 		}
 
-		private IEnumerable<ContentItem> GetChildren(ContentItem ancestorItem)
+		private IQueryable<ContentItem> QueryApplicableChildren(ContentItem ancestorItem)
 		{
-			return (from x in ancestorItem.GetChildren()
-					where x.IsPage && (menuPart.MenuShowInvisible || x.Visible) && x.IsPublished() && x.ID != Content.Current.Page.ID
-					select x).ToArray();
+			return menuPart.MenuShowInvisible
+				? Content.Search.PublishedPages.Where(item => item.ID != Content.Current.Page.ID && item.Parent == ancestorItem)
+				: Content.Search.PublishedPages.Where(item => item.ID != Content.Current.Page.ID && item.Parent == ancestorItem && item.Visible);
 		}
 
-		private List<ContentTreeNode> BuildNavTree()
+		/// <summary>
+		/// Builds the internal navigation tree structure.
+		/// </summary>
+		/// <param name="currentPage">The current page.</param>
+		/// <returns></returns>
+		private List<ContentTreeNode> BuildNavigationTree(ContentItem currentPage)
 		{
 			List<ContentTreeNode> navTree = new List<ContentTreeNode>();
-			var ci = Content.Current.Page;
-			if (ci == null)
+			if (currentPage == null)
 				return navTree;
-			cId = ci.ID; // need to cache this due to the following if clause:
-			if (ci.VersionOf != null && ci.VersionOf.Value != null)
-				ci = ci.VersionOf.Value; // get the published version
+
+			if (currentPage.VersionOf != null && currentPage.VersionOf.Value != null)
+				currentPage = currentPage.VersionOf.Value; // get the published version
 
 			// follow the ancestral trail up to the desired "start from level"
-			var convertedAncestralTrail = Array.ConvertAll(ci.AncestralTrail.Split(new [] { '/' }, StringSplitOptions.RemoveEmptyEntries), int.Parse);
+			var convertedAncestralTrail = Array.ConvertAll(currentPage.AncestralTrail.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries), int.Parse);
 
 			var xn = menuPart.MenuStartFromLevel;
 			if (xn < 0)
@@ -324,13 +545,13 @@ namespace N2.Web
 			var expandedParents = new List<ContentTreeNode>();
 			for (var i = Math.Max(xn, 0); i < convertedAncestralTrail.Length; ++i)
 			{
-				var ancestorItem = Context.Current.Persister.Get(Convert.ToInt32(convertedAncestralTrail[i]));
+				var ancestorItem = Context.Current.Persister.Get(convertedAncestralTrail[i]);
 				var ancestorNode = new ContentTreeNode(ancestorItem, navTree.LastOrDefault()) { IsAncestor = true };
 				navTree.Add(ancestorNode);
 
 				// expand the ancestor
 				// ReSharper disable LoopCanBeConvertedToQuery
-				foreach (var item in GetChildren(ancestorItem))
+				foreach (var item in QueryApplicableChildren(ancestorItem))
 					expandedParents.Add(new ContentTreeNode(item, ancestorNode));
 				// ReSharper restore LoopCanBeConvertedToQuery
 			}
@@ -338,16 +559,16 @@ namespace N2.Web
 
 			// Add current item ================================================================
 
-			if (ci.Visible || menuPart.MenuShowCurrentItemIfHidden)
+			if (currentPage.Visible || menuPart.MenuShowCurrentItemIfHidden)
 			{
 				// -- add a node for the current page --
-				var navItemCurrent = new ContentTreeNode(ci, navTree.LastOrDefault());
+				var navItemCurrent = new ContentTreeNode(currentPage, navTree.LastOrDefault());
 				var navItemCParent = navTree.LastOrDefault();
 				navTree.Add(navItemCurrent);
 
-				// -- get children and sibilings --
+				// -- get children and siblings --
 				// ReSharper disable LoopCanBeConvertedToQuery
-				foreach (var child in GetChildren(ci).OrderBy(f => f.SortOrder))
+				foreach (var child in QueryApplicableChildren(currentPage).OrderBy(f => f.SortOrder))
 					navTree.Add(new ContentTreeNode(child, navItemCurrent));
 				// ReSharper restore LoopCanBeConvertedToQuery
 			}
@@ -363,16 +584,16 @@ namespace N2.Web
 
 
 
-			// show sibilings of the current item (put under navItemCParent)
-			//if (menuPart.ShowSibilings != MenuPartBase.SibilingDisplayOptions.Never)
+			// show siblings of the current item (put under navItemCParent)
+			//if (menuPart.ShowSiblings != MenuPartBase.SiblingDisplayOptions.Never)
 			//{
-			//	if (menuPart.ShowSibilings == MenuPartBase.SibilingDisplayOptions.Always
-			//		|| (menuPart.ShowSibilings == MenuPartBase.SibilingDisplayOptions.OnlyIfItemHasNoChildren && chil.Length > 0))
+			//	if (menuPart.ShowSiblings == MenuPartBase.SiblingDisplayOptions.Always
+			//		|| (menuPart.ShowSiblings == MenuPartBase.SiblingDisplayOptions.OnlyIfItemHasNoChildren && chil.Length > 0))
 			//	{
 			//		// ok...
 			//		// ReSharper disable LoopCanBeConvertedToQuery
-			//		foreach (var sibiling in sibs.OrderBy(f => f.SortOrder))
-			//			navTree.Add(new ContentTreeNode(sibiling, navItemCParent));
+			//		foreach (var sibling in sibs.OrderBy(f => f.SortOrder))
+			//			navTree.Add(new ContentTreeNode(sibling, navItemCParent));
 			//		// ReSharper restore LoopCanBeConvertedToQuery
 			//	}
 			//}
@@ -390,22 +611,22 @@ namespace N2.Web
 			xml.AddAttribute("class", currentNode == null ? menuPart.MenuOuterUlCssClass : menuPart.MenuInnerUlCssClass);
 			xml.RenderBeginTag(HtmlTextWriterTag.Ul);
 
-		    if (currentNode == null && (!menuPart.MenuShowTreeRoot && childNodes.Count > 0)) // indicates that we are starting the menu, 
-		    {
-                // Skip directly to the childre of the root node.
-		        childNodes = database.Where(f => f.Parent == childNodes.First()).ToList();
-		    }
+			if (currentNode == null && (!menuPart.MenuShowTreeRoot && childNodes.Count > 0)) // indicates that we are starting the menu, 
+			{
+				// Skip directly to the childre of the root node.
+				childNodes = database.Where(f => f.Parent == childNodes.First()).ToList();
+			}
 
-		    foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).ThenBy(n => n.Item.ID))
-		    {
-		        WriteListItem(childNode, xml, level, null);
+			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).ThenBy(n => n.Item.ID))
+			{
+				WriteListItem(childNode, xml, level, null);
 
-		        if (!menuPart.MenuNestChildUls)
-		        {
-		            WriteChildList(childNode, xml, level + 1);
-		        }
-		    }
-		    xml.RenderEndTag();
+				if (!menuPart.MenuNestChildUls)
+				{
+					WriteChildList(childNode, xml, level + 1);
+				}
+			}
+			xml.RenderEndTag();
 		}
 		// ReSharper restore ParameterTypeCanBeEnumerable.Local
 
@@ -447,7 +668,7 @@ namespace N2.Web
 			// write LI...
 			var sn = menuPart;
 			var childItem = childNode.Item;
-			var isSelected = childItem.ID == cId;
+			var isSelected = childItem.ID == currentPageId;
 
 			if (cssClass == null)
 				cssClass = childNode.IsAncestor
@@ -471,13 +692,18 @@ namespace N2.Web
 
 				// render caret if subitems exist
 				if (sn.MenuShowCaretOnItemsWithChildren
-					&& database.Any(f => f.Parent == childNode))
+					&& QueryApplicableChildren(childItem).Any() /* has any applicable children */)
 				{
-					// <b class="caret"></b> 
-					xml.Write(' ');
-					xml.AddAttribute("class", "caret");
-					xml.RenderBeginTag(HtmlTextWriterTag.B);
-					xml.RenderEndTag();
+					if (!String.IsNullOrWhiteSpace(sn.MenuCaretCustomHtml))
+						xml.Write(sn.MenuCaretCustomHtml);
+					else
+					{
+						// <b class="caret"></b> 
+						xml.Write(' ');
+						xml.AddAttribute("class", "caret");
+						xml.RenderBeginTag(HtmlTextWriterTag.B);
+						xml.RenderEndTag();
+					}
 				}
 				xml.RenderEndTag();
 			}

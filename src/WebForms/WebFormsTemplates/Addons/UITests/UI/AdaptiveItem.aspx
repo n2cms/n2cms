@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Templates/UI/Layouts/Top+SubMenu.Master" CodeBehind="AdaptiveItem.aspx.cs" Inherits="N2.Addons.UITests.UI.AdaptiveItem" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Templates/UI/Layouts/Top+SubMenu.Master" CodeBehind="AdaptiveItem.aspx.cs" Inherits="N2.Addons.UITests.UI.AdaptiveItem" %>
 <asp:Content ID="Content9" ContentPlaceHolderID="PostContent" runat="server">
     State: <%= CurrentItem.State %>
 	<ul>

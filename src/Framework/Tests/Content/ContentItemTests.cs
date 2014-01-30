@@ -219,12 +219,12 @@ namespace N2.Tests.Content
         }
 
         [Test]
-        public void GetChild_NameIncludingAspx_IsFound()
+        public void GetChild_NameIncludingSlash_IsFound()
         {
             AnItem root = CreateOneItem<AnItem>(1, "root", null);
             AnItem item1 = CreateOneItem<AnItem>(2, "item1", root);
 
-            Assert.That(root.GetChild("item1.aspx"), Is.EqualTo(item1));
+            Assert.That(root.GetChild("item1/"), Is.EqualTo(item1));
         }
 
         [Test]
@@ -237,12 +237,12 @@ namespace N2.Tests.Content
         }
 
         [Test]
-        public void GetChild_NameIncluding_DotAndAspx_IsFound()
+        public void GetChild_NameIncluding_Slash_IsFound()
         {
             AnItem root = CreateOneItem<AnItem>(1, "root", null);
             AnItem item1 = CreateOneItem<AnItem>(2, "item.1", root);
 
-            Assert.That(root.GetChild("item.1.aspx"), Is.EqualTo(item1));
+            Assert.That(root.GetChild("item.1/"), Is.EqualTo(item1));
         }
 
         [Test]
@@ -271,7 +271,7 @@ namespace N2.Tests.Content
             AnItem item1 = CreateOneItem<AnItem>(2, "item1", root);
             AnItem item2 = CreateOneItem<AnItem>(2, "item2", item1);
 
-            Assert.That(root.GetChild("item1/item2.aspx"), Is.EqualTo(item2));
+            Assert.That(root.GetChild("item1/item2/"), Is.EqualTo(item2));
         }
 
         [Test]

@@ -55,7 +55,7 @@ namespace N2.Management.Content.Templates
             template[ContentTemplateRepository.TemplateDescription] = txtDescription.Text;
             Templates.AddTemplate(template);
 
-            Response.Redirect("Default.aspx#" + tpTemplates.ClientID);
+			Response.Redirect("Default.aspx?template" + template.Path + "#" + tpTemplates.ClientID);
         }
     }
 }

@@ -36,13 +36,6 @@ namespace N2.Edit.Security
             base.OnLoad(e);
         }
 
-
-
-        protected void rptPermissions_ItemDataBound(object sender, RepeaterItemEventArgs args)
-        {
-            CheckBox cb = (CheckBox)args.Item.FindControl("cbRole");
-        }
-
         protected void rptPermissions_ItemCreated(object sender, RepeaterItemEventArgs args)
         {
             if(args.Item.ItemType == ListItemType.Item || args.Item.ItemType == ListItemType.AlternatingItem)
@@ -64,7 +57,7 @@ namespace N2.Edit.Security
             InitValues();
             DataBind();
 
-            base.Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
+            base.Refresh(Selection.SelectedItem, ToolbarArea.Both);
         }
 
         protected void btnSaveRecursive_Command(object sender, CommandEventArgs e)
@@ -76,7 +69,7 @@ namespace N2.Edit.Security
             ApplyRolesRecursive(Selection.SelectedItem);
             DataBind();
 
-            base.Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
+            base.Refresh(Selection.SelectedItem, ToolbarArea.Both);
         }
 
 

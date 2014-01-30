@@ -170,9 +170,16 @@ namespace N2.Persistence.Search
 
                 if (Utility.CurrentTime().Subtract(lastAttempt) >= RetryInterval)
                 {
-                    indexer.Unlock();
-                    lastAttempt = N2.Utility.CurrentTime();
-                    ExecuteEnqueuedActionsAsync();
+					try
+					{
+						indexer.Unlock();
+						lastAttempt = N2.Utility.CurrentTime();
+						ExecuteEnqueuedActionsAsync();
+					}
+					catch (Exception ex)
+					{
+						logger.Error("Error scheduling work", ex);
+					}
                 }
             }
         }

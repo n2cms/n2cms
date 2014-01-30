@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Web.Security;
 using System.Linq;
+using ICSharpCode.SharpZipLib.Zip;
+using N2.Details;
 using N2.Persistence;
 using N2.Security.Items;
 
@@ -264,7 +266,8 @@ namespace N2.Security
                     u.IsLogin = true;
             }
 
-            if (requiresUniqueEmail)
+			//access the property, not the field, in case overriden by a subclass
+            if (RequiresUniqueEmail) 
             {
                 if(!string.IsNullOrEmpty(GetUserNameByEmail(email))){
                     status = MembershipCreateStatus.DuplicateEmail;
@@ -419,10 +422,18 @@ namespace N2.Security
             if (userContainer == null)
                 return null;
 
-            var users = Bridge.Repository.Find(Parameter.TypeEqual(typeof(User).Name) & Parameter.Equal("Parent", userContainer)).ToList();
+            var users = Bridge.Repository.Find(
+				Parameter.TypeEqual(typeof(User).Name) 
+				& Parameter.Equal("Parent", userContainer)).ToList();
 
-            // default admin account does not have an email field be default, to test first.
-            var userNames = users.Where(x => x.Details.ContainsKey("Email") && x.Details["Email"].ToString().Equals(email, StringComparison.OrdinalIgnoreCase)).Select(x => x.Name);
+            // default admin account does not have an email field by default, to test first.
+	        var userNames = from x in users
+		        where x.Details.ContainsKey("Email")
+		        let emailDetailValue = Convert.ToString(x.Details["Email"])
+		        where
+			        !String.IsNullOrEmpty(emailDetailValue) 
+					&& emailDetailValue.Equals(email, StringComparison.OrdinalIgnoreCase)
+		        select x.Name;
 
             return userNames.FirstOrDefault();
         }

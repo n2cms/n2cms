@@ -23,7 +23,8 @@ namespace N2.Tests.Web.Items
             return GetChildren(new ItemFilter[0]);
         }
 
-        public override ItemList GetChildren(string childZoneName)
+        [Obsolete]
+		public override ItemList GetChildren(string childZoneName)
         {
             return GetChildren(new ZoneFilter(childZoneName));
         }

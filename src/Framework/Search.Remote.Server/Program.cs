@@ -26,37 +26,97 @@ namespace N2.Search.Remote.Server
             var server = new IndexerServer();
 
             server.Start();
+            Console.WriteLine("Listening on " + server.UriPrefix + ". Type \"exit\" and press enter to exit");
 
-            Console.WriteLine("Listening on " + server.UriPrefix + ". Press enter key to exit");
-            string command = "";
-            do
-            {
-                command = Console.ReadLine();
-                if ("debug".Equals(command, StringComparison.InvariantCultureIgnoreCase))
-                    Trace.Listeners.Add(new ConsoleWriterTraceListener());
-                if ("exit".Equals(command, StringComparison.InvariantCultureIgnoreCase))
-                    break;
-                if ("cls".Equals(command, StringComparison.InvariantCultureIgnoreCase))
-                    Console.Clear();
-            } while (!string.IsNullOrEmpty(command));
+			string instance = "Pages";
+			var commands = new Dictionary<string, Action<string>>(StringComparer.InvariantCultureIgnoreCase);
 
-            Console.WriteLine("Exiting...");
-            server.Stop();
+			commands["debug"] = (arg) => Trace.Listeners.Add(new ConsoleWriterTraceListener());
+			commands["exit"] = (arg) => { server.Stop(); Environment.Exit(-1); };
+			commands["cls"] = (arg) => Console.Clear();
+			commands["search"] = (arg) => Search(server, instance, arg);
+			commands["count"] = (arg) => Count(server, instance);
+			commands["instance"] = (arg) => { if (string.IsNullOrEmpty(arg)) Console.WriteLine("Current instance: " + instance); else instance = arg; };
+			commands["help"] = (arg) => { Console.WriteLine("Available commands: "); foreach (var command in commands) Console.WriteLine(" * " + command.Key); };
+
+			try
+			{	        
+				do
+				{
+					Console.Write(">");
+					var input = Console.ReadLine();
+					var command = input.Split(' ')[0];
+					var argument = input.Substring(command.Length);
+
+					Action<string> action;
+					if (commands.TryGetValue(command, out action))
+						action(argument);
+					else if (!string.IsNullOrEmpty(command))
+						Console.WriteLine("Invalid command");
+					
+				} while (true);
+
+			}
+			finally
+			{
+				Console.WriteLine("Exiting...");
+				server.Stop();
+			}
         }
 
+		private static void Count(IndexerServer server, string instance)
+		{
+			Console.WriteLine("Number of documents on instance " + instance + ": " + server.Statistics(instance).TotalDocuments);
+		}
 
+		private static void Search(IndexerServer server, string instance, string query)
+		{
+			Console.WriteLine("Searching for " + query);
+			foreach (var result in server.Search(instance, query).Hits)
+			{
+				Console.WriteLine(result.Content.ID + ":\t" + result.Title);
+			}
+		}
     }
+
     public class ConsoleWriterTraceListener : TraceListener
     {
         public override void Write(string message)
         {
-            Console.Write(message);
+			using (OverrideColor(ConsoleColor.DarkGray))
+			{
+				Console.Write(message);
+			}
         }
 
         public override void WriteLine(string message)
         {
-            Console.WriteLine(message);
+			using (OverrideColor(ConsoleColor.DarkGray))
+			{
+				Console.WriteLine(message);
+			}
         }
+
+		private IDisposable OverrideColor(ConsoleColor newColor)
+		{
+			var reset = new ColorReset(Console.ForegroundColor);
+			Console.ForegroundColor = newColor;
+			return reset;
+		}
+
+		class ColorReset : IDisposable
+		{
+			private ConsoleColor resetTo;
+
+			public ColorReset(ConsoleColor resetToOnDispose)
+			{
+				this.resetTo = resetToOnDispose;
+			}
+			public void Dispose()
+			{
+				Console.ForegroundColor = resetTo;
+			}
+		}
     }
 
 }
