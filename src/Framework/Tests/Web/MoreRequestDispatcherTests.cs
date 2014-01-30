@@ -173,7 +173,7 @@ namespace N2.Tests.Web
         [Test]
         public void DoesntUpdateCurrentPage_WhenExtension_IsEmpty_AndEmpty_IsNotObserved()
         {
-            ReCreateDispatcherWithConfig(new HostSection { Web = new WebElement { ObserveEmptyExtension = false } });
+            ReCreateDispatcherWithConfig(new HostSection { Web = new WebElement { Extension = ".aspx", ObserveEmptyExtension = false } });
             webContext.Url = "/one";
 
             TriggerRewrite();

@@ -29,14 +29,14 @@ namespace N2.Tests.Web
         public void CanBuildUrl_ItemOneLevelDown()
         {
             string url = parser.BuildUrl(page1);
-            Assert.AreEqual("/item1.aspx", url);
+            Assert.AreEqual("/item1/", url);
         }
 
         [Test]
         public void CanBuildUrl_ItemOneStep_TwoLevelsDown()
         {
             string url = parser.BuildUrl(page2_1);
-            Assert.AreEqual("/item2/item2_1.aspx", url);
+            Assert.AreEqual("/item2/item2_1/", url);
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace N2.Tests.Web
             {
                 string url = parser.BuildUrl(page2_1);
 
-                Assert.AreEqual("/HelloWorld/item2/item2_1.aspx", url);
+                Assert.AreEqual("/HelloWorld/item2/item2_1/", url);
             }
             finally
             {
