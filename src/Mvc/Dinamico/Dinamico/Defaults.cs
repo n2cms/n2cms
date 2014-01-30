@@ -28,58 +28,58 @@ namespace Dinamico
 					return "content";
 			}
 		}
-        public static string ImageSize(string preferredSize, string fallbackToZoneNamed)
-        {
-            if (string.IsNullOrEmpty(preferredSize))
-                return ImageSize(fallbackToZoneNamed);
-            return preferredSize;
-        }
+
+		public static string ImageSize(string preferredSize, string fallbackToZoneNamed)
+		{
+			if (string.IsNullOrEmpty(preferredSize))
+				return ImageSize(fallbackToZoneNamed);
+			return preferredSize;
+		}
+
+		public static string ImageSize(string zoneName)
+		{
+			switch (zoneName)
+			{
+				case "SliderArea":
+				case "PreContent":
+				case "PostContent":
+					return "wide";
+				default:
+					return "half";
+			}
+		}
 
 
-        public static string ImageSize(string zoneName)
-        {
-            switch (zoneName)
-            {
-                case "SliderArea":
-                case "PreContent":
-                case "PostContent":
-                    return "wide";
-                default:
-                    return "half";
-            }
-        }
+		/// <summary>
+		/// Picks the translation best matching the browser-language or the first translation in the list
+		/// </summary>
+		/// <param name="request"></param>
+		/// <param name="currentPage"></param>
+		/// <returns></returns>
+		public static ContentItem SelectLanguage(this HttpRequestBase request, ContentItem currentPage)
+		{
+			var start = Find.ClosestOf<IStartPage>(currentPage) ?? N2.Find.StartPage;
+			if (start == null) return null;
 
+			if (start is LanguageIntersection)
+			{
+				var translations = GetTranslations(currentPage).ToList();
 
-        /// <summary>
-        /// Picks the translation best matching the browser-language or the first translation in the list
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="currentPage"></param>
-        /// <returns></returns>
-        public static ContentItem SelectLanguage(this HttpRequestBase request, ContentItem currentPage)
-        {
-            var start = Find.ClosestOf<IStartPage>(currentPage) ?? N2.Find.StartPage;
-            if (start == null) return null;
+				if (request.UserLanguages == null)
+					return translations.FirstOrDefault();
 
-            if (start is LanguageIntersection)
-            {
-                var translations = GetTranslations(currentPage).ToList();
+				var selectedlanguage = request.UserLanguages.Select(ul => translations.FirstOrDefault(t => t.LanguageCode == ul))
+					.Where(t => t != null)
+					.FirstOrDefault();
+				return selectedlanguage ?? translations.FirstOrDefault();
+			}
 
-                if (request.UserLanguages == null)
-                    return translations.FirstOrDefault();
+			return start;
+		}
 
-                var selectedlanguage = request.UserLanguages.Select(ul => translations.FirstOrDefault(t => t.LanguageCode == ul))
-                    .Where(t => t != null)
-                    .FirstOrDefault();
-                return selectedlanguage ?? translations.FirstOrDefault();
-            }
-
-            return start;
-        }
-
-        private static IEnumerable<StartPage> GetTranslations(ContentItem currentPage)
-        {
-            return currentPage.GetChildren().OfType<StartPage>();
-        }
+		private static IEnumerable<StartPage> GetTranslations(ContentItem currentPage)
+		{
+			return currentPage.GetChildren().OfType<StartPage>();
+		}
     }
 }
