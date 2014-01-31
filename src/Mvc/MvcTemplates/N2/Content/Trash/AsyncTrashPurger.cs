@@ -1,6 +1,7 @@
 using N2.Edit.Trash;
 using N2.Engine;
 using N2.Persistence;
+using N2.Security;
 using System;
 using System.Collections.Concurrent;
 
@@ -28,12 +29,14 @@ namespace N2.Management.Content.Trash
         private AsyncPurgeStatus _currentStatus;
         bool _isWorking;
         ConcurrentQueue<Work> workQueue = new ConcurrentQueue<Work>();
+        private ISecurityManager security;
 
-        public AsyncTrashPurger(IWorker worker, ITrashHandler trash, IPersister persister)
+        public AsyncTrashPurger(IWorker worker, ITrashHandler trash, IPersister persister, ISecurityManager security)
         {
             this.worker = worker;
             this.trash = trash;
             this.persister = persister;
+            this.security = security;
         }
 
         public AsyncPurgeStatus Status
@@ -66,7 +69,10 @@ namespace N2.Management.Content.Trash
                     string title = item.Title;
                     Status = new AsyncPurgeStatus { IsRunning = true, Progress = new PurgingStatus { Deleted = 0, Remaining = 1 }, Title = title };
 
-                    trash.Purge(item, s => { Status = new AsyncPurgeStatus { IsRunning = true, Progress = s, Title = title }; });
+                    using(this.security.Disable())
+                    {
+                        trash.Purge(item, s => { Status = new AsyncPurgeStatus { IsRunning = true, Progress = s, Title = title }; });
+                    }
                     Status = null;
                 }
             });
