@@ -281,11 +281,12 @@ namespace N2.Web.Parts
                 ?? RendererSelector.ResolveRenderer(part.GetContentType());
             if (renderer != null)
             {
+                logger.DebugFormat("Using renderer {0} for part {1}", renderer, part);
                 renderer.Render(new Rendering.ContentRenderingContext { Content = part, Html = html }, writer ?? html.ViewContext.Writer);
                 return;
             }
 
-            logger.WarnFormat("Using legacy template rendering for part {0}", part);
+            logger.DebugFormat("Using fallback template rendering for part {0}", part);
             new LegacyTemplateRenderer(Engine.Resolve<IControllerMapper>()).RenderTemplate(part, html);
         }
 
