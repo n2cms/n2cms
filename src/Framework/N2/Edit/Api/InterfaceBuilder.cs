@@ -391,7 +391,7 @@ namespace N2.Management.Api
 
         protected virtual Node<TreeNode> GetContent(HttpContextBase context, SelectionUtility selection, ContentItem selectedItem)
         {
-            var filter = engine.EditManager.GetEditorFilter(context.User);
+            var filter = engine.EditManager.GetEditorFilter(context.User) & Content.Is.Page();
 
             var root = selection.Traverse.RootPage;
             var structure = ApiExtensions.BuildBranchStructure(filter, engine.Resolve<IContentAdapterProvider>(), selectedItem, root);
