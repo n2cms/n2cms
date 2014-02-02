@@ -113,7 +113,7 @@
 	"signout": { text: "Sign out", title: "Sign out {{Context.User.Name}}" },
     "confirm": {
         "move": {
-            "title": "Move?",
+            "title": "Move to new location?",
             "info": "This may break inbound links",
             "moved": "Moved",
             "destination": "Destination"
