@@ -111,6 +111,7 @@
     <Content Include="N2\App\Js\Controllers.js" />
     <Content Include="N2\App\Js\Directives.js" />
     <Content Include="N2\App\Js\Services.js" />
+    <Content Include="N2\App\Partials\ManagementConfirm.html" />
     <Content Include="N2\App\Partials\Main.html" />
     <Content Include="N2\App\Partials\Loading.html" />
     <Content Include="N2\App\Partials\Framework.html" />

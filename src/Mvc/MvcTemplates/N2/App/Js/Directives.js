@@ -418,4 +418,25 @@ span.null {color:silver}\
 		};
 	});
 
+	module.directive('n2DelayClass', function ($timeout, $compile) {
+	    return {
+	        link: function (scope, element, attrs) {
+	            scope.$watch(attrs.n2DelayClass, function (options) {
+	                if (!options)
+	                    return;
+
+	                $timeout(function () {
+	                    for (var k in options) {
+	                        if (options[k]) {
+	                            element.addClass(k);
+	                        } else {
+	                            element.removeClass(k);
+	                        }
+	                    }
+	                }, 10);
+	            }, true);
+	        }
+	    };
+	});
+
 })(angular.module('n2.directives', ['n2.localization']));

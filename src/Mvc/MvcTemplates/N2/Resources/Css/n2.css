@@ -179,6 +179,10 @@ a { text-decoration: none; color: #000; }
 		margin: 10px;
 	}
 
+#confirm .in {
+    display:block;
+}
+
 #debug-context {
 	right:30px;
 }
@@ -279,4 +283,9 @@ a[disabled=disabled]:hover {
     left: 10px;
     top: 11px;
     left: -6px;
+}
+
+/* BOOTSTRAP OVERRIDES */
+.modal {
+    border-radius:0;
 }

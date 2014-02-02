@@ -1,4 +1,4 @@
-﻿<div class="modal" ng-show="settings">
+﻿<div class="modal fade" n2-delay-class="{ in: !!settings }" style="display:block;">
     <div class="modal-header">
         <button type="button" class="close" ng-click="close()" aria-hidden="true">&times;</button>
         <h3>{{settings.title}}</h3>
@@ -13,4 +13,4 @@
         <a href="#" class="btn" ng-click="close()" translate="confirm.close">Close</a>
     </div>
 </div>
-<div class="modal-backdrop" ng-show="open"></div>
+<div class="modal-backdrop" ng-show="settings"></div>
