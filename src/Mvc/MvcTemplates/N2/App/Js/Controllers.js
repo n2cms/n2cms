@@ -359,10 +359,15 @@ function ManagementConfirmCtrl($rootScope, $scope) {
         delete $scope.settings;
     }
     $scope.close = function () {
+        $scope.settings.cancelled && $scope.settings.cancelled();
         delete $scope.settings;
     }
     $rootScope.$on("confirm", function (e, settings) {
         $scope.settings = settings;
+        if (!$scope.$$phase) {
+            // specific sceanrio: move
+            $scope.$digest();
+        }
     });
 }
 
@@ -458,8 +463,6 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 			node.IsPaged = false;
 		});
 	}
-	$scope.$on("moved", function (e, content) {
-	});
 	$scope.sort = new SortHelperFactory($scope, Content);
 	$scope.parts = {
 		show: function(node) {
