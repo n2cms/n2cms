@@ -82,6 +82,7 @@ a { text-decoration: none; color: #000; }
 						#page-tree li div.item.draft	   b.handle { background-color: #FFBB88; }
 						#page-tree li div.item.draft:hover b.handle { background-color: #FF9966; }
 
+					#page-tree li div.item.unpublished { border-color: #FF6600; }
 						#page-tree li div.item.unpublished		 b.handle { background-color: #FF6600; }
 						#page-tree li div.item.unpublished:hover b.handle { background-color: #EE3300; }
 		

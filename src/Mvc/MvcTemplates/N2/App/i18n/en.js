@@ -111,4 +111,12 @@
 	"me": { },
 	"password": { text: "Change password" },
 	"signout": { text: "Sign out", title: "Sign out {{Context.User.Name}}" },
+    "confirm": {
+        "unpublish": { 
+            "title": "Unpublish?",
+            "startpagewarning": "This page is a start page. Unpublishing it will prevent visits for all non-editors."
+        },
+        "confirm": { "text" : "Confirm" },
+        "close": { "text" : "Close" }
+    }
 }

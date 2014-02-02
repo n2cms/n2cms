@@ -300,4 +300,10 @@
 		};
 	});
 
+	module.factory('Confirm', function ($rootScope) {
+	    return function (settings) {
+	        $rootScope.$emit("confirm", settings);
+	    };
+	});
+
 })(angular.module('n2.services', ['ngResource']));

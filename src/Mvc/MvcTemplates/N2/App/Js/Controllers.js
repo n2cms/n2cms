@@ -353,6 +353,19 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	};
 }
 
+function ManagementConfirmCtrl($rootScope, $scope) {
+    $scope.confirm = function () {
+        $scope.settings.confirmed && $scope.settings.confirmed();
+        delete $scope.settings;
+    }
+    $scope.close = function () {
+        delete $scope.settings;
+    }
+    $rootScope.$on("confirm", function (e, settings) {
+        $scope.settings = settings;
+    });
+}
+
 function NavigationCtrl($rootScope, $scope, Content, ContextMenuFactory, Eventually) {
 	$scope.search = {
 		execute: function (searchQuery) {
@@ -632,7 +645,7 @@ function PageInfoCtrl($scope, Content) {
 	});
 }
 
-function PagePublishCtrl($scope, $rootScope, $modal, Content) {
+function PagePublishCtrl($scope, $rootScope, $modal, Content, Confirm, Translate) {
 	$scope.publish = function () {
 		Content.publish({ selected: $scope.Context.CurrentItem.Path, versionIndex: $scope.Context.CurrentItem.VersionIndex }, function (result) {
 			$scope.previewUrl(result.Current.PreviewUrl);
@@ -641,11 +654,23 @@ function PagePublishCtrl($scope, $rootScope, $modal, Content) {
 		});
 	};
 	$scope.unpublish = function () {
-		Content.unpublish(Content.applySelection({}, $scope.Context.CurrentItem), function (result) {
-			$scope.previewUrl(result.Current.PreviewUrl);
-			
-			$scope.reloadNode(result.Current.Path, $scope.refreshContext);
-		});
+	    var settings = {
+	        title: Translate("confirm.unpublish.title"),
+	        item: $scope.Context.CurrentItem,
+	        template: "<b class='ico' ng-show='settings.item.IconClass || settings.item.IconUrl' ng-class='settings.item.IconClass' x-background-image='settings.item.IconUrl'></b> {{settings.item.Title}}",
+	        confirmed: function () {
+	            Content.unpublish(Content.applySelection({}, $scope.Context.CurrentItem), function (result) {
+	                $scope.previewUrl(result.Current.PreviewUrl);
+
+	                $scope.reloadNode(result.Current.Path, $scope.refreshContext);
+	            })
+	        }
+	    };
+	    if ($scope.Context.CurrentItem.MetaInformation.authority) {
+	        settings.template = "<div class='alert alert-warnig'>{{settings.warning}}</div>" + settings.template;
+	        settings.warning = Translate("confirm.unpublish.startpagewarning");
+	    }
+	    Confirm(settings);
 	};
 }
 
