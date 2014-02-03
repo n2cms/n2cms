@@ -26,7 +26,7 @@
 	</ItemGroup>
 
 	<Target Name="Config-NuGet">
-    <Copy SourceFiles="@(nugetLibraryBinFiles)" DestinationFolder="$(Library-NugetFolder)\lib" />
+    <!--<Copy SourceFiles="@(nugetLibraryBinFiles)" DestinationFolder="$(Library-NugetFolder)\lib" />-->
     <ItemGroup>
       <configNugetIncludes Include="$(BuildFolder)\Nuget\Config\**\*" />
     </ItemGroup>
