@@ -50,7 +50,10 @@ namespace N2.Management.Content.Trash
             workQueue.Enqueue(new Work { Task = () => 
             {
                 Status = new AsyncPurgeStatus { IsRunning = true, Progress = new PurgingStatus { Deleted = 0, Remaining = 1 }, Title = "All" };
-                trash.PurgeAll(s => { Status = new AsyncPurgeStatus { IsRunning = true, Progress = s, Title = "All" }; });
+                using (security.Disable())
+                {
+                    trash.PurgeAll(s => { Status = new AsyncPurgeStatus { IsRunning = true, Progress = s, Title = "All" }; });
+                }
                 Status = null;
             }});
             BeginWorking();
