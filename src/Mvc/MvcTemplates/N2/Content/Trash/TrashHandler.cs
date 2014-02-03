@@ -216,7 +216,7 @@ namespace N2.Edit.Trash
             var containerItem = GetTrashContainer(create: false);
             if (containerItem == null) return;
 
-            var children = containerItem.GetChildren(new AccessFilter(webContext.User, security)).ToList()
+            var children = containerItem.Children
                 .Select(c => new { Item = c, DescendantCount = persister.Repository.CountDescendants(c) }).ToList();
 
             int deletedCount = 0;
