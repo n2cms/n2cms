@@ -1,8 +1,16 @@
 ﻿@using N2.Edit
 @{
-	int level = 1;
-	foreach (var a in Content.Traverse.AncestorsBetween(level, 2)){
-		level++;
-		@Html.UnorderedList(Content.Traverse.NavigatableChildPages(a).TryAppendCreatorNode(Html.ContentEngine(), a), @<span>@Html.Link(item.Data)</span>, htmlAttributes: new { @class = "submenu menu clearfix level" + level });
+	var ancestors = Content.Traverse.AncestorsBetween(1, 2).ToList();
+	var allAncestors = new HashSet<N2.ContentItem>(Content.Traverse.Ancestors());
+}
+@foreach(var ancestor in ancestors)
+{
+	<ul class="nav nav-pills level@(Content.Traverse.LevelOf(ancestor))">
+	@foreach(var child in Content.Traverse.NavigatableChildPages(ancestor).TryAppendCreatorNode(Html.ContentEngine(), ancestor))
+	{
+		<li class="@(allAncestors.Contains(child) ? "active" : "")">
+			@Html.Link(child)
+		</li>
 	}
+	</ul>
 }

@@ -1,6 +1,6 @@
 /* SIZE AND LAYOUT OF THE PAGE */
 
-html,body { min-height:100%; }
+/*html,body { min-height:100%; }
 	div#wrapper { position:relative; width:960px; margin:0 auto; }
 		div#top { position:absolute; right:0; padding:5px; z-index:10 }
 			div#top ul { float:right; list-style-type:none; margin-left:0; }
@@ -23,11 +23,11 @@ html,body { min-height:100%; }
 						.columns .column { margin:0; float:left; }
 				div#aside { width:300px; float:right; }
 					div#aside .part { margin-top:20px; }
-		div#footer { padding:20px; }
+		div#footer { padding:20px; }*/
 
 /* layout parts */
-	#content .part { margin-bottom:20px; }
+	/*#content .part { margin-bottom:20px; }
 	.columns .column { margin-left:20px; width:450px; float:left; }
 		.columns .column .part { margin-left:0; margin-right:0; }
 	.threecolumns .column { width:290px; }
-		.threecolumns .column .half { width:100%; }
+		.threecolumns .column .half { width:100%; }*/
