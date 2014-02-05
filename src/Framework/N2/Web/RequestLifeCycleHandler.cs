@@ -230,11 +230,11 @@ namespace N2.Web
 			}
 		}
 
-		/// <summary>Infuses the http handler (usually an aspx page) with the content page associated with the url if it implements the <see cref="IContentTemplate"/> interface.</summary>
-		protected virtual void Application_AcquireRequestState(object sender, EventArgs e)
-		{
-			//TODO: Add ForceConsistentUrls property? Right now there is only this #if to turn it off by default.
+		//TODO: Add ForceConsistentUrls property? Right now there is only this #if to turn it off by default.
 #if SAFE_URL_HANDLING
+		/// <summary>Infuses the http handler (usually an aspx page) with the content page associated with the url if it implements the <see cref="IContentTemplate"/> interface.</summary>
+		protected virtual void §(object sender, EventArgs e)
+		{
 
 			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
 
@@ -264,9 +264,8 @@ namespace N2.Web
 				adapter.InjectCurrentPage(webContext.CurrentPath, webContext.HttpContext.Handler);
 			}
 
-#endif
-
 		}
+#endif
 
 		protected virtual void Application_Error(object sender, EventArgs e)
 		{
@@ -295,7 +294,9 @@ namespace N2.Web
 			broker.PostResolveRequestCache += Application_PostResolveRequestCache;
 			broker.PostMapRequestHandler += Application_PostMapRequestHandler;
 			broker.AuthorizeRequest += Application_AuthorizeRequest;
+#if SAFE_URL_HANDLING
 			broker.AcquireRequestState += Application_AcquireRequestState;
+#endif
 			broker.Error += Application_Error;
 			broker.EndRequest += Application_EndRequest;
 		}
@@ -306,7 +307,9 @@ namespace N2.Web
 			broker.PostResolveRequestCache -= Application_PostResolveRequestCache;
 			broker.PostMapRequestHandler -= Application_PostMapRequestHandler;
 			broker.AuthorizeRequest -= Application_AuthorizeRequest;
+#if SAFE_URL_HANDLING
 			broker.AcquireRequestState -= Application_AcquireRequestState;
+#endif
 			broker.Error -= Application_Error;
 			broker.EndRequest -= Application_EndRequest;
 		}
