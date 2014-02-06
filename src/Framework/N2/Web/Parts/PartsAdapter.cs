@@ -158,9 +158,10 @@ namespace N2.Web.Parts
         /// <returns>Item definitions allowed by zone, parent restrictions and security.</returns>
         public virtual IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem parentItem, IPrincipal user)
         {
-            return Definitions.GetAllowedChildren(parentItem)
-                .Where(d => d.Enabled && d.AllowedIn != Integrity.AllowedZones.None && d.Enabled)
-                .WhereAuthorized(Security, user, parentItem);
+            return new[] { parentItem }
+                .Concat(parentItem.Children.Where(x => !x.IsPage).SelectMany(Find.EnumerateTree))
+                .SelectMany(x => Definitions.GetDefinition(x).AvailableZones.SelectMany(y => GetAllowedDefinitions(x, y.ZoneName, user)))
+                .Distinct();
         }
 
         /// <summary>Adds a content item part to a containing control hierarchy (typically a zone control). Override this method to adapt how a parent gets it's children added.</summary>

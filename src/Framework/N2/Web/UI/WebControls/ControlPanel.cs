@@ -198,7 +198,7 @@ jQuery(document).ready(function(){{
                 availableDefinitions = GetPossibleDefinitions(adapter, pageZones, user);
 
             return from x in availableDefinitions
-                orderby x ascending, x.SortOrder ascending
+                orderby x ascending, x.Title ascending
                 select x;
         }
 
