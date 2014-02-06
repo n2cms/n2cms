@@ -2,8 +2,7 @@
    href="{{action.Current.Url}}"
    target="{{action.Current.Target}}"
    ng-controller="FrameActionCtrl"
-   ng-show="action.Current.Url"
-   x-background-image="action.Current.IconUrl">
+   ng-show="action.Current.Url">
 	<b class='ico' ng-show='action.Current.IconClass || action.Current.IconUrl' ng-class='action.Current.IconClass' x-background-image='action.Current.IconUrl'></b>
 	{{action.Current.Title}}
 </a>
@@ -11,8 +10,7 @@
    href="#"
    ng-controller="FrameActionCtrl"
    ng-show="action && !action.Current.Url"
-   ng-click="manipulator.click(action.Current.Selector)"
-   x-background-image="action.Current.IconUrl">
+   ng-click="manipulator.click(action.Current.Selector)">
 	<b class='ico' ng-show='action.Current.IconClass || action.Current.IconUrl' ng-class='action.Current.IconClass' x-background-image='action.Current.IconUrl'></b>
 	{{action.Current.Title}}
 </a>

@@ -30,7 +30,10 @@ namespace N2.Edit.Trash
                 btnClear.Enabled = false;
                 hlRunning.NavigateUrl = Request.RawUrl;
                 hlRunning.Visible = status.IsRunning;
-                hlRunning.Text = string.Format(GetLocalResourceString("hlRunning", "A delete task is in progress. Deleted {0} out of {1} items below '{2}'. Click to refresh."), status.Progress.Deleted, status.Progress.Total, status.Title);
+                var format = status.Progress.Deleted > 0
+                    ? GetLocalResourceString("hlRunning", "A delete task is in progress. Deleted {0} out of {1} items below '{2}'. Click to refresh.")
+                    : GetLocalResourceString("hlDeleting", "Deleting {1} items below '{2}'. Click to refresh.");
+                hlRunning.Text = string.Format(format, status.Progress.Deleted, status.Progress.Total, status.Title);
             }
             else if (Convert.ToBoolean(Request["showStatus"]))
                 RegisterRefreshNavigationScript(CurrentItem);

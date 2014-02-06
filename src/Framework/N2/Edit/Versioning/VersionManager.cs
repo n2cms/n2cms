@@ -245,8 +245,8 @@ namespace N2.Edit.Versioning
                 {
                     var clone = replacingChild.Clone(false);
                     clone.State = ContentState.Published;
-                    clone.Published = Utility.CurrentTime();
-                    clone.Expires = null;
+                    if (!clone.Published.HasValue)
+                        clone.Published = Utility.CurrentTime();
                     clone.AddTo(currentItem);
                     RelinkMasterVersion(clone);
                     yield return clone;

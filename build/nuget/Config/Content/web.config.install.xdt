@@ -48,7 +48,7 @@
 		<httpRuntime xdt:Transform="SetAttributes(requestValidationMode)" requestValidationMode="2.0" />
 
 		<authentication mode="Forms" xdt:Transform="InsertIfMissing">
-			<forms>
+      <forms xdt:Transform="InsertIfMissing">
 				<credentials passwordFormat="SHA1" xdt:Transform="InsertIfMissing">
 					<!-- WARNING: Make sure the admin password was changed manually or using the installer at http://yoursite/n2/installation/begin/. -->
 					<user xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" name="admin" password="fa9beb99e4029ad5a6615399e7bbae21356086b3" />
@@ -63,5 +63,10 @@
 		</authentication>
 
 	</system.web>
+
+  <system.webServer xdt:Transform="InsertIfMissing">
+    <validation xdt:Transform="InsertIfMissing" />
+    <validation xdt:Transform="SetAttributes(validateIntegratedModeConfiguration)" validateIntegratedModeConfiguration="false"/>
+  </system.webServer>
 
 </configuration>

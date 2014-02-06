@@ -262,7 +262,13 @@
 		};
 	});
 
-	module.factory('SortHelperFactory', function (Content, Notify) {
+	module.factory('Confirm', function ($rootScope) {
+	    return function (settings) {
+	        $rootScope.$emit("confirm", settings);
+	    };
+	});
+
+	module.factory('SortHelperFactory', function (Content, Notify, Translate, Confirm) {
 		var context = {}
 		return function (scope) {
 			function reload(ctx) {
@@ -280,12 +286,27 @@
 				});
 			}
 			this.move = function (ctx) {
-				Content.move(ctx.paths, function () {
-					reload(ctx);
-					Notify.show({ message: "Moved " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
-				}, function () {
-					Notify.show({ message: "Failed moving " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "error" });
-				});
+			    console.log("move", ctx, ctx.scopes.selected.node.Current.Title, ctx.scopes.to.node.Current.Title, Translate("confirm.move.title"));
+			    Confirm({
+			        title: Translate("confirm.move.title"),
+			        moved: ctx.scopes.selected.node.Current,
+			        destination: ctx.scopes.to.node.Current,
+			        template: "<div class='alert alert-info' translate='confirm.move.info'>This may break inbound links</div>"
+                            + "<p><label translate='confirm.move.moved'>Moved</label><b class='ico' ng-show='settings.moved.IconClass || settings.moved.IconUrl' ng-class='settings.moved.IconClass' x-background-image='settings.moved.IconUrl'></b> {{settings.moved.Title}}<p>"
+                            + "<p><label translate='confirm.move.destination'>Destination</label><b class='ico' ng-show='settings.destination.IconClass || settings.destination.IconUrl' ng-class='settings.destination.IconClass' x-background-image='settings.destination.IconUrl'></b> {{settings.destination.Title}}<p>",
+			        confirmed: function () {
+			            Content.move(ctx.paths, function () {
+			                reload(ctx);
+			                Notify.show({ message: "Moved " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
+			            }, function () {
+			                Notify.show({ message: "Failed moving " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "error" });
+			            });
+			        },
+			        cancelled: function () {
+			            scope.reloadChildren(ctx.scopes.from.node);
+			            scope.reloadChildren(ctx.scopes.to.node);
+			        }
+			    });
 			};
 			this.sort = function (ctx) {
 				Content.sort(ctx.paths, function () {

@@ -4,56 +4,76 @@
 
 $.fn.plupdown = function (options) {
 	options = $.extend({
-		callback: function () { },
-		loadingHtml: "<ul><li class='loading'>Loading...</li></ul>",
-		opener: true,
-		openerClass: "opener",
-		resultsClass: "dropmenu"
+		callback: function () { }
+		//,
+		//opener: true,
+		//openerClass: "opener",
+		//resultsClass: "dropmenu"
 	}, options);
 	var isForm = this.is("form");
 
-	var close = function (e) {
-		if ($(e.target).closest(".inner").any())
-			return;
-		$(".dropmenu").each(function () {
-			$($(this).data("opener")).removeClass("open");
-		}).removeData("opener").remove();
-		$(document).unbind("click", close);
-		$(document).unbind("submit", close);
-	};
-
+	//var close = function (e) {
+	//	if ($(e.target).closest(".inner").any())
+	//		return;
+	//	$(".dropmenu").each(function () {
+	//		$($(this).data("opener")).removeClass("open");
+	//	}).removeData("opener").remove();
+	//	$(document).unbind("click", close);
+	//	$(document).unbind("submit", close);
+	//};
 	var open = function (e) {
-		e.preventDefault();
-		if ($(this).is(".open"))
-			return;
-		e.stopPropagation();
-		close(e);
-		$(this).addClass("open");
+		e && e.preventDefault();
+		if (isForm) {
+			$(this).closest("li").addClass("open").end().siblings("ul").children("li").show();
+			var form = this;
+			function close() {
+				$(form).closest("li").removeClass("open");
+				$(document).unbind(".plupdown_closer");
+			}
+			$(document).bind("click.plupdown_closer", function (e) {
+				close();
+			}).bind("keydown.plupdown_closer", function (e) {
+				if (e.keyCode != 27)
+					return;
+				close();
+			});
+		}
+		else
+			$(this).unbind("click.plupdown");
+		//if ($(this).is(".open"))
+		//	return;
+		//e.stopPropagation();
+		//close(e);
+		//$(this).addClass("open");
 
-		var o = $(this).offset();
-		var h = $(this).height();
+		//var o = $(this).offset();
+		//var h = $(this).height();
 
 		var url = isForm ? this.action : this.href;
 		var data = isForm ? $(this).serialize() : {};
-		var $r = $("<div/>").addClass(options.resultsClass).appendTo(document.body)
-			.css({
-				position: "absolute",
-				top: (o.top + h) + "px",
-				left: Math.min(o.left, $(window).width() - 220) + "px"
-			})
-			.html("<a href='#close' class='closer'>&nbsp;</a><div class='inner'/>")
-			.data("opener", this);
-		$r.children(".inner")
-			.html(options.loadingHtml)
-			.load(url, data, options.callback);
-
-		$(document.body).bind("click", close);
-		$(document.body).bind("submit", close);
+		
+		//$("<div/>").addClass(options.resultsClass).appendTo(document.body)
+			//.css({
+			//	position: "absolute",
+			//	top: (o.top + h) + "px",
+			//	left: Math.min(o.left, $(window).width() - 220) + "px"
+			//})
+			//.html("<a href='#close' class='closer'>&nbsp;</a><div class='inner'/>")
+			//.data("opener", this);
+		var $ul = $(this).siblings("ul");
+		if (options.loadingHtml)
+			$ul.html(options.loadingHtml);
+		$ul.load(url, data, options.callback);
 	};
 
-	var $o = this.bind(isForm ? "submit" : "click", open);
-	if(options.opener)
-		$o.addClass(options.openerClass).append("<span class='arrow'>&nbsp;</span>");
+	//var $o = this.bind(isForm ? "submit" : "click", open);
+	//if(options.opener)
+	//	$o.addClass(options.openerClass).append("<span class='arrow'>&nbsp;</span>");
+
+	if (isForm)
+		$(this).bind("submit.plupdown", open);
+	else
+		$(this).bind("click.plupdown", open);
 
 	return this;
 };
@@ -61,12 +81,6 @@ $.fn.plupdown = function (options) {
 $.fn.any = function () {
 	return this.length > 0;
 }
-
-$.fn.clearonfocus = function () {
-	this.each(function () { this.title = this.value; })
-		.focus(function () { if (this.value === this.title) this.value = ""; })
-		.blur(function () { if (this.value === "") this.value = this.title; });
-};
 
 $.fn.menudown = function (options) {
 	options = $.extend({ submenuclass: "submenu" }, options);
@@ -97,7 +111,7 @@ $(document).ready(function () {
 
 	function highlight(text) {
 		if (!window.highlightLoaded)
-			$("<script type='text/javascript' />").attr("src", "/Dinamico/Themes/Default/Scripts/jquery.highlight-3.js").appendTo($("head"));
+			$("<script type='text/javascript' />").attr("src", "/Dinamico/Themes/Default/lib/jquery/jquery.highlight-3.js").appendTo($("head"));
 		window.highlightLoaded = true;
 		setTimeout(function () {
 			var splits = text.split(" ");
@@ -106,11 +120,9 @@ $(document).ready(function () {
 		}, 1);
 	}
 
-	$("#searchform input").clearonfocus();
-
 	$("#searchform").plupdown({
 		callback: function () {
-			var value = $("#searchform input").attr("value");
+			var value = $("#searchform input").val();
 			var here = location.href.replace(/#.*/, "");
 			$("a", this).each(function (i) {
 				if (i === 0) this.focus();

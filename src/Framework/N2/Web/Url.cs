@@ -22,7 +22,7 @@ namespace N2.Web
 		static readonly string[] querySplitter = new[] {"&amp;", Amp};
 		static readonly char[] slashes = new char[] { '/' };
 		static readonly char[] dotsAndSlashes = new char[] { '.', '/' };
-		static string defaultExtension = ".aspx";
+		static string defaultExtension = "";
 		static string defaultDocument = "Default.aspx";
 
 		private static readonly HashSet<string> contentParameters = new HashSet<string>

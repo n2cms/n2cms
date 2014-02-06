@@ -6,3 +6,7 @@
 </div>
 <div id="footer" ng-include src="Context.Partials.Footer">
 </div>
+
+<div id="confirm" ng-controller="ManagementConfirmCtrl" ng-include src="settings && 'App/Partials/ManagementConfirm.html'">
+    {{settings}}
+</div>

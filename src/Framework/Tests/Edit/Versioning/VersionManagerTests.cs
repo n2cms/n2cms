@@ -1,6 +1,5 @@
 using System;
 using N2.Persistence;
-using N2.Persistence.NH;
 using N2.Tests.Fakes;
 using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
@@ -8,8 +7,6 @@ using Shouldly;
 using System.Linq;
 using N2.Edit.Versioning;
 using N2.Tests.Persistence;
-using N2.Persistence.Proxying;
-using N2.Definitions;
 using System.Collections.Generic;
 
 namespace N2.Tests.Edit.Versioning
@@ -1052,5 +1049,26 @@ namespace N2.Tests.Edit.Versioning
         public void NewDetailCollections_AreAdded()
         {
         }
+
+
+        [Test]
+        public void PublishingDraft_CreatesNewPart_WithoutRemovingExpiryDate()
+        {
+            PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
+            persister.Save(root);
+            
+            var draft = versioner.AddVersion(root, asPreviousVersion: false);
+            var part = new PersistablePart { Title = "part", Name = "part" };
+            part.ZoneName = "TheZone";
+            var now = DateTime.Now.StripMilliseconds();
+            part.Expires = now;
+            part.AddTo(draft);
+
+            var master = versioner.MakeMasterVersion(draft);
+
+            var addedChild = master.Children.Single();
+            addedChild.Expires.Value.ShouldBe(now);
+        }
+
     }
 }

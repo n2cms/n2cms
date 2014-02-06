@@ -40,7 +40,7 @@ namespace N2.Web
         }
 
         static string itemQueryKey = "item";
-        static string pageQueryKey = "page";
+		static string pageQueryKey = "page";
         static string partQueryKey = "part";
         static string pathDataKey = "path";
         static string versionIndexQueryKey = "versionIndex";

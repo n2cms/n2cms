@@ -1,16 +1,11 @@
 ﻿<!doctype html>
-<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	@{ Html.RenderPartial("LayoutPartials/Head"); }
-	@{ Html.Resources().JQuery(); }
-	@{ Html.Resources().JavaScript(Url.ThemedContent("~/Scripts/site.js")); }
 	@{
 		Content.PrependDefinition(re =>
 		{
@@ -24,29 +19,44 @@
 	@{ Html.ControlPanel().Render(); }
 	<div id="wrapper" class="clearfix">
 	@if (IsSectionDefined("page"))
- { <div>@RenderSection("page")</div> }
- else
- {
-		<div id="top" class="clearfix">@{ Html.RenderPartial("LayoutPartials/Top"); }</div>
-		<div id="header" class="clearfix">@{ Html.RenderPartial("LayoutPartials/Header"); }</div>
+	{
+		@RenderSection("page")
+	}
+	else
+	{
+	<div id="top">@{ Html.RenderPartial("LayoutPartials/Top"); }</div>
+	<div class="container">
+		<div id="header">@{ Html.RenderPartial("LayoutPartials/Header"); }</div>
 		<div id="page">
 			@if (IsSectionDefined("main"))
-   { <div>@RenderSection("main")</div> }
-   else
-   {
-			<div id="main" class="clearfix">
+			{
+				@RenderSection("main")
+			}
+			else
+			{
+			<div id="main" class="row">
 				@{ Html.RenderPartial("LayoutPartials/PreContent"); }
-				<div id="aside" role="complementary">@if (IsSectionDefined("Aside"))
-										 { <div>@RenderSection("Aside")</div> }
-										 else { Html.DroppableZone("Aside").Render(); }</div>
-				<div id="content" role="main">@RenderBody()</div>
+				<div id="content" class="col-lg-9" role="main">
+					@RenderBody()
+				</div>
+				<div id="aside" class="col-lg-3" role="complementary">
+					@if (IsSectionDefined("Aside"))
+					{
+						@RenderSection("Aside")
+					}
+					else
+					{
+						Html.DroppableZone("Aside").Render();
+					}
+				</div>
 				@{ Html.RenderPartial("LayoutPartials/PostContent"); }
 			</div>
-   }
+			}
 		</div>
-		<div id="footer" class="clearfix">@{ Html.RenderPartial("LayoutPartials/Footer"); }</div>
- }
+		<div id="footer">@{ Html.RenderPartial("LayoutPartials/Footer"); }</div>
 	</div>
+ }
+	 </div>
 	@{ Html.Zone("Scripts").Render(); }
 </body>
 </html>
