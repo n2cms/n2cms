@@ -10,10 +10,10 @@
 		<projectUrl>http://n2cms.com/</projectUrl>
 		<iconUrl>http://n2cms.com/Upload/logo-5.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>This package enables usage of Castle.Windsor 3 as IoC container to be used by N2 CMS internally.</description>
+		<description>This package enables usage of Castle.Windsor 3 as IoC container to be used by N2CMS internally.</description>
 		<summary></summary>
 		<language>en-US</language>
-		<tags>N2 CMS</tags>
+		<tags>N2 CMS, N2CMS</tags>
 		<dependencies>
 			<dependency id="N2CMS.Library" version="{Version}" />
 			<dependency id="N2CMS.Config" version="2.5" />
