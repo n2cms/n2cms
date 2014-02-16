@@ -23,8 +23,6 @@ namespace N2.Web.Mvc.Html
             return DisplayableFactory(helper, detailName, item);
         }
 
-
-
         public static Displayable DisplayContent<TItem>(this HtmlHelper<TItem> helper,
                                                  Expression<Func<TItem, object>> expression)
             where TItem : ContentItem

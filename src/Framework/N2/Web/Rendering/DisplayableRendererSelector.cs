@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using N2.Engine;
-using System.Web.Routing;
-using N2.Details;
 
 namespace N2.Web.Rendering
 {
