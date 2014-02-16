@@ -1,17 +1,19 @@
+//#define NO_MENUPART_CACHE
+//#define ENABLE_DEBUG_COMMENTS
+
+using System.Globalization;
 using System.IO;
 using System.Web.UI;
-using System.Xml.Linq;
 using N2.Definitions;
 using N2.Details;
 using N2.Engine;
-using N2.Integrity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using N2.Web.Mvc;
 using N2.Web.UI;
 using N2.Web.Parts;
+
 
 namespace N2.Web
 {
@@ -148,7 +150,7 @@ namespace N2.Web
 	/// <summary>
 	/// Provides navigation across child and sibling pages. Ideal for sidebars.
 	/// </summary>
-	[PartDefinition(Title = "Menu", IconClass = "n2-icon-list-ul", RequiredPermission = N2.Security.Permission.Administer)]
+	[PartDefinition(Title = "Menu", IconClass = "n2-icon-list-ul", RequiredPermission = Security.Permission.Administer)]
 	[WithEditableTitle]
 	[WithEditableName(HelpText = "The name will be used to set the HTML id of the part")]
 	[FieldSetContainer(NestingContainerName, "Hierarchy View Settings", 400)]
@@ -411,8 +413,8 @@ namespace N2.Web
 				ItemId = item.ID;
 			}
 
-			public int ItemId { get; protected set; }
-			public int SortOrder { get; protected set; }
+			public int ItemId { get; private set; }
+			public int SortOrder { get; private set; }
 			public ContentItem Item { get; private set; }
 			public ContentTreeNode Parent { get; private set; }
 			public bool IsAncestor { get; set; }
@@ -434,10 +436,12 @@ namespace N2.Web
 			// Need the current page ID regardless of cached database or not to render selected page correctly.
 			currentPageId = page == null ? 0 : page.ID;
 
-
+#if NO_MENUPART_CACHE
+			database = BuildNavigationTree(page);
+#else
 		    if (page != null)
 		    {
-		        var cacheKey = String.Concat(page.ID.ToString(), "+", menuPart.AncestralTrail);
+		        var cacheKey = String.Concat(page.ID.ToString(CultureInfo.InvariantCulture), "+", menuPart.AncestralTrail);
 		        var cacheData = System.Web.Hosting.HostingEnvironment.Cache.Get(cacheKey);
 		        if (cacheData == null)
 		        {
@@ -451,6 +455,7 @@ namespace N2.Web
 		    {
 		        database = new List<ContentTreeNode>();
 		    }
+#endif
 		}
 
 		/// <summary>
@@ -514,7 +519,7 @@ namespace N2.Web
 		/// <returns></returns>
 		private List<ContentTreeNode> BuildNavigationTree(ContentItem currentPage)
 		{
-			List<ContentTreeNode> navTree = new List<ContentTreeNode>();
+			var navTree = new List<ContentTreeNode>();
 			if (currentPage == null)
 				return navTree;
 
@@ -593,13 +598,15 @@ namespace N2.Web
 		{
 			var childNodes = database.Where(f => f.Parent == currentNode).ToList();
 			if (childNodes.Count <= 0) return;
-
+#if ENABLE_DEBUG_COMMENTS
+			xml.Write("<!-- WriteChildList(currentNode = {0}, level = {1} -->\n", currentNode.ItemId, level);
+#endif
 			xml.AddAttribute("class", currentNode == null ? menuPart.MenuOuterUlCssClass : menuPart.MenuInnerUlCssClass);
 			xml.RenderBeginTag(HtmlTextWriterTag.Ul);
 
 			if (currentNode == null && (!menuPart.MenuShowTreeRoot && childNodes.Count > 0)) // indicates that we are starting the menu, 
 			{
-				// Skip directly to the childre of the root node.
+				// Skip directly to the children of the root node.
 				childNodes = database.Where(f => f.Parent == childNodes.First()).ToList();
 			}
 
@@ -620,8 +627,6 @@ namespace N2.Web
 		/// Writes the top two levels of a tree flattened into a single list, with header styles on the level-1 list
 		/// items, and with sub-items in their respective hierarchies. 
 		/// </summary>
-		/// <param name="menuPart"></param>
-		/// <param name="database"></param>
 		/// <param name="currentNode"></param>
 		/// <param name="xml"></param>
 		private void WriteListWithHeaders(ContentTreeNode currentNode, HtmlTextWriter xml)
@@ -631,18 +636,19 @@ namespace N2.Web
 
 			xml.AddAttribute("class", currentNode == null ? menuPart.MenuOuterUlCssClass : menuPart.MenuInnerUlCssClass);
 			xml.RenderBeginTag(HtmlTextWriterTag.Ul);
+
 			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).ThenBy(n => n.Item.ID))
 			{
-				WriteListItem(childNode, xml, 0, "nav-header disabled"); // header item
+				WriteListItem(childNode, xml, 0, "nav-header disabled"); // flattened header item
 
-				var childNodes2 = database.Where(f => f.Parent == childNode).OrderBy(n => n.SortOrder).ToList();
-				foreach (var childnode2 in childNodes2)
+				var innerChildNodes = database.Where(f => f.Parent == childNode).ToList();
+				foreach (var innerChildNode in innerChildNodes.OrderBy(n => n.SortOrder))
 				{
-					WriteListItem(childnode2, xml, 1, null);
+					WriteListItem(innerChildNode, xml, 1, null);
 
 					if (!menuPart.MenuNestChildUls)
 					{
-						WriteChildList(childNode, xml, 2);
+						WriteChildList(innerChildNode, xml, 2);
 					}
 				}
 			}
@@ -651,6 +657,14 @@ namespace N2.Web
 
 		private void WriteListItem(ContentTreeNode childNode, HtmlTextWriter xml, int level, string cssClass)
 		{
+#if ENABLE_DEBUG_COMMENTS
+			// debug output
+			xml.Write("<!-- WriteListItem(childNode.itemId = {0}, parent.itemId = {2}, level = {1} -->", 
+				childNode != null ? childNode.ItemId : -1, 
+				level, 
+				(childNode != null && childNode.Parent != null) ? childNode.Parent.ItemId : -1);
+#endif
+
 			// write LI...
 			var sn = menuPart;
 			var childItem = childNode.Item;
