@@ -1,0 +1,44 @@
+﻿@model Dinamico.Models.ContentPart
+
+@{ Content.Define(re =>
+	{
+		re.Title = "Google map";
+		re.IconUrl = "{IconsUrl}/map.png";
+		re.FieldSet("Coordinates", "Coordinates", r =>
+		{
+			re.Text("Latitude", "Latitude").DefaultValue("").Validation("[-]?\\d+([.]\\d+)?", "Decimal number required");
+			re.Text("Longitude", "Longitude").DefaultValue("").Validation("[-]?\\d+([.]\\d+)?", "Decimal number required");
+		});
+		re.FieldSet("Gelocation", "Gelocation", r =>
+		{
+			//re.Text("APIKey", "Google Maps API Key").DefaultValue("").Help("Get API key at http://code.google.com/intl/en-US/apis/maps/signup.html");
+			re.Text("Address", "Street address").DefaultValue("");
+		});
+		re.FieldSet("Appearance", "Appearance", r =>
+		{
+			re.Text("MarkerText", "Marker").DefaultValue("");
+			re.Text("Zoom").DefaultValue(10).Configure(e => { e.ValidationExpression = "\\d+"; e.ValidationMessage = "Zoom must be (1-14)"; });
+			re.DropDown("MapType",
+				new System.Web.UI.WebControls.ListItem("Roadmap", "ROADMAP"), 
+				new System.Web.UI.WebControls.ListItem("Satellite", "SATELLITE"), 
+				new System.Web.UI.WebControls.ListItem("Hybrid", "HYBRID"), 
+				new System.Web.UI.WebControls.ListItem("Terrain", "TERRAIN"));
+		});
+	});
+}
+@{ Html.Resources().JavaScript("http://maps.google.com/maps/api/js?sensor=false"); }
+
+<div class="part gmap">
+@if (Content.Has.Latitude && Content.Has.Longitude)
+{
+	Html.RenderPartial("Partials/GMapCoordinate");
+}
+else if (Content.Has.Address)
+{
+	Html.RenderPartial("Partials/GMapAddress");
+}
+else
+{
+	<p>Set either address or latitude & longitude</p>
+}
+</div>

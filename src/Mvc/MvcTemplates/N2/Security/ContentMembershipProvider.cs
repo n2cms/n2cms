@@ -225,7 +225,7 @@ namespace N2.Security
             if (u == null || u.Password != ToStoredPassword(oldPassword)) // JH
                 return false;
             u.Password = ToStoredPassword(newPassword); // JH
-            Bridge.Save(u);
+            Bridge.SaveUser(u);
             return true;
         }
 
@@ -236,7 +236,7 @@ namespace N2.Security
                 return false;
             u.PasswordQuestion = newPasswordQuestion;
             u.PasswordAnswer = newPasswordAnswer;
-            Bridge.Save(u);
+            Bridge.SaveUser(u);
             return true;
         }
 
@@ -301,7 +301,7 @@ namespace N2.Security
             N2.Security.Items.User u = Bridge.GetUser(username);
             if (u == null)
                 return false;
-            Bridge.Delete(u);
+			Bridge.DeleteUser(u);
             Cache.Expire();
             return true;
         }
@@ -422,21 +422,22 @@ namespace N2.Security
             if (userContainer == null)
                 return null;
 
-            var users = Bridge.Repository.Find(
-				Parameter.TypeEqual(typeof(User).Name) 
-				& Parameter.Equal("Parent", userContainer)).ToList();
+			var users = Bridge.Repository.Find(Parameter.TypeEqual(typeof(User).Name) & Parameter.Equal("Parent", userContainer)).ToList();
+            
+            // TODO: reimplement- janpub 1.12.2013: handle null emails gracefully
+            // var userNames = users.Where(x => x.Details["Email"].ToString().Equals(email, StringComparison.OrdinalIgnoreCase)).Select(x => x.Name);
+            Func<ContentItem, string, bool> hasEqualEmail = (item, email2) => {
+                if (string.IsNullOrEmpty(email))
+                    return false;
+                var emailDetail = item.Details["Email"];
+                if (emailDetail == null)
+                   return false;
+                return emailDetail.ToString().Equals(email2, StringComparison.OrdinalIgnoreCase);
+            };
+            var userNames = users.Where(x => hasEqualEmail(x,email)).Select(x => x.Name);
 
-            // default admin account does not have an email field by default, to test first.
-	        var userNames = from x in users
-		        where x.Details.ContainsKey("Email")
-		        let emailDetailValue = Convert.ToString(x.Details["Email"])
-		        where
-			        !String.IsNullOrEmpty(emailDetailValue) 
-					&& emailDetailValue.Equals(email, StringComparison.OrdinalIgnoreCase)
-		        select x.Name;
-
-            return userNames.FirstOrDefault();
-        }
+			return userNames.FirstOrDefault();
+		}
 
         public override string ResetPassword(string username, string answer)
         {
@@ -457,7 +458,7 @@ namespace N2.Security
                 string newPassword = GenerateRandomPassword();
                 u.Password = ToStoredPassword(newPassword);
                 u.IsLockedOut = false;
-                Bridge.Save(u);
+                Bridge.SaveUser(u);
                 return newPassword;
             }
             return null;
@@ -469,7 +470,7 @@ namespace N2.Security
             if (u == null)
                 return false;
             u.IsLockedOut = false;
-            Bridge.Save(u);
+            Bridge.SaveUser(u);
             return true;
         }
 
@@ -481,7 +482,7 @@ namespace N2.Security
             if (u != null)
             {
                 u.UpdateFromMembershipUser(user); // JH: note that password remains unaffected
-                Bridge.Save(u);
+                Bridge.SaveUser(u);
             }
             else
                 throw new N2Exception("User '" + user.UserName + "' not found.");
@@ -493,7 +494,7 @@ namespace N2.Security
             if (u != null && u.Password == ToStoredPassword(password) && u.IsLogin) // JH
             {
                 u.LastLoginDate = N2.Utility.CurrentTime(); // JH
-                Bridge.Save(u);
+                Bridge.SaveUser(u);
                 return true;
             }
             return false;

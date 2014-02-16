@@ -1,0 +1,52 @@
+﻿<!doctype html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	@{ Html.RenderPartial("LayoutPartials/Head"); }
+	@{ Html.Resources().JQuery(); }
+	@{ Html.Resources().JavaScript(Url.ThemedContent("~/Scripts/site.js")); }
+	@{
+		Content.PrependDefinition(re =>
+		{
+			re.Tab("Content", "Content");
+			re.PublishedRange().Container("Metadata");
+		});
+	 }
+	@if (IsSectionDefined("head")) { @RenderSection("head") }
+</head>
+<body>
+	@{ Html.ControlPanel().Render(); }
+	<div id="wrapper" class="clearfix">
+	@if (IsSectionDefined("page"))
+ { <div>@RenderSection("page")</div> }
+ else
+ {
+		<div id="top" class="clearfix">@{ Html.RenderPartial("LayoutPartials/Top"); }</div>
+		<div id="header" class="clearfix">@{ Html.RenderPartial("LayoutPartials/Header"); }</div>
+		<div id="page">
+			@if (IsSectionDefined("main"))
+   { <div>@RenderSection("main")</div> }
+   else
+   {
+			<div id="main" class="clearfix">
+				@{ Html.RenderPartial("LayoutPartials/PreContent"); }
+				<div id="aside" role="complementary">@if (IsSectionDefined("Aside"))
+										 { <div>@RenderSection("Aside")</div> }
+										 else { Html.DroppableZone("Aside").Render(); }</div>
+				<div id="content" role="main">@RenderBody()</div>
+				@{ Html.RenderPartial("LayoutPartials/PostContent"); }
+			</div>
+   }
+		</div>
+		<div id="footer" class="clearfix">@{ Html.RenderPartial("LayoutPartials/Footer"); }</div>
+ }
+	</div>
+	@{ Html.Zone("Scripts").Render(); }
+</body>
+</html>

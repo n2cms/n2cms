@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</ProjectGuid>
+    <ProjectGuid>{AB51C88A-1639-46C8-925C-AB2CC088FD56}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -1076,6 +1076,8 @@
     <Compile Include="N2\Content\ItemInfo.ascx.designer.cs">
       <DependentUpon>ItemInfo.ascx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Details\EditableRolesAttribute.cs" />
+
     <Compile Include="N2\Externals\External.ascx.cs">
       <DependentUpon>External.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1217,7 +1219,12 @@
       <DependentUpon>Roles.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="N2\Security\AccountInfo.cs" />
+    <Compile Include="N2\Security\AccountResources.cs" />
+    <Compile Include="N2\Security\MembershipAccountResources.cs" />
+    <Compile Include="N2\Security\MembershipAccountManager.cs" />
     <Compile Include="N2\Security\ContentProfileRepository.cs" />
+    <Compile Include="N2\Security\AccountManager.cs" />
     <Compile Include="N2\Security\EditablePassword.cs" />
     <Compile Include="N2\Myself\EditPassword.aspx.cs">
       <DependentUpon>EditPassword.aspx</DependentUpon>
@@ -1226,6 +1233,7 @@
     <Compile Include="N2\Myself\EditPassword.aspx.designer.cs">
       <DependentUpon>EditPassword.aspx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Security\Items\UserLogin.cs" />
     <Compile Include="N2\Web\FontHandler.cs" />
     <Compile Include="N2\Resources\IconHandler.ashx.cs">
       <DependentUpon>IconHandler.ashx</DependentUpon>

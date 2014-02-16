@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Web.Security;
 using System.Web.UI.WebControls;
 using N2.Edit.Web;
@@ -12,6 +13,7 @@ namespace N2.Edit.Membership
         RequiredPermission = Permission.Administer)]
     public partial class Users : EditPage
     {
+        
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -26,33 +28,26 @@ namespace N2.Edit.Membership
         }
     }
 
+
     public static class UsersSource
     {
-        public const int PageSize = 100;
+        private static AccountManager AccountManager { get { return N2.Context.Current.Resolve<AccountManager>(); } }
 
-        public static MembershipUserCollection GetUsers(int start, int max)
+        public static int PageSize { get { return AccountManager.PageSize; } }
+
+        public static IList<IAccountInfo> GetUsers(int start, int max)
         {
-            int page = start/max;
-            int total;
-            MembershipUserCollection users = System.Web.Security.Membership.GetAllUsers(page, max, out total);
-
-            return users;
+            return AccountManager.GetUsers(start,max);
         }
 
         public static int GetUsersCount()
         {
-            int total;
-            System.Web.Security.Membership.GetAllUsers(0, PageSize, out total);
-
-            return total;
+	        return AccountManager.GetUsersCount();
         }
 
         public static void DeleteUser(string userName)
         {
-            if (userName == null)
-                throw new ArgumentNullException("userName");
-
-            System.Web.Security.Membership.DeleteUser(userName, true);
+            AccountManager.DeleteUser(userName);
         }
     }
 }

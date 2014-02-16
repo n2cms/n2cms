@@ -1,0 +1,5 @@
+﻿@model string
+@using (Content.BeginScope(Model))
+{
+@Html.Link(@Content.Traverse.Children().FirstOrDefault())
+}

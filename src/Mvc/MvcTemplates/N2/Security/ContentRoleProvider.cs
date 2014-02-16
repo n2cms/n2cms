@@ -63,7 +63,7 @@ namespace N2.Security
                     if (!u.Roles.Contains(role))
                     {
                         u.Roles.Add(role);
-                        Bridge.Save(u);
+                        Bridge.SaveUser(u);
                     }
                 }
             }
@@ -79,7 +79,7 @@ namespace N2.Security
         {
             Items.UserList ul = Bridge.GetUserContainer(true);
             ul.AddRole(roleName);
-            Bridge.Save(ul);
+            Bridge.SaveUserContainer(ul);
         }
 
         public override bool DeleteRole(string roleName, bool throwOnPopulatedRole)
@@ -89,7 +89,7 @@ namespace N2.Security
             
             Items.UserList ul = Bridge.GetUserContainer(true);
             ul.RemoveRole(roleName);
-            Bridge.Save(ul);
+            Bridge.SaveUserContainer(ul);
             return true;
         }
 
@@ -145,7 +145,7 @@ namespace N2.Security
                     if (u.Roles.Contains(role))
                     {
                         u.Roles.Remove(role);
-                        Bridge.Save(u);
+                        Bridge.SaveUser(u);
                     }
                 }
             }

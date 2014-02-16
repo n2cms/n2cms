@@ -1,0 +1,37 @@
+﻿@model Dinamico.Models.ContentPage
+
+@{
+	Content.Define(re => 
+	{
+		re.Title = "Container";
+		re.Definition.IconClass = "n2-icon-list-alt";
+		re.Tab("Container", "Container", tr =>
+		{
+			re.Add(new N2.Details.EditableDefinitionAttribute { Name = "ListingType", Title = "Listed type", TemplateSelection = true, RemovedTypes = new[] { typeof(N2.Definitions.ISystemNode) }, DefaultValue = "ContentPage/News" });
+			re.CheckBox("ShowDescendants", "Show all descendants");
+			tr.FreeText("NewsFooter", "News item footer").Help("Text displayed as footer for each news item");
+		});
+
+	});
+}
+@{
+	Content.Register.RegisterDisplayable<N2.Details.DisplayableTokensAttribute>("NewsFooter");
+}
+
+@Html.Partial("LayoutPartials/Content")
+
+@{
+	var items = Content.Data.ShowDescendants ?? false
+		? Content.Traverse.DescendantPages()
+		: Content.Traverse.ChildPages();
+	if (Content.Has.ListingType)
+	{
+		items = items.Where(Content.Is.Definition((string)Content.Data.ListingType));
+	}
+}
+@Html.Loop(items,
+	template: @<div class="list-item">
+		@Html.Partial("Partials/ContentLink", item.Data)
+	</div>,
+	wrapper: @<div class="list">@item.RenderContents()</div>,
+	empty: @<p>No items</p>)

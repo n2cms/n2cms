@@ -1,0 +1,8 @@
+﻿<div class="part freeform">
+	@Html.ValidationSummary()
+	@using (Html.BeginForm("Submit", null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+	{
+		@Content.Display.Form
+		<input type="submit" value="Send" />
+	}
+</div>

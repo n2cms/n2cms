@@ -1,0 +1,9 @@
+﻿@model Dinamico.Models.StartPage
+
+@section main {
+<div id="main" class="clearfix">
+	@{ Html.RenderPartial("LayoutPartials/PreContent"); }
+	@Content.Render.Tokens("Text").Wrap(@<div id="content">@item.RenderContents()</div>)
+	@{ Html.RenderPartial("LayoutPartials/PostContent"); }
+</div>
+}

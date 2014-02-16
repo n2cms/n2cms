@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Web.Security;
 using System.Web.UI.WebControls;
-using N2.Collections;
 using N2.Definitions;
 using N2.Details;
 using N2.Engine;
 using N2.Persistence.Search;
 using N2.Integrity;
-using N2.Edit;
-using N2.Web;
 using N2.Management;
 
 namespace N2.Security.Items
@@ -40,17 +37,25 @@ namespace N2.Security.Items
             get { return GetDetail("Roles", "Everyone"); }
             set { SetDetail("Roles", value, "Everyone"); }
         }
+        #region Role API
 
         public virtual string[] GetRoleNames()
         {
             return Roles.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
         }
 
+        /// <summary>Is role already present? </summary>
+        /// <param name="roleName">The role </param>
+        public virtual bool HasRole(string roleName)
+        {
+            return (Array.IndexOf<string>(GetRoleNames(), roleName) >= 0);
+        }
+
         /// <summary>Adds a role if not already present.</summary>
         /// <param name="roleName">The role to add.</param>
         public virtual void AddRole(string roleName)
         {
-            if(Array.IndexOf<string>(GetRoleNames(), roleName) < 0)
+			if(!HasRole(roleName))
                 Roles += Environment.NewLine + roleName;
         }
 
@@ -68,6 +73,8 @@ namespace N2.Security.Items
             }
             Roles = string.Join(Environment.NewLine, roles.ToArray());
         }
+        
+        #endregion Role API
 
         public virtual MembershipUserCollection GetMembershipUsers(string providerName)
         {

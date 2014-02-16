@@ -42,8 +42,24 @@ namespace N2.Security
 
             Type configuredUserType = Type.GetType(config.Membership.UserType);
             if (configuredUserType == null) throw new ArgumentException("Couldn't create configured membership user type: " + config.Membership.UserType);
-            if (!typeof(User).IsAssignableFrom(configuredUserType)) throw new ArgumentException("Configured membership user type '" + config.Membership.UserType + "' doesn't derive from '" + typeof(User).AssemblyQualifiedName + "'");
-            this.userType = configuredUserType;
+            SetUserType(configuredUserType);
+		}
+
+        /// <summary>
+        /// Define N2 User type (application wide)
+        /// </summary>
+        /// <remarks>
+        /// User type shall be assignable to <see cref="User"/> basic user type.
+        /// User type defaults to <see cref="User"/> basic user type or type defined by N2 <see cref="MembershipElement.UserType"/> configuration parameter.
+        /// User type may be explicitly set at start of application, e.g. by custom account system what overrides configured type.
+        /// Limitations: All user records shall be exactly of a specified user type, any records of other user types are ignored by Bridge.
+        ///              Data migration shall be planned when introducing new user type.
+        /// </remarks>
+        public void SetUserType(Type userType)
+        {
+            if (!typeof(User).IsAssignableFrom(userType))
+                throw new ArgumentException("Configured membership user type '" + userType.AssemblyQualifiedName + "' doesn't derive from '" + typeof(User).AssemblyQualifiedName + "'");
+            this.userType = userType;
         }
 
         public IContentItemRepository Repository
@@ -68,6 +84,8 @@ namespace N2.Security
             set { defaultRoles = value; }
         }
 
+        #region User
+
         public virtual Items.User CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey)
         {
             if(IsEditorOrAdmin(username))
@@ -82,7 +100,7 @@ namespace N2.Security
             u.PasswordAnswer = passwordAnswer;
             u.IsApproved = isApproved;
 
-            Save(u);
+			SaveUser(u);
             
             return u;
         }
@@ -91,10 +109,19 @@ namespace N2.Security
         {
             try
             {
-                IList<Items.User> users = GetUsers(username, 0, 1);
-                if (users.Count == 0)
+                /*
+				IList<Items.User> users = GetUsers(username, 0, 1);
+				if (users.Count == 0)
+					return null;
+				return users[0];
+                */
+
+                Items.UserList users = GetUserContainer(false);
+                if (users == null)
                     return null;
-                return users[0];
+
+                return Repository.Find(Parameter.Equal("Parent", users) & Parameter.TypeEqual(userType.Name) & Parameter.Equal("Name", username))
+                                 .Cast<User>().FirstOrDefault();         
             }
             catch (Exception ex)
             {
@@ -112,6 +139,58 @@ namespace N2.Security
             return Repository.Find((Parameter.Equal("Parent", users) & Parameter.TypeEqual(userType.Name) & Parameter.Like("Name", username)).Skip(firstResult).Take(maxResults))
                 .OfType<User>().ToList();
         }
+
+        public virtual IEnumerable<Items.User> GetUsers(int firstResult, int maxResults)
+        {
+            Items.UserList users = GetUserContainer(false);
+            if (users == null)
+                return new List<Items.User>();
+
+            return users.Children.FindRange(firstResult, maxResults).OfType<Items.User>();
+            // return Repository.Find((Parameter.Equal("Parent", users) & Parameter.TypeEqual(userType.Name)).Skip(firstResult).Take(maxResults))
+            //    .OfType<User>();
+        }
+
+        public virtual int GetUsersCount()
+        {
+            Items.UserList users = GetUserContainer(false);
+            if (users == null)
+                return 0;
+            return users.Children.OfType<User>().Count(); 
+        }
+
+        /// <summary> Exist one or more users in specified role? </summary>
+        public virtual bool HasUsersInRole(string roleName)
+        {
+            foreach (var userName in GetUsersInRole(roleName, 1))
+                return true;
+            return false;
+        }
+
+        /// <summary> Returns users (UserNames) in specified role </summary>
+        public virtual string[] GetUsersInRole(string roleName, int maxResults)
+        {
+            Items.UserList users = GetUserContainer(false);
+            if (users == null)
+                return new string[] {};
+
+            return Repository.Find((Parameter.Equal("Parent", users) & Parameter.TypeEqual(userType.Name) & Parameter.Equal("Roles",roleName).SetDetail(true)).Take(maxResults))
+              .OfType<User>().Select(u => u.Name).ToArray();
+        }
+
+        public virtual void SaveUser(Items.User user) 
+        { 
+            SaveItem(user); 
+        }
+
+        public virtual void DeleteUser(Items.User user) 
+        { 
+            DeleteItem(user); 
+        }
+
+        #endregion
+
+        #region UserList
 
         public virtual Items.UserList GetUserContainer(bool create)
         {
@@ -138,11 +217,65 @@ namespace N2.Security
                 m.AddRole(role);
             }
 
-            Save(m);
+            SaveUserContainer(m);
             return m;
         }
 
-        public virtual void Delete(ContentItem item)
+        public virtual void SaveUserContainer(Items.UserList userList) { SaveItem(userList); }
+
+        #endregion
+
+        #region UserLoginInfo
+
+        public virtual UserLogin FindLogin(string loginProvider, string providerKey)
+        {
+            return FindUserLogin(null, loginProvider, providerKey);
+        }
+
+        public virtual UserLogin FindUserLogin(Items.User user, string loginProvider, string providerKey)
+        {
+            return Repository.Find(UserLogin.QueryLoginInfoParameter(loginProvider, providerKey, user))
+                         .OfType<UserLogin>()
+                         .FirstOrDefault();
+        }
+
+        public virtual IEnumerable<UserLogin> FindUserLogins(Items.User user)
+        {
+            if (user == null)
+                throw new ArgumentNullException("user");
+            return user.GetChildren().OfType<UserLogin>();
+        }
+
+        public virtual bool DeleteUserLogin(Items.User user, string loginProvider, string providerKey) 
+        {
+            if (user == null)
+                throw new ArgumentNullException("user");
+            var loginItem = FindUserLogin(user, loginProvider, providerKey);
+            if (loginItem == null)
+                return false;
+            DeleteItem(loginItem);
+            return true;
+        }
+
+        public virtual bool AddUserLogin(Items.User user, string loginProvider, string providerKey)
+        {
+            if (user == null)
+                throw new ArgumentNullException("user");
+            if (FindUserLogin(user, loginProvider, providerKey) != null)
+                return false;
+            var loginItem = activator.CreateInstance<UserLogin>(user);
+            loginItem.LoginProvider = loginProvider;
+            loginItem.ProviderKey = providerKey;
+            SaveItem(loginItem);
+            return true;
+        }
+
+        #endregion
+
+        [Obsolete("Use specialized methods instead, e.g. DeleteUser")]
+		public virtual void Delete(ContentItem item) { DeleteItem(item); }
+
+        protected virtual void DeleteItem(ContentItem item)
         {
             using (security.Disable())
             {
@@ -154,7 +287,10 @@ namespace N2.Security
             }
         }
 
-        public virtual void Save(ContentItem item)
+        [Obsolete("Use specialized methods instead, e.g. SaveUser, SaveUserList")]
+        public virtual void Save(ContentItem item) { SaveItem(item); }
+
+        protected virtual void SaveItem(ContentItem item)
         {
             using (security.Disable())
             {
@@ -189,5 +325,6 @@ namespace N2.Security
                 return true;
             return false;
         }
+
     }
 }

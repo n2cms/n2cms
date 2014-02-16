@@ -47,6 +47,7 @@ namespace N2.Persistence
 
         public Comparison Comparison { get; set; }
 
+        /// <summary> Parameter mode (detail/property) </summary>
         public bool IsDetail { get; set; }
 
         public Parameter(string name, object value)
@@ -60,6 +61,12 @@ namespace N2.Persistence
             Value = value;
             Comparison = comparisonType;
         }
+
+        /// <summary> Set detail/property parameter mode <seealso cref="IsDetail"/></summary>
+        /// <example> Allows chaining, e.g.: 
+        /// repository.Find(Parameter.Equal("Parent", parent), Parameter.TypeEqual(typeof(TUser)), Parameter.Equal("MyDetail",value).SetDetail(true))
+        /// </example>
+        public Parameter SetDetail(bool value) { IsDetail = value; return this; }
 
         public static Parameter Equal(string name, object value)
         {
