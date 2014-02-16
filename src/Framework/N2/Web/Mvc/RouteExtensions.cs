@@ -63,24 +63,6 @@ namespace N2.Web.Mvc
             return data.ApplyCurrentPath(path);
         }
 
-        /// <summary>Applies the current content item to the route data.</summary>
-        [Obsolete]
-        public static RouteData ApplyCurrentItem(this RouteData data, ContentItem page, ContentItem part)
-        {
-            return data.ApplyCurrentPath(new PathData(page, part));
-        }
-
-        /// <summary>Applies the current content item and controller to the route data.</summary>
-        [Obsolete]
-        public static RouteData ApplyCurrentItem(RouteData data, string controllerName, string actionName, ContentItem page, ContentItem part)
-        {
-            data.Values[ContentRoute.ControllerKey] = controllerName;
-            data.Values[ContentRoute.ActionKey] = actionName;
-            return data.ApplyCurrentPath(new PathData(page, part));
-        }
-
-
-
         public static PathData CurrentPath(this RouteData routeData)
         {
             if (routeData.DataTokens.ContainsKey(PathData.PathKey))
