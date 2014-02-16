@@ -30,14 +30,6 @@ namespace N2.Web
 			OnlyIfItemHasNoChildren
 		}
 
-		[Obsolete("Please use SiblingDisplayOptions instead")]
-		public enum SibilingDisplayOptions
-		{
-			Always,
-			Never,
-			OnlyIfItemHasNoChildren
-		}
-
 		public enum TitleDisplayOptions
 		{
 			CustomTitle,
@@ -84,12 +76,6 @@ namespace N2.Web
 		///   <c>true</c> if the root node of the tree should be shown (rendered); otherwise, <c>false</c>.
 		/// </value>
 		public abstract bool MenuShowTreeRoot { get; set; }
-		[Obsolete("Please use MenuShowSiblings instead")]
-		public SiblingDisplayOptions MenuShowSibilings
-		{
-			get { return MenuShowSiblings; }
-			set { MenuShowSiblings = value; }
-		}
 
 		/// <summary>
 		/// Expands the navigation tree so that sibling pages of the current page are always shown.
