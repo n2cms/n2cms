@@ -1,7 +1,6 @@
 using System;
 using System.Web.UI;
 using N2.Web.UI.WebControls;
-using N2.Definitions;
 
 namespace N2.Details
 {
@@ -16,12 +15,10 @@ namespace N2.Details
     ///     }
     /// </example>
     [AttributeUsage(AttributeTargets.Property)]
-    public class EditableImageAttribute : AbstractEditableAttribute, IDisplayable, IRelativityTransformer, IWritingDisplayable
+    public class EditableImageAttribute : AbstractEditableAttribute, IRelativityTransformer, IWritingDisplayable
     {
         private string alt = string.Empty;
         private string cssClass = string.Empty;
-
-
 
         public EditableImageAttribute()
             : this(null, 40)
@@ -31,11 +28,10 @@ namespace N2.Details
         public EditableImageAttribute(string title, int sortOrder)
             : base(title, sortOrder)
         {
+	        ReadOnly = false;
         }
 
-
-
-        /// <summary>Image alt text.</summary>
+	    /// <summary>Image alt text.</summary>
         public string Alt
         {
             get { return alt; }
@@ -52,27 +48,29 @@ namespace N2.Details
         /// <summary>The image size to display by default if available.</summary>
         public string PreferredSize { get; set; }
 
+	    public bool ReadOnly { get; set; }
 
-
-        protected override Control AddEditor(Control container)
+	    protected override Control AddEditor(Control container)
         {
-            FileSelector selector = new FileSelector();
+            var selector = new FileSelector();
             selector.SelectableExtensions = FileSelector.ImageExtensions;
             selector.ID = Name;
             selector.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
+			if (ReadOnly)
+				selector.Attributes["readonly"] = "readonly";
             container.Controls.Add(selector);
             return selector;
         }
         
         public override void UpdateEditor(ContentItem item, Control editor)
         {
-            FileSelector selector = (FileSelector)editor;
+            var selector = (FileSelector)editor;
             selector.Url = item[Name] as string;
         }
 
         public override bool UpdateItem(ContentItem item, Control editor)
         {
-            FileSelector selector = (FileSelector)editor;
+            var selector = (FileSelector)editor;
             if (selector.Url != item[Name] as string)
             {
                 item[Name] = selector.Url;
@@ -100,6 +98,7 @@ namespace N2.Details
 
         string IRelativityTransformer.Rebase(string currentPath, string fromAppPath, string toAppPath)
         {
+// ReSharper disable once RedundantNameQualifier
             return N2.Web.Url.Rebase(currentPath, fromAppPath, toAppPath);
         }
 
