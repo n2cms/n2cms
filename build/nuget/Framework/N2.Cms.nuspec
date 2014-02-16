@@ -4,16 +4,16 @@
 		<id>N2CMS</id>
 		<version>{Version}</version>
 		<title>N2CMS</title>
-		<authors>Cristian Libardo, Benjamin Herila</authors>
-		<owners>Cristian Libardo, Benjamin Herila</owners>
+		<authors>Cristian Libardo</authors>
+		<owners>Cristian Libardo</owners>
 		<licenseUrl>http://n2cms.com/Project/License.aspx</licenseUrl>
 		<projectUrl>http://n2cms.com/</projectUrl>
 		<iconUrl>http://n2cms.com/Upload/logo-5.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>This package calls the management interface and contains the web config transformations required by N2 CMS. This package doesn't contain templates.</description>
-		<summary>N2CMS is a lightweight CMS library that can be used as is, or in combination with many features out of the box using template pack for MVC5, Razor or WebForms.</summary>
+		<summary>N2 CMS is a lightweight CMS library that can be used as is, or in combination with many features out of the box using template pack for MVC2-4, Razor or WebForms.</summary>
 		<language>en-US</language>
-		<tags>N2 CMS, N2CMS</tags>
+		<tags>N2 CMS</tags>
 		<dependencies>
 			<dependency id="N2CMS.Config" version="2.5" />
 			<dependency id="N2CMS.Library" version="{Version}" />

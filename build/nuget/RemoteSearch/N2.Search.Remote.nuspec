@@ -3,7 +3,7 @@
 	<metadata>
 		<id>N2CMS.Search.Remote</id>
 		<version>{Version}</version>
-		<title>N2CMS - Remote Search and Indexing</title>
+		<title>N2 CMS - Remote Search and Indexing</title>
 		<authors>Cristian Libardo</authors>
 		<owners>Cristian Libardo</owners>
 		<licenseUrl>http://n2cms.com/Project/License.aspx</licenseUrl>
@@ -13,7 +13,7 @@
 		<description>This package enables indexing and searching using a process external to the web process.</description>
 		<summary></summary>
 		<language>en-US</language>
-		<tags>N2 CMS, N2CMS</tags>
+		<tags>N2 CMS</tags>
 		<dependencies>
 			<dependency id="N2CMS.Library" version="{Version}" />
 		</dependencies>

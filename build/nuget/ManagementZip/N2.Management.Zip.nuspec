@@ -10,10 +10,10 @@
 		<projectUrl>http://n2cms.com/</projectUrl>
 		<iconUrl>http://n2cms.com/Upload/logo-5.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>This package contains the management interface required by N2CMS, packaged as a single N2.ZIP file and the corresponding virtual path provider. Use this if you publishing your website via FTP. This package doesn't contain templates. </description>
-		<summary>N2CMS is a lightweight CMS library that can be used as is, or in combination with many features out of the box using template pack for ASP.NET MVC, Razor or WebForms.</summary>
+		<description>This package contains the management interface required by N2 CMS, packaged as a single N2.ZIP file and the corresponding virtual path provider. Use this if you publishing your website via FTP. This package doesn't contain templates. </description>
+		<summary>N2 CMS is a lightweight CMS library that can be used as is, or in combination with many features out of the box using template pack for MVC2-4, Razor or WebForms.</summary>
 		<language>en-US</language>
-		<tags>N2 CMS, N2CMS</tags>
+		<tags>N2 CMS</tags>
 		<dependencies>
 			<dependency id="N2CMS.Library" version="{Version}" />
 			<dependency id="N2CMS.Config" version="2.5" />
