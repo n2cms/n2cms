@@ -24,7 +24,7 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <OldToolsVersion>4.0</OldToolsVersion>
     <TargetFrameworkProfile />
     <UseIISExpress>false</UseIISExpress>
@@ -45,7 +45,6 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -55,7 +54,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FiftyOne.Foundation">
@@ -125,7 +123,6 @@
     <Compile Include="Templates\Items\Comment.cs" />
     <Compile Include="Templates\Items\CommentInput.cs" />
     <Compile Include="Templates\Items\CommentList.cs" />
-    <Compile Include="Templates\Items\ControlPanel.cs" />
     <Compile Include="Templates\Items\DatabaseSearch.cs" />
     <Compile Include="Templates\Items\Event.cs" />
     <Compile Include="Templates\Items\Faq.cs" />
@@ -195,13 +192,6 @@
     </Compile>
     <Compile Include="Templates\UI\Parts\CommentList.ascx.designer.cs">
       <DependentUpon>CommentList.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\UI\Parts\ControlPanel.ascx.cs">
-      <DependentUpon>ControlPanel.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\UI\Parts\ControlPanel.ascx.designer.cs">
-      <DependentUpon>ControlPanel.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Comment.ascx.cs">
       <DependentUpon>Comment.ascx</DependentUpon>
@@ -760,7 +750,6 @@
     <Content Include="Templates\UI\Parts\Columns.ascx" />
     <Content Include="Templates\UI\Parts\CommentInput.ascx" />
     <Content Include="Templates\UI\Parts\CommentList.ascx" />
-    <Content Include="Templates\UI\Parts\ControlPanel.ascx" />
     <Content Include="Templates\UI\Parts\Comment.ascx" />
     <Content Include="Templates\UI\Parts\Empty.ascx" />
     <Content Include="Templates\UI\Parts\Login.ascx" />

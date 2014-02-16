@@ -32,46 +32,6 @@ namespace N2.Web.Mvc.Html
             return CurrentPath(helper).CurrentItem as T;
         }
 
-
-        [Obsolete]
-        public static ContentItem CurrentItem(this ViewContext context)
-        {
-            return context.CurrentItem<ContentItem>();
-        }
-        [Obsolete]
-        public static T CurrentItem<T>(this ViewContext context) where T : ContentItem
-        {
-            if (context == null) throw new ArgumentNullException("context");
-            
-            return context.ViewData.CurrentItem<T>()
-                ?? context.RequestContext.CurrentItem<T>();
-        }
-        [Obsolete]
-        public static T CurrentPage<T>(this ViewContext context) where T : ContentItem
-        {
-            if (context == null) throw new ArgumentNullException("context");
-
-            return context.ViewData.CurrentPage<T>()
-                ?? context.RequestContext.CurrentPage<T>();
-        }
-        [Obsolete]
-        private static T CurrentItem<T>(this ViewDataDictionary viewData) where T : ContentItem
-        {
-            if (viewData == null) throw new ArgumentNullException("viewData");
-
-            return viewData[ContentRoute.ContentItemKey] as T
-                ?? viewData.Model as T;
-        }
-        [Obsolete]
-        private static T CurrentPage<T>(this ViewDataDictionary viewData) where T : ContentItem
-        {
-            if (viewData == null) throw new ArgumentNullException("viewData");
-
-            return viewData[ContentRoute.ContentPageKey] as T;
-        }
-
-
-
         public static ContentItem StartPage(this HtmlHelper html)
         {
             return html.ViewContext.RequestContext.StartPage();

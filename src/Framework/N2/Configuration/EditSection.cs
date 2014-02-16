@@ -70,15 +70,6 @@ namespace N2.Configuration
             set { base["theme"] = value; }
         }
 
-
-        [Obsolete("TinyMCE is no longer used. Please use CKEditor instead.")]
-        [ConfigurationProperty("tinyMCE")]
-        public TinyMCEElement TinyMCE
-        {
-            get { return (TinyMCEElement)base["tinyMCE"]; }
-            set { base["tinyMCE"] = value; }
-        }
-
         [ConfigurationProperty("ckeditor")]
         public CkEditorElement CkEditor
         {

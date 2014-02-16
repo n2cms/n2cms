@@ -5,19 +5,6 @@ using N2.Edit;
 
 namespace N2.Web.UI.WebControls
 {
-    [Obsolete]
-    public class H1 : Hn { }
-    [Obsolete]
-    public class H2 : Hn { protected override int DefaultLevel { get { return 2; } } }
-    [Obsolete]
-    public class H3 : Hn { protected override int DefaultLevel { get { return 3; } } }
-    [Obsolete]
-    public class H4 : Hn { protected override int DefaultLevel { get { return 4; } } }
-    [Obsolete]
-    public class H5 : Hn { protected override int DefaultLevel { get { return 5; } } }
-    [Obsolete]
-    public class H6 : Hn { protected override int DefaultLevel { get { return 6; } } }
-
     public class Hn : Control, ITextControl
     {
 		public Hn()

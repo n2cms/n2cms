@@ -23,7 +23,7 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -56,7 +56,6 @@
     </DocumentationFile>
     <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -68,7 +67,6 @@
     <DocumentationFile>bin\N2.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Iesi.Collections">
@@ -915,7 +913,6 @@
     <Compile Include="Integrity\CannotDeleteRootException.cs" />
     <Compile Include="Integrity\DestinationOnOrBelowItselfException.cs" />
     <Compile Include="Persistence\Comparison.cs" />
-    <Compile Include="Persistence\DoNotCopyAttribute.cs" />
     <Compile Include="Persistence\NH\IConfigurationBuilder.cs" />
     <Compile Include="Persistence\NH\ISessionProvider.cs" />
     <Compile Include="Plugin\IPluginInitializer.cs" />
@@ -1013,7 +1010,6 @@
     <Compile Include="Configuration\SettingsEditorCollection.cs" />
     <Compile Include="Configuration\SiteElement.cs" />
     <Compile Include="Configuration\SiteElementCollection.cs" />
-    <Compile Include="Configuration\TinyMCEElement.cs" />
     <Compile Include="Configuration\UrlElement.cs" />
     <Compile Include="Configuration\WebElement.cs" />
     <Compile Include="Definitions\AbstractDefinitionRefiner.cs" />
@@ -1076,7 +1072,6 @@
     <Compile Include="Edit\Workflow\Commands\DeleteCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\EnsureNotPublishedCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\EnsurePublishedCommand.cs" />
-    <Compile Include="Edit\Workflow\Commands\IncrementVersionIndexCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\MakeVersionCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\MoveToPositionCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\OnMasterCommand.cs" />
@@ -1317,7 +1312,6 @@
     <Compile Include="Web\IPathFinder.cs" />
     <Compile Include="Web\Mail\IMailSender.cs" />
     <Compile Include="Web\Mail\SmtpMailSender.cs" />
-    <Compile Include="Web\Mail\StaticMailSender.cs" />
     <Compile Include="Web\Parts\CreateUrlProvider.cs" />
     <Compile Include="Web\Parts\EditUrlProvider.cs" />
     <Compile Include="Web\Parts\ItemCopyer.cs" />
@@ -1434,7 +1428,6 @@
     <Compile Include="Web\UI\WebControls\TabPanel.cs" />
     <Compile Include="Web\UI\WebControls\Tree.cs" />
     <Compile Include="Web\UI\WebControls\TreeNode.cs" />
-    <Compile Include="Web\UI\WebControls\Ul.cs" />
     <Compile Include="Web\UI\WebControls\UrlRelativityMode.cs" />
     <Compile Include="Web\Url.cs" />
     <Compile Include="Web\WebRequestContext.cs" />

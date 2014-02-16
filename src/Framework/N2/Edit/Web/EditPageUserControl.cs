@@ -9,12 +9,6 @@ namespace N2.Edit.Web
     /// </summary>
     public class EditPageUserControl : UserControl
     {
-        [Obsolete]
-        public EditPage EditPage
-        {
-            get { return base.Page as EditPage; }
-        }
-
         public IEngine Engine
         {
             get { return (base.Page as EditPage) != null ? (base.Page as EditPage).Engine : N2.Context.Current; }
@@ -25,12 +19,6 @@ namespace N2.Edit.Web
         {
             get { return selection ?? (selection = new SelectionUtility(this, Engine)); }
             set { selection = value; }
-        }
-
-        [Obsolete]
-        public ContentItem SelectedItem
-        {
-            get { return Selection.SelectedItem; }
         }
     }
 }
