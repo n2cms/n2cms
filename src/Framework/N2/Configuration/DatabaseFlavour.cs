@@ -12,7 +12,6 @@ namespace N2.Configuration
         SqlCe4 = 0x40,
         MySql = 0x80,
         SqLite = 0x100,
-        Firebird = 0x200,
         Generic = 0x400,
         Jet = 0x800,
         DB2 = 0x1000,
