@@ -17,45 +17,45 @@
 
 namespace Castle.DynamicProxy.Tokens
 {
-	using System;
-	using System.Reflection;
-	using System.Runtime.Serialization;
+    using System;
+    using System.Reflection;
+    using System.Runtime.Serialization;
 
-	/// <summary>
-	///   Holds <see cref = "MethodInfo" /> objects representing methods of <see cref = "SerializationInfo" /> class.
-	/// </summary>
-	public static class SerializationInfoMethods
-	{
-		/// <summary>
-		///   <see cref = "SerializationInfo.AddValue(string,bool)" />
-		/// </summary>
-		public static readonly MethodInfo AddValue_Bool =
-			typeof(SerializationInfo).GetMethod("AddValue", new[] { typeof(String), typeof(bool) });
+    /// <summary>
+    ///   Holds <see cref = "MethodInfo" /> objects representing methods of <see cref = "SerializationInfo" /> class.
+    /// </summary>
+    public static class SerializationInfoMethods
+    {
+        /// <summary>
+        ///   <see cref = "SerializationInfo.AddValue(string,bool)" />
+        /// </summary>
+        public static readonly MethodInfo AddValue_Bool =
+            typeof(SerializationInfo).GetMethod("AddValue", new[] { typeof(String), typeof(bool) });
 
-		/// <summary>
-		///   <see cref = "SerializationInfo.AddValue(string,int)" />
-		/// </summary>
-		public static readonly MethodInfo AddValue_Int32 =
-			typeof(SerializationInfo).GetMethod("AddValue", new[] { typeof(String), typeof(int) });
+        /// <summary>
+        ///   <see cref = "SerializationInfo.AddValue(string,int)" />
+        /// </summary>
+        public static readonly MethodInfo AddValue_Int32 =
+            typeof(SerializationInfo).GetMethod("AddValue", new[] { typeof(String), typeof(int) });
 
-		/// <summary>
-		///   <see cref = "SerializationInfo.AddValue(string,object)" />
-		/// </summary>
-		public static readonly MethodInfo AddValue_Object =
-			typeof(SerializationInfo).GetMethod("AddValue", new[] { typeof(String), typeof(Object) });
+        /// <summary>
+        ///   <see cref = "SerializationInfo.AddValue(string,object)" />
+        /// </summary>
+        public static readonly MethodInfo AddValue_Object =
+            typeof(SerializationInfo).GetMethod("AddValue", new[] { typeof(String), typeof(Object) });
 
-		/// <summary>
-		///   <see cref = "SerializationInfo.GetValue" />
-		/// </summary>
-		public static readonly MethodInfo GetValue =
-			typeof(SerializationInfo).GetMethod("GetValue", new[] { typeof(String), typeof(Type) });
+        /// <summary>
+        ///   <see cref = "SerializationInfo.GetValue" />
+        /// </summary>
+        public static readonly MethodInfo GetValue =
+            typeof(SerializationInfo).GetMethod("GetValue", new[] { typeof(String), typeof(Type) });
 
-		/// <summary>
-		///   <see cref = "SerializationInfo.SetType" />
-		/// </summary>
-		public static readonly MethodInfo SetType =
-			typeof(SerializationInfo).GetMethod("SetType");
-	}
+        /// <summary>
+        ///   <see cref = "SerializationInfo.SetType" />
+        /// </summary>
+        public static readonly MethodInfo SetType =
+            typeof(SerializationInfo).GetMethod("SetType");
+    }
 }
 
 #endif

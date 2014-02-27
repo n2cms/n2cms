@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +12,7 @@ namespace N2.Addons.Wiki.Renderers
         public Control AddTo(Control container, ViewContext context)
         {
             int level = context.Fragment.Tokens.First().Fragment.Length;
-			string text = context.Fragment.ToString().Trim('=');
+            string text = context.Fragment.ToString().Trim('=');
             
             Hn hn = new Hn();
             hn.Level = level;

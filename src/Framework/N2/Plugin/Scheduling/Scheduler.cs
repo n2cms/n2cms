@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,74 +14,74 @@ namespace N2.Plugin.Scheduling
     /// Maintains a list of scheduler actions and checks whether it's time to 
     /// execute them.
     /// </summary>
-	[Service]
+    [Service]
     public class Scheduler : IAutoStart
     {
-		private readonly Engine.Logger<Scheduler> logger;
+        private readonly Engine.Logger<Scheduler> logger;
 
-		IList<ScheduledAction> actions = new List<ScheduledAction>();
-		IHeart heart;
-		readonly IWorker worker;
-		Web.IWebContext context;
-		IErrorNotifier errorHandler;
-		IEngine engine;
-		private bool enabled;
-		private bool asyncActions;
+        IList<ScheduledAction> actions = new List<ScheduledAction>();
+        IHeart heart;
+        readonly IWorker worker;
+        Web.IWebContext context;
+        IErrorNotifier errorHandler;
+        IEngine engine;
+        private bool enabled;
+        private bool asyncActions;
         private bool runWhileDebuggerAttached;
 
-		public Scheduler(IEngine engine, IHeart heart, IWorker worker, IWebContext context, IErrorNotifier errorHandler, ScheduledAction[] registeredActions, Configuration.EngineSection config)
+        public Scheduler(IEngine engine, IHeart heart, IWorker worker, IWebContext context, IErrorNotifier errorHandler, ScheduledAction[] registeredActions, Configuration.EngineSection config)
         {
-			this.engine = engine;
-			this.heart = heart;
-			this.worker = worker;
-			this.context = context;
-			this.errorHandler = errorHandler;
+            this.engine = engine;
+            this.heart = heart;
+            this.worker = worker;
+            this.context = context;
+            this.errorHandler = errorHandler;
 
-			this.enabled = config.Scheduler.Enabled;
-			this.asyncActions = config.Scheduler.AsyncActions;
+            this.enabled = config.Scheduler.Enabled;
+            this.asyncActions = config.Scheduler.AsyncActions;
             this.runWhileDebuggerAttached = config.Scheduler.RunWhileDebuggerAttached;
-			if (!string.IsNullOrEmpty(config.Scheduler.ExecuteOnMachineNamed))
-				if (config.Scheduler.ExecuteOnMachineNamed != Environment.MachineName)
-					this.enabled = false;
+            if (!string.IsNullOrEmpty(config.Scheduler.ExecuteOnMachineNamed))
+                if (config.Scheduler.ExecuteOnMachineNamed != Environment.MachineName)
+                    this.enabled = false;
 
-			if (enabled)
-			{
-				actions = new List<ScheduledAction>(InstantiateActions(registeredActions, config.Scheduler));
-			}
-		}
+            if (enabled)
+            {
+                actions = new List<ScheduledAction>(InstantiateActions(registeredActions, config.Scheduler));
+            }
+        }
 
         public IList<ScheduledAction> Actions
         {
             get { return actions; }
         }
 
-		private IEnumerable<ScheduledAction> InstantiateActions(IEnumerable<ScheduledAction> registeredActions, Configuration.SchedulerElement schedulerElement)
+        private IEnumerable<ScheduledAction> InstantiateActions(IEnumerable<ScheduledAction> registeredActions, Configuration.SchedulerElement schedulerElement)
         {
-			var isClear = schedulerElement.IsCleared;
-			var removedNames = new HashSet<string>(schedulerElement.RemovedElements.Select(re => re.Name));
-			var added = schedulerElement.AddedElements.ToDictionary(ae => ae.Name);
-			foreach (var action in registeredActions)
+            var isClear = schedulerElement.IsCleared;
+            var removedNames = new HashSet<string>(schedulerElement.RemovedElements.Select(re => re.Name));
+            var added = schedulerElement.AddedElements.ToDictionary(ae => ae.Name);
+            foreach (var action in registeredActions)
             {
-				string name = action.GetType().Name;
-				if (removedNames.Contains(name) && !added.ContainsKey(name))
-					continue;
-				if (isClear && !added.ContainsKey(name))
-					continue;
-				if (added.ContainsKey(name))
-				{
-					var actionConfig = added[name];
-					if (!string.IsNullOrEmpty(actionConfig.ExecuteOnMachineNamed) && actionConfig.ExecuteOnMachineNamed != Environment.MachineName)
-						continue;
-				}
+                string name = action.GetType().Name;
+                if (removedNames.Contains(name) && !added.ContainsKey(name))
+                    continue;
+                if (isClear && !added.ContainsKey(name))
+                    continue;
+                if (added.ContainsKey(name))
+                {
+                    var actionConfig = added[name];
+                    if (!string.IsNullOrEmpty(actionConfig.ExecuteOnMachineNamed) && actionConfig.ExecuteOnMachineNamed != Environment.MachineName)
+                        continue;
+                }
 
-				if (added.ContainsKey(name))
-				{
-					var actionConfig = added[name];
-					if (actionConfig.Interval.HasValue)
-						action.Interval = actionConfig.Interval.Value;
-					if (actionConfig.Repeat.HasValue)
-						action.Repeat = actionConfig.Repeat.Value ? Repeat.Indefinitely : Repeat.Once;
-				}
+                if (added.ContainsKey(name))
+                {
+                    var actionConfig = added[name];
+                    if (actionConfig.Interval.HasValue)
+                        action.Interval = actionConfig.Interval.Value;
+                    if (actionConfig.Repeat.HasValue)
+                        action.Repeat = actionConfig.Repeat.Value ? Repeat.Indefinitely : Repeat.Once;
+                }
 
                 yield return action;
             }
@@ -89,15 +89,15 @@ namespace N2.Plugin.Scheduling
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         void heart_Beat(object sender, EventArgs e)
-		{
-			ExecutActions();
-		}
-
-		/// <summary>Executes the scheduled actions that are scheduled for executions.</summary>
-		public void ExecutActions()
         {
-			if (!enabled)
-				return;
+            ExecutActions();
+        }
+
+        /// <summary>Executes the scheduled actions that are scheduled for executions.</summary>
+        public void ExecutActions()
+        {
+            if (!enabled)
+                return;
 
             if (Debugger.IsAttached && !runWhileDebuggerAttached)
                 return;
@@ -107,7 +107,7 @@ namespace N2.Plugin.Scheduling
                 ScheduledAction action = actions[i];
                 if (action.ShouldExecute())
                 {
-					Action work = delegate
+                    Action work = delegate
                     {
                         try
                         {
@@ -124,8 +124,8 @@ namespace N2.Plugin.Scheduling
 
                         try
                         {
-							logger.Debug("Executing " + action.GetType().Name);
-							action.Engine = engine;
+                            logger.Debug("Executing " + action.GetType().Name);
+                            action.Engine = engine;
                             action.Execute();
                             action.ErrorCount = 0;
                         }
@@ -160,11 +160,11 @@ namespace N2.Plugin.Scheduling
                         }
                     };
 
-					action.IsExecuting = true;
-					if (asyncActions)
-						worker.DoWork(work);
-					else
-						work();
+                    action.IsExecuting = true;
+                    if (asyncActions)
+                        worker.DoWork(work);
+                    else
+                        work();
 
                     if (action.Repeat == Repeat.Once)
                     {

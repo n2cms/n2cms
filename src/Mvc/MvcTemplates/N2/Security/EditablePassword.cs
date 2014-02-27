@@ -1,4 +1,4 @@
-﻿using N2.Details;
+using N2.Details;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,37 +8,37 @@ using System.Web.UI.WebControls;
 
 namespace N2.Security
 {
-	public class EditablePasswordAttribute : EditableTextAttribute
-	{
-		public EditablePasswordAttribute(string title, int sortOrder)
-			: base (title, sortOrder)
-		{
-			this.TextMode = TextBoxMode.Password;
-		}
+    public class EditablePasswordAttribute : EditableTextAttribute
+    {
+        public EditablePasswordAttribute(string title, int sortOrder)
+            : base (title, sortOrder)
+        {
+            this.TextMode = TextBoxMode.Password;
+        }
 
         private AccountManager AccountManager { get { return N2.Context.Current.Resolve<AccountManager>(); } }
 
-		public override void UpdateEditor(ContentItem item, System.Web.UI.Control editor)
-		{
-		}
+        public override void UpdateEditor(ContentItem item, System.Web.UI.Control editor)
+        {
+        }
 
-		public override bool UpdateItem(ContentItem item, System.Web.UI.Control editor)
-		{
-			var password = ((TextBox)editor).Text;
-			if (string.IsNullOrEmpty(password))
-				return false;
+        public override bool UpdateItem(ContentItem item, System.Web.UI.Control editor)
+        {
+            var password = ((TextBox)editor).Text;
+            if (string.IsNullOrEmpty(password))
+                return false;
 
             if (AccountManager.IsMembershipAccountType())
             {
-                var membershpiProvider = Membership.Provider as ContentMembershipProvider;
-                if (membershpiProvider != null)
-                {
-                    password = membershpiProvider.ToStoredPassword(password);
-                }
+			var membershpiProvider = Membership.Provider as ContentMembershipProvider;
+			if (membershpiProvider != null)
+			{
+				password = membershpiProvider.ToStoredPassword(password);
+			}
             }
 
-			item[Name] = password;
-			return true;
-		}
-	}
+            item[Name] = password;
+            return true;
+        }
+    }
 }

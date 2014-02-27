@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.Web.Profile;
@@ -15,7 +15,7 @@ namespace N2.Security
 
         public override int DeleteInactiveProfiles(ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate)
         {
-			Engine.Logger.Warn("ContentProfileProvider.DeleteInactiveProfiles Not Implemented");
+            Engine.Logger.Warn("ContentProfileProvider.DeleteInactiveProfiles Not Implemented");
             return 0;
         }
 
@@ -47,7 +47,7 @@ namespace N2.Security
 
         public override ProfileInfoCollection FindInactiveProfilesByUserName(ProfileAuthenticationOption authenticationOption, string usernameToMatch, DateTime userInactiveSinceDate, int pageIndex, int pageSize, out int totalRecords)
         {
-			Engine.Logger.Warn("ContentProfileProvider.FindInactiveProfilesByUserName Not Implemented");
+            Engine.Logger.Warn("ContentProfileProvider.FindInactiveProfilesByUserName Not Implemented");
             totalRecords = 0;
             return new ProfileInfoCollection();
         }
@@ -73,7 +73,7 @@ namespace N2.Security
 
         public override ProfileInfoCollection GetAllInactiveProfiles(ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate, int pageIndex, int pageSize, out int totalRecords)
         {
-			Engine.Logger.Warn("ContentProfileProvider.GetAllInactiveProfiles Not Implemented");
+            Engine.Logger.Warn("ContentProfileProvider.GetAllInactiveProfiles Not Implemented");
             totalRecords = 0;
             return new ProfileInfoCollection();
         }
@@ -94,7 +94,7 @@ namespace N2.Security
 
         public override int GetNumberOfInactiveProfiles(ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate)
         {
-			Engine.Logger.Warn("ContentProfileProvider.GetNumberOfInactiveProfiles Not Implemented");
+            Engine.Logger.Warn("ContentProfileProvider.GetNumberOfInactiveProfiles Not Implemented");
             return 0;
         }
 
@@ -111,28 +111,28 @@ namespace N2.Security
             string username = (string)context["UserName"];
             if (!string.IsNullOrEmpty(username))
             {
-            	User _user = Bridge.GetUser(username);
-            	
-            	//user wasn't created by ASP.Net Membership
-            	if(null == _user) {
-            		bool _isAuthenticated = (bool?)context["IsAuthenticated"] ?? false;
-            		
-            		//..but ASP.Net Profile infrastructure believes that
-            		// a user with such name should have properties,
-            		// so have to create a fake DB user to hold profile properties
-            		if(_isAuthenticated) {
-            			_user = Bridge.CreateUser(
-            					username,
-            					string.Empty,
-            					string.Empty,
-            					string.Empty,
-            					string.Empty,
-            					false,
-            					null);
-            		}
-            	}
-            	
-            	return _user;
+                User _user = Bridge.GetUser(username);
+                
+                //user wasn't created by ASP.Net Membership
+                if(null == _user) {
+                    bool _isAuthenticated = (bool?)context["IsAuthenticated"] ?? false;
+                    
+                    //..but ASP.Net Profile infrastructure believes that
+                    // a user with such name should have properties,
+                    // so have to create a fake DB user to hold profile properties
+                    if(_isAuthenticated) {
+                        _user = Bridge.CreateUser(
+                                username,
+                                string.Empty,
+                                string.Empty,
+                                string.Empty,
+                                string.Empty,
+                                false,
+                                null);
+                    }
+                }
+                
+                return _user;
             }
             return null;
         }
@@ -152,17 +152,17 @@ namespace N2.Security
                         //SettingsPropertyValue should automatically resort to .DefaultValue
                         // unless .PropertyValue was set
                         if(null != _propertyValue) {
-                        	property.PropertyValue = _propertyValue;
+                            property.PropertyValue = _propertyValue;
                         }
                         properties.Add(property);
                     }
                 } else {
-                	//fill in properties, allowed for anonymous users..
-                	foreach(SettingsProperty requestedProperty in requestedProperties) {
-                		if((bool?)requestedProperty.Attributes["AllowAnonymous"] ?? false) {
-                			properties.Add(new SettingsPropertyValue(requestedProperty));
-                		}
-                	}
+                    //fill in properties, allowed for anonymous users..
+                    foreach(SettingsProperty requestedProperty in requestedProperties) {
+                        if((bool?)requestedProperty.Attributes["AllowAnonymous"] ?? false) {
+                            properties.Add(new SettingsPropertyValue(requestedProperty));
+                        }
+                    }
                 }
             }
             return properties;

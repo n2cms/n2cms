@@ -1,36 +1,43 @@
 ﻿(function (module) {
+	module.factory('LocationKeeper', function ($rootScope, $routeParams, $location, Content) {
+		$rootScope.$on("contextchanged", function (s, ctx) {
+			$location.search(Content.applySelection({}, ctx.CurrentItem))
+				.replace();
+		});
+		return {};
+	});
 
 	module.factory('Eventually', function ($timeout) {
 		return (function () {
 			// clears the previous action if a new event is triggered before the timeout
 			var timer = 0;
-			var timers = {}
-			return function (callback, ms, onWorkCancelled, parallelWorkGroup) {
+			var timers = {};
+			return function(callback, ms, onWorkCancelled, parallelWorkGroup) {
 				if (!!parallelWorkGroup) {
 					if (timers[parallelWorkGroup]) {
 						$timeout.cancel(timers[parallelWorkGroup]);
 						onWorkCancelled();
 					}
-					timers[parallelWorkGroup] = $timeout(function () {
+					timers[parallelWorkGroup] = $timeout(function() {
 						timers[parallelWorkGroup] = null;
 						callback();
 					}, ms);
 				} else {
 					timer && onWorkCancelled && onWorkCancelled();
 					timer && $timeout.cancel(timer);
-					timer = $timeout(function () {
+					timer = $timeout(function() {
 						timer = 0;
 						callback();
 					}, ms);
 				}
-			}
+			};
 		})();
 	});
 
 	window.frameHost = {
-		notify: function () {
+		notify: function() {
 		}
-	}
+	};
 	module.factory('FrameManipulator', function () {
 		var frameManipulator = {
 			host: window.frameHost,
@@ -102,9 +109,9 @@
 		res.paths = {
 			SelectedQueryKey: "selected",
 			ItemQueryKey: "item"
-		}
+		};
 
-		res.applySelection = function (settings, currentItem) {
+		res.applySelection = function(settings, currentItem) {
 			var path = currentItem && currentItem.Path;
 			var id = currentItem && currentItem.ID;
 
@@ -121,7 +128,7 @@
 				return angular.extend(selection, settings);
 			}
 			return settings;
-		}
+		};
 
 		res.loadChildren = function (node, callback) {
 		    if (!node)
@@ -132,6 +139,7 @@
 		        node.Children = data.Children;
 		        delete node.Loading;
 		        node.IsPaged = data.IsPaged;
+		        node.HasChildren = data.Children.length > 0;
 		        callback && callback(node);
 		    });
 		};
@@ -224,9 +232,9 @@
 	});
 
 	module.factory('ContextMenuFactory', function () {
-		return function (scope) {
+		return function(scope) {
 			var contextMenu = this;
-			contextMenu.show = function (node) {
+			contextMenu.show = function(node) {
 				scope.select(node);
 				scope.ContextMenu.node = node;
 				scope.ContextMenu.options = [];
@@ -236,25 +244,31 @@
 					scope.ContextMenu.options.push(cm.Current);
 				}
 			};
-			contextMenu.hide = function () {
+			contextMenu.hide = function() {
 				delete scope.ContextMenu.node;
 				delete scope.ContextMenu.options;
 				delete scope.ContextMenu.memory;
 				delete scope.ContextMenu.action;
 			};
-			contextMenu.cut = function (node) {
+			contextMenu.cut = function(node) {
 				contextMenu.memory = node.Current;
 				contextMenu.action = "cut";
-				
+
 			};
-			contextMenu.copy = function (node) {
+			contextMenu.copy = function(node) {
 				contextMenu.memory = node.Current;
 				contextMenu.action = "copy";
 			};
-		}
+		};
 	});
 
-	module.factory('SortHelperFactory', function (Content, Notify) {
+	module.factory('Confirm', function ($rootScope) {
+	    return function (settings) {
+	        $rootScope.$emit("confirm", settings);
+	    };
+	});
+
+	module.factory('SortHelperFactory', function (Content, Notify, Translate, Confirm) {
 		var context = {}
 		return function (scope) {
 			function reload(ctx) {
@@ -272,12 +286,27 @@
 				});
 			}
 			this.move = function (ctx) {
-				Content.move(ctx.paths, function () {
-					reload(ctx);
-					Notify.show({ message: "Moved " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
-				}, function () {
-					Notify.show({ message: "Failed moving " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "error" });
-				});
+			    console.log("move", ctx, ctx.scopes.selected.node.Current.Title, ctx.scopes.to.node.Current.Title, Translate("confirm.move.title"));
+			    Confirm({
+			        title: Translate("confirm.move.title"),
+			        moved: ctx.scopes.selected.node.Current,
+			        destination: ctx.scopes.to.node.Current,
+			        template: "<div class='alert alert-info' translate='confirm.move.info'>This may break inbound links</div>"
+                            + "<p><label translate='confirm.move.moved'>Moved</label><b class='ico' ng-show='settings.moved.IconClass || settings.moved.IconUrl' ng-class='settings.moved.IconClass' x-background-image='settings.moved.IconUrl'></b> {{settings.moved.Title}}<p>"
+                            + "<p><label translate='confirm.move.destination'>Destination</label><b class='ico' ng-show='settings.destination.IconClass || settings.destination.IconUrl' ng-class='settings.destination.IconClass' x-background-image='settings.destination.IconUrl'></b> {{settings.destination.Title}}<p>",
+			        confirmed: function () {
+			            Content.move(ctx.paths, function () {
+			                reload(ctx);
+			                Notify.show({ message: "Moved " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
+			            }, function () {
+			                Notify.show({ message: "Failed moving " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "error" });
+			            });
+			        },
+			        cancelled: function () {
+			            scope.reloadChildren(ctx.scopes.from.node);
+			            scope.reloadChildren(ctx.scopes.to.node);
+			        }
+			    });
 			};
 			this.sort = function (ctx) {
 				Content.sort(ctx.paths, function () {

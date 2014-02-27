@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="../Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Settings.Default" meta:resourceKey="settingsPage" %>
+﻿<%@ Page MasterPageFile="../Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Settings.Default" meta:resourceKey="settingsPage" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
 </asp:Content>

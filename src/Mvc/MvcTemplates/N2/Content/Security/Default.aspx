@@ -1,4 +1,5 @@
-<%@ Page Language="C#" MasterPageFile="../Framed.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Security.Default" Title="Untitled Page" meta:resourcekey="PageResource1" %>
+﻿<%@ Page Language="C#" MasterPageFile="../Framed.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Security.Default" Title="Untitled Page" meta:resourcekey="PageResource1" %>
+<%@ Import Namespace="N2.Edit" %>
 <%@ Import Namespace="N2.Security"%>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
@@ -22,32 +23,32 @@
 		.AuthorizedFalse { opacity:.33; }
     </style>
     <script type="text/javascript">
-    	$(document).ready(function() {
-    		$.fn.disable = function() {
-    			return this.attr("disabled", "disabled");
-    		};
-    		$.fn.enable = function() {
-    			return this.removeAttr("disabled");
-    		};
-    		var updateColumn = function() {
-    			var groupName = this.parentNode.className.split(' ')[1];
-    			var $grouped = $("." + groupName + " input").not(this);
-    			if (this.checked) {
-    				$grouped.parent().andSelf().disable();
-    			} else {
-    				$grouped.parent().andSelf().enable();
-    			}
-    			var $unauthorized = $grouped.parent().filter(".AuthorizedFalse").children("input").andSelf();
-    			$unauthorized.disable();
-    			return $grouped;
-    		};
-    		$(".overrides .cb input").filter(":checked").addClass("defaultChecked");
-    		$(".defaults .cb input").click(function() {
-    			var $grouped = updateColumn.call(this);
-    			$grouped.filter(".defaultChecked").attr("checked", true);
-    			$grouped.filter(":not(.defaultChecked)").removeAttr("checked");
-    		}).each(updateColumn);
-    	});
+	    $(document).ready(function() {
+		    $.fn.disable = function() {
+			    return this.attr("disabled", "disabled");
+		    };
+		    $.fn.enable = function() {
+			    return this.removeAttr("disabled");
+		    };
+		    var updateColumn = function() {
+			    var groupName = this.parentNode.className.split(' ')[1];
+			    var $grouped = $("." + groupName + " input").not(this);
+			    if (this.checked) {
+				    $grouped.parent().andSelf().disable();
+			    } else {
+				    $grouped.parent().andSelf().enable();
+			    }
+			    var $unauthorized = $grouped.parent().filter(".AuthorizedFalse").children("input").andSelf();
+			    $unauthorized.disable();
+			    return $grouped;
+		    };
+		    $(".overrides .cb input").filter(":checked").addClass("defaultChecked");
+		    $(".defaults .cb input").click(function() {
+			    var $grouped = updateColumn.call(this);
+			    $grouped.filter(".defaultChecked").attr("checked", true);
+			    $grouped.filter(":not(.defaultChecked)").removeAttr("checked");
+		    }).each(updateColumn);
+	    });
     </script>
 <div class="tabPanel">
     <table>
@@ -76,9 +77,7 @@
 		<asp:Repeater ID="rptPermittedRoles" runat="server" DataSource="<%# GetAvailableRoles() %>"><ItemTemplate>
 			<tr>
 				<td><%# Container.DataItem %></td>
-				<asp:Repeater ID="rptPermissions" runat="server" DataSource="<%# Permissions %>" 
-							  OnItemDataBound="rptPermissions_ItemDataBound"
-							  OnItemCreated="rptPermissions_ItemCreated"><ItemTemplate>
+				<asp:Repeater ID="rptPermissions" runat="server" DataSource="<%# Permissions %>" OnItemCreated="rptPermissions_ItemCreated"><ItemTemplate>
 					<td>
 						<asp:CheckBox ID="cbRole" runat="server" 
 									  Checked="<%# IsRolePermitted(GetRole(Container), (Permission)Container.DataItem) %>" 

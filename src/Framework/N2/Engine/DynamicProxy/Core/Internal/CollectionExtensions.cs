@@ -1,4 +1,4 @@
-﻿// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
+// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,70 +14,70 @@
 
 namespace Castle.Core.Internal
 {
-	using N2;
-	using N2.Collections;
-	using System;
-	using System.Collections;
-	using System.Collections.Generic;
-	using System.ComponentModel;
+    using N2;
+    using N2.Collections;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
 
 #if SILVERLIGHT
-	using System.Linq;
+    using System.Linq;
 #endif
 
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	public static class CollectionExtensions
-	{
-		public static TResult[] ConvertAll<T, TResult>(this T[] items, Converter<T, TResult> transformation)
-		{
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public static class CollectionExtensions
+    {
+        public static TResult[] ConvertAll<T, TResult>(this T[] items, Converter<T, TResult> transformation)
+        {
 #if SILVERLIGHT
-			return items.Select(transformation.Invoke).ToArray();
+            return items.Select(transformation.Invoke).ToArray();
 #else
-			return Array.ConvertAll(items, transformation);
+            return Array.ConvertAll(items, transformation);
 #endif
-		}
+        }
 
-		public static void ForEach<T>(this IEnumerable<T> items, Action<T> action)
-		{
-			if (items == null) return;
+        public static void ForEach<T>(this IEnumerable<T> items, Action<T> action)
+        {
+            if (items == null) return;
 
-			foreach (var item in items)
-			{
-				action(item);
-			}
-		}
+            foreach (var item in items)
+            {
+                action(item);
+            }
+        }
 
-		public static T Find<T>(this T[] items, Predicate<T> predicate)
-		{
+        public static T Find<T>(this T[] items, Predicate<T> predicate)
+        {
 #if SILVERLIGHT
-			if (items == null)
-				throw new ArgumentNullException("items");
+            if (items == null)
+                throw new ArgumentNullException("items");
 
-			if (predicate == null)
-				throw new ArgumentNullException("predicate");
-			return items.FirstOrDefault(predicate.Invoke);
+            if (predicate == null)
+                throw new ArgumentNullException("predicate");
+            return items.FirstOrDefault(predicate.Invoke);
 #else
-			return Array.Find(items, predicate);
+            return Array.Find(items, predicate);
 #endif
-		}
+        }
 
-		public static T[] FindAll<T>(this T[] items, Predicate<T> predicate)
-		{
+        public static T[] FindAll<T>(this T[] items, Predicate<T> predicate)
+        {
 #if SILVERLIGHT
-			return items.Where(predicate.Invoke).ToArray();
+            return items.Where(predicate.Invoke).ToArray();
 #else
-			return Array.FindAll(items, predicate);
+            return Array.FindAll(items, predicate);
 #endif
-		}
+        }
 
-		/// <summary>
-		///   Checks whether or not collection is null or empty. Assumes colleciton can be safely enumerated multiple times.
-		/// </summary>
-		/// <param name = "this"></param>
-		/// <returns></returns>
-		public static bool IsNullOrEmpty(this IEnumerable @this)
-		{
-			return @this == null || @this.GetEnumerator().MoveNext() == false;
-		}
-	}
+        /// <summary>
+        ///   Checks whether or not collection is null or empty. Assumes colleciton can be safely enumerated multiple times.
+        /// </summary>
+        /// <param name = "this"></param>
+        /// <returns></returns>
+        public static bool IsNullOrEmpty(this IEnumerable @this)
+        {
+            return @this == null || @this.GetEnumerator().MoveNext() == false;
+        }
+    }
 }

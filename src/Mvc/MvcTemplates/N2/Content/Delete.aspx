@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="Delete.aspx.cs" Inherits="N2.Edit.Delete" Title="Delete" %>
+﻿<%@ Page MasterPageFile="Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="Delete.aspx.cs" Inherits="N2.Edit.Delete" Title="Delete" %>
 <%@ Register Src="AffectedItems.ascx" TagName="AffectedItems" TagPrefix="uc1" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 

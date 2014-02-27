@@ -4,18 +4,18 @@ using NUnit.Framework;
 
 namespace N2.Tests.Fakes
 {
-	public class FakeErrorHandler : IErrorNotifier
-	{
-		#region IErrorNotifier Members
+    public class FakeErrorHandler : IErrorNotifier
+    {
+        #region IErrorNotifier Members
 
-		public void Notify(Exception ex)
-		{
-			Assert.Fail(ex.ToString());
-			ErrorOccured(this, new ErrorEventArgs { Error = ex });
-		}
+        public void Notify(Exception ex)
+        {
+            Assert.Fail(ex.ToString());
+            ErrorOccured(this, new ErrorEventArgs { Error = ex });
+        }
 
-		public event EventHandler<ErrorEventArgs> ErrorOccured = delegate { };
+        public event EventHandler<ErrorEventArgs> ErrorOccured = delegate { };
 
-		#endregion
-	}
+        #endregion
+    }
 }

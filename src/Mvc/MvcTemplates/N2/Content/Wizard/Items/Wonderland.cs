@@ -7,13 +7,14 @@ using N2.Management;
 
 namespace N2.Edit.Wizard.Items
 {
-	[PartDefinition("Wizard Container",
-		IconClass = "n2-icon-magic",
-		AuthorizedRoles = new string[0])]
-	[Throwable(AllowInTrash.No)]
-	[Indexable(IsIndexable = false)]
-	[RestrictParents(typeof(IRootPage))]
+    [PartDefinition("Wizard Container",
+        IconClass = "n2-icon-magic",
+        AuthorizedRoles = new string[0])]
+    [Throwable(AllowInTrash.No)]
+    [Indexable(IsIndexable = false)]
+    [RestrictParents(typeof(IRootPage))]
+	[Versionable(AllowVersions.No)]
 	public class Wonderland : ManagementItem, ISystemNode
-	{
-	}
+    {
+    }
 }

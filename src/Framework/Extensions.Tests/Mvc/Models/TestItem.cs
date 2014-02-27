@@ -1,15 +1,15 @@
 namespace N2.Extensions.Tests.Mvc.Models
 {
-	public class TestItem : ContentItem
-	{
-		public override bool IsPage
-		{
-			get { return false; }
-		}
+    public class TestItem : ContentItem
+    {
+        public override bool IsPage
+        {
+            get { return false; }
+        }
 
-		public override string Url
-		{
-			get { return Parent.Url + "?item=" + ID; }
-		}
-	}
+        public override string Url
+        {
+            get { return Parent.Url + "?item=" + ID; }
+        }
+    }
 }

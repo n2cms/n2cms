@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Search.aspx.cs" Inherits="N2.Edit.Navigation.Search" meta:resourceKey="searchPage" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Search.aspx.cs" Inherits="N2.Edit.Navigation.Search" meta:resourceKey="searchPage" %>
 <%@ Register TagPrefix="nav" TagName="ContextMenu" Src="ContextMenu.ascx" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

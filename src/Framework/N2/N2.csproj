@@ -41,6 +41,8 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <OldToolsVersion>3.5</OldToolsVersion>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -150,12 +152,14 @@
     <Compile Include="Configuration\CollaborationElement.cs" />
     <Compile Include="Configuration\FileListElement.cs" />
     <Compile Include="Configuration\DocViewerElement.cs" />
+    <Compile Include="Configuration\HtmlSanitizeElement.cs" />
     <Compile Include="Configuration\TargetingCollection.cs" />
     <Compile Include="Configuration\TargetingElement.cs" />
     <Compile Include="Configuration\ExceptionResolutionMode.cs" />
     <Compile Include="Configuration\ServerElement.cs" />
     <Compile Include="Definitions\DefinitionEventArgs.cs" />
     <Compile Include="Definitions\IPlaceholder.cs" />
+    <Compile Include="Web\IStyleable.cs" />
     <Compile Include="Definitions\ITemplateAggregator.cs" />
     <Compile Include="Definitions\TemplateAggregator.cs" />
     <Compile Include="Details\EditableDirectUrlAttribute.cs" />
@@ -170,6 +174,8 @@
     <Compile Include="Edit\Api\IProfileRepository.cs" />
     <Compile Include="Edit\Api\ManagementModule.cs" />
     <Compile Include="Edit\Api\ProfileHandler.cs" />
+    <Compile Include="Edit\ISafeContentRenderer.cs" />
+    <Compile Include="Edit\SafeContentRenderer.cs" />
     <Compile Include="Edit\Installation\InstallationExtensions.cs" />
     <Compile Include="Edit\Installation\MigrationAttribute.cs" />
     <Compile Include="Edit\MetaInfo.cs" />
@@ -731,6 +737,8 @@
     <Compile Include="Collections\TraverseHelper.cs" />
     <Compile Include="Web\NonRewritableAttribute.cs" />
     <Compile Include="Web\Parsing\AnalyzerBase.cs" />
+    <Compile Include="Web\Parsing\ElementAnalyzer.cs" />
+    <Compile Include="Web\Parsing\HtmlCommentAnalyzer.cs" />
     <Compile Include="Web\Parsing\Token.cs" />
     <Compile Include="Web\Parsing\TokenType.cs" />
     <Compile Include="Web\Parts\IIntegerityManager.cs" />
@@ -905,7 +913,6 @@
     <Compile Include="Integrity\CannotDeleteRootException.cs" />
     <Compile Include="Integrity\DestinationOnOrBelowItselfException.cs" />
     <Compile Include="Persistence\Comparison.cs" />
-    <Compile Include="Persistence\DoNotCopyAttribute.cs" />
     <Compile Include="Persistence\NH\IConfigurationBuilder.cs" />
     <Compile Include="Persistence\NH\ISessionProvider.cs" />
     <Compile Include="Plugin\IPluginInitializer.cs" />
@@ -1003,7 +1010,6 @@
     <Compile Include="Configuration\SettingsEditorCollection.cs" />
     <Compile Include="Configuration\SiteElement.cs" />
     <Compile Include="Configuration\SiteElementCollection.cs" />
-    <Compile Include="Configuration\TinyMCEElement.cs" />
     <Compile Include="Configuration\UrlElement.cs" />
     <Compile Include="Configuration\WebElement.cs" />
     <Compile Include="Definitions\AbstractDefinitionRefiner.cs" />
@@ -1066,7 +1072,6 @@
     <Compile Include="Edit\Workflow\Commands\DeleteCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\EnsureNotPublishedCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\EnsurePublishedCommand.cs" />
-    <Compile Include="Edit\Workflow\Commands\IncrementVersionIndexCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\MakeVersionCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\MoveToPositionCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\OnMasterCommand.cs" />
@@ -1307,7 +1312,6 @@
     <Compile Include="Web\IPathFinder.cs" />
     <Compile Include="Web\Mail\IMailSender.cs" />
     <Compile Include="Web\Mail\SmtpMailSender.cs" />
-    <Compile Include="Web\Mail\StaticMailSender.cs" />
     <Compile Include="Web\Parts\CreateUrlProvider.cs" />
     <Compile Include="Web\Parts\EditUrlProvider.cs" />
     <Compile Include="Web\Parts\ItemCopyer.cs" />
@@ -1424,7 +1428,6 @@
     <Compile Include="Web\UI\WebControls\TabPanel.cs" />
     <Compile Include="Web\UI\WebControls\Tree.cs" />
     <Compile Include="Web\UI\WebControls\TreeNode.cs" />
-    <Compile Include="Web\UI\WebControls\Ul.cs" />
     <Compile Include="Web\UI\WebControls\UrlRelativityMode.cs" />
     <Compile Include="Web\Url.cs" />
     <Compile Include="Web\WebRequestContext.cs" />
@@ -1468,6 +1471,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

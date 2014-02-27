@@ -5,8 +5,8 @@ using System;
 
 namespace N2.Web.Mvc.Html
 {
-	public static class DroppableZoneExtensions
-	{
+    public static class DroppableZoneExtensions
+    {
         /// <summary>
         /// Gets the HTML for all items in the Zone of the given name from the item held by the <see cref="container" />.
         /// </summary>
@@ -30,5 +30,5 @@ namespace N2.Web.Mvc.Html
         {
             return new DroppableZoneHelper(helper, zoneName, item);
         }
-	}
+    }
 }

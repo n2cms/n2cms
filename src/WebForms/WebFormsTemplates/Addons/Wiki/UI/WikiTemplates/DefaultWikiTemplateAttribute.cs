@@ -1,4 +1,4 @@
-﻿namespace N2.Addons.Wiki.UI.WikiTemplates
+namespace N2.Addons.Wiki.UI.WikiTemplates
 {
     /// <summary>
     /// A template plugin attribute that assumes the template to exist in the 

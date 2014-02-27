@@ -15,15 +15,15 @@ namespace N2.Edit.Myself
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!LoadSelectedUser())
-			{
-				cvNoUser.IsValid = false;
-				btnSave.Enabled = false;
-				txtPassword.Enabled = false;
-				txtOldPassword.Enabled = false;
-				txtRepeatPassword.Enabled = false;
-			}
-			else
-				btnSave.Enabled = !SelectedUser.IsLockedOut;
+            {
+                cvNoUser.IsValid = false;
+                btnSave.Enabled = false;
+                txtPassword.Enabled = false;
+                txtOldPassword.Enabled = false;
+                txtRepeatPassword.Enabled = false;
+            }
+            else
+                btnSave.Enabled = !SelectedUser.IsLockedOut;
 
         }
 
@@ -31,10 +31,10 @@ namespace N2.Edit.Myself
         {
             SelectedUserName = HttpContext.Current.User.Identity.Name;
             MembershipUserCollection muc = System.Web.Security.Membership.FindUsersByName(SelectedUserName);
-			if (muc.Count < 1)
-				return false;
+            if (muc.Count < 1)
+                return false;
             SelectedUser = muc[SelectedUserName];
-			return true;
+            return true;
         }
 
         protected void btnSave_Click(object sender, EventArgs e)

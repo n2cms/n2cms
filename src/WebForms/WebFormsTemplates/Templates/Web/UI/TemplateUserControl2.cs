@@ -9,29 +9,29 @@ namespace N2.Templates.Web.UI
     /// <typeparam name="TPage">The type of page the user control is dynamically added to.</typeparam>
     /// <typeparam name="TItem">The type of part the user control is a template for.</typeparam>
     /// <remarks>This base class will be associated with the content data of the part which can be accessed through the CurrentItem property.</remarks>
-	public class TemplateUserControl<TPage, TItem> : N2.Web.UI.ContentUserControl<TPage, TItem>
-		where TPage : ContentItem
-		where TItem : ContentItem
-	{
-		private string cssClass;
+    public class TemplateUserControl<TPage, TItem> : N2.Web.UI.ContentUserControl<TPage, TItem>
+        where TPage : ContentItem
+        where TItem : ContentItem
+    {
+        private string cssClass;
 
-		public TemplateUserControl()
-		{
-			string itemTypeName = GetType().BaseType.Name;
-			cssClass = itemTypeName.Substring(0, 1).ToLower() + itemTypeName.Substring(1);
-		}
+        public TemplateUserControl()
+        {
+            string itemTypeName = GetType().BaseType.Name;
+            cssClass = itemTypeName.Substring(0, 1).ToLower() + itemTypeName.Substring(1);
+        }
 
-		public virtual string CssClass
-		{
-			get { return cssClass; }
-			set { cssClass = value; }
-		}
+        public virtual string CssClass
+        {
+            get { return cssClass; }
+            set { cssClass = value; }
+        }
 
-		protected override void Render(System.Web.UI.HtmlTextWriter writer)
-		{
-			writer.Write("<div class='uc {0}'>", CssClass);
-			base.Render(writer);
-			writer.Write("</div>");
-		}
-	}
+        protected override void Render(System.Web.UI.HtmlTextWriter writer)
+        {
+            writer.Write("<div class='uc {0}'>", CssClass);
+            base.Render(writer);
+            writer.Write("</div>");
+        }
+    }
 }

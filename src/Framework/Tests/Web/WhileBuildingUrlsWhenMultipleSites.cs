@@ -22,7 +22,7 @@ namespace N2.Tests.Web
         public void CanBuildUrlOnCurrentSite()
         {
             CreateDefaultStructure();
-			wrapper.Url = "http://www.n2cms.com/";
+            wrapper.Url = "http://www.n2cms.com/";
             mocks.ReplayAll();
 
             string url = parser.BuildUrl(page1_1);
@@ -33,7 +33,7 @@ namespace N2.Tests.Web
         public void CanBuildUrlOnOtherSiteStartPage()
         {
             CreateDefaultStructure();
-			wrapper.Url = "http://www.n2cms.com&";
+            wrapper.Url = "http://www.n2cms.com&";
             mocks.ReplayAll();
 
             string url = parser.BuildUrl(page2);
@@ -44,7 +44,7 @@ namespace N2.Tests.Web
         public void CanBuildUrlOnOtherSitePage()
         {
             CreateDefaultStructure();
-			wrapper.Url = "http://n2.libardo.com&";
+            wrapper.Url = "http://n2.libardo.com&";
             mocks.ReplayAll();
 
             string url = parser.BuildUrl(page1_1);
@@ -54,7 +54,7 @@ namespace N2.Tests.Web
         [Test]
         public void ReferencesItems_OutsideAllSites_ByRewrittenUrl()
         {
-			wrapper.Url = "http://www.n2cms.com/";
+            wrapper.Url = "http://www.n2cms.com/";
             ContentItem itemOnTheOutside = CreateOneItem<PageItem>(99, "item4", startItem);
 
             mocks.ReplayAll();
@@ -71,17 +71,17 @@ namespace N2.Tests.Web
             Assert.That(count, Is.EqualTo(1));
         }
 
-		[Test]
-		public void Url_ToItem_ThatIsVersion_IsTheUrl_OfTheMasterVersion_PlusVersionIndex()
-		{
-			CreateDefaultStructure();
-			var version = new PageItem { VersionIndex = 1, VersionOf = page1_1 };
+        [Test]
+        public void Url_ToItem_ThatIsVersion_IsTheUrl_OfTheMasterVersion_PlusVersionIndex()
+        {
+            CreateDefaultStructure();
+            var version = new PageItem { VersionIndex = 1, VersionOf = page1_1 };
 
-			string itemUrl = parser.BuildUrl(page1_1);
-			string url = parser.BuildUrl(version);
+            string itemUrl = parser.BuildUrl(page1_1);
+            string url = parser.BuildUrl(version);
 
-			itemUrl.ShouldBe("/item1_1.aspx");
-			url.ShouldBe("/item1_1.aspx?versionIndex=1");
-		}
+            itemUrl.ShouldBe("/item1_1.aspx");
+            url.ShouldBe("/item1_1.aspx?versionIndex=1");
+        }
     }
 }

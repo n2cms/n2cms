@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 
 namespace N2.Web
 {
-	public class ErrorEventArgs : EventArgs
-	{
-		public Exception Error { get; set; }
-	}
+    public class ErrorEventArgs : EventArgs
+    {
+        public Exception Error { get; set; }
+    }
 }

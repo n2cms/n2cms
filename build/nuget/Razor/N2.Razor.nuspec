@@ -15,9 +15,15 @@
     <language>en-US</language>
     <tags>N2 CMS</tags>
 		<dependencies>
-			<dependency id="N2CMS.Library" version="{Version}" />
-			<!--<dependency id="AspNetMvc" version="4.0.20126.16343" />
-			<dependency id="AspNetRazor.Core" version="2.0.20126.16343" />-->
+			<group>
+				<dependency id="N2CMS.Library" version="{Version}" />
+			</group>
+			<group targetFramework="net40">
+				<dependency id="Microsoft.AspNet.Razor" version="[2.0.30506.0]" />
+			</group>
+			<group targetFramework="net45">
+				<dependency id="Microsoft.AspNet.Razor" version="3.0.0" />
+			</group>
 		</dependencies>
 	</metadata>
 </package>

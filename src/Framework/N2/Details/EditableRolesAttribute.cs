@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Moved to N2.Management (Mvc\MvcTemplates\N2\Details)
  * 
 using System.Collections.Generic;

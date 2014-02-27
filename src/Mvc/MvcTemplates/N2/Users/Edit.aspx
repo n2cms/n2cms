@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="../Content/Framed.Master" AutoEventWireup="true" CodeBehind="Edit.aspx.cs" Inherits="N2.Edit.Membership.Edit" Title="Edit user" meta:resourcekey="PageResource1" %>
+﻿<%@ Page Language="C#" MasterPageFile="../Content/Framed.Master" AutoEventWireup="true" CodeBehind="Edit.aspx.cs" Inherits="N2.Edit.Membership.Edit" Title="Edit user" meta:resourcekey="PageResource1" %>
 <%--<asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="server">
     <link rel="stylesheet" href="Css/membership.css" type="text/css" />
 </asp:Content>--%>

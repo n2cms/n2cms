@@ -1,4 +1,4 @@
-﻿using System.Web.UI;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
 
 namespace N2.Edit
@@ -13,15 +13,15 @@ namespace N2.Edit
         {
             Name = name;
             SortOrder = sortOrder;
-			IsDivider = true;
-		}
+            IsDivider = true;
+        }
 
-		public override Control AddTo(Control container, PluginContext context)
-		{
-			HtmlGenericControl hgc = new HtmlGenericControl("div");
-			hgc.Attributes["class"] = "separator";
-			container.Controls.Add(hgc);
-			return hgc;
-		}
+        public override Control AddTo(Control container, PluginContext context)
+        {
+            HtmlGenericControl hgc = new HtmlGenericControl("div");
+            hgc.Attributes["class"] = "separator";
+            container.Controls.Add(hgc);
+            return hgc;
+        }
     }
 }

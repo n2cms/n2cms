@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="New.aspx.cs" Inherits="N2.Edit.New" Title="Create new item" meta:resourceKey="DefaultResource" %>
+﻿<%@ Page MasterPageFile="Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="New.aspx.cs" Inherits="N2.Edit.New" Title="Create new item" meta:resourceKey="DefaultResource" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <%@ Import namespace="N2.Definitions"%>
 <asp:Content ContentPlaceHolderID="Toolbar" ID="ct" runat="server">

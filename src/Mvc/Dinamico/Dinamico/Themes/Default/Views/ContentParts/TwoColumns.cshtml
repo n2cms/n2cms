@@ -7,11 +7,15 @@
 		   re.CheckBox("Separator", "Show separator");
 	   });
 }
-<div class="columns twocolumns clearfix @((bool)(Content.Data.Separator ?? false) ? "separator" : "")">
-	<div class="column column1">
+@if (Content.Data.Separator ?? false)
+{
+	<hr />
+}
+<div class="columns twocolumns row">
+	<div class="column span col-lg-6">
 		@{ Html.DroppableZone("Left").Render(); }
 	</div>
-	<div class="column column2">
+	<div class="column column2 col-lg-6">
 		@{ Html.DroppableZone("Right").Render(); }
 	</div>
 </div>

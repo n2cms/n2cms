@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="../Layouts/Top+SubMenu.master" Language="C#" AutoEventWireup="true" CodeBehind="Container.aspx.cs" Inherits="N2.Templates.UI.Views.CalendarList" %>
+﻿<%@ Page MasterPageFile="../Layouts/Top+SubMenu.master" Language="C#" AutoEventWireup="true" CodeBehind="Container.aspx.cs" Inherits="N2.Templates.UI.Views.CalendarList" %>
 <asp:Content ID="cpc" ContentPlaceHolderID="PostContent" runat="server">
     <n2:Repeater ID="rc" runat="server">
         <HeaderTemplate><div class="list"></HeaderTemplate>

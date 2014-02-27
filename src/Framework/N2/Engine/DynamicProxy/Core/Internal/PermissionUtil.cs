@@ -14,33 +14,33 @@
 
 namespace Castle.Core.Internal
 {
-	using System;
-	using System.Security;
-	using System.Security.Permissions;
-	
+    using System;
+    using System.Security;
+    using System.Security.Permissions;
+    
 #if !SILVERLIGHT
-	public static class PermissionUtil
-	{
+    public static class PermissionUtil
+    {
 #if DOTNET
-		[SecuritySafeCritical]
+        [SecuritySafeCritical]
 #endif
-		public static bool IsGranted(this IPermission permission)
-		{
+        public static bool IsGranted(this IPermission permission)
+        {
 #if DOTNET35 || MONO26
-			return SecurityManager.IsGranted(permission);
+            return SecurityManager.IsGranted(permission);
 #else
-			var permissionSet = new PermissionSet(PermissionState.None);
-			permissionSet.AddPermission(permission);
-			try
-			{
-				return permissionSet.IsSubsetOf(AppDomain.CurrentDomain.PermissionSet);
-			}
-			catch (Exception)
-			{
-				return false;
-			}
+            var permissionSet = new PermissionSet(PermissionState.None);
+            permissionSet.AddPermission(permission);
+            try
+            {
+                return permissionSet.IsSubsetOf(AppDomain.CurrentDomain.PermissionSet);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
 #endif
-		}
-	}
+        }
+    }
 #endif
 }

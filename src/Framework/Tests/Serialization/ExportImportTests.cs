@@ -21,42 +21,42 @@ using System.Linq;
 
 namespace N2.Tests.Serialization
 {
-	[TestFixture]
-	public class ExportImportTests : XmlSerializationTestsBase
-	{
-		[Test]
-		public void ExportedImportedItem_KeepsBasicAttributes()
-		{
-			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+    [TestFixture]
+    public class ExportImportTests : XmlSerializationTestsBase
+    {
+        [Test]
+        public void ExportedImportedItem_KeepsBasicAttributes()
+        {
+            XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
 
-			ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
+            ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
 
-			Assert.AreEqual(item.ID, readItem.ID);
-			Assert.AreEqual(item.Title, readItem.Title);
-			Assert.AreEqual(item.Name, readItem.Name);
-		}
+            Assert.AreEqual(item.ID, readItem.ID);
+            Assert.AreEqual(item.Title, readItem.Title);
+            Assert.AreEqual(item.Name, readItem.Name);
+        }
 
-		[Test]
-		public void ExportedImportedItem_KeepsTranslationKey()
-		{
-			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
-			item.TranslationKey = 123;
+        [Test]
+        public void ExportedImportedItem_KeepsTranslationKey()
+        {
+            XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.TranslationKey = 123;
 
-			ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
+            ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
 
-			Assert.AreEqual(item.TranslationKey, readItem.TranslationKey);
-		}
+            Assert.AreEqual(item.TranslationKey, readItem.TranslationKey);
+        }
 
-		[Test]
-		public void ExportedImportedItem_KeepsState()
-		{
-			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
-			item.State = ContentState.Deleted;
+        [Test]
+        public void ExportedImportedItem_KeepsState()
+        {
+            XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.State = ContentState.Deleted;
 
-			ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
+            ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
 
-			Assert.AreEqual(item.State, readItem.State);
-		}
+            Assert.AreEqual(item.State, readItem.State);
+        }
 
         [Test]
         public void ExportedImportedItem_MaintainsSameType()
@@ -65,91 +65,91 @@ namespace N2.Tests.Serialization
 
             ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
 
-			Assert.That(readItem, Is.TypeOf(typeof(XmlableItem)));
-		}
+            Assert.That(readItem, Is.TypeOf(typeof(XmlableItem)));
+        }
 
-		[Test]
-		public void ExportedImportedItem_ClearsNames_SameAsOldId()
-		{
-			XmlableItem item = CreateOneItem<XmlableItem>(1, "1", null);
+        [Test]
+        public void ExportedImportedItem_ClearsNames_SameAsOldId()
+        {
+            XmlableItem item = CreateOneItem<XmlableItem>(1, "1", null);
 
-			ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
-			readItem.ID = 0;
+            ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
+            readItem.ID = 0;
 
-			Assert.That(readItem.Name, Is.Null);
-		}
+            Assert.That(readItem.Name, Is.Null);
+        }
 
-		[Test]
-		public void ExportedImportedItem_CanContain_ComplexProperties_CastingToString()
-		{
-			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
-			item.Version = new Version(2, 0);
+        [Test]
+        public void ExportedImportedItem_CanContain_ComplexProperties_CastingToString()
+        {
+            XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.Version = new Version(2, 0);
 
-			XmlableItem readItem = ExportAndImport(item, ExportOptions.Default);
+            XmlableItem readItem = ExportAndImport(item, ExportOptions.Default);
 
-			Assert.That(readItem.Version, Is.EqualTo(new Version(2, 0)));
-		}
+            Assert.That(readItem.Version, Is.EqualTo(new Version(2, 0)));
+        }
 
-		[Test]
-		public void ExportedImportedItem_CanContain_XDocumentProperties_CastingToString()
-		{
-			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
-			item.Xml = XDocument.Parse("<root>hello</root>");
+        [Test]
+        public void ExportedImportedItem_CanContain_XDocumentProperties_CastingToString()
+        {
+            XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.Xml = XDocument.Parse("<root>hello</root>");
 
-			XmlableItem readItem = ExportAndImport(item, ExportOptions.Default);
+            XmlableItem readItem = ExportAndImport(item, ExportOptions.Default);
 
-			Assert.That(readItem.Xml.ToString(), Is.EqualTo("<root>hello</root>"));
-		}
+            Assert.That(readItem.Xml.ToString(), Is.EqualTo("<root>hello</root>"));
+        }
 
-		[Test]
-		public void ExportedImportedItem_CanContain_DetailCollection()
-		{
-			var item = CreateOneItem<XmlableItem>(1, "item", null);
-			item.GetDetailCollection("hello", true).Add("world");
+        [Test]
+        public void ExportedImportedItem_CanContain_DetailCollection()
+        {
+            var item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.GetDetailCollection("hello", true).Add("world");
 
-			var readItem = ExportAndImport(item, ExportOptions.Default);
+            var readItem = ExportAndImport(item, ExportOptions.Default);
 
-			Assert.That(readItem.GetDetailCollection("hello", false)[0], Is.EqualTo("world"));
-		}
+            Assert.That(readItem.GetDetailCollection("hello", false)[0], Is.EqualTo("world"));
+        }
 
-		[Test]
-		public void DetailValues_AreNotDoublyHtmlEncoded()
-		{
-			var item = CreateOneItem<XmlableItem>(1, "item", null);
-			item["hello"] = "<p>&aring;</p>";
+        [Test]
+        public void DetailValues_AreNotDoublyHtmlEncoded()
+        {
+            var item = CreateOneItem<XmlableItem>(1, "item", null);
+            item["hello"] = "<p>&aring;</p>";
 
-			var readItem = ExportAndImport(item, ExportOptions.Default);
+            var readItem = ExportAndImport(item, ExportOptions.Default);
 
-			Assert.That(readItem["hello"], Is.EqualTo("<p>&aring;</p>"));
-		}
+            Assert.That(readItem["hello"], Is.EqualTo("<p>&aring;</p>"));
+        }
 
-		[Test]
-		public void DetailCollectionValues_AreNotDoublyHtmlEncoded()
-		{
-			var item = CreateOneItem<XmlableItem>(1, "item", null);
-			item.GetDetailCollection("hello", true).Add("<p>&aring;</p>");
+        [Test]
+        public void DetailCollectionValues_AreNotDoublyHtmlEncoded()
+        {
+            var item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.GetDetailCollection("hello", true).Add("<p>&aring;</p>");
 
-			var readItem = ExportAndImport(item, ExportOptions.Default);
+            var readItem = ExportAndImport(item, ExportOptions.Default);
 
-			Assert.That(readItem.GetDetailCollection("hello", false)[0], Is.EqualTo("<p>&aring;</p>"));
-		}
+            Assert.That(readItem.GetDetailCollection("hello", false)[0], Is.EqualTo("<p>&aring;</p>"));
+        }
 
-		[Test, Obsolete]
-		public void ExportedImportedItem_AutoGeneratedProperties_AreImported()
-		{
-			var item = definitions.CreateInstance<XmlableItem2>(null);
-			item.AutoPropertyString = "Hello World!";
+        [Test, Obsolete]
+        public void ExportedImportedItem_AutoGeneratedProperties_AreImported()
+        {
+            var item = definitions.CreateInstance<XmlableItem2>(null);
+            item.AutoPropertyString = "Hello World!";
 
-			// simulate saving proxied items - this is most likely the case in normal operation
-			var pf = new N2.Persistence.Proxying.InterceptingProxyFactory();
-			var map = new DefinitionMap();
-			pf.Initialize(new [] { map.GetOrCreateDefinition(typeof(XmlableItem2)) });
-			pf.OnSaving(item);
+            // simulate saving proxied items - this is most likely the case in normal operation
+            var pf = new N2.Persistence.Proxying.InterceptingProxyFactory();
+            var map = new DefinitionMap();
+            pf.Initialize(new [] { map.GetOrCreateDefinition(typeof(XmlableItem2)) });
+            pf.OnSaving(item);
 
-			var readItem = ExportAndImport(item, ExportOptions.Default);
+            var readItem = ExportAndImport(item, ExportOptions.Default);
 
-			Assert.That(readItem.AutoPropertyString, Is.EqualTo(item.AutoPropertyString));
-		}
+            Assert.That(readItem.AutoPropertyString, Is.EqualTo(item.AutoPropertyString));
+        }
 
         [Test]
         public void CanExport_SimpleItem_AndIgnore_NotDefinedData()
@@ -166,31 +166,31 @@ namespace N2.Tests.Serialization
             Assert.That(readItem["NotExported"], Is.Null);
         }
 
-		[Test]
-		public void CanExport_SimpleItem_WithAttachment()
-		{
-			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
-			item.ImageUrl = "/hello.jpg";
+        [Test]
+        public void CanExport_SimpleItem_WithAttachment()
+        {
+            XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.ImageUrl = "/hello.jpg";
             ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
 
-			Assert.AreEqual(item.ID, readItem.ID);
-			Assert.AreEqual(item.Title, readItem.Title);
-			Assert.AreEqual(item.Name, readItem.Name);
-			Assert.AreEqual("/hello.jpg", item.ImageUrl);
-		}
+            Assert.AreEqual(item.ID, readItem.ID);
+            Assert.AreEqual(item.Title, readItem.Title);
+            Assert.AreEqual(item.Name, readItem.Name);
+            Assert.AreEqual("/hello.jpg", item.ImageUrl);
+        }
 
-		[Test]
-		public void CanExport_SimpleItem_WithFakeAttachment()
-		{
-			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
-			item.ImageUrl = "/hello.jpg";
+        [Test]
+        public void CanExport_SimpleItem_WithFakeAttachment()
+        {
+            XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.ImageUrl = "/hello.jpg";
 
             XmlableItem readItem = ExportAndImport(item, ExportOptions.Default);
 
-			Assert.AreEqual(item.ID, readItem.ID);
-			Assert.AreEqual(item.Title, readItem.Title);
-			Assert.AreEqual(item.Name, readItem.Name);
-			Assert.AreEqual("/hello.jpg", readItem.ImageUrl);
+            Assert.AreEqual(item.ID, readItem.ID);
+            Assert.AreEqual(item.Title, readItem.Title);
+            Assert.AreEqual(item.Name, readItem.Name);
+            Assert.AreEqual("/hello.jpg", readItem.ImageUrl);
             Assert.That(item["wasWritten"], Is.True, "Attachment wasn't written.");
             Assert.That(readItem["wasRead"], Is.True, "Attachment wasn't read.");
         }
@@ -208,40 +208,40 @@ namespace N2.Tests.Serialization
             Assert.That(readItem["wasRead"], Is.Null, "Attachment was read.");
         }
 
-		[Test]
-		public void CanExport_SimpleItem_WithFileAttachment()
-		{
-			XmlableItem destination = new XmlableItem();
-			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
-			string file = "TestFile.txt";
-			string path = "/Serialization/" + file;
-			item.TextFile = "/Serialization/TestFile.txt";
-			var sourceFs = new FakeMemoryFileSystem();
-			sourceFs.files.Add(path, new N2.Edit.FileSystem.FileData { Name = file, VirtualPath = path });
-			sourceFs.contents.Add(path, Encoding.UTF8.GetBytes("Just a little file."));
+        [Test]
+        public void CanExport_SimpleItem_WithFileAttachment()
+        {
+            XmlableItem destination = new XmlableItem();
+            XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+            string file = "TestFile.txt";
+            string path = "/Serialization/" + file;
+            item.TextFile = "/Serialization/TestFile.txt";
+            var sourceFs = new FakeMemoryFileSystem();
+            sourceFs.files.Add(path, new N2.Edit.FileSystem.FileData { Name = file, VirtualPath = path });
+            sourceFs.contents.Add(path, Encoding.UTF8.GetBytes("Just a little file."));
 
-			string xml = ExportToString(item, CreateExporter(sourceFs), ExportOptions.Default);
-			//string path = AppDomain.CurrentDomain.BaseDirectory + @"\Serialization\TestFile.txt";
+            string xml = ExportToString(item, CreateExporter(sourceFs), ExportOptions.Default);
+            //string path = AppDomain.CurrentDomain.BaseDirectory + @"\Serialization\TestFile.txt";
 
-			var destinationFs = new FakeMemoryFileSystem();
-			IImportRecord record = ImportFromString(xml, CreateImporter(destinationFs));
-			XmlableItem readItem = (XmlableItem)record.RootItem;
-			Assert.AreEqual(item.ID, readItem.ID);
-			Assert.That(!destinationFs.FileExists(path));
+            var destinationFs = new FakeMemoryFileSystem();
+            IImportRecord record = ImportFromString(xml, CreateImporter(destinationFs));
+            XmlableItem readItem = (XmlableItem)record.RootItem;
+            Assert.AreEqual(item.ID, readItem.ID);
+            Assert.That(!destinationFs.FileExists(path));
 
-			CreateImporter(destinationFs).Import(record, destination, ImportOption.All);
-			
-			Assert.AreEqual(item.Title, readItem.Title);
-			Assert.AreEqual(item.Name, readItem.Name);
-			Assert.AreEqual("/Serialization/TestFile.txt", readItem.TextFile);
+            CreateImporter(destinationFs).Import(record, destination, ImportOption.All);
+            
+            Assert.AreEqual(item.Title, readItem.Title);
+            Assert.AreEqual(item.Name, readItem.Name);
+            Assert.AreEqual("/Serialization/TestFile.txt", readItem.TextFile);
 
-			var temp = new byte[1000];
-			var size = destinationFs.OpenFile(path).Read(temp, 0, 1000);
-			var buffer = new byte[size];
-			Array.Copy(temp, buffer, size);
+            var temp = new byte[1000];
+            var size = destinationFs.OpenFile(path).Read(temp, 0, 1000);
+            var buffer = new byte[size];
+            Array.Copy(temp, buffer, size);
 
-			Assert.That(destinationFs.FileExists("/Serialization/TestFile.txt"));
-			Assert.AreEqual("Just a little file.", Encoding.UTF8.GetString(buffer));
+            Assert.That(destinationFs.FileExists("/Serialization/TestFile.txt"));
+            Assert.AreEqual("Just a little file.", Encoding.UTF8.GetString(buffer));
         }
 
         [Test]
@@ -251,12 +251,12 @@ namespace N2.Tests.Serialization
             
             var item = CreateOneItem<XmlableItem>(0, "item", null);
             var item2 = item.Clone(false);
-			item2.AncestralTrail = "/";
+            item2.AncestralTrail = "/";
 
             try
             {
-				var nowDate = DateTime.Now;
-				N2.Utility.CurrentTime = () => nowDate;
+                var nowDate = DateTime.Now;
+                N2.Utility.CurrentTime = () => nowDate;
 
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
                 string xmlUS = ExportToString(item, CreateExporter(), ExportOptions.Default);
@@ -267,7 +267,7 @@ namespace N2.Tests.Serialization
             }
             finally
             {
-				N2.Utility.CurrentTime = () => DateTime.Now;
+                N2.Utility.CurrentTime = () => DateTime.Now;
                 Thread.CurrentThread.CurrentCulture = originalCulture;
             }
         }
@@ -295,238 +295,238 @@ namespace N2.Tests.Serialization
             {
                 Thread.CurrentThread.CurrentCulture = originalCulture;
             }
-		}
+        }
 
-		[TestCase("/hello/", "/hello/upload/image.gif", "/world/", "/world/upload/image.gif")]
-		[TestCase("/hello/", "/hello/upload/image.gif", "/hello/", "/hello/upload/image.gif")]
-		[TestCase("/", "/upload/image.gif", "/world/", "/world/upload/image.gif")]
-		[TestCase("/", "/upload/image.gif", "/", "/upload/image.gif")]
-		[TestCase("/hello/", "/other/upload/image.gif", "/world/", "/other/upload/image.gif")]
-		[TestCase("/hello/", "~/upload/image.gif", "/world/", "/world/upload/image.gif")]
-		public void ExportingImageUrl_BetweenApplications_WithDifferentRelativeUrl(string fromApplicationPath, string fromUrl, string toApplicationPath, string toExpectedUrl)
-		{
-			var item = CreateOneItem<XmlableItem>(1, "item", null);
-			item.ImageUrl = fromUrl;
+        [TestCase("/hello/", "/hello/upload/image.gif", "/world/", "/world/upload/image.gif")]
+        [TestCase("/hello/", "/hello/upload/image.gif", "/hello/", "/hello/upload/image.gif")]
+        [TestCase("/", "/upload/image.gif", "/world/", "/world/upload/image.gif")]
+        [TestCase("/", "/upload/image.gif", "/", "/upload/image.gif")]
+        [TestCase("/hello/", "/other/upload/image.gif", "/world/", "/other/upload/image.gif")]
+        [TestCase("/hello/", "~/upload/image.gif", "/world/", "/world/upload/image.gif")]
+        public void ExportingImageUrl_BetweenApplications_WithDifferentRelativeUrl(string fromApplicationPath, string fromUrl, string toApplicationPath, string toExpectedUrl)
+        {
+            var item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.ImageUrl = fromUrl;
 
-			Url.ApplicationPath = fromApplicationPath;
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            Url.ApplicationPath = fromApplicationPath;
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
 
-			Url.ApplicationPath = toApplicationPath;
-			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+            Url.ApplicationPath = toApplicationPath;
+            var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
 
-			try
-			{
-				Assert.That(readItem.ImageUrl, Is.EqualTo(toExpectedUrl));
-			}
-			finally
-			{
-				Url.ApplicationPath = null;
-			}
-		}
+            try
+            {
+                Assert.That(readItem.ImageUrl, Is.EqualTo(toExpectedUrl));
+            }
+            finally
+            {
+                Url.ApplicationPath = null;
+            }
+        }
 
-		[Test]
-		public void CanExport_AndImport_Detail_WithMultipleValues()
-		{
-			var item = CreateOneItem<XmlableItem>(1, "item", null);
-			var detail = N2.Details.ContentDetail.Multi("Hello",
-				booleanValue: true,
-				dateTimeValue: new DateTime(2010, 6, 16),
-				doubleValue: 10.7,
-				linkedValue: item,integerValue: 123,
-				objectValue: new[] { 1, 2, 3 },
-				stringValue: "World");
-			detail.AddTo(item);
+        [Test]
+        public void CanExport_AndImport_Detail_WithMultipleValues()
+        {
+            var item = CreateOneItem<XmlableItem>(1, "item", null);
+            var detail = N2.Details.ContentDetail.Multi("Hello",
+                booleanValue: true,
+                dateTimeValue: new DateTime(2010, 6, 16),
+                doubleValue: 10.7,
+                linkedValue: item,integerValue: 123,
+                objectValue: new[] { 1, 2, 3 },
+                stringValue: "World");
+            detail.AddTo(item);
 
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			ContentItem readItem = ImportFromString(xml, CreateImporter()).RootItem;
-			var readDetail = readItem.Details["Hello"];
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            ContentItem readItem = ImportFromString(xml, CreateImporter()).RootItem;
+            var readDetail = readItem.Details["Hello"];
 
-			Assert.That(readDetail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.MultiType));
-			Assert.That(readDetail.BoolValue, Is.EqualTo(detail.BoolValue));
-			Assert.That(readDetail.DateTimeValue, Is.EqualTo(detail.DateTimeValue));
-			Assert.That(readDetail.DoubleValue, Is.EqualTo(detail.DoubleValue));
-			Assert.That(readDetail.IntValue, Is.EqualTo(detail.IntValue));
-			Assert.That(readDetail.LinkedItem, Is.EqualTo(detail.LinkedItem));
-			Assert.That(readDetail.ObjectValue, Is.EquivalentTo((IEnumerable)detail.ObjectValue));
-			Assert.That(readDetail.StringValue, Is.EqualTo(detail.StringValue));
-		}
+            Assert.That(readDetail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.MultiType));
+            Assert.That(readDetail.BoolValue, Is.EqualTo(detail.BoolValue));
+            Assert.That(readDetail.DateTimeValue, Is.EqualTo(detail.DateTimeValue));
+            Assert.That(readDetail.DoubleValue, Is.EqualTo(detail.DoubleValue));
+            Assert.That(readDetail.IntValue, Is.EqualTo(detail.IntValue));
+            Assert.That(readDetail.LinkedItem, Is.EqualTo(detail.LinkedItem));
+            Assert.That(readDetail.ObjectValue, Is.EquivalentTo((IEnumerable)detail.ObjectValue));
+            Assert.That(readDetail.StringValue, Is.EqualTo(detail.StringValue));
+        }
 
-		[Test]
-		public void CanExport_AndImport_DetailCollection_WithMultipleValues()
-		{
-			var item = CreateOneItem<XmlableItem>(1, "item", null);
-			var collection = item.GetDetailCollection("World", true);
-			var detail = N2.Details.ContentDetail.Multi("Hello",
-				booleanValue: true,
-				dateTimeValue: new DateTime(2010, 6, 16),
-				doubleValue: 10.7,
-				linkedValue: item, 
-				integerValue: 123,
-				objectValue: new[] { 1, 2, 3 },
-				stringValue: "World");
-			detail.AddTo(collection);
+        [Test]
+        public void CanExport_AndImport_DetailCollection_WithMultipleValues()
+        {
+            var item = CreateOneItem<XmlableItem>(1, "item", null);
+            var collection = item.GetDetailCollection("World", true);
+            var detail = N2.Details.ContentDetail.Multi("Hello",
+                booleanValue: true,
+                dateTimeValue: new DateTime(2010, 6, 16),
+                doubleValue: 10.7,
+                linkedValue: item, 
+                integerValue: 123,
+                objectValue: new[] { 1, 2, 3 },
+                stringValue: "World");
+            detail.AddTo(collection);
 
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			ContentItem readItem = ImportFromString(xml, CreateImporter()).RootItem;
-			var readDetail = readItem.GetDetailCollection("World", false).Details[0];
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            ContentItem readItem = ImportFromString(xml, CreateImporter()).RootItem;
+            var readDetail = readItem.GetDetailCollection("World", false).Details[0];
 
-			Assert.That(readDetail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.MultiType));
-			Assert.That(readDetail.BoolValue, Is.EqualTo(detail.BoolValue));
-			Assert.That(readDetail.DateTimeValue, Is.EqualTo(detail.DateTimeValue));
-			Assert.That(readDetail.DoubleValue, Is.EqualTo(detail.DoubleValue));
-			Assert.That(readDetail.IntValue, Is.EqualTo(detail.IntValue));
-			Assert.That(readDetail.LinkedItem, Is.EqualTo(detail.LinkedItem));
-			Assert.That(readDetail.ObjectValue, Is.EquivalentTo((IEnumerable)detail.ObjectValue));
-			Assert.That(readDetail.StringValue, Is.EqualTo(detail.StringValue));
-		}
+            Assert.That(readDetail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.MultiType));
+            Assert.That(readDetail.BoolValue, Is.EqualTo(detail.BoolValue));
+            Assert.That(readDetail.DateTimeValue, Is.EqualTo(detail.DateTimeValue));
+            Assert.That(readDetail.DoubleValue, Is.EqualTo(detail.DoubleValue));
+            Assert.That(readDetail.IntValue, Is.EqualTo(detail.IntValue));
+            Assert.That(readDetail.LinkedItem, Is.EqualTo(detail.LinkedItem));
+            Assert.That(readDetail.ObjectValue, Is.EquivalentTo((IEnumerable)detail.ObjectValue));
+            Assert.That(readDetail.StringValue, Is.EqualTo(detail.StringValue));
+        }
 
 
-		[Test]
-		public void TemplateKey_IsTransferred()
-		{
-			var item = CreateOneItem<XmlableItem>(1, "item", null);
-			item.TemplateKey = "Hello";
+        [Test]
+        public void TemplateKey_IsTransferred()
+        {
+            var item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.TemplateKey = "Hello";
 
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			ContentItem readItem = ImportFromString(xml, CreateImporter()).RootItem;
-			
-			Assert.That(readItem.TemplateKey, Is.EqualTo(item.TemplateKey));
-		}
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            ContentItem readItem = ImportFromString(xml, CreateImporter()).RootItem;
+            
+            Assert.That(readItem.TemplateKey, Is.EqualTo(item.TemplateKey));
+        }
 
-		[Test]
-		public void PersistableNumber_IsTransferred()
-		{
-			var item = CreateOneItem<XmlableItem>(1, "item", null);
-			item.PersistableNumber = 432;
+        [Test]
+        public void PersistableNumber_IsTransferred()
+        {
+            var item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.PersistableNumber = 432;
 
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
 
-			Assert.That(readItem.PersistableNumber, Is.EqualTo(item.PersistableNumber));
-		}
+            Assert.That(readItem.PersistableNumber, Is.EqualTo(item.PersistableNumber));
+        }
 
-		[Test]
-		public void PersistableDate_IsTransferred()
-		{
-			var item = CreateOneItem<XmlableItem>(1, "item", null);
-			item.PersistableDate = new DateTime(2010, 6, 16);
+        [Test]
+        public void PersistableDate_IsTransferred()
+        {
+            var item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.PersistableDate = new DateTime(2010, 6, 16);
 
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
 
-			Assert.That(readItem.PersistableDate, Is.EqualTo(item.PersistableDate));
-		}
+            Assert.That(readItem.PersistableDate, Is.EqualTo(item.PersistableDate));
+        }
 
-		[Test]
-		public void PersistableText_IsTransferred()
-		{
-			var item = CreateOneItem<XmlableItem>(1, "item", null);
-			item.PersistableText = "Hello World";
+        [Test]
+        public void PersistableText_IsTransferred()
+        {
+            var item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.PersistableText = "Hello World";
 
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
 
-			Assert.That(readItem.PersistableText, Is.EqualTo(item.PersistableText));
-		}
+            Assert.That(readItem.PersistableText, Is.EqualTo(item.PersistableText));
+        }
 
-		[Test]
-		public void PersistableLink_IsTransferred()
-		{
-			var item = CreateOneItem<XmlableItem>(1, "item", null);
-			var child = CreateOneItem<XmlableItem>(2, "item", item);
-			item.PersistableLink = child;
+        [Test]
+        public void PersistableLink_IsTransferred()
+        {
+            var item = CreateOneItem<XmlableItem>(1, "item", null);
+            var child = CreateOneItem<XmlableItem>(2, "item", item);
+            item.PersistableLink = child;
 
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
 
-			Assert.That(readItem.PersistableLink, Is.EqualTo(item.PersistableLink));
-		}
+            Assert.That(readItem.PersistableLink, Is.EqualTo(item.PersistableLink));
+        }
 
-		[Test]
-		public void PersistableEnum_IsTransferred()
-		{
-			var item = CreateOneItem<XmlableItem>(1, "item", null);
-			item.PersistableEnum = ContentState.Published;
+        [Test]
+        public void PersistableEnum_IsTransferred()
+        {
+            var item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.PersistableEnum = ContentState.Published;
 
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
 
-			Assert.That(readItem.PersistableEnum, Is.EqualTo(item.PersistableEnum));
-		}
+            Assert.That(readItem.PersistableEnum, Is.EqualTo(item.PersistableEnum));
+        }
 
-		[Test]
-		public void PersistableObject_IsTransferred()
-		{
-			var item = CreateOneItem<XmlableItem>(1, "item", null);
-			item.PersistableObject = new [] { "Hello", "World" };
+        [Test]
+        public void PersistableObject_IsTransferred()
+        {
+            var item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.PersistableObject = new [] { "Hello", "World" };
 
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
 
-			Assert.That(readItem.PersistableObject, Is.EquivalentTo(item.PersistableObject));
-		}
+            Assert.That(readItem.PersistableObject, Is.EquivalentTo(item.PersistableObject));
+        }
 
-		[Test]
-		public void Scripts_AreTransferred()
-		{
-			var item = CreateOneItem<XmlableItem>(1, "item", null);
-			item.TextFile = "<script><![CDATA[alert(1);]]></script>";
+        [Test]
+        public void Scripts_AreTransferred()
+        {
+            var item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.TextFile = "<script><![CDATA[alert(1);]]></script>";
 
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
 
-			Assert.That(readItem.TextFile, Is.EqualTo(item.TextFile));
-		}
+            Assert.That(readItem.TextFile, Is.EqualTo(item.TextFile));
+        }
 
-		[Test]
-		public void EmbeddedParts_AreTransferred()
-		{
-			var item = CreateOneItem<XmlableItem>(1, "item", null);
-			var embeddable = CreateOneItem<XmlableItem>(1, "embedded", null);
-			embeddable["World"] = "Greeting?";
-			N2.Web.Parts.PartsExtensions.StoreEmbeddedPart(item, "Hello", embeddable);
+        [Test]
+        public void EmbeddedParts_AreTransferred()
+        {
+            var item = CreateOneItem<XmlableItem>(1, "item", null);
+            var embeddable = CreateOneItem<XmlableItem>(1, "embedded", null);
+            embeddable["World"] = "Greeting?";
+            N2.Web.Parts.PartsExtensions.StoreEmbeddedPart(item, "Hello", embeddable);
 
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
 
-			var embedded = N2.Web.Parts.PartsExtensions.LoadEmbeddedPart<XmlableItem>(readItem, "Hello");
+            var embedded = N2.Web.Parts.PartsExtensions.LoadEmbeddedPart<XmlableItem>(readItem, "Hello");
 
-			embedded.Title.ShouldBe(embeddable.Title);
-			embedded.Name.ShouldBe(embeddable.Name);
-			embedded["World"].ShouldBe(embeddable["World"]);
-		}
+            embedded.Title.ShouldBe(embeddable.Title);
+            embedded.Name.ShouldBe(embeddable.Name);
+            embedded["World"].ShouldBe(embeddable["World"]);
+        }
 
-		[Test]
-		public void AutoImplementedProperties_GetsTheirDefaultValues()
-		{
-			var item = activator.CreateInstance<XmlableItem>(null);
-			
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+        [Test]
+        public void AutoImplementedProperties_GetsTheirDefaultValues()
+        {
+            var item = activator.CreateInstance<XmlableItem>(null);
+            
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
 
-			readItem.PersistableNumber.ShouldBe(666);
-			readItem.PersistableText.ShouldBe("hello");
-			readItem.PersistableEnum.ShouldBe(ContentState.Published);
-			readItem.PersistableObject.ShouldBe(new[] { "one", "two" });
-		}
+            readItem.PersistableNumber.ShouldBe(666);
+            readItem.PersistableText.ShouldBe("hello");
+            readItem.PersistableEnum.ShouldBe(ContentState.Published);
+            readItem.PersistableObject.ShouldBe(new[] { "one", "two" });
+        }
 
-		[Test]
-		public void AutoImplementedProperties_AreTransferred()
-		{
-			var item = activator.CreateInstance<XmlableItem>(null);
-			item.PersistableNumber = 123;
-			item.PersistableText = "world";
-			item.PersistableEnum = ContentState.Unpublished;
-			item.PersistableObject = new[] { "x", "y" };
+        [Test]
+        public void AutoImplementedProperties_AreTransferred()
+        {
+            var item = activator.CreateInstance<XmlableItem>(null);
+            item.PersistableNumber = 123;
+            item.PersistableText = "world";
+            item.PersistableEnum = ContentState.Unpublished;
+            item.PersistableObject = new[] { "x", "y" };
 
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
 
-			readItem.PersistableNumber.ShouldBe(123);
-			readItem.PersistableText.ShouldBe("world");
-			readItem.PersistableEnum.ShouldBe(ContentState.Unpublished);
-			readItem.PersistableObject.ShouldBe(new[] { "x", "y" });
-		}
+            readItem.PersistableNumber.ShouldBe(123);
+            readItem.PersistableText.ShouldBe("world");
+            readItem.PersistableEnum.ShouldBe(ContentState.Unpublished);
+            readItem.PersistableObject.ShouldBe(new[] { "x", "y" });
+        }
 
         [Test]
         public void AutoImplementedProperties_WithEditableItem_AreTransferred()
@@ -546,68 +546,68 @@ namespace N2.Tests.Serialization
             readItem.EditableItem.Name.ShouldBe("EditableItem");
         }
 
-		[TestCase("\0")]
-		[TestCase("\x03")]
-		[TestCase("\x07")]
-		[TestCase("\x1B")]
-		public void SerializingText_WithInvalidCharacters_RemovesInalidCharacters(string character)
-		{
-			var item = activator.CreateInstance<XmlableItem2>(null);
-			item["Hello"] = "World" + character + "Tour";
+        [TestCase("\0")]
+        [TestCase("\x03")]
+        [TestCase("\x07")]
+        [TestCase("\x1B")]
+        public void SerializingText_WithInvalidCharacters_RemovesInalidCharacters(string character)
+        {
+            var item = activator.CreateInstance<XmlableItem2>(null);
+            item["Hello"] = "World" + character + "Tour";
 
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			var readItem = (XmlableItem2)ImportFromString(xml, CreateImporter()).RootItem;
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            var readItem = (XmlableItem2)ImportFromString(xml, CreateImporter()).RootItem;
 
-			readItem["Hello"].ShouldBe("WorldTour");
-		}
+            readItem["Hello"].ShouldBe("WorldTour");
+        }
 
-		[TestCase("\t")]
-		[TestCase("\r")]
-		[TestCase("\n")]
-		public void SerializingText_WithSpecialCharacters_CharactersAreNotRemoved(string character)
-		{
-			var item = activator.CreateInstance<XmlableItem2>(null);
-			item["Hello"] = "World" + character + "Tour";
+        [TestCase("\t")]
+        [TestCase("\r")]
+        [TestCase("\n")]
+        public void SerializingText_WithSpecialCharacters_CharactersAreNotRemoved(string character)
+        {
+            var item = activator.CreateInstance<XmlableItem2>(null);
+            item["Hello"] = "World" + character + "Tour";
 
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			var readItem = (XmlableItem2)ImportFromString(xml, CreateImporter()).RootItem;
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            var readItem = (XmlableItem2)ImportFromString(xml, CreateImporter()).RootItem;
 
-			readItem["Hello"].ShouldBe("World" + character + "Tour");
-		}
+            readItem["Hello"].ShouldBe("World" + character + "Tour");
+        }
 
-		[Test]
-		public void ImportedRelations_AreAssignedToItems_WithinImportPackage()
-		{
-			var item = CreateOneItem<XmlableItem>(0, "item", null);
-			var referenced = CreateOneItem<XmlableItem>(0, "referenced", item);
-			item["Link"] = referenced;
-			persister.Save(item);
-			persister.Save(referenced);
+        [Test]
+        public void ImportedRelations_AreAssignedToItems_WithinImportPackage()
+        {
+            var item = CreateOneItem<XmlableItem>(0, "item", null);
+            var referenced = CreateOneItem<XmlableItem>(0, "referenced", item);
+            item["Link"] = referenced;
+            persister.Save(item);
+            persister.Save(referenced);
 
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			var importer = CreateImporter();
-			var journal = ImportFromString(xml, importer);
-			importer.Import(journal, referenced, ImportOption.All);
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            var importer = CreateImporter();
+            var journal = ImportFromString(xml, importer);
+            importer.Import(journal, referenced, ImportOption.All);
 
-			var importedItem = referenced.Children.Single();
-			importedItem.Name.ShouldBe("item");
-			importedItem.Children[0].Name.ShouldBe("referenced");
-			importedItem["Link"].ShouldBe(importedItem.Children[0]);
-		}
+            var importedItem = referenced.Children.Single();
+            importedItem.Name.ShouldBe("item");
+            importedItem.Children[0].Name.ShouldBe("referenced");
+            importedItem["Link"].ShouldBe(importedItem.Children[0]);
+        }
 
-		[Test]
-		public void ImportedItems_ArePublished()
-		{
-			var item = CreateOneItem<XmlableItem>(0, "item", null);
-			persister.Save(item);
+        [Test]
+        public void ImportedItems_ArePublished()
+        {
+            var item = CreateOneItem<XmlableItem>(0, "item", null);
+            persister.Save(item);
 
-			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			var importer = CreateImporter();
-			importer.Import(ImportFromString(xml, importer), item, ImportOption.All);
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            var importer = CreateImporter();
+            importer.Import(ImportFromString(xml, importer), item, ImportOption.All);
 
-			var importedItem = item.Children.Single();
-			importedItem.State.ShouldBe(ContentState.Published);
-		}
+            var importedItem = item.Children.Single();
+            importedItem.State.ShouldBe(ContentState.Published);
+        }
 
         [Test, Ignore("Probably enough that this is done when saving")]
         public void AutoImplementedProperties_WithEditableChildren_AreTransferred()
@@ -637,19 +637,19 @@ namespace N2.Tests.Serialization
             }
         }
 
-	    #region Text
+        #region Text
 
-		private static readonly string lgplLicense = @"This program is licensed under GPL-2. Here follows the full text of the GPL-2:
+        private static readonly string lgplLicense = @"This program is licensed under GPL-2. Here follows the full text of the GPL-2:
 
-		    GNU GENERAL PUBLIC LICENSE
-		       Version 2, June 1991
+            GNU GENERAL PUBLIC LICENSE
+               Version 2, June 1991
 
  Copyright (C) 1989, 1991 Free Software Foundation, Inc.
  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  Everyone is permitted to copy and distribute verbatim copies
  of this license document, but changing it is not allowed.
 
-			    Preamble
+                Preamble
 
   The licenses for most software are designed to take away your
 freedom to share and change it.  By contrast, the GNU General Public
@@ -699,7 +699,7 @@ patent must be licensed for everyone's free use or not licensed at all.
   The precise terms and conditions for copying, distribution and
 modification follow.
 
-		    GNU GENERAL PUBLIC LICENSE
+            GNU GENERAL PUBLIC LICENSE
    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
   0. This License applies to any program or other work which contains
@@ -898,7 +898,7 @@ make exceptions for this.  Our decision will be guided by the two goals
 of preserving the free status of all derivatives of our free software and
 of promoting the sharing and reuse of software generally.
 
-			    NO WARRANTY
+                NO WARRANTY
 
   11. BECAUSE THE PROGRAM IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
 FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW.  EXCEPT WHEN
@@ -920,9 +920,9 @@ YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER
 PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGES.
 
-		     END OF TERMS AND CONDITIONS
+             END OF TERMS AND CONDITIONS
 
-	    How to Apply These Terms to Your New Programs
+        How to Apply These Terms to Your New Programs
 
   If you develop a new program, and you want it to be of the greatest
 possible use to the public, the best way to achieve this is to make it
@@ -983,53 +983,53 @@ library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.
 
 ";
-		#endregion
+        #endregion
 
-		[Test, Ignore]
-		public void CanExportAndImportWithCompression()
-		{
-			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
-			item["License"] = lgplLicense;
+        [Test, Ignore]
+        public void CanExportAndImportWithCompression()
+        {
+            XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+            item["License"] = lgplLicense;
 
-			Exporter exporter = new GZipExporter((ItemXmlWriter)CreateWriter());
-			Importer importer = new GZipImporter(null, (ItemXmlReader)CreateReader(), new FakeMemoryFileSystem());
+            Exporter exporter = new GZipExporter((ItemXmlWriter)CreateWriter());
+            Importer importer = new GZipImporter(null, (ItemXmlReader)CreateReader(), new FakeMemoryFileSystem());
 
-			StringBuilder sb = new StringBuilder();
-			HttpResponse hr  = new HttpResponse(new StringWriter(sb));
-			exporter.Export(item, ExportOptions.Default, hr);
-			char[] buf = new char[sb.Length];
-			sb.CopyTo(0, buf, 0, sb.Length);
+            StringBuilder sb = new StringBuilder();
+            HttpResponse hr  = new HttpResponse(new StringWriter(sb));
+            exporter.Export(item, ExportOptions.Default, hr);
+            char[] buf = new char[sb.Length];
+            sb.CopyTo(0, buf, 0, sb.Length);
 
-			Stream s = null;// = new MemoryStream((byte[])buf);
-			ContentItem readItem = importer.Read(s, "export.n2.xml.gz").RootItem;
+            Stream s = null;// = new MemoryStream((byte[])buf);
+            ContentItem readItem = importer.Read(s, "export.n2.xml.gz").RootItem;
 
-			Assert.AreEqual(item.ID, readItem.ID);
-			Assert.AreEqual(item.Title, readItem.Title);
-			Assert.AreEqual(item.Name, readItem.Name);
-			Assert.AreEqual(lgplLicense, readItem["License"]);
-		}
+            Assert.AreEqual(item.ID, readItem.ID);
+            Assert.AreEqual(item.Title, readItem.Title);
+            Assert.AreEqual(item.Name, readItem.Name);
+            Assert.AreEqual(lgplLicense, readItem["License"]);
+        }
 
 
-		private T ExportAndImport<T>(T item, ExportOptions options) where T: ContentItem
-		{
-			string xml = ExportToString(item, CreateExporter(), options);
-			return (T)ImportFromString(xml, CreateImporter()).RootItem;
-		}
+        private T ExportAndImport<T>(T item, ExportOptions options) where T: ContentItem
+        {
+            string xml = ExportToString(item, CreateExporter(), options);
+            return (T)ImportFromString(xml, CreateImporter()).RootItem;
+        }
 
-		private static IImportRecord ImportFromString(string xml, Importer importer)
-		{
-			StringReader sr = new StringReader(xml);
+        private static IImportRecord ImportFromString(string xml, Importer importer)
+        {
+            StringReader sr = new StringReader(xml);
 
-			return importer.Read(sr);
-		}
+            return importer.Read(sr);
+        }
 
-		private static string ExportToString(ContentItem item, Exporter exporter, ExportOptions options)
-		{
-			using (var sw = new StringWriter())
-			{
-				exporter.Export(item, options, sw);
-				return sw.ToString();
-			}
-		}
-	}
+        private static string ExportToString(ContentItem item, Exporter exporter, ExportOptions options)
+        {
+            using (var sw = new StringWriter())
+            {
+                exporter.Export(item, options, sw);
+                return sw.ToString();
+            }
+        }
+    }
 }

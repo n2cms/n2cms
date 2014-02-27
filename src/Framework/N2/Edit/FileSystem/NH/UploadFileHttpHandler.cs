@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Web;
 using N2.Configuration;
@@ -8,22 +8,22 @@ using N2.Web;
 
 namespace N2.Edit.FileSystem.NH
 {
-	/// <summary>
-	/// Handles requests for files in the database file system.
-	/// </summary>
-	[Service(Configuration = "dbfs")]
+    /// <summary>
+    /// Handles requests for files in the database file system.
+    /// </summary>
+    [Service(Configuration = "dbfs")]
     public class UploadFileHttpHandler : IHttpHandler, IAutoStart
     {
-		private IFileSystem fileSystem;
-		private UploadFolderSource folderSource;
-		private EventBroker broker;
+        private IFileSystem fileSystem;
+        private UploadFolderSource folderSource;
+        private EventBroker broker;
 
-		public UploadFileHttpHandler(IFileSystem fileSystem, UploadFolderSource folderSource, EventBroker broker)
-		{
-			this.fileSystem = fileSystem;
-			this.folderSource = folderSource;
-			this.broker = broker;
-		}
+        public UploadFileHttpHandler(IFileSystem fileSystem, UploadFolderSource folderSource, EventBroker broker)
+        {
+            this.fileSystem = fileSystem;
+            this.folderSource = folderSource;
+            this.broker = broker;
+        }
 
         public void ProcessRequest(HttpContext context)
         {
@@ -73,28 +73,28 @@ namespace N2.Edit.FileSystem.NH
             if (app == null) return;
 
 
-			var uploadFolders = folderSource.GetUploadFoldersForCurrentSite();
+            var uploadFolders = folderSource.GetUploadFoldersForCurrentSite();
             if (!uploadFolders.Any(x => app.Request.Path.StartsWith(x.Path.TrimStart('~'), StringComparison.OrdinalIgnoreCase))) 
                 return;
 
-			if (!fileSystem.FileExists(app.Request.Path))
+            if (!fileSystem.FileExists(app.Request.Path))
                 return;
 
-			app.Context.Handler = this;
+            app.Context.Handler = this;
         }
 
-		#region IAutoStart Members
+        #region IAutoStart Members
 
-		public void Start()
-		{
-			broker.PreRequestHandlerExecute += HttpApplication_PreRequestHandlerExecute;
-		}
+        public void Start()
+        {
+            broker.PreRequestHandlerExecute += HttpApplication_PreRequestHandlerExecute;
+        }
 
-		public void Stop()
-		{
-			broker.PreRequestHandlerExecute -= HttpApplication_PreRequestHandlerExecute;
-		}
+        public void Stop()
+        {
+            broker.PreRequestHandlerExecute -= HttpApplication_PreRequestHandlerExecute;
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

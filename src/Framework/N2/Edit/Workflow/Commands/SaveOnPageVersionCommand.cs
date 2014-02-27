@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,18 +6,18 @@ using N2.Edit.Versioning;
 
 namespace N2.Edit.Workflow.Commands
 {
-	public class SaveOnPageVersionCommand : CommandBase<CommandContext>
-	{
-		private IVersionManager versionMaker;
+    public class SaveOnPageVersionCommand : CommandBase<CommandContext>
+    {
+        private IVersionManager versionMaker;
 
-		public SaveOnPageVersionCommand(IVersionManager versionMaker)
-		{
-			this.versionMaker = versionMaker;
-		}
+        public SaveOnPageVersionCommand(IVersionManager versionMaker)
+        {
+            this.versionMaker = versionMaker;
+        }
 
-		public override void Process(CommandContext state)
-		{
-			var item = state.Content;
+        public override void Process(CommandContext state)
+        {
+            var item = state.Content;
             var page = Find.ClosestPage(item);
             var pageVersion = page.VersionOf.HasValue
                 ? page
@@ -46,6 +46,6 @@ namespace N2.Edit.Workflow.Commands
             }
             
             versionMaker.UpdateVersion(pageVersion);
-		}
-	}
+        }
+    }
 }

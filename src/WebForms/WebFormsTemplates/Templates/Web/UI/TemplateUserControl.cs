@@ -7,8 +7,8 @@ namespace N2.Templates.Web.UI
     /// </summary>
     /// <typeparam name="TPage">The type of page the user control has been added to.</typeparam>
     /// <remarks>This user control is not dynamically added to the page. It's just a way to factor view logic. See TemplateUserControl&lt;TPage, TItem&gt; for dynamic parts.</remarks>
-	public class TemplateUserControl<TPage> : N2.Web.UI.ContentUserControl<TPage>
-		 where TPage : ContentItem
-	{
-	}
+    public class TemplateUserControl<TPage> : N2.Web.UI.ContentUserControl<TPage>
+         where TPage : ContentItem
+    {
+    }
 }

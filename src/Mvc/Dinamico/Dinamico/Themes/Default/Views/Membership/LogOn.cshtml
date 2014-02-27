@@ -19,35 +19,38 @@
 
 @Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.")
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal" }))
+{
     <div>
-        <fieldset>
-            <legend>@Content.Translate.Text("Account Information")</legend>
+		<fieldset>
+			<legend>@Content.Translate.Text("Account Information")</legend>
+			<div class="form-group">
+				@Html.LabelFor(m => m.UserName, new { @class = "col-sm-2 control-label" })
 
-            <div class="editor-label">
-                @Html.LabelFor(m => m.UserName)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(m => m.UserName)
-                @Html.ValidationMessageFor(m => m.UserName)
-            </div>
+				<div class="col-sm-4">
+					@Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+					@Html.ValidationMessageFor(m => m.UserName)
+				</div>
+			</div>
+			<div class="form-group">
+				@Html.LabelFor(m => m.Password, new { @class = "col-sm-2 control-label" })
+				<div class="col-sm-4">
+					@Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+					@Html.ValidationMessageFor(m => m.Password)
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					@Html.CheckBoxFor(m => m.RememberMe)
+					@Html.LabelFor(m => m.RememberMe)
+				</div>
+			</div>
 
-            <div class="editor-label">
-                @Html.LabelFor(m => m.Password)
-            </div>
-            <div class="editor-field">
-                @Html.PasswordFor(m => m.Password)
-                @Html.ValidationMessageFor(m => m.Password)
-            </div>
-
-            <div class="editor-label">
-                @Html.CheckBoxFor(m => m.RememberMe)
-                @Html.LabelFor(m => m.RememberMe)
-            </div>
-
-            <p>
-                <input type="submit" value="@Content.Translate.Text("Log On")" />
-            </p>
-        </fieldset>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<input type="submit" class="btn btn-default" value="@Content.Translate.Text("Log On")" />
+				</div>
+			</div>
+		</fieldset>
     </div>
 }

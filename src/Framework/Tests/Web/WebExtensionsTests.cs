@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +7,8 @@ using NUnit.Framework;
 
 using N2.Web;
 using Shouldly;
+using N2.Tests.Fakes;
+using System.IO;
 
 namespace N2.Tests.Web
 {
@@ -52,5 +54,27 @@ namespace N2.Tests.Web
             testEnum.IsFlagSet(TestEnumWithFlags.Have).ShouldBe(true);
             testEnum.IsFlagSet(TestEnumWithFlags.Flags).ShouldBe(false);
         }
+
+		[Test]
+		public void PostingJson_GetRequestValueAccessor_UsesJsonAsSource()
+		{
+			var ctx = new FakeHttpContext();
+			ctx.request.CreatePost("/", "application/json", "{ hello: 'world' }");
+
+			var accessor = ctx.GetRequestValueAccessor();
+
+			accessor("hello").ShouldBe("world");
+		}
+
+		[Test]
+		public void PostingJson_GetRequestValueAccessor_ConvertsJsonObjects_ToString()
+		{
+			var ctx = new FakeHttpContext();
+			ctx.request.CreatePost("/", "application/json", "{ hello: 'world', one: 1 }");
+
+			var accessor = ctx.GetRequestValueAccessor();
+
+			accessor("one").ShouldBe("1");
+		}
     }
 }

@@ -3,24 +3,24 @@ using N2.Security;
 
 namespace N2.Collections
 {
-	/// <summary>
-	/// Filters parts and unauthorized or unpublished items.
-	/// </summary>
-	public class AccessiblePageFilter : AllFilter
-	{
-		public AccessiblePageFilter()
-			: base(new PageFilter(), new PublishedFilter(), new AccessFilter())
-		{
-		}
+    /// <summary>
+    /// Filters parts and unauthorized or unpublished items.
+    /// </summary>
+    public class AccessiblePageFilter : AllFilter
+    {
+        public AccessiblePageFilter()
+            : base(new PageFilter(), new PublishedFilter(), new AccessFilter())
+        {
+        }
 
-		public AccessiblePageFilter(IPrincipal user, ISecurityManager securityManager)
-			: base(new PageFilter(), new PublishedFilter(), new AccessFilter(user, securityManager))
-		{
-		}
+        public AccessiblePageFilter(IPrincipal user, ISecurityManager securityManager)
+            : base(new PageFilter(), new PublishedFilter(), new AccessFilter(user, securityManager))
+        {
+        }
 
-		public override string ToString()
-		{
-			return "AsccessiblePage";
-		}
-	}
+        public override string ToString()
+        {
+            return "AsccessiblePage";
+        }
+    }
 }

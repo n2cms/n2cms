@@ -14,40 +14,40 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System;
-	using System.Reflection;
-	using System.Reflection.Emit;
+    using System;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
-	public class ConstructorInvocationStatement : Statement
-	{
-		private readonly Expression[] args;
-		private readonly ConstructorInfo cmethod;
+    public class ConstructorInvocationStatement : Statement
+    {
+        private readonly Expression[] args;
+        private readonly ConstructorInfo cmethod;
 
-		public ConstructorInvocationStatement(ConstructorInfo method, params Expression[] args)
-		{
-			if (method == null)
-			{
-				throw new ArgumentNullException("method");
-			}
-			if (args == null)
-			{
-				throw new ArgumentNullException("args");
-			}
+        public ConstructorInvocationStatement(ConstructorInfo method, params Expression[] args)
+        {
+            if (method == null)
+            {
+                throw new ArgumentNullException("method");
+            }
+            if (args == null)
+            {
+                throw new ArgumentNullException("args");
+            }
 
-			cmethod = method;
-			this.args = args;
-		}
+            cmethod = method;
+            this.args = args;
+        }
 
-		public override void Emit(IMemberEmitter member, ILGenerator gen)
-		{
-			gen.Emit(OpCodes.Ldarg_0);
+        public override void Emit(IMemberEmitter member, ILGenerator gen)
+        {
+            gen.Emit(OpCodes.Ldarg_0);
 
-			foreach (var exp in args)
-			{
-				exp.Emit(member, gen);
-			}
+            foreach (var exp in args)
+            {
+                exp.Emit(member, gen);
+            }
 
-			gen.Emit(OpCodes.Call, cmethod);
-		}
-	}
+            gen.Emit(OpCodes.Call, cmethod);
+        }
+    }
 }

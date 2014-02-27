@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using N2.Collections;
 using N2.Configuration;
@@ -8,22 +8,22 @@ using N2.Web;
 
 namespace N2.Edit.Globalization
 {
-	[ToolbarPlugin("LANGS", "globalization", "{ManagementUrl}/Content/Globalization/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Options, Targets.Preview, "{ManagementUrl}/Resources/icons/world.png", 150, 
-		ToolTip = "view translations",
-		GlobalResourceClassName = "Toolbar",
-		OptionProvider = typeof(GlobalizationOptionProvider),
-		Legacy = true)]
-	public partial class _Default : EditPage
-	{
-		protected ILanguageGateway gateway;
-		protected IEnumerable<ILanguage> languages;
-		private readonly Engine.Logger<_Default> logger;
+    [ToolbarPlugin("LANGS", "globalization", "{ManagementUrl}/Content/Globalization/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Options, Targets.Preview, "{ManagementUrl}/Resources/icons/world.png", 150, 
+        ToolTip = "view translations",
+        GlobalResourceClassName = "Toolbar",
+        OptionProvider = typeof(GlobalizationOptionProvider),
+        Legacy = true)]
+    public partial class _Default : EditPage
+    {
+        protected ILanguageGateway gateway;
+        protected IEnumerable<ILanguage> languages;
+        private readonly Engine.Logger<_Default> logger;
 
-		protected override void OnInit(EventArgs e)
-		{
+        protected override void OnInit(EventArgs e)
+        {
             Initialize();
-			base.OnInit(e);
-		}
+            base.OnInit(e);
+        }
 
         private void Initialize()
         {
@@ -45,43 +45,43 @@ namespace N2.Edit.Globalization
             }
         }
 
-		protected IEnumerable<ContentItem> GetChildren(bool getPages)
-		{
-			ItemList items = new ItemList();
-			foreach (ContentItem parent in gateway.FindTranslations(Selection.SelectedItem))
-			{
-				foreach (ContentItem child in parent.GetChildren(Engine.EditManager.GetEditorFilter(User)))
-				{
-					if (!items.ContainsAny(gateway.FindTranslations(child)))
-					{
-						items.Add(child);
-					}
-				}
-			}
-			items.Sort();
+        protected IEnumerable<ContentItem> GetChildren(bool getPages)
+        {
+            ItemList items = new ItemList();
+            foreach (ContentItem parent in gateway.FindTranslations(Selection.SelectedItem))
+            {
+                foreach (ContentItem child in parent.GetChildren(Engine.EditManager.GetEditorFilter(User)))
+                {
+                    if (!items.ContainsAny(gateway.FindTranslations(child)))
+                    {
+                        items.Add(child);
+                    }
+                }
+            }
+            items.Sort();
 
-			foreach (ContentItem item in items)
-			{
-				if (item is ILanguage)
-					continue;
-				else if (item.IsPage == getPages)
-					yield return item;
-			}
-		}
+            foreach (ContentItem item in items)
+            {
+                if (item is ILanguage)
+                    continue;
+                else if (item.IsPage == getPages)
+                    yield return item;
+            }
+        }
 
         protected string ReturnUrl
         {
             get { return Server.UrlEncode(Request.RawUrl); }
         }
 
-		protected IEnumerable<TranslateSpecification> GetTranslations(ContentItem item)
-		{
-			foreach (TranslateSpecification translate in gateway.GetEditTranslations(item, true, true))
-			{
-				translate.EditUrl += "&returnUrl=" + ReturnUrl;
-				yield return translate;
-			}
-		}
+        protected IEnumerable<TranslateSpecification> GetTranslations(ContentItem item)
+        {
+            foreach (TranslateSpecification translate in gateway.GetEditTranslations(item, true, true))
+            {
+                translate.EditUrl += "&returnUrl=" + ReturnUrl;
+                yield return translate;
+            }
+        }
 
         protected void btnAssociate_Click(object sender, EventArgs args)
         {
@@ -146,5 +146,5 @@ namespace N2.Edit.Globalization
             }
             return items;
         }
-	}
+    }
 }

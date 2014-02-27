@@ -14,16 +14,16 @@
 
 namespace Castle.DynamicProxy.Contributors
 {
-	using Castle.DynamicProxy.Generators;
-	using Castle.DynamicProxy.Generators.Emitters;
+    using Castle.DynamicProxy.Generators;
+    using Castle.DynamicProxy.Generators.Emitters;
 
-	/// <summary>
-	///   Interface describing elements composing generated type
-	/// </summary>
-	public interface ITypeContributor
-	{
-		void CollectElementsToProxy(IProxyGenerationHook hook, MetaType model);
+    /// <summary>
+    ///   Interface describing elements composing generated type
+    /// </summary>
+    public interface ITypeContributor
+    {
+        void CollectElementsToProxy(IProxyGenerationHook hook, MetaType model);
 
-		void Generate(ClassEmitter @class, ProxyGenerationOptions options);
-	}
+        void Generate(ClassEmitter @class, ProxyGenerationOptions options);
+    }
 }

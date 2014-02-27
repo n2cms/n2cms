@@ -14,224 +14,224 @@
 
 namespace Castle.DynamicProxy
 {
-	using System;
-	using System.Diagnostics;
-	using System.Reflection;
-	using System.Runtime.Serialization;
-	using Castle.DynamicProxy.Serialization;
+    using System;
+    using System.Diagnostics;
+    using System.Reflection;
+    using System.Runtime.Serialization;
+    using Castle.DynamicProxy.Serialization;
 
 #if DOTNET40
-	using System.Security;
+    using System.Security;
 #endif
 
 #if SILVERLIGHT
-	public abstract class AbstractInvocation : IInvocation
+    public abstract class AbstractInvocation : IInvocation
 #else
-//MT 	[Serializable]
-	public abstract class AbstractInvocation : IInvocation//MT, ISerializable
+//MT    [Serializable]
+    public abstract class AbstractInvocation : IInvocation//MT, ISerializable
 #endif
-	{
-		private readonly IInterceptor[] interceptors;
-		private readonly object[] arguments;
-		private int currentInterceptorIndex = -1;
-		private Type[] genericMethodArguments;
-		private readonly MethodInfo proxiedMethod;
-		protected readonly object proxyObject;
+    {
+        private readonly IInterceptor[] interceptors;
+        private readonly object[] arguments;
+        private int currentInterceptorIndex = -1;
+        private Type[] genericMethodArguments;
+        private readonly MethodInfo proxiedMethod;
+        protected readonly object proxyObject;
 
-		protected AbstractInvocation(
-			object proxy,
-			IInterceptor[] interceptors,
-			MethodInfo proxiedMethod,
-			object[] arguments)
-		{
-			Debug.Assert(proxiedMethod != null);
-			proxyObject = proxy;
-			this.interceptors = interceptors;
-			this.proxiedMethod = proxiedMethod;
-			this.arguments = arguments;
-		}
+        protected AbstractInvocation(
+            object proxy,
+            IInterceptor[] interceptors,
+            MethodInfo proxiedMethod,
+            object[] arguments)
+        {
+            Debug.Assert(proxiedMethod != null);
+            proxyObject = proxy;
+            this.interceptors = interceptors;
+            this.proxiedMethod = proxiedMethod;
+            this.arguments = arguments;
+        }
 
-		protected AbstractInvocation(
-			object proxy,
-			Type targetType,
-			IInterceptor[] interceptors,
-			MethodInfo proxiedMethod,
-			object[] arguments,
-			IInterceptorSelector selector,
-			ref IInterceptor[] methodInterceptors)
-			: this(proxy, interceptors, proxiedMethod, arguments)
-		{
-			methodInterceptors = SelectMethodInterceptors(selector, methodInterceptors, targetType);
-			this.interceptors = methodInterceptors;
-		}
+        protected AbstractInvocation(
+            object proxy,
+            Type targetType,
+            IInterceptor[] interceptors,
+            MethodInfo proxiedMethod,
+            object[] arguments,
+            IInterceptorSelector selector,
+            ref IInterceptor[] methodInterceptors)
+            : this(proxy, interceptors, proxiedMethod, arguments)
+        {
+            methodInterceptors = SelectMethodInterceptors(selector, methodInterceptors, targetType);
+            this.interceptors = methodInterceptors;
+        }
 
-		private IInterceptor[] SelectMethodInterceptors(IInterceptorSelector selector,
-		                                                IInterceptor[] methodInterceptors,
-		                                                Type targetType)
-		{
-			return methodInterceptors ??
-			       selector.SelectInterceptors(targetType, Method, interceptors) ??
-			       new IInterceptor[0];
-		}
+        private IInterceptor[] SelectMethodInterceptors(IInterceptorSelector selector,
+                                                        IInterceptor[] methodInterceptors,
+                                                        Type targetType)
+        {
+            return methodInterceptors ??
+                   selector.SelectInterceptors(targetType, Method, interceptors) ??
+                   new IInterceptor[0];
+        }
 
-		public void SetGenericMethodArguments(Type[] arguments)
-		{
-			genericMethodArguments = arguments;
-		}
+        public void SetGenericMethodArguments(Type[] arguments)
+        {
+            genericMethodArguments = arguments;
+        }
 
-		public abstract object InvocationTarget { get; }
+        public abstract object InvocationTarget { get; }
 
-		public abstract Type TargetType { get; }
+        public abstract Type TargetType { get; }
 
-		public abstract MethodInfo MethodInvocationTarget { get; }
+        public abstract MethodInfo MethodInvocationTarget { get; }
 
-		public Type[] GenericArguments
-		{
-			get { return genericMethodArguments; }
-		}
+        public Type[] GenericArguments
+        {
+            get { return genericMethodArguments; }
+        }
 
-		public object Proxy
-		{
-			get { return proxyObject; }
-		}
+        public object Proxy
+        {
+            get { return proxyObject; }
+        }
 
-		public MethodInfo Method
-		{
-			get { return proxiedMethod; }
-		}
+        public MethodInfo Method
+        {
+            get { return proxiedMethod; }
+        }
 
-		public MethodInfo GetConcreteMethod()
-		{
-			return EnsureClosedMethod(Method);
-		}
+        public MethodInfo GetConcreteMethod()
+        {
+            return EnsureClosedMethod(Method);
+        }
 
-		public MethodInfo GetConcreteMethodInvocationTarget()
-		{
-			// it is ensured by the InvocationHelper that method will be closed
-			var method = MethodInvocationTarget;
-			Debug.Assert(method == null || method.IsGenericMethodDefinition == false,
-			             "method == null || method.IsGenericMethodDefinition == false");
-			return method;
-		}
+        public MethodInfo GetConcreteMethodInvocationTarget()
+        {
+            // it is ensured by the InvocationHelper that method will be closed
+            var method = MethodInvocationTarget;
+            Debug.Assert(method == null || method.IsGenericMethodDefinition == false,
+                         "method == null || method.IsGenericMethodDefinition == false");
+            return method;
+        }
 
-		public object ReturnValue { get; set; }
+        public object ReturnValue { get; set; }
 
-		public object[] Arguments
-		{
-			get { return arguments; }
-		}
+        public object[] Arguments
+        {
+            get { return arguments; }
+        }
 
-		public void SetArgumentValue(int index, object value)
-		{
-			arguments[index] = value;
-		}
+        public void SetArgumentValue(int index, object value)
+        {
+            arguments[index] = value;
+        }
 
-		public object GetArgumentValue(int index)
-		{
-			return arguments[index];
-		}
+        public object GetArgumentValue(int index)
+        {
+            return arguments[index];
+        }
 
-		public void Proceed()
-		{
-			if (interceptors == null)
-				// not yet fully initialized? probably, an intercepted method is called while we are being deserialized
-			{
-				InvokeMethodOnTarget();
-				return;
-			}
+        public void Proceed()
+        {
+            if (interceptors == null)
+                // not yet fully initialized? probably, an intercepted method is called while we are being deserialized
+            {
+                InvokeMethodOnTarget();
+                return;
+            }
 
-			currentInterceptorIndex++;
-			try
-			{
-				if (currentInterceptorIndex == interceptors.Length)
-				{
-					InvokeMethodOnTarget();
-				}
-				else if (currentInterceptorIndex > interceptors.Length)
-				{
-					string interceptorsCount;
-					if (interceptors.Length > 1)
-					{
-						interceptorsCount = " each one of " + interceptors.Length + " interceptors";
-					}
-					else
-					{
-						interceptorsCount = " interceptor";
-					}
+            currentInterceptorIndex++;
+            try
+            {
+                if (currentInterceptorIndex == interceptors.Length)
+                {
+                    InvokeMethodOnTarget();
+                }
+                else if (currentInterceptorIndex > interceptors.Length)
+                {
+                    string interceptorsCount;
+                    if (interceptors.Length > 1)
+                    {
+                        interceptorsCount = " each one of " + interceptors.Length + " interceptors";
+                    }
+                    else
+                    {
+                        interceptorsCount = " interceptor";
+                    }
 
-					var message = "This is a DynamicProxy2 error: invocation.Proceed() has been called more times than expected." +
-					              "This usually signifies a bug in the calling code. Make sure that" + interceptorsCount +
-					              " selected for the method '" + Method + "'" +
-					              "calls invocation.Proceed() at most once.";
-					throw new InvalidOperationException(message);
-				}
-				else
-				{
-					interceptors[currentInterceptorIndex].Intercept(this);
-				}
-			}
-			finally
-			{
-				currentInterceptorIndex--;
-			}
-		}
+                    var message = "This is a DynamicProxy2 error: invocation.Proceed() has been called more times than expected." +
+                                  "This usually signifies a bug in the calling code. Make sure that" + interceptorsCount +
+                                  " selected for the method '" + Method + "'" +
+                                  "calls invocation.Proceed() at most once.";
+                    throw new InvalidOperationException(message);
+                }
+                else
+                {
+                    interceptors[currentInterceptorIndex].Intercept(this);
+                }
+            }
+            finally
+            {
+                currentInterceptorIndex--;
+            }
+        }
 
 //MT #if !SILVERLIGHT
 //MT #if DOTNET40
-//MT 		[SecurityCritical]
+//MT        [SecurityCritical]
 //MT #endif
-//MT 		public void GetObjectData(SerializationInfo info, StreamingContext context)
-//MT 		{
-//MT 			info.SetType(typeof(RemotableInvocation));
-//MT 			info.AddValue("invocation", new RemotableInvocation(this));
-//MT 		}
+//MT        public void GetObjectData(SerializationInfo info, StreamingContext context)
+//MT        {
+//MT            info.SetType(typeof(RemotableInvocation));
+//MT            info.AddValue("invocation", new RemotableInvocation(this));
+//MT        }
 //MT #endif
 
-		protected abstract void InvokeMethodOnTarget();
+        protected abstract void InvokeMethodOnTarget();
 
-		protected void ThrowOnNoTarget()
-		{
-			// let's try to build as friendly message as we can
-			string interceptorsMessage;
-			if (interceptors.Length == 0)
-			{
-				interceptorsMessage = "There are no interceptors specified";
-			}
-			else
-			{
-				interceptorsMessage = "The interceptor attempted to 'Proceed'";
-			}
+        protected void ThrowOnNoTarget()
+        {
+            // let's try to build as friendly message as we can
+            string interceptorsMessage;
+            if (interceptors.Length == 0)
+            {
+                interceptorsMessage = "There are no interceptors specified";
+            }
+            else
+            {
+                interceptorsMessage = "The interceptor attempted to 'Proceed'";
+            }
 
-			string methodKindIs;
-			string methodKindDescription;
-			if (Method.DeclaringType.IsClass && Method.IsAbstract)
-			{
-				methodKindIs = "is abstract";
-				methodKindDescription = "an abstract method";
-			}
-			else
-			{
-				methodKindIs = "has no target";
-				methodKindDescription = "method without target";
-			}
+            string methodKindIs;
+            string methodKindDescription;
+            if (Method.DeclaringType.IsClass && Method.IsAbstract)
+            {
+                methodKindIs = "is abstract";
+                methodKindDescription = "an abstract method";
+            }
+            else
+            {
+                methodKindIs = "has no target";
+                methodKindDescription = "method without target";
+            }
 
-			var message = string.Format("This is a DynamicProxy2 error: {0} for method '{1}' which {2}. " +
-			                            "When calling {3} there is no implementation to 'proceed' to and " +
-			                            "it is the responsibility of the interceptor to mimic the implementation " +
-			                            "(set return value, out arguments etc)",
-			                            interceptorsMessage, Method, methodKindIs, methodKindDescription);
+            var message = string.Format("This is a DynamicProxy2 error: {0} for method '{1}' which {2}. " +
+                                        "When calling {3} there is no implementation to 'proceed' to and " +
+                                        "it is the responsibility of the interceptor to mimic the implementation " +
+                                        "(set return value, out arguments etc)",
+                                        interceptorsMessage, Method, methodKindIs, methodKindDescription);
 
-			throw new NotImplementedException(message);
-		}
+            throw new NotImplementedException(message);
+        }
 
-		private MethodInfo EnsureClosedMethod(MethodInfo method)
-		{
-			if (method.ContainsGenericParameters)
-			{
-				Debug.Assert(genericMethodArguments != null);
-				return method.GetGenericMethodDefinition().MakeGenericMethod(genericMethodArguments);
-			}
-			return method;
-		}
-	}
+        private MethodInfo EnsureClosedMethod(MethodInfo method)
+        {
+            if (method.ContainsGenericParameters)
+            {
+                Debug.Assert(genericMethodArguments != null);
+                return method.GetGenericMethodDefinition().MakeGenericMethod(genericMethodArguments);
+            }
+            return method;
+        }
+    }
 }

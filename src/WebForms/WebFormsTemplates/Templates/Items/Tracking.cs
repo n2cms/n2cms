@@ -4,13 +4,13 @@ using N2.Templates.Items;
 
 namespace N2.Templates.Items
 {
-	[PartDefinition("Tracking script",
-		IconUrl = "~/Templates/UI/Img/google.png", 
-		SortOrder = 2000)]
+    [PartDefinition("Tracking script",
+        IconUrl = "~/Templates/UI/Img/google.png", 
+        SortOrder = 2000)]
     [RestrictParents(typeof(LanguageRoot))]
     [AllowedZones(Zones.SiteRight)]
-	[RestrictCardinality]
-	public class Tracking : Templates.Items.AbstractItem
+    [RestrictCardinality]
+    public class Tracking : Templates.Items.AbstractItem
     {
         [EditableCheckBox("Enabled", 100)]
         public virtual bool Enabled

@@ -1,4 +1,4 @@
-﻿namespace N2.Edit.Tests
+namespace N2.Edit.Tests
 {
     class Program
     {

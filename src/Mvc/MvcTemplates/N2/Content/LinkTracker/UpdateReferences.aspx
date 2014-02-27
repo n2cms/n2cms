@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="../Framed.master" AutoEventWireup="true" CodeBehind="UpdateReferences.aspx.cs" Inherits="N2.Edit.LinkTracker.UpdateReferences" meta:resourcekey="PageResource1" %>
+﻿<%@ Page Language="C#" MasterPageFile="../Framed.master" AutoEventWireup="true" CodeBehind="UpdateReferences.aspx.cs" Inherits="N2.Edit.LinkTracker.UpdateReferences" meta:resourcekey="PageResource1" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <%@ Register Src="../AffectedItems.ascx" TagName="AffectedItems" TagPrefix="uc1" %>
 

@@ -17,58 +17,58 @@
 
 namespace Castle.DynamicProxy.Serialization
 {
-	using System;
-	using System.Collections.Generic;
-	using System.IO;
-	using System.Reflection;
-	using System.Reflection.Emit;
-	using System.Runtime.Serialization.Formatters.Binary;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Reflection;
+    using System.Reflection.Emit;
+    using System.Runtime.Serialization.Formatters.Binary;
 
-	using Castle.DynamicProxy.Generators;
+    using Castle.DynamicProxy.Generators;
 
-	/// <summary>
-	///   Applied to the assemblies saved by <see cref = "ModuleScope" /> in order to persist the cache data included in the persisted assembly.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
-	[CLSCompliant(false)]
-	public class CacheMappingsAttribute : Attribute
-	{
-		private static readonly ConstructorInfo constructor =
-			typeof(CacheMappingsAttribute).GetConstructor(new[] { typeof(byte[]) });
+    /// <summary>
+    ///   Applied to the assemblies saved by <see cref = "ModuleScope" /> in order to persist the cache data included in the persisted assembly.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
+    [CLSCompliant(false)]
+    public class CacheMappingsAttribute : Attribute
+    {
+        private static readonly ConstructorInfo constructor =
+            typeof(CacheMappingsAttribute).GetConstructor(new[] { typeof(byte[]) });
 
-		private readonly byte[] _serializedCacheMappings;
+        private readonly byte[] _serializedCacheMappings;
 
-		public CacheMappingsAttribute(byte[] serializedCacheMappings)
-		{
-			_serializedCacheMappings = serializedCacheMappings;
-		}
+        public CacheMappingsAttribute(byte[] serializedCacheMappings)
+        {
+            _serializedCacheMappings = serializedCacheMappings;
+        }
 
-		public byte[] SerializedCacheMappings
-		{
-			get { return _serializedCacheMappings; }
-		}
+        public byte[] SerializedCacheMappings
+        {
+            get { return _serializedCacheMappings; }
+        }
 
-		public Dictionary<CacheKey, string> GetDeserializedMappings()
-		{
-			using (var stream = new MemoryStream(SerializedCacheMappings))
-			{
-				var formatter = new BinaryFormatter();
-				return (Dictionary<CacheKey, string>)formatter.Deserialize(stream);
-			}
-		}
+        public Dictionary<CacheKey, string> GetDeserializedMappings()
+        {
+            using (var stream = new MemoryStream(SerializedCacheMappings))
+            {
+                var formatter = new BinaryFormatter();
+                return (Dictionary<CacheKey, string>)formatter.Deserialize(stream);
+            }
+        }
 
-		public static void ApplyTo(AssemblyBuilder assemblyBuilder, Dictionary<CacheKey, string> mappings)
-		{
-			using (var stream = new MemoryStream())
-			{
-				var formatter = new BinaryFormatter();
-				formatter.Serialize(stream, mappings);
-				var bytes = stream.ToArray();
-				var attributeBuilder = new CustomAttributeBuilder(constructor, new object[] { bytes });
-				assemblyBuilder.SetCustomAttribute(attributeBuilder);
-			}
-		}
-	}
+        public static void ApplyTo(AssemblyBuilder assemblyBuilder, Dictionary<CacheKey, string> mappings)
+        {
+            using (var stream = new MemoryStream())
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(stream, mappings);
+                var bytes = stream.ToArray();
+                var attributeBuilder = new CustomAttributeBuilder(constructor, new object[] { bytes });
+                assemblyBuilder.SetCustomAttribute(attributeBuilder);
+            }
+        }
+    }
 }
 
 #endif

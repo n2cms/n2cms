@@ -1,4 +1,4 @@
-﻿using System.Configuration;
+using System.Configuration;
 using N2.Engine;
 using N2.Engine.MediumTrust;
 using N2.Web;
@@ -6,25 +6,25 @@ using NUnit.Framework;
 
 namespace N2.Tests.Engine
 {
-	[TestFixture]
-	public class MultipleSitesContentEngineTests
-	{
-		ContentEngine engine;
+    [TestFixture]
+    public class MultipleSitesContentEngineTests
+    {
+        ContentEngine engine;
         IHost host;
 
-		[SetUp]
-		public void SetUp()
-		{
-			var cfg = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-			engine = new ContentEngine(cfg, "n2multiplesites", new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
+        [SetUp]
+        public void SetUp()
+        {
+            var cfg = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            engine = new ContentEngine(cfg, "n2multiplesites", new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
             host = engine.Resolve<IHost>();
-		}
+        }
 
-		[Test]
-		public void MultipleSitesParser_IsConfigurable()
-		{
-			var parser = engine.Resolve<IUrlParser>();
-			Assert.That(parser, Is.TypeOf(typeof(MultipleSitesParser)));
+        [Test]
+        public void MultipleSitesParser_IsConfigurable()
+        {
+            var parser = engine.Resolve<IUrlParser>();
+            Assert.That(parser, Is.TypeOf(typeof(MultipleSitesParser)));
         }
 
         [Test]
@@ -60,5 +60,5 @@ namespace N2.Tests.Engine
             var parser = (MultipleSitesParser)engine.Resolve<IUrlParser>();
             Assert.That(host.Sites[0].Settings["nextSite"], Is.EqualTo("http://beta.localhost.com"));
         }
-	}
+    }
 }

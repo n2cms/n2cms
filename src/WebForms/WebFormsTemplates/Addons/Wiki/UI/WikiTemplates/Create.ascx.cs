@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using N2.Web;
 
 namespace N2.Addons.Wiki.UI.WikiTemplates

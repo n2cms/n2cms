@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="~/Templates/UI/Layouts/Top+Submenu.master" Language="C#" AutoEventWireup="true" CodeBehind="AddonPage.aspx.cs" Inherits="N2.Addons.AddonCatalog.UI.AddonPage" %>
+﻿<%@ Page MasterPageFile="~/Templates/UI/Layouts/Top+Submenu.master" Language="C#" AutoEventWireup="true" CodeBehind="AddonPage.aspx.cs" Inherits="N2.Addons.AddonCatalog.UI.AddonPage" %>
 <%@ Import Namespace="N2.Web"%>
 
 <asp:Content ContentPlaceHolderID="Content" runat="server">

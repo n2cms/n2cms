@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,59 +15,57 @@ using N2.Security;
 
 namespace Dinamico.Controllers
 {
-	/// <summary>
-	/// The registration <see cref="Registrations.StartPageRegistration"/> is responsible for
-	/// connecting this controller to the start page model.
-	/// </summary>
-	public class StartPageController : ContentController<StartPage>
-	{
+    /// <summary>
+    /// The registration <see cref="Registrations.StartPageRegistration"/> is responsible for
+    /// connecting this controller to the start page model.
+    /// </summary>
+    public class StartPageController : ContentController<StartPage>
+    {
         private  AccountManager AccountManager { get { return N2.Context.Current.Resolve<AccountManager>(); } }
 
-		public ActionResult NotFound()
-		{
-			var closestMatch = Content.Traverse.Path(Request.AppRelativeCurrentExecutionFilePath.Trim('~', '/')).StopItem;
-			
-			var startPage = Content.Traverse.ClosestStartPage(closestMatch);
-			var urlText = Request.AppRelativeCurrentExecutionFilePath.Trim('~', '/').Replace('/', ' ');
-			var similarPages = GetSearchResults(startPage, urlText, 10).ToList();
+        public ActionResult NotFound()
+        {
+            var closestMatch = Content.Traverse.Path(Request.AppRelativeCurrentExecutionFilePath.Trim('~', '/')).StopItem;
+            
+            var startPage = Content.Traverse.ClosestStartPage(closestMatch);
+            var urlText = Request.AppRelativeCurrentExecutionFilePath.Trim('~', '/').Replace('/', ' ');
+            var similarPages = GetSearchResults(startPage, urlText, 10).ToList();
 
-			ControllerContext.RouteData.ApplyCurrentPath(new PathData(new ContentPage { Parent = startPage }));
-			Response.TrySkipIisCustomErrors = true;
-			Response.Status = "404 Not Found";
+            ControllerContext.RouteData.ApplyCurrentPath(new PathData(new ContentPage { Parent = startPage }));
+            Response.TrySkipIisCustomErrors = true;
+            Response.Status = "404 Not Found";
 
-			return View(similarPages);
-		}
+            return View(similarPages);
+        }
 
-		[ContentOutputCache]
-		public ActionResult SiteMap()
-		{
-			var start = this.Content.Traverse.StartPage;
-			string content = Tree.From(start)
-				.Filters(N2.Content.Is.Accessible())
-				.ExcludeRoot(true).ToString();
-			return Content("<ul>" 
-				+ "<li>" + Link.To(start) + "</li>"
-				+ content + "</ul>");
-		}
+        [ContentOutputCache]
+        public ActionResult SiteMap()
+        {
+            var start = this.Content.Traverse.StartPage;
+            string content = Tree.From(start)
+                .Filters(N2.Content.Is.Navigatable())
+                .ExcludeRoot(true).ToString();
+            return Content("<li>" + Link.To(start) + "</li>" + content);
+        }
 
-		public ActionResult Search(string q)
-		{
-			if (string.IsNullOrWhiteSpace(q))
-				return Content("<ul><li>A search term is required</li></ul>");
+        public ActionResult Search(string q)
+        {
+            if (string.IsNullOrWhiteSpace(q))
+                return Content("<li>A search term is required</li>");
 
-			var hits = GetSearchResults(CurrentPage ?? this.Content.Traverse.StartPage, q, 50);
+            var hits = GetSearchResults(CurrentPage ?? this.Content.Traverse.StartPage, q, 50);
 
-			StringBuilder results = new StringBuilder();
-			foreach (var hit in hits)
-			{
-				results.Append("<li>").Append(Link.To(hit)).Append("</li>");
-			}
-			
-			if (results.Length == 0)
-				return Content("<ul><li>No hits</li></ul>");
+            StringBuilder results = new StringBuilder();
+            foreach (var hit in hits)
+            {
+                results.Append("<li>").Append(Link.To(hit)).Append("</li>");
+            }
+            
+            if (results.Length == 0)
+                return Content("<li>No hits</li>");
 
-			return Content("<ul>" + results + "</ul>");
-		}
+            return Content(results.ToString());
+        }
 
 		private IEnumerable<ContentItem> GetSearchResults(ContentItem root, string text, int take)
 		{
@@ -78,21 +76,21 @@ namespace Dinamico.Controllers
 			return hits;
 		}
 
-		[ContentOutputCache]
-		public ActionResult Translations(int id)
-		{
-			StringBuilder sb = new StringBuilder();
+        [ContentOutputCache]
+        public ActionResult Translations(int id)
+        {
+            StringBuilder sb = new StringBuilder();
 
-			var item = Engine.Persister.Get(id);
-			var lg = Engine.Resolve<LanguageGatewaySelector>().GetLanguageGateway(item);
-			var translations = lg.FindTranslations(item);
-			foreach (var language in translations)
-				sb.Append("<li>").Append(Link.To(language).Text(lg.GetLanguage(language).LanguageTitle)).Append("</li>");
+            var item = Engine.Persister.Get(id);
+            var lg = Engine.Resolve<LanguageGatewaySelector>().GetLanguageGateway(item);
+            var translations = lg.FindTranslations(item);
+            foreach (var language in translations)
+                sb.Append("<li>").Append(Link.To(language).Text(lg.GetLanguage(language).LanguageTitle)).Append("</li>");
 
-			if (sb.Length == 0)
-				return Content("<ul><li>This page is not translated</li></ul>");
+            if (sb.Length == 0)
+                return Content("<li>This page is not translated</li>");
 
-			return Content("<ul>" + sb + "</ul>");
-		}
-	}
+            return Content(sb.ToString());
+        }
+    }
 }
