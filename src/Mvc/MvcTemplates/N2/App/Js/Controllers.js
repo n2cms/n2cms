@@ -1,4 +1,4 @@
-﻿(function(n2Module){
+﻿(function (n2Module) {
 	n2Module.value('$strapConfig', {
 		datepicker: {
 			language: 'en',
@@ -6,9 +6,15 @@
 		}
 	});
 })(angular.module('n2', ['n2.directives', 'n2.services', 'n2.localization', 'ui', '$strap.directives', "ngRoute"], function ($routeProvider, $locationProvider) {
-	$locationProvider.html5Mode(true);
-	$locationProvider.hashPrefix("!");
-	$routeProvider.otherwise({ templateUrl: "App/Partials/Framework.html", controller: "ManagementCtrl", reloadOnSearch: false });
+    if (history.pushState) {
+        $locationProvider.html5Mode(true);
+        $locationProvider.hashPrefix("!");
+    }
+	$routeProvider.otherwise({
+	    templateUrl: "App/Partials/Framework.html",
+	    controller: "ManagementCtrl",
+	    reloadOnSearch: false
+	});
 }))
 
 function findBranch(node, selectedPath) {
