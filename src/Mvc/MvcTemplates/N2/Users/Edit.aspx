@@ -22,6 +22,6 @@
 		<asp:CheckBoxList ID="cblRoles" runat="server" CssClass="cbl" 
 			DataSourceID="odsRoles" meta:resourcekey="cblRolesResource1" RepeatLayout="Flow" />
 	</div>
-    <asp:ObjectDataSource ID="odsRoles" runat="server" TypeName="System.Web.Security.Roles" SelectMethod="GetAllRoles" />
+    <asp:ObjectDataSource ID="odsRoles" runat="server" TypeName="N2.Edit.Membership.RolesSource" SelectMethod="GetAllRoles" />
 	</div>
 </asp:Content>

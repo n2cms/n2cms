@@ -1013,15 +1013,30 @@ namespace N2.Web
 
 		/// <summary>Formats an url using replacement tokens.</summary>
 		/// <param name="urlFormat">The url format to resolve, e.g. {ManagementUrl}/Resources/icons/add.png</param>
-		/// <returns>An an absolut path with all tokens replaced by their corresponding value.</returns>
+		/// <returns>An an absolute path with all tokens replaced by their corresponding value.</returns>
 		public static string ResolveTokens(string urlFormat)
 		{
 			if (string.IsNullOrEmpty(urlFormat))
 				return urlFormat;
 
-            //TODO: Use a nicer method for replacing tokens. Doesn't work if token values contain other tokens.
-			foreach (var kvp in replacements)
-				urlFormat = urlFormat.Replace(kvp.Key, kvp.Value);
+			//TODO: Use a nicer method for replacing tokens. Doesn't work if token values contain other tokens.
+
+            int maxLevels = 10; // Does work if token values contain other tokens, replacement levels are limited.
+            for (int level = 0; level < maxLevels; ++level)
+            {
+                bool changed = false;
+                foreach (var kvp in replacements)
+                {
+                    string replaced = urlFormat.Replace(kvp.Key, kvp.Value);
+                    if (replaced != urlFormat)
+                        changed = true;
+                    urlFormat = replaced;
+                }
+
+                if (!changed)
+                    break; // all resolved
+            }
+
 			return ToAbsolute(urlFormat);
 		}
 

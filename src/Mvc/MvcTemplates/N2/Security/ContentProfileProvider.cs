@@ -24,10 +24,10 @@ namespace N2.Security
             int count = 0;
             foreach (string username in usernames)
             {
-                ContentItem user = Bridge.GetUser(username);
+                User user = Bridge.GetUser(username);
                 if (user != null)
                 {
-                    Bridge.Delete(user);
+                    Bridge.DeleteUser(user);
                     count++;
                 }
             }
@@ -179,7 +179,7 @@ namespace N2.Security
                     {
                         u[property.Name] = property.PropertyValue;
                     }
-                    Bridge.Save(u);
+                    Bridge.SaveUser(u);
                 }
             }
         }
