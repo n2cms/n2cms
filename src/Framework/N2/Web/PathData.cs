@@ -288,7 +288,6 @@ namespace N2.Web
 
         private int Set(ref ContentItem current, ContentItem value)
         {
-	        if (current == null) throw new ArgumentNullException("current");
 	        current = value;
             OnItemChange(current, value);
             return value != null ? value.ID : 0;
