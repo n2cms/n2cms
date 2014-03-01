@@ -1,4 +1,28 @@
 <configuration>
+	<n2 xmlns="http://n2cms.com/schemas/configuration/v3">
+		<!--
+			When installing a database from scratch you'll need to insert some required pages. 
+			This can be done by the web based installer located at http://yoursite/n2/installation/ 
+			-->
+		<host rootID="1" startPageID="2" multipleSites="true"></host>
+		<engine>
+			<errors action="Email" mailTo="" mailFrom="noreply@yourdomain.com" />
+			<globalization enabled="true" />
+		</engine>
+		<database connectionStringName="N2CMS" caching="true"></database>
+		<edit>
+			<installer checkInstallationStatus="true" />
+			<writers dynamic="true"/>
+			<editors dynamic="true"/>
+			<administrators dynamic="true"/>
+			<images>
+				<sizes>
+					<add name="thumb" width="50" height="50" mode="Fill"/>
+					<add name="wide" width="960" height="480" mode="Fill" />
+				</sizes>
+			</images>
+		</edit>
+	</n2>
 	<configSections>
 		<sectionGroup name="n2" type="N2.Configuration.SectionGroup, N2">
 			<section name="host" type="N2.Configuration.HostSection, N2" requirePermission="false" restartOnExternalChanges="true"/>
