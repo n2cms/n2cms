@@ -4,7 +4,8 @@ namespace N2.Configuration
 {
     public class ResourcesElement : ConfigurationElement
     {
-        public const string JQueryVersion = "1.10.2";
+        public const string JQueryVersion = "1.11.0";
+        public const string JQueryUiVersion = "1.10.4";
 
         /// <summary>Whether to make registered web resources debuggable.</summary>
         [ConfigurationProperty("debug")]
@@ -23,7 +24,7 @@ namespace N2.Configuration
         }
 
         /// <summary>The path to the included jQuery UI javascript resource.</summary>
-        [ConfigurationProperty("jQueryUiPath", DefaultValue = "{ManagementUrl}/Resources/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js")]
+        [ConfigurationProperty("jQueryUiPath", DefaultValue = "{ManagementUrl}/Resources/jquery-ui-" + JQueryUiVersion + ".custom/js/jquery-ui-" + JQueryUiVersion + ".custom.min.js")]
         public string JQueryUiPath
         {
             get { return (string)base["jQueryUiPath"]; }
