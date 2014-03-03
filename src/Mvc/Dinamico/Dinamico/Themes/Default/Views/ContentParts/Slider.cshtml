@@ -1,32 +1,40 @@
 ﻿@model Dinamico.Models.ContentPart
 		   
 @{ 
-	Content.Define(ie => 
+	Content.Define(ie =>
 	{
-		ie.Title = "Parts Slider";
+		ie.Title = "Parts Carousel";
 		ie.IconUrl = "{IconsUrl}/photos.png";
 	});
 	string uniqueId = Html.UniqueID("s");
 }
 
-@{ Html.Resources().JavaScript(Url.ThemedContent("~/Scripts/jquery.anythingslider.js")); }
+<div id="@uniqueId" class="part carousel slide">
+	<ol class="carousel-indicators">
+	@{ var index = 0; }
+	@foreach (var item in Content.Traverse.ChildParts("SliderArea"))
+	{
+		<li data-target="#@uniqueId" data-slide-to="@(index++)" class="@(index == 1 ? "active" : "")"></li>
+	}
+	</ol>
 
-<div class="slider partSlider">
-	<div id="@uniqueId">
-		@{ Html.DroppableZone("SliderArea").Render(); }
+	<!-- Wrapper for slides -->
+	<div class="carousel-inner">
+	@{ 
+		index = 0;
+		Html.DroppableZone("SliderArea").WrapIn((ci) => 
+			{ 
+				var tb = new TagBuilder("div"); 
+				tb.Id("carousel-item-" + ci.ID); 
+				tb.AddCssClass("item" + (index++ == 0 ? " active" : ""));
+				return tb; 
+			}).Render(); 
+	}
 	</div>
 
-	<script type="text/javascript">
-		$(document).ready(function () {
-			var $container = $("#@uniqueId");
-			if($container.children(".dropZone").length > 0) return;
-
-			$container.wrapInner("<ul/>").children("ul")
-				.children("*").wrap("<li/>").end()
-				.each(function(){
-					var $t = $(this);
-					$t.anythingSlider({ width: $container.width(), delay:5000, animationTime:200, resizeContents:true, buildArrows:false });
-				});
-		});
-	</script>
+	<!-- Controls -->
+	<a class="left carousel-control" href="#@uniqueId" data-slide="prev"><span class="icon-prev"></span></a>
+	<a class="right carousel-control" href="#@uniqueId" data-slide="next"><span class="icon-next"></span></a>
 </div>
+
+@Html.Resources().JavaScript(@"$('.carousel').carousel().find('.carousel-inner .item:first').addClass('active');", N2.Resources.ScriptOptions.DocumentReady)

@@ -43,16 +43,15 @@
 												$(Templates-Mvc-SourceFolder)\N2.Management.*" />
 		</ItemGroup>
 
-		<Copy SourceFiles="@(templatesMvcFiles)"						DestinationFolder="$(Templates-Mvc-DeployFolder-Path)\%(RecursiveDir)" />
-		<Copy SourceFiles="@(Framework-BinFiles)"						DestinationFolder="$(Templates-Mvc-DeployFolder-Path)\bin\" />
-		<Copy SourceFiles="@(Framework-EditFiles)"					DestinationFolder="$(Templates-Mvc-DeployFolder-Path)\N2\%(RecursiveDir)" />
-		<Copy SourceFiles="@(TextFiles)"										DestinationFolder="$(Templates-Mvc-DeployFolder)\" />
-		<Copy SourceFiles="@(Snippets)"											DestinationFolder="$(Templates-Mvc-DeployFolder)\Snippets" />
+		<Copy SourceFiles="@(templatesMvcFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder-Path)\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder-Path)\bin\" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder-Path)\N2\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\" />
+		<Copy SourceFiles="@(Snippets)" DestinationFolder="$(Templates-Mvc-DeployFolder)\Snippets" />
 		<CallTarget Targets="Templates-Mvc-RemoveProjectReferences" />
 	</Target>
 
-	<Target Name="Templates-Mvc-ZipDeploy" DependsOnTargets="Templates-Mvc-Deploy;Templates-Mvc-Zip">
-	</Target>
+	<Target Name="Templates-Mvc-ZipDeploy" DependsOnTargets="Templates-Mvc-Deploy;Templates-Mvc-Zip"></Target>
 
 	<Target Name="Templates-Mvc-PrepareZip">
 		<ItemGroup>

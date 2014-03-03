@@ -52,13 +52,6 @@ namespace N2.Web.UI
             set { tabText = value; }
         }
 
-        /// <summary>Gets or sets wether default styles should be registered.</summary>
-        [Obsolete]
-        public bool RegisterTabCss
-        {
-            get { return registerTabCss; }
-            set { registerTabCss = value; }
-        }
 
         /// <summary>
         /// This needs to contain the css class tabPanel to receive default styles.

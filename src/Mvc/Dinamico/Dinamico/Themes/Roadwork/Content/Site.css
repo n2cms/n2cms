@@ -1,9 +1,0 @@
-﻿@import "../../Default/Content/Boilerhead.css";
-@import "Layout.css";
-@import "Elements.css";
-@import "../../Default/Content/Features.css";
-@import "Mood.css";
-@import "../../Default/Content/Boilerfoot.css";
-@import "TopNavigation.css";
-
-#content img.main { width:920px; }

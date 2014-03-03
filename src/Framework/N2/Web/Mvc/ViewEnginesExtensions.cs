@@ -32,8 +32,8 @@ namespace N2.Web.Mvc
             Url.SetToken(Url.ThemesUrlToken, themeFolderPath);
 
             var tve = typeof(T) == typeof(WebFormViewEngine)
-                ? new ThemeViewEngine<T>(themeFolderPath, new string[] { "aspx", "ascx" }, new string[] { "master" })
-                : new ThemeViewEngine<T>(themeFolderPath, new string[] { "cshtml" }, new string[] { "cshtml" });
+                ? new ThemeViewEngine<T>(themeFolderPath, new[] { "aspx", "ascx" }, new[] { "master" })
+                : new ThemeViewEngine<T>(themeFolderPath, new[] { "cshtml" }, new[] { "cshtml" });
             viewEngines.Insert(0, tve);
             return tve;
         }

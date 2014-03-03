@@ -22,7 +22,6 @@ namespace N2.Edit.Versioning
                 else if (item.State != ContentState.Unpublished || asPreviousVersion == false)
                     stateChanger.ChangeTo(clone, ContentState.Draft);
             }
-            clone.Expires = Utility.CurrentTime().AddSeconds(-1);
             clone.Updated = Utility.CurrentTime().AddSeconds(-1);
             clone.Parent = null;
             clone.AncestralTrail = "/";

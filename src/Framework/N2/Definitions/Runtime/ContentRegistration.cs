@@ -114,6 +114,13 @@ namespace N2.Definitions.Runtime
             get { return Definition.IconUrl; }
             set { Definition.IconUrl = value; }
         }
+
+	    /// <summary>Immediately maps to the definition icon class.</summary>
+	    public string IconClass
+	    {
+			get { return Definition.IconClass; }
+			set { Definition.IconClass = value; }
+	    }
         
         /// <summary>This property is set to true when the view start registering.</summary>
         public bool IsDefined { get; set; }

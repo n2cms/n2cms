@@ -22,7 +22,7 @@ namespace N2.Web
 		static readonly string[] querySplitter = new[] {"&amp;", Amp};
 		static readonly char[] slashes = new char[] { '/' };
 		static readonly char[] dotsAndSlashes = new char[] { '.', '/' };
-		static string defaultExtension = ".aspx";
+		static string defaultExtension = "";
 		static string defaultDocument = "Default.aspx";
 
 		private static readonly HashSet<string> contentParameters = new HashSet<string>
@@ -102,7 +102,8 @@ namespace N2.Web
 			fragment = null;
 		}
 
-		void EnsureTrailingSlashOnPath()
+#if SAFE_URL_HANDLING
+        void EnsureTrailingSlashOnPath()
 		{
 			// Addition by James Tharpe w/ Rollins, Inc.
 			// --------------------------------------------------------------------------------
@@ -114,6 +115,7 @@ namespace N2.Web
 			if (Extension == null && !path.EndsWith("/")) //TODO: Add a forceTralingSlash option?
 				path += "/";
 		}
+#endif
 
 		void LoadSiteRelativeUrl(string url, int queryIndex, int hashIndex)
 		{
@@ -131,7 +133,10 @@ namespace N2.Web
 			else
 				path = "";
 
+#if SAFE_URL_HANDLING
+            // alternatively it's possible to set extension="/"
 			EnsureTrailingSlashOnPath(); // jamestharpe
+#endif
 		}
 
 		void LoadBasedUrl(string url, int queryIndex, int hashIndex, int authorityIndex)
@@ -148,7 +153,9 @@ namespace N2.Web
 				else
 					path = url.Substring(slashIndex); // http://site.com/foo/bar -> /foo/bar
 
+#if SAFE_URL_HANDLING
 				EnsureTrailingSlashOnPath(); // jamestharpe
+#endif
 			}
 			else
 			{

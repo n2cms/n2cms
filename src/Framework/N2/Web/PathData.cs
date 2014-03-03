@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using N2.Edit;
 using N2.Persistence;
 
@@ -23,7 +24,7 @@ namespace N2.Web
         }
 
         /// <summary>The path didn't correspond to a content item. The caller may use the last found item and remaining url to take action.</summary>
-        /// <param name="closestMatch">The last item reporting no match.</param>
+		/// <param name="reportedBy">The last item reporting no match.</param>
         /// <param name="remainingUrl">The remaining url when no match was found.</param>
         /// <returns>A an empty path data with additional information.</returns>
         public static PathData None(ContentItem reportedBy, string remainingUrl)
@@ -39,46 +40,46 @@ namespace N2.Web
             return new PathData(item) { IsRewritable = false };
         }
 
-        static string itemQueryKey = "item";
-        static string pageQueryKey = "page";
-        static string partQueryKey = "part";
-        static string pathDataKey = "path";
-        static string versionIndexQueryKey = "versionIndex";
-        static string versionKeyQueryKey = "versionKey";
+        static string _itemQueryKey = "n2Item";
+		static string _pageQueryKey = "n2Page";
+        static string _partQueryKey = "n2Part";
+        static string _pathDataKey = "n2Path";
+        static string _versionIndexQueryKey = "n2VersionIndex";
+        static string _versionKeyQueryKey = "n2VersionKey";
 
         /// <summary>The version key query key.</summary>
         public static string VersionKeyQueryKey
         {
-            get { return PathData.versionKeyQueryKey; }
-            set { PathData.versionKeyQueryKey = value; }
+            get { return _versionKeyQueryKey; }
+            set { _versionKeyQueryKey = value; }
         }
 
         /// <summary>The version index query key.</summary>
         public static string VersionIndexQueryKey
         {
-            get { return versionIndexQueryKey; }
-            set { versionIndexQueryKey = value; }
+            get { return _versionIndexQueryKey; }
+            set { _versionIndexQueryKey = value; }
         }
 
         /// <summary>The item query string parameter.</summary>
         public static string ItemQueryKey
         {
-            get { return itemQueryKey; }
-            set { itemQueryKey = value; }
+            get { return _itemQueryKey; }
+            set { _itemQueryKey = value; }
         }
 
         /// <summary>The page query string parameter.</summary>
         public static string PageQueryKey
         {
-            get { return pageQueryKey; }
-            set { pageQueryKey = value; }
+            get { return _pageQueryKey; }
+            set { _pageQueryKey = value; }
         }
 
         /// <summary>The part query string parameter.</summary>
         public static string PartQueryKey
         {
-            get { return partQueryKey; }
-            set { partQueryKey = value; }
+            get { return _partQueryKey; }
+            set { _partQueryKey = value; }
         }
 
         /// <summary>A key used to override the path when rendering sub-actions.</summary>
@@ -87,8 +88,8 @@ namespace N2.Web
         /// <summary>Key used to access path data from context dictionaries.</summary>
         public static string PathKey
         {
-            get { return pathDataKey; }
-            set { pathDataKey = value; }
+            get { return _pathDataKey; }
+            set { _pathDataKey = value; }
         }
 
         /// <summary>The selection query string parameter.</summary>
@@ -103,7 +104,7 @@ namespace N2.Web
         ContentItem currentPage;
         ContentItem currentItem;
         ContentItem stopItem;
-        Persistence.IPersister persister;
+        IPersister persister;
         
         public PathData(ContentItem item, string templateUrl, string action, string arguments)
             : this()
@@ -249,15 +250,15 @@ namespace N2.Web
             return data;
         }
 
-        /// <summary>Creates a copy of the PathData with a content item retrieved from the supplied persister. The reason for this is that PathData can be cached and we don't want to share instances between requests.</summary>
-        /// <param name="persister">The perister providing the item.</param>
+        /// <summary>Creates a copy of the PathData with a content item retrieved from the supplied persisterToAttach. The reason for this is that PathData can be cached and we don't want to share instances between requests.</summary>
+        /// <param name="persisterToAttach">The perister providing the item.</param>
         /// <returns>A copy of the path data.</returns>
-        public virtual PathData Attach(N2.Persistence.IPersister persister)
+        public virtual PathData Attach(IPersister persisterToAttach)
         {
             PathData data = Clone();
 
-            // the persister is used to lazily load persistent CurrentItem/CurrentPage/StopItem
-            data.persister = persister;
+            // the persisterToAttach is used to lazily load persistent CurrentItem/CurrentPage/StopItem
+            data.persister = persisterToAttach;
 
             return data;
         }
@@ -287,18 +288,22 @@ namespace N2.Web
 
         private int Set(ref ContentItem current, ContentItem value)
         {
-            current = value;
+	        current = value;
             OnItemChange(current, value);
             return value != null ? value.ID : 0;
         }
 
         protected virtual void OnItemChange(ContentItem current, ContentItem value)
         {
+			/*
+			 * dead code ... [Obsolete]
+			 * 
             var newPermission = Security.Permission.None;
             if (currentItem != null)
                 newPermission |= currentItem.AlteredPermissions;
             if (currentPage != null)
                 newPermission |= currentPage.AlteredPermissions;
+			*/
 
             IsPubliclyAvailable = IsPubliclyAvailableOrEmpty(currentItem) && IsPubliclyAvailableOrEmpty(currentPage);
         }
@@ -314,8 +319,8 @@ namespace N2.Web
         /// <returns>A clone of the path data object.</returns>
         public virtual PathData Clone()
         {
-            var clone = MemberwiseClone() as PathData;
-            clone.QueryParameters = new Dictionary<string, string>(this.QueryParameters);
+            var clone = (PathData)MemberwiseClone();
+	        clone.QueryParameters = new Dictionary<string, string>(QueryParameters);
             return clone;
         }
 
@@ -336,21 +341,18 @@ namespace N2.Web
 
         public override string ToString()
         {
-            if (PageID != 0 && PageID != ID)
+	        if (PageID != 0 && PageID != ID)
                 return PageID + "/" + ID;
-            else if (ID != 0)
-                return ID.ToString();
-            else
-                return "";
+	        return ID == 0 ? string.Empty : ID.ToString(CultureInfo.InvariantCulture);
         }
 
-        /// <summary>Parses a string representation of this pathdata giving a detached path data object.</summary>
+	    /// <summary>Parses a string representation of this pathdata giving a detached path data object.</summary>
         /// <param name="pathString">A string created via <see cref="ToString"/>.</param>
         /// <returns>A path with the given values or an empty path data.</returns>
         public static PathData Parse(string pathString)
         {
             if (string.IsNullOrEmpty(pathString))
-                return PathData.Empty;
+                return Empty;
 
             var parts = pathString.Split('/');
             if (parts.Length > 1)
@@ -366,12 +368,12 @@ namespace N2.Web
                     return new PathData { ID = id };
             }
 
-            return PathData.Empty;
+            return Empty;
         }
 
         /// <summary>Parses a string representation of this pathdata and reconnects the items to the session.</summary>
         /// <param name="pathString">A string created via <see cref="ToString"/>.</param>
-        /// <param name="persister">A persister that will be used to get the items referenced by the path string.</param>
+        /// <param name="persister">A persisterToAttach that will be used to get the items referenced by the path string.</param>
         /// <returns>A path with the given values or an empty path data.</returns>
         public static PathData Parse(string pathString, IPersister persister)
         {
