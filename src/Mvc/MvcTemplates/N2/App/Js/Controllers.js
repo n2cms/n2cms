@@ -1,4 +1,4 @@
-﻿(function(n2Module){
+﻿(function (n2Module) {
 	n2Module.value('$strapConfig', {
 		datepicker: {
 			language: 'en',
@@ -6,9 +6,15 @@
 		}
 	});
 })(angular.module('n2', ['n2.directives', 'n2.services', 'n2.localization', 'ui', '$strap.directives', "ngRoute"], function ($routeProvider, $locationProvider) {
-	$locationProvider.html5Mode(true);
-	$locationProvider.hashPrefix("!");
-	$routeProvider.otherwise({ templateUrl: "App/Partials/Framework.html", controller: "ManagementCtrl", reloadOnSearch: false });
+    if (history.pushState) {
+        $locationProvider.html5Mode(true);
+        $locationProvider.hashPrefix("!");
+    }
+	$routeProvider.otherwise({
+	    templateUrl: "App/Partials/Framework.html",
+	    controller: "ManagementCtrl",
+	    reloadOnSearch: false
+	});
 }))
 
 function findBranch(node, selectedPath) {
@@ -75,7 +81,7 @@ function Uri(uri) {
 	};
 };
 
-function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Content, Profile, Security, FrameContext, Translate, Eventually, LocationKeeper) {
+function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Context, Content, Profile, Security, FrameContext, Translate, Eventually, LocationKeeper) {
 	$scope.Content = Content;
 	$scope.Security = Security;
 
@@ -154,9 +160,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		}
 	});
 
-	var viewMatch = window.location.search.match(/[?&]view=([^?&]+)/);
-	var selectedMatch = window.location.search.match(/[?&]selected=([^?&]+)/);
-	var organizeMatch = window.location.search.match(/[?&]mode=([^?&#]+)/);
 	$scope.Context = {
 		CurrentItem: {
 			PreviewUrl: "Empty.aspx"
@@ -188,10 +191,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		}
 	}
 
-	$scope.extendSelection = function (settings) {
-		
-	};
-
 	$scope.watchChanges = function(watchExpression, listener, objectEquality) {
 		var firstTime = true;
 		$scope.$watch(watchExpression, function() {
@@ -202,10 +201,8 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		}, objectEquality);
 	};
 
-	Context.full({
-		view: viewMatch && viewMatch[1],
-		selected: selectedMatch && selectedMatch[1]
-	}, function (i) {
+	var query = $location.search();
+	Context.full(query, function (i) {
 		$scope.Context.Partials.Management = "App/Partials/Management.html";
 		Content.paths = i.Interface.Paths;
 		translateMenuRecursive(i.Interface.MainMenu);
@@ -214,7 +211,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		angular.extend($scope.Context, i.Interface);
 		angular.extend($scope.Context, i.Context);
 
-		if (organizeMatch && organizeMatch[1] == "Organize")
+		if (query.mode == "Organize")
 			$scope.Context.Paths.PreviewUrl = $scope.appendQuery($scope.Context.Paths.PreviewUrl, "edit", "drag");
 
 		$scope.watchChanges("Context.User", function (user) {
@@ -371,37 +368,7 @@ function ManagementConfirmCtrl($rootScope, $scope) {
     });
 }
 
-function NavigationCtrl($rootScope, $scope, Content, ContextMenuFactory, Eventually) {
-	$scope.search = {
-		execute: function (searchQuery) {
-			if (!searchQuery)
-				return $scope.search.clear();
-			else if (searchQuery == $scope.search.searching)
-				return;
-
-			$scope.search.searching = searchQuery;
-			Content.search(Content.applySelection({ q: searchQuery, take: 20, pages: true }, $scope.Context.CurrentItem), function (data) {
-				$scope.search.hits = data.Hits;
-				$scope.search.searching = "";
-			});
-		},
-		clear: function () {
-			$scope.search.query = "";
-			$scope.search.searching = "";
-			$scope.search.hits = null;
-			$scope.search.focused = -1;
-		},
-		hits: null,
-		query: "",
-		searching: false,
-		focused: undefined,
-	};
-	$scope.$watch("search.query", function (searchQuery) {
-		Eventually(function () {
-			$scope.search.execute(searchQuery);
-			$scope.$digest();
-		}, 400);
-	});
+function NavigationCtrl($scope, ContextMenuFactory) {
 	$scope.ContextMenu = new ContextMenuFactory($scope);
 }
 
@@ -629,6 +596,48 @@ function VersionsCtrl($scope, Content) {
 			node.Children = data.Versions;
 		});
 	};
+}
+
+function SearchCtrl($scope, $rootScope, Content, Eventually) {
+    $scope.item.Children = [{}];
+
+    $scope.$parent.toggleSearch = function () {
+        $scope.$parent.search.show = !$scope.$parent.search.show;
+        $scope.$parent.search.query = null;
+    }
+
+    $scope.$parent.search = {
+        execute: function (searchQuery) {
+            if (!searchQuery)
+                return $scope.search.clear();
+            else if (searchQuery == $scope.search.searching)
+                return;
+
+            $scope.search.searching = searchQuery;
+            Content.search(Content.applySelection({ q: searchQuery, take: 20, pages: true }, $scope.Context.CurrentItem), function (data) {
+                $scope.search.hits = data.Hits;
+                $scope.item.Expanded = true;
+                $scope.search.searching = "";
+            });
+        },
+        clear: function () {
+            $scope.search.query = "";
+            $scope.search.searching = "";
+            $scope.search.hits = null;
+            delete $scope.item.Expanded;
+            $scope.search.focused = -1;
+        },
+        hits: null,
+        query: "",
+        searching: false,
+        focused: undefined,
+    };
+    $scope.$watch("search.query", function (searchQuery) {
+        Eventually(function () {
+            $scope.search.execute(searchQuery);
+            $scope.$digest();
+        }, 400);
+    });
 }
 
 function PageInfoCtrl($scope, Content) {

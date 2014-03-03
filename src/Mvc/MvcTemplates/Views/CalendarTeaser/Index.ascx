@@ -1,5 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="CalendarTeaser.ascx.cs"
-	Inherits="N2.Web.Mvc.N2ModelViewUserControl<CalendarTeaserModel, CalendarTeaser>" %>
+	Inherits="N2.Web.Mvc.ContentViewUserControl<CalendarTeaserModel, CalendarTeaser>" %>
 <div class="uc">
 	<%= ContentHtml.DisplayContent(m => m.Title)%>
 	<div class="box calendarTeaser ">

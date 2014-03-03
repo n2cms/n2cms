@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
@@ -29,7 +28,7 @@ namespace N2.Web.Mvc.Html
             this.propertyName = propertyName;
         }
 
-        protected System.Web.Mvc.TagBuilder Wrapper { get; set; }
+        protected TagBuilder Wrapper { get; set; }
         public string Value
         {
             get
@@ -50,7 +49,7 @@ namespace N2.Web.Mvc.Html
 
         public Displayable WrapIn(string tagName, object attributes)
         {
-            Wrapper = new System.Web.Mvc.TagBuilder(tagName);
+            Wrapper = new TagBuilder(tagName);
             Wrapper.MergeAttributes(new RouteValueDictionary(attributes));
 
             return this;

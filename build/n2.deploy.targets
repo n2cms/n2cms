@@ -4,7 +4,6 @@
 
   <PropertyGroup>
     <Framework-DeployFolder>$(DeployFolder)\$(DeployPrefix)Framework</Framework-DeployFolder>
-    
     <Config-NugetFolder>$(DeployFolder)\$(DeployPrefix)Config_Nuget</Config-NugetFolder>
     <Framework-NugetFolder>$(DeployFolder)\$(DeployPrefix)Framework_Nuget</Framework-NugetFolder>
     <Management-NugetFolderZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_Zip</Management-NugetFolderZip>

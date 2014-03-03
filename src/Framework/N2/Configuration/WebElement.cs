@@ -18,7 +18,7 @@ namespace N2.Configuration
         }
 
         /// <summary>The query string key used to identify the page.</summary>
-        [ConfigurationProperty("pageQueryKey", DefaultValue = "page")]
+        [ConfigurationProperty("pageQueryKey", DefaultValue = "n2Page")]
         public string PageQueryKey
         {
             get { return (string)base["pageQueryKey"]; }
@@ -26,7 +26,7 @@ namespace N2.Configuration
         }
 
         /// <summary>The query string key used to identify the item.</summary>
-        [ConfigurationProperty("itemQueryKey", DefaultValue = "item")]
+        [ConfigurationProperty("itemQueryKey", DefaultValue = "n2Item")]
         public string ItemQueryKey
         {
             get { return (string)base["itemQueryKey"]; }
@@ -34,7 +34,7 @@ namespace N2.Configuration
         }
 
         /// <summary>The query string key used to identify the part.</summary>
-        [ConfigurationProperty("partQueryKey", DefaultValue = "part")]
+        [ConfigurationProperty("partQueryKey", DefaultValue = "n2Part")]
         public string PartQueryKey
         {
             get { return (string)base["partQueryKey"]; }
@@ -42,7 +42,7 @@ namespace N2.Configuration
         }
 
         /// <summary>Key used to access path data from context dictionaries.</summary>
-        [ConfigurationProperty("pathDataKey", DefaultValue = "path")]
+        [ConfigurationProperty("pathDataKey", DefaultValue = "n2Path")]
         public string PathDataKey
         {
             get { return (string)base["pathDataKey"]; }

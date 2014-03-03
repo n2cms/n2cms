@@ -140,32 +140,12 @@
   <ItemGroup>
     <Content Include="Dinamico\N2\readme.txt" />
     <Content Include="Dinamico\readme.txt" />
-    <Content Include="Dinamico\Themes\Cloudy\Content\Elements.css" />
-    <Content Include="Dinamico\Themes\Cloudy\Content\fade.png" />
-    <Content Include="Dinamico\Themes\Cloudy\Content\home.png" />
-    <Content Include="Dinamico\Themes\Cloudy\Content\Layout.css" />
-    <Content Include="Dinamico\Themes\Cloudy\Content\Mood.css" />
-    <Content Include="Dinamico\Themes\Cloudy\Content\Site.css" />
-    <Content Include="Dinamico\Themes\Cloudy\Thumbnail.JPG" />
-    <Content Include="Dinamico\Themes\Concrete\Content\Layout.css" />
-    <Content Include="Dinamico\Themes\Concrete\Content\Mood.css" />
-    <Content Include="Dinamico\Themes\Concrete\Content\Site.css" />
-    <Content Include="Dinamico\Themes\Concrete\Thumbnail.JPG" />
-    <Content Include="Dinamico\Themes\Dark\Content\Elements.css" />
-    <Content Include="Dinamico\Themes\Dark\Content\Layout.css" />
-    <Content Include="Dinamico\Themes\Dark\Content\Mood.css" />
-    <Content Include="Dinamico\Themes\Dark\Content\Site.css" />
-    <Content Include="Dinamico\Themes\Dark\Thumbnail.JPG" />
-    <Content Include="Dinamico\Themes\Default\Content\Boilerfoot.css" />
-    <Content Include="Dinamico\Themes\Default\Content\Boilerhead.css" />
     <Content Include="Dinamico\Themes\Default\Content\Elements.css" />
     <Content Include="Dinamico\Themes\Default\Content\Features.css" />
     <Content Include="Dinamico\Themes\Default\Content\IE.css" />
     <Content Include="Dinamico\Themes\Default\Content\Layout.css" />
     <Content Include="Dinamico\Themes\Default\Content\Mood.css" />
     <Content Include="Dinamico\Themes\Default\Content\Site.css" />
-    <Content Include="Dinamico\Themes\Default\Scripts\jquery.anythingslider.js" />
-    <Content Include="Dinamico\Themes\Default\Scripts\jquery.highlight-3.js" />
     <Content Include="Dinamico\Themes\Default\Scripts\Site.js" />
     <Content Include="Dinamico\Themes\Default\Thumbnail.JPG" />
     <Content Include="Dinamico\Themes\Default\Views\ContentParts\GDocViewer.cshtml" />
@@ -183,21 +163,6 @@
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Form.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Index.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Submitted.cshtml" />
-    <Content Include="Dinamico\Themes\Responsive\Content\Site.css" />
-    <Content Include="Dinamico\Themes\Responsive\img\glyphicons-halflings-white.png" />
-    <Content Include="Dinamico\Themes\Responsive\img\glyphicons-halflings.png" />
-    <Content Include="Dinamico\Themes\Roadwork\Content\down.png" />
-    <Content Include="Dinamico\Themes\Roadwork\Content\Elements.css" />
-    <Content Include="Dinamico\Themes\Roadwork\Content\home.png" />
-    <Content Include="Dinamico\Themes\Roadwork\Content\Layout.css" />
-    <Content Include="Dinamico\Themes\Roadwork\Content\Mood.css" />
-    <Content Include="Dinamico\Themes\Roadwork\Content\Site.css" />
-    <Content Include="Dinamico\Themes\Roadwork\Content\TopNavigation.css" />
-    <Content Include="Dinamico\Themes\Roadwork\Thumbnail.JPG" />
-    <Content Include="Dinamico\Themes\Terracotta\Content\fade.png" />
-    <Content Include="Dinamico\Themes\Terracotta\Content\Mood.css" />
-    <Content Include="Dinamico\Themes\Terracotta\Content\Site.css" />
-    <Content Include="Dinamico\Themes\Terracotta\Thumbnail.JPG" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Web.config">
@@ -220,17 +185,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Dinamico\Themes\Cloudy\Views\Shared\LayoutPartials\Header.cshtml" />
-    <Content Include="Dinamico\Themes\Cloudy\Views\Shared\LayoutPartials\PreContent.cshtml" />
-    <Content Include="Dinamico\Themes\Cloudy\Views\Shared\LayoutPartials\SubNavigation.cshtml" />
-    <Content Include="Dinamico\Themes\Cloudy\Views\Shared\LayoutPartials\TopNavigation.cshtml" />
-    <Content Include="Dinamico\Themes\Cloudy\Views\Web.config" />
-    <Content Include="Dinamico\Themes\Concrete\Views\Shared\LayoutPartials\Header.cshtml" />
-    <Content Include="Dinamico\Themes\Concrete\Views\Shared\LayoutPartials\PreContent.cshtml" />
-    <Content Include="Dinamico\Themes\Concrete\Views\Web.config" />
-    <Content Include="Dinamico\Themes\Dark\Views\Shared\LayoutPartials\Header.cshtml" />
-    <Content Include="Dinamico\Themes\Dark\Views\Shared\LayoutPartials\PreContent.cshtml" />
-    <Content Include="Dinamico\Themes\Dark\Views\Web.config" />
     <Content Include="Dinamico\Themes\Default\Views\ContentPages\Container.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\ContentPages\Index.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\ContentPages\News.cshtml" />
@@ -290,12 +244,6 @@
     <Content Include="Dinamico\Themes\Default\Views\Test\Index.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Web.config" />
     <Content Include="Dinamico\Themes\_ViewStart.cshtml" />
-    <Content Include="Dinamico\Themes\Roadwork\Views\Shared\LayoutPartials\Footer.cshtml" />
-    <Content Include="Dinamico\Themes\Roadwork\Views\Shared\LayoutPartials\Logotype.cshtml" />
-    <Content Include="Dinamico\Themes\Roadwork\Views\Shared\LayoutPartials\SubNavigation.cshtml" />
-    <Content Include="Dinamico\Themes\Roadwork\Views\Shared\LayoutPartials\TopNavigation.cshtml" />
-    <Content Include="Dinamico\Themes\Roadwork\Views\Web.config" />
-    <Content Include="Dinamico\Themes\Terracotta\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Extensions\N2.Extensions.csproj">
@@ -333,11 +281,6 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Dinamico\Themes\Default\Views\Slideshow\Index.cshtml" />
-    <Content Include="Dinamico\Themes\Responsive\Views\ContentParts\ThreeColumns.cshtml" />
-    <Content Include="Dinamico\Themes\Responsive\Views\Shared\LayoutPartials\Navbar.cshtml" />
-    <Content Include="Dinamico\Themes\Responsive\Views\Shared\_Layout.cshtml" />
-    <Content Include="Dinamico\Themes\Responsive\Views\Web.config" />
-    <Content Include="Dinamico\Themes\Responsive\Views\_ViewStart.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Slideshow\BootstrapGrid.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Slideshow\Galleria.cshtml" />
   </ItemGroup>

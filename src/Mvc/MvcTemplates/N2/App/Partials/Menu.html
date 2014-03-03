@@ -29,12 +29,13 @@
 	</ul>
 
 	<ul class="menu nav pull-right">
-		<li class="item primary-action"
-			ng-repeat="item in secondaryNavigation"
-			ng-class="{ dropdown : item.Children.length, selected: isFlagged(item.Current.SelectedBy) }"
-			ng-controller="PageActionCtrl"
-			ng-include src="item.Current.TemplateUrl || 'App/Partials/MenuNode.html'"
-			ng-show="isDisplayable(item)">
-		</li>
+        <li class="item primary-action"
+            title="children:{{item.Children.length}}"
+            ng-repeat="item in secondaryNavigation"
+            ng-class="{ dropdown : item.Children.length, selected: isFlagged(item.Current.SelectedBy), open: item.Expanded }"
+            ng-controller="PageActionCtrl"
+            ng-include src="item.Current.TemplateUrl || 'App/Partials/MenuNode.html'"
+            ng-show="isDisplayable(item)">
+        </li>
 	</ul>
 </div+u6u

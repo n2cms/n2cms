@@ -127,6 +127,7 @@ namespace N2.Management.Api
 
         public string Tree { get; set; }
 
+        [Obsolete("Implemented through menu")]
         public string Search { get; set; }
 
         public string Footer { get; set; }
@@ -215,7 +216,6 @@ namespace N2.Management.Api
                 Main = "App/Partials/Main.html",
                 Tree = "App/Partials/ContentTree.html",
                 Preview = "App/Partials/ContentPreview.html",
-                Search = "App/Partials/ContentSearch.html",
                 Footer = "App/Partials/Footer.html",
                 ContextMenu = "App/Partials/ContentContextMenu.html"
             };
@@ -359,6 +359,7 @@ namespace N2.Management.Api
                 },
                 new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "frameaction", TemplateUrl = "App/Partials/FrameAction.html", RequiredPermission = Permission.Write }),
                 new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "close", Title = "Close", Url = "{{Context.ReturnUrl || Context.CurrentItem.PreviewUrl || Context.Paths.PreviewUrl}}", Target = Targets.Preview, DisplayedBy = "Management", HiddenBy = "Unclosable" }),
+                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "search", Alignment = "Right", TemplateUrl = "App/Partials/ContentSearch.html" }),
                 new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "me", Url = engine.Content.Traverse.RootPage.Url, ToolTip = context.User.Identity.Name, Alignment = "Right", IconClass = "n2-icon-user" })
                 {
                     Children = new Node<InterfaceMenuItem>[]

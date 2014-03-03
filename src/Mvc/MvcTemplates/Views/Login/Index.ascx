@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ModelViewUserControl<LoginModel, LoginItem>" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.ContentViewUserControl<LoginModel, LoginItem>" %>
 <div class="uc login">
 	<h4><%=Model.CurrentItem.Title%></h4>
 	<div class="box">

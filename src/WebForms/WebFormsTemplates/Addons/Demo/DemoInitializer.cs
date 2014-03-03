@@ -6,9 +6,9 @@ using N2;
 using N2.Details;
 using N2.Plugin;
 using N2.Persistence.Serialization;
-using N2.Templates.Items;
 using N2.Edit.Versioning;
 using System.Linq;
+using N2.Templates.Items;
 
 namespace Demo
 {

@@ -270,14 +270,12 @@
     <Compile Include="Models\Pages\PageBase.cs" />
     <Compile Include="Models\Pages\SearchBase.cs" />
     <Compile Include="Models\Parts\BoxedTextItem.cs" />
-    <Compile Include="Models\Parts\BubbleItem.cs" />
     <Compile Include="Models\Pages\Calendar.cs" />
     <Compile Include="Models\Parts\CalendarTeaser.cs" />
     <Compile Include="Models\Parts\Columns.cs" />
     <Compile Include="Models\Parts\Comment.cs" />
     <Compile Include="Models\Parts\CommentInput.cs" />
     <Compile Include="Models\Parts\CommentList.cs" />
-    <Compile Include="Models\Parts\ControlPanel.cs" />
     <Compile Include="Models\Pages\DatabaseSearch.cs" />
     <Compile Include="Models\Pages\Event.cs" />
     <Compile Include="Models\Parts\Faq.cs" />

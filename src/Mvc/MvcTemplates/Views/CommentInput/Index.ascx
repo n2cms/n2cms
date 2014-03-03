@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ModelViewUserControl<CommentInputModel, CommentInput>" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.ContentViewUserControl<CommentInputModel, CommentInput>" %>
 <%@ Import Namespace="N2.Web"%>
 <a href="javascript:showComment();" id="addComment">
 	<img src="<%= ResolveUrl("~/Content/Img/bullet_toggle_plus.png") %>" alt="" />
