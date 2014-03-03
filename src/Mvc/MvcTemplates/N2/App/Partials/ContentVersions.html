@@ -1,8 +1,9 @@
-﻿<a href='{{evaluateExpression(item.Current.Url)}}' 
-	target='preview' 
-	title='View page versions' 
-	class='page-action page-action-description page-versions'
-	translate="versions.action">
+﻿<a href='{{evaluateExpression(item.Current.Url)}}'
+   target='preview'
+   title='View page versions'
+   class='page-action page-action-description page-versions'
+   translate="versions.action"
+   x-page-action-icon-class>
 	<b class="ico n2-icon-briefcase"></b>
 	Versions<br />
 	<span class="draft" ng-show="Context.CurrentItem.State == Content.states.Draft" translate="versions.draft"><b class="n2-icon-circle-blank"></b> Draft</span>

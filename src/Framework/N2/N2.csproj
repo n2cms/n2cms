@@ -91,8 +91,9 @@
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
       <HintPath>..\..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -915,7 +916,6 @@
     <Compile Include="Integrity\CannotDeleteRootException.cs" />
     <Compile Include="Integrity\DestinationOnOrBelowItselfException.cs" />
     <Compile Include="Persistence\Comparison.cs" />
-    <Compile Include="Persistence\DoNotCopyAttribute.cs" />
     <Compile Include="Persistence\NH\IConfigurationBuilder.cs" />
     <Compile Include="Persistence\NH\ISessionProvider.cs" />
     <Compile Include="Plugin\IPluginInitializer.cs" />
@@ -1013,7 +1013,6 @@
     <Compile Include="Configuration\SettingsEditorCollection.cs" />
     <Compile Include="Configuration\SiteElement.cs" />
     <Compile Include="Configuration\SiteElementCollection.cs" />
-    <Compile Include="Configuration\TinyMCEElement.cs" />
     <Compile Include="Configuration\UrlElement.cs" />
     <Compile Include="Configuration\WebElement.cs" />
     <Compile Include="Definitions\AbstractDefinitionRefiner.cs" />
@@ -1076,7 +1075,6 @@
     <Compile Include="Edit\Workflow\Commands\DeleteCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\EnsureNotPublishedCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\EnsurePublishedCommand.cs" />
-    <Compile Include="Edit\Workflow\Commands\IncrementVersionIndexCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\MakeVersionCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\MoveToPositionCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\OnMasterCommand.cs" />
@@ -1317,7 +1315,6 @@
     <Compile Include="Web\IPathFinder.cs" />
     <Compile Include="Web\Mail\IMailSender.cs" />
     <Compile Include="Web\Mail\SmtpMailSender.cs" />
-    <Compile Include="Web\Mail\StaticMailSender.cs" />
     <Compile Include="Web\Parts\CreateUrlProvider.cs" />
     <Compile Include="Web\Parts\EditUrlProvider.cs" />
     <Compile Include="Web\Parts\ItemCopyer.cs" />
@@ -1434,7 +1431,6 @@
     <Compile Include="Web\UI\WebControls\TabPanel.cs" />
     <Compile Include="Web\UI\WebControls\Tree.cs" />
     <Compile Include="Web\UI\WebControls\TreeNode.cs" />
-    <Compile Include="Web\UI\WebControls\Ul.cs" />
     <Compile Include="Web\UI\WebControls\UrlRelativityMode.cs" />
     <Compile Include="Web\Url.cs" />
     <Compile Include="Web\WebRequestContext.cs" />

@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ModelViewUserControl<FormModel, Form>" %>
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.ContentViewUserControl<FormModel, Form>" %>
 
 <div class="uc">
 	<%if(Model.FormSubmitted){%>

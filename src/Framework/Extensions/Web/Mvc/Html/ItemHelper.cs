@@ -21,34 +21,13 @@ namespace N2.Web.Mvc.Html
         protected ContentItem CurrentItem
         {
             get { return currentItem ?? (currentItem = Html.CurrentItem()); }
-            set { this.currentItem = value; }
+            set { currentItem = value; }
         }
 
         /// <summary>The content adapter related to the current page item.</summary>
         protected virtual PartsAdapter PartsAdapter
         {
-            get
-            {
-                if (partsAdapter == null)
-                    partsAdapter = Adapters.ResolveAdapter<PartsAdapter>(CurrentItem);
-                return partsAdapter;
-            }
-        }
-
-        /// <summary>The content adapter related to the current page item.</summary>
-        [Obsolete("Use PartsAdapter")]
-        protected virtual MvcAdapter MvcAdapter
-        {
-            get
-            {
-                return Adapters.ResolveAdapter<MvcAdapter>(CurrentItem);
-            }
-        }
-
-        [Obsolete]
-        protected virtual MvcAdapter GetMvcAdapterFor(Type contentType)
-        {
-            return Adapters.ResolveAdapter<MvcAdapter>(contentType);
+            get { return partsAdapter ?? (partsAdapter = Adapters.ResolveAdapter<PartsAdapter>(CurrentItem)); }
         }
 
         protected IContentAdapterProvider Adapters

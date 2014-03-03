@@ -24,17 +24,28 @@ namespace N2.Management.Files
             Fs = Engine.Resolve<IFileSystem>();
         }
 
-        protected void btnUpdate_Command(object sender, CommandEventArgs e)
-        {
-            var preExistingFiles = Fs.GetFilesRecursive(Selection.SelectedItem.Url)
-                .Where(f => Resizer.IsResizableImagePath(f.VirtualPath))
-                .Where(f => !f.Name.Contains('_'))
-                .ToList();
+		protected void btnUpdate_Command(object sender, CommandEventArgs e)
+		{
+			var preExistingFiles = Fs.GetFilesRecursive(Selection.SelectedItem.Url)
+				.Where(f => Resizer.IsResizableImagePath(f.VirtualPath))
+				.Where(f => !f.Name.Contains('_'))
+				.ToList();
 
-            BuildImageSizes(preExistingFiles, Request["add"]);
-            BuildImageSizes(preExistingFiles, Request["modify"]);
-            RemoveImageSizes(preExistingFiles, Request["remove"]);
-        }
+			var resizer = Engine.Resolve<UploadedFilesResizer>();
+			var previouslyEnabled = resizer.Enabled;
+			try
+			{
+				resizer.Enabled = false;
+
+				BuildImageSizes(preExistingFiles, Request["add"]);
+				BuildImageSizes(preExistingFiles, Request["modify"]);
+				RemoveImageSizes(preExistingFiles, Request["remove"]);
+			}
+			finally
+			{
+				resizer.Enabled = previouslyEnabled;
+			}
+		}
 
         private void RemoveImageSizes(List<FileData> preExistingFiles, string commaSeparatedListOfSizes)
         {
@@ -60,11 +71,13 @@ namespace N2.Management.Files
             if (string.IsNullOrEmpty(commaSeparatedListOfSizes))
                 return;
 
-            foreach (var s in commaSeparatedListOfSizes.Split(','))
-            {
-                ImageSizeElement size;
-                if (!ConfiguredSizes.TryGetValue(s, out size))
-                    continue;
+			foreach (var s in commaSeparatedListOfSizes.Split(','))
+			{
+				ImageSizeElement size;
+				if (!ConfiguredSizes.TryGetValue(s, out size))
+					continue;
+				if (size.Height == 0 && size.Width == 0)
+					continue;
 
                 foreach (var file in preExistingFiles)
                 {

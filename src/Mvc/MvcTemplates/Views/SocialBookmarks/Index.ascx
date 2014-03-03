@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ModelViewUserControl<SocialBookmarksModel, SocialBookmarks>" %>
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.ContentViewUserControl<SocialBookmarksModel, SocialBookmarks>" %>
 
 <%= ContentHtml.DisplayContent(m => m.Title)%>
 

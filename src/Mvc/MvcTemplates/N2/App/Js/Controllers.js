@@ -1,4 +1,4 @@
-﻿(function(n2Module){
+﻿(function (n2Module) {
 	n2Module.value('$strapConfig', {
 		datepicker: {
 			language: 'en',
@@ -6,16 +6,45 @@
 		}
 	});
 })(angular.module('n2', ['n2.directives', 'n2.services', 'n2.localization', 'ui', '$strap.directives', "ngRoute"], function ($routeProvider, $locationProvider) {
-	$locationProvider.html5Mode(true);
-	$locationProvider.hashPrefix("!");
-	$routeProvider.otherwise({ templateUrl: "App/Partials/Framework.html", controller: "ManagementCtrl", reloadOnSearch: false });
+    if (history.pushState) {
+        $locationProvider.html5Mode(true);
+        $locationProvider.hashPrefix("!");
+    }
+	$routeProvider.otherwise({
+	    templateUrl: "App/Partials/Framework.html",
+	    controller: "ManagementCtrl",
+	    reloadOnSearch: false
+	});
 }))
+
+function findBranch(node, selectedPath) {
+	if (!node)
+		return null;
+	if (node.Current.Path == selectedPath) {
+		return [node];
+	}
+	if (selectedPath.indexOf(node.Current.Path) < 0) {
+		return null;
+	}
+	
+	for (var i in node.Children) {
+		var n = findBranch(node.Children[i], selectedPath);
+		if (n) {
+			n.push(node);
+			return n;
+		}
+	}
+	return null;
+}
 
 function findNodeRecursive(node, selectedPath) {
 	if (!node)
 		return null;
 	if (node.Current.Path == selectedPath) {
 		return node;
+	}
+	if (selectedPath.indexOf(node.Current.Path) < 0) {
+		return null;
 	}
 
 	for (var i in node.Children) {
@@ -52,7 +81,7 @@ function Uri(uri) {
 	};
 };
 
-function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Content, Profile, Security, FrameContext, Translate, Eventually, LocationKeeper) {
+function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Context, Content, Profile, Security, FrameContext, Translate, Eventually, LocationKeeper) {
 	$scope.Content = Content;
 	$scope.Security = Security;
 
@@ -108,6 +137,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	decorate(FrameContext, "refresh", function (ctx) {
 		// legacy refresh call from frame
 		if (ctx.force) {
+			$scope.reloadNode(ctx.path);
 			$scope.reloadChildren(ctx.path);
 			if (ctx.previewUrl) {
 				$scope.previewUrl(ctx.previewUrl);
@@ -121,20 +151,15 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 
 		if (!findNodeRecursive($scope.Context.Content, ctx.path)) {
 			$scope.reloadChildren(getParentPath(ctx.path), function () {
-				$scope.select(ctx.path, ctx.versionIndex, /*keepFlags*/false, /*forceContextRefresh*/false, /*preventReload*/false, /*disregardNodeUrl*/true);
+				if (ctx.force) {
+					$scope.expandTo(ctx.path, /*select*/true);
+				}
 			});
+		} else if (ctx.force) {
+			$scope.expandTo(ctx.path, /*select*/true);
 		}
-
-		//if (!$scope.select(ctx.path, ctx.versionIndex, /*keepFlags*/false, /*forceContextRefresh*/false, /*preventReload*/false, /*disregardNodeUrl*/true)) {
-		//	$scope.reloadChildren(getParentPath(ctx.path), function () {
-		//		$scope.select(ctx.path, ctx.versionIndex, /*keepFlags*/!ctx.force, /*forceContextRefresh*/false, /*preventReload*/false, /*disregardNodeUrl*/true);
-		//	});
-		//}
 	});
 
-	var viewMatch = window.location.search.match(/[?&]view=([^?&]+)/);
-	var selectedMatch = window.location.search.match(/[?&]selected=([^?&]+)/);
-	var organizeMatch = window.location.search.match(/[?&]mode=([^?&#]+)/);
 	$scope.Context = {
 		CurrentItem: {
 			PreviewUrl: "Empty.aspx"
@@ -166,10 +191,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		}
 	}
 
-	$scope.extendSelection = function (settings) {
-		
-	};
-
 	$scope.watchChanges = function(watchExpression, listener, objectEquality) {
 		var firstTime = true;
 		$scope.$watch(watchExpression, function() {
@@ -180,10 +201,8 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		}, objectEquality);
 	};
 
-	Context.full({
-		view: viewMatch && viewMatch[1],
-		selected: selectedMatch && selectedMatch[1]
-	}, function (i) {
+	var query = $location.search();
+	Context.full(query, function (i) {
 		$scope.Context.Partials.Management = "App/Partials/Management.html";
 		Content.paths = i.Interface.Paths;
 		translateMenuRecursive(i.Interface.MainMenu);
@@ -192,14 +211,14 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		angular.extend($scope.Context, i.Interface);
 		angular.extend($scope.Context, i.Context);
 
-		if (organizeMatch && organizeMatch[1] == "Organize")
+		if (query.mode == "Organize")
 			$scope.Context.Paths.PreviewUrl = $scope.appendQuery($scope.Context.Paths.PreviewUrl, "edit", "drag");
 
 		$scope.watchChanges("Context.User", function (user) {
 			Eventually(function () {
 				Profile.save({}, user, function(data){
 				});
-			}, 20000);
+			}, 10000);
 		}, true);
 	});
 
@@ -215,7 +234,20 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		});
 	};
 
-	$scope.select = function(nodeOrPath, versionIndex, keepFlags, forceContextRefresh, preventReload, disregardNodeUrl) {
+	$scope.expandTo = function (nodeOrPath, select) {
+		var path = typeof nodeOrPath == "string" ? nodeOrPath : nodeOrPath && nodeOrPath.Current && nodeOrPath.Current.Path;
+		if (!path)
+			return;
+		var branch = findBranch($scope.Context.Content, path);
+		for (var i in branch) {
+			if (i == 0)
+				$scope.Context.SelectedNode = branch[0];
+			else
+				branch[i].Expanded = true;
+		}
+	}
+
+	$scope.select = function (nodeOrPath, versionIndex, keepFlags, forceContextRefresh, preventReload, disregardNodeUrl) {
 		if (typeof nodeOrPath == "string") {
 			var path = nodeOrPath;
 			var node = findNodeRecursive($scope.Context.Content, path);
@@ -318,37 +350,25 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	};
 }
 
-function NavigationCtrl($rootScope, $scope, Content, ContextMenuFactory, Eventually) {
-	$scope.search = {
-		execute: function (searchQuery) {
-			if (!searchQuery)
-				return $scope.search.clear();
-			else if (searchQuery == $scope.search.searching)
-				return;
+function ManagementConfirmCtrl($rootScope, $scope) {
+    $scope.confirm = function () {
+        $scope.settings.confirmed && $scope.settings.confirmed();
+        delete $scope.settings;
+    }
+    $scope.close = function () {
+        $scope.settings.cancelled && $scope.settings.cancelled();
+        delete $scope.settings;
+    }
+    $rootScope.$on("confirm", function (e, settings) {
+        $scope.settings = settings;
+        if (!$scope.$$phase) {
+            // specific sceanrio: move
+            $scope.$digest();
+        }
+    });
+}
 
-			$scope.search.searching = searchQuery;
-			Content.search(Content.applySelection({ q: searchQuery, take: 20, pages: true }, $scope.Context.CurrentItem), function (data) {
-				$scope.search.hits = data.Hits;
-				$scope.search.searching = "";
-			});
-		},
-		clear: function () {
-			$scope.search.query = "";
-			$scope.search.searching = "";
-			$scope.search.hits = null;
-			$scope.search.focused = -1;
-		},
-		hits: null,
-		query: "",
-		searching: false,
-		focused: undefined,
-	};
-	$scope.$watch("search.query", function (searchQuery) {
-		Eventually(function () {
-			$scope.search.execute(searchQuery);
-			$scope.$digest();
-		}, 400);
-	});
+function NavigationCtrl($scope, ContextMenuFactory) {
 	$scope.ContextMenu = new ContextMenuFactory($scope);
 }
 
@@ -410,8 +430,6 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 			node.IsPaged = false;
 		});
 	}
-	$scope.$on("moved", function (e, content) {
-	});
 	$scope.sort = new SortHelperFactory($scope, Content);
 	$scope.parts = {
 		show: function(node) {
@@ -580,12 +598,56 @@ function VersionsCtrl($scope, Content) {
 	};
 }
 
+function SearchCtrl($scope, $rootScope, Content, Eventually) {
+    $scope.item.Children = [{}];
+
+    $scope.$parent.toggleSearch = function () {
+        $scope.$parent.search.show = !$scope.$parent.search.show;
+        $scope.$parent.search.query = null;
+    }
+
+    $scope.$parent.search = {
+        execute: function (searchQuery) {
+            if (!searchQuery)
+                return $scope.search.clear();
+            else if (searchQuery == $scope.search.searching)
+                return;
+
+            $scope.search.searching = searchQuery;
+            Content.search(Content.applySelection({ q: searchQuery, take: 20, pages: true }, $scope.Context.CurrentItem), function (data) {
+                $scope.search.hits = data.Hits;
+                $scope.item.Expanded = true;
+                $scope.search.searching = "";
+            });
+        },
+        clear: function () {
+            $scope.search.query = "";
+            $scope.search.searching = "";
+            $scope.search.hits = null;
+            delete $scope.item.Expanded;
+            $scope.search.focused = -1;
+        },
+        hits: null,
+        query: "",
+        searching: false,
+        focused: undefined,
+    };
+    $scope.$watch("search.query", function (searchQuery) {
+        Eventually(function () {
+            $scope.search.execute(searchQuery);
+            $scope.$digest();
+        }, 400);
+    });
+}
+
 function PageInfoCtrl($scope, Content) {
 	$scope.exctractLanguage = function(language) {
 		return language && language.replace(/[(].*?[)]/, "");
 	};
+	$scope.$parent.showInfo = $scope.Context.User.Settings.ShowInfo;
 	$scope.toggleInfo = function() {
 		$scope.$parent.showInfo = !$scope.$parent.showInfo;
+		$scope.Context.User.Settings.ShowInfo = $scope.$parent.showInfo;
 	};
 	$scope.definitions = {};
 	Content.definitions({}, function (data) {
@@ -595,7 +657,7 @@ function PageInfoCtrl($scope, Content) {
 	});
 }
 
-function PagePublishCtrl($scope, $rootScope, $modal, Content) {
+function PagePublishCtrl($scope, $rootScope, $modal, Content, Confirm, Translate) {
 	$scope.publish = function () {
 		Content.publish({ selected: $scope.Context.CurrentItem.Path, versionIndex: $scope.Context.CurrentItem.VersionIndex }, function (result) {
 			$scope.previewUrl(result.Current.PreviewUrl);
@@ -604,11 +666,23 @@ function PagePublishCtrl($scope, $rootScope, $modal, Content) {
 		});
 	};
 	$scope.unpublish = function () {
-		Content.unpublish(Content.applySelection({}, $scope.Context.CurrentItem), function (result) {
-			$scope.previewUrl(result.Current.PreviewUrl);
-			
-			$scope.reloadNode(result.Current.Path, $scope.refreshContext);
-		});
+	    var settings = {
+	        title: Translate("confirm.unpublish.title"),
+	        item: $scope.Context.CurrentItem,
+	        template: "<b class='ico' ng-show='settings.item.IconClass || settings.item.IconUrl' ng-class='settings.item.IconClass' x-background-image='settings.item.IconUrl'></b> {{settings.item.Title}}",
+	        confirmed: function () {
+	            Content.unpublish(Content.applySelection({}, $scope.Context.CurrentItem), function (result) {
+	                $scope.previewUrl(result.Current.PreviewUrl);
+
+	                $scope.reloadNode(result.Current.Path, $scope.refreshContext);
+	            })
+	        }
+	    };
+	    if ($scope.Context.CurrentItem.MetaInformation.authority) {
+	        settings.template = "<div class='alert alert-warnig'>{{settings.warning}}</div>" + settings.template;
+	        settings.warning = Translate("confirm.unpublish.startpagewarning");
+	    }
+	    Confirm(settings);
 	};
 }
 

@@ -11,8 +11,8 @@ namespace N2.Web
 {
     public class CssCompilerHandler : IHttpHandler
     {
-        static Regex urlExpression = new Regex("url[(]\"?(?<url>[^(\")]+)\"?[)]");
-        static Regex importUrlExpression = new Regex("@import (url)?[(]?\"?(?<url>[^(\")]+)\"?[)]?");
+		static Regex urlExpression = new Regex("url[(][\"']?(?<url>[^(\"')]+)[\"']?[)]");
+        static Regex importUrlExpression = new Regex("@import (url)?[(]?[\"']?(?<url>[^(\"')]+)[\"']?[)]?");
 
         #region IHttpHandler Members
 
