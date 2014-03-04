@@ -15,13 +15,9 @@
 		<language>en-US</language>
 		<tags>N2 CMS</tags>
 		<dependencies>
-			<group targetFramework="net45">
-				<dependency id="Newtonsoft.Json" version="6.0" />
-			</group>
 			<group>
 				<dependency id="N2CMS.Library" version="{Version}" />
-				<dependency id="N2CMS.Config" version="2.5" />
-				<dependency id="Microsoft.AspNet.WebApi" version="5.1.1" />
+				<dependency id="N2CMS.Config" version="2.6" />
 			</group>
 		</dependencies>
 	</metadata>

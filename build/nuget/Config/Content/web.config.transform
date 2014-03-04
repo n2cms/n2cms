@@ -41,26 +41,26 @@
 		These membership and role providers store their data as content items. You can also use the forms authentication 
 		credentials only (then remove these sections) or the default ASP.NET providers (search for asp.net membership) 
 		-->
-		<membership defaultProvider="ContentMembershipProvider">
-			<providers>
-				<add name="ContentMembershipProvider" type="N2.Security.ContentMembershipProvider, N2.Management" passwordFormat="Hashed" />
-			</providers>
-		</membership>
-		<roleManager defaultProvider="ContentRoleProvider">
-			<providers>
-				<add name="ContentRoleProvider" type="N2.Security.ContentRoleProvider, N2.Management" />
-			</providers>
-		</roleManager>
-		<profile defaultProvider="ContentProfileProvider">
-			<providers>
-				<add name="ContentProfileProvider" type="N2.Security.ContentProfileProvider, N2.Management" />
-			</providers>
-		</profile>
-		<siteMap defaultProvider="PublicSiteMap">
-			<providers>
-				<add name="PublicSiteMap" type="N2.Web.PublicSiteMapProvider, N2" startPageIsRoot="true" />
-			</providers>
-		</siteMap>
+    <membership>
+      <providers>
+        <add name="ContentMembershipProvider" type="N2.Security.ContentMembershipProvider, N2.Management" passwordFormat="Hashed" />
+      </providers>
+    </membership>
+    <roleManager>
+      <providers>
+        <add name="ContentRoleProvider" type="N2.Security.ContentRoleProvider, N2.Management" />
+      </providers>
+    </roleManager>
+    <profile>
+      <providers>
+        <add name="ContentProfileProvider" type="N2.Security.ContentProfileProvider, N2.Management" />
+      </providers>
+    </profile>
+    <siteMap>
+      <providers>
+        <add name="PublicSiteMap" type="N2.Web.PublicSiteMapProvider, N2" startPageIsRoot="true" />
+      </providers>
+    </siteMap>
 	
 		<pages>
 			<controls>
