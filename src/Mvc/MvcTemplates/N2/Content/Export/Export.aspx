@@ -22,7 +22,7 @@
 		<div>
 		    <asp:CheckBox ID="chkAttachments" runat="server" Text="Don't export attachments"  meta:resourceKey="chkAttachments" />
 		</div>
-		<n2:h4 runat="server" Text="Exported items" meta:resourceKey="exportedItems" />
+		<n2:hn runat="server" Text="Exported items" meta:resourceKey="exportedItems" />
 		<uc1:AffectedItems id="exportedItems" runat="server" />		
     </n2:tabpanel>
 	</edit:PersistentOnlyPanel>	
