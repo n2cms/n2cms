@@ -75,8 +75,8 @@
 													 $(EditFolder)\Resources\bootstrap-components\angular-strap.js;
 													 $(EditFolder)\Resources\font-awesome\css\font-awesome-ie7.css;
 													 $(EditFolder)\Resources\font-awesome\css\font-awesome.css;
-													 $(EditFolder)\Resources\jquery-ui*\css\smoothness\jquery-ui-1.10.2.custom.css;
-													 $(EditFolder)\Resources\jquery-ui*\js\jquery-ui-1.10.2.custom.js;
+													 $(EditFolder)\Resources\jquery-ui*\css\smoothness\jquery-ui-1.10.4.custom.css;
+													 $(EditFolder)\Resources\jquery-ui*\js\jquery-ui-1.10.4.custom.js;
 													 @(Framework-LocalizedResources)" />
 		</ItemGroup>
 	</Target>

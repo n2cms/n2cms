@@ -67,8 +67,7 @@ namespace N2.Details
 
         protected virtual void Configure(MultiSelect ddl)
         {
-            ddl.EnableFilter = SearchTreshold >= 0 && ddl.Items.Count >= SearchTreshold;
-            ddl.SelectedList = byte.MaxValue;
+            ddl.SearchTreshold = SearchTreshold;
         }
 
         public override void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
