@@ -493,7 +493,6 @@
 									<xs:enumeration value="SqlCe"/>
 									<xs:enumeration value="MySql"/>
 									<xs:enumeration value="SqLite"/>
-									<xs:enumeration value="Firebird"/>
 									<xs:enumeration value="Generic"/>
 									<xs:enumeration value="Jet"/>
 									<xs:enumeration value="DB2"/>
