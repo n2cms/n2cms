@@ -15,7 +15,7 @@
 		<language>en-US</language>
 		<tags>N2 CMS, CMS, Bundle, Dinamico, MVC, Razor</tags>
 		<dependencies>
-			<dependency id="N2CMS.Config" version="2.6" />
+			<dependency id="N2CMS.Config" version="2.6.2" />
 			<dependency id="N2CMS.Config.SQLite" version="{Version}" />
 			<dependency id="N2CMS.Library" version="{Version}" />
 			<dependency id="N2CMS.Management" version="{Version}" />
