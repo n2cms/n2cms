@@ -289,13 +289,35 @@ namespace N2.Persistence.NH
             cfg.AddDeserializedMapping(compiledMapping, "N2");
         }
 
+        /// <summary>
+        /// When using NH4 and stringtype on the discriminator an exception is thrown (probably due to internal constructor)
+        /// </summary>
+        [Serializable]
+        public class WorkaroundNH4StringType : NHibernate.Type.AbstractStringType
+        {
+            public WorkaroundNH4StringType()
+                : base(new NHibernate.SqlTypes.StringSqlType())
+            {
+            }
+
+            public WorkaroundNH4StringType(NHibernate.SqlTypes.StringSqlType sqlType)
+                : base(sqlType)
+            {
+            }
+
+            public override string Name
+            {
+                get { return "String"; }
+            }
+        }
+
         void ContentItemCustomization(IClassMapper<ContentItem> ca)
         {
             ca.Table(tablePrefix + "Item");
             ca.Lazy(false);
             ca.Cache(cm => { cm.Usage(CacheUsage.NonstrictReadWrite); cm.Region(cacheRegion); });
             ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
-            ca.Discriminator(cm => { cm.Column("Type"); cm.Type(NHibernateUtil.String); });
+            ca.Discriminator(cm => { cm.Column("Type"); cm.Type<WorkaroundNH4StringType>(); });
             ca.Property(x => x.Created, cm => { });
             ca.Property(x => x.Published, cm => { });
             ca.Property(x => x.Updated, cm => { });
