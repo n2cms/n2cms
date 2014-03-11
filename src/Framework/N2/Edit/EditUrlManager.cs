@@ -14,6 +14,7 @@ namespace N2.Edit
         private string editTreeUrl;
         private ViewPreference defaultViewPreference;
         private IUrlParser parser;
+        private bool ensureLocalhostPreviewUrls;
 
         public EditUrlManager(IUrlParser parser, EditSection config)
         {
@@ -28,6 +29,7 @@ namespace N2.Edit
             NewItemUrl = config.Paths.NewItemUrl;
             DeleteItemUrl = config.Paths.DeleteItemUrl;
             defaultViewPreference = config.Versions.DefaultViewMode;
+            ensureLocalhostPreviewUrls = config.Paths.EnsureLocalhostPreviewUrls;
         }
 
         protected virtual string EditInterfaceUrl { get; set; }
@@ -65,7 +67,7 @@ namespace N2.Edit
             try
             {
                 // If hostname == localhost, then don't use custom hostnames in the management navigation tree
-                if (HttpContext.Current != null && HttpContext.Current.Request.Url.Host == "localhost")
+                if (ensureLocalhostPreviewUrls && HttpContext.Current != null && HttpContext.Current.Request.Url.Host == "localhost")
                     return selectedItem.FindPath(PathData.DefaultAction).GetRewrittenUrl();
 
                 Url url = ResolveResourceUrl(parser.BuildUrl(selectedItem));

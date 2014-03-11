@@ -57,5 +57,12 @@ namespace N2.Configuration
             set { base["deleteItemUrl"] = value; }
         }
 
+        [ConfigurationProperty("ensureLocalhostPreviewUrls", DefaultValue = false)]
+        public bool EnsureLocalhostPreviewUrls
+        {
+            get { return (bool)base["ensureLocalhostPreviewUrls"]; }
+            set { base["ensureLocalhostPreviewUrls"] = value; }
+        }
+
     }
 }
