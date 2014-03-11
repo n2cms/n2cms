@@ -768,6 +768,7 @@
 									<xs:attribute name="editInterfaceUrl" type="xs:string" use="optional" />
 									<xs:attribute name="newItemUrl" type="xs:string" use="optional" />
 									<xs:attribute name="deleteItemUrl" type="xs:string" use="optional" />
+                  <xs:attribute name="ensureLocalhostPreviewUrls" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
 						</xs:all>
