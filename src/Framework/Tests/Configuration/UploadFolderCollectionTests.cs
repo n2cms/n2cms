@@ -21,7 +21,7 @@ namespace N2.Tests.Configuration
             config.UploadFolders.IsTrusted(filename).ShouldBe(true);
         }
 
-        [TestCase("hello.exe")]
+        [TestCase("hello.php")]
         [TestCase("hello.cshtml")]
         [TestCase("hello.aspx")]
         public void Disallows_DangerousExtensions(string filename)

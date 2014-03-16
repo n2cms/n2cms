@@ -21,7 +21,7 @@ namespace N2.Configuration
             set { base["uploadsWhitelistExression"] = value; }
         }
 
-        [ConfigurationProperty("uploadsBlacklistExression", DefaultValue = "[.](armx|asax|asbx|axhx|asmx|asp|aspx|axd|cshtml|master|vsdisco|cfm|pl|cgi|ad|adp|crt|ins|mde|msc|sct|vb|swc|wsf|cpl|shs|bas|bat|cmd|com|hlp|hta|isp|js|jse|lnk|mst|pcd|pif|reg|scr|url|vbe|vbs|ws|wsh|exe|com|bat|cmd|ps1)$")]
+        [ConfigurationProperty("uploadsBlacklistExression", DefaultValue = "[.](armx|asax|asbx|axhx|asmx|asp|aspx|axd|cshtml|master|vsdisco|cfm|pl|cgi|ad|adp|crt|ins|mde|msc|sct|vb|swc|wsf|cpl|shs|bas|bat|cmd|com|hlp|hta|isp|js|jse|lnk|mst|pcd|pif|reg|scr|url|vbe|vbs|ws|wsh|php)$")]
         public string UploadsBlacklistExression
         {
             get { return (string)base["uploadsBlacklistExression"]; }

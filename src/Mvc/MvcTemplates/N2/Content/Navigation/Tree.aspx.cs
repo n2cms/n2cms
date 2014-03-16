@@ -38,7 +38,15 @@ namespace N2.Edit.Navigation
 
                 string fileName = System.IO.Path.GetFileName(inputFile.PostedFile.FileName);
                 string filePath = Url.Combine(uploadFolder, fileName);
-                FS.WriteFile(filePath, inputFile.PostedFile.InputStream);
+
+                if (Engine.Config.Sections.Management.UploadFolders.IsTrusted(fileName))
+                {
+                    FS.WriteFile(filePath, inputFile.PostedFile.InputStream);
+                }
+                else
+                {
+                    throw new N2.Security.PermissionDeniedException("Invalid file name");
+                }
 
                 ClientScript.RegisterStartupScript(typeof(Tree), "select", "updateOpenerWithUrlAndClose('" + ResolveUrl(filePath) + "');", true);
             }
