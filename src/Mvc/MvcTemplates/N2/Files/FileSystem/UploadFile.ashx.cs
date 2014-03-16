@@ -7,11 +7,23 @@ using N2.Web;
 using System.Collections.Generic;
 using System.IO;
 using N2.Definitions;
+using System.Text.RegularExpressions;
 
 namespace N2.Management.Files.FileSystem
 {
 	public class UploadFile : IHttpHandler
 	{
+        private Engine.IEngine engine;
+        
+        public UploadFile()
+            : this(Context.Current)
+        {
+        }
+
+        public UploadFile(Engine.IEngine engine)
+        {
+            this.engine = engine;
+        }
 
 		public void ProcessRequest(HttpContext context)
 		{
@@ -20,8 +32,8 @@ namespace N2.Management.Files.FileSystem
 
 			ValidateTicket(context.Request["ticket"]);
 
-			SelectionUtility selection = new SelectionUtility(context, N2.Context.Current);
-			var fs = N2.Context.Current.Resolve<IFileSystem>();
+			SelectionUtility selection = new SelectionUtility(context, engine);
+            var fs = engine.Resolve<IFileSystem>();
 
 			List<FilesStatus> statuses;
 
@@ -38,10 +50,10 @@ namespace N2.Management.Files.FileSystem
 			WriteJsonIframeSafe(context, statuses);
 		}
 
-		private bool IsFileNameSafe(string fileName)
+		private bool IsFilenameTrusted(string fileName)
 		{
-			return System.Text.RegularExpressions.Regex.IsMatch(fileName,
-				"\\A(?:.*\\.(armx|asax|asbx|axhx|asmx|asp|aspx|axd|cshtml|master|vsdisco|cfm|pl|cgi|ad|adp|crt|ins|mde|msc|sct|vb|swc|wsf|cpl|shs|bas|bat|cmd|com|hlp|hta|isp|js|jse|lnk|mst|pcd|pif|reg|scr|url|vbe|vbs|ws|wsh)\\z)\\z");
+            var uploadSection = engine.Config.Sections.Management.UploadFolders;
+            return uploadSection.IsTrusted(fileName);
 		}
 
 		// Upload partial file
@@ -53,7 +65,7 @@ namespace N2.Management.Files.FileSystem
 			var inputStream = fileUpload.InputStream;
 			var virtualPath = Url.Combine(selection.SelectedItem.Url, fileName);
 
-			if (!IsFileNameSafe(fileName))
+			if (!IsFilenameTrusted(fileName))
 			{
 				yield return new FilesStatus(virtualPath, 0) { error = "Unsafe filename" };
 			}
@@ -86,7 +98,7 @@ namespace N2.Management.Files.FileSystem
 				var fileName = Path.GetFileName(file.FileName);
 				var virtualPath = Url.Combine(((IFileSystemNode)selection.SelectedItem).LocalUrl, fileName);
 
-				if (!IsFileNameSafe(fileName))
+				if (!IsFilenameTrusted(fileName))
 				{
 					yield return new FilesStatus(virtualPath, 0) { error = "Unsafe filename" };
 				}
@@ -121,9 +133,9 @@ namespace N2.Management.Files.FileSystem
 		{
 			var ticket = FormsAuthentication.Decrypt(encryptedTicket);
 			if (ticket.Expired)
-				throw new N2.N2Exception("Upload ticket expired");
+				throw new Security.PermissionDeniedException("Upload ticket expired");
 			if (!ticket.Name.StartsWith("SecureUpload-"))
-				throw new N2.N2Exception("Unknown ticket");
+                throw new Security.PermissionDeniedException("Unknown ticket");
 		}
 
 		public bool IsReusable
