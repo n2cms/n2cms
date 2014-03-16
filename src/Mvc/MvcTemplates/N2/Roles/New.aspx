@@ -10,7 +10,7 @@
     </p>
         
     <p>
-        <asp:LinkButton OnClick="btnCreateRoleClick" CausesValidation="True" CssClass="btn" meta:resourcekey="SaveButton" runat="server" />
-        <asp:HyperLink NavigateUrl="Roles.aspx" CssClass="btn" meta:resourcekey="CancelButton" runat="server" />
+        <asp:LinkButton OnClick="btnCreateRoleClick" CausesValidation="True" CssClass="btn" Text="Save" meta:resourcekey="SaveButton" runat="server" />
+        <asp:HyperLink NavigateUrl="Roles.aspx" CssClass="btn" Text="Cancel" meta:resourcekey="CancelButton" runat="server" />
     </p>
 </asp:Content>
