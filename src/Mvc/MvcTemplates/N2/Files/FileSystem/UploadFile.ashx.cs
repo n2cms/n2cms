@@ -41,7 +41,7 @@ namespace N2.Management.Files.FileSystem
 		private bool IsFileNameSafe(string fileName)
 		{
 			return System.Text.RegularExpressions.Regex.IsMatch(fileName,
-				"\\A(?:.*\\.(armx|asax|asbx|axhx|asmx|asp|aspx|axd|cshtml|master|vsdisco|cfm|pl|cgi|ad|adp|crt|ins|mde|msc|sct|vb|swc|wsf|cpl|shs|bas|bat|cmd|com|hlp|hta|isp|js|jse|lnk|mst|pcd|pif|reg|scr|url|vbe|vbs|ws|wsh)\\z)\\z");
+				"\\A(?:.*\\.(armx|asax|asbx|axhx|asmx|asp|aspx|axd|cshtml|php|master|vsdisco|cfm|pl|cgi|ad|adp|crt|ins|mde|msc|sct|vb|swc|wsf|cpl|shs|bas|bat|cmd|com|hlp|hta|isp|js|jse|lnk|mst|pcd|pif|reg|scr|url|vbe|vbs|ws|wsh)\\z)\\z");
 		}
 
 		// Upload partial file
