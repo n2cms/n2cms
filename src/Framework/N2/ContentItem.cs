@@ -1014,7 +1014,7 @@ namespace N2
 
 		string ILink.Contents
 		{
-			get { return N2.Context.Current.Resolve<ISafeContentRenderer>().HtmlEncode(Title); }
+			get { return Title; }
 		}
 
 		string ILink.ToolTip
