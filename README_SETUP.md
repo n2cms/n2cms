@@ -1,10 +1,3 @@
-This pull request solves the following problems:
-
-* Users who wish to deploy a N2 site without public management can do so easily. You just have an internal version with the management pack installed, and an external version without the management pack. 
-
-* Users who store their websites in Git repositories won't have the bloat of a 5+ MB N2.zip file in their history every time they update N2CMS. 
-
-
 # N2CMS Developer Installation Instructions
 (to be uploaded to wiki)
  
