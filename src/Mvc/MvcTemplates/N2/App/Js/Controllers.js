@@ -125,7 +125,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 			return url;
 		url = $scope.appendQuery(url, ctx.Paths.SelectedQueryKey + "=" + ctx.CurrentItem.Path + "&" + ctx.Paths.ItemQueryKey + "=" + ctx.CurrentItem.ID);
 		if (appendVersionIndex)
-			url += "&versionIndex=" + ctx.CurrentItem.VersionIndex;
+			url += "&n2versionIndex=" + ctx.CurrentItem.VersionIndex;
 		return url;
 	};
 

@@ -97,7 +97,7 @@ namespace N2.Tests.Web.Parts
 
             request[PathData.ItemQueryKey] = part.Path;
             request[PathData.VersionKeyQueryKey] = part.GetVersionKey();
-            request["versionIndex"] = part.VersionIndex.ToString();
+            request[PathData.VersionIndexQueryKey] = part.VersionIndex.ToString();
             request["below"] = root.Path;
             request["zone"] = "ZoneTwo";
 
@@ -123,7 +123,7 @@ namespace N2.Tests.Web.Parts
 
             request[PathData.ItemQueryKey] = part2.Path;
             request[PathData.VersionKeyQueryKey] = part2.GetVersionKey();
-            request["versionIndex"] = part2.VersionIndex.ToString();
+            request[PathData.VersionIndexQueryKey] = part2.VersionIndex.ToString();
             request["before"] = part.Path;
             request["zone"] = "ZoneTwo";
 
@@ -148,7 +148,7 @@ namespace N2.Tests.Web.Parts
             request[PathData.ItemQueryKey] = root.Path;
             request["below"] = root.Path;
             request[PathData.VersionKeyQueryKey] = part.GetVersionKey();
-            request["versionIndex"] = version.VersionIndex.ToString();
+            request[PathData.VersionIndexQueryKey] = version.VersionIndex.ToString();
             request["zone"] = "ZoneTwo";
 
             var response = mover.HandleRequest(request);
@@ -175,7 +175,7 @@ namespace N2.Tests.Web.Parts
 
             request[PathData.ItemQueryKey] = root.Path;
             request[PathData.VersionKeyQueryKey] = part2.GetVersionKey();
-            request["versionIndex"] = version.VersionIndex.ToString();
+            request[PathData.VersionIndexQueryKey] = version.VersionIndex.ToString();
             request["before"] = "";
             request["beforeVersionKey"] = part.GetVersionKey();
             request["zone"] = "ZoneOne";

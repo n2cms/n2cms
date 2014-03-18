@@ -28,7 +28,7 @@ namespace N2.Edit
 		RequiredPermission = Permission.Write,
 		OptionProvider = typeof(EditOptionProvider),
 		Legacy = true)]
-	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}&versionIndex={Selected.VersionIndex}", "Edit page", 50, ControlPanelState.Visible | ControlPanelState.DragDrop,
+	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}&n2versionIndex={Selected.VersionIndex}", "Edit page", 50, ControlPanelState.Visible | ControlPanelState.DragDrop,
 		CssClass = "complementary",
 		RequiredPermission = Permission.Write,
 		IconClass = "n2-icon-edit-sign")]

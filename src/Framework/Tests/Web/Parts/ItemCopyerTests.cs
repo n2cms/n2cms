@@ -206,7 +206,7 @@ namespace N2.Tests.Web.Parts
 
             var response = copyer.HandleRequest(request);
 
-            response["redirect"].ShouldStartWith("/root.aspx?versionIndex=1&edit=drag");
+            response["redirect"].ShouldStartWith("/root?n2versionIndex=1&edit=drag");
         }
 
     }
