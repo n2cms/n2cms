@@ -76,7 +76,9 @@
 																	</xs:complexType>
 																</xs:element>
 															</xs:sequence>
-														</xs:complexType>
+                              <xs:attribute name="uploadsWhitelistExression" type="xs:string"/>
+                              <xs:attribute name="uploadsBlacklistExression" type="xs:string"/>
+                            </xs:complexType>
 													</xs:element>
 												</xs:all>
 												<xs:attribute name="id" type="xs:integer" use="required" />
