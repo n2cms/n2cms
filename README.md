@@ -1,3 +1,5 @@
+## Welcome to N2CMS
+
 **N2CMS is a lightweight CMS framework.** With just a few strokes of your keyboard a 
 wonderful strongly-typed model emerges complete with a management UI. You can 
 spend the rest of your day building the best site imaginable.
@@ -21,7 +23,7 @@ public class PageItem : N2.ContentItem
 }
 ```
 
-## Quick Start
+### Quick Start
 
 **For a quick start**, follow these instructions, which assume that you are using ASP.NET MVC + Razor (the "Dinamico" template pack -- see below for details). 
 
