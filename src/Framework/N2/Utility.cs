@@ -522,6 +522,13 @@ namespace N2
 
         public static Func<DateTime> CurrentTime = () => DateTime.Now;
 
+        public static IDisposable TimeCapsule(DateTime frozenTime)
+        {
+            var previous = CurrentTime;
+            CurrentTime = () => frozenTime;
+            return new Engine.Globalization.Scope(() => CurrentTime = previous);
+        }
+
         [Obsolete("Moved to N2.Web.Url.ToAbsolute")]
         public static string ToAbsolute(string relativePath)
         {

@@ -254,7 +254,7 @@ namespace N2.Management.Api
         {
             var adapter = engine.GetContentAdapter<NodeAdapter>(Selection.SelectedItem);
             var versions = engine.Resolve<IVersionManager>().GetVersionsOf(Selection.SelectedItem);
-            return versions.Select(v => new Node<TreeNode>(adapter.GetTreeNode(v, allowDraft: false)));
+            return versions.Select(v => new Node<TreeNode>(adapter.GetTreeNode(v.Content, allowDraft: false)));
         }
 
         private IEnumerable<Node<InterfaceMenuItem>> GetTranslations(HttpContextBase context)

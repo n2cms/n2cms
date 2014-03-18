@@ -68,7 +68,7 @@ namespace N2.Tests.Workflow
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
 
-            Assert.That(versions.GetVersionsOf(item).Count, Is.EqualTo(3));
+            Assert.That(versions.GetVersionsOf(item).Count(), Is.EqualTo(3));
         }
 
         [Test]

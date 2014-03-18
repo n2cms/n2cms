@@ -5,7 +5,7 @@ using System.Text;
 
 namespace N2.Management.Content.Versions
 {
-    public class VersionInfo
+    public class ManagementVersionInfo
     {
         public string Info { get; set; }
 

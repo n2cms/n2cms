@@ -196,6 +196,7 @@
     <!-- Using DotNetZip since MSBuild Community Tasks Zip doesn't include directory entries -->
     <Delete Files="$(Management-NugetFolderZip)\content\N2\N2.zip" Condition="Exists('$(Management-NugetFolderZip)\content\N2\N2.zip')" />
     <Copy SourceFiles="$(Framework-DeployFolder)\N2\web.config"	DestinationFolder="$(Management-NugetFolderZip)\content\N2\" />
+    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Management-NugetFolderZip)\content\N2\" />
     <Exec Command="$(BuildFolder)\lib\BuildSupport.exe ZipDirectory &quot;$(Management-NugetFolderZip)\content\N2\N2.zip&quot; &quot;$(Framework-DeployFolder)\N2&quot; &quot;N2&quot;" />
 
     <ItemGroup>
