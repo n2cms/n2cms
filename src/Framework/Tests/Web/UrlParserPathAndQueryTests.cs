@@ -37,8 +37,8 @@ namespace N2.Tests.Web
         {
             mocks.ReplayAll();
 
-            string url = Url.Parse("http://www.n2cms.com/item1.aspx?item=1").PathAndQuery;
-            Assert.AreEqual("/item1.aspx?item=1", url);
+            string url = Url.Parse("http://www.n2cms.com/item1.aspx?n2item=1").PathAndQuery;
+            Assert.AreEqual("/item1.aspx?n2item=1", url);
         }
 
         [Test]
@@ -46,8 +46,8 @@ namespace N2.Tests.Web
         {
             mocks.ReplayAll();
 
-            string url = Url.Parse("http://www.n2cms.com/item1/item2/item3/item4.aspx?item=1&page=2&optional=yes").PathAndQuery;
-            Assert.AreEqual("/item1/item2/item3/item4.aspx?item=1&page=2&optional=yes", url);
+            string url = Url.Parse("http://www.n2cms.com/item1/item2/item3/item4.aspx?n2item=1&n2page=2&optional=yes").PathAndQuery;
+            Assert.AreEqual("/item1/item2/item3/item4.aspx?n2item=1&n2page=2&optional=yes", url);
         }
 
         [Test]

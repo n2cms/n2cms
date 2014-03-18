@@ -100,8 +100,7 @@ namespace N2.Tests.Web.Parsing
             string text = "[[hello\n]]";
             var block = p.Parse(text).FirstOrDefault();
 
-            Assert.That(block.Command, Is.EqualTo("Text"));
-            Assert.That(block.ToString(), Is.EqualTo(text));
+            Assert.That(block.Command, Is.Not.EqualTo("InternalLink"));
         }
 
         [Test]
@@ -110,8 +109,7 @@ namespace N2.Tests.Web.Parsing
             string text = "[[hello<b>world</b>]]";
             var block = p.Parse(text).FirstOrDefault();
 
-            Assert.That(block.Command, Is.EqualTo("Text"));
-            Assert.That(block.ToString(), Is.EqualTo(text));
+            Assert.That(block.Command, Is.Not.EqualTo("InternalLink"));
         }
 
         [Test]
@@ -386,10 +384,12 @@ namespace N2.Tests.Web.Parsing
         public void Html()
         {
             string text = @"<p>hello</p>";
-            var block = p.Parse(text).Single();
+            var blocks = p.Parse(text).ToList();
 
-            Assert.That(block.Command, Is.EqualTo("Text"));
-            Assert.That(block.ToString(), Is.EqualTo(text));
+            Assert.That(blocks[0].Command, Is.EqualTo("HtmlElement"));
+            Assert.That(blocks[1].Command, Is.EqualTo("Text"));
+            Assert.That(blocks[1].ToString(), Is.EqualTo("hello"));
+            Assert.That(blocks[2].Command, Is.EqualTo("HtmlElement"));
         }
     }
 }

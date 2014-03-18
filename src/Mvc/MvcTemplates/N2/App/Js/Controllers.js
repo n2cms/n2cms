@@ -223,7 +223,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 	});
 
 	$scope.refreshContext = function(node, versionIndex, keepFlags, callback) {
-		Context.get(Content.applySelection({ view: $scope.Context.User.Settings.ViewPreference, versionIndex: versionIndex }, node.Current), function(ctx) {
+		Context.get(Content.applySelection({ view: $scope.Context.User.Settings.ViewPreference, n2versionIndex: versionIndex }, node.Current), function(ctx) {
 			//console.log("select -> contextchanged", node, versionIndex, ctx);
 			if (keepFlags)
 				angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
@@ -659,7 +659,7 @@ function PageInfoCtrl($scope, Content) {
 
 function PagePublishCtrl($scope, $rootScope, $modal, Content, Confirm, Translate) {
 	$scope.publish = function () {
-		Content.publish({ selected: $scope.Context.CurrentItem.Path, versionIndex: $scope.Context.CurrentItem.VersionIndex }, function (result) {
+		Content.publish({ selected: $scope.Context.CurrentItem.Path, n2versionIndex: $scope.Context.CurrentItem.VersionIndex }, function (result) {
 			$scope.previewUrl(result.Current.PreviewUrl);
 
 			$scope.reloadNode(result.Current.Path, $scope.refreshContext);
@@ -701,7 +701,7 @@ function PageScheduleCtrl($scope, Content) {
 			var date = $scope.schedule.date;
 			date.setHours(hour, min);
 
-			Content.schedule(Content.applySelection({ versionIndex: $scope.Context.CurrentItem.VersionIndex, publishDate: date }, $scope.Context.CurrentItem));
+			Content.schedule(Content.applySelection({ n2versionIndex: $scope.Context.CurrentItem.VersionIndex, publishDate: date }, $scope.Context.CurrentItem));
 		}
 	};
 }

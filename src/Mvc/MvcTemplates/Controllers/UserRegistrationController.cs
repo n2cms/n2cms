@@ -81,7 +81,7 @@ namespace N2.Templates.Mvc.Controllers
                 Membership.UpdateUser(user);
 
                 string crypto = FormsAuthentication.Encrypt(new FormsAuthenticationTicket(un, true, 60*24*7));
-                var route = new UrlHelper(ControllerContext.RequestContext).Action("verify", new { item = CurrentItem, ticket = crypto });
+                var route = new UrlHelper(ControllerContext.RequestContext).Action("verify", new { n2item = CurrentItem, ticket = crypto });
                 var url = new Url(Request.Url.Scheme, Request.Url.Authority, route);
 
                 string subject = CurrentItem.VerificationSubject;

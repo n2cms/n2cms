@@ -80,7 +80,7 @@ namespace N2.Tests.Web
 
             string url = parser.BuildUrl(page);
 
-            Assert.AreEqual("/Default.aspx?page=9", url);
+            Assert.AreEqual("/Default.aspx?n2page=9", url);
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace N2.Tests.Web
 
                 string url = parser.BuildUrl(page);
 
-                Assert.AreEqual("/HelloWorld/Default.aspx?page=10", url);
+                Assert.AreEqual("/HelloWorld/Default.aspx?n2page=10", url);
             }
             finally
             {

@@ -385,7 +385,7 @@ namespace N2
 			get { return Definitions.Static.DefinitionMap.Instance.GetOrCreateDefinition(this).IconClass; }
 		}
 
-		/// <summary>Gets the non-friendly url to this item (e.g. "/Default.aspx?page=1"). This is used to uniquely identify this item when rewriting to the template page. Non-page items have two query string properties; page and item (e.g. "/Default.aspx?page=1&amp;item&#61;27").</summary>
+        /// <summary>Gets the non-friendly url to this item (e.g. "/Default.aspx?n2page=1"). This is used to uniquely identify this item when rewriting to the template page. Non-page items have two query string properties; page and item (e.g. "/Default.aspx?page=1&amp;item&#61;27").</summary>
 		[Obsolete("Use the new template API: item.FindPath(PathData.DefaultAction).GetRewrittenUrl()"), NonInterceptable]
 		public virtual string RewrittenUrl
 		{
@@ -732,7 +732,8 @@ namespace N2
 		protected virtual ContentItem FindNamedChild(string nameSegment)
 		{
 			var childItem = Children.FindNamed(nameSegment);
-			if (childItem == null && string.IsNullOrEmpty(Extension) == false)
+            
+            if (childItem == null && nameSegment.Contains('.'))
 			{
 				childItem = Children.FindNamed(Web.Url.RemoveAnyExtension(nameSegment));
 			}

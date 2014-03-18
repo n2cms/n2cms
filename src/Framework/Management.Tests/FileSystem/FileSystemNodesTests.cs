@@ -286,7 +286,7 @@ namespace N2.Edit.Tests.FileSystem
             {
                 d.AddTo(upload.GetChild("Folder1"));
                 Assert.That(arguments[0].SourcePath, Is.EqualTo("/Upload/Folder 2/Folder 3"));
-                Assert.That(arguments[0].VirtualPath, Is.EqualTo("/Upload/Folder1/Folder 3/"));
+                Assert.That(arguments[0].VirtualPath, Is.EqualTo("/Upload/Folder1/Folder 3"));
                 Assert.That(operations[0], Is.EqualTo("DirectoryMoved"));
             }
             finally
