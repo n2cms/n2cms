@@ -4,9 +4,7 @@
 wonderful strongly-typed model emerges complete with a management UI. You can 
 spend the rest of your day building the best site imaginable.
 
-### "It's so .NET!"
-
-With N2CMS, you build the model of the data that needs to be managed using C# or 
+**It's so .NET!** With N2CMS, you build the model of the data that needs to be managed using C# or 
 VB code in Visual Studio. The type below is picked up by the N2 engine at runtime 
 and made available to be edited. The code uses an open API with multiple built-in 
 options and unlimited customization options.
