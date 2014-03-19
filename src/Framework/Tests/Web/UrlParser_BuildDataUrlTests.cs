@@ -30,14 +30,14 @@ namespace N2.Tests.Web
         public void CanCreate_DataItemUrl_OnPage_OneLevelDown()
         {
             string url = parser.BuildUrl(part2);
-            Assert.AreEqual("/item2.aspx?n2item=7", url);
+            Assert.AreEqual("/item2?n2item=7", url);
         }
 
         [Test]
         public void CanCreate_DataItemUrl_OnPage_TwoLevelsDown()
         {
             string url = parser.BuildUrl(part3);
-            Assert.AreEqual("/item2/item2_1.aspx?n2item=8", url);
+            Assert.AreEqual("/item2/item2_1?n2item=8", url);
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace N2.Tests.Web
             data4.VersionIndex = 77;
 
             string url = parser.BuildUrl(data4);
-            Assert.That(url, Is.EqualTo("/item2/item2_1.aspx?n2item=8&n2versionIndex=77"));
+            Assert.That(url, Is.EqualTo("/item2/item2_1?n2item=8&n2versionIndex=77"));
         }
 
         [Test]

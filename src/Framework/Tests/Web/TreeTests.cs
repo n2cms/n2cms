@@ -37,17 +37,17 @@ namespace N2.Tests.Web
             string treeString = Tree.From(a).ToString();
             string expected
                 = "<ul>"
-                  + "<li><a href=\"/a.aspx\">a</a>"
+                  + "<li><a href=\"/a\">a</a>"
                   + "<ul>"
-                  + "<li><a href=\"/a_a.aspx\">a_a</a>"
+                  + "<li><a href=\"/a_a\">a_a</a>"
                   + "<ul>"
-                  + "<li><a href=\"/a_a_a.aspx\">a_a_a</a></li>"
-                  + "<li><a href=\"/a_a_b.aspx\">a_a_b</a></li>"
+                  + "<li><a href=\"/a_a_a\">a_a_a</a></li>"
+                  + "<li><a href=\"/a_a_b\">a_a_b</a></li>"
                   + "</ul></li>"
-                  + "<li><a href=\"/a_b.aspx\">a_b</a>"
+                  + "<li><a href=\"/a_b\">a_b</a>"
                   + "<ul>"
-                  + "<li><a href=\"/a_b_a.aspx\">a_b_a</a></li>"
-                  + "<li><a href=\"/a_b_b.aspx\">a_b_b</a></li>"
+                  + "<li><a href=\"/a_b_a\">a_b_a</a></li>"
+                  + "<li><a href=\"/a_b_b\">a_b_b</a></li>"
                   + "</ul></li>"
                   + "</ul></li>"
                   + "</ul>";
@@ -60,14 +60,14 @@ namespace N2.Tests.Web
             string treeString = Tree.Between(a_a_a, a).ToString();
             string expected
                 = "<ul>"
-                  + "<li><a href=\"/a.aspx\">a</a>"
+                  + "<li><a href=\"/a\">a</a>"
                   + "<ul>"
-                  + "<li><a href=\"/a_a.aspx\">a_a</a>"
+                  + "<li><a href=\"/a_a\">a_a</a>"
                   + "<ul>"
-                  + "<li><a href=\"/a_a_a.aspx\">a_a_a</a></li>"
-                  + "<li><a href=\"/a_a_b.aspx\">a_a_b</a></li>"
+                  + "<li><a href=\"/a_a_a\">a_a_a</a></li>"
+                  + "<li><a href=\"/a_a_b\">a_a_b</a></li>"
                   + "</ul></li>"
-                  + "<li><a href=\"/a_b.aspx\">a_b</a></li>"
+                  + "<li><a href=\"/a_b\">a_b</a></li>"
                   + "</ul></li>"
                   + "</ul>";
             Assert.AreEqual(expected, treeString);
@@ -79,10 +79,10 @@ namespace N2.Tests.Web
             string treeString = Tree.Between(a_a_a, a_a).ToString();
             string expected
                 = "<ul>"
-                  + "<li><a href=\"/a_a.aspx\">a_a</a>"
+                  + "<li><a href=\"/a_a\">a_a</a>"
                   + "<ul>"
-                  + "<li><a href=\"/a_a_a.aspx\">a_a_a</a></li>"
-                  + "<li><a href=\"/a_a_b.aspx\">a_a_b</a></li>"
+                  + "<li><a href=\"/a_a_a\">a_a_a</a></li>"
+                  + "<li><a href=\"/a_a_b\">a_a_b</a></li>"
                   + "</ul></li>"
                   + "</ul>";
             Assert.AreEqual(expected, treeString);
@@ -95,10 +95,10 @@ namespace N2.Tests.Web
                 .ToString();
             string expected
                 = "<ul>"
-                  + "<li class=\"a_b\"><a href=\"/a_b.aspx\">a_b</a>"
+                  + "<li class=\"a_b\"><a href=\"/a_b\">a_b</a>"
                   + "<ul>"
-                  + "<li class=\"a_b_a\"><a href=\"/a_b_a.aspx\">a_b_a</a></li>"
-                  + "<li class=\"a_b_b\"><a href=\"/a_b_b.aspx\">a_b_b</a></li>"
+                  + "<li class=\"a_b_a\"><a href=\"/a_b_a\">a_b_a</a></li>"
+                  + "<li class=\"a_b_b\"><a href=\"/a_b_b\">a_b_b</a></li>"
                   + "</ul></li>"
                   + "</ul>";
             Assert.AreEqual(expected, treeString);
@@ -112,10 +112,10 @@ namespace N2.Tests.Web
                     .ToString();
             string expected
                 = "<ul>"
-                  + "<li><a class=\"a_b\" href=\"/a_b.aspx\">a_b</a>"
+                  + "<li><a class=\"a_b\" href=\"/a_b\">a_b</a>"
                   + "<ul>"
-                  + "<li><a class=\"a_b_a\" href=\"/a_b_a.aspx\">a_b_a</a></li>"
-                  + "<li><a class=\"a_b_b\" href=\"/a_b_b.aspx\">a_b_b</a></li>"
+                  + "<li><a class=\"a_b_a\" href=\"/a_b_a\">a_b_a</a></li>"
+                  + "<li><a class=\"a_b_b\" href=\"/a_b_b\">a_b_b</a></li>"
                   + "</ul></li>"
                   + "</ul>";
             Assert.AreEqual(expected, treeString);
@@ -128,17 +128,17 @@ namespace N2.Tests.Web
 
             string expected
                 = "<ul>"
-                  + "<li class=\"open\"><a href=\"/a.aspx\">a</a>"
+                  + "<li class=\"open\"><a href=\"/a\">a</a>"
                   + "<ul>"
-                  + "<li class=\"open\"><a href=\"/a_a.aspx\">a_a</a>"
+                  + "<li class=\"open\"><a href=\"/a_a\">a_a</a>"
                   + "<ul>"
-                  + "<li><a href=\"/a_a_a.aspx\">a_a_a</a></li>"
-                  + "<li><a href=\"/a_a_b.aspx\">a_a_b</a></li>"
+                  + "<li><a href=\"/a_a_a\">a_a_a</a></li>"
+                  + "<li><a href=\"/a_a_b\">a_a_b</a></li>"
                   + "</ul></li>"
-                  + "<li><a href=\"/a_b.aspx\">a_b</a>"
+                  + "<li><a href=\"/a_b\">a_b</a>"
                   + "<ul>"
-                  + "<li><a href=\"/a_b_a.aspx\">a_b_a</a></li>"
-                  + "<li><a href=\"/a_b_b.aspx\">a_b_b</a></li>"
+                  + "<li><a href=\"/a_b_a\">a_b_a</a></li>"
+                  + "<li><a href=\"/a_b_b\">a_b_b</a></li>"
                   + "</ul></li>"
                   + "</ul></li>"
                   + "</ul>";
@@ -168,12 +168,12 @@ namespace N2.Tests.Web
                 .ToString();
             string expected
                 = "<ul>"
-                  + "<li><a href=\"/a.aspx\">a</a>"
+                  + "<li><a href=\"/a\">a</a>"
                   + "<ul>"
-                  + "<li><a href=\"/a_a.aspx\">a_a</a>"
+                  + "<li><a href=\"/a_a\">a_a</a>"
                   + "<ul>"
-                  + "<li><a href=\"/a_a_a.aspx\">a_a_a</a></li>"
-                  + "<li><a href=\"/a_a_b.aspx\">a_a_b</a></li>"
+                  + "<li><a href=\"/a_a_a\">a_a_a</a></li>"
+                  + "<li><a href=\"/a_a_b\">a_a_b</a></li>"
                   + "</ul></li>"
                   + "</ul></li>"
                   + "</ul>";
