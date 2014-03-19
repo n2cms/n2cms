@@ -24,7 +24,7 @@ namespace N2.Web.Parts
 
         public override NameValueCollection HandleRequest(NameValueCollection request)
         {
-            ContentItem item = navigator.Navigate(request["item"]);
+            ContentItem item = navigator.Navigate(request[PathData.ItemQueryKey]);
             if (item == null)
                 throw new N2Exception("Couln't find any item with the id: " + request[PathData.ItemQueryKey]);
             persister.Delete(item);

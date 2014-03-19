@@ -46,10 +46,10 @@ namespace N2.Web.UI.WebControls
             {
                 string tag = TagKey;
                 writer.WriteFullBeginTag(tag);
-				if (HtmlEncode)
-					N2.Context.Current.Resolve<ISafeContentRenderer>().HtmlEncode(Text, writer);
-				else
-					writer.Write(Text);
+                if (HtmlEncode)
+                    writer.Write(HtmlSanitizer.Current.Encode(Text));
+                else
+                    writer.Write(Text);
                 if (CssClass != null)
                     writer.WriteAttribute("class", CssClass);
                 writer.WriteEndTag(tag);

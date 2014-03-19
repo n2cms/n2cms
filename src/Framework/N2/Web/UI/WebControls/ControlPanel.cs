@@ -75,7 +75,7 @@ namespace N2.Web.UI.WebControls
                     return currentItem;
 
                 int selectedItemID;
-                if (int.TryParse(Page.Request["item"], out selectedItemID))
+                if (int.TryParse(Page.Request[PathData.ItemQueryKey], out selectedItemID))
                 {
                     return currentItem = Engine.Persister.Get(selectedItemID);
                 }

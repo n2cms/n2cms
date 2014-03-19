@@ -12,7 +12,7 @@ namespace N2.Extensions.Tests.Mvc
         public void CanRoute_ToPart()
         {
             var part = CreateOneItem<TestItem>(10, "whatever", root);
-            RequestingUrl("/TestItem/?part=10");
+            RequestingUrl("/TestItem/?n2part=10");
 
             var r = routes.GetRouteData(httpContext);
 
@@ -26,7 +26,7 @@ namespace N2.Extensions.Tests.Mvc
         public void CanRoute_ToPart_WithPage()
         {
             var part = CreateOneItem<TestItem>(10, "whatever", root);
-            RequestingUrl("/TestItem/?page=1&part=10");
+            RequestingUrl("/TestItem/?n2page=1&n2part=10");
 
             var r = routes.GetRouteData(httpContext);
 
@@ -40,7 +40,7 @@ namespace N2.Extensions.Tests.Mvc
         public void CanRoute_ToPart_Action()
         {
             var part = CreateOneItem<TestItem>(10, "whatever", root);
-            RequestingUrl("/TestItem/Submit/?part=10");
+            RequestingUrl("/TestItem/Submit/?n2part=10");
 
             var r = routes.GetRouteData(httpContext);
 
@@ -53,7 +53,7 @@ namespace N2.Extensions.Tests.Mvc
         public void CanRoute_ToPart_Action_WithPage()
         {
             var part = CreateOneItem<TestItem>(10, "whatever", root);
-            RequestingUrl("/TestItem/Submit/?page=1&part=10");
+            RequestingUrl("/TestItem/Submit/?n2page=1&n2part=10");
 
             var r = routes.GetRouteData(httpContext);
 
@@ -67,7 +67,7 @@ namespace N2.Extensions.Tests.Mvc
         public void CanRoute_ToPart_Action_WithPageOtherThanParent()
         {
             var part = CreateOneItem<TestItem>(10, "whatever", root);
-            RequestingUrl("/TestItem/Submit/?part=10&page=" + about.ID);
+            RequestingUrl("/TestItem/Submit/?n2part=10&n2page=" + about.ID);
 
             var r = routes.GetRouteData(httpContext);
 
@@ -81,7 +81,7 @@ namespace N2.Extensions.Tests.Mvc
         public void CanRoute_ToPart_PageIsClosestParent()
         {
             var part = CreateOneItem<TestItem>(10, "whatever", root);
-            RequestingUrl("/TestItem/Submit/?part=10");
+            RequestingUrl("/TestItem/Submit/?n2part=10");
 
             var r = routes.GetRouteData(httpContext);
 
@@ -97,7 +97,7 @@ namespace N2.Extensions.Tests.Mvc
             RequestingUrl("/");
 
             var part = CreateOneItem<TestItem>(10, "whatever", root);
-            var vpd = routes.GetVirtualPath(requestContext, new RouteValueDictionary(new { item = part }));
+            var vpd = routes.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2item = part }));
             RequestingUrl(vpd.VirtualPath);
 
             var r = routes.GetRouteData(httpContext);
@@ -111,7 +111,7 @@ namespace N2.Extensions.Tests.Mvc
 
             RequestingUrl("/");
 
-            var vpd = routes.GetVirtualPath(requestContext, new RouteValueDictionary(new { item = part }));
+            var vpd = routes.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2item = part }));
             RequestingUrl(vpd.VirtualPath);
             var r = routes.GetRouteData(httpContext);
 
@@ -123,7 +123,7 @@ namespace N2.Extensions.Tests.Mvc
         public void RoutingToPart_PassesPart_AsContentPart()
         {
             var part = CreateOneItem<TestItem>(10, "whatever", root);
-            var r = RequestingUrl("/TestItem/?part=10");
+            var r = RequestingUrl("/TestItem/?n2part=10");
 
             Assert.That(r.CurrentPath().ID, Is.EqualTo(part.ID));
             Assert.That(r.CurrentPath().CurrentItem, Is.EqualTo(part));
@@ -133,7 +133,7 @@ namespace N2.Extensions.Tests.Mvc
         public void RoutingToPart_PassesAssociatedPage_AsContentPage()
         {
             var part = CreateOneItem<TestItem>(10, "whatever", root);
-            var r = RequestingUrl("/TestItem/?part=10");
+            var r = RequestingUrl("/TestItem/?n2part=10");
 
             Assert.That(r.CurrentPath().PageID, Is.EqualTo(root.ID));
             Assert.That(r.CurrentPath().CurrentPage, Is.EqualTo(root));
@@ -143,7 +143,7 @@ namespace N2.Extensions.Tests.Mvc
         public void RoutingToPart_PassesController_OfThePart()
         {
             var part = CreateOneItem<TestItem>(10, "whatever", root);
-            var r = RequestingUrl("/TestItem/?part=10");
+            var r = RequestingUrl("/TestItem/?n2part=10");
 
             Assert.That(r.Values[ContentRoute.ControllerKey], Is.EqualTo("TestItem"));
         }
@@ -152,7 +152,7 @@ namespace N2.Extensions.Tests.Mvc
         public void RoutingToPart_PassesAction_DefinedByQueryString()
         {
             var part = CreateOneItem<TestItem>(10, "whatever", root);
-            RequestingUrl("/TestItem/WithModel/?part=10");
+            RequestingUrl("/TestItem/WithModel/?n2part=10");
 
             var r = routes.GetRouteData(httpContext);
             Assert.That(r.Values[ContentRoute.ActionKey], Is.EqualTo("WithModel"));
@@ -162,7 +162,7 @@ namespace N2.Extensions.Tests.Mvc
         public void RoutingToPart_PassesPage_AsContentPage()
         {
             var part = CreateOneItem<TestItem>(10, "whatever", root);
-            var r = RequestingUrl("/TestItem/?part=10&page=" + search.ID);
+            var r = RequestingUrl("/TestItem/?n2part=10&n2page=" + search.ID);
 
             Assert.That(r.CurrentPath().PageID, Is.EqualTo(search.ID));
             Assert.That(r.CurrentPath().CurrentPage, Is.EqualTo(search));
@@ -174,7 +174,7 @@ namespace N2.Extensions.Tests.Mvc
             RequestingUrl("/");
 
             var part = CreateOneItem<TestItem>(10, "whatever", root);
-            var vpd = routes.GetVirtualPath(requestContext, new RouteValueDictionary(new { item = part }));
+            var vpd = routes.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2item = part }));
             RequestingUrl(vpd.VirtualPath);
 
             var r = routes.GetRouteData(httpContext);
@@ -188,7 +188,7 @@ namespace N2.Extensions.Tests.Mvc
             RequestingUrl("/");
 
             var part = CreateOneItem<TestItem>(10, "whatever", root);
-            var vpd = routes.GetVirtualPath(requestContext, new RouteValueDictionary(new { item = part }));
+            var vpd = routes.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2item = part }));
             RequestingUrl(vpd.VirtualPath);
 
             var r = routes.GetRouteData(httpContext);

@@ -81,7 +81,7 @@ namespace N2.Tests.Edit
 
             string editUrl = editUrlManager.GetEditExistingItemUrl(versionOfItem);
 
-            Assert.That(editUrl, Is.EqualTo("/N2/Content/Edit.aspx?selected=" + HttpUtility.UrlEncode(item.Path) + "&versionIndex=33"));
+            Assert.That(editUrl, Is.EqualTo("/N2/Content/Edit.aspx?selected=" + HttpUtility.UrlEncode(item.Path) + "&n2versionIndex=33"));
         }
     }
 }

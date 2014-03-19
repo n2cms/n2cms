@@ -67,7 +67,7 @@ namespace N2.Web
                 {
                     return BuildUrl(page)
                         .SetQueryParameter(PathData.VersionIndexQueryKey, page.VersionIndex)
-                        .SetQueryParameter("versionKey", item.GetVersionKey());
+                        .SetQueryParameter(PathData.VersionKeyQueryKey, item.GetVersionKey());
                 }
             }
 

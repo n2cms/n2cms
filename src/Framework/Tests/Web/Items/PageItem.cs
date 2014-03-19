@@ -15,7 +15,7 @@ namespace N2.Tests.Web.Items
         [Obsolete]
         public override string RewrittenUrl
         {
-            get { return TemplateUrl.TrimStart('~') + "?page=" + ID; }
+            get { return TemplateUrl.TrimStart('~') + "?n2page=" + ID; }
         }
 
         public override ItemList GetChildren()

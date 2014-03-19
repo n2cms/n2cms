@@ -18,7 +18,7 @@ namespace N2.Configuration
         }
 
         /// <summary>The query string key used to identify the page.</summary>
-        [ConfigurationProperty("pageQueryKey", DefaultValue = "n2Page")]
+        [ConfigurationProperty("pageQueryKey", DefaultValue = "n2page")]
         public string PageQueryKey
         {
             get { return (string)base["pageQueryKey"]; }
@@ -26,7 +26,7 @@ namespace N2.Configuration
         }
 
         /// <summary>The query string key used to identify the item.</summary>
-        [ConfigurationProperty("itemQueryKey", DefaultValue = "n2Item")]
+        [ConfigurationProperty("itemQueryKey", DefaultValue = "n2item")]
         public string ItemQueryKey
         {
             get { return (string)base["itemQueryKey"]; }
@@ -34,7 +34,7 @@ namespace N2.Configuration
         }
 
         /// <summary>The query string key used to identify the part.</summary>
-        [ConfigurationProperty("partQueryKey", DefaultValue = "n2Part")]
+        [ConfigurationProperty("partQueryKey", DefaultValue = "n2part")]
         public string PartQueryKey
         {
             get { return (string)base["partQueryKey"]; }
@@ -42,7 +42,7 @@ namespace N2.Configuration
         }
 
         /// <summary>Key used to access path data from context dictionaries.</summary>
-        [ConfigurationProperty("pathDataKey", DefaultValue = "n2Path")]
+        [ConfigurationProperty("pathDataKey", DefaultValue = "n2path")]
         public string PathDataKey
         {
             get { return (string)base["pathDataKey"]; }
@@ -69,7 +69,7 @@ namespace N2.Configuration
         [ConfigurationProperty("observedExtensions"), TypeConverter(typeof(CommaDelimitedStringCollectionConverter))]
         public StringCollection ObservedExtensions
         {
-            get { return (CommaDelimitedStringCollection)base["observedExtensions"]; }
+            get { return (StringCollection)base["observedExtensions"]; }
             set { base["observedExtensions"] = value; }
         }
 

@@ -40,46 +40,46 @@ namespace N2.Web
             return new PathData(item) { IsRewritable = false };
         }
 
-        static string _itemQueryKey = "n2Item";
-		static string _pageQueryKey = "n2Page";
-        static string _partQueryKey = "n2Part";
-        static string _pathDataKey = "n2Path";
-        static string _versionIndexQueryKey = "n2VersionIndex";
-        static string _versionKeyQueryKey = "n2VersionKey";
+        static string itemQueryKey = "n2item";
+		static string pageQueryKey = "n2page";
+        static string partQueryKey = "n2part";
+        static string pathDataKey = "n2path";
+        static string versionIndexQueryKey = "n2versionIndex";
+        static string versionKeyQueryKey = "n2versionKey";
 
         /// <summary>The version key query key.</summary>
         public static string VersionKeyQueryKey
         {
-            get { return _versionKeyQueryKey; }
-            set { _versionKeyQueryKey = value; }
+            get { return versionKeyQueryKey; }
+            set { versionKeyQueryKey = value; }
         }
 
         /// <summary>The version index query key.</summary>
         public static string VersionIndexQueryKey
         {
-            get { return _versionIndexQueryKey; }
-            set { _versionIndexQueryKey = value; }
+            get { return versionIndexQueryKey; }
+            set { versionIndexQueryKey = value; }
         }
 
         /// <summary>The item query string parameter.</summary>
         public static string ItemQueryKey
         {
-            get { return _itemQueryKey; }
-            set { _itemQueryKey = value; }
+            get { return itemQueryKey; }
+            set { itemQueryKey = value; }
         }
 
         /// <summary>The page query string parameter.</summary>
         public static string PageQueryKey
         {
-            get { return _pageQueryKey; }
-            set { _pageQueryKey = value; }
+            get { return pageQueryKey; }
+            set { pageQueryKey = value; }
         }
 
         /// <summary>The part query string parameter.</summary>
         public static string PartQueryKey
         {
-            get { return _partQueryKey; }
-            set { _partQueryKey = value; }
+            get { return partQueryKey; }
+            set { partQueryKey = value; }
         }
 
         /// <summary>A key used to override the path when rendering sub-actions.</summary>
@@ -88,8 +88,8 @@ namespace N2.Web
         /// <summary>Key used to access path data from context dictionaries.</summary>
         public static string PathKey
         {
-            get { return _pathDataKey; }
-            set { _pathDataKey = value; }
+            get { return pathDataKey; }
+            set { pathDataKey = value; }
         }
 
         /// <summary>The selection query string parameter.</summary>

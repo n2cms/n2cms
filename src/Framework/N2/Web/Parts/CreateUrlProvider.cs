@@ -59,7 +59,7 @@ namespace N2.Web.Parts
         private string CreateItem(TemplateDefinition template, NameValueCollection request)
         {
             var path = new PathData(navigator.Navigate(request["below"]));
-            if (!versionRepository.TryParseVersion(request[PathData.VersionIndexQueryKey], request["versionKey"], path))
+            if (!versionRepository.TryParseVersion(request[PathData.VersionIndexQueryKey], request[PathData.VersionKeyQueryKey], path))
                 path.CurrentItem = versions.AddVersion(path.CurrentItem, asPreviousVersion: false);
             var parent = path.CurrentItem;
 
@@ -109,12 +109,10 @@ namespace N2.Web.Parts
             if (!string.IsNullOrEmpty(request[PathData.VersionIndexQueryKey]))
                 url = url.SetQueryParameter(PathData.VersionIndexQueryKey, request[PathData.VersionIndexQueryKey]);
             
-            //if (!string.IsNullOrEmpty(request["versionKey"]))
-            //    url = url.SetQueryParameter("versionKey", request["versionKey"]);
             if (!string.IsNullOrEmpty(request["belowVersionKey"]))
-                url = url.SetQueryParameter("versionKey", request["belowVersionKey"]);
+                url = url.SetQueryParameter(PathData.VersionKeyQueryKey, request["belowVersionKey"]);
             if (!string.IsNullOrEmpty(request["belowVersionKey"]))
-                url = url.SetQueryParameter("versionKey", request["belowVersionKey"]);
+                url = url.SetQueryParameter(PathData.VersionKeyQueryKey, request["belowVersionKey"]);
             if (!string.IsNullOrEmpty(request["beforeVersionKey"]))
                 url = url.SetQueryParameter("beforeVersionKey", request["beforeVersionKey"]);
     

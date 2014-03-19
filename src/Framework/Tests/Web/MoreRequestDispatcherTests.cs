@@ -8,6 +8,7 @@ using N2.Web;
 using NUnit.Framework;
 using N2.Persistence;
 using N2.Web.Targeting;
+using System.Collections.Specialized;
 
 namespace N2.Tests.Web
 {
@@ -22,12 +23,12 @@ namespace N2.Tests.Web
         [Test]
         public void Context_IsNot_RewrittenBack_ToFriendlyUrl_AfterMapRequestHandler()
         {
-            webContext.Url = "/one/two.aspx";
+            webContext.Url = "/one/two";
 
             TriggerRewrite();
             handler.PostMapRequestHandler();
 
-            Assert.That(webContext.rewrittenPath, Is.EqualTo("/Default.aspx?page=3"));
+            Assert.That(webContext.rewrittenPath, Is.EqualTo("/Default.aspx?n2page=3"));
         }
     }
 
@@ -77,7 +78,7 @@ namespace N2.Tests.Web
             three = CreateOneItem<PageItem>(5, "three.3", root);
 
             webContext = new FakeWebContextWrapper();
-            var hostSection = new HostSection { Web = new WebElement { Rewrite = rewriteMethod } };
+            var hostSection = new HostSection { Web = new WebElement { Rewrite = rewriteMethod, ObservedExtensions = new StringCollection { ".aspx" } } };
             parser = new UrlParser(persister, webContext, new Host(webContext, root.ID, root.ID), new N2.Plugin.ConnectionMonitor(), hostSection);
             errorHandler = new FakeErrorHandler();
             engine = new FakeEngine();
@@ -98,27 +99,27 @@ namespace N2.Tests.Web
         [Test]
         public void CanRewriteUrl()
         {
-            webContext.Url = "/one/two.aspx";
+            webContext.Url = "/one/two";
 
             TriggerRewrite();
 
-            Assert.That(webContext.rewrittenPath, Is.EqualTo("/Default.aspx?page=3"));
+            Assert.That(webContext.rewrittenPath, Is.EqualTo("/Default.aspx?n2page=3"));
         }
 
         [Test]
         public void RewriteUrl_AppendsExistingQueryString()
         {
-            webContext.Url = "/one/two.aspx?happy=true&flip=feet";
+            webContext.Url = "/one/two?happy=true&flip=feet";
 
             TriggerRewrite();
 
-            Assert.That(webContext.rewrittenPath, Is.EqualTo("/Default.aspx?happy=true&flip=feet&page=3"));
+            Assert.That(webContext.rewrittenPath, Is.EqualTo("/Default.aspx?happy=true&flip=feet&n2page=3"));
         }
 
         [Test]
         public void UpdateContentPage()
         {
-            webContext.Url = "/one/two.aspx";
+            webContext.Url = "/one/two";
 
             TriggerRewrite();
 
@@ -131,7 +132,15 @@ namespace N2.Tests.Web
         {
             webContext.Url = "/one.aspx";
 
-            TriggerRewrite();
+            try
+            {
+                Url.DefaultExtension = ".aspx";
+                TriggerRewrite();
+            }
+            finally
+            {
+                Url.DefaultExtension = "";
+            }
 
             Assert.That(webContext.CurrentPage, Is.EqualTo(one));
         }
@@ -195,7 +204,7 @@ namespace N2.Tests.Web
         [Test]
         public void UpdateContentPage_WithRewrittenUrl()
         {
-            webContext.Url = "/Default.aspx?page=3";
+            webContext.Url = "/Default.aspx?n2page=3";
 
             TriggerRewrite();
 
@@ -205,7 +214,7 @@ namespace N2.Tests.Web
         [Test]
         public void UpdateContentPage_WithItemReference_UpdatesWithPage()
         {
-            webContext.Url = "/Default.aspx?item=4&page=3";
+            webContext.Url = "/Default.aspx?n2item=4&n2page=3";
 
             TriggerRewrite();
 

@@ -210,7 +210,7 @@ namespace N2.Web.Mvc
             return data;
         }
 
-        /// <summary>Responds to the path /{controller}/{action}/?page=123&item=234</summary>
+        /// <summary>Responds to the path /{controller}/{action}/?n2page=123&n2item=234</summary>
         private RouteData CheckForContentController(HttpContextBase context)
         {
             var routeData = innerRoute.GetRouteData(context);
