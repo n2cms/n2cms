@@ -55,7 +55,7 @@ namespace N2.Extensions.Tests.Mvc
         public void RoutesOnlyToPage_WhenPart_IsPassedAsItem_InQuery()
         {
             var part = CreateOneItem<TestItem>(10, "whatever", root);
-            var data = RequestingUrl("/about/?item=10");
+            var data = RequestingUrl("/about/?n2item=10");
 
             Assert.That(data.CurrentItem(), Is.EqualTo(about));
             Assert.That(data.CurrentPage(), Is.EqualTo(about));
@@ -92,7 +92,7 @@ namespace N2.Extensions.Tests.Mvc
         public void CanRoute_ToPage_ViaController()
         {
             var part = CreateOneItem<TestItem>(10, "whatever", root);
-            RequestingUrl("/Regular/?page=1");
+            RequestingUrl("/Regular/?n2page=1");
 
             var r = routes.GetRouteData(httpContext);
 

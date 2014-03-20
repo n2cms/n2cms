@@ -25,7 +25,7 @@ namespace N2.Extensions.Tests.Mvc
 
             var result = urlHelper.Action("hello");
 
-            Assert.That(result, Is.EqualTo("/about/hello/"));
+            Assert.That(result, Is.EqualTo("/about/hello"));
         }
 
         [Test]
@@ -43,9 +43,9 @@ namespace N2.Extensions.Tests.Mvc
         {
             RequestingUrl("/about/");
 
-            var result = urlHelper.Action("Index", new { item = executives });
+            var result = urlHelper.Action("Index", new { n2item = executives });
 
-            Assert.That(result, Is.EqualTo("/about/executives/"));
+            Assert.That(result, Is.EqualTo("/about/executives"));
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace N2.Extensions.Tests.Mvc
 
             var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary());
 
-            Assert.That(vpd.VirtualPath, Is.EqualTo("search/"));
+            Assert.That(vpd.VirtualPath, Is.EqualTo("search"));
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace N2.Extensions.Tests.Mvc
 
             var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { action = "find" }));
 
-            Assert.That(vpd.VirtualPath, Is.EqualTo("search/find/"));
+            Assert.That(vpd.VirtualPath, Is.EqualTo("search/find"));
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace N2.Extensions.Tests.Mvc
 
             var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { action = "find", q = "query" }));
 
-            Assert.That(vpd.VirtualPath, Is.EqualTo("search/find/?q=query"));
+            Assert.That(vpd.VirtualPath, Is.EqualTo("search/find?q=query"));
         }
 
         [Test]
@@ -83,9 +83,9 @@ namespace N2.Extensions.Tests.Mvc
         {
             RequestingUrl("/search/");
 
-            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { item = executives }));
+            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2item = executives }));
 
-            Assert.That(vpd.VirtualPath, Is.EqualTo("about/executives/"));
+            Assert.That(vpd.VirtualPath, Is.EqualTo("about/executives"));
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace N2.Extensions.Tests.Mvc
         {
             RequestingUrl("/search/");
 
-            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { page = executives }));
+            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2page = executives }));
 
             Assert.That(vpd.VirtualPath, Is.Not.EqualTo("about/executives"));
         }
@@ -106,7 +106,7 @@ namespace N2.Extensions.Tests.Mvc
             var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { controller = "aboutussectionpage" }));
 
             Assert.That(vpd, Is.Not.Null);
-            Assert.That(vpd.VirtualPath, Is.EqualTo("about/"));
+            Assert.That(vpd.VirtualPath, Is.EqualTo("about"));
         }
 
         [Test]
@@ -117,7 +117,7 @@ namespace N2.Extensions.Tests.Mvc
             var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { controller = "aboutussectionpage", action = "more" }));
 
             Assert.That(vpd, Is.Not.Null);
-            Assert.That(vpd.VirtualPath, Is.EqualTo("about/more/"));
+            Assert.That(vpd.VirtualPath, Is.EqualTo("about/more"));
         }
 
         [Test]
@@ -135,9 +135,9 @@ namespace N2.Extensions.Tests.Mvc
         {
             RequestingUrl("/about/executives/");
 
-            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { item = search, action = "find" }));
+            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2item = search, action = "find" }));
 
-            Assert.That(vpd.VirtualPath, Is.EqualTo("search/find/"));
+            Assert.That(vpd.VirtualPath, Is.EqualTo("search/find"));
         }
 
         [Test]
@@ -145,9 +145,9 @@ namespace N2.Extensions.Tests.Mvc
         {
             RequestingUrl("/about/executives/");
 
-            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { item = search, action = "find", q = "what", x = "y" }));
+            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2item = search, action = "find", q = "what", x = "y" }));
 
-            Assert.That(vpd.VirtualPath, Is.EqualTo("search/find/?q=what&x=y"));
+            Assert.That(vpd.VirtualPath, Is.EqualTo("search/find?q=what&x=y"));
         }
 
         [Test]
@@ -157,7 +157,7 @@ namespace N2.Extensions.Tests.Mvc
 
             string url = urlHelper.RouteUrl(null, new { controller = "Search" }, null);
 
-            Assert.That(url, Is.EqualTo("/search/"));
+            Assert.That(url, Is.EqualTo("/search"));
         }
 
         [Test]
@@ -167,7 +167,7 @@ namespace N2.Extensions.Tests.Mvc
 
             string html = HtmlHelper.GenerateLink(requestContext, routes, "Hello", null, "find", "Search", new RouteValueDictionary(new { q = "hello" }), null);
 
-            Assert.That(html, Is.EqualTo("<a href=\"/search/find/?q=hello\">Hello</a>"));
+            Assert.That(html, Is.EqualTo("<a href=\"/search/find?q=hello\">Hello</a>"));
         }
 
         [Test]
@@ -177,7 +177,7 @@ namespace N2.Extensions.Tests.Mvc
 
             var html = htmlHelper.ActionLink("Hello", "find", new { q = "something", controller = "Search" });
 
-            Assert.That(html.ToString(), Is.EqualTo("<a href=\"/search/find/?q=something\">Hello</a>"));
+            Assert.That(html.ToString(), Is.EqualTo("<a href=\"/search/find?q=something\">Hello</a>"));
         }
 
         //[Test]
@@ -200,7 +200,7 @@ namespace N2.Extensions.Tests.Mvc
             var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { controller = "aboutussectionpage" }));
 
             Assert.That(vpd, Is.Not.Null);
-            Assert.That(vpd.VirtualPath, Is.EqualTo("about/"));
+            Assert.That(vpd.VirtualPath, Is.EqualTo("about"));
         }
     }
 }

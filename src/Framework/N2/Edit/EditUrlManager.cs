@@ -75,7 +75,7 @@ namespace N2.Edit
             }
             catch (N2Exception)
             {
-                return Url.ResolveTokens("{ManagementUrl}/Empty.aspx?item=" + selectedItem.ID);
+                return Url.ResolveTokens("{ManagementUrl}/Empty.aspx?n2item=" + selectedItem.ID);
             }
         }
 
@@ -205,11 +205,11 @@ namespace N2.Edit
                 if (item.IsPage)
                     editUrl = editUrl
                         .SetQueryParameter(PathData.VersionIndexQueryKey, item.VersionIndex)
-                        .SetQueryParameter("versionKey", item.GetVersionKey());
+                        .SetQueryParameter(PathData.VersionKeyQueryKey, item.GetVersionKey());
                 else
                     editUrl = editUrl
                         .SetQueryParameter(PathData.VersionIndexQueryKey, Find.ClosestPage(item).VersionIndex)
-                        .SetQueryParameter("versionKey", item.GetVersionKey());
+                        .SetQueryParameter(PathData.VersionKeyQueryKey, item.GetVersionKey());
             }
             else if (item.ID == 0)
             {
@@ -218,7 +218,7 @@ namespace N2.Edit
                     editUrl = editUrl
                         .SetQueryParameter(SelectionUtility.SelectedQueryKey, page.VersionOf.Path)
                         .SetQueryParameter(PathData.VersionIndexQueryKey, page.VersionIndex)
-                        .SetQueryParameter("versionKey", item.GetVersionKey());
+                        .SetQueryParameter(PathData.VersionKeyQueryKey, item.GetVersionKey());
             }
             return editUrl;
         }
@@ -233,13 +233,13 @@ namespace N2.Edit
                     var page = Find.ClosestPage(selectedItem);
                     return url.AppendQuery(SelectionUtility.SelectedQueryKey + "=" + page.Path)
                         .AppendQuery(PathData.VersionIndexQueryKey + "=" + page.VersionIndex)
-                        .AppendQuery("versionKey", selectedItem.GetVersionKey());
+                        .AppendQuery(PathData.VersionKeyQueryKey, selectedItem.GetVersionKey());
                 }
 
                 url = url.AppendQuery(SelectionUtility.SelectedQueryKey + "=" + selectedItem.Path);
                 if (selectedItem.VersionOf.HasValue)
                     url = url.AppendQuery(PathData.VersionIndexQueryKey + "=" + selectedItem.VersionIndex)
-                        .AppendQuery("versionKey", selectedItem.GetVersionKey());
+                        .AppendQuery(PathData.VersionKeyQueryKey, selectedItem.GetVersionKey());
 
             }
             return url;

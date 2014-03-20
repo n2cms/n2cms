@@ -15,9 +15,9 @@ namespace N2.Extensions.Tests.Mvc
             var part = CreateOneItem<TestItem>(10, "whatever", about);
             RequestingUrl("/about/");
 
-            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { item = part }));
+            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2item = part }));
 
-            Assert.That(vpd.VirtualPath, Is.EqualTo("TestItem?page=2&part=10"));
+            Assert.That(vpd.VirtualPath, Is.EqualTo("TestItem?n2page=2&n2part=10"));
         }
 
         [Test]
@@ -26,7 +26,7 @@ namespace N2.Extensions.Tests.Mvc
             var part = CreateOneItem<TestItem>(10, "whatever", about);
             RequestingUrl("/about/");
 
-            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { part = part }));
+            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2part = part }));
 
             var data = RequestingUrl(vpd.VirtualPath);
             Assert.That(data.CurrentItem(), Is.EqualTo(about));
@@ -38,20 +38,20 @@ namespace N2.Extensions.Tests.Mvc
             var part = CreateOneItem<TestItem>(10, "whatever", about);
             RequestingUrl("/about/");
 
-            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { item = part, action = "doit" }));
+            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2item = part, action = "doit" }));
 
-            Assert.That(vpd.VirtualPath, Is.EqualTo("TestItem/doit?page=2&part=10"));
+            Assert.That(vpd.VirtualPath, Is.EqualTo("TestItem/doit?n2page=2&n2part=10"));
         }
 
         [Test]
         public void CanCreate_ActionLink_ToPart()
         {
             var item = CreateOneItem<TestItem>(10, "whatever", root);
-            RequestingUrl("/?part=10");
+            RequestingUrl("/?n2part=10");
 
             var html = htmlHelper.ActionLink(/*text*/"Hello", /*action*/"Submit", new { q = "something", controller = "TestItem" });
 
-            Assert.That(html.ToString(), Is.EqualTo("<a href=\"/TestItem/Submit?q=something&amp;page=1&amp;part=10\">Hello</a>"));
+            Assert.That(html.ToString(), Is.EqualTo("<a href=\"/TestItem/Submit?q=something&amp;n2page=1&amp;n2part=10\">Hello</a>"));
         }
     }
 }

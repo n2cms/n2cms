@@ -35,6 +35,7 @@ namespace N2.Addons.Wiki
             Renderers["Bold"] = new FormatRenderer();
             Renderers["Italics"] = new FormatRenderer();
             Renderers["BoldItalics"] = new FormatRenderer();
+            Renderers["NewLine"] = new NewLineRenderer();
         }
 
         public IRenderer FallbackRenderer { get; set; }

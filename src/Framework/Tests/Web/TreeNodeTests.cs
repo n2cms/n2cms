@@ -24,7 +24,7 @@ namespace N2.Tests.Web
                 tn.RenderControl(writer);
             }
 
-            Assert.AreEqual("<ul><li><a href=\"/name.aspx\">name</a></li></ul>", sb.ToString());
+            Assert.AreEqual("<ul><li><a href=\"/name\">name</a></li></ul>", sb.ToString());
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace N2.Tests.Web
                 tn.RenderControl(writer);
             }
 
-            Assert.AreEqual("<ul><li><a href=\"/root.aspx\">root</a><ul><li><a href=\"/item.aspx\">item</a></li></ul></li></ul>", sb.ToString());
+            Assert.AreEqual("<ul><li><a href=\"/root\">root</a><ul><li><a href=\"/item\">item</a></li></ul></li></ul>", sb.ToString());
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace N2.Tests.Web
                 tn.RenderControl(writer);
             }
 
-            Assert.AreEqual("<li><a href=\"/item.aspx\">item</a></li>", sb.ToString());
+            Assert.AreEqual("<li><a href=\"/item\">item</a></li>", sb.ToString());
             //<li><a href="/item.aspx">item</a></li>]]!=
             //<li><a href="/item.aspx">item</a></li><ul><li><a href="/root.aspx">root</a><ul><li><span>item</span></li></ul></li></ul>
         }

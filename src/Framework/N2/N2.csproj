@@ -161,6 +161,7 @@
     <Compile Include="Definitions\DefinitionEventArgs.cs" />
     <Compile Include="Definitions\IPlaceholder.cs" />
     <Compile Include="Edit\Versioning\VersionInfo.cs" />
+    <Compile Include="Web\HtmlSanitizer.cs" />
     <Compile Include="Web\IStyleable.cs" />
     <Compile Include="Definitions\ITemplateAggregator.cs" />
     <Compile Include="Definitions\TemplateAggregator.cs" />
@@ -176,8 +177,6 @@
     <Compile Include="Edit\Api\IProfileRepository.cs" />
     <Compile Include="Edit\Api\ManagementModule.cs" />
     <Compile Include="Edit\Api\ProfileHandler.cs" />
-    <Compile Include="Edit\ISafeContentRenderer.cs" />
-    <Compile Include="Edit\SafeContentRenderer.cs" />
     <Compile Include="Edit\Installation\InstallationExtensions.cs" />
     <Compile Include="Edit\Installation\MigrationAttribute.cs" />
     <Compile Include="Edit\MetaInfo.cs" />
@@ -783,6 +782,7 @@
     <Compile Include="Web\Wiki\Analyzers\CommentAnalyzer.cs" />
     <Compile Include="Web\Wiki\Analyzers\ExternalLinkAnalyzer.cs" />
     <Compile Include="Web\Wiki\Analyzers\HeadingAnalyzer.cs" />
+    <Compile Include="Web\Wiki\Analyzers\HtmlElementAnalyzer.cs" />
     <Compile Include="Web\Wiki\Analyzers\InternalLinkAnalyzer.cs" />
     <Compile Include="Web\Wiki\Analyzers\ItalicsAnalyzer.cs" />
     <Compile Include="Web\Wiki\Analyzers\ListItemAnalyzerBase.cs" />
@@ -790,6 +790,7 @@
     <Compile Include="Web\Wiki\Analyzers\TemplateAnalyzer.cs" />
     <Compile Include="Web\Wiki\Analyzers\UnorderedListItemAnalyzer.cs" />
     <Compile Include="Web\Wiki\Analyzers\UserInfoAnalyzer.cs" />
+    <Compile Include="Web\Wiki\Analyzers\NewLineAnalyzer.cs" />
     <Compile Include="Web\Wiki\WikiParser.cs" />
     <Compile Include="Web\Parsing\Component.cs" />
     <Compile Include="Web\Parsing\Parser.cs" />

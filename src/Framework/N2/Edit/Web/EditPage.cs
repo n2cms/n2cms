@@ -343,11 +343,11 @@ namespace N2.Edit.Web
 
         #region Properties
 
-	    private ISafeContentRenderer safeContentRenderer;
-	    public ISafeContentRenderer SafeContentRenderer
+        private HtmlSanitizer sanitizer;
+        public HtmlSanitizer Sanitizer
 	    {
-		    get { return safeContentRenderer ?? (safeContentRenderer = Engine.Resolve<ISafeContentRenderer>()); }
-			set { safeContentRenderer = value; }
+            get { return sanitizer ?? (sanitizer = Engine.Resolve<HtmlSanitizer>()); }
+			set { sanitizer = value; }
 	    }
 
         Engine.IEngine engine;

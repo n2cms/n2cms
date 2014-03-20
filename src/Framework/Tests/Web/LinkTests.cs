@@ -15,7 +15,7 @@ namespace N2.Tests.Web
 
             string anchor = Link.To(item).ToString();
 
-            Assert.AreEqual("<a href=\"/yoda.aspx\">yoda</a>", anchor);
+            Assert.AreEqual("<a href=\"/yoda\">yoda</a>", anchor);
         }
 
         [Test]
@@ -26,7 +26,7 @@ namespace N2.Tests.Web
             HtmlAnchor anchor = (HtmlAnchor)Link.To(item).ToControl();
 
             Assert.AreEqual(anchor.InnerHtml, "yoda");
-            Assert.AreEqual(anchor.HRef, "/yoda.aspx");
+            Assert.AreEqual(anchor.HRef, "/yoda");
             Assert.AreEqual(anchor.Title, "");
             Assert.AreEqual(anchor.Target, "");
         }
@@ -41,7 +41,7 @@ namespace N2.Tests.Web
                 .Target("_top")
                 .ToString();
 
-            Assert.AreEqual("<a href=\"/yoda.aspx\" target=\"_top\" title=\"open in new window\">yoda</a>", anchor);
+            Assert.AreEqual("<a href=\"/yoda\" target=\"_top\" title=\"open in new window\">yoda</a>", anchor);
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace N2.Tests.Web
                 .ToControl();
 
             Assert.AreEqual(anchor.InnerHtml, "yoda");
-            Assert.AreEqual(anchor.HRef, "/yoda.aspx");
+            Assert.AreEqual(anchor.HRef, "/yoda");
             Assert.AreEqual(anchor.Title, "open in new window");
             Assert.AreEqual(anchor.Target, "_top");
         }
@@ -81,7 +81,7 @@ namespace N2.Tests.Web
 
             string anchor = Link.To(item).Query("hungry=yes").ToString();
 
-            Assert.AreEqual("<a href=\"/yoda.aspx?hungry=yes\">yoda</a>", anchor);
+            Assert.AreEqual("<a href=\"/yoda?hungry=yes\">yoda</a>", anchor);
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace N2.Tests.Web
 
             string anchor = Link.To(item).AddQuery("hungry", "yes").ToString();
 
-            Assert.AreEqual("<a href=\"/yoda.aspx?hungry=yes\">yoda</a>", anchor);
+            Assert.AreEqual("<a href=\"/yoda?hungry=yes\">yoda</a>", anchor);
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace N2.Tests.Web
 
             string anchor = Link.To(item).Query("feedingTime=soon").AddQuery("hungry", "yes").ToString();
 
-            Assert.AreEqual("<a href=\"/yoda.aspx?feedingTime=soon&amp;hungry=yes\">yoda</a>", anchor);
+            Assert.AreEqual("<a href=\"/yoda?feedingTime=soon&amp;hungry=yes\">yoda</a>", anchor);
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace N2.Tests.Web
 
             string anchor = Link.To(item).AddQuery("feedingTime", "soon").AddQuery("hungry", "yes").ToString();
 
-            Assert.AreEqual("<a href=\"/yoda.aspx?feedingTime=soon&amp;hungry=yes\">yoda</a>", anchor);
+            Assert.AreEqual("<a href=\"/yoda?feedingTime=soon&amp;hungry=yes\">yoda</a>", anchor);
         }
 
         [Test]
@@ -121,7 +121,7 @@ namespace N2.Tests.Web
 
             string anchor = Link.To(item).Query("feedingTime=soon&hungry=yes").AddQuery("hungry", null).ToString();
 
-            Assert.AreEqual("<a href=\"/yoda.aspx?feedingTime=soon\">yoda</a>", anchor);
+            Assert.AreEqual("<a href=\"/yoda?feedingTime=soon\">yoda</a>", anchor);
         }
 
         [Test]
@@ -131,7 +131,7 @@ namespace N2.Tests.Web
 
             string anchor = Link.To(item).Attribute("rel", "/yoda").ToString();
 
-            Assert.AreEqual("<a href=\"/yoda.aspx\" rel=\"/yoda\">yoda</a>", anchor);
+            Assert.AreEqual("<a href=\"/yoda\" rel=\"/yoda\">yoda</a>", anchor);
         }
     }
 }

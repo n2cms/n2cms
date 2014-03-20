@@ -71,7 +71,7 @@ namespace N2.Web.UI.WebControls
                 {
                     int previewIndex;
                     int publishedItemID;
-                    if (int.TryParse(preview, out previewIndex) && int.TryParse(Page.Request.QueryString["item"], out publishedItemID))
+                    if (int.TryParse(preview, out previewIndex) && int.TryParse(Page.Request.QueryString[PathData.ItemQueryKey], out publishedItemID))
                         if (publishedItemID == item.ID)
                             item = Engine.Resolve<IVersionManager>().GetVersion(item, previewIndex);
                 }

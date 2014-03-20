@@ -30,7 +30,7 @@ namespace N2.Web.Parts
 
         private string GetRedirectUrl(NameValueCollection request)
         {
-            ContentItem item = navigator.Navigate(request["item"]);
+            ContentItem item = navigator.Navigate(request[PathData.ItemQueryKey]);
             Url url = editUrlManager.GetEditExistingItemUrl(item);
             if (!string.IsNullOrEmpty(request["returnUrl"]))
                 url = url.AppendQuery("returnUrl", request["returnUrl"]);
