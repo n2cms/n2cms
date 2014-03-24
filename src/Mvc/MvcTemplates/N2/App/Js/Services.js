@@ -135,7 +135,7 @@
 		        return;
 
 		    node.Loading = true;
-		    res.children(res.applySelection({}, node.Current), function (data) {
+		    return res.children(res.applySelection({}, node.Current), function (data) {
 		        node.Children = data.Children;
 		        delete node.Loading;
 		        node.IsPaged = data.IsPaged;

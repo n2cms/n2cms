@@ -15,6 +15,7 @@
         input{vertical-align:middle;margin-bottom:5px;}
         ul,li{margin-top:0;margin-bottom:0;}
         textarea{height:55px;width:70%;background-color:#FFA07A;border:none;font-size:11px}
+		th {text-align:right; vertical-align:top; background-color:#eee; border:solid 1px #fff; }
         .t {font-size:.8em; width:100%;}
         .t thead td{ font-weight:bold; background-color:#eee;}
 		.t th h2 { margin:0; padding:.1em; background-color:#ccc; width:auto;}
@@ -53,12 +54,12 @@
 					<tr><th>Connection</th><td><asp:Label ID="lblDbConnection" runat="server" /></td></tr>
 					<tr><th>Root item</th><td><asp:Label ID="lblRootNode" runat="server" /></td></tr>
 					<tr><th>Start page</th><td><asp:Label ID="lblStartNode" runat="server" /></td></tr>
-					<tr><th>N2 version (recorded)</th><td><%= Status.RecordedAssemblyVersion %> (<%= Status.RecordedFileVersion %>)</td></tr>
-					<tr><th>N2 file version (recorded)</th><td><%= Status.RecordedFileVersion %> (<%= Status.RecordedFileVersion %>)</td></tr>
-					<tr><th rowspan="<%= Status.RecordedFeatures.Length %>">Installed features (recorded)</th>
+					<tr><th>N2 version (recorded)</th><td><%= typeof(N2.Content).Assembly.GetName().Version %> (<%= Status.RecordedAssemblyVersion %>)</td></tr>
+					<tr><th rowspan="<%= 1 + Status.RecordedFeatures.Length %>">Installed features (recorded)</th>
 						<% foreach (string feature in Status.RecordedFeatures){ %>
 						<td><%= feature %></td>
 						<% } %>
+						<td></td>
 					</tr>
 					<tr><th>Needs <a href="Upgrade.aspx">upgrade</a></th><td><%= Status.NeedsUpgrade %></td></tr>
 					<tr><th>Needs <a href="Rebase.aspx">rebase</a></th><td><%= Status.NeedsRebase %></td></tr>

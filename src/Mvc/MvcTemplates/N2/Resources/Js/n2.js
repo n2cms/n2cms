@@ -26,15 +26,18 @@
 var N2 = {};
 
 N2.splitter = function (master, slave, options) {
-    var settings = $.extend({}, N2.splitter.defaults, options),
-        $master = $(master), $slave = $(slave);
-    $(settings.dragbarSelector, $master).mousedown(function (e) {
-        e.preventDefault();
+	var settings = $.extend({}, N2.splitter.defaults, options);
+	var $master = $(master);
+	var $slave = $(slave);
+	$(settings.dragbarSelector).mousedown(function (e) {
+		$master = $(master);
+		$slave = $(slave);
+		e.preventDefault();
         $(document).mousemove(function (e) {
-        	$master.css("width", e.pageX);
+        	$master.css("width", e.pageX + "px");
         	$slave.css({
-        		left: $master.outerWidth(true),
-        		width: ($(window).width() - $master.outerWidth(true) - ($slave.outerWidth(true) - $slave.width()))
+        		left: $master.outerWidth(true) + "px",
+        		width: ($(window).width() - $master.outerWidth(true) - ($slave.outerWidth(true) - $slave.width())) + "px"
         	});
         	$("html").css("cursor", "w-resize")
         });

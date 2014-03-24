@@ -136,7 +136,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 
 	decorate(FrameContext, "refresh", function (ctx) {
 		// legacy refresh call from frame
-		if (ctx.force) {
+	    if (ctx.force) {
 			$scope.reloadNode(ctx.path);
 			$scope.reloadChildren(ctx.path);
 			if (ctx.previewUrl) {
@@ -150,13 +150,13 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 			return;
 
 		if (!findNodeRecursive($scope.Context.Content, ctx.path)) {
-			$scope.reloadChildren(getParentPath(ctx.path), function () {
-				if (ctx.force) {
-					$scope.expandTo(ctx.path, /*select*/true);
-				}
+			$scope.reloadChildren(getParentPath(ctx.path), /*callback*/function () {
+			    $scope.expandTo(ctx.path, /*select*/true);
+			}, /*pathNotFound*/function () {
+				$scope.reloadTree(/*selectedPath*/ctx.path);
 			});
 		} else if (ctx.force) {
-			$scope.expandTo(ctx.path, /*select*/true);
+		    $scope.expandTo(ctx.path, /*select*/true);
 		}
 	});
 
@@ -235,7 +235,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 	};
 
 	$scope.expandTo = function (nodeOrPath, select) {
-		var path = typeof nodeOrPath == "string" ? nodeOrPath : nodeOrPath && nodeOrPath.Current && nodeOrPath.Current.Path;
+	    var path = typeof nodeOrPath == "string" ? nodeOrPath : nodeOrPath && nodeOrPath.Current && nodeOrPath.Current.Path;
 		if (!path)
 			return;
 		var branch = findBranch($scope.Context.Content, path);
@@ -247,8 +247,15 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 		}
 	}
 
+	$scope.reloadTree = function (selectedPath) {
+		Content.branch(Content.applySelection({}, selectedPath), function (data) {
+			$scope.Context.Content = data.Branch;
+			$scope.select(selectedPath);
+		});
+	}
+
 	$scope.select = function (nodeOrPath, versionIndex, keepFlags, forceContextRefresh, preventReload, disregardNodeUrl) {
-		if (typeof nodeOrPath == "string") {
+	    if (typeof nodeOrPath == "string") {
 			var path = nodeOrPath;
 			var node = findNodeRecursive($scope.Context.Content, path);
 			if (!node) {
@@ -285,15 +292,18 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 		}
 	};
 
-	$scope.reloadChildren = function(parentPathOrNode, callback) {
+	$scope.reloadChildren = function(parentPathOrNode, callback, pathNotFound) {
 		var node = typeof parentPathOrNode == "string"
 			? findNodeRecursive($scope.Context.Content, parentPathOrNode)
 			: parentPathOrNode;
 
-		Content.loadChildren(node, callback);
+		if (node)
+		    Content.loadChildren(node, callback);
+		else if (pathNotFound)
+		    pathNotFound(parentPathOrNode);
 	};
 
-	$scope.reloadNode = function(pathOrNode, callback) {
+	$scope.reloadNode = function (pathOrNode, callback) {
 		var node = typeof pathOrNode == "string"
 			? findNodeRecursive($scope.Context.Content, pathOrNode)
 			: pathOrNode;
