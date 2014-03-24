@@ -58,5 +58,7 @@ namespace N2.Edit.Trash
         void PurgeAll(Action<PurgingStatus> onProgress = null);
 
         void Purge(ContentItem itemToPurge, Action<PurgingStatus> onProgress = null);
-    }
+
+		void HandleMoved(ContentItem from);
+	}
 }

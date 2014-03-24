@@ -90,7 +90,8 @@ namespace N2.Edit
             Utility.MoveToIndex(siblings, item, index);
             using (var tx = persister.Repository.BeginTransaction())
             {
-                foreach (ContentItem updatedItem in Utility.UpdateSortOrder(siblings))
+				persister.Repository.SaveOrUpdate(item);
+				foreach (ContentItem updatedItem in Utility.UpdateSortOrder(siblings))
                 {
                     persister.Repository.SaveOrUpdate(updatedItem);
                 }
