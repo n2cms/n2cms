@@ -220,6 +220,7 @@
     <Compile Include="Engine\TypeFinderTests.cs" />
     <Compile Include="Fakes\FakeCacheWrapper.cs" />
     <Compile Include="Fakes\FakeProvider.cs" />
+    <Compile Include="Fakes\FakeUrlParser.cs" />
     <Compile Include="Installation\ImageSizesMigrationTests.cs" />
     <Compile Include="PersistenceTestHelper.cs" />
     <Compile Include="Persistence\ChildrenTests.cs" />
@@ -259,6 +260,7 @@
     <Compile Include="Persistence\NH\TagsRepositoryTests.cs" />
     <Compile Include="Persistence\SearchHelperTests.cs" />
     <Compile Include="Persistence\Sources\ContentSourceTests.cs" />
+    <Compile Include="Persistence\Xml\XmlRepositoryTests.cs" />
     <Compile Include="Plugin\Scheduling\Actions.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="Web\SlugTests.cs" />
@@ -396,7 +398,6 @@
     <Compile Include="Persistence\DatabasePreparingBase.cs" />
     <Compile Include="Persistence\Definitions\PersistableItem1.cs" />
     <Compile Include="Persistence\Definitions\PersistableItem2.cs" />
-    <Compile Include="Persistence\FinderFixture.cs" />
     <Compile Include="Persistence\NH\ItemFinderTests.cs" />
     <Compile Include="Persistence\NH\ItemRepositoryTests.cs" />
     <Compile Include="Persistence\NH\PersisterTests.cs" />

@@ -31,6 +31,7 @@ using System.Collections;
 using System.IO;
 using N2.Engine.Globalization;
 using System.Text;
+using N2.Edit.FileSystem;
 
 namespace N2.Tests
 {
@@ -250,8 +251,7 @@ namespace N2.Tests
                 versionRepository = new FakeRepository<ContentVersion>();
             var importer = new Importer(persister,
                 new ItemXmlReader(definitions,
-                    activator,
-                    persister.Repository),
+                    activator),
                 new Fakes.FakeMemoryFileSystem());
             var exporter = new Exporter(
                 new ItemXmlWriter(
@@ -340,5 +340,15 @@ namespace N2.Tests
         //      new EditableHierarchyBuilder(new FakeSecurityManager(), new EngineSection()),
         //      new EditSection());
         //}
-    }
+
+		internal static IUrlParser SetupUrlParser()
+		{
+			return new FakeUrlParser();
+		}
+
+		internal static N2.Edit.FileSystem.IFileSystem SetupFileSystem()
+		{
+			return new FakeMemoryFileSystem();
+		}
+	}
 }

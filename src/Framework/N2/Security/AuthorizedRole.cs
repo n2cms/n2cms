@@ -67,7 +67,8 @@ namespace N2.Security
         }
 
         /// <summary>Gets or sets the item this AuthorizedRole referrs to.</summary>
-        public virtual ContentItem EnclosingItem
+		[System.Xml.Serialization.XmlIgnore]
+		public virtual ContentItem EnclosingItem
         {
             get { return enclosingItem; }
             set { enclosingItem = value; }

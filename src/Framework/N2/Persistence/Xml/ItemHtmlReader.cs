@@ -6,7 +6,7 @@ using System.Xml.XPath;
 using N2.Engine;
 using N2.Persistence.Serialization;
 
-namespace N2.Persistence.Html
+namespace N2.Persistence.Xml
 {
     [Service]
     [Service(typeof(IItemXmlReader))]

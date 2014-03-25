@@ -39,6 +39,8 @@ namespace N2.Persistence
                     : DefaultAccessor(ID ?? 0);
             }
         }
+
+		[System.Xml.Serialization.XmlIgnore]
         public Func<object, T> ValueAccessor { get; set; }
 
         void IJsonWriter.Write(System.IO.TextWriter writer)

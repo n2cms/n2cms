@@ -173,6 +173,11 @@ namespace N2.Configuration
                     configurationKeys.Add("xml");
                     break;
             }
+
+			if ((Flavour & DatabaseFlavour.NoSql) == DatabaseFlavour.NoSql)
+				configurationKeys.Add("nosql");
+			else
+				configurationKeys.Add("sql");
         }
 
     }

@@ -10,20 +10,20 @@ namespace N2.Persistence.Serialization
     public class Importer
     {
         private Engine.Logger<Importer> logger; // TODO: Figure out how/where this gets initialized.
-        private readonly IPersister _persister;
-        private readonly IItemXmlReader _reader;
-        private readonly IFileSystem _fs;
+        private readonly IPersister persister;
+        private readonly IItemXmlReader reader;
+        private readonly IFileSystem fs;
 
         public Importer(IPersister persister, IItemXmlReader reader, IFileSystem fs)
         {
-            _persister = persister;
-            _reader = reader;
-            _fs = fs;
+			this.persister = persister;
+			this.reader = reader;
+            this.fs = fs;
         }
 
         public IPersister Persister
         {
-            get { return _persister; }
+            get { return persister; }
         } 
 
         public virtual IImportRecord Read(string path)
@@ -51,7 +51,10 @@ namespace N2.Persistence.Serialization
             if (2 != version)
                 throw new WrongVersionException("Invalid export version, expected 2 but was " + version);
 
-            return _reader.Read(navigator);
+            var record = reader.Read(navigator);
+			foreach (var item in record.ReadItems)
+				item.VersionOf.ValueAccessor = Persister.Repository.Get;
+			return record;
         }
 
         protected virtual XPathNavigator CreateNavigator(TextReader input)
@@ -70,7 +73,7 @@ namespace N2.Persistence.Serialization
             if ((options & ImportOption.AllItems) == ImportOption.AllItems)
             {
                 record.RootItem.AddTo(destination);
-                _persister.SaveRecursive(record.RootItem);
+                persister.SaveRecursive(record.RootItem);
             }
             else if ((options & ImportOption.Children) == ImportOption.Children)
             {
@@ -79,7 +82,7 @@ namespace N2.Persistence.Serialization
                 {
                     ContentItem child = record.RootItem.Children[0];
                     child.AddTo(destination);
-                    _persister.SaveRecursive(child);
+                    persister.SaveRecursive(child);
                 }
             }
             else
@@ -93,7 +96,7 @@ namespace N2.Persistence.Serialization
                 {
                     try
                     {
-                        a.Import(_fs);
+                        a.Import(fs);
                     }
                     catch (Exception ex)
                     {

@@ -11,7 +11,7 @@ using N2.Edit.FileSystem;
 using System.Linq;
 using N2.Edit.Versioning;
 
-namespace N2.Persistence.Html
+namespace N2.Persistence.Xml
 {
     [Service]
     [Service(typeof(IItemXmlWriter))]

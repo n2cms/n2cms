@@ -95,7 +95,8 @@ namespace N2.Details
         } 
 
         /// <summary>Gets or sets the the item containing this collection.</summary>
-        public virtual N2.ContentItem EnclosingItem
+		[System.Xml.Serialization.XmlIgnore]
+		public virtual N2.ContentItem EnclosingItem
         {
             get { return enclosingItem; }
             set { enclosingItem = value; }

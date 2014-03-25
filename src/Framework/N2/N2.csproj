@@ -83,6 +83,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Extensions" />
@@ -161,6 +162,8 @@
     <Compile Include="Definitions\DefinitionEventArgs.cs" />
     <Compile Include="Definitions\IPlaceholder.cs" />
     <Compile Include="Edit\Versioning\VersionInfo.cs" />
+    <Compile Include="Persistence\Xml\ContentDataContractResolver.cs" />
+    <Compile Include="Persistence\Xml\XmlInstallationManager.cs" />
     <Compile Include="Web\HtmlSanitizer.cs" />
     <Compile Include="Web\IStyleable.cs" />
     <Compile Include="Definitions\ITemplateAggregator.cs" />
@@ -574,8 +577,8 @@
     <Compile Include="Persistence\FilesystemTransaction.cs" />
     <Compile Include="Persistence\NH\DetailCollectionFactory.cs" />
     <Compile Include="Persistence\NH\PersistentDetailCollectionList.cs" />
-    <Compile Include="Persistence\Serialization\Html\ItemHtmlWriter.cs" />
-    <Compile Include="Persistence\Serialization\Html\ItemHtmlReader.cs" />
+    <Compile Include="Persistence\Xml\ItemHtmlWriter.cs" />
+    <Compile Include="Persistence\Xml\ItemHtmlReader.cs" />
     <Compile Include="Persistence\IContentItemRepository.cs" />
     <Compile Include="Persistence\Behaviors\ISavingBehavior.cs" />
     <Compile Include="Persistence\IPersistableProperty.cs" />
@@ -625,7 +628,7 @@
     <Compile Include="Persistence\Search\ContentIndexer.cs" />
     <Compile Include="Persistence\Search\SortFieldData.cs" />
     <Compile Include="Persistence\Serialization\ChildXmlReader.cs" />
-    <Compile Include="Persistence\Serialization\Html\XmlRepository.cs" />
+    <Compile Include="Persistence\Xml\XmlRepository.cs" />
     <Compile Include="Persistence\Serialization\UnresolvedLink.cs" />
     <Compile Include="Persistence\Sources\ContentSource.cs" />
     <Compile Include="Persistence\Finder\INullableCriteriaOfT.cs" />

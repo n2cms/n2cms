@@ -22,26 +22,18 @@ namespace N2.Persistence.Serialization
         private readonly IDefinitionManager definitions;
         private readonly ContentActivator activator;
         private readonly IDictionary<string, IXmlReader> readers;
-        bool _ignoreMissingTypes = false;
-        private IRepository<ContentItem> repository;
 
-        public ItemXmlReader(IDefinitionManager definitions, ContentActivator activator, IRepository<ContentItem> repository)
-        {
-            if (definitions == null)
-                throw new ArgumentNullException("definitions");
+		public ItemXmlReader(IDefinitionManager definitions, ContentActivator activator)
+		{
+			if (definitions == null)
+				throw new ArgumentNullException("definitions");
 
+			this.definitions = definitions;
+			this.activator = activator;
+			this.readers = DefaultReaders();
+		}
 
-            this.definitions = definitions;
-            this.activator = activator;
-            this.readers = DefaultReaders();
-            this.repository = repository;
-        }
-
-        public bool IgnoreMissingTypes
-        {
-            get { return _ignoreMissingTypes; }
-            set { _ignoreMissingTypes = value; }
-        }
+		public bool IgnoreMissingTypes { get; set; }
 
         private static IDictionary<string, IXmlReader> DefaultReaders()
         {
@@ -70,7 +62,7 @@ namespace N2.Persistence.Serialization
                 catch (DefinitionNotFoundException ex)
                 {
                     journal.Error(ex);
-                    if (!_ignoreMissingTypes)
+                    if (!IgnoreMissingTypes)
                         throw;
                 }
             }
@@ -125,7 +117,6 @@ namespace N2.Persistence.Serialization
             if (attributes.ContainsKey("versionOf"))
             {
                 item.VersionOf.ID = Convert.ToInt32(attributes["versionOf"]);
-                item.VersionOf.ValueAccessor = repository.Get;
             }
 
             if (attributes.ContainsKey("parent"))
@@ -149,7 +140,7 @@ namespace N2.Persistence.Serialization
                 if (parentItem != null)
                     item.AddTo(parentItem);
                 else
-                    journal.Register(parentID, (laterParent) => item.AddTo(laterParent), isChild: true);
+                    journal.RegisterParentRelation(parentID, item);
             }
             if (!string.IsNullOrEmpty(parentVersionKey))
             {
