@@ -35,7 +35,7 @@ namespace N2.Web.Compilation
             get { return UI.ItemUtility.CurrentContentItem; }
         }
 
-        /// <summary>Gets the value of an exression.</summary>
+        /// <summary>Gets the value of an expression.</summary>
         /// <param name="expression">The expression whose value to get.</param>
         /// <returns>The value a given expression.</returns>
         public static object GetCurrentItemValue(string expression)
