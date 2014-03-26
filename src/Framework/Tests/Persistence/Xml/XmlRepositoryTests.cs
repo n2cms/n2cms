@@ -45,7 +45,7 @@ namespace N2.Tests.Persistence.NH
         public override void SetUp()
         {
             base.SetUp();
-            repository = new XmlContentRepository(definitions, writer, reader);
+            repository = new XmlContentRepository(definitions, writer, reader, new N2.Configuration.ConfigurationManagerWrapper());
         }
 
 		[TearDown]

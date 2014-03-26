@@ -13,6 +13,7 @@ using System.Web.Hosting;
 using System.Xml;
 using System.Xml.XPath;
 using System.Threading;
+using N2.Configuration;
 
 namespace N2.Persistence.Xml
 {
@@ -26,12 +27,13 @@ namespace N2.Persistence.Xml
 		private IItemXmlWriter writer;
 		private IDefinitionManager definitions;
 
-		public XmlContentRepository(IDefinitionManager definitions, IItemXmlWriter writer, IItemXmlReader reader)
-			: base(definitions)
+		public XmlContentRepository(IDefinitionManager definitions, IItemXmlWriter writer, IItemXmlReader reader, ConfigurationManagerWrapper config)
+			: base(definitions, config)
 		{
 			this.definitions = definitions;
 			this.writer = writer;
 			this.reader = reader;
+
 		}
 
 		protected override XmlRepository<ContentItem>.Envelope Load(int id)
@@ -172,18 +174,18 @@ namespace N2.Persistence.Xml
 		protected ITransaction activeTransaction;
 		private bool isInitialized;
 
-		public string DataDirectoryPhysical
-		{
-			get
-			{
-				return HostingEnvironment.MapPath("/App_Data/XmlRepository/" + typeof(TEntity).Name)
-					?? Environment.CurrentDirectory + "\\App_Data\\XmlRepository\\" + typeof(TEntity).Name;
-			}
-		}
+		public string DataDirectoryPhysical { get; set; }
 
-		public XmlRepository(IDefinitionManager definitions)
+		public XmlRepository(IDefinitionManager definitions, ConfigurationManagerWrapper config)
 		{
 			this.definitions = definitions;
+
+			var connectionString = config.GetConnectionString();
+			var virtualPath = connectionString.Split(';').Where(x => x.StartsWith("XmlRepositoryPath=")).Select(x => x.Split('=')).Where(x => x.Length > 1).Select(x => x[1]).FirstOrDefault()
+				?? "~/App_Data/XmlRepository/";
+
+			DataDirectoryPhysical = HostingEnvironment.MapPath("~/" + virtualPath.Trim('~', '/') + "/" + typeof(TEntity).Name)
+				?? Environment.CurrentDirectory + "\\" + virtualPath.Trim('~', '/').Replace('/', '\\') + "\\" + typeof(TEntity).Name;
 
 			if (!Directory.Exists(DataDirectoryPhysical))
 			{
