@@ -12,6 +12,7 @@ using System.Runtime.Serialization;
 using System.Web.Hosting;
 using System.Xml;
 using System.Xml.XPath;
+using System.Threading;
 
 namespace N2.Persistence.Xml
 {
@@ -79,7 +80,9 @@ namespace N2.Persistence.Xml
 			using (var fs = File.Open(path, FileMode.Create))
 			using (var xw = new XmlTextWriter(fs, Encoding.Default))
 			{
-				writer.Write(envelope.Entity, Serialization.ExportOptions.ExcludeAttachments, xw);
+				writer.Write(envelope.Entity, Serialization.ExportOptions.ExcludeAttachments | Serialization.ExportOptions.ExcludeChildren, xw);
+				xw.Flush();
+				fs.Flush();
 			}
 		}
 
@@ -93,12 +96,40 @@ namespace N2.Persistence.Xml
 
 		public IEnumerable<ContentItem> FindReferencing(ContentItem linkTarget)
 		{
-			throw new NotImplementedException();
+			Initialize();
+			return FindReferencing(new [] { linkTarget.ID });
+		}
+
+		private IEnumerable<ContentItem> FindReferencing(IEnumerable<int> itemIDs)
+		{
+			return cache.Values
+				.Select(v => v.Entity)
+				.Where(ci =>
+					ci.Details.Any(d => d.LinkedItem.HasValue && itemIDs.Contains(d.LinkedItem.ID.Value))
+					|| ci.DetailCollections.SelectMany(dc => dc.Details).Any(d => d.LinkedItem.HasValue && itemIDs.Contains(d.LinkedItem.ID.Value)));
 		}
 
 		public int RemoveReferencesToRecursive(ContentItem target)
 		{
-			throw new NotImplementedException();
+			int count = 0;
+			var descendantIDs = new HashSet<int>(FindDescendants(target, null).Select(ci => ci.ID));
+			foreach (var referencing in FindReferencing(descendantIDs))
+			{
+				foreach (var detail in referencing.Details.Where(d => d.LinkedItem.HasValue && descendantIDs.Contains(d.LinkedItem.ID.Value)).ToList())
+				{
+					referencing.Details.Remove(detail);
+					count++;
+				}
+				foreach (var collection in referencing.DetailCollections)
+				{
+					foreach (var detail in collection.Details.Where(d => d.LinkedItem.HasValue && descendantIDs.Contains(d.LinkedItem.ID.Value)).ToList())
+					{
+						collection.Details.Remove(detail);
+						count++;
+					}
+				}
+			}
+			return count;
 		}
 		
         public IEnumerable<DiscriminatorCount> FindDescendantDiscriminators(ContentItem ancestor)
@@ -139,6 +170,16 @@ namespace N2.Persistence.Xml
 		private IDefinitionManager definitions;
 		protected IDictionary<object, Envelope> cache = new Dictionary<object, Envelope>();
 		protected ITransaction activeTransaction;
+		private bool isInitialized;
+
+		public string DataDirectoryPhysical
+		{
+			get
+			{
+				return HostingEnvironment.MapPath("/App_Data/XmlRepository/" + typeof(TEntity).Name)
+					?? Environment.CurrentDirectory + "\\App_Data\\XmlRepository\\" + typeof(TEntity).Name;
+			}
+		}
 
 		public XmlRepository(IDefinitionManager definitions)
 		{
@@ -164,15 +205,6 @@ namespace N2.Persistence.Xml
 
 			public int UnresolvedParentID { get; set; }
 		}
-
-        protected string DataDirectoryPhysical
-        {
-            get 
-			{
-				return HostingEnvironment.MapPath("/App_Data/XmlRepository/" + typeof(TEntity).Name)
-					?? Environment.CurrentDirectory + "\\App_Data\\XmlRepository\\" + typeof(TEntity).Name;
-			}
-        }
 
         public virtual TEntity Get(object id)
         {
@@ -210,11 +242,14 @@ namespace N2.Persistence.Xml
 		{
 			if (isInitialized)
 				return;
+
 			lock (this)
 			{
-				isInitialized = true;
 				foreach (var path in Directory.GetFiles(DataDirectoryPhysical, "*.xml"))
 					Load(path);
+				isInitialized = true;
+				if (cache.Count > 0)
+					maxId = cache.Values.Max(v => (int)Utility.GetProperty(v.Entity, "ID"));
 			}
 		}
 
@@ -236,8 +271,8 @@ namespace N2.Persistence.Xml
 
 			if (!File.Exists(path))
 			{
-				cache[id] = new Envelope { Empty = true };
-				return null;
+				cache[id] = envelope = new Envelope { Empty = true };
+				return envelope;
 			}
 
 			envelope = Read(path);
@@ -284,10 +319,9 @@ namespace N2.Persistence.Xml
             else
             {
 				var path = GetPath(item);
-				Write(new Envelope { Entity = item }, path);
-				//var s = new System.Xml.Serialization.XmlSerializer(item.GetType());
-				//using (var fs = File.CreateText(GetPath(item)))
-				//	s.Serialize(fs, item);
+				var envelope = new Envelope { Entity = item };
+				Write(envelope, path);
+				cache[GetOrAssignId(item)] = envelope;
             }
         }
 
@@ -320,13 +354,17 @@ namespace N2.Persistence.Xml
 		int maxId = 0;
 		private int GetOrAssignId(TEntity item)
 		{
-			lock(this)
+			Initialize();
+			int id = (int)Utility.GetProperty(item, "ID");
+			if (id == 0)
 			{
-				int id = (int)Utility.GetProperty(item, "ID");
-				if (id == 0)
-					Utility.SetProperty(item, "ID", ++maxId);
-				return maxId;
+				lock (this)
+				{
+					id = ++maxId;
+					Utility.SetProperty(item, "ID", id);
+				}
 			}
+			return id;
 		}
 
         public bool Exists()
@@ -365,10 +403,12 @@ namespace N2.Persistence.Xml
         }
 
         public event EventHandler Disposed;
-		private bool isInitialized;
         
 		public virtual void Dispose()
         {
+			cache.Clear();
+			isInitialized = false;
+
             if (Disposed != null)
                 Disposed(this, new EventArgs());
         }

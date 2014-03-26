@@ -17,6 +17,8 @@ namespace N2.Persistence.Serialization
         /// <summary>Don't export children that are not parts.</summary>
         ExcludeParts = 4,
         /// <summary>Don't export children that are not parts.</summary>
-        ExcludePages = 8
+        ExcludePages = 8,
+        /// <summary>Don't export children at all.</summary>
+        ExcludeChildren = ExcludeParts | ExcludePages
     }
 }

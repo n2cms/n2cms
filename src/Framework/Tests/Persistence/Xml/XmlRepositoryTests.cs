@@ -9,6 +9,7 @@ using NUnit.Framework;
 using Shouldly;
 using N2.Persistence.Xml;
 using N2.Persistence.Serialization;
+using System.IO;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -16,6 +17,9 @@ namespace N2.Tests.Persistence.NH
     public class XmlRepositoryTests : ItemTestsBase
     {
 		XmlContentRepository repository;
+		private ItemXmlWriter writer;
+		private ItemXmlReader reader;
+		private N2.Definitions.IDefinitionManager definitions;
 
         protected override T CreateOneItem<T>(int id, string name, ContentItem parent)
         {
@@ -24,20 +28,33 @@ namespace N2.Tests.Persistence.NH
             return item;
         }
 
+		[TestFixtureSetUp]
+		public void TestFixtureSetUp()
+		{
+			definitions = TestSupport.SetupDefinitions(typeof(Definitions.PersistableItem), typeof(Definitions.PersistablePart));
+			writer = new ItemXmlWriter(
+						definitions,
+						TestSupport.SetupUrlParser(),
+						TestSupport.SetupFileSystem());
+			reader = new ItemXmlReader(
+						definitions,
+						TestSupport.SetupContentActivator());
+		}
+
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
-			var definitions = TestSupport.SetupDefinitions(typeof(Definitions.PersistableItem), typeof(Definitions.PersistablePart));
-			var writer = new ItemXmlWriter(
-						definitions,
-						TestSupport.SetupUrlParser(),
-						TestSupport.SetupFileSystem());
-			var reader = new ItemXmlReader(
-						definitions,
-						TestSupport.SetupContentActivator());
             repository = new XmlContentRepository(definitions, writer, reader);
         }
+
+		[TearDown]
+		public override void TearDown()
+		{
+			base.TearDown();
+			foreach (var file in Directory.GetFiles(repository.DataDirectoryPhysical, "*.xml"))
+				File.Delete(file);
+		}
 
         [Test]
         public void CanSave()
@@ -108,6 +125,25 @@ namespace N2.Tests.Persistence.NH
 				var parent = repository.Get(parentID);
 				var child = repository.Get(itemID);
 				child.Parent.ShouldBe(parent);
+			}
+		}
+
+		[Test]
+		public void Details_AreWritten()
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "item", null);
+			item["hello"] = "world";
+
+			using (repository)
+			{
+				repository.SaveOrUpdate(item);
+			}
+
+			using (repository)
+			{
+				var loadedItem = repository.Get(item.ID);
+				loadedItem["hello"].ShouldBe("world");
+				loadedItem.ShouldNotBeSameAs(item);
 			}
 		}
 
@@ -264,18 +300,21 @@ namespace N2.Tests.Persistence.NH
         public void FindReferencing_ShouldReturn_ItemsThatLinkToTarget()
         {
             ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "page", null);
-            var child1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", root);
-            var child2 = CreateOneItem<Definitions.PersistableItem>(0, "page2", root);
+            var page1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", root);
+            var page2 = CreateOneItem<Definitions.PersistableItem>(0, "page2", root);
 
-            child1["Link"] = child2;
-            child2["Link"] = child1;
+			repository.SaveOrUpdate(root);
+			repository.SaveOrUpdate(page1);
+			repository.SaveOrUpdate(page2);
 
-            repository.SaveOrUpdate(root);
-            repository.Flush();
+            page1["Link"] = page2;
+			repository.SaveOrUpdate(page1);
+			page2["Link"] = page1;
+			repository.SaveOrUpdate(page2);
 
-            var results = repository.FindReferencing(child2);
+            var results = repository.FindReferencing(page2);
 
-            results.Single().ShouldBe(child1);
+            results.Single().ShouldBe(page1);
         }
 
         [Test]
@@ -319,11 +358,18 @@ namespace N2.Tests.Persistence.NH
             var child1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", root);
             var grandchild1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", child1);
             var child2 = CreateOneItem<Definitions.PersistableItem>(0, "page2", root);
+
+			repository.SaveOrUpdate(root);
+			repository.SaveOrUpdate(child1);
+			repository.SaveOrUpdate(grandchild1);
+			repository.SaveOrUpdate(child2);
+
             child1["Link"] = grandchild1;
-            grandchild1["Link"] = grandchild1;
-            child2["Link"] = grandchild1;
-            repository.SaveOrUpdate(root);
-            repository.Flush();
+			repository.SaveOrUpdate(child1);
+			grandchild1["Link"] = grandchild1;
+			repository.SaveOrUpdate(grandchild1);
+			child2["Link"] = grandchild1;
+			repository.SaveOrUpdate(child2);
 
             repository.RemoveReferencesToRecursive(child1);
 
