@@ -26,16 +26,16 @@ namespace N2.Persistence.Serialization
     public class ItemXmlWriter : IItemXmlWriter
     {
         private readonly IDefinitionManager definitions;
-        private readonly IUrlParser parser;
+        //private readonly IUrlParser parser;
         private readonly IFileSystem fs;
 
-        public ItemXmlWriter(IDefinitionManager definitions, IUrlParser parser, IFileSystem fs)
+		public ItemXmlWriter(IDefinitionManager definitions, /*IUrlParser parser, */IFileSystem fs)
         {
             if (definitions == null)
                 throw new ArgumentNullException("definitions");
 
             this.definitions = definitions;
-            this.parser = parser;
+            //this.parser = parser;
             this.fs = fs;
         }
 
@@ -118,7 +118,7 @@ namespace N2.Persistence.Serialization
             itemElement.WriteAttribute("published", item.Published);
             itemElement.WriteAttribute("expires", item.Expires);
             itemElement.WriteAttribute("sortOrder", item.SortOrder);
-            itemElement.WriteAttribute("url", parser == null ? item.Url : (string)parser.BuildUrl(item));
+            itemElement.WriteAttribute("url", item.Url);
             itemElement.WriteAttribute("visible", item.Visible);
             itemElement.WriteAttribute("savedBy", item.SavedBy);
             itemElement.WriteAttribute("typeName", SerializationUtility.GetTypeAndAssemblyName(item.GetContentType()));

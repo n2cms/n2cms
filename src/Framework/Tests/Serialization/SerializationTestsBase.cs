@@ -106,7 +106,7 @@ namespace N2.Tests.Serialization
     {
         protected override IItemXmlWriter CreateWriter()
         {
-            return (new ItemXmlWriter(definitions, parser, new FakeMemoryFileSystem()));
+            return (new ItemXmlWriter(definitions, new FakeMemoryFileSystem()));
         }
 
         protected override Exporter CreateExporter()
@@ -116,7 +116,7 @@ namespace N2.Tests.Serialization
 
         protected override Exporter CreateExporter(IFileSystem fs)
         {
-            return new Exporter(new ItemXmlWriter(definitions, parser, fs));
+            return new Exporter(new ItemXmlWriter(definitions, fs));
         }
 
         protected override IItemXmlReader CreateReader()

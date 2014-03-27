@@ -7,8 +7,8 @@ using NHibernate.Criterion;
 
 namespace N2.Persistence.NH
 {
-    [Service(typeof(IContentItemRepository), Key = "n2.ContentItemRepository")]
-    [Service(typeof(IRepository<ContentItem>), Key = "n2.repository.ContentItem")]
+	[Service(typeof(IContentItemRepository), Configuration = "sql", Key = "n2.ContentItemRepository")]
+	[Service(typeof(IRepository<ContentItem>), Configuration = "sql", Key = "n2.repository.ContentItem")]
     public class ContentItemRepository : NHRepository<ContentItem>, IContentItemRepository
     {
         public ContentItemRepository(ISessionProvider sessionProvider)

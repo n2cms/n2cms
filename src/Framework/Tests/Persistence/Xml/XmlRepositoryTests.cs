@@ -34,7 +34,6 @@ namespace N2.Tests.Persistence.NH
 			definitions = TestSupport.SetupDefinitions(typeof(Definitions.PersistableItem), typeof(Definitions.PersistablePart));
 			writer = new ItemXmlWriter(
 						definitions,
-						TestSupport.SetupUrlParser(),
 						TestSupport.SetupFileSystem());
 			reader = new ItemXmlReader(
 						definitions,

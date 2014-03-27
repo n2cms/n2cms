@@ -18,6 +18,8 @@ using N2.Configuration;
 namespace N2.Persistence.Xml
 {
 	[Service]
+	[Service(typeof(IRepository<ContentItem>), 
+		Configuration = "xml")]
 	[Service(typeof(IContentItemRepository),
 		Configuration = "xml",
 		Replaces = typeof(IContentItemRepository))]
@@ -82,7 +84,10 @@ namespace N2.Persistence.Xml
 			using (var fs = File.Open(path, FileMode.Create))
 			using (var xw = new XmlTextWriter(fs, Encoding.Default))
 			{
-				writer.Write(envelope.Entity, Serialization.ExportOptions.ExcludeAttachments | Serialization.ExportOptions.ExcludeChildren, xw);
+#if DEBUG
+				xw.Formatting = Formatting.Indented;
+#endif
+				writer.WriteSingleItem(envelope.Entity, Serialization.ExportOptions.ExcludeAttachments | Serialization.ExportOptions.ExcludeChildren, xw);
 				xw.Flush();
 				fs.Flush();
 			}
@@ -91,7 +96,9 @@ namespace N2.Persistence.Xml
 		public IEnumerable<ContentItem> FindDescendants(ContentItem ancestor, string discriminator)
 		{
 			Initialize();
-			return cache.Values.Where(e => e.Entity == ancestor || e.Entity.AncestralTrail.StartsWith(ancestor.GetTrail()))
+			return cache.Values
+				.Where(v => !v.Empty)
+				.Where(e => e.Entity == ancestor || e.Entity.AncestralTrail.StartsWith(ancestor.GetTrail()))
 				.Where(e => discriminator == null || definitions.GetDefinition(e.Entity).Discriminator == discriminator)
 				.Select(e => e.Entity);
 		}
@@ -105,6 +112,7 @@ namespace N2.Persistence.Xml
 		private IEnumerable<ContentItem> FindReferencing(IEnumerable<int> itemIDs)
 		{
 			return cache.Values
+				.Where(v => !v.Empty)
 				.Select(v => v.Entity)
 				.Where(ci =>
 					ci.Details.Any(d => d.LinkedItem.HasValue && itemIDs.Contains(d.LinkedItem.ID.Value))
@@ -165,7 +173,7 @@ namespace N2.Persistence.Xml
     [Service]
     [Service(typeof(IRepository<>),
         Configuration = "xml",
-        Replaces = typeof(NH.NHRepository<>))]
+        Replaces = typeof(IRepository<>))]
     public class XmlRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
 		Logger<XmlRepository<TEntity>> logger;
@@ -225,7 +233,7 @@ namespace N2.Persistence.Xml
         {
 			Initialize();
 			if (propertyValuesToMatchAll == null || propertyValuesToMatchAll.Length == 0)
-				return cache.Values.Select(e => e.Entity);
+				return cache.Values.Where(v => !v.Empty).Select(e => e.Entity);
 			else
 				return cache.Where(e => propertyValuesToMatchAll.All(condition => condition.IsMatch(e.Value.Entity)))
 					.Select(e => e.Value.Entity);
@@ -234,10 +242,9 @@ namespace N2.Persistence.Xml
         public IEnumerable<TEntity> Find(IParameter parameters)
         {
 			Initialize();
-            return from w in cache
-                   let x = w.Value
-                   where parameters.IsMatch(x.Entity)
-                   select x.Entity;
+            return cache.Values.Where(v => !v.Empty)
+				.Select(v => v.Entity)
+				.Where(e => parameters.IsMatch(e));
         }
 
 		protected void Initialize()
@@ -250,8 +257,12 @@ namespace N2.Persistence.Xml
 				foreach (var path in Directory.GetFiles(DataDirectoryPhysical, "*.xml"))
 					Load(path);
 				isInitialized = true;
-				if (cache.Count > 0)
-					maxId = cache.Values.Max(v => (int)Utility.GetProperty(v.Entity, "ID"));
+				maxId = cache.Where(kvp => !kvp.Value.Empty)
+					.Select(kvp => kvp.Key as int?)
+					.Where(id => id.HasValue)
+					.OrderByDescending(id => id.Value)
+					.FirstOrDefault()
+					?? 0;
 			}
 		}
 

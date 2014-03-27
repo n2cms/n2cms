@@ -256,7 +256,6 @@ namespace N2.Tests
             var exporter = new Exporter(
                 new ItemXmlWriter(
                     definitions,
-                    parser,
                     new FakeMemoryFileSystem()));
             return new ContentVersionRepository(
                 versionRepository,
