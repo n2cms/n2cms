@@ -253,5 +253,27 @@ namespace N2.Edit.Trash
         public event EventHandler<CancellableItemEventArgs> ItemThrowing;
         /// <summary>Occurs after an item has been thrown.</summary>
         public event EventHandler<ItemEventArgs> ItemThrowed;
-    }
+
+		public void HandleMoved(ContentItem movedItem)
+		{
+			if (movedItem.State == ContentState.Deleted && !IsInTrash(movedItem))
+			{
+				using (var tx = persister.Repository.BeginTransaction())
+				{
+					RestoreValuesRecursive(movedItem);
+					persister.Repository.SaveOrUpdate(movedItem);
+					tx.Commit();
+				}
+			}
+			else if (movedItem.State != ContentState.Deleted && IsInTrash(movedItem))
+			{
+				using (var tx = persister.Repository.BeginTransaction())
+				{
+					ExpireTrashedItemsRecursive(movedItem);
+					persister.Repository.SaveOrUpdate(movedItem);
+					tx.Commit();
+				}
+			}
+		}
+	}
 }

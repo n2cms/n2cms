@@ -305,6 +305,10 @@
 
 						ctx.scopes.from.node.Children.splice(ctx.indexes.from, 1);
 
+						ctx.callback = function () {
+							$selected.remove();
+						}
+
 						var options = scope.$eval(attrs.sortable)
 
 						if (ctx.operation == "move") {

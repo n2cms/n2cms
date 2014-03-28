@@ -1,3 +1,4 @@
+using N2.Engine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +57,7 @@ namespace N2.Web.Mvc
             viewEngines.Add(new TokenViewEngine());
         }
 
-        class TokenViewEngine : IViewEngine
+        class TokenViewEngine : IViewEngine, IDecorator<IViewEngine>
         {
             WebFormViewEngine inner;
             string[] noLocations = new string[0];
@@ -89,6 +90,11 @@ namespace N2.Web.Mvc
             public void ReleaseView(ControllerContext controllerContext, IView view)
             {
                 inner.ReleaseView(controllerContext, view);
+            }
+
+            public IViewEngine Component
+            {
+                get { return inner; }
             }
         }
 

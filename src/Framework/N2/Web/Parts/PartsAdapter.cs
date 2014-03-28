@@ -159,8 +159,10 @@ namespace N2.Web.Parts
         public virtual IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem parentItem, IPrincipal user)
         {
             return new[] { parentItem }
-                .Concat(parentItem.Children.Where(x => !x.IsPage).SelectMany(Find.EnumerateTree))
-                .SelectMany(x => Definitions.GetDefinition(x).AvailableZones.SelectMany(y => GetAllowedDefinitions(x, y.ZoneName, user)))
+                .Concat(parentItem.Children.FindParts().SelectMany(Find.EnumerateTree))
+				.SelectMany(ci => Definitions.GetAllowedChildren(ci))
+				.Where(d => d.Enabled)
+				.Where(d => d.AllowedIn != Integrity.AllowedZones.None)
                 .Distinct();
         }
 

@@ -199,7 +199,7 @@ namespace N2.Tests.Web.Parts
 
             var response = mover.HandleRequest(request);
 
-            response["redirect"].ShouldStartWith("/root.aspx?versionIndex=1&edit=drag");
+            response["redirect"].ShouldStartWith("/root?n2versionIndex=1&edit=drag");
         }
 
     }

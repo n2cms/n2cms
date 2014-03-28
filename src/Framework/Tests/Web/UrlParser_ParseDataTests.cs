@@ -48,7 +48,7 @@ namespace N2.Tests.Web
         [Test]
         public void CanParseDataItemWithMixedCase()
         {
-            ContentItem parsedItem = parser.Parse("/?iTeM=6");
+            ContentItem parsedItem = parser.Parse("/?N2iTeM=6");
             Assert.AreEqual(part1, parsedItem);
         }
     }
