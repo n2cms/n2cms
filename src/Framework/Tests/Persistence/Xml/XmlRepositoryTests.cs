@@ -10,6 +10,7 @@ using Shouldly;
 using N2.Persistence.Xml;
 using N2.Persistence.Serialization;
 using System.IO;
+using System;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -124,6 +125,20 @@ namespace N2.Tests.Persistence.NH
 				var parent = repository.Get(parentID);
 				var child = repository.Get(itemID);
 				child.Parent.ShouldBe(parent);
+			}
+		}
+
+		[Test]
+		public void Children_ArePopulated()
+		{
+			int parentID = SaveAnItem("parent", null);
+			int childID = SaveAnItem("child", repository.Get(parentID));
+
+			using (repository)
+			{
+				var parent = repository.Get(parentID);
+				var child = repository.Get(childID);
+				parent.Children.Single().ShouldBe(child);
 			}
 		}
 

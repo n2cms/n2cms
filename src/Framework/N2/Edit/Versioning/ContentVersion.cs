@@ -68,7 +68,8 @@ namespace N2.Edit.Versioning
             set { _versionDataXml = value; _version = null; }
         }
 
-        public ContentItem Version
+		[XmlIgnore]
+		public ContentItem Version
         {
             get
             {

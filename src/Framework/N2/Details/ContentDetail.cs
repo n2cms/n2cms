@@ -32,7 +32,7 @@ namespace N2.Details
     /// </summary>
     /// <remarks>Usually content details are created below the hood when working with primitive .NET types against a contnet item.</remarks>
     [Serializable]
-    [DebuggerDisplay("ContentDetail, {Name}: {Value}")]
+    [DebuggerDisplay("ContentDetail, {name} #{id}: {Value}")]
     public class ContentDetail: ICloneable, INameable, IMultipleValue
     {
         #region TypeKeys

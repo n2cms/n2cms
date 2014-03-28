@@ -17,159 +17,6 @@ using N2.Configuration;
 
 namespace N2.Persistence.Xml
 {
-	[Service]
-	[Service(typeof(IRepository<ContentItem>), 
-		Configuration = "xml")]
-	[Service(typeof(IContentItemRepository),
-		Configuration = "xml",
-		Replaces = typeof(IContentItemRepository))]
-	public class XmlContentRepository : XmlRepository<ContentItem>, IContentItemRepository
-	{
-		private IItemXmlReader reader;
-		private IItemXmlWriter writer;
-		private IDefinitionManager definitions;
-
-		public XmlContentRepository(IDefinitionManager definitions, IItemXmlWriter writer, IItemXmlReader reader, ConfigurationManagerWrapper config)
-			: base(definitions, config)
-		{
-			this.definitions = definitions;
-			this.writer = writer;
-			this.reader = reader;
-
-		}
-
-		protected override XmlRepository<ContentItem>.Envelope Load(int id)
-		{
-			var envelope = base.Load(id);
-			HandleUnresolvedParent(envelope);
-			return envelope;
-		}
-
-		protected override XmlRepository<ContentItem>.Envelope Load(string path)
-		{
-			var envelope = base.Load(path);
-			HandleUnresolvedParent(envelope);
-			return envelope;
-		}
-
-		private void HandleUnresolvedParent(Envelope envelope)
-		{
-			if (envelope.UnresolvedParentID != 0)
-			{
-				envelope.Entity.Parent = Load(envelope.UnresolvedParentID).Entity;
-				envelope.UnresolvedParentID = 0;
-			}
-		}
-
-		protected override XmlRepository<ContentItem>.Envelope Read(string path)
-		{
-			using (var fs = File.OpenRead(path))
-			{
-				var doc = new XmlDocument();
-				doc.Load(fs);
-
-				var record = reader.Read(doc.CreateNavigator());
-				var parentRelation = record.UnresolvedLinks.FirstOrDefault(ul => ul.RelationType == "parent" && ul.ReferencingItem == record.RootItem);
-				if (parentRelation != null && record.RootItem.Parent == null)
-				{
-					return new Envelope { Entity = record.RootItem, UnresolvedParentID = parentRelation.ReferencedItemID };
-				}
-
-				return new Envelope { Entity = record.RootItem };
-			}
-		}
-
-		protected override void Write(XmlRepository<ContentItem>.Envelope envelope, string path)
-		{
-			using (var fs = File.Open(path, FileMode.Create))
-			using (var xw = new XmlTextWriter(fs, Encoding.Default))
-			{
-#if DEBUG
-				xw.Formatting = Formatting.Indented;
-#endif
-				writer.WriteSingleItem(envelope.Entity, Serialization.ExportOptions.ExcludeAttachments | Serialization.ExportOptions.ExcludeChildren, xw);
-				xw.Flush();
-				fs.Flush();
-			}
-		}
-
-		public IEnumerable<ContentItem> FindDescendants(ContentItem ancestor, string discriminator)
-		{
-			Initialize();
-			return cache.Values
-				.Where(v => !v.Empty)
-				.Where(e => e.Entity == ancestor || e.Entity.AncestralTrail.StartsWith(ancestor.GetTrail()))
-				.Where(e => discriminator == null || definitions.GetDefinition(e.Entity).Discriminator == discriminator)
-				.Select(e => e.Entity);
-		}
-
-		public IEnumerable<ContentItem> FindReferencing(ContentItem linkTarget)
-		{
-			Initialize();
-			return FindReferencing(new [] { linkTarget.ID });
-		}
-
-		private IEnumerable<ContentItem> FindReferencing(IEnumerable<int> itemIDs)
-		{
-			return cache.Values
-				.Where(v => !v.Empty)
-				.Select(v => v.Entity)
-				.Where(ci =>
-					ci.Details.Any(d => d.LinkedItem.HasValue && itemIDs.Contains(d.LinkedItem.ID.Value))
-					|| ci.DetailCollections.SelectMany(dc => dc.Details).Any(d => d.LinkedItem.HasValue && itemIDs.Contains(d.LinkedItem.ID.Value)));
-		}
-
-		public int RemoveReferencesToRecursive(ContentItem target)
-		{
-			int count = 0;
-			var descendantIDs = new HashSet<int>(FindDescendants(target, null).Select(ci => ci.ID));
-			foreach (var referencing in FindReferencing(descendantIDs))
-			{
-				foreach (var detail in referencing.Details.Where(d => d.LinkedItem.HasValue && descendantIDs.Contains(d.LinkedItem.ID.Value)).ToList())
-				{
-					referencing.Details.Remove(detail);
-					count++;
-				}
-				foreach (var collection in referencing.DetailCollections)
-				{
-					foreach (var detail in collection.Details.Where(d => d.LinkedItem.HasValue && descendantIDs.Contains(d.LinkedItem.ID.Value)).ToList())
-					{
-						collection.Details.Remove(detail);
-						count++;
-					}
-				}
-			}
-			return count;
-		}
-		
-        public IEnumerable<DiscriminatorCount> FindDescendantDiscriminators(ContentItem ancestor)
-        {
-			Initialize();
-			var counts = new Dictionary<Type, DiscriminatorCount>();
-			if (ancestor != null)
-				IncrementDiscriminatorCount(counts, ancestor);
-
-			foreach(var kvp in cache)
-			{
-				if (ancestor == null || kvp.Value.Entity.AncestralTrail.StartsWith(ancestor.GetTrail()))
-				{
-					IncrementDiscriminatorCount(counts, kvp.Value.Entity);
-				}
-			}
-
-			return counts.Values.OrderByDescending(dc => dc.Count);
-        }
-
-		private void IncrementDiscriminatorCount(Dictionary<Type, DiscriminatorCount> counts, ContentItem item)
-		{
-			DiscriminatorCount count;
-			if (counts.TryGetValue(item.GetContentType(), out count))
-				count.Count++;
-			else
-				counts[item.GetContentType()] = count = new DiscriminatorCount { Discriminator = definitions.GetDefinition(item).Discriminator, Count = 1 };
-		}
-	}
-
     [Service]
     [Service(typeof(IRepository<>),
         Configuration = "xml",
@@ -178,7 +25,7 @@ namespace N2.Persistence.Xml
     {
 		Logger<XmlRepository<TEntity>> logger;
 		private IDefinitionManager definitions;
-		protected IDictionary<object, Envelope> cache = new Dictionary<object, Envelope>();
+		protected IDictionary<object, Box> cache = new Dictionary<object, Box>();
 		protected ITransaction activeTransaction;
 		private bool isInitialized;
 
@@ -208,11 +55,17 @@ namespace N2.Persistence.Xml
 			}
 		}
 
-		protected class Envelope
+		protected class Box
 		{
-			public TEntity Entity { get; set; }
+			public TEntity Entity {
+				get 
+				{ 
+					return EntityFactory != null ? EntityFactory() : null; 
+				} 
+			}
+			// TODO: add multithreading support
+			public Func<TEntity> EntityFactory { get; set; }
 			public bool Empty { get; set; }
-
 			public int UnresolvedParentID { get; set; }
 		}
 
@@ -266,25 +119,25 @@ namespace N2.Persistence.Xml
 			}
 		}
 
-		protected virtual Envelope Load(int id)
+		protected virtual Box Load(int id)
 		{
-			Envelope envelope;
+			Box envelope;
 			if (cache.TryGetValue(id, out envelope))
 				return envelope;
 
 			return Load(GetPath(id));
 		}
 
-		protected virtual Envelope Load(string path)
+		protected virtual Box Load(string path)
 		{
 			var id = ExtractId(path);
-			Envelope envelope;
+			Box envelope;
 			if (cache.TryGetValue(id, out envelope))
 				return envelope;
 
 			if (!File.Exists(path))
 			{
-				cache[id] = envelope = new Envelope { Empty = true };
+				cache[id] = envelope = new Box { Empty = true };
 				return envelope;
 			}
 
@@ -294,13 +147,13 @@ namespace N2.Persistence.Xml
 			return envelope;
 		}
 
-		protected virtual Envelope Read(string path)
+		protected virtual Box Read(string path)
 		{
 			using (var fs = File.OpenRead(path))
 			{
 				var s = GetSerializer();
 				var entity = (TEntity)s.ReadObject(fs);
-				return new Envelope { Entity = entity };
+				return new Box { EntityFactory = () => entity };
 			}
 		}
 
@@ -323,7 +176,7 @@ namespace N2.Persistence.Xml
                 cache.Remove(toRemove);
         }
 
-        public virtual void SaveOrUpdate(TEntity item)
+        public virtual void SaveOrUpdate(TEntity entity)
         {
             if (typeof(TEntity) == typeof(ContentVersion))
             {
@@ -331,14 +184,14 @@ namespace N2.Persistence.Xml
             }
             else
             {
-				var path = GetPath(item);
-				var envelope = new Envelope { Entity = item };
+				var path = GetPath(entity);
+				var envelope = new Box { EntityFactory = () => entity };
 				Write(envelope, path);
-				cache[GetOrAssignId(item)] = envelope;
+				cache[GetOrAssignId(entity)] = envelope;
             }
         }
 
-		protected virtual void Write(Envelope envelope, string path)
+		protected virtual void Write(Box envelope, string path)
 		{
 			using (var fs = File.Open(path, FileMode.Create))
 			{
