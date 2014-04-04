@@ -21,6 +21,7 @@ namespace N2.Tests.Persistence.NH
 		private ItemXmlWriter writer;
 		private ItemXmlReader reader;
 		private N2.Definitions.IDefinitionManager definitions;
+		private ItemNotifier notifier;
 
         protected override T CreateOneItem<T>(int id, string name, ContentItem parent)
         {
@@ -45,7 +46,8 @@ namespace N2.Tests.Persistence.NH
         public override void SetUp()
         {
             base.SetUp();
-            repository = new XmlContentRepository(definitions, writer, reader, new N2.Configuration.ConfigurationManagerWrapper());
+			notifier = new ItemNotifier();
+            repository = new XmlContentRepository(definitions, writer, reader, new N2.Configuration.ConfigurationManagerWrapper(), notifier);
         }
 
 		[TearDown]
@@ -444,7 +446,43 @@ namespace N2.Tests.Persistence.NH
             count.ShouldBe(3);
         }
 
-        private int SaveAnItem(string name, ContentItem parent)
+		[Test]
+		public void NotifiesCreated()
+		{
+			ContentItem notifiedItem = null;
+			notifier.ItemCreated += (s, a) => { notifiedItem = a.AffectedItem; };
+			var itemID = SaveAnItem("root");
+
+			var item = repository.Get(itemID);
+
+			notifiedItem.ID.ShouldBe(itemID);
+		}
+
+		[Test]
+		public void NotifiesDeleting()
+		{
+			ContentItem notifiedItem = null;
+			notifier.ItemDeleting += (s, a) => { notifiedItem = a.AffectedItem; };
+			var itemID = SaveAnItem("root");
+			var item = repository.Get(itemID);
+
+			repository.Delete(item);
+
+			notifiedItem.ID.ShouldBe(itemID);
+		}
+
+		[Test]
+		public void NotifiesSaving()
+		{
+			ContentItem notifiedItem = null;
+			notifier.ItemSaving += (s, a) => { notifiedItem = a.AffectedItem; };
+
+			var itemID = SaveAnItem("root");
+
+			notifiedItem.ID.ShouldBe(itemID);
+		}
+
+        private int SaveAnItem(string name, ContentItem parent = null)
         {
             using (repository)
             {

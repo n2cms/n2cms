@@ -1014,6 +1014,22 @@ namespace N2
             {
                 return GetEnumerator();
             }
+
         }
-    }
+
+		internal static void AppendHashCode(ref int currentHashCode, object nextComponent)
+		{
+			currentHashCode *= 23;
+			if (nextComponent != null)
+				currentHashCode += nextComponent.GetHashCode();
+		}
+
+		internal static bool Compare(object first, object second)
+		{
+			if (first != null)
+				return first.Equals(second);
+
+			return second == null;
+		}
+	}
 }

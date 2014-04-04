@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using N2.Persistence;
+using System.Diagnostics;
+using N2.Collections;
 
 namespace N2.Persistence
 {
-    public class ParameterCollection : ICollection<IParameter>, IParameter
+	[DebuggerDisplay("ParameterCollection: Count = {parameters.Count}")]
+	[DebuggerTypeProxy(typeof(CollectionDebugView<>))]
+	public class ParameterCollection : ICollection<IParameter>, IParameter
     {
         public ParameterCollection()
         {
@@ -123,11 +127,47 @@ namespace N2.Persistence
         public Order Order { get; set; }
         public Range Range { get; set; }
 
+		#region Equals & GetHashCode
+		public override bool Equals(object obj)
+		{
+			var other = obj as ParameterCollection;
+			return other != null
+				&& other.Operator == Operator
+				&& Utility.Compare(other.Order, Order)
+				&& ParametersEquals(other)
+				&& Utility.Compare(other.Range, Range);
+		}
+
+		private bool ParametersEquals(ParameterCollection other)
+		{
+			if (other.parameters.Count != parameters.Count)
+				return false;
+
+			for (int i = 0; i < parameters.Count; i++)
+			{
+				if (other.parameters[i] != parameters[i])
+					return false;
+			}
+			return true;
+		}
+
+		public override int GetHashCode()
+		{
+			int hash = 17;
+			Utility.AppendHashCode(ref hash, Operator);
+			Utility.AppendHashCode(ref hash, Order);
+			foreach(var parameter in parameters)
+				Utility.AppendHashCode(ref hash, parameter);
+			Utility.AppendHashCode(ref hash, Range);
+			return hash;
+		}
+
         public override string ToString()
         {
             return string.Join((Operator == Persistence.Operator.And ? " & " : " | "), parameters.Select(p => p.ToString()))
                 + (Range == null ? "" : (" (" + Range.Skip + " - " + (Range.Skip + Range.Take)) + ")")
                 + (Order == null ? "" : (" (by " + Order.Property + (Order.Descending ? " DESC" : "")) + ")");
         }
-    }
+		#endregion
+	}
 }

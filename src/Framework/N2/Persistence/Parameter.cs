@@ -305,6 +305,16 @@ namespace N2.Persistence
         {
             return new ParameterCollection(Persistence.Operator.Or) { { q1 }, { q2 } };
         }
+
+		//public static ParameterCollection operator &(Parameter q1, ParameterCollection q2)
+		//{
+		//	return new ParameterCollection(Persistence.Operator.And) { { q1 }, { q2 } };
+		//}
+		//public static ParameterCollection operator |(Parameter q1, ParameterCollection q2)
+		//{
+		//	return new ParameterCollection(Persistence.Operator.Or) { { q1 }, { q2 } };
+		//}
+
         public static implicit operator ParameterCollection(Parameter p)
         {
             return new ParameterCollection(p);
@@ -316,13 +326,32 @@ namespace N2.Persistence
         public override bool Equals(object obj)
         {
             var other = obj as Parameter;
-            return other != null && other.Name == Name && other.Value == Value;
+			return other != null
+				&& other.Name == Name
+				&& ValueEquals(other)
+				&& other.Comparison == Comparison
+				&& other.IsDetail == IsDetail;
         }
+
+		private bool ValueEquals(Parameter other)
+		{
+			return (Value != null && Value.Equals(other.Value))
+				|| (Value == null && other.Value == null)
+				|| (Value is object[] && other.Value is object[] && (Value as object[]).SequenceEqual(other.Value as object[]));
+		}
 
         public override int GetHashCode()
         {
-            return (Name != null ? Name.GetHashCode() : GetHashCode())
-                + (Value != null ? Value.GetHashCode() : GetHashCode());
+			int hash = 17;
+			Utility.AppendHashCode(ref hash, Name);
+			if (Value is object[])
+				foreach(var value in (Value as object[]))
+					Utility.AppendHashCode(ref hash, value);
+			else
+				Utility.AppendHashCode(ref hash, Value);
+			Utility.AppendHashCode(ref hash, Comparison);
+			Utility.AppendHashCode(ref hash, IsDetail);
+			return hash;
         }
 
         public override string ToString()
@@ -333,5 +362,10 @@ namespace N2.Persistence
                 + Value;
         }
         #endregion
-    }
+
+		public ParameterCollection Join(params Parameter[] parameters)
+		{
+			return new ParameterCollection(parameters) { this };
+		}
+	}
 }

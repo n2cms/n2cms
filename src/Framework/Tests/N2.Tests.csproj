@@ -258,6 +258,7 @@
     <Compile Include="Persistence\NH\PersisterLinksTests.cs" />
     <Compile Include="Persistence\Proxying\InterceptionFactoryTests.cs" />
     <Compile Include="Persistence\NH\TagsRepositoryTests.cs" />
+    <Compile Include="Persistence\ParameterTests.cs" />
     <Compile Include="Persistence\SearchHelperTests.cs" />
     <Compile Include="Persistence\Sources\ContentSourceTests.cs" />
     <Compile Include="Persistence\Xml\XmlRepositoryTests.cs" />
