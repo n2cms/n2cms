@@ -7,15 +7,16 @@ namespace N2.Persistence
 {
     class FilesystemTransaction : ITransaction
     {
-
         public void Commit()
         {
-            //throw new NotImplementedException();
+			if (Committed != null)
+				Committed(this, new EventArgs());
         }
 
         public void Rollback()
-        {
-            throw new NotImplementedException();
+		{
+			if (Rollbacked != null)
+				Rollbacked(this, new EventArgs());
         }
 
         public event EventHandler Committed;
@@ -25,7 +26,9 @@ namespace N2.Persistence
         public event EventHandler Disposed;
 
         public void Dispose()
-        {
+		{
+			if (Disposed != null)
+				Disposed(this, new EventArgs());
         }
     }
 }

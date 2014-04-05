@@ -23,48 +23,57 @@ namespace N2.Persistence.Xml
 		private IItemXmlReader reader;
 		private IItemXmlWriter writer;
 		private IDefinitionManager definitions;
+		private IItemNotifier notifier;
 
-		public XmlContentRepository(IDefinitionManager definitions, IItemXmlWriter writer, IItemXmlReader reader, ConfigurationManagerWrapper config)
+		public XmlContentRepository(IDefinitionManager definitions, IItemXmlWriter writer, IItemXmlReader reader, ConfigurationManagerWrapper config, IItemNotifier notifier)
 			: base(definitions, config)
 		{
 			this.definitions = definitions;
 			this.writer = writer;
 			this.reader = reader;
+			this.notifier = notifier;
 		}
 
 		public override void SaveOrUpdate(ContentItem entity)
 		{
+			notifier.NotifySaving(entity);
 			base.SaveOrUpdate(entity);
 			if (entity.Parent != null)
 				base.SaveOrUpdate(entity.Parent);
 		}
 
-		protected override XmlRepository<ContentItem>.Box Load(int id)
+		public override void Delete(ContentItem entity)
 		{
-			var envelope = base.Load(id);
-			HandleRelations(envelope);
-			return envelope;
+			notifier.NotifyDeleting(entity);
+			base.Delete(entity);
 		}
 
-		protected override XmlRepository<ContentItem>.Box Load(string path)
+		protected override ContentItem Load(object id)
 		{
-			var envelope = base.Load(path);
-			HandleRelations(envelope);
-			return envelope;
+			var item = base.Load(id);
+			HandleRelations(item);
+			return item;
 		}
 
-		private void HandleRelations(Box envelope)
+		protected override ContentItem Load(string path)
 		{
-			if (envelope.Empty)
+			var item = base.Load(path);
+			HandleRelations(item);
+			return item;
+		}
+
+		private void HandleRelations(ContentItem item)
+		{
+			if (item == null)
 				return;
 
-			if (envelope.UnresolvedParentID != 0)
+			if (item.Parent is UnresolvedParent)
 			{
-				envelope.Entity.Parent = Load(envelope.UnresolvedParentID).Entity;
-				envelope.UnresolvedParentID = 0;
+				item.Parent = Load(item.Parent.ID);
 			}
-			if (!(envelope.Entity.Children is XmlItemList))
-				envelope.Entity.Children = new XmlItemList(() => Find(Parameter.Equal("Parent", envelope.Entity)));
+
+			if (!(item.Children is XmlItemList) && item.Children.WasInitialized && item.Children.Count == 0)
+				item.Children = new XmlItemList(() => Find(Parameter.Equal("Parent", item)));
 		}
 
 		// TODO: make safe for multithreading
@@ -76,47 +85,45 @@ namespace N2.Persistence.Xml
 			}
 		}
 
-		protected override XmlRepository<ContentItem>.Box Read(string path)
+		protected override ContentItem Read(string path)
 		{
-			using (var fs = File.OpenRead(path))
-			{
-				var doc = new XmlDocument();
-				doc.Load(fs);
+			var xml = File.ReadAllText(path);
+			//using (var fs = File.OpenRead(path))
+			var doc = new XmlDocument();
+			doc.LoadXml(xml);
 
-				var record = reader.Read(doc.CreateNavigator());
-				var parentRelation = record.UnresolvedLinks.FirstOrDefault(ul => ul.RelationType == "parent" && ul.ReferencingItem == record.RootItem);
-				var item = record.RootItem;
-				if (parentRelation != null && record.RootItem.Parent == null)
-				{
-					return new Box { EntityFactory = () => item, UnresolvedParentID = parentRelation.ReferencedItemID };
-				}
+			var record = reader.Read(doc.CreateNavigator());
+			var parentRelation = record.UnresolvedLinks.FirstOrDefault(ul => ul.RelationType == "parent" && ul.ReferencingItem == record.RootItem);
+			var item = record.RootItem;
+			if (parentRelation != null && record.RootItem.Parent == null)
+				item.Parent = new UnresolvedParent { ID = parentRelation.ReferencedItemID };
 
-				return new Box { EntityFactory = () => item };
-			}
+			notifier.NotifiyCreated(item);
+
+			return item;
 		}
 
-		protected override void Write(XmlRepository<ContentItem>.Box envelope, string path)
+		protected override void Write(ContentItem entity, string path)
 		{
-			using (var fs = File.Open(path, FileMode.Create))
-			using (var xw = new XmlTextWriter(fs, Encoding.Default))
+			//using (var fs = File.Open(path, FileMode.Create))
+			using (var sw = new StringWriter())
+			using (var xw = new XmlTextWriter(sw))
 			{
 #if DEBUG
 				xw.Formatting = Formatting.Indented;
 #endif
-				writer.WriteSingleItem(envelope.Entity, Serialization.ExportOptions.ExcludeAttachments | Serialization.ExportOptions.ExcludeChildren, xw);
-				xw.Flush();
-				fs.Flush();
+				writer.WriteSingleItem(entity, Serialization.ExportOptions.ExcludeAttachments | Serialization.ExportOptions.ExcludeChildren, xw);
+
+				File.WriteAllText(path, sw.ToString());
 			}
 		}
 
 		public IEnumerable<ContentItem> FindDescendants(ContentItem ancestor, string discriminator)
 		{
 			Initialize();
-			return cache.Values
-				.Where(v => !v.Empty)
-				.Where(e => e.Entity == ancestor || e.Entity.AncestralTrail.StartsWith(ancestor.GetTrail()))
-				.Where(e => discriminator == null || definitions.GetDefinition(e.Entity).Discriminator == discriminator)
-				.Select(e => e.Entity);
+			return identityMap.Values
+				.Where(v => v == ancestor || v.AncestralTrail.StartsWith(ancestor.GetTrail()))
+				.Where(v => discriminator == null || definitions.GetDefinition(v).Discriminator == discriminator);
 		}
 
 		public IEnumerable<ContentItem> FindReferencing(ContentItem linkTarget)
@@ -127,9 +134,7 @@ namespace N2.Persistence.Xml
 
 		private IEnumerable<ContentItem> FindReferencing(IEnumerable<int> itemIDs)
 		{
-			return cache.Values
-				.Where(v => !v.Empty)
-				.Select(v => v.Entity)
+			return identityMap.Values
 				.Where(ci =>
 					ci.Details.Any(d => d.LinkedItem.HasValue && itemIDs.Contains(d.LinkedItem.ID.Value))
 					|| ci.DetailCollections.SelectMany(dc => dc.Details).Any(d => d.LinkedItem.HasValue && itemIDs.Contains(d.LinkedItem.ID.Value)));
@@ -165,11 +170,11 @@ namespace N2.Persistence.Xml
 			if (ancestor != null)
 				IncrementDiscriminatorCount(counts, ancestor);
 
-			foreach (var kvp in cache)
+			foreach (var v in identityMap.Values)
 			{
-				if (ancestor == null || kvp.Value.Entity.AncestralTrail.StartsWith(ancestor.GetTrail()))
+				if (ancestor == null || v.AncestralTrail.StartsWith(ancestor.GetTrail()))
 				{
-					IncrementDiscriminatorCount(counts, kvp.Value.Entity);
+					IncrementDiscriminatorCount(counts, v);
 				}
 			}
 

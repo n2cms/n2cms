@@ -162,7 +162,10 @@
     <Compile Include="Definitions\DefinitionEventArgs.cs" />
     <Compile Include="Definitions\IPlaceholder.cs" />
     <Compile Include="Edit\Versioning\VersionInfo.cs" />
+    <Compile Include="Persistence\Xml\Box.cs" />
     <Compile Include="Persistence\Xml\ContentDataContractResolver.cs" />
+    <Compile Include="Persistence\Xml\Cache.cs" />
+    <Compile Include="Persistence\Xml\UnresolvedParent.cs" />
     <Compile Include="Persistence\Xml\XmlContentRepository.cs" />
     <Compile Include="Persistence\Xml\XmlInstallationManager.cs" />
     <Compile Include="Web\HtmlSanitizer.cs" />

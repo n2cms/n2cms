@@ -254,6 +254,8 @@ namespace N2.Persistence
                 case Comparison.NotIn:
                     return !Compare(value, comparison, itemValue);
                 default:
+					if (value == null || itemValue == null)
+						return false;
                     bool? result = TryCompare(value, comparison, itemValue as IComparable);
                     if (result.HasValue)
                         return result.Value;

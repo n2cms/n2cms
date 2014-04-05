@@ -21,18 +21,25 @@ namespace N2.Persistence.Xml
     [Service(typeof(IRepository<>),
         Configuration = "xml",
         Replaces = typeof(IRepository<>))]
-    public class XmlRepository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class XmlRepository<TEntity> 
+		: IRepository<TEntity> 
+		where TEntity : class
     {
 		Logger<XmlRepository<TEntity>> logger;
 		private IDefinitionManager definitions;
-		protected IDictionary<object, Box> cache = new Dictionary<object, Box>();
 		protected ITransaction activeTransaction;
 		private bool isInitialized;
+
+		protected Cache<TEntity> secondLevelCache = new Cache<TEntity>();
+		protected Cache<TEntity> identityMap = new Cache<TEntity>();
 
 		public string DataDirectoryPhysical { get; set; }
 
 		public XmlRepository(IDefinitionManager definitions, ConfigurationManagerWrapper config)
 		{
+			//secondLevelCache = new Cache<TEntity>();
+			//identityMap = new Cache<TEntity>();
+
 			this.definitions = definitions;
 
 			var connectionString = config.GetConnectionString();
@@ -55,26 +62,12 @@ namespace N2.Persistence.Xml
 			}
 		}
 
-		protected class Box
-		{
-			public TEntity Entity {
-				get 
-				{ 
-					return EntityFactory != null ? EntityFactory() : null; 
-				} 
-			}
-			// TODO: add multithreading support
-			public Func<TEntity> EntityFactory { get; set; }
-			public bool Empty { get; set; }
-			public int UnresolvedParentID { get; set; }
-		}
-
         public virtual TEntity Get(object id)
         {
             if (id is Int32 && (int)id == 0)
                 return null;
 
-			return Load((int)id).Entity;
+			return Load(id);
         }
 
         public virtual IEnumerable<TEntity> Find(string propertyName, object value)
@@ -82,22 +75,20 @@ namespace N2.Persistence.Xml
             return Find((IParameter)Parameter.Equal(propertyName, value));
         }
 
-        public IEnumerable<TEntity> Find(params Parameter[] propertyValuesToMatchAll)
+		public virtual IEnumerable<TEntity> Find(params Parameter[] propertyValuesToMatchAll)
         {
 			Initialize();
 			if (propertyValuesToMatchAll == null || propertyValuesToMatchAll.Length == 0)
-				return cache.Values.Where(v => !v.Empty).Select(e => e.Entity);
+				return identityMap.Values;
 			else
-				return cache.Where(e => propertyValuesToMatchAll.All(condition => condition.IsMatch(e.Value.Entity)))
-					.Select(e => e.Value.Entity);
+				return identityMap.Values.Where(v => propertyValuesToMatchAll.All(condition => condition.IsMatch(v)));
         }
 
-        public IEnumerable<TEntity> Find(IParameter parameters)
+		public virtual IEnumerable<TEntity> Find(IParameter parameters)
         {
 			Initialize();
-            return cache.Values.Where(v => !v.Empty)
-				.Select(v => v.Entity)
-				.Where(e => parameters.IsMatch(e));
+            return identityMap.Values
+				.Where(v => parameters.IsMatch(v));
         }
 
 		protected void Initialize()
@@ -110,8 +101,8 @@ namespace N2.Persistence.Xml
 				foreach (var path in Directory.GetFiles(DataDirectoryPhysical, "*.xml"))
 					Load(path);
 				isInitialized = true;
-				maxId = cache.Where(kvp => !kvp.Value.Empty)
-					.Select(kvp => kvp.Key as int?)
+				maxId = identityMap.Keys
+					.OfType<int?>()
 					.Where(id => id.HasValue)
 					.OrderByDescending(id => id.Value)
 					.FirstOrDefault()
@@ -119,42 +110,40 @@ namespace N2.Persistence.Xml
 			}
 		}
 
-		protected virtual Box Load(int id)
+		protected virtual TEntity Load(object id)
 		{
-			Box envelope;
-			if (cache.TryGetValue(id, out envelope))
-				return envelope;
-
-			return Load(GetPath(id));
+			return identityMap.Get(id)
+				?? Load(GetPath(id));
 		}
 
-		protected virtual Box Load(string path)
+		protected virtual TEntity Load(string path)
 		{
 			var id = ExtractId(path);
-			Box envelope;
-			if (cache.TryGetValue(id, out envelope))
-				return envelope;
 
-			if (!File.Exists(path))
+			return identityMap.Get(id, () =>
 			{
-				cache[id] = envelope = new Box { Empty = true };
-				return envelope;
-			}
-
-			envelope = Read(path);
-			cache[id] = envelope;
-
-			return envelope;
+				if (!File.Exists(path))
+					return null;
+				return Read(path);
+			});
 		}
 
-		protected virtual Box Read(string path)
+		protected virtual TEntity Read(string path)
 		{
-			using (var fs = File.OpenRead(path))
+			var xml = File.ReadAllText(path);
+			using (var sr = new StringReader(xml))
+			using (var xr = System.Xml.XmlReader.Create(sr))
 			{
 				var s = GetSerializer();
-				var entity = (TEntity)s.ReadObject(fs);
-				return new Box { EntityFactory = () => entity };
+				var entity = (TEntity)s.ReadObject(xr);
+				return entity;
 			}
+			//using (var fs = File.OpenRead(path))
+			//{
+			//	var s = GetSerializer();
+			//	var entity = (TEntity)s.ReadObject(fs);
+			//	return entity;
+			//}
 		}
 
 		private object ExtractId(string path)
@@ -167,37 +156,33 @@ namespace N2.Persistence.Xml
             return Find(parameters).Select(e => properties.ToDictionary(p => p, p => Utility.GetProperty(e, p)));
         }
 
-        public void Delete(TEntity entity)
+        public virtual void Delete(TEntity entity)
         {
 			var path = GetPath(entity);
 			if (File.Exists(path))
 				File.Delete(path);
-            foreach (var toRemove in cache.Where(x => x.Value.Entity == entity).Select(x => x.Key).ToList())
-                cache.Remove(toRemove);
+
+			identityMap.Remove(GetId(entity));
         }
 
         public virtual void SaveOrUpdate(TEntity entity)
         {
-            if (typeof(TEntity) == typeof(ContentVersion))
-            {
-                //TODO: Make XmlRepository handle versions
-            }
-            else
-            {
-				var path = GetPath(entity);
-				var envelope = new Box { EntityFactory = () => entity };
-				Write(envelope, path);
-				cache[GetOrAssignId(entity)] = envelope;
-            }
+			var id = GetOrAssignId(entity);
+			var path = GetPath(id);
+			Write(entity, path);
+			identityMap.Set(id, entity);
         }
 
-		protected virtual void Write(Box envelope, string path)
+		protected virtual void Write(TEntity entity, string path)
 		{
-			using (var fs = File.Open(path, FileMode.Create))
+			//using (var fs = File.Open(path, FileMode.Create))
+			using (var sw = new StringWriter())
+			using (var xw = XmlWriter.Create(sw))
 			{
 				var s = GetSerializer();
-				s.WriteObject(fs, envelope.Entity);
-				fs.Flush();
+				s.WriteObject(xw, entity);
+
+				File.WriteAllText(path, sw.ToString());
 			}
 		}
 
@@ -208,21 +193,22 @@ namespace N2.Persistence.Xml
 
 		protected string GetPath(TEntity item)
         {
-			int id = GetOrAssignId(item);
+			var id = GetOrAssignId(item);
             return GetPath(id);
         }
 
-		protected string GetPath(int id)
+		protected string GetPath(object id)
 		{
 			return Path.Combine(DataDirectoryPhysical, id + ".xml");
 		}
 
 		int maxId = 0;
-		private int GetOrAssignId(TEntity item)
+		static object zero = 0;
+		private object GetOrAssignId(TEntity item)
 		{
 			Initialize();
-			int id = (int)Utility.GetProperty(item, "ID");
-			if (id == 0)
+			object id = GetId(item);
+			if (zero.Equals(id))
 			{
 				lock (this)
 				{
@@ -233,23 +219,28 @@ namespace N2.Persistence.Xml
 			return id;
 		}
 
-        public bool Exists()
+		private static object GetId(TEntity item)
+		{
+			return Utility.GetProperty(item, "ID");
+		}
+
+		public virtual bool Exists()
         {
             return Count() > 0;
         }
 
-        public long Count()
+		public virtual long Count()
         {
 			Initialize();
-			return cache.Count;
+			return identityMap.Count;
         }
 
-        public long Count(IParameter parameters)
+		public virtual long Count(IParameter parameters)
         {
             return Find(parameters).Count();
         }
 
-        public void Flush()
+		public virtual void Flush()
         {
             if (typeof(TEntity) == typeof(ContentVersion))
             {
@@ -258,12 +249,12 @@ namespace N2.Persistence.Xml
             }
         }
 
-        public ITransaction BeginTransaction()
+		public virtual ITransaction BeginTransaction()
         {
             return activeTransaction ?? (activeTransaction = new FilesystemTransaction());
         }
 
-        public ITransaction GetTransaction()
+		public virtual ITransaction GetTransaction()
         {
             return activeTransaction;
         }
@@ -272,7 +263,7 @@ namespace N2.Persistence.Xml
         
 		public virtual void Dispose()
         {
-			cache.Clear();
+			identityMap.Remove();
 			isInitialized = false;
 
             if (Disposed != null)
