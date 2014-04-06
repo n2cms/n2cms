@@ -19,7 +19,7 @@ namespace N2.Web.Compilation
             get { return UI.ItemUtility.CurrentContentItem; }
         }
 
-        /// <summary>Gets wether a certain exression has a value.</summary>
+        /// <summary>Gets wether a certain expression has a value.</summary>
         /// <param name="expression">The expression to check.</param>
         /// <returns>True if the expression would result in a non null or non empty-string value.</returns>
         public static bool HasValue(string expression)
