@@ -196,6 +196,7 @@
     <!-- Using DotNetZip since MSBuild Community Tasks Zip doesn't include directory entries -->
     <Delete Files="$(Management-NugetFolderZip)\content\N2\N2.zip" Condition="Exists('$(Management-NugetFolderZip)\content\N2\N2.zip')" />
     <Copy SourceFiles="$(Framework-DeployFolder)\N2\web.config"	DestinationFolder="$(Management-NugetFolderZip)\content\N2\" />
+    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Management-NugetFolderZip)\content\N2\" />
     <Exec Command="$(BuildFolder)\lib\BuildSupport.exe ZipDirectory &quot;$(Management-NugetFolderZip)\content\N2\N2.zip&quot; &quot;$(Framework-DeployFolder)\N2&quot; &quot;N2&quot;" />
 
     <ItemGroup>
@@ -284,7 +285,19 @@
     <WriteLinesToFile Lines="@(buildLine)" File="$(DeployFolder)\BuildAll.bat" Overwrite="true" />
   </Target>
 
-  <Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Mvc-NuGet;Dinamico-NuGet;Bundle-Dinamico-Nuget;Windsor3-NuGet;MongoDB-NuGet;RemoteSearch-NuGet;Framework-LocalizedResources-Nuget;ReusableParts-NuGet;LuceneSearch-NuGet">
+  <Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;
+                                               Library-NuGet;
+                                               SQLite-NuGet;
+                                               Razor-NuGet;
+                                               Mvc-NuGet;
+                                               Dinamico-NuGet;
+                                               Bundle-Dinamico-Nuget;
+                                               Windsor3-NuGet;
+                                               MongoDB-NuGet;
+                                               RemoteSearch-NuGet;
+                                               Framework-LocalizedResources-Nuget;
+                                               ReusableParts-NuGet;
+                                               LuceneSearch-NuGet">
   </Target>
 
 	<Target Name="Publish-NuGet" DependsOnTargets="Push-NuGet">

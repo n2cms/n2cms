@@ -125,7 +125,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 			return url;
 		url = $scope.appendQuery(url, ctx.Paths.SelectedQueryKey + "=" + ctx.CurrentItem.Path + "&" + ctx.Paths.ItemQueryKey + "=" + ctx.CurrentItem.ID);
 		if (appendVersionIndex)
-			url += "&versionIndex=" + ctx.CurrentItem.VersionIndex;
+			url += "&n2versionIndex=" + ctx.CurrentItem.VersionIndex;
 		return url;
 	};
 
@@ -136,7 +136,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 
 	decorate(FrameContext, "refresh", function (ctx) {
 		// legacy refresh call from frame
-		if (ctx.force) {
+	    if (ctx.force) {
 			$scope.reloadNode(ctx.path);
 			$scope.reloadChildren(ctx.path);
 			if (ctx.previewUrl) {
@@ -150,13 +150,13 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 			return;
 
 		if (!findNodeRecursive($scope.Context.Content, ctx.path)) {
-			$scope.reloadChildren(getParentPath(ctx.path), function () {
-				if (ctx.force) {
-					$scope.expandTo(ctx.path, /*select*/true);
-				}
+			$scope.reloadChildren(getParentPath(ctx.path), /*callback*/function () {
+			    $scope.expandTo(ctx.path, /*select*/true);
+			}, /*pathNotFound*/function () {
+				$scope.reloadTree(/*selectedPath*/ctx.path);
 			});
 		} else if (ctx.force) {
-			$scope.expandTo(ctx.path, /*select*/true);
+		    $scope.expandTo(ctx.path, /*select*/true);
 		}
 	});
 
@@ -223,7 +223,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 	});
 
 	$scope.refreshContext = function(node, versionIndex, keepFlags, callback) {
-		Context.get(Content.applySelection({ view: $scope.Context.User.Settings.ViewPreference, versionIndex: versionIndex }, node.Current), function(ctx) {
+		Context.get(Content.applySelection({ view: $scope.Context.User.Settings.ViewPreference, n2versionIndex: versionIndex }, node.Current), function(ctx) {
 			//console.log("select -> contextchanged", node, versionIndex, ctx);
 			if (keepFlags)
 				angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
@@ -235,7 +235,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 	};
 
 	$scope.expandTo = function (nodeOrPath, select) {
-		var path = typeof nodeOrPath == "string" ? nodeOrPath : nodeOrPath && nodeOrPath.Current && nodeOrPath.Current.Path;
+	    var path = typeof nodeOrPath == "string" ? nodeOrPath : nodeOrPath && nodeOrPath.Current && nodeOrPath.Current.Path;
 		if (!path)
 			return;
 		var branch = findBranch($scope.Context.Content, path);
@@ -247,8 +247,15 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 		}
 	}
 
+	$scope.reloadTree = function (selectedPath) {
+		Content.branch(Content.applySelection({}, selectedPath), function (data) {
+			$scope.Context.Content = data.Branch;
+			$scope.select(selectedPath);
+		});
+	}
+
 	$scope.select = function (nodeOrPath, versionIndex, keepFlags, forceContextRefresh, preventReload, disregardNodeUrl) {
-		if (typeof nodeOrPath == "string") {
+	    if (typeof nodeOrPath == "string") {
 			var path = nodeOrPath;
 			var node = findNodeRecursive($scope.Context.Content, path);
 			if (!node) {
@@ -285,15 +292,18 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 		}
 	};
 
-	$scope.reloadChildren = function(parentPathOrNode, callback) {
+	$scope.reloadChildren = function(parentPathOrNode, callback, pathNotFound) {
 		var node = typeof parentPathOrNode == "string"
 			? findNodeRecursive($scope.Context.Content, parentPathOrNode)
 			: parentPathOrNode;
 
-		Content.loadChildren(node, callback);
+		if (node)
+		    Content.loadChildren(node, callback);
+		else if (pathNotFound)
+		    pathNotFound(parentPathOrNode);
 	};
 
-	$scope.reloadNode = function(pathOrNode, callback) {
+	$scope.reloadNode = function (pathOrNode, callback) {
 		var node = typeof pathOrNode == "string"
 			? findNodeRecursive($scope.Context.Content, pathOrNode)
 			: pathOrNode;
@@ -659,7 +669,7 @@ function PageInfoCtrl($scope, Content) {
 
 function PagePublishCtrl($scope, $rootScope, $modal, Content, Confirm, Translate) {
 	$scope.publish = function () {
-		Content.publish({ selected: $scope.Context.CurrentItem.Path, versionIndex: $scope.Context.CurrentItem.VersionIndex }, function (result) {
+		Content.publish({ selected: $scope.Context.CurrentItem.Path, n2versionIndex: $scope.Context.CurrentItem.VersionIndex }, function (result) {
 			$scope.previewUrl(result.Current.PreviewUrl);
 
 			$scope.reloadNode(result.Current.Path, $scope.refreshContext);
@@ -701,7 +711,7 @@ function PageScheduleCtrl($scope, Content) {
 			var date = $scope.schedule.date;
 			date.setHours(hour, min);
 
-			Content.schedule(Content.applySelection({ versionIndex: $scope.Context.CurrentItem.VersionIndex, publishDate: date }, $scope.Context.CurrentItem));
+			Content.schedule(Content.applySelection({ n2versionIndex: $scope.Context.CurrentItem.VersionIndex, publishDate: date }, $scope.Context.CurrentItem));
 		}
 	};
 }

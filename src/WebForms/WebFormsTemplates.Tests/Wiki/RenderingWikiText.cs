@@ -14,6 +14,7 @@ namespace N2.Templates.Tests.Wiki
     using N2.Addons.Wiki;
     using N2.Engine;
     using N2.Web.Wiki;
+    using System.Linq;
 
     [TestFixture]
     public class RenderingWikiText : ItemTestsBase
@@ -440,7 +441,8 @@ hello";
             using (var writer = new HtmlTextWriter(new StringWriter(buf)))
             {
                 Page container = new Page();
-                renderer.AddTo(parser.Parse(text), container, article);
+                var fragments = parser.Parse(text).ToList();
+                renderer.AddTo(fragments, container, article);
                 container.RenderControl(writer);
             }
             return buf.ToString();

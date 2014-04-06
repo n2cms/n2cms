@@ -8,7 +8,7 @@ namespace N2.Web.Wiki
     public class WikiParser : Parser
     {
         public WikiParser()
-            : base(new CommentAnalyzer(), new InternalLinkAnalyzer(), new ExternalLinkAnalyzer(), new BoldItalicsAnalyzer(), new BoldAnalyzer(), new ItalicsAnalyzer(), new HeadingAnalyzer(), new UnorderedListItemAnalyzer(), new OrderedListItemAnalyzer(), new UserInfoAnalyzer(), new TemplateAnalyzer())
+            : base(new HtmlElementAnalyzer(), new CommentAnalyzer(), new InternalLinkAnalyzer(), new ExternalLinkAnalyzer(), new BoldItalicsAnalyzer(), new BoldAnalyzer(), new ItalicsAnalyzer(), new HeadingAnalyzer(), new UnorderedListItemAnalyzer(), new OrderedListItemAnalyzer(), new UserInfoAnalyzer(), new TemplateAnalyzer(), new NewLineAnalyzer())
         {
         }
     }

@@ -1,28 +1,4 @@
 <configuration>
-	<n2 xmlns="http://n2cms.com/schemas/configuration/v3">
-		<!--
-			When installing a database from scratch you'll need to insert some required pages. 
-			This can be done by the web based installer located at http://yoursite/n2/installation/ 
-			-->
-		<host rootID="1" startPageID="2" multipleSites="true"></host>
-		<engine>
-			<errors action="Email" mailTo="" mailFrom="noreply@yourdomain.com" />
-			<globalization enabled="true" />
-		</engine>
-		<database connectionStringName="N2CMS" caching="true"></database>
-		<edit>
-			<installer checkInstallationStatus="true" />
-			<writers dynamic="true"/>
-			<editors dynamic="true"/>
-			<administrators dynamic="true"/>
-			<images>
-				<sizes>
-					<add name="thumb" width="50" height="50" mode="Fill"/>
-					<add name="wide" width="960" height="480" mode="Fill" />
-				</sizes>
-			</images>
-		</edit>
-	</n2>
 	<configSections>
 		<sectionGroup name="n2" type="N2.Configuration.SectionGroup, N2">
 			<section name="host" type="N2.Configuration.HostSection, N2" requirePermission="false" restartOnExternalChanges="true"/>
@@ -41,26 +17,26 @@
 		These membership and role providers store their data as content items. You can also use the forms authentication 
 		credentials only (then remove these sections) or the default ASP.NET providers (search for asp.net membership) 
 		-->
-		<membership defaultProvider="ContentMembershipProvider">
-			<providers>
-				<add name="ContentMembershipProvider" type="N2.Security.ContentMembershipProvider, N2.Management" passwordFormat="Hashed" />
-			</providers>
-		</membership>
-		<roleManager defaultProvider="ContentRoleProvider">
-			<providers>
-				<add name="ContentRoleProvider" type="N2.Security.ContentRoleProvider, N2.Management" />
-			</providers>
-		</roleManager>
-		<profile defaultProvider="ContentProfileProvider">
-			<providers>
-				<add name="ContentProfileProvider" type="N2.Security.ContentProfileProvider, N2.Management" />
-			</providers>
-		</profile>
-		<siteMap defaultProvider="PublicSiteMap">
-			<providers>
-				<add name="PublicSiteMap" type="N2.Web.PublicSiteMapProvider, N2" startPageIsRoot="true" />
-			</providers>
-		</siteMap>
+    <membership>
+      <providers>
+        <add name="ContentMembershipProvider" type="N2.Security.ContentMembershipProvider, N2.Management" passwordFormat="Hashed" />
+      </providers>
+    </membership>
+    <roleManager>
+      <providers>
+        <add name="ContentRoleProvider" type="N2.Security.ContentRoleProvider, N2.Management" />
+      </providers>
+    </roleManager>
+    <profile>
+      <providers>
+        <add name="ContentProfileProvider" type="N2.Security.ContentProfileProvider, N2.Management" />
+      </providers>
+    </profile>
+    <siteMap>
+      <providers>
+        <add name="PublicSiteMap" type="N2.Web.PublicSiteMapProvider, N2" startPageIsRoot="true" />
+      </providers>
+    </siteMap>
 	
 		<pages>
 			<controls>

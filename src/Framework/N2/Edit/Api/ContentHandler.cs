@@ -254,7 +254,7 @@ namespace N2.Management.Api
         {
             var adapter = engine.GetContentAdapter<NodeAdapter>(Selection.SelectedItem);
             var versions = engine.Resolve<IVersionManager>().GetVersionsOf(Selection.SelectedItem);
-            return versions.Select(v => new Node<TreeNode>(adapter.GetTreeNode(v, allowDraft: false)));
+            return versions.Select(v => new Node<TreeNode>(adapter.GetTreeNode(v.Content, allowDraft: false)));
         }
 
         private IEnumerable<Node<InterfaceMenuItem>> GetTranslations(HttpContextBase context)
@@ -349,23 +349,29 @@ namespace N2.Management.Api
         {
             var sorter = engine.Resolve<ITreeSorter>();
             var from = Selection.ParseSelectionFromRequest();
-            if (!string.IsNullOrEmpty(request("before")))
-            {
-                var before = engine.Resolve<Navigator>().Navigate(request("before"));
 
-                PerformMoveChecks(context, from, before.Parent);
+			using (var tx = engine.Persister.Repository.BeginTransaction())
+			{
+				if (!string.IsNullOrEmpty(request("before")))
+				{
+					var before = engine.Resolve<Navigator>().Navigate(request("before"));
 
-                sorter.MoveTo(from, NodePosition.Before, before);
-            }
-            else
-            {
-                var to = engine.Resolve<Navigator>().Navigate(request("to"));
+					PerformMoveChecks(context, from, before.Parent);
 
-                PerformMoveChecks(context, from, to);
+					sorter.MoveTo(from, NodePosition.Before, before);
+				}
+				else
+				{
+					var to = engine.Resolve<Navigator>().Navigate(request("to"));
 
-                sorter.MoveTo(from, to);
-            }
+					PerformMoveChecks(context, from, to);
 
+					sorter.MoveTo(from, to);
+					engine.Resolve<ITrashHandler>().HandleMoved(from);
+				}
+				engine.Persister.Save(from);
+				tx.Commit();
+			}
             context.Response.WriteJson(new { Moved = true, Current = engine.GetNodeAdapter(from).GetTreeNode(from) });
         }
 

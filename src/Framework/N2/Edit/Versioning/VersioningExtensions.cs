@@ -176,5 +176,37 @@ namespace N2.Edit.Versioning
             }
             return previewedItem;
         }
+
+        public static VersionInfo GetVersionInfo(this ContentVersion version)
+        {
+            return new VersionInfo
+            {
+                ID = version.Master.ID.Value,
+                ContentFactory = () => version.Version,
+                Expires = version.Expired,
+                Published = version.Published,
+                FuturePublish = version.FuturePublish,
+                SavedBy = version.SavedBy,
+                State = version.State,
+                Title = version.Title,
+                VersionIndex = version.VersionIndex
+            };
+        }
+
+        public static VersionInfo GetVersionInfo(this ContentItem version)
+        {
+            return new VersionInfo
+            {
+                ID = version.ID,
+                ContentFactory = () => version,
+                Expires = version.Expires,
+                Published = version.Published,
+                FuturePublish = version["FuturePublishDate"] as DateTime?,
+                SavedBy = version.SavedBy,
+                State = version.State,
+                Title = version.Title,
+                VersionIndex = version.VersionIndex
+            };
+        }
     }
 }

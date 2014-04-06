@@ -95,7 +95,7 @@ namespace N2.Web
             }
             else
             {
-                return slug.IndexOfAny(new[] { '/', '?', '#', '@', ':', '&', '+', '\'', '*' }) == -1
+                return slug.IndexOfAny(new[] { '/', '?', '#', '@', ':', '&', '+', '\'', '*', '%', '\\' }) == -1
                     && !slug.Contains("%20"); // space encoded in name is confusing N2 url parser
             }
         }

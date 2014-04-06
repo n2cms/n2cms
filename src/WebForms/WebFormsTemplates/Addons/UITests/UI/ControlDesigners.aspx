@@ -55,12 +55,12 @@
 			</td></tr><tr><td>ZoneSelector</td><td>
 	<n2:ZoneSelector runat="server" />
 			</td></tr>
-			<tr><td>H1</td><td><n2:H1 runat="server" /></td></tr>
-			<tr><td>H2</td><td><n2:H2 runat="server" /></td></tr>
-			<tr><td>H3</td><td><n2:H3 runat="server" /></td></tr>
-			<tr><td>H4</td><td><n2:H4 runat="server" /></td></tr>
-			<tr><td>H5</td><td><n2:H5 runat="server" /></td></tr>
-			<tr><td>H6</td><td><n2:H6 ID="H1" runat="server" /></td></tr>
+			<tr><td>H1</td><td><n2:Hn Level="1" runat="server" /></td></tr>
+			<tr><td>H2</td><td><n2:Hn Level="2" runat="server" /></td></tr>
+			<tr><td>H3</td><td><n2:Hn Level="3" runat="server" /></td></tr>
+			<tr><td>Hn</td><td><n2:Hn runat="server" /></td></tr>
+			<tr><td>H5</td><td><n2:Hn Level="5" runat="server" /></td></tr>
+			<tr><td>H6</td><td><n2:Hn Level="6" runat="server" /></td></tr>
 			<tr><td></td><td><%--<n2:ItemEditorList runat="server" />--%></td></tr>
 			<tr><td>OptionsMenu</td><td><n2:OptionsMenu ID="OptionsMenu1" runat="server" /></td></tr>
 			<tr><td>Path</td><td><n2:Path ID="Path1" runat="server" /></td></tr>

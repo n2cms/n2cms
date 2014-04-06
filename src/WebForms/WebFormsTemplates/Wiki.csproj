@@ -87,6 +87,7 @@
     <Compile Include="Addons\Wiki\Renderers\InternalLinkRenderer.cs" />
     <Compile Include="Addons\Wiki\Renderers\LineRenderer.cs" />
     <Compile Include="Addons\Wiki\Renderers\ListRenderer.cs" />
+    <Compile Include="Addons\Wiki\Renderers\NewLineRenderer.cs" />
     <Compile Include="Addons\Wiki\Renderers\OrderedListItemRenderer.cs" />
     <Compile Include="Addons\Wiki\Renderers\TemplateRenderer.cs" />
     <Compile Include="Addons\Wiki\Renderers\TextRenderer.cs" />

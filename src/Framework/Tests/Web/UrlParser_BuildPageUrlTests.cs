@@ -29,14 +29,14 @@ namespace N2.Tests.Web
         public void CanBuildUrl_ItemOneLevelDown()
         {
             string url = parser.BuildUrl(page1);
-            Assert.AreEqual("/item1/", url);
+            Assert.AreEqual("/item1", url);
         }
 
         [Test]
         public void CanBuildUrl_ItemOneStep_TwoLevelsDown()
         {
             string url = parser.BuildUrl(page2_1);
-            Assert.AreEqual("/item2/item2_1/", url);
+            Assert.AreEqual("/item2/item2_1", url);
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace N2.Tests.Web
             {
                 string url = parser.BuildUrl(page2_1);
 
-                Assert.AreEqual("/HelloWorld/item2/item2_1/", url);
+                Assert.AreEqual("/HelloWorld/item2/item2_1", url);
             }
             finally
             {
@@ -80,7 +80,7 @@ namespace N2.Tests.Web
 
             string url = parser.BuildUrl(page);
 
-            Assert.AreEqual("/Default.aspx?page=9", url);
+            Assert.AreEqual("/Default.aspx?n2page=9", url);
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace N2.Tests.Web
 
                 string url = parser.BuildUrl(page);
 
-                Assert.AreEqual("/HelloWorld/Default.aspx?page=10", url);
+                Assert.AreEqual("/HelloWorld/Default.aspx?n2page=10", url);
             }
             finally
             {
@@ -111,7 +111,7 @@ namespace N2.Tests.Web
 
             string url = parser.BuildUrl(version);
 
-            Assert.AreEqual("/?versionIndex=22", url);
+            Assert.AreEqual("/?n2versionIndex=22", url);
         }
     }
 }

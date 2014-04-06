@@ -135,7 +135,7 @@
 		        return;
 
 		    node.Loading = true;
-		    res.children(res.applySelection({}, node.Current), function (data) {
+		    return res.children(res.applySelection({}, node.Current), function (data) {
 		        node.Children = data.Children;
 		        delete node.Loading;
 		        node.IsPaged = data.IsPaged;
@@ -268,7 +268,7 @@
 	    };
 	});
 
-	module.factory('SortHelperFactory', function (Content, Notify, Translate, Confirm) {
+	module.factory('SortHelperFactory', function ($timeout, Content, Notify, Translate, Confirm) {
 		var context = {}
 		return function (scope) {
 			function reload(ctx) {
@@ -284,9 +284,10 @@
 					if (data.IsPaged)
 						node.IsPaged = true;
 				});
+
+				scope.reloadChildren(ctx.scopes.from.node);
 			}
 			this.move = function (ctx) {
-			    console.log("move", ctx, ctx.scopes.selected.node.Current.Title, ctx.scopes.to.node.Current.Title, Translate("confirm.move.title"));
 			    Confirm({
 			        title: Translate("confirm.move.title"),
 			        moved: ctx.scopes.selected.node.Current,
@@ -299,8 +300,10 @@
 			                reload(ctx);
 			                Notify.show({ message: "Moved " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
 			            }, function () {
-			                Notify.show({ message: "Failed moving " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "error" });
+			            	reload(ctx);
+			            	Notify.show({ message: "Failed moving " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "error" });
 			            });
+			            ctx.callback && ctx.callback();
 			        },
 			        cancelled: function () {
 			            scope.reloadChildren(ctx.scopes.from.node);
@@ -312,6 +315,7 @@
 				Content.sort(ctx.paths, function () {
 					reload(ctx);
 					Notify.show({ message: "Sorted " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
+					ctx.callback && ctx.callback();
 				}, function () {
 					Notify.show({ message: "Failed sorting " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "error" });
 				});

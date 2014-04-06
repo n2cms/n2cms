@@ -35,10 +35,11 @@ namespace N2.Tests.Web.WebControls
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("sk-Sk");
 
             DatePicker picker = new DatePicker();
-            picker.SelectedDate = new DateTime(2010, 08, 29, 13, 12, 33);
+            var date = new DateTime(2010, 08, 29, 13, 12, 33);
+            picker.SelectedDate = date;
 
-            Assert.That(picker.DatePickerBox.Text, Is.EqualTo("29.8.2010"));
-            Assert.That(picker.TimePickerBox.Text, Is.EqualTo("13:12:33"));
+            Assert.That(picker.DatePickerBox.Text, Is.EqualTo(date.ToShortDateString()));
+            Assert.That(picker.TimePickerBox.Text, Is.EqualTo(date.ToString("HH:mm:ss")));
         }
 
         [Test]

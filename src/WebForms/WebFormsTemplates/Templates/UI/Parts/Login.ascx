@@ -1,5 +1,5 @@
 ﻿<%@ control language="C#" autoeventwireup="true" codebehind="Login.ascx.cs" inherits="N2.Templates.UI.Parts.Login" %>
-<n2:h4 text="<%$ CurrentItem: Title %>" visible="<%$ HasValue: Title %>" runat="server" />
+<n2:hn text="<%$ CurrentItem: Title %>" visible="<%$ HasValue: Title %>" runat="server" />
 <n2:box id="boxLogin" runat="server">
 	<asp:LoginStatus ID="Status" runat="server" LogoutText="<%$ CurrentItem: LogoutText %>" LoginText="" />
 	<asp:Login ID="LoginBox" runat="server" FailureText="<%$ CurrentItem: FailureText %>" VisibleWhenLoggedIn="false">

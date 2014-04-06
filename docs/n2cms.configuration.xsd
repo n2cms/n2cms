@@ -76,7 +76,9 @@
 																	</xs:complexType>
 																</xs:element>
 															</xs:sequence>
-														</xs:complexType>
+                              <xs:attribute name="uploadsWhitelistExression" type="xs:string"/>
+                              <xs:attribute name="uploadsBlacklistExression" type="xs:string"/>
+                            </xs:complexType>
 													</xs:element>
 												</xs:all>
 												<xs:attribute name="id" type="xs:integer" use="required" />
@@ -493,7 +495,6 @@
 									<xs:enumeration value="SqlCe"/>
 									<xs:enumeration value="MySql"/>
 									<xs:enumeration value="SqLite"/>
-									<xs:enumeration value="Firebird"/>
 									<xs:enumeration value="Generic"/>
 									<xs:enumeration value="Jet"/>
 									<xs:enumeration value="DB2"/>
@@ -769,6 +770,7 @@
 									<xs:attribute name="editInterfaceUrl" type="xs:string" use="optional" />
 									<xs:attribute name="newItemUrl" type="xs:string" use="optional" />
 									<xs:attribute name="deleteItemUrl" type="xs:string" use="optional" />
+                  <xs:attribute name="ensureLocalhostPreviewUrls" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
 						</xs:all>

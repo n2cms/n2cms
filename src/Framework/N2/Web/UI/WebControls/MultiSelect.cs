@@ -9,8 +9,7 @@ namespace N2.Web.UI.WebControls
   {
     public MultiSelect()
     {
-      EnableFilter = false;
-      SelectedList = 4;
+      //SelectedList = 4;
     }
 
     protected override void OnInit(EventArgs e)
@@ -20,31 +19,17 @@ namespace N2.Web.UI.WebControls
       RegisterClientScript();
     }
 
-    public bool EnableFilter { get; set; }
-
-    public int SelectedList { get; set; }
+    public int SearchTreshold { get; set; }
 
     public string ScriptUrl
     {
-      get { return (string)(ViewState["ScriptUrl"] ?? "{ManagementUrl}/Resources/Js/jquery.multiselect.js"); }
+        get { return (string)(ViewState["ScriptUrl"] ?? "{ManagementUrl}/Resources/chosen_v1.1.0/chosen.jquery.min.js"); }
       set { ViewState["ScriptUrl"] = value; }
     }
 
     public string StyleSheetUrl
     {
-      get { return (string)(ViewState["StyleSheetUrl"] ?? "{ManagementUrl}/Resources/Css/jquery.multiselect.css"); }
-      set { ViewState["StyleSheetUrl"] = value; }
-    }
-
-    public string FilterScriptUrl
-    {
-      get { return (string)(ViewState["ScriptUrl"] ?? "{ManagementUrl}/Resources/Js/jquery.multiselect.filter.js"); }
-      set { ViewState["ScriptUrl"] = value; }
-    }
-
-    public string FilterStyleSheetUrl
-    {
-      get { return (string)(ViewState["StyleSheetUrl"] ?? "{ManagementUrl}/Resources/Css/jquery.multiselect.filter.css"); }
+        get { return (string)(ViewState["StyleSheetUrl"] ?? "{ManagementUrl}/Resources/chosen_v1.1.0/chosen.min.css"); }
       set { ViewState["StyleSheetUrl"] = value; }
     }
 
@@ -55,23 +40,15 @@ namespace N2.Web.UI.WebControls
       Page.JavaScript(ScriptUrl);
       Page.StyleSheet(StyleSheetUrl);
 
-      if (EnableFilter)
-      {
-        Page.JavaScript(FilterScriptUrl);
-        Page.StyleSheet(FilterStyleSheetUrl);
-      }
-
-
-      var filter = EnableFilter ? ".multiselectfilter()" : "";
-
       var options = new List<string>
                       {
-                        string.Format("selectedList: {0}", SelectedList)
+                        string.Format("disable_search_threshold: {0}", SearchTreshold)
                       };
       var optionsString = string.Join(",", options.ToArray());
 
-      Page.JavaScript(string.Format("$('#{0}').multiselect({{{2}}}){1};", ClientID, filter, optionsString), ScriptPosition.Bottom, ScriptOptions.DocumentReady | ScriptOptions.ScriptTags);
+      Page.JavaScript(string.Format("$('#{0}').chosen({{{1}}});", ClientID, optionsString), ScriptPosition.Bottom, ScriptOptions.DocumentReady | ScriptOptions.ScriptTags);
     }
+
 
   }
 

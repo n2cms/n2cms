@@ -86,7 +86,14 @@ namespace N2.Details
                 fileName = Regex.Replace(fileName, InvalidCharactersExpression, "-");
                 string filePath = VirtualPathUtility.Combine(directoryPath, fileName);
 
-                fs.WriteFile(filePath, postedFile.InputStream);
+                if (Engine.Config.Sections.Management.UploadFolders.IsTrusted(fileName))
+                {
+                    fs.WriteFile(filePath, postedFile.InputStream);
+                }
+                else
+                {
+                    throw new Security.PermissionDeniedException("Invalid file name");
+                }
 
                 item[Name] = Url.ToAbsolute(filePath);
                 return true;

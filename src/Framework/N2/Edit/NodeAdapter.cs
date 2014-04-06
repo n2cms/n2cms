@@ -31,6 +31,7 @@ namespace N2.Edit
         private IDefinitionManager definitions;
         private ILanguageGateway languages;
         private DraftRepository drafts;
+        private HtmlSanitizer cleaner;
 
         public NavigationSettings Settings
         {
@@ -98,6 +99,11 @@ namespace N2.Edit
             set { drafts = value; }
         }
 
+        public HtmlSanitizer Cleaner
+        {
+            get { return cleaner ?? Engine.Resolve<HtmlSanitizer>(); }
+            set { cleaner = value; }
+        }
 
 		/// <summary>Gets the node representation used to build the tree hierarchy in the management UI.</summary>
 		/// <param name="item">The item to link to.</param>
@@ -111,7 +117,7 @@ namespace N2.Edit
 				State = item.State,
 				IconUrl = GetIconUrl(item),
 				IconClass = GetIconClass(item),
-				Title = Engine.Resolve<ISafeContentRenderer>().GetSafeHtml(item.Title),
+				Title = Cleaner.Clean(item.Title),
 				ToolTip = "#" + item.ID + ": " +  Definitions.GetDefinition(item).Title,
 				PreviewUrl = GetPreviewUrl(item, allowDraft: allowDraft),
 				MaximumPermission = GetMaximumPermission(item),

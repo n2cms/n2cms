@@ -25,12 +25,12 @@ namespace N2.Management.Content.Versions
 
         protected override void  OnDataBinding(EventArgs e)
         {
-            var allVersions = Engine.Resolve<IVersionManager>().GetVersionsOf(CurrentItem.VersionOf.Value ?? CurrentItem, 0, 4);
+            var allVersions = Engine.Resolve<IVersionManager>().GetVersionsOf(CurrentItem.VersionOf.Value ?? CurrentItem, 0, 4).ToList();
 
             ShowMoreVersions = allVersions.Count > 3
                 && Engine.SecurityManager.IsAuthorized(Page.User, CurrentItem, Security.Permission.Publish);
 
-            Versions = allVersions.Select(v => new VersionInfo { ID = v.ID, VersionIndex = v.VersionIndex + 1, Title = v.Title, SavedBy = v.SavedBy, Info = GetVersionInfo(v), InProgress = false, State = v.State }).Take(3);
+            Versions = allVersions.Select(v => new ManagementVersionInfo { ID = v.ID, VersionIndex = v.VersionIndex + 1, Title = v.Title, SavedBy = v.SavedBy, Info = GetVersionInfo(v), InProgress = false, State = v.State }).Take(3);
 
             VersionsUrl = "{ManagementUrl}/Content/Versions/".ToUrl().ResolveTokens()
                 .AppendQuery(SelectionUtility.SelectedQueryKey, CurrentItem.Path)
@@ -39,19 +39,19 @@ namespace N2.Management.Content.Versions
             base.OnDataBinding(e);
         }
 
-        private string GetVersionInfo(ContentItem v)
+        private string GetVersionInfo(VersionInfo v)
         {
             if (v.Expires.HasValue)
                 return GetLocalResourceString("tdExpired.Label", "Expired") + v.Expires.Value;
             if (v.State == ContentState.Waiting)
-                return GetLocalResourceString("tdFuturePublish.Label", "Pending publish") + v["FuturePublishDate"];
+                return GetLocalResourceString("tdFuturePublish.Label", "Pending publish") + v.FuturePublish;
             if (v.State == ContentState.Draft)
-                return GetLocalResourceString("tdActivity.Label", "Activity") + v["FuturePublishDate"];
+                return GetLocalResourceString("tdActivity.Label", "Activity") + v.FuturePublish;
 
             return "";
         }
 
-        public IEnumerable<VersionInfo> Versions { get; set; }
+        public IEnumerable<ManagementVersionInfo> Versions { get; set; }
     
         public bool ShowMoreVersions { get; set; }
 

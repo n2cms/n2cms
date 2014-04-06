@@ -74,7 +74,7 @@ namespace N2.Management.Tests
             action.Execute();
 
             var published = engine.Persister.Get(item.ID);
-            var allVersions = versionManager.GetVersionsOf(published);
+            var allVersions = versionManager.GetVersionsOf(published).ToList();
             var unpublished = allVersions.Single(v => v.State == ContentState.Unpublished);
 
             allVersions.Count.ShouldBe(2);

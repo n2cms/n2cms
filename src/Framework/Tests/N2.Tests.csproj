@@ -79,9 +79,9 @@
     <Reference Include="Iesi.Collections">
       <HintPath>..\..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\log4net.dll</HintPath>
+      <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -176,6 +176,7 @@
     <Compile Include="Collections\TypeFilterTests.cs" />
     <Compile Include="Collections\ZoneFilterTests.cs" />
     <Compile Include="Configuration\LazyRemovableCollectionTests.cs" />
+    <Compile Include="Configuration\UploadFolderCollectionTests.cs" />
     <Compile Include="Content\AnItem.cs" />
     <Compile Include="Content\ContentItemTests.cs" />
     <Compile Include="Definitions\AllowedDefinitionFilterTests.cs" />

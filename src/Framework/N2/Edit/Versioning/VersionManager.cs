@@ -69,14 +69,14 @@ namespace N2.Edit.Versioning
 
             if (asPreviousVersion)
             {
-                Repository.Save(version);
+                Repository.Save(version, asPreviousVersion);
                 item.VersionIndex = Repository.GetGreatestVersionIndex(item) + 1;
                 itemRepository.SaveOrUpdate(item);
             }
             else
             {
                 version.VersionIndex = Repository.GetGreatestVersionIndex(item) + 1;
-                Repository.Save(version);
+                Repository.Save(version, asPreviousVersion);
             }
 
             if (ItemSavedVersion != null)
@@ -316,16 +316,17 @@ namespace N2.Edit.Versioning
         /// <param name="publishedItem">The item whose versions to get.</param>
         /// <param name="count">The number of versions to get.</param>
         /// <returns>A list of versions of the item.</returns>
-        public virtual IList<ContentItem> GetVersionsOf(ContentItem publishedItem, int skip = 0, int take = 100)
+        public virtual IEnumerable<VersionInfo> GetVersionsOf(ContentItem publishedItem, int skip = 0, int take = 1000)
         {
             if (publishedItem.ID == 0)
-                return new ItemList { publishedItem };
+                return new [] { publishedItem.GetVersionInfo() };
 
-            var versions = Repository.GetVersions(publishedItem).Select(v => v.Version)
-                .Concat(new[] { publishedItem })
+            var versions = Repository.GetVersions(publishedItem).Select(v => v.GetVersionInfo())
+                .Concat(new[] { publishedItem.GetVersionInfo() })
                 .OrderByDescending(i => i.VersionIndex)
                 .Skip(skip).Take(take)
                 .ToList();
+
             return versions;
         }
 
@@ -344,22 +345,6 @@ namespace N2.Edit.Versioning
                 Repository.Repository.Flush();
                 transaction.Commit();
             }
-
-            //IList<ContentItem> versions = GetVersionsOf(publishedItem);
-            //versions.Remove(publishedItem);
-            //int max = maximumNumberOfVersions - 1;
-
-            //if (versions.Count <= max) return;
-
-            //using (ITransaction transaction = itemRepository.BeginTransaction())
-            //{
-            //    for (int i = max; i < versions.Count; i++)
-            //    {
-            //        this.itemRepository.Delete(versions[i]);
-            //    }
-            //    itemRepository.Flush();
-            //    transaction.Commit();
-            //}
         }
 
         /// <summary>Checks whether an item  may have versions.</summary>

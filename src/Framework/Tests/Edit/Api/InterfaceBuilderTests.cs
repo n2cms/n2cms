@@ -94,7 +94,6 @@ namespace N2.Tests.Edit.Api
             definition.Partials.Management.ShouldNotBeEmpty();
             definition.Partials.Menu.ShouldNotBeEmpty();
             definition.Partials.Preview.ShouldNotBeEmpty();
-            definition.Partials.Search.ShouldNotBeEmpty();
             definition.Partials.Tree.ShouldNotBeEmpty();
         }
 

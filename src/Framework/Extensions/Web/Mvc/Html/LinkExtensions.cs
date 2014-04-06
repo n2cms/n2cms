@@ -14,7 +14,7 @@ namespace N2.Web.Mvc.Html
         {
             if (item == null) return null;
 
-            return htmlHelper.ActionLink(item.Title, action, null, new RouteValueDictionary() { { "item", item } }, new RouteValueDictionary());
+            return htmlHelper.ActionLink(item.Title, action, null, new RouteValueDictionary() { { "n2item", item } }, new RouteValueDictionary());
         }
         public static MvcHtmlString ActionLink(this HtmlHelper htmlHelper, ContentItem item, object routeValues)
         {
@@ -24,7 +24,7 @@ namespace N2.Web.Mvc.Html
         {
             if (item == null) return null;
 
-            return htmlHelper.ActionLink(item.Title, action, null, new RouteValueDictionary(routeValues) { { "item", item } }, new RouteValueDictionary());
+            return htmlHelper.ActionLink(item.Title, action, null, new RouteValueDictionary(routeValues) { { "n2item", item } }, new RouteValueDictionary());
         }
         public static MvcHtmlString ActionLink(this HtmlHelper htmlHelper, ContentItem item, object routeValues, object htmlAttributes)
         {
@@ -34,15 +34,15 @@ namespace N2.Web.Mvc.Html
         {
             if (item == null) return null;
 
-            return htmlHelper.ActionLink(item.Title, action, null, new RouteValueDictionary(routeValues) { { "item", item } }, new RouteValueDictionary(htmlAttributes));
+            return htmlHelper.ActionLink(item.Title, action, null, new RouteValueDictionary(routeValues) { { "n2item", item } }, new RouteValueDictionary(htmlAttributes));
         }
         public static MvcHtmlString ActionLink(this HtmlHelper htmlHelper, string linkText, ContentItem item, object routeValues, object htmlAttributes)
         {
-            return htmlHelper.ActionLink(linkText, "Index", null, new RouteValueDictionary(routeValues) { { "item", item } }, new RouteValueDictionary(htmlAttributes));
+            return htmlHelper.ActionLink(linkText, "Index", null, new RouteValueDictionary(routeValues) { { "n2item", item } }, new RouteValueDictionary(htmlAttributes));
         }
         public static MvcHtmlString ActionLink(this HtmlHelper htmlHelper, string linkText, ContentItem item, string action, object routeValues, object htmlAttributes)
         {
-            return htmlHelper.ActionLink(linkText, action, null, new RouteValueDictionary(routeValues) { { "item", item } }, new RouteValueDictionary(htmlAttributes));
+            return htmlHelper.ActionLink(linkText, action, null, new RouteValueDictionary(routeValues) { { "n2item", item } }, new RouteValueDictionary(htmlAttributes));
         }
     }
 }

@@ -26,7 +26,7 @@ namespace N2.Tests.Web
             mocks.ReplayAll();
 
             string url = parser.BuildUrl(page1_1);
-            Assert.AreEqual("/item1_1.aspx", url);
+            Assert.AreEqual("/item1_1", url);
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace N2.Tests.Web
             mocks.ReplayAll();
 
             string url = parser.BuildUrl(page1_1);
-            Assert.AreEqual("http://www.n2cms.com/item1_1.aspx", url);
+            Assert.AreEqual("http://www.n2cms.com/item1_1", url);
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace N2.Tests.Web
             mocks.ReplayAll();
 
             string url = parser.BuildUrl(itemOnTheOutside);
-            Assert.That(url, Is.EqualTo("/Default.aspx?page=99"));
+            Assert.That(url, Is.EqualTo("/Default.aspx?n2page=99"));
         }
 
         [Test]
@@ -80,8 +80,8 @@ namespace N2.Tests.Web
             string itemUrl = parser.BuildUrl(page1_1);
             string url = parser.BuildUrl(version);
 
-            itemUrl.ShouldBe("/item1_1.aspx");
-            url.ShouldBe("/item1_1.aspx?versionIndex=1");
+            itemUrl.ShouldBe("/item1_1");
+            url.ShouldBe("/item1_1?n2versionIndex=1");
         }
     }
 }

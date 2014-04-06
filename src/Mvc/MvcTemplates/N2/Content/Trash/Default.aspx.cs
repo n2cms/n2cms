@@ -79,7 +79,7 @@ namespace N2.Edit.Trash
 
 	    protected string HtmlEncode(String value)
 	    {
-		    return SafeContentRenderer.HtmlEncode(value);
+		    return Sanitizer.Encode(value);
 	    }
 
         protected void btnClear_Click(object sender, EventArgs e)

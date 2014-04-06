@@ -146,7 +146,7 @@ jQuery('#{8}').n2datepicker({{ firstDay:{0}, dateFormat:'{1}', dayNamesMin:{3}, 
 				if(value != null)
 				{
 					DateTime parsed;
-					if (!DateTime.TryParse(value, out parsed)) 
+					if (!DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AllowInnerWhite, out parsed)) 
 						return;
 					DatePickerBox.Text = parsed.ToShortDateString();
 					TimePickerBox.Text = parsed.Second == 0 ? parsed.ToShortTimeString() : parsed.ToLongTimeString();

@@ -75,10 +75,11 @@ namespace N2.Edit.Versioning
                 .OrderByDescending(v => v.VersionIndex);
         }
 
-        public ContentVersion Save(ContentItem item)
+        public ContentVersion Save(ContentItem item, bool asPreviousVersion = true)
         {
             item = Find.ClosestPage(item);
-            var version = GetVersion(GetMaster(item), item.VersionIndex)
+            var master = GetMaster(item);
+            var version = GetVersion(master, item.VersionIndex)
                 ?? Inject(new ContentVersion());
 
             ApplyCommonValuesRecursive(item);
@@ -87,7 +88,18 @@ namespace N2.Edit.Versioning
             version.Saved = Utility.CurrentTime();
             version.Version = item;
             version.ItemCount = N2.Find.EnumerateChildren(item, includeSelf: true, useMasterVersion: false).Count();
-
+            if (asPreviousVersion)
+            {
+                version.Published = GetVersions(master)
+                    .Where(v => v.VersionIndex < item.VersionIndex)
+                    .OrderByDescending(v => v.VersionIndex)
+                    .Select(v => v.Expired)
+                    .FirstOrDefault()
+                    ?? item.Published;
+                version.Expired = Utility.CurrentTime();
+            }
+            else
+                version.Published = null;
 
             using (var tx = Repository.BeginTransaction())
             {
