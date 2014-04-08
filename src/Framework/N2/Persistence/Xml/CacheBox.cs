@@ -5,10 +5,10 @@ using System.Text;
 
 namespace N2.Persistence.Xml
 {
-	public class Box<TEntity>
+	public class CacheBox<TEntity>
 		where TEntity: class
 	{
-		public TEntity Entity
+		public TEntity Value
 		{
 			get
 			{

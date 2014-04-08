@@ -14,6 +14,7 @@ using System.Xml;
 using System.Xml.XPath;
 using System.Threading;
 using N2.Configuration;
+using N2.Web;
 
 namespace N2.Persistence.Xml
 {
@@ -28,22 +29,41 @@ namespace N2.Persistence.Xml
 		Logger<XmlRepository<TEntity>> logger;
 		private IDefinitionManager definitions;
 		protected ITransaction activeTransaction;
-		private bool isInitialized;
 
-		protected Cache<TEntity> secondLevelCache = new Cache<TEntity>();
-		protected Cache<TEntity> identityMap = new Cache<TEntity>();
+		protected ApplicationCache<TEntity> secondLevelCache;
+		
+		public SessionCache<TEntity> Cache
+		{
+			get { return webContext.RequestItems[cacheSessionKey] as SessionCache<TEntity> ?? (Cache = new SessionCache<TEntity>(secondLevelCache)); }
+			set { webContext.RequestItems[cacheSessionKey] = value; }
+		}
 
 		public string DataDirectoryPhysical { get; set; }
 
-		public XmlRepository(IDefinitionManager definitions, ConfigurationManagerWrapper config)
+		protected virtual TEntity Dehydrate(TEntity entity)
 		{
-			//secondLevelCache = new Cache<TEntity>();
-			//identityMap = new Cache<TEntity>();
+			return entity;
+		}
+
+		protected virtual TEntity Hydrate(TEntity entity)
+		{
+			return entity;
+		}
+
+		public XmlRepository(IDefinitionManager definitions, IWebContext webContext, ConfigurationManagerWrapper config)
+		{
+			cacheSessionKey = "CachBroker<" + typeof(TEntity).Name + ">.Cache";
+			secondLevelCache = new ApplicationCache<TEntity>(Dehydrate, Hydrate);
+			this.webContext = webContext;
+			Cache = new SessionCache<TEntity>(secondLevelCache);
 
 			this.definitions = definitions;
 
 			var connectionString = config.GetConnectionString();
-			var virtualPath = connectionString.Split(';').Where(x => x.StartsWith("XmlRepositoryPath=")).Select(x => x.Split('=')).Where(x => x.Length > 1).Select(x => x[1]).FirstOrDefault()
+			var virtualPath = connectionString.Split(';')
+				.Where(x => x.StartsWith("XmlRepositoryPath="))
+				.Select(x => x.Split('=')).Where(x => x.Length > 1).Select(x => x[1])
+				.FirstOrDefault()
 				?? "~/App_Data/XmlRepository/";
 
 			DataDirectoryPhysical = HostingEnvironment.MapPath("~/" + virtualPath.Trim('~', '/') + "/" + typeof(TEntity).Name)
@@ -54,6 +74,10 @@ namespace N2.Persistence.Xml
 				try
 				{
 					Directory.CreateDirectory(DataDirectoryPhysical);
+					maxId = GetFiles()
+						.Select(path => (int)ExtractId(path))
+						.OrderByDescending(id => id)
+						.FirstOrDefault();
 				}
 				catch (Exception ex)
 				{
@@ -62,12 +86,23 @@ namespace N2.Persistence.Xml
 			}
 		}
 
+		private string[] GetFiles()
+		{
+			return Directory.GetFiles(DataDirectoryPhysical, "*.xml");
+		}
+
         public virtual TEntity Get(object id)
         {
             if (id is Int32 && (int)id == 0)
                 return null;
 
-			return Load(id);
+			return Cache.Get(id, (entityId) =>
+			{
+				var path = GetPath(id);
+				if (!File.Exists(path))
+					return null;
+				return Read(path);
+			});
         }
 
         public virtual IEnumerable<TEntity> Find(string propertyName, object value)
@@ -77,56 +112,47 @@ namespace N2.Persistence.Xml
 
 		public virtual IEnumerable<TEntity> Find(params Parameter[] propertyValuesToMatchAll)
         {
-			Initialize();
 			if (propertyValuesToMatchAll == null || propertyValuesToMatchAll.Length == 0)
-				return identityMap.Values;
+				return GetAll();
+			else if (propertyValuesToMatchAll.Length == 1)
+				return Find((IParameter)propertyValuesToMatchAll[0]);
 			else
-				return identityMap.Values.Where(v => propertyValuesToMatchAll.All(condition => condition.IsMatch(v)));
+				return Find((IParameter)new ParameterCollection(propertyValuesToMatchAll));
         }
 
 		public virtual IEnumerable<TEntity> Find(IParameter parameters)
         {
-			Initialize();
-            return identityMap.Values
-				.Where(v => parameters.IsMatch(v));
+			return Cache.Query(parameters, () => FindInternal(parameters), Get);
         }
 
-		protected void Initialize()
+		protected IEnumerable<Tuple<object, TEntity>> FindInternal(IParameter parameters)
 		{
-			if (isInitialized)
-				return;
-
-			lock (this)
-			{
-				foreach (var path in Directory.GetFiles(DataDirectoryPhysical, "*.xml"))
-					Load(path);
-				isInitialized = true;
-				maxId = identityMap.Keys
-					.OfType<int?>()
-					.Where(id => id.HasValue)
-					.OrderByDescending(id => id.Value)
-					.FirstOrDefault()
-					?? 0;
-			}
+			return GetAll().Where(parameters.IsMatch).Select(e => new Tuple<object, TEntity>(GetId(e), e));
 		}
 
-		protected virtual TEntity Load(object id)
+		protected IEnumerable<TEntity> GetAll()
 		{
-			return identityMap.Get(id)
-				?? Load(GetPath(id));
+			return GetFiles().Select(path => Get(ExtractId(path)));
 		}
 
-		protected virtual TEntity Load(string path)
-		{
-			var id = ExtractId(path);
+		//protected void Initialize()
+		//{
+		//	if (isInitialized)
+		//		return;
 
-			return identityMap.Get(id, () =>
-			{
-				if (!File.Exists(path))
-					return null;
-				return Read(path);
-			});
-		}
+		//	lock (this)
+		//	{
+		//		foreach (var path in Directory.GetFiles(DataDirectoryPhysical, "*.xml"))
+		//			Load(path);
+		//		isInitialized = true;
+		//		maxId = identityMap.Keys
+		//			.OfType<int?>()
+		//			.Where(id => id.HasValue)
+		//			.OrderByDescending(id => id.Value)
+		//			.FirstOrDefault()
+		//			?? 0;
+		//	}
+		//}
 
 		protected virtual TEntity Read(string path)
 		{
@@ -162,16 +188,20 @@ namespace N2.Persistence.Xml
 			if (File.Exists(path))
 				File.Delete(path);
 
-			identityMap.Remove(GetId(entity));
-        }
+			Cache.Remove(GetId(entity));
+			Cache.Clear(entityCache: false, queryCache: true);
+			secondLevelCache.Clear(entityCache: false, queryCache: true);
+		}
 
         public virtual void SaveOrUpdate(TEntity entity)
         {
 			var id = GetOrAssignId(entity);
 			var path = GetPath(id);
 			Write(entity, path);
-			identityMap.Set(id, entity);
-        }
+			Cache.Set(id, entity);
+			Cache.Clear(entityCache: false, queryCache: true);
+			secondLevelCache.Clear(entityCache: false, queryCache: true);
+		}
 
 		protected virtual void Write(TEntity entity, string path)
 		{
@@ -206,7 +236,6 @@ namespace N2.Persistence.Xml
 		static object zero = 0;
 		private object GetOrAssignId(TEntity item)
 		{
-			Initialize();
 			object id = GetId(item);
 			if (zero.Equals(id))
 			{
@@ -231,8 +260,7 @@ namespace N2.Persistence.Xml
 
 		public virtual long Count()
         {
-			Initialize();
-			return identityMap.Count;
+			return GetFiles().Length;
         }
 
 		public virtual long Count(IParameter parameters)
@@ -260,11 +288,12 @@ namespace N2.Persistence.Xml
         }
 
         public event EventHandler Disposed;
+		private IWebContext webContext;
+		private string cacheSessionKey;
         
 		public virtual void Dispose()
         {
-			identityMap.Remove();
-			isInitialized = false;
+			Cache.Clear();
 
             if (Disposed != null)
                 Disposed(this, new EventArgs());

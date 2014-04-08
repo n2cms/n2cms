@@ -11,6 +11,8 @@ using N2.Persistence.Xml;
 using N2.Persistence.Serialization;
 using System.IO;
 using System;
+using N2.Configuration;
+using N2.Web;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -47,7 +49,7 @@ namespace N2.Tests.Persistence.NH
         {
             base.SetUp();
 			notifier = new ItemNotifier();
-            repository = new XmlContentRepository(definitions, writer, reader, new N2.Configuration.ConfigurationManagerWrapper(), notifier);
+			repository = new XmlContentRepository(definitions, new ThreadContext(), new ConfigurationManagerWrapper(), writer, reader, notifier);
         }
 
 		[TearDown]

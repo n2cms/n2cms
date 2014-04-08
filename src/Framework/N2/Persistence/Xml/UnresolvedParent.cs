@@ -5,7 +5,7 @@ using System.Text;
 
 namespace N2.Persistence.Xml
 {
-	internal class UnresolvedParent : ContentItem
+	internal class UnresolvedRelation : ContentItem
 	{
 	}
 }

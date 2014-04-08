@@ -836,12 +836,12 @@ namespace N2
 		/// <param name="includeChildren">Wether this item's child items also should be cloned.</param>
 		/// <returns>The cloned item with or without cloned child items.</returns>
 		[NonInterceptable]
-		public virtual ContentItem Clone(bool includeChildren = false, bool includeIdentifier = false)
+		public virtual ContentItem Clone(bool includeChildren = false, bool includeIdentifier = false, bool includeParent = false)
 		{
 			ContentItem cloned = (ContentItem)Activator.CreateInstance(GetContentType(), true); //(ContentItem)MemberwiseClone(); 
 
 			CloneUnversionableFields(this, cloned);
-			CloneFields(this, cloned, includeIdentifier);
+			CloneFields(this, cloned, includeIdentifier, includeParent);
 			CloneAutoProperties(this, cloned);
 			CloneDetails(this, cloned);
 			CloneChildren(this, cloned, includeChildren);
@@ -859,7 +859,7 @@ namespace N2
 			destination.state = source.state;
 		}
 
-		static void CloneFields(ContentItem source, ContentItem destination, bool includeID)
+		static void CloneFields(ContentItem source, ContentItem destination, bool includeID, bool includeParent)
 		{
 			destination.title = source.title;
 			if (source.id.ToString() != source.name)
@@ -877,6 +877,8 @@ namespace N2
 			destination.ancestralTrail = source.ancestralTrail;
 			if (includeID)
 				destination.id = source.id;
+			if (includeParent)
+				destination.parent = source.parent;
 		}
 
 		static void CloneAutoProperties(ContentItem source, ContentItem destination)
@@ -1115,7 +1117,7 @@ namespace N2
 
 		void IUpdatable<ContentItem>.UpdateFrom(ContentItem source)
 		{
-			CloneFields(source, this, false);
+			CloneFields(source, this, false, false);
 			CloneDetails(source, this);
 			ClearMissingDetails(source, this);
 			CloneAutoProperties(source, this);

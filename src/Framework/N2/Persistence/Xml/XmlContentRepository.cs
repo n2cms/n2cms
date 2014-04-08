@@ -3,6 +3,7 @@ using N2.Configuration;
 using N2.Definitions;
 using N2.Engine;
 using N2.Persistence.Serialization;
+using N2.Web;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,13 +26,44 @@ namespace N2.Persistence.Xml
 		private IDefinitionManager definitions;
 		private IItemNotifier notifier;
 
-		public XmlContentRepository(IDefinitionManager definitions, IItemXmlWriter writer, IItemXmlReader reader, ConfigurationManagerWrapper config, IItemNotifier notifier)
-			: base(definitions, config)
+		public XmlContentRepository(IDefinitionManager definitions, IWebContext webContext, ConfigurationManagerWrapper config, IItemXmlWriter writer, IItemXmlReader reader, IItemNotifier notifier)
+			: base(definitions, webContext, config)
 		{
 			this.definitions = definitions;
 			this.writer = writer;
 			this.reader = reader;
 			this.notifier = notifier;
+		}
+
+		protected override ContentItem Hydrate(ContentItem entity)
+		{
+			entity = entity.Clone(includeIdentifier: true, includeParent: true);
+			
+			HandleRelations(entity);
+			notifier.NotifiyCreated(entity);
+			return entity;
+		}
+
+		protected override ContentItem Dehydrate(ContentItem entity)
+		{
+			if (entity == null)
+				return null;
+
+			var clone = entity.Clone(includeIdentifier: true);
+
+			if (entity.Parent != null)
+				clone.Parent = new UnresolvedRelation { ID = entity.Parent.ID };
+
+			clone.Children = new ItemList();
+
+			return clone;
+		}
+
+		public override ContentItem Get(object id)
+		{
+			var item = base.Get(id);
+			HandleRelations(item);
+			return item;
 		}
 
 		public override void SaveOrUpdate(ContentItem entity)
@@ -48,28 +80,14 @@ namespace N2.Persistence.Xml
 			base.Delete(entity);
 		}
 
-		protected override ContentItem Load(object id)
-		{
-			var item = base.Load(id);
-			HandleRelations(item);
-			return item;
-		}
-
-		protected override ContentItem Load(string path)
-		{
-			var item = base.Load(path);
-			HandleRelations(item);
-			return item;
-		}
-
 		private void HandleRelations(ContentItem item)
 		{
 			if (item == null)
 				return;
 
-			if (item.Parent is UnresolvedParent)
+			if (item.Parent is UnresolvedRelation)
 			{
-				item.Parent = Load(item.Parent.ID);
+				item.Parent = Get(item.Parent.ID);
 			}
 
 			if (!(item.Children is XmlItemList) && item.Children.WasInitialized && item.Children.Count == 0)
@@ -96,7 +114,7 @@ namespace N2.Persistence.Xml
 			var parentRelation = record.UnresolvedLinks.FirstOrDefault(ul => ul.RelationType == "parent" && ul.ReferencingItem == record.RootItem);
 			var item = record.RootItem;
 			if (parentRelation != null && record.RootItem.Parent == null)
-				item.Parent = new UnresolvedParent { ID = parentRelation.ReferencedItemID };
+				item.Parent = new UnresolvedRelation { ID = parentRelation.ReferencedItemID };
 
 			notifier.NotifiyCreated(item);
 
@@ -120,24 +138,58 @@ namespace N2.Persistence.Xml
 
 		public IEnumerable<ContentItem> FindDescendants(ContentItem ancestor, string discriminator)
 		{
-			Initialize();
-			return identityMap.Values
-				.Where(v => v == ancestor || v.AncestralTrail.StartsWith(ancestor.GetTrail()))
-				.Where(v => discriminator == null || definitions.GetDefinition(v).Discriminator == discriminator);
+			if (ancestor == null && discriminator == null)
+				return GetAll();
+
+			var ancestorQuery = QueryAncestor(ancestor);
+			var discriminatorQuery = QueryDiscriminator(discriminator);
+
+			var query = (ancestorQuery != null && discriminatorQuery != null)
+				? (ancestorQuery & discriminatorQuery)
+				: ancestorQuery == null
+					? discriminatorQuery
+					: ancestorQuery;
+
+			return Cache.Query(query, () => FindInternal(query), Get);
+				
+			//identityMap.Values
+			//.Where(v => v == ancestor || v.AncestralTrail.StartsWith(ancestor.GetTrail()))
+			//.Where(v => discriminator == null || definitions.GetDefinition(v).Discriminator == discriminator);
+		}
+
+		private Parameter QueryDiscriminator(string discriminator)
+		{
+			if (discriminator == null)
+				return null;
+
+			return Parameter.TypeEqual(discriminator);
+		}
+
+		private static ParameterCollection QueryAncestor(ContentItem ancestor)
+		{
+			if (ancestor == null)
+				return null;
+			return (Parameter.Equal("ID", ancestor.ID) | Parameter.StartsWith("AncestralTrail", ancestor.GetTrail()));
 		}
 
 		public IEnumerable<ContentItem> FindReferencing(ContentItem linkTarget)
 		{
-			Initialize();
 			return FindReferencing(new[] { linkTarget.ID });
 		}
 
 		private IEnumerable<ContentItem> FindReferencing(IEnumerable<int> itemIDs)
 		{
-			return identityMap.Values
-				.Where(ci =>
-					ci.Details.Any(d => d.LinkedItem.HasValue && itemIDs.Contains(d.LinkedItem.ID.Value))
-					|| ci.DetailCollections.SelectMany(dc => dc.Details).Any(d => d.LinkedItem.HasValue && itemIDs.Contains(d.LinkedItem.ID.Value)));
+			var query = Parameter.In(null, itemIDs).Detail();
+			return Cache.Query(query, 
+				() => GetAll().Where(ci => 
+					ci.Details.Any(d => d.LinkedItem.HasValue && itemIDs.Contains(d.LinkedItem.ID.Value)) 
+					|| ci.DetailCollections.SelectMany(dc => dc.Details).Any(d => d.LinkedItem.HasValue && itemIDs.Contains(d.LinkedItem.ID.Value)))
+					.Select(ci => new Tuple<object, ContentItem>(ci.ID, ci)), Get);
+			
+			//	identityMap.Values
+			//	.Where(ci =>
+			//		ci.Details.Any(d => d.LinkedItem.HasValue && itemIDs.Contains(d.LinkedItem.ID.Value))
+			//		|| ci.DetailCollections.SelectMany(dc => dc.Details).Any(d => d.LinkedItem.HasValue && itemIDs.Contains(d.LinkedItem.ID.Value)));
 		}
 
 		public int RemoveReferencesToRecursive(ContentItem target)
@@ -165,12 +217,11 @@ namespace N2.Persistence.Xml
 
 		public IEnumerable<DiscriminatorCount> FindDescendantDiscriminators(ContentItem ancestor)
 		{
-			Initialize();
 			var counts = new Dictionary<Type, DiscriminatorCount>();
 			if (ancestor != null)
 				IncrementDiscriminatorCount(counts, ancestor);
 
-			foreach (var v in identityMap.Values)
+			foreach (var v in GetAll())
 			{
 				if (ancestor == null || v.AncestralTrail.StartsWith(ancestor.GetTrail()))
 				{

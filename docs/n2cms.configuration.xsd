@@ -779,7 +779,7 @@
 						<xs:attribute name="legacy" type="xs:boolean" use="optional" />
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="web">
+				<!--<xs:element name="web">
 					<xs:complexType>
 						<xs:all>
 							<xs:element name="filelist" minOccurs="0" maxOccurs="1">
@@ -789,7 +789,7 @@
 							</xs:element>
 						</xs:all>
 					</xs:complexType>
-				</xs:element>
+				</xs:element>-->
 			</xs:all>
 		</xs:complexType>
 	</xs:element>
