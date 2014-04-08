@@ -165,6 +165,7 @@
     <Compile Include="Persistence\Xml\CacheBox.cs" />
     <Compile Include="Persistence\Xml\ContentDataContractResolver.cs" />
     <Compile Include="Persistence\Xml\ApplicationCache.cs" />
+    <Compile Include="Persistence\Xml\ContentDataContractSurrogate.cs" />
     <Compile Include="Persistence\Xml\SessionCache.cs" />
     <Compile Include="Persistence\Xml\UnresolvedParent.cs" />
     <Compile Include="Persistence\Xml\XmlContentRepository.cs" />

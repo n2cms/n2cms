@@ -218,7 +218,7 @@ namespace N2.Persistence.Xml
 
 		private static DataContractSerializer GetSerializer()
 		{
-			return new DataContractSerializer(typeof(ContentItem), null, 100, true, false, null, new ContentDataContractResolver());
+			return new DataContractSerializer(typeof(TEntity), null, 100, true, false, new ContentDataContractSurrogate(), new ContentDataContractResolver());
 		}
 
 		protected string GetPath(TEntity item)

@@ -16,7 +16,7 @@ using N2.Web;
 
 namespace N2.Tests.Persistence.NH
 {
-    [TestFixture, Category("Integration")]
+    [TestFixture]
     public class XmlRepositoryTests : ItemTestsBase
     {
 		XmlContentRepository repository;

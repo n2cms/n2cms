@@ -11,7 +11,9 @@ namespace N2.Edit.Versioning
 {
     public sealed class ContentVersion
     {
-        private Func<string, ContentItem> _deserializer;
+		[NonSerialized]
+		private Func<string, ContentItem> _deserializer;
+		[NonSerialized]
         private Func<ContentItem, string> _serializer;
         private string _versionDataXml;
         private ContentItem _version;
@@ -28,7 +30,7 @@ namespace N2.Edit.Versioning
 
         // ReSharper disable RedundantNameQualifier
         [XmlIgnore]
-        public Func<string, ContentItem> Deserializer
+		public Func<string, ContentItem> Deserializer
         {
             get
             {
@@ -39,7 +41,7 @@ namespace N2.Edit.Versioning
         }
 
         [XmlIgnore]
-        public Func<ContentItem, string> Serializer
+		public Func<ContentItem, string> Serializer
         {
             get 
             { 
