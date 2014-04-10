@@ -74,21 +74,22 @@ namespace N2.Management.Tests.Installation
             newVersion.State.ShouldBe(version.State);
             newVersion.Title.ShouldBe(version.Title);
             newVersion.VersionIndex.ShouldBe(version.VersionIndex);
-            newVersion.Version.ID.ShouldBe(0);
-            newVersion.Version.Created.StripMilliseconds().ShouldBe(version.Created.StripMilliseconds());
-            //newVersion.Version.Expires.ShouldBe(version.Expires);
-            newVersion.Version.Name.ShouldBe(version.Name);
-            newVersion.Version.Published.Value.StripMilliseconds().ShouldBe(version.Published.Value.StripMilliseconds());
-            newVersion.Version.SavedBy.ShouldBe(version.SavedBy);
-            newVersion.Version.SortOrder.ShouldBe(version.SortOrder);
-            newVersion.Version.State.ShouldBe(version.State);
-            newVersion.Version.TemplateKey.ShouldBe(version.TemplateKey);
-            newVersion.Version.Title.ShouldBe(version.Title);
-            newVersion.Version.TranslationKey.ShouldBe(version.TranslationKey);
-            //newVersion.Version.Updated.ShouldBe(version.Updated);
-            newVersion.Version.VersionIndex.ShouldBe(version.VersionIndex);
-            newVersion.Version.Visible.ShouldBe(version.Visible);
-            newVersion.Version.ZoneName.ShouldBe(version.ZoneName);
+			var versionData = repository.DeserializeVersion(newVersion);
+            versionData.ID.ShouldBe(0);
+            versionData.Created.StripMilliseconds().ShouldBe(version.Created.StripMilliseconds());
+            //versionData.Expires.ShouldBe(version.Expires);
+            versionData.Name.ShouldBe(version.Name);
+            versionData.Published.Value.StripMilliseconds().ShouldBe(version.Published.Value.StripMilliseconds());
+            versionData.SavedBy.ShouldBe(version.SavedBy);
+            versionData.SortOrder.ShouldBe(version.SortOrder);
+            versionData.State.ShouldBe(version.State);
+            versionData.TemplateKey.ShouldBe(version.TemplateKey);
+            versionData.Title.ShouldBe(version.Title);
+            versionData.TranslationKey.ShouldBe(version.TranslationKey);
+            //versionData.Updated.ShouldBe(version.Updated);
+            versionData.VersionIndex.ShouldBe(version.VersionIndex);
+            versionData.Visible.ShouldBe(version.Visible);
+            versionData.ZoneName.ShouldBe(version.ZoneName);
         }
 
         [Test]
@@ -102,7 +103,7 @@ namespace N2.Management.Tests.Installation
             }
 
             var newVersion = repository.GetVersion(master, version.VersionIndex);
-            newVersion.Version["Hello"].ShouldBe("World");
+			repository.DeserializeVersion(newVersion)["Hello"].ShouldBe("World");
         }
 
         [Test]
@@ -132,7 +133,7 @@ namespace N2.Management.Tests.Installation
             }
 
             var newVersion = repository.GetVersion(master, version.VersionIndex);
-            newVersion.Version.Children.Single().ZoneName.ShouldBe("TheZone");
+            repository.DeserializeVersion(newVersion).Children.Single().ZoneName.ShouldBe("TheZone");
         }
     }
 }

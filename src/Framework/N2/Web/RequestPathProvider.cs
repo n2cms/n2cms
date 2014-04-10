@@ -68,7 +68,7 @@ namespace N2.Web
                 if (viewPreferenceParameter == WebExtensions.DraftQueryValue && draftRepository.HasDraft(path.CurrentItem))
                 {
                     var draft = draftRepository.Versions.GetVersion(path.CurrentPage);
-                    path.TryApplyVersion(draft, url["versionKey"]);
+					path.TryApplyVersion(draft, url["versionKey"], draftRepository.Versions);
                 }
 
                 return path;

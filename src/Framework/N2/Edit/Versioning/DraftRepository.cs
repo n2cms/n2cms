@@ -56,17 +56,15 @@ namespace N2.Edit.Versioning
 
         public IEnumerable<ContentVersion> FindDrafts(int skip = 0, int take = 100)
         {
-            return Versions.Repository.Find(new ParameterCollection(Parameter.Equal("State", ContentState.Draft)).Skip(skip).Take(take).OrderBy("Saved DESC"))
-                .Select(v => Versions.Inject(v));
+            return Versions.Repository.Find(new ParameterCollection(Parameter.Equal("State", ContentState.Draft)).Skip(skip).Take(take).OrderBy("Saved DESC"));
         }
 
         public IEnumerable<ContentVersion> FindDrafts(ContentItem newerThanMasterVersion)
         {
-            return Versions.Repository.Find((Parameter.Equal("State", ContentState.Draft)
-                & Parameter.Equal("Master.ID", newerThanMasterVersion.ID)
-                & Parameter.GreaterThan("VersionIndex", newerThanMasterVersion.VersionIndex)).OrderBy("VersionIndex DESC"))
-                .OrderByDescending(v => v.VersionIndex)
-                .Select(v => Versions.Inject(v));
+			return Versions.Repository.Find((Parameter.Equal("State", ContentState.Draft)
+				& Parameter.Equal("Master.ID", newerThanMasterVersion.ID)
+				& Parameter.GreaterThan("VersionIndex", newerThanMasterVersion.VersionIndex)).OrderBy("VersionIndex DESC"))
+				.OrderByDescending(v => v.VersionIndex);
         }
 
         private IDictionary<int, DraftInfo> GetPagesWithDrafts()

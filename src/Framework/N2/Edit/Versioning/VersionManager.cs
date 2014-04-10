@@ -67,16 +67,17 @@ namespace N2.Edit.Versioning
             if (item.Parent != null)
                 version["ParentID"] = item.Parent.ID;
 
+			ContentVersion savedVersion;
             if (asPreviousVersion)
             {
-                Repository.Save(version, asPreviousVersion);
+				savedVersion = Repository.Save(version, asPreviousVersion);
                 item.VersionIndex = Repository.GetGreatestVersionIndex(item) + 1;
                 itemRepository.SaveOrUpdate(item);
             }
             else
             {
                 version.VersionIndex = Repository.GetGreatestVersionIndex(item) + 1;
-                Repository.Save(version, asPreviousVersion);
+				savedVersion = Repository.Save(version, asPreviousVersion);
             }
 
             if (ItemSavedVersion != null)
@@ -84,7 +85,7 @@ namespace N2.Edit.Versioning
 
             TrimVersionCountTo(item, maximumVersionsPerItem);
 
-            return version;
+			return Repository.DeserializeVersion(savedVersion);
         }
 
         /// <summary>Updates a version.</summary>
@@ -301,14 +302,14 @@ namespace N2.Edit.Versioning
                 var version = Repository.GetVersion(publishedItem, versionIndex);
                 if (version == null)
                     return null;
-                return version.Version;
+                return Repository.DeserializeVersion(version);
             }
             else
             {
                 var version = Repository.GetVersion(Find.ClosestPage(publishedItem), versionIndex);
                 if (version == null)
                     return null;
-                return version.Version.FindPartVersion(publishedItem);
+                return Repository.DeserializeVersion(version).FindPartVersion(publishedItem);
             }
         }
 
@@ -321,7 +322,7 @@ namespace N2.Edit.Versioning
             if (publishedItem.ID == 0)
                 return new [] { publishedItem.GetVersionInfo() };
 
-            var versions = Repository.GetVersions(publishedItem).Select(v => v.GetVersionInfo())
+            var versions = Repository.GetVersions(publishedItem).Select(v => v.GetVersionInfo(Repository))
                 .Concat(new[] { publishedItem.GetVersionInfo() })
                 .OrderByDescending(i => i.VersionIndex)
                 .Skip(skip).Take(take)

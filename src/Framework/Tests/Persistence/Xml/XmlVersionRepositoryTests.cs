@@ -52,10 +52,47 @@ namespace N2.Tests.Persistence.Xml
 		[Test]
 		public void Save()
 		{
+			var now = DateTime.Now;
+
+			var version = new ContentVersion();
+			version.Expired = now;
+			version.FuturePublish = now;
+			version.ItemCount = 3;
+			version.Published = now;
+			version.Saved = now;
+			version.SavedBy = "Ben";
+			version.State = ContentState.Published;
+			version.Title = "Hello";
+			version.VersionDataXml = "duh";
+			version.VersionIndex = 3;
+
+			using(repository)
+			{
+				repository.SaveOrUpdate(version);
+			}
+			var read = repository.Get(version.ID);
+
+			read.Expired.ShouldBe(now);
+			read.FuturePublish.ShouldBe(now);
+			read.ItemCount.ShouldBe(3);
+			read.Published.ShouldBe(now);
+			read.Saved.ShouldBe(now);
+			read.SavedBy.ShouldBe("Ben");
+			read.State.ShouldBe(ContentState.Published);
+			read.Title.ShouldBe("Hello");
+			read.VersionDataXml.ShouldBe("duh");
+			read.VersionIndex.ShouldBe(3);
+		}
+
+		[Test]
+		public void Serialize_ContentItem()
+		{
 			var version = new ContentVersion();
 			version.Title = "Hello";
 
-			using(repository)
+			//TODO
+
+			using (repository)
 			{
 				repository.SaveOrUpdate(version);
 			}

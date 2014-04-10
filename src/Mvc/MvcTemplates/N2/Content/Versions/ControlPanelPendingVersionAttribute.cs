@@ -34,7 +34,8 @@ namespace N2.Edit.Versions
             var draft = engine.Resolve<DraftRepository>().GetDraftInfo(context.Selected);
             if (draft == null)
                 return null;
-            var latestVersion = engine.Resolve<DraftRepository>().FindDrafts(context.Selected).Select(v => v.Version).FirstOrDefault();
+			var drafts = engine.Resolve<DraftRepository>();
+			var latestVersion = drafts.FindDrafts(context.Selected).Select(v => drafts.Versions.DeserializeVersion(v)).FirstOrDefault();
             if (latestVersion == null)
                 return null;
 

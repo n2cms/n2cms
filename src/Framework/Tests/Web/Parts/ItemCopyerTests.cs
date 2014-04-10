@@ -61,9 +61,9 @@ namespace N2.Tests.Web.Parts
             var response = copyer.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children.Count.ShouldBe(2);
-            draft.Version.Children[0].ZoneName.ShouldBe("ZoneOne");
-            draft.Version.Children[1].ZoneName.ShouldBe("ZoneTwo");
+            versionRepository.DeserializeVersion(draft).Children.Count.ShouldBe(2);
+            versionRepository.DeserializeVersion(draft).Children[0].ZoneName.ShouldBe("ZoneOne");
+            versionRepository.DeserializeVersion(draft).Children[1].ZoneName.ShouldBe("ZoneTwo");
         }
 
         [Test]
@@ -83,9 +83,9 @@ namespace N2.Tests.Web.Parts
             var response = copyer.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children[0].Title.ShouldBe("part2");
-            draft.Version.Children[1].Title.ShouldBe("part");
-            draft.Version.Children[2].Title.ShouldBe("part2");
+            versionRepository.DeserializeVersion(draft).Children[0].Title.ShouldBe("part2");
+            versionRepository.DeserializeVersion(draft).Children[1].Title.ShouldBe("part");
+            versionRepository.DeserializeVersion(draft).Children[2].Title.ShouldBe("part2");
         }
 
         [Test]
@@ -107,8 +107,8 @@ namespace N2.Tests.Web.Parts
             var response = copyer.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children.Any(c => c.ZoneName == "ZoneOne").ShouldBe(true);
-            draft.Version.Children.Any(c => c.ZoneName == "ZoneTwo").ShouldBe(true);
+            versionRepository.DeserializeVersion(draft).Children.Any(c => c.ZoneName == "ZoneOne").ShouldBe(true);
+            versionRepository.DeserializeVersion(draft).Children.Any(c => c.ZoneName == "ZoneTwo").ShouldBe(true);
         }
 
         [Test]
@@ -134,9 +134,9 @@ namespace N2.Tests.Web.Parts
             var response = copyer.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children[0].Title.ShouldBe("part2");
-            draft.Version.Children[1].Title.ShouldBe("part");
-            draft.Version.Children[2].Title.ShouldBe("part2");
+            versionRepository.DeserializeVersion(draft).Children[0].Title.ShouldBe("part2");
+            versionRepository.DeserializeVersion(draft).Children[1].Title.ShouldBe("part");
+            versionRepository.DeserializeVersion(draft).Children[2].Title.ShouldBe("part2");
         }
 
         [Test]
@@ -159,8 +159,8 @@ namespace N2.Tests.Web.Parts
             var response = copyer.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children.Single(c => c.ZoneName == "ZoneTwo").Name.ShouldBe(null);
-            draft.Version.Children.Single(c => c.ZoneName == "ZoneOne").Name.ShouldBe("part");
+			versionRepository.DeserializeVersion(draft).Children.Single(c => c.ZoneName == "ZoneTwo").Name.ShouldBe(null);
+            versionRepository.DeserializeVersion(draft).Children.Single(c => c.ZoneName == "ZoneOne").Name.ShouldBe("part");
         }
 
         [Test]
@@ -189,9 +189,9 @@ namespace N2.Tests.Web.Parts
             var response = copyer.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children[0].Title.ShouldBe("part2");
-            draft.Version.Children[1].Title.ShouldBe("part");
-            draft.Version.Children[2].Title.ShouldBe("part2");
+            versionRepository.DeserializeVersion(draft).Children[0].Title.ShouldBe("part2");
+            versionRepository.DeserializeVersion(draft).Children[1].Title.ShouldBe("part");
+            versionRepository.DeserializeVersion(draft).Children[2].Title.ShouldBe("part2");
         }
 
         [Test]

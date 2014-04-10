@@ -18,25 +18,24 @@
  */
 #endregion
 
+using Castle.DynamicProxy;
+using N2.Collections;
+using N2.Definitions;
+using N2.Details;
+using N2.Engine;
+using N2.Persistence;
+using N2.Persistence.Proxying;
+using N2.Web;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Text;
 using System.Web;
-using N2.Collections;
-using N2.Definitions;
-using N2.Details;
-using N2.Edit;
-using N2.Engine;
-using N2.Persistence;
-using N2.Persistence.Proxying;
-using N2.Web;
-using Castle.DynamicProxy;
-using System.Linq;
-using System.Collections;
 
 namespace N2
 {
