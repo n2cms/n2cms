@@ -90,5 +90,20 @@ namespace N2.Tests.Web.WebControls
             Assert.That(rangeControl.FromDatePicker.TimePickerBox.Text, Is.EqualTo("8:15 AM"));
             Assert.That(rangeControl.ToDatePicker.TimePickerBox.Text, Is.EqualTo("8:30 PM"));
         }
+
+        [Test]
+        public void DateRange_DisplayDate_OnFromControl_InRussianCultures()
+        {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("ru-RU");
+
+            DateRange rangeControl = new DateRange();
+            rangeControl.From = new DateTime(2014, 03, 06, 20, 12, 24);
+
+            Assert.That(rangeControl.FromDatePicker.DatePickerBox.Text, Is.EqualTo("06.03.2014"));
+            Assert.That(rangeControl.FromDatePicker.TimePickerBox.Text, Is.EqualTo("20:12:24"));
+            Assert.That(rangeControl.ToDatePicker.DatePickerBox.Text, Is.Empty);
+            Assert.That(rangeControl.ToDatePicker.TimePickerBox.Text, Is.Empty);
+        }
+
     }
 }
