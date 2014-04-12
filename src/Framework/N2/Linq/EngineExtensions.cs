@@ -5,6 +5,7 @@ using N2.Persistence.Finder;
 using N2.Persistence.NH;
 using NHibernate.Linq;
 using System;
+using N2.Persistence;
 
 namespace N2.Linq
 {
@@ -16,7 +17,7 @@ namespace N2.Linq
         /// <returns>A query that can be extended.</returns>
         public static IQueryable<T> Query<T>(this IEngine engine)
         {
-            var q = engine.Resolve<ISessionProvider>().OpenSession.Session.Query<T>();
+            var q = engine.Resolve<LinqQueryFacade>().Query<T>();
             return q;
         }
 
