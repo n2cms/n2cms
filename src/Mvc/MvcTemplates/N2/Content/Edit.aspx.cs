@@ -261,7 +261,7 @@ namespace N2.Edit
 				var version = Engine.Resolve<N2.Edit.Versioning.DraftRepository>().FindDrafts(page).FirstOrDefault();
 				if (version != null && version.Saved > item.Updated)
 				{
-					DisplayThisHasNewerVersionInfo(version.Version.FindPartVersion(item));
+					DisplayThisHasNewerVersionInfo(Repository.DeserializeVersion(version).FindPartVersion(item));
 				}
 			}
 		}

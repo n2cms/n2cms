@@ -61,7 +61,7 @@ namespace N2.Tests.Web.Parts
             var response = mover.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children.Single().ZoneName.ShouldBe("ZoneTwo");
+			versionRepository.DeserializeVersion(draft).Children.Single().ZoneName.ShouldBe("ZoneTwo");
         }
 
         [Test]
@@ -81,8 +81,8 @@ namespace N2.Tests.Web.Parts
             var response = mover.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children[0].Name.ShouldBe("part2");
-            draft.Version.Children[1].Name.ShouldBe("part");
+            versionRepository.DeserializeVersion(draft).Children[0].Name.ShouldBe("part2");
+            versionRepository.DeserializeVersion(draft).Children[1].Name.ShouldBe("part");
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace N2.Tests.Web.Parts
             var response = mover.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children.Single().ZoneName.ShouldBe("ZoneTwo");
+			versionRepository.DeserializeVersion(draft).Children.Single().ZoneName.ShouldBe("ZoneTwo");
         }
 
         [Test]
@@ -130,8 +130,8 @@ namespace N2.Tests.Web.Parts
             var response = mover.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children[0].Name.ShouldBe("part2");
-            draft.Version.Children[1].Name.ShouldBe("part");
+            versionRepository.DeserializeVersion(draft).Children[0].Name.ShouldBe("part2");
+            versionRepository.DeserializeVersion(draft).Children[1].Name.ShouldBe("part");
         }
 
         [Test]
@@ -154,7 +154,7 @@ namespace N2.Tests.Web.Parts
             var response = mover.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children.Single().ZoneName.ShouldBe("ZoneTwo");
+            versionRepository.DeserializeVersion(draft).Children.Single().ZoneName.ShouldBe("ZoneTwo");
         }
 
         [Test]
@@ -183,8 +183,8 @@ namespace N2.Tests.Web.Parts
             var response = mover.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children[0].Name.ShouldBe("part2");
-            draft.Version.Children[1].Name.ShouldBe("part");
+            versionRepository.DeserializeVersion(draft).Children[0].Name.ShouldBe("part2");
+            versionRepository.DeserializeVersion(draft).Children[1].Name.ShouldBe("part");
         }
 
         [Test]

@@ -1,5 +1,6 @@
 ﻿using N2.Collections;
 using N2.Details;
+using N2.Edit.Versioning;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +24,11 @@ namespace N2.Persistence.Xml
 					return typeof(ContentList<ContentDetail>);
 				case "collections":
 					return typeof(ContentList<DetailCollection>);
+				case "versions":
+					return typeof(ContentVersion);
 				default:
-					return knownTypeResolver.ResolveName(typeName, typeNamespace, declaredType, null);
+					var result = knownTypeResolver.ResolveName(typeName, typeNamespace, declaredType, null);
+					return result;
 			}
 		}
 
@@ -38,8 +42,11 @@ namespace N2.Persistence.Xml
 				return Return("details", "N2", out typeName, out typeNamespace);
 			if (typeof(IContentList<DetailCollection>).IsAssignableFrom(type))
 				return Return("collections", "N2", out typeName, out typeNamespace);
+			if (typeof(ContentVersion) == type)
+				return Return("versions", "N2", out typeName, out typeNamespace);
 
-			return knownTypeResolver.TryResolveType(type, declaredType, null, out typeName, out typeNamespace);
+			var result = knownTypeResolver.TryResolveType(type, declaredType, null, out typeName, out typeNamespace);
+			return result;
 		}
 
 		private bool Return(string name, string @namespace, out XmlDictionaryString typeName, out XmlDictionaryString typeNamespace)

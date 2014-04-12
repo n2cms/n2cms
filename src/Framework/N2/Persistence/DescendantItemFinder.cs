@@ -32,7 +32,7 @@ namespace N2.Persistence
             {
                 if (typeof(T).IsAssignableFrom(definition.ItemType))
                 {
-                    foreach (var item in repository.FindDescendants(root, definition.Discriminator))
+                    foreach (var item in repository.FindDescendants(root, definition.Discriminator).ToList())
                     {
                         if (N2.Find.EnumerateParents(item).Any(i => i is ITrashCan))
                             continue;

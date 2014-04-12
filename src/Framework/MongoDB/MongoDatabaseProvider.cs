@@ -177,7 +177,6 @@ namespace N2.Persistence.MongoDB
                 {
                     cm.AutoMap();
                     cm.MapIdProperty(cv => cv.ID).SetIdGenerator(new IntIdGenerator());
-                    cm.UnmapProperty(cv => cv.Version); // TODO, try to avoid
                     cm.GetMemberMap(cv => cv.Published).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
                     cm.GetMemberMap(cv => cv.Saved).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
                     cm.GetMemberMap(cv => cv.FuturePublish).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));

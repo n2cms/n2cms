@@ -10,16 +10,20 @@ using Shouldly;
 using N2.Persistence.Xml;
 using N2.Persistence.Serialization;
 using System.IO;
+using System;
+using N2.Configuration;
+using N2.Web;
 
 namespace N2.Tests.Persistence.NH
 {
-    [TestFixture, Category("Integration")]
+    [TestFixture]
     public class XmlRepositoryTests : ItemTestsBase
     {
 		XmlContentRepository repository;
 		private ItemXmlWriter writer;
 		private ItemXmlReader reader;
 		private N2.Definitions.IDefinitionManager definitions;
+		private ItemNotifier notifier;
 
         protected override T CreateOneItem<T>(int id, string name, ContentItem parent)
         {
@@ -44,7 +48,8 @@ namespace N2.Tests.Persistence.NH
         public override void SetUp()
         {
             base.SetUp();
-            repository = new XmlContentRepository(definitions, writer, reader, new N2.Configuration.ConfigurationManagerWrapper());
+			notifier = new ItemNotifier();
+			repository = new XmlContentRepository(definitions, new ThreadContext(), new ConfigurationManagerWrapper(), writer, reader, notifier);
         }
 
 		[TearDown]
@@ -124,6 +129,20 @@ namespace N2.Tests.Persistence.NH
 				var parent = repository.Get(parentID);
 				var child = repository.Get(itemID);
 				child.Parent.ShouldBe(parent);
+			}
+		}
+
+		[Test]
+		public void Children_ArePopulated()
+		{
+			int parentID = SaveAnItem("parent", null);
+			int childID = SaveAnItem("child", repository.Get(parentID));
+
+			using (repository)
+			{
+				var parent = repository.Get(parentID);
+				var child = repository.Get(childID);
+				parent.Children.Single().ShouldBe(child);
 			}
 		}
 
@@ -429,7 +448,43 @@ namespace N2.Tests.Persistence.NH
             count.ShouldBe(3);
         }
 
-        private int SaveAnItem(string name, ContentItem parent)
+		[Test]
+		public void NotifiesCreated()
+		{
+			ContentItem notifiedItem = null;
+			notifier.ItemCreated += (s, a) => { notifiedItem = a.AffectedItem; };
+			var itemID = SaveAnItem("root");
+
+			var item = repository.Get(itemID);
+
+			notifiedItem.ID.ShouldBe(itemID);
+		}
+
+		[Test]
+		public void NotifiesDeleting()
+		{
+			ContentItem notifiedItem = null;
+			notifier.ItemDeleting += (s, a) => { notifiedItem = a.AffectedItem; };
+			var itemID = SaveAnItem("root");
+			var item = repository.Get(itemID);
+
+			repository.Delete(item);
+
+			notifiedItem.ID.ShouldBe(itemID);
+		}
+
+		[Test]
+		public void NotifiesSaving()
+		{
+			ContentItem notifiedItem = null;
+			notifier.ItemSaving += (s, a) => { notifiedItem = a.AffectedItem; };
+
+			var itemID = SaveAnItem("root");
+
+			notifiedItem.ID.ShouldBe(itemID);
+		}
+
+        private int SaveAnItem(string name, ContentItem parent = null)
         {
             using (repository)
             {

@@ -20,11 +20,10 @@ namespace N2.Edit.Installation
         protected string managementUrl;
         InstallationManager installer;
 
-        private DatabaseStatus status;
         public DatabaseStatus Status
         {
-            get { return status ?? (status = installer.GetStatus()); }
-            set { status = value; }
+			get { return webContext.RequestItems["InstallationChecker.Status"] as DatabaseStatus ?? (Status = installer.GetStatus()); }
+			set { webContext.RequestItems["InstallationChecker.Status"] = value; }
         }
 
         public InstallationChecker(IWebContext webContext, EventBroker broker, ConfigurationManagerWrapper configuration, InstallationManager installer)
@@ -67,7 +66,7 @@ namespace N2.Edit.Installation
             }
             catch (Exception ex)
             {
-                Engine.Logger.Warn(ex);
+                logger.Warn(ex);
             }
 
             if (Status == null)

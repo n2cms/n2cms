@@ -16,5 +16,21 @@ namespace N2.Persistence
         public int Skip { get; set; }
 
         public int Take { get; set; }
+
+		public override bool Equals(object obj)
+		{
+			var other = obj as Range;
+			return other != null
+				&& other.Skip == Skip
+				&& other.Take == Take;
+		}
+
+		public override int GetHashCode()
+		{
+			int hash = 17;
+			Utility.AppendHashCode(ref hash, Skip);
+			Utility.AppendHashCode(ref hash, Take);
+			return hash;
+		}
     }
 }

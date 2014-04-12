@@ -173,8 +173,12 @@ namespace N2.Edit
             if (drafts.HasDraft(selectedItem))
             {
                 var version = drafts.Versions.GetVersion(selectedItem);
-                if (version != null && version.Version != null)
-                    selectedItem = version.Version;
+                if (version != null)
+				{
+					var item = drafts.Versions.DeserializeVersion(version);
+					if (item != null)
+						selectedItem = item;
+				}
             }
             return selectedItem;
         }

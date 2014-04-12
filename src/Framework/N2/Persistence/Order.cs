@@ -30,6 +30,22 @@ namespace N2.Persistence
         public string Property { get; set; }
         public bool Descending { get; set; }
 
-        public bool HasValue { get { return !string.IsNullOrEmpty(Property); } }
+		public bool HasValue { get { return !string.IsNullOrEmpty(Property); } }
+
+		public override bool Equals(object obj)
+		{
+			var other = obj as Order;
+			return other != null
+				&& other.Descending == Descending
+				&& other.Property == Property;
+		}
+
+		public override int GetHashCode()
+		{
+			int hash = 17;
+			Utility.AppendHashCode(ref hash, Descending);
+			Utility.AppendHashCode(ref hash, Property);
+			return hash;
+		}
     }
 }

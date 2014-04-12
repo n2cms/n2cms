@@ -177,12 +177,18 @@ namespace N2.Edit.Versioning
             return previewedItem;
         }
 
-        public static VersionInfo GetVersionInfo(this ContentVersion version)
+        public static ContentItem GetVersionItem(this ContentVersionRepository repository, ContentItem item, int versionIndex)
+		{
+			var version = repository.GetVersion(item, versionIndex);
+			return repository.DeserializeVersion(version);
+		}
+
+        public static VersionInfo GetVersionInfo(this ContentVersion version, ContentVersionRepository repository)
         {
             return new VersionInfo
             {
                 ID = version.Master.ID.Value,
-                ContentFactory = () => version.Version,
+                ContentFactory = () => repository.DeserializeVersion(version),
                 Expires = version.Expired,
                 Published = version.Published,
                 FuturePublish = version.FuturePublish,

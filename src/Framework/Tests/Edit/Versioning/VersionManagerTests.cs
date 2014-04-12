@@ -28,11 +28,13 @@ namespace N2.Tests.Edit.Versioning
         }
 
         [TestFixtureTearDown]
-        public void TestFixtureTearDown()
+        public override void TestFixtureTearDown()
         {
             N2.Utility.CurrentTime = () => DateTime.Now;
             engine.SecurityManager.ScopeEnabled = true;
-        }
+
+			base.TestFixtureTearDown();
+		}
 
         // versioning
 
@@ -257,9 +259,9 @@ namespace N2.Tests.Edit.Versioning
                 referenced = persister.Get(referenced.ID);
                 persister.Delete(referenced);
 
-                var loadedVersioin = versioner.Repository.GetVersion(item, version.VersionIndex).Version;
+				var loadedVersion = versioner.Repository.DeserializeVersion(versioner.Repository.GetVersion(item, version.VersionIndex));
                 //persister.Get(version.ID);
-                Assert.That(loadedVersioin["Reference"], Is.Null);
+                Assert.That(loadedVersion["Reference"], Is.Null);
             }
         }
 
@@ -800,7 +802,7 @@ namespace N2.Tests.Edit.Versioning
             persister.Save(item);
             versioner.AddVersion(item);
 
-            versioner.Repository.GetVersions(item).Single().Version.VersionOf.Value.ShouldBe(item);
+            versioner.Repository.DeserializeVersion(versioner.Repository.GetVersions(item).Single()).VersionOf.Value.ShouldBe(item);
             versioner.Repository.DeleteVersionsOf(item);
             versioner.Repository.GetVersions(item).ShouldBeEmpty();
         }
