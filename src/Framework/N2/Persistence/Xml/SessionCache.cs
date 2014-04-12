@@ -13,10 +13,12 @@ namespace N2.Persistence.Xml
 		protected Dictionary<object, CacheBox<IEnumerable<object>>> queryCache = new Dictionary<object, CacheBox<IEnumerable<object>>>();
 		protected Dictionary<object, CacheBox<TEntity>> entityCache = new Dictionary<object, CacheBox<TEntity>>();
 		private ApplicationCache<TEntity> secondLevelCache;
+		private Func<TEntity, TEntity> hydrate;
 
-		public SessionCache(ApplicationCache<TEntity> secondLevelCache)
+		public SessionCache(ApplicationCache<TEntity> secondLevelCache, Func<TEntity, TEntity> hydrate)
 		{
 			this.secondLevelCache = secondLevelCache;
+			this.hydrate = hydrate;
 		}
 
 		public virtual TEntity Get(object id, Func<object, TEntity> factory = null)
@@ -30,6 +32,7 @@ namespace N2.Persistence.Xml
 			if (entity != null)
 			{
 				entityCache[id] = new CacheBox<TEntity> { Value = entity };
+				hydrate(entity);
 				return entity;
 			}
 

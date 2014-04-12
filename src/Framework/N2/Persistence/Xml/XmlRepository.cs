@@ -34,7 +34,7 @@ namespace N2.Persistence.Xml
 		
 		public SessionCache<TEntity> Cache
 		{
-			get { return webContext.RequestItems[cacheSessionKey] as SessionCache<TEntity> ?? (Cache = new SessionCache<TEntity>(secondLevelCache)); }
+			get { return webContext.RequestItems[cacheSessionKey] as SessionCache<TEntity> ?? (Cache = new SessionCache<TEntity>(secondLevelCache, Hydrate)); }
 			set { webContext.RequestItems[cacheSessionKey] = value; }
 		}
 
@@ -53,9 +53,9 @@ namespace N2.Persistence.Xml
 		public XmlRepository(IDefinitionManager definitions, IWebContext webContext, ConfigurationManagerWrapper config)
 		{
 			cacheSessionKey = "CachBroker<" + typeof(TEntity).Name + ">.Cache";
-			secondLevelCache = new ApplicationCache<TEntity>(Dehydrate, Hydrate);
+			secondLevelCache = new ApplicationCache<TEntity>(Dehydrate);
 			this.webContext = webContext;
-			Cache = new SessionCache<TEntity>(secondLevelCache);
+			Cache = new SessionCache<TEntity>(secondLevelCache, Hydrate);
 
 			this.definitions = definitions;
 

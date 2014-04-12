@@ -37,6 +37,9 @@ namespace N2.Persistence.Xml
 
 		protected override ContentItem Hydrate(ContentItem entity)
 		{
+			if (entity == null)
+				return null;
+
 			entity = entity.Clone(includeIdentifier: true, includeParent: true);
 			
 			HandleRelations(entity);

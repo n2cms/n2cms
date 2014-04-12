@@ -67,17 +67,17 @@ namespace N2.Edit.Versioning
             if (item.Parent != null)
                 version["ParentID"] = item.Parent.ID;
 
-			ContentVersion savedVersion;
+			//ContentVersion savedVersion;
             if (asPreviousVersion)
             {
-				savedVersion = Repository.Save(version, asPreviousVersion);
+				/*savedVersion = */Repository.Save(version, asPreviousVersion);
                 item.VersionIndex = Repository.GetGreatestVersionIndex(item) + 1;
                 itemRepository.SaveOrUpdate(item);
             }
             else
             {
                 version.VersionIndex = Repository.GetGreatestVersionIndex(item) + 1;
-				savedVersion = Repository.Save(version, asPreviousVersion);
+				/*savedVersion = */Repository.Save(version, asPreviousVersion);
             }
 
             if (ItemSavedVersion != null)
@@ -85,7 +85,7 @@ namespace N2.Edit.Versioning
 
             TrimVersionCountTo(item, maximumVersionsPerItem);
 
-			return Repository.DeserializeVersion(savedVersion);
+			return version;// Repository.DeserializeVersion(savedVersion);
         }
 
         /// <summary>Updates a version.</summary>
