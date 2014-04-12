@@ -18,28 +18,11 @@ namespace N2.Tests.Persistence.Xml
 	public class XmlVersionRepositoryTests
 	{
 		XmlRepository<ContentVersion> repository;
-		private ItemXmlWriter writer;
-		private ItemXmlReader reader;
-		private N2.Definitions.IDefinitionManager definitions;
-		private ItemNotifier notifier;
-
-		[TestFixtureSetUp]
-		public void TestFixtureSetUp()
-		{
-			definitions = TestSupport.SetupDefinitions(typeof(Definitions.PersistableItem), typeof(Definitions.PersistablePart));
-			writer = new ItemXmlWriter(
-						definitions,
-						TestSupport.SetupFileSystem());
-			reader = new ItemXmlReader(
-						definitions,
-						TestSupport.SetupContentActivator());
-		}
 
 		[SetUp]
 		public void SetUp()
 		{
-			notifier = new ItemNotifier();
-			repository = new XmlRepository<ContentVersion>(definitions, new ThreadContext(), new ConfigurationManagerWrapper());
+			repository = new XmlRepository<ContentVersion>(new ThreadContext(), new ConfigurationManagerWrapper());
 		}
 
 		[TearDown]
@@ -90,7 +73,7 @@ namespace N2.Tests.Persistence.Xml
 			var version = new ContentVersion();
 			version.Title = "Hello";
 
-			//TODO
+			
 
 			using (repository)
 			{

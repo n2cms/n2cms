@@ -27,7 +27,7 @@ namespace N2.Persistence.Xml
 		private IItemNotifier notifier;
 
 		public XmlContentRepository(IDefinitionManager definitions, IWebContext webContext, ConfigurationManagerWrapper config, IItemXmlWriter writer, IItemXmlReader reader, IItemNotifier notifier)
-			: base(definitions, webContext, config)
+			: base(webContext, config)
 		{
 			this.definitions = definitions;
 			this.writer = writer;

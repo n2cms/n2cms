@@ -7,12 +7,12 @@ using N2.Engine;
 
 namespace N2.Persistence.NH
 {
-	[Service(typeof(LinqQueryProvider))]
-	public class NHQueryProvider : LinqQueryProvider
+	[Service(typeof(LinqQueryFacade))]
+	public class LinqNHQueryFacade : LinqQueryFacade
 	{
 		private ISessionProvider session;
 		
-		public NHQueryProvider(ISessionProvider session)
+		public LinqNHQueryFacade(ISessionProvider session)
 		{
 			this.session = session;
 		}

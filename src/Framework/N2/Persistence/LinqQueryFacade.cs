@@ -5,7 +5,7 @@ using System.Text;
 
 namespace N2.Persistence
 {
-	public abstract class LinqQueryProvider
+	public abstract class LinqQueryFacade
 	{
 		public abstract IQueryable<T> Query<T>();
 	}

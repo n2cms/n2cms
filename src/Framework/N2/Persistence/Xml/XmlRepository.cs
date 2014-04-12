@@ -28,7 +28,6 @@ namespace N2.Persistence.Xml
 		where TEntity : class
     {
 		Logger<XmlRepository<TEntity>> logger;
-		private IDefinitionManager definitions;
 		protected ITransaction activeTransaction;
 
 		protected ApplicationCache<TEntity> secondLevelCache;
@@ -51,14 +50,12 @@ namespace N2.Persistence.Xml
 			return entity;
 		}
 
-		public XmlRepository(IDefinitionManager definitions, IWebContext webContext, ConfigurationManagerWrapper config)
+		public XmlRepository(IWebContext webContext, ConfigurationManagerWrapper config)
 		{
 			cacheSessionKey = "CachBroker<" + typeof(TEntity).Name + ">.Cache";
 			secondLevelCache = new ApplicationCache<TEntity>(Dehydrate);
 			this.webContext = webContext;
 			Cache = new SessionCache<TEntity>(secondLevelCache, Hydrate);
-
-			this.definitions = definitions;
 
 			var virtualPath = "~/App_Data/XmlRepository/";
 			try 
@@ -144,21 +141,6 @@ namespace N2.Persistence.Xml
 			return GetFiles().Select(path => Get(ExtractId(path)));
 		}
 
-		protected virtual TEntity Read(string path)
-		{
-			var xml = File.ReadAllText(path);
-			if (string.IsNullOrEmpty(xml))
-				throw new Exception("Unexpected empty xml file at: " + path);
-
-			using (var sr = new StringReader(xml))
-			using (var xr = System.Xml.XmlReader.Create(sr))
-			{
-				var s = GetSerializer();
-				var entity = (TEntity)s.ReadObject(xr);
-				return entity;
-			}
-		}
-
 		private object ExtractId(string path)
 		{
 			return int.Parse(Path.GetFileNameWithoutExtension(path));
@@ -188,27 +170,6 @@ namespace N2.Persistence.Xml
 			Cache.Set(id, entity);
 			Cache.Clear(entityCache: false, queryCache: true);
 			secondLevelCache.Clear(entityCache: false, queryCache: true);
-		}
-
-		protected virtual void Write(TEntity entity, string path)
-		{
-			using (var sw = new StringWriter())
-			using (var xw = XmlWriter.Create(sw))
-			{
-				var s = GetSerializer();
-				s.WriteObject(xw, entity);
-
-				var xml = sw.ToString();
-				if (string.IsNullOrEmpty(xml))
-					return;
-					//TODO:throw new Exception("Empty xml from entity " + entity + " not written to: " + path);
-				File.WriteAllText(path, xml);
-			}
-		}
-
-		private static DataContractSerializer GetSerializer()
-		{
-			return new DataContractSerializer(typeof(TEntity), null, 100, true, false, null, new ContentDataContractResolver());
 		}
 
 		protected string GetPath(TEntity item)
@@ -289,5 +250,43 @@ namespace N2.Persistence.Xml
                 Disposed(this, new EventArgs());
         }
 
+		protected virtual TEntity Read(string path)
+		{
+			var xml = File.ReadAllText(path);
+			if (string.IsNullOrEmpty(xml))
+				throw new Exception("Unexpected empty xml file at: " + path);
+
+			using (var sr = new StringReader(xml))
+			using (var xr = System.Xml.XmlReader.Create(sr))
+			{
+				var s = GetSerializer();
+				//var entity = (TEntity)s.ReadObject(xr);
+				var entity = (TEntity)s.Deserialize(xr);
+				return entity;
+			}
+		}
+
+		protected virtual void Write(TEntity entity, string path)
+		{
+			using (var sw = new StringWriter())
+			using (var xw = XmlWriter.Create(sw))
+			{
+				var s = GetSerializer();
+				s.Serialize(xw, entity);
+				//s.WriteObject(xw, entity);
+
+				var xml = sw.ToString();
+				if (string.IsNullOrEmpty(xml))
+					return;
+				//TODO:throw new Exception("Empty xml from entity " + entity + " not written to: " + path);
+				File.WriteAllText(path, xml);
+			}
+		}
+
+		private static System.Xml.Serialization.XmlSerializer GetSerializer()
+		{
+			return new System.Xml.Serialization.XmlSerializer(typeof(TEntity));
+//			return new DataContractSerializer(typeof(TEntity), null, 100, true, false, null, null);
+		}
     }
 }
