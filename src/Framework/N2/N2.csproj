@@ -171,6 +171,7 @@
     <Compile Include="Persistence\Xml\SessionCache.cs" />
     <Compile Include="Persistence\Xml\UnresolvedParent.cs" />
     <Compile Include="Persistence\Xml\XmlContentRepository.cs" />
+    <Compile Include="Persistence\Xml\XmlFileSystem.cs" />
     <Compile Include="Persistence\Xml\XmlInstallationManager.cs" />
     <Compile Include="Persistence\Xml\LinqXmlQueryFacade.cs" />
     <Compile Include="Web\HtmlSanitizer.cs" />

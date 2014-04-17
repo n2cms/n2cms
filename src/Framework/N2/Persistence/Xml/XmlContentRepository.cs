@@ -6,7 +6,6 @@ using N2.Persistence.Serialization;
 using N2.Web;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -26,8 +25,8 @@ namespace N2.Persistence.Xml
 		private IDefinitionManager definitions;
 		private IItemNotifier notifier;
 
-		public XmlContentRepository(IDefinitionManager definitions, IWebContext webContext, ConfigurationManagerWrapper config, IItemXmlWriter writer, IItemXmlReader reader, IItemNotifier notifier)
-			: base(webContext, config)
+		public XmlContentRepository(IDefinitionManager definitions, IWebContext webContext, XmlFileSystem fileSystem, IItemXmlWriter writer, IItemXmlReader reader, IItemNotifier notifier)
+			: base(webContext, fileSystem)
 		{
 			this.definitions = definitions;
 			this.writer = writer;
@@ -106,10 +105,11 @@ namespace N2.Persistence.Xml
 			}
 		}
 
-		protected override ContentItem Read(string path)
+		protected override ContentItem Deserialize(string xml)
 		{
-			var xml = File.ReadAllText(path);
-			//using (var fs = File.OpenRead(path))
+			if (string.IsNullOrEmpty(xml))
+				throw new ArgumentNullException("xml");
+
 			var doc = new XmlDocument();
 			doc.LoadXml(xml);
 
@@ -124,10 +124,9 @@ namespace N2.Persistence.Xml
 			return item;
 		}
 
-		protected override void Write(ContentItem entity, string path)
+		protected override string Serialize(ContentItem entity)
 		{
-			//using (var fs = File.Open(path, FileMode.Create))
-			using (var sw = new StringWriter())
+			using (var sw = new System.IO.StringWriter())
 			using (var xw = new XmlTextWriter(sw))
 			{
 #if DEBUG
@@ -135,7 +134,7 @@ namespace N2.Persistence.Xml
 #endif
 				writer.WriteSingleItem(entity, Serialization.ExportOptions.ExcludeAttachments | Serialization.ExportOptions.ExcludeChildren, xw);
 
-				File.WriteAllText(path, sw.ToString());
+				return sw.ToString();
 			}
 		}
 
@@ -188,11 +187,6 @@ namespace N2.Persistence.Xml
 					ci.Details.Any(d => d.LinkedItem.HasValue && itemIDs.Contains(d.LinkedItem.ID.Value)) 
 					|| ci.DetailCollections.SelectMany(dc => dc.Details).Any(d => d.LinkedItem.HasValue && itemIDs.Contains(d.LinkedItem.ID.Value)))
 					.Select(ci => new Tuple<object, ContentItem>(ci.ID, ci)), Get);
-			
-			//	identityMap.Values
-			//	.Where(ci =>
-			//		ci.Details.Any(d => d.LinkedItem.HasValue && itemIDs.Contains(d.LinkedItem.ID.Value))
-			//		|| ci.DetailCollections.SelectMany(dc => dc.Details).Any(d => d.LinkedItem.HasValue && itemIDs.Contains(d.LinkedItem.ID.Value)));
 		}
 
 		public int RemoveReferencesToRecursive(ContentItem target)

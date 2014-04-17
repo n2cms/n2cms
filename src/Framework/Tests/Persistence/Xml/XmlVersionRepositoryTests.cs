@@ -22,14 +22,13 @@ namespace N2.Tests.Persistence.Xml
 		[SetUp]
 		public void SetUp()
 		{
-			repository = new XmlRepository<ContentVersion>(new ThreadContext(), new ConfigurationManagerWrapper());
+			repository = new XmlRepository<ContentVersion>(new ThreadContext(), new XmlFileSystem(new ConfigurationManagerWrapper()));
 		}
 
 		[TearDown]
 		public void TearDown()
 		{
-			foreach (var file in Directory.GetFiles(repository.DataDirectoryPhysical, "*.xml"))
-				File.Delete(file);
+			repository.FileSystem.DeleteEntityDirectories();
 		}
 
 		[Test]

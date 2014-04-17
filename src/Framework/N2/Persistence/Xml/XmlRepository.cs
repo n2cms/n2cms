@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text;
 using N2.Definitions;
@@ -38,8 +37,6 @@ namespace N2.Persistence.Xml
 			set { webContext.RequestItems[cacheSessionKey] = value; }
 		}
 
-		public string DataDirectoryPhysical { get; set; }
-
 		protected virtual TEntity Dehydrate(TEntity entity)
 		{
 			return entity;
@@ -50,51 +47,20 @@ namespace N2.Persistence.Xml
 			return entity;
 		}
 
-		public XmlRepository(IWebContext webContext, ConfigurationManagerWrapper config)
+		public XmlRepository(IWebContext webContext, XmlFileSystem fileSystem)
 		{
+			this.webContext = webContext;
+			this.FileSystem = fileSystem;
+			
 			cacheSessionKey = "CachBroker<" + typeof(TEntity).Name + ">.Cache";
 			SecondLevelCache = new ApplicationCache<TEntity>(Dehydrate);
-			this.webContext = webContext;
 			Cache = new SessionCache<TEntity>(SecondLevelCache, Hydrate);
+			
+			maxId = fileSystem.GetFiles<TEntity>()
+				.Select(path => (int)ExtractId(path))
+				.FirstOrDefault();
 
-			var virtualPath = "~/App_Data/XmlRepository/";
-			try 
-			{
-				var connectionString = config.GetConnectionString();
-				virtualPath = connectionString.Split(';')
-					.Where(x => x.StartsWith("XmlRepositoryPath="))
-					.Select(x => x.Split('=')).Where(x => x.Length > 1).Select(x => x[1])
-					.FirstOrDefault()
-					?? virtualPath;
-			}
-			catch (ConfigurationErrorsException ex)
-			{
-				logger.Warn(ex);
-			}
-
-			DataDirectoryPhysical = HostingEnvironment.MapPath("~/" + virtualPath.Trim('~', '/') + "/" + typeof(TEntity).Name)
-				?? Environment.CurrentDirectory + "\\" + virtualPath.Trim('~', '/').Replace('/', '\\') + "\\" + typeof(TEntity).Name;
-
-			if (!Directory.Exists(DataDirectoryPhysical))
-			{
-				try
-				{
-					Directory.CreateDirectory(DataDirectoryPhysical);
-					maxId = GetFiles()
-						.Select(path => (int)ExtractId(path))
-						.OrderByDescending(id => id)
-						.FirstOrDefault();
-				}
-				catch (Exception ex)
-				{
-					logger.Error(ex);
-				}
-			}
-		}
-
-		private string[] GetFiles()
-		{
-			return Directory.GetFiles(DataDirectoryPhysical, "*.xml");
+			logger.DebugFormat("Constructing {0}, maxId: {1}", this, maxId);
 		}
 
         public virtual TEntity Get(object id)
@@ -104,10 +70,14 @@ namespace N2.Persistence.Xml
 
 			return Cache.Get(id, (entityId) =>
 			{
-				var path = GetPath(id);
-				if (!File.Exists(path))
+				string xml = FileSystem.Read<TEntity>(id);
+				if (xml == null)
+				{
+					logger.InfoFormat("Not creating #{0} from empty xml (probably missing file)", entityId);
 					return null;
-				return Read(path);
+				}
+				logger.DebugFormat("Creating #{0] from xml with length {1}", entityId, xml != null ? xml.Length : -1);
+				return Deserialize(xml);
 			});
         }
 
@@ -133,17 +103,18 @@ namespace N2.Persistence.Xml
 
 		protected IEnumerable<Tuple<object, TEntity>> FindInternal(IParameter parameters)
 		{
+			logger.DebugFormat("Querying all entities with: {0}", parameters);
 			return GetAll().Where(parameters.IsMatch).Select(e => new Tuple<object, TEntity>(GetId(e), e));
 		}
 
 		protected IEnumerable<TEntity> GetAll()
 		{
-			return GetFiles().Select(path => Get(ExtractId(path)));
+			return FileSystem.GetFiles<TEntity>().Select(path => Get(ExtractId(path)));
 		}
 
 		private object ExtractId(string path)
 		{
-			return int.Parse(Path.GetFileNameWithoutExtension(path));
+			return int.Parse(System.IO.Path.GetFileNameWithoutExtension(path));
 		}
 
         public IEnumerable<IDictionary<string, object>> Select(IParameter parameters, params string[] properties)
@@ -153,9 +124,10 @@ namespace N2.Persistence.Xml
 
         public virtual void Delete(TEntity entity)
         {
-			var path = GetPath(entity);
-			if (File.Exists(path))
-				File.Delete(path);
+			object id = GetId(entity);
+			logger.DebugFormat("Deleting #{0}", id);
+			
+			FileSystem.Delete<TEntity>(id);
 
 			Cache.Remove(GetId(entity));
 			Cache.Clear(entityCache: false, queryCache: true);
@@ -165,22 +137,14 @@ namespace N2.Persistence.Xml
         public virtual void SaveOrUpdate(TEntity entity)
         {
 			var id = GetOrAssignId(entity);
-			var path = GetPath(id);
-			Write(entity, path);
+			string xml = Serialize(entity);
+
+			logger.DebugFormat("Writing #{0} with xml {1}", id, string.IsNullOrEmpty(xml) ? "(empty)" : xml.Length.ToString());
+			FileSystem.Write<TEntity>(id, xml);
+
 			Cache.Set(id, entity);
 			Cache.Clear(entityCache: false, queryCache: true);
 			SecondLevelCache.Clear(entityCache: false, queryCache: true);
-		}
-
-		protected string GetPath(TEntity item)
-        {
-			var id = GetOrAssignId(item);
-            return GetPath(id);
-        }
-
-		protected string GetPath(object id)
-		{
-			return Path.Combine(DataDirectoryPhysical, id + ".xml");
 		}
 
 		int maxId = 0;
@@ -211,7 +175,7 @@ namespace N2.Persistence.Xml
 
 		public virtual long Count()
         {
-			return GetFiles().Length;
+			return FileSystem.GetFiles<TEntity>().LongCount();
         }
 
 		public virtual long Count(IParameter parameters)
@@ -241,6 +205,7 @@ namespace N2.Persistence.Xml
         public event EventHandler Disposed;
 		private IWebContext webContext;
 		private string cacheSessionKey;
+		public XmlFileSystem FileSystem { get; protected set; }
         
 		public virtual void Dispose()
         {
@@ -250,43 +215,36 @@ namespace N2.Persistence.Xml
                 Disposed(this, new EventArgs());
         }
 
-		protected virtual TEntity Read(string path)
+		protected virtual TEntity Deserialize(string xml)
 		{
-			var xml = File.ReadAllText(path);
 			if (string.IsNullOrEmpty(xml))
-				throw new Exception("Unexpected empty xml file at: " + path);
+				throw new ArgumentNullException("xml");
 
-			using (var sr = new StringReader(xml))
+			using (var sr = new System.IO.StringReader(xml))
 			using (var xr = System.Xml.XmlReader.Create(sr))
 			{
 				var s = GetSerializer();
-				//var entity = (TEntity)s.ReadObject(xr);
 				var entity = (TEntity)s.Deserialize(xr);
 				return entity;
 			}
 		}
 
-		protected virtual void Write(TEntity entity, string path)
+		protected virtual string Serialize(TEntity entity)
 		{
-			using (var sw = new StringWriter())
+			using (var sw = new System.IO.StringWriter())
 			using (var xw = XmlWriter.Create(sw))
 			{
 				var s = GetSerializer();
 				s.Serialize(xw, entity);
-				//s.WriteObject(xw, entity);
 
 				var xml = sw.ToString();
-				if (string.IsNullOrEmpty(xml))
-					return;
-				//TODO:throw new Exception("Empty xml from entity " + entity + " not written to: " + path);
-				File.WriteAllText(path, xml);
+				return xml;
 			}
 		}
 
 		private static System.Xml.Serialization.XmlSerializer GetSerializer()
 		{
 			return new System.Xml.Serialization.XmlSerializer(typeof(TEntity));
-//			return new DataContractSerializer(typeof(TEntity), null, 100, true, false, null, null);
 		}
     }
 }

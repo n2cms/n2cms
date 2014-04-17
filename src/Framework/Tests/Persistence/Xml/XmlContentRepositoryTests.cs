@@ -49,15 +49,14 @@ namespace N2.Tests.Persistence.NH
         {
             base.SetUp();
 			notifier = new ItemNotifier();
-			repository = new XmlContentRepository(definitions, new ThreadContext(), new ConfigurationManagerWrapper(), writer, reader, notifier);
+			repository = new XmlContentRepository(definitions, new ThreadContext(), new XmlFileSystem(new ConfigurationManagerWrapper()), writer, reader, notifier);
         }
 
 		[TearDown]
 		public override void TearDown()
 		{
 			base.TearDown();
-			foreach (var file in Directory.GetFiles(repository.DataDirectoryPhysical, "*.xml"))
-				File.Delete(file);
+			repository.FileSystem.DeleteEntityDirectories();
 		}
 
         [Test]

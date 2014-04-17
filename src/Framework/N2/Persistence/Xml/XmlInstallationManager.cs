@@ -155,11 +155,9 @@ namespace N2.Persistence.Xml
         }
 
         public override void Install()
-        {
-			if (!Directory.Exists(repository.DataDirectoryPhysical))
-				Directory.CreateDirectory(repository.DataDirectoryPhysical);
-			foreach (var subdir in Directory.GetDirectories(repository.DataDirectoryPhysical))
-				Directory.Delete(subdir, recursive: true);
+		{
+			repository.FileSystem.EnsureRootDirectory();
+			repository.FileSystem.DeleteEntityDirectories();
 			repository.Cache.Clear();
 			repository.SecondLevelCache.Clear();
         }
