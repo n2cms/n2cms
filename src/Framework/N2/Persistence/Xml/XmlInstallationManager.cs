@@ -6,6 +6,7 @@ using N2.Plugin;
 using N2.Web;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -20,12 +21,14 @@ namespace N2.Persistence.Xml
         Logger<XmlInstallationManager> logger;
         private IHost host;
         private IPersister persister;
+		private XmlContentRepository repository;
 
-		public XmlInstallationManager(IHost host, IPersister persister, ConnectionMonitor connectionContext, Importer importer, IWebContext webContext, ContentActivator activator)
+		public XmlInstallationManager(IHost host, IPersister persister, XmlContentRepository repository, ConnectionMonitor connectionContext, Importer importer, IWebContext webContext, ContentActivator activator)
             : base(connectionContext, importer, webContext, persister, activator)
         {
             this.host = host;
             this.persister = persister;
+			this.repository = repository;
         }
 
         public override string CheckConnection(out string stackTrace)
@@ -149,12 +152,16 @@ namespace N2.Persistence.Xml
 
         public override void Upgrade()
         {
-            throw new NotImplementedException();
         }
 
         public override void Install()
         {
-            throw new NotImplementedException();
+			if (!Directory.Exists(repository.DataDirectoryPhysical))
+				Directory.CreateDirectory(repository.DataDirectoryPhysical);
+			foreach (var subdir in Directory.GetDirectories(repository.DataDirectoryPhysical))
+				Directory.Delete(subdir, recursive: true);
+			repository.Cache.Clear();
+			repository.SecondLevelCache.Clear();
         }
 
         public override IEnumerable<ContentItem> ExecuteQuery(string query)
@@ -164,7 +171,7 @@ namespace N2.Persistence.Xml
 
         public override string ExportSchema()
         {
-            return "[No schema required for schemaless db]";
+            return "[No schema required for xml db; installing will delete all content]";
         }
 
         public override void ExportSchema(System.IO.TextWriter output)

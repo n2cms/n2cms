@@ -30,11 +30,11 @@ namespace N2.Persistence.Xml
 		Logger<XmlRepository<TEntity>> logger;
 		protected ITransaction activeTransaction;
 
-		protected ApplicationCache<TEntity> secondLevelCache;
+		public ApplicationCache<TEntity> SecondLevelCache { get; protected set; }
 		
 		public SessionCache<TEntity> Cache
 		{
-			get { return webContext.RequestItems[cacheSessionKey] as SessionCache<TEntity> ?? (Cache = new SessionCache<TEntity>(secondLevelCache, Hydrate)); }
+			get { return webContext.RequestItems[cacheSessionKey] as SessionCache<TEntity> ?? (Cache = new SessionCache<TEntity>(SecondLevelCache, Hydrate)); }
 			set { webContext.RequestItems[cacheSessionKey] = value; }
 		}
 
@@ -53,9 +53,9 @@ namespace N2.Persistence.Xml
 		public XmlRepository(IWebContext webContext, ConfigurationManagerWrapper config)
 		{
 			cacheSessionKey = "CachBroker<" + typeof(TEntity).Name + ">.Cache";
-			secondLevelCache = new ApplicationCache<TEntity>(Dehydrate);
+			SecondLevelCache = new ApplicationCache<TEntity>(Dehydrate);
 			this.webContext = webContext;
-			Cache = new SessionCache<TEntity>(secondLevelCache, Hydrate);
+			Cache = new SessionCache<TEntity>(SecondLevelCache, Hydrate);
 
 			var virtualPath = "~/App_Data/XmlRepository/";
 			try 
@@ -159,7 +159,7 @@ namespace N2.Persistence.Xml
 
 			Cache.Remove(GetId(entity));
 			Cache.Clear(entityCache: false, queryCache: true);
-			secondLevelCache.Clear(entityCache: false, queryCache: true);
+			SecondLevelCache.Clear(entityCache: false, queryCache: true);
 		}
 
         public virtual void SaveOrUpdate(TEntity entity)
@@ -169,7 +169,7 @@ namespace N2.Persistence.Xml
 			Write(entity, path);
 			Cache.Set(id, entity);
 			Cache.Clear(entityCache: false, queryCache: true);
-			secondLevelCache.Clear(entityCache: false, queryCache: true);
+			SecondLevelCache.Clear(entityCache: false, queryCache: true);
 		}
 
 		protected string GetPath(TEntity item)

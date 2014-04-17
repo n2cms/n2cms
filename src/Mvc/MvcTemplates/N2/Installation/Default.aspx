@@ -60,7 +60,7 @@
 						<p class="warning"><b>Advice: </b>Go back and check database connection. </p>
 					</asp:Literal>
 					<p>
-						Please review the following SQL script carefully before creating tables.
+						Please review the following database installation script carefully before creating tables.
 						<asp:Literal ID="Literal1" runat="server" Visible="<%# Status.HasSchema %>">
 							<span class="warning">Creating tables will destroy any existing content.</span>
 						</asp:Literal>
