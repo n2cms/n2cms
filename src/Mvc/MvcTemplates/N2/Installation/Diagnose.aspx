@@ -48,9 +48,21 @@
 			<table class="t">
 				<tbody>
 					<tr><th colspan="2"><h2>Database</h2></th></tr>
-<% try { %>
-					<tr><th>Connection provider</th><td><%= System.Configuration.ConfigurationManager.ConnectionStrings[Engine.Resolve<N2.Configuration.DatabaseSection>().ConnectionStringName].ProviderName %></td></tr>
-<% } catch (Exception ex) { Response.Write("<tr><td>" + ex + "</td></tr>"); } %>
+					<tr><th>Connection string name</th><td><%
+															string connectionStringName = Engine.Resolve<N2.Configuration.DatabaseSection>().ConnectionStringName;
+															Response.Write(connectionStringName);
+															%></td></tr>
+					
+					<tr><th>Connection provider</th><td><%
+					try {
+						if (string.IsNullOrEmpty(connectionStringName))
+							Response.Write("No connection string name configured");
+						else if (System.Configuration.ConfigurationManager.ConnectionStrings[connectionStringName] == null)
+							Response.Write("No connection string with name '" + connectionStringName + "'");
+						else
+							Response.Write(System.Configuration.ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName);
+					} catch (Exception ex) { Response.Write("<tr><td>" + ex + "</td></tr>"); }
+					%></td></tr>
 					<tr><th>Connection</th><td><asp:Label ID="lblDbConnection" runat="server" /></td></tr>
 					<tr><th>Root item</th><td><asp:Label ID="lblRootNode" runat="server" /></td></tr>
 					<tr><th>Start page</th><td><asp:Label ID="lblStartNode" runat="server" /></td></tr>

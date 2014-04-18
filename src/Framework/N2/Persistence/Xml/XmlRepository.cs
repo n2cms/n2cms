@@ -76,7 +76,7 @@ namespace N2.Persistence.Xml
 					logger.InfoFormat("Not creating #{0} from empty xml (probably missing file)", entityId);
 					return null;
 				}
-				logger.DebugFormat("Creating #{0] from xml with length {1}", entityId, xml != null ? xml.Length : -1);
+				logger.DebugFormat("Creating #{0} from xml with length {1}", entityId, xml != null ? xml.Length : -1);
 				return Deserialize(xml);
 			});
         }
@@ -101,10 +101,22 @@ namespace N2.Persistence.Xml
 			return Cache.Query(parameters, () => FindInternal(parameters), Get);
         }
 
-		protected IEnumerable<Tuple<object, TEntity>> FindInternal(IParameter parameters)
+		protected virtual IEnumerable<Tuple<object, TEntity>> FindInternal(IParameter parameters)
 		{
 			logger.DebugFormat("Querying all entities with: {0}", parameters);
-			return GetAll().Where(parameters.IsMatch).Select(e => new Tuple<object, TEntity>(GetId(e), e));
+			var query = GetAll().Where(parameters.IsMatch);
+			var pc = parameters as ParameterCollection;
+			if (pc != null)
+			{
+				if (pc.Range != null)
+					query = query.Skip(pc.Range.Skip).Take(pc.Range.Take);
+				if (pc.Order != null && pc.Order.HasValue)
+					if (pc.Order.Descending)
+						query = query.OrderByDescending(ci => Utility.GetProperty(ci, pc.Order.Property));
+					else
+						query = query.OrderBy(ci => Utility.GetProperty(ci, pc.Order.Property));
+			}
+			return query.Select(e => new Tuple<object, TEntity>(GetId(e), e));
 		}
 
 		protected IEnumerable<TEntity> GetAll()

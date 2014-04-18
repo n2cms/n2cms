@@ -44,18 +44,41 @@ namespace N2.Persistence.Xml
         }
 
         public override string CheckDatabase()
-        {
-            throw new NotImplementedException();
+		{
+			try
+			{
+				return string.Format("Database OK, items: {0}", repository.Count());
+			}
+			catch (Exception ex)
+			{
+				return ex.ToString();
+			}
         }
 
         public override string CheckRootItem()
-        {
-            throw new NotImplementedException();
+		{
+			try
+			{
+				var root = persister.Get(host.DefaultSite.RootItemID);
+				return string.Format("Root: {0}", root);
+			}
+			catch (Exception ex)
+			{
+				return ex.ToString();
+			}
         }
 
         public override string CheckStartPage()
-        {
-            throw new NotImplementedException();
+		{
+			try
+			{
+				var root = persister.Get(host.DefaultSite.StartPageID);
+				return string.Format("Root: {0}", root);
+			}
+			catch (Exception ex)
+			{
+				return ex.ToString();
+			}
         }
 
         public override DatabaseStatus GetStatus()
@@ -118,7 +141,7 @@ namespace N2.Persistence.Xml
             try
             {
                 //status.Items = (int)database.GetCollection<ContentItem>().Count();
-				status.Items = 0;
+				status.Items = (int)repository.Count();
                 status.Details = 0;
                 status.DetailCollections = 0;
                 status.AuthorizedRoles = 0;
@@ -169,7 +192,7 @@ namespace N2.Persistence.Xml
 
         public override string ExportSchema()
         {
-            return "[No schema required for xml db; installing will delete all content]";
+            return "[No schema required; installing will delete existing content]";
         }
 
         public override void ExportSchema(System.IO.TextWriter output)

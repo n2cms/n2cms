@@ -98,6 +98,11 @@ namespace N2.Persistence
             return new ParameterCollection(Persistence.Operator.Or) { { q1 }, { q2 } };
         }
 
+		public static ParameterCollection Empty
+		{
+			get { return new ParameterCollection(); }
+		}
+
         public bool IsMatch(object item)
         {
             if (Operator == Persistence.Operator.And)
