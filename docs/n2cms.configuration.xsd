@@ -489,9 +489,8 @@
 						<xs:attribute name="flavour" use="optional">
 							<xs:simpleType>
 								<xs:restriction base="xs:string">
-									<xs:enumeration value="SqlServer2008"/>
-									<xs:enumeration value="SqlServer2005"/>
-									<xs:enumeration value="SqlServer2000"/>
+									<xs:enumeration value="AutoDetect"/>
+									<xs:enumeration value="SqlServer"/>
 									<xs:enumeration value="SqlCe"/>
 									<xs:enumeration value="MySql"/>
 									<xs:enumeration value="SqLite"/>
@@ -500,7 +499,8 @@
 									<xs:enumeration value="DB2"/>
 									<xs:enumeration value="Oracle9i"/>
 									<xs:enumeration value="Oracle10g"/>
-									<xs:enumeration value="AutoDetect"/>
+									<xs:enumeration value="MongoDB"/>
+									<xs:enumeration value="Xml"/>
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:attribute>
