@@ -32,11 +32,14 @@ namespace N2.Persistence.Search
     [Service(typeof(ILightweightSearcher))]
     public class FindingContentSearcher : IContentSearcher, ILightweightSearcher
     {
-        IItemFinder finder;
+		private IContentItemRepository repository;
+		//IItemFinder finder;
 
-        public FindingContentSearcher(IItemFinder finder)
+		//public FindingContentSearcher(IItemFinder finder)
+        public FindingContentSearcher(IContentItemRepository repository)
         {
-            this.finder = finder;
+            //this.finder = finder;
+			this.repository = repository;
         }
 
         #region ITextSearcher Members
@@ -49,27 +52,51 @@ namespace N2.Persistence.Search
         /// <returns>An enumeration of items matching the search query.</returns>
         public IEnumerable<ContentItem> Search(string ancestor, string query, int skip, int take, bool? onlyPages, string[] types, out int totalRecords)
         {
-            var q = finder.Where.AncestralTrail.Like(ancestor + "%")
-                .And.Title.IsNull(false);
+			var q = new ParameterCollection();
+			if (ancestor != null)
+			{
+				q.Add(Parameter.Like("AncestralTrail", ancestor + "%") & Parameter.IsNotNull("Title"));
+			}
+			
+			if (!string.IsNullOrEmpty(query))
+			{
+				var words = query.Split(' ').Where(w => w.Length > 0).Select(w => "%" + w.Trim('*') + "%");
+				q.Add(new ParameterCollection(Operator.Or, words.Select(word => (Parameter.Like("Title", word) | Parameter.Like(null, word).Detail()))));
+			}
 
-            var words = query.Split(' ').Where(w => w.Length > 0).Select(w => "%" + w.Trim('*') + "%");
-            foreach (var word in words)
-            {
-                q = q.And.OpenBracket()
-                    .Title.Like(word)
-                    .Or.Detail().Like(word)
-                .CloseBracket();
-            }
-            if (onlyPages.HasValue)
-                q = q.And.OpenBracket()
-                    .ZoneName.IsNull(onlyPages.Value)
-                    .Or.ZoneName.Eq("")
-                .CloseBracket();
-            if (types != null)
-                q = q.And.Property("class").In(types);
+			if (onlyPages.HasValue)
+				if (onlyPages.Value)
+					q.Add(Parameter.IsNull("ZoneName"));
+				else
+					q.Add(Parameter.IsNotNull("ZoneName"));
 
-            totalRecords = q.Count();
-            return q.FirstResult(skip).MaxResults(take).Select();
+			if (types != null)
+				q.Add(Parameter.In("class", types));
+
+			totalRecords = (int)repository.Count(q);
+			return repository.Find(q.Skip(skip).Take(take));
+			
+			//var q = finder.Where.AncestralTrail.Like(ancestor + "%")
+			//	.And.Title.IsNull(false);
+
+			//var words = query.Split(' ').Where(w => w.Length > 0).Select(w => "%" + w.Trim('*') + "%");
+			//foreach (var word in words)
+			//{
+			//	q = q.And.OpenBracket()
+			//		.Title.Like(word)
+			//		.Or.Detail().Like(word)
+			//	.CloseBracket();
+			//}
+			//if (onlyPages.HasValue)
+			//	q = q.And.OpenBracket()
+			//		.ZoneName.IsNull(onlyPages.Value)
+			//		.Or.ZoneName.Eq("")
+			//	.CloseBracket();
+			//if (types != null)
+			//	q = q.And.Property("class").In(types);
+
+			//totalRecords = q.Count();
+			//return q.FirstResult(skip).MaxResults(take).Select();
         }
 
         public Result<ContentItem> Search(Query query)
@@ -77,7 +104,7 @@ namespace N2.Persistence.Search
             var result = new Result<ContentItem>();
             int total;
             result.Hits = Search(query.Ancestor, query.Text, query.SkipHits, query.TakeHits, query.OnlyPages, query.Types, out total)
-                .Select(i => new Hit<ContentItem> { Title = i.Title, Url = i.Url, Content = i, Score = (i.Title != null && i.Title.ToLower().Contains(query.Text.ToLower())) ? 1 : .5 });
+				.Select(i => new Hit<ContentItem> { Title = i.Title, Url = i.Url, Content = i, Score = (i.Title != null && query.Text != null && i.Title.ToLower().Contains(query.Text.ToLower())) ? 1 : .5 });
             result.Total = total;
             return result;
         }

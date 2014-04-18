@@ -197,11 +197,6 @@ namespace N2.Persistence.Xml
 
 		public virtual void Flush()
         {
-            if (typeof(TEntity) == typeof(ContentVersion))
-            {
-                //TODO: Make XmlRepository handle versions
-                return;
-            }
         }
 
 		public virtual ITransaction BeginTransaction()

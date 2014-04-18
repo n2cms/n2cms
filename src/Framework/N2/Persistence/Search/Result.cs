@@ -13,8 +13,13 @@ namespace N2.Persistence.Search
         /// <summary>Search hits.</summary>
         public IEnumerable<Hit<T>> Hits { get; set; }
 
-        /// <summary>Number of items in the result set.</summary>
-        public int Count { get; set; }
+		private int? count;
+		/// <summary>Number of items in the result set.</summary>
+		public int Count
+		{
+			get { return count ?? (count = ((Hits != null) ? Hits.Count() : 0)) ?? 0; }
+			set { count = value; }
+		}
 
         /// <summary>Total number of items given the search expression.</summary>
         public int Total { get; set; }

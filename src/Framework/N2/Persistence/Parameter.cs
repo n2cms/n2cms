@@ -250,7 +250,7 @@ namespace N2.Persistence
                 case Persistence.Comparison.NotLike:
                     return !CompareInvariant(value, itemValue);
                 case Comparison.In:
-                    return ((IEnumerable)value).OfType<object>().Any(v => Compare(v, Persistence.Comparison.Equal, v));
+					return ((IEnumerable)value).OfType<object>().Any(v => Compare(v, Persistence.Comparison.Equal, itemValue));
                 case Comparison.NotIn:
                     return !Compare(value, comparison, itemValue);
                 default:
@@ -269,16 +269,42 @@ namespace N2.Persistence
                 return itemValue == null;
 
             var value = parameterValue.ToString();
-            if (value.EndsWith("%"))
-            {
-                if (itemValue is Details.IMultipleValue)
-                    return itemValue != null && (itemValue as Details.IMultipleValue).StringValue.StartsWith(value.Substring(0, value.Length - 1), StringComparison.InvariantCultureIgnoreCase);
-                
-                return itemValue != null && itemValue.ToString().StartsWith(value.Substring(0, value.Length - 1));
-            }
+			if (value.EndsWith("%"))
+			{
+				if (value.StartsWith("%"))
+					return FindContaining(itemValue, value.Substring(1, value.Length - 2));
+
+				return FindStartingWith(itemValue, value.Substring(0, value.Length - 1));
+			}
+			else if (value.StartsWith("%"))
+				return FindEndingWith(itemValue, value.Substring(1));
 
             return string.Equals(itemValue != null ? itemValue.ToString() : null, parameterValue != null ? parameterValue.ToString() : null, StringComparison.InvariantCultureIgnoreCase);
         }
+
+		private static bool FindStartingWith(object itemValue, string value)
+		{
+			if (itemValue is Details.IMultipleValue)
+				return itemValue != null && (itemValue as Details.IMultipleValue).StringValue.StartsWith(value, StringComparison.InvariantCultureIgnoreCase);
+
+			return itemValue != null && itemValue.ToString().StartsWith(value, StringComparison.InvariantCultureIgnoreCase);
+		}
+
+		private static bool FindContaining(object itemValue, string value)
+		{
+			if (itemValue is Details.IMultipleValue)
+				return itemValue != null && (itemValue as Details.IMultipleValue).StringValue.IndexOf(value, StringComparison.InvariantCultureIgnoreCase) >= 0;
+
+			return itemValue != null && itemValue.ToString().IndexOf(value, StringComparison.InvariantCultureIgnoreCase) >= 0;
+		}
+
+		private static bool FindEndingWith(object itemValue, string value)
+		{
+			if (itemValue is Details.IMultipleValue)
+				return itemValue != null && (itemValue as Details.IMultipleValue).StringValue.EndsWith(value, StringComparison.InvariantCultureIgnoreCase);
+
+			return itemValue != null && itemValue.ToString().EndsWith(value, StringComparison.InvariantCultureIgnoreCase);
+		}
 
         private bool? TryCompare(object value, Comparison comparison, IComparable comparable)
         {

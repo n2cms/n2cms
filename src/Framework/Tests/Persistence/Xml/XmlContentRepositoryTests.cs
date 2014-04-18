@@ -13,52 +13,13 @@ using System.IO;
 using System;
 using N2.Configuration;
 using N2.Web;
+using N2.Tests.Persistence.Xml;
 
 namespace N2.Tests.Persistence.NH
 {
     [TestFixture]
-    public class XmlRepositoryTests : ItemTestsBase
+	public class XmlRepositoryTests : XmlRepositoryTestsBase
     {
-		XmlContentRepository repository;
-		private ItemXmlWriter writer;
-		private ItemXmlReader reader;
-		private N2.Definitions.IDefinitionManager definitions;
-		private ItemNotifier notifier;
-
-        protected override T CreateOneItem<T>(int id, string name, ContentItem parent)
-        {
-            var item = base.CreateOneItem<T>(id, name, parent);
-            repository.SaveOrUpdate(item);
-            return item;
-        }
-
-		[TestFixtureSetUp]
-		public void TestFixtureSetUp()
-		{
-			definitions = TestSupport.SetupDefinitions(typeof(Definitions.PersistableItem), typeof(Definitions.PersistablePart));
-			writer = new ItemXmlWriter(
-						definitions,
-						TestSupport.SetupFileSystem());
-			reader = new ItemXmlReader(
-						definitions,
-						TestSupport.SetupContentActivator());
-		}
-
-        [SetUp]
-        public override void SetUp()
-        {
-            base.SetUp();
-			notifier = new ItemNotifier();
-			repository = new XmlContentRepository(definitions, new ThreadContext(), new XmlFileSystem(new ConfigurationManagerWrapper()), writer, reader, notifier);
-        }
-
-		[TearDown]
-		public override void TearDown()
-		{
-			base.TearDown();
-			repository.FileSystem.DeleteEntityDirectories();
-		}
-
         [Test]
         public void CanSave()
         {

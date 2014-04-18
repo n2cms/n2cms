@@ -13,8 +13,8 @@ namespace N2.Persistence
 	public class ParameterCollection : ICollection<IParameter>, IParameter
     {
         public ParameterCollection()
-        {
-            Operator = Persistence.Operator.And;
+			: this(Operator.And)
+		{
         }
 
         public ParameterCollection(Operator op)
@@ -23,18 +23,20 @@ namespace N2.Persistence
         }
 
         public ParameterCollection(params IParameter[] parameters)
-            : this(Operator.And)
+            : this(Operator.And, parameters)
         {
-            Operator = Persistence.Operator.And;
-            this.parameters.AddRange(parameters);
         }
 
-        public ParameterCollection(IEnumerable<IParameter> parameters)
-            : this(Operator.And)
-        {
-            Operator = Persistence.Operator.And;
-            this.parameters.AddRange(parameters);
-        }
+		public ParameterCollection(IEnumerable<IParameter> parameters)
+			: this(Operator.And, parameters)
+		{
+		}
+
+		public ParameterCollection(Operator op, IEnumerable<IParameter> parameters)
+			: this(op)
+		{
+			this.parameters.AddRange(parameters);
+		}
 
         List<IParameter> parameters = new List<IParameter>();
 
@@ -105,6 +107,9 @@ namespace N2.Persistence
 
         public bool IsMatch(object item)
         {
+			if (Count == 0)
+				return true;
+
             if (Operator == Persistence.Operator.And)
                 return this.All(p => p.IsMatch(item));
 
