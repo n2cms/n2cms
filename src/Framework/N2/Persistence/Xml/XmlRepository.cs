@@ -55,12 +55,17 @@ namespace N2.Persistence.Xml
 			cacheSessionKey = "CachBroker<" + typeof(TEntity).Name + ">.Cache";
 			SecondLevelCache = new ApplicationCache<TEntity>(Dehydrate);
 			Cache = new SessionCache<TEntity>(SecondLevelCache, Hydrate);
-			
-			maxId = fileSystem.GetFiles<TEntity>()
-				.Select(path => (int)ExtractId(path))
-				.FirstOrDefault();
+
+			ResetMaxId();
 
 			logger.DebugFormat("Constructing {0}, maxId: {1}", this, maxId);
+		}
+
+		public virtual void ResetMaxId()
+		{
+			maxId = FileSystem.GetFiles<TEntity>()
+				.Select(path => (int)ExtractId(path))
+				.FirstOrDefault();
 		}
 
         public virtual TEntity Get(object id)
@@ -159,18 +164,15 @@ namespace N2.Persistence.Xml
 			SecondLevelCache.Clear(entityCache: false, queryCache: true);
 		}
 
-		int maxId = 0;
+		static int maxId = 0;
 		static object zero = 0;
 		private object GetOrAssignId(TEntity item)
 		{
 			object id = GetId(item);
 			if (zero.Equals(id))
 			{
-				lock (this)
-				{
-					id = ++maxId;
-					Utility.SetProperty(item, "ID", id);
-				}
+				id = Interlocked.Increment(ref maxId);
+				Utility.SetProperty(item, "ID", id);
 			}
 			return id;
 		}

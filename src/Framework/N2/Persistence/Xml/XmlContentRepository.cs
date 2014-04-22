@@ -71,9 +71,13 @@ namespace N2.Persistence.Xml
 		public override void SaveOrUpdate(ContentItem entity)
 		{
 			notifier.NotifySaving(entity);
-			base.SaveOrUpdate(entity);
-			if (entity.Parent != null)
+			if (entity.ID == 0 && entity.Parent != null)
+			{
+				base.SaveOrUpdate(entity);
 				base.SaveOrUpdate(entity.Parent);
+			}
+			else
+				base.SaveOrUpdate(entity);
 		}
 
 		public override void Delete(ContentItem entity)
