@@ -311,7 +311,7 @@
 
 		recalculate: function () {
 			var $sc = $(this.selector)
-			this.closedPos = { top: (33 - $sc.height()) + "px", left: (5 - $sc.width()) + "px" };
+			this.closedPos = { top: (33 - $sc.height()) + "px", left: (17 - $sc.width()) + "px" };
 			if (!this.isOpen()) $sc.css(this.closedPos);
 		},
 
