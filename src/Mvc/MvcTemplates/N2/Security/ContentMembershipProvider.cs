@@ -315,7 +315,7 @@ namespace N2.Security
                 totalRecords = 0;
                 return muc;
             }
-            IList<ContentItem> users = Bridge.Repository.Find(Parameter.Equal("Email", emailToMatch) 
+            IList<ContentItem> users = Bridge.Repository.Find(Parameter.Equal("Email", emailToMatch).Detail()
                 & Parameter.TypeEqual(typeof(N2.Security.Items.User).Name)
                 & Parameter.Equal("Parent", userContainer)).ToList();
             totalRecords = users.Count;
