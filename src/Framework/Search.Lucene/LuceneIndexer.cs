@@ -12,7 +12,7 @@ using System.Threading;
 namespace N2.Persistence.Search
 {
     [Service]
-    [Service(typeof(IIndexer), Replaces = typeof(EmptyIndexer), Configuration = "lucene")]
+    [Service(typeof(IIndexer), Replaces = typeof(EmptyIndexer), Configuration = "Lucene")]
     public class LuceneIndexer : IIndexer
     {
         private readonly Engine.Logger<LuceneIndexer> logger;

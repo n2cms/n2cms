@@ -37,10 +37,10 @@ namespace N2.Configuration
         }
 
         /// <summary>Enable indexing of content.</summary>
-        [ConfigurationProperty("type", DefaultValue = SearchIndexType.Lucene)]
-        public SearchIndexType Type
+        [ConfigurationProperty("type", DefaultValue = "Lucene")]
+        public string Type
         {
-            get { return (SearchIndexType)base["type"]; }
+			get { return (string)base["type"]; }
             set { base["type"] = value; }
         }
 

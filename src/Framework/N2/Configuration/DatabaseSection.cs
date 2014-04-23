@@ -160,14 +160,10 @@ namespace N2.Configuration
             if (Files.StorageLocation == FileStoreLocation.Database)
                 configurationKeys.Add("dbfs");
 
-            if (Search.Type == SearchIndexType.Lucene)
-                configurationKeys.Add("lucene");
-
-            if (Search.Type == SearchIndexType.RemoteServer)
-                configurationKeys.Add("remote");
+			if (!string.IsNullOrEmpty(Search.Type))
+				configurationKeys.Add(Search.Type);
 
 			var flavour = Flavour;
-
 			if (flavour == DatabaseFlavour.AutoDetect)
 			{
 				try

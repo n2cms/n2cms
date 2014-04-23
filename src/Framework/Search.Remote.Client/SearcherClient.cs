@@ -14,8 +14,8 @@ using N2.Persistence;
 
 namespace N2.Search.Remote.Client
 {
-    [Service(typeof(IContentSearcher), Replaces = typeof(FindingContentSearcher), Configuration = "remote")]
-    [Service(typeof(ILightweightSearcher), Replaces = typeof(FindingContentSearcher), Configuration = "remote")]
+	[Service(typeof(IContentSearcher), Replaces = typeof(FindingContentSearcher), Configuration = "RemoteServer")]
+	[Service(typeof(ILightweightSearcher), Replaces = typeof(FindingContentSearcher), Configuration = "RemoteServer")]
     public class SearcherClient : IContentSearcher, ILightweightSearcher
     {
         private readonly Logger<SearcherClient> logger;
