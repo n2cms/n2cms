@@ -216,10 +216,21 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 
 		$scope.watchChanges("Context.User", function (user) {
 			Eventually(function () {
-				Profile.save({}, user, function(data){
+				if (user.$saved){
+					delete user.$saved;
+					return;
+				}
+
+				Profile.save({}, user, function (data) {
 				});
+
 			}, 10000);
 		}, true);
+		$scope.saveUserSettings = function () {
+			$scope.Context.User.$saved = true;
+			Profile.save({}, $scope.Context.User, function (data) {
+			});
+		}
 	});
 
 	$scope.refreshContext = function(node, versionIndex, keepFlags, callback) {
@@ -388,10 +399,12 @@ function ScopeHandler($scope, Content) {
 		this.from = true;
 		$scope.node = node;
 		$scope.Context.User.Settings.Scope = node.Current.Path;
+		$scope.saveUserSettings();
 	};
 	this.clear = function () {
 		$scope.node = $scope.Context.Content;
 		delete $scope.Context.User.Settings.Scope;
+		$scope.saveUserSettings();
 		this.from = false;
 	};
 	if ($scope.Context.User.Settings.Scope) {
@@ -514,6 +527,7 @@ function MenuCtrl($rootScope, $scope, Security) {
 
 	$scope.setViewPreference = function (viewPreference) {
 		$scope.Context.User.Settings.ViewPreference = viewPreference;
+		$scope.saveUserSettings();
 	};
 	$scope.$watch("Context.User.Settings.ViewPreference", function (viewPreference, previousPreference) {
 		$scope.setPreviewQuery("view", viewPreference);
@@ -553,6 +567,7 @@ function MenuNodeLastChildCtrl($scope, $timeout) {
     $scope.$on("nodeclicked", function (scope, node) {
     	replace($scope.item, node);
     	$scope.Context.User.Settings.PreferredEditAction = node.Current.Name;
+    	$scope.saveUserSettings();
     });
 }
 
