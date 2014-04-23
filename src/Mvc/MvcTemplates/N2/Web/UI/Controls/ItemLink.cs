@@ -33,17 +33,19 @@ namespace N2.Edit.Web.UI.Controls
             else
                 this.NavigateUrl = InterfaceUrl.ResolveUrlTokens().ToUrl().AppendSelection(item);
 
+            var title = string.IsNullOrEmpty(item.Title) ? N2.Context.Current.Definitions.GetDefinition(item).Title : item.Title;
+
             if (!ShowIcon)
             {
-                Text = item.Title;
+                Text = title;
             }
             else if (string.IsNullOrEmpty(item.IconUrl))
             {
-                Text = string.Format("<b class='{0}'></b> {1}", item.IconClass, item.Title);
+                Text = string.Format("<b class='{0}'></b> {1}", item.IconClass, title);
             }
             else
             {
-                Text = string.Format("<img src='{0}' alt='{1}' /> {2}", item.IconUrl.ResolveUrlTokens(), item.GetContentType().Name, string.IsNullOrEmpty(item.Title) ? "(untitled)" : item.Title);
+                Text = string.Format("<img src='{0}' alt='{1}' /> {2}", item.IconUrl.ResolveUrlTokens(), item.GetContentType().Name, title);
             }
         }
     }
