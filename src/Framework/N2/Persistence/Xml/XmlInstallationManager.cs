@@ -181,7 +181,6 @@ namespace N2.Persistence.Xml
 		{
 			repository.FileSystem.EnsureRootDirectory();
 			repository.FileSystem.DeleteEntityDirectories();
-			repository.ResetMaxId();
 			repository.Cache.Clear();
 			repository.SecondLevelCache.Clear();
         }

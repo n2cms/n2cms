@@ -71,6 +71,7 @@ namespace N2.Persistence.Xml
 		public override void SaveOrUpdate(ContentItem entity)
 		{
 			notifier.NotifySaving(entity);
+
 			if (entity.ID == 0 && entity.Parent != null)
 			{
 				base.SaveOrUpdate(entity);
@@ -78,6 +79,19 @@ namespace N2.Persistence.Xml
 			}
 			else
 				base.SaveOrUpdate(entity);
+		}
+
+		protected override void ValidateBeforeSave(ContentItem entity, object id, bool isAssigned, string xml)
+		{
+			base.ValidateBeforeSave(entity, id, isAssigned, xml);
+
+			var ancestors = new List<ContentItem>();
+			for (var current = entity; current != null; current = current.Parent)
+			{
+				if (ancestors.Any(a => a.ID == current.ID))
+					throw new Exception(string.Format("Cyclic parent dependency detected on {0}: {1}", entity, string.Join(", ", ancestors.Select(a => a + "->" + a.Parent))));
+				ancestors.Add(current);
+			}
 		}
 
 		public override void Delete(ContentItem entity)

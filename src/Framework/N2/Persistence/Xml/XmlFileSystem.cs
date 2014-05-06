@@ -61,6 +61,12 @@ namespace N2.Persistence.Xml
 			return Path.Combine(GetDirectory<TEntity>(), id + ".xml");
 		}
 
+		public virtual bool Exists<TEntity>(object id)
+		{
+			var path = GetPath<TEntity>(id);
+			return File.Exists(path);
+		}
+
 		public virtual string Read<TEntity>(object id)
 		{
 			string path = GetPath<TEntity>(id);
@@ -103,6 +109,37 @@ namespace N2.Persistence.Xml
 			{
 				logger.InfoFormat("Deleting {0}", subdir);
 				Directory.Delete(subdir, recursive: true);
+			}
+		}
+
+		internal int GetMaxId<TEntity>()
+		{
+			return GetFiles<TEntity>()
+				.Select(path => (int)ExtractId(path))
+				.DefaultIfEmpty()
+				.Max();
+		}
+
+		public static object ExtractId(string path)
+		{
+			return int.Parse(System.IO.Path.GetFileNameWithoutExtension(path));
+		}
+
+		internal int Count<TEntity>()
+		{
+			return GetFiles<TEntity>().Count();
+		}
+
+		public override string ToString()
+		{
+			try
+			{
+				return string.Format("FileSystem: Path = \"{0}\"", this.RootDirectoryPath);
+			}
+			catch (Exception ex)
+			{
+				logger.Error(ex);
+				return ex.Message;
 			}
 		}
 	}

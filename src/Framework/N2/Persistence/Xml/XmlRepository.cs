@@ -56,16 +56,7 @@ namespace N2.Persistence.Xml
 			SecondLevelCache = new ApplicationCache<TEntity>(Dehydrate);
 			Cache = new SessionCache<TEntity>(SecondLevelCache, Hydrate);
 
-			ResetMaxId();
-
-			logger.DebugFormat("Constructing {0}, maxId: {1}", this, maxId);
-		}
-
-		public virtual void ResetMaxId()
-		{
-			maxId = FileSystem.GetFiles<TEntity>()
-				.Select(path => (int)ExtractId(path))
-				.FirstOrDefault();
+			logger.DebugFormat("Constructing {0}, file system: {1}", this, FileSystem);
 		}
 
         public virtual TEntity Get(object id)
@@ -126,12 +117,7 @@ namespace N2.Persistence.Xml
 
 		protected IEnumerable<TEntity> GetAll()
 		{
-			return FileSystem.GetFiles<TEntity>().Select(path => Get(ExtractId(path)));
-		}
-
-		private object ExtractId(string path)
-		{
-			return int.Parse(System.IO.Path.GetFileNameWithoutExtension(path));
+			return FileSystem.GetFiles<TEntity>().Select(path => Get(XmlFileSystem.ExtractId(path)));
 		}
 
         public IEnumerable<IDictionary<string, object>> Select(IParameter parameters, params string[] properties)
@@ -153,10 +139,15 @@ namespace N2.Persistence.Xml
 
         public virtual void SaveOrUpdate(TEntity entity)
         {
-			var id = GetOrAssignId(entity);
+			bool isAssigned;
+			var id = GetOrAssignId(entity, out isAssigned);
+
 			string xml = Serialize(entity);
 
+			ValidateBeforeSave(entity, id, isAssigned, xml);
+
 			logger.DebugFormat("Writing #{0} with xml {1}", id, string.IsNullOrEmpty(xml) ? "(empty)" : xml.Length.ToString());
+			
 			FileSystem.Write<TEntity>(id, xml);
 
 			Cache.Set(id, entity);
@@ -164,16 +155,26 @@ namespace N2.Persistence.Xml
 			SecondLevelCache.Clear(entityCache: false, queryCache: true);
 		}
 
-		static int maxId = 0;
+		protected virtual void ValidateBeforeSave(TEntity entity, object id, bool isAssigned, string xml)
+		{
+			if (string.IsNullOrEmpty(xml))
+				throw new Exception("Empty xml for entity " + entity);
+			if (isAssigned && FileSystem.Exists<TEntity>(id))
+				throw new Exception(string.Format("File already exists for entity {0} with auto-assigned id {1}", entity, id));
+		}
+
 		static object zero = 0;
-		private object GetOrAssignId(TEntity item)
+		private object GetOrAssignId(TEntity item, out bool isAssigned)
 		{
 			object id = GetId(item);
 			if (zero.Equals(id))
 			{
-				id = Interlocked.Increment(ref maxId);
+				id = 1 + FileSystem.GetMaxId<TEntity>();
 				Utility.SetProperty(item, "ID", id);
+				isAssigned = true;
 			}
+			else
+				isAssigned = false;
 			return id;
 		}
 
