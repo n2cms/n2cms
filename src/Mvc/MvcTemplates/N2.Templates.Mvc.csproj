@@ -669,7 +669,6 @@
     <Content Include="Views\Shared\PageTemplates\SiteMap.aspx" />
     <Content Include="Views\Shared\PageTemplates\TextPage.aspx" />
     <Content Include="Views\Shared\PartTemplates\BoxedTextItem.ascx" />
-    <Content Include="Views\Shared\PartTemplates\BubbleItem.ascx" />
     <Content Include="Views\Shared\PartTemplates\Columns.ascx" />
     <Content Include="Views\Shared\PartTemplates\Comment.ascx" />
     <Content Include="Views\Shared\PartTemplates\CommentList.ascx" />
