@@ -109,9 +109,9 @@ namespace N2.Persistence.Xml
 			{
 				item.Parent = Get(item.Parent.ID);
 			}
-
+			
 			if (!(item.Children is XmlItemList) && item.Children.WasInitialized && item.Children.Count == 0)
-				item.Children = new XmlItemList(() => Find(Parameter.Equal("Parent", item)));
+				item.Children = new XmlItemList(() => Find(new ParameterCollection(Parameter.Equal("Parent", item)).OrderBy("SortOrder")));
 		}
 
 		// TODO: make safe for multithreading
