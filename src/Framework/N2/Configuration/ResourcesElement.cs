@@ -40,7 +40,7 @@ namespace N2.Configuration
         }
 
         /// <summary>The path to the included angular javascript resource.</summary>
-		[ConfigurationProperty("angularRoot", DefaultValue = "{ManagementUrl}/Resources/angular-1.2.8/")]
+		[ConfigurationProperty("angularRoot", DefaultValue = "//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/")]
 		public string AngularRoot
         {
 			get { return (string)base["angularRoot"]; }
