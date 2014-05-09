@@ -48,10 +48,19 @@ namespace N2.Edit.Web
         /// <returns>True if the user is authorized.</returns>
         protected virtual void Authorize(IPrincipal user)
         {
-            if(Engine.SecurityManager.IsAuthorized(user, Permission.Write))
-                Engine.Resolve<ISecurityEnforcer>().AuthorizeRequest(user, Selection.SelectedItem, Permission.Read);
-            else
-                Engine.Resolve<ISecurityEnforcer>().AuthorizeRequest(user, Selection.SelectedItem, Permission.Write);
+	        try
+	        {
+		        if (Engine.SecurityManager.IsAuthorized(user, Permission.Write))
+			        Engine.Resolve<ISecurityEnforcer>().AuthorizeRequest(user, Selection.SelectedItem, Permission.Read);
+		        else
+			        Engine.Resolve<ISecurityEnforcer>().AuthorizeRequest(user, Selection.SelectedItem, Permission.Write);
+	        }
+	        catch (PermissionDeniedException ex)
+	        {
+		        Response.StatusCode = ex.GetHttpCode();
+		        Response.Write(ex.GetHtmlErrorMessage() ?? string.Empty);
+				Response.End();
+	        }
         }
 
         protected override void OnInit(EventArgs e)
