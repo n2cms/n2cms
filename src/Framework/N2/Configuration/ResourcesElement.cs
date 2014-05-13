@@ -40,7 +40,7 @@ namespace N2.Configuration
         }
 
         /// <summary>The path to the included angular javascript resource.</summary>
-		[ConfigurationProperty("angularRoot", DefaultValue = "{ManagementUrl}/Resources/angular-1.2.8/")]
+		[ConfigurationProperty("angularRoot", DefaultValue = "//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/")]
 		public string AngularRoot
         {
 			get { return (string)base["angularRoot"]; }
@@ -48,7 +48,7 @@ namespace N2.Configuration
         }
 
         /// <summary>The path to the included tiny MCE javascript resource.</summary>
-        [ConfigurationProperty("ckEditorPath", DefaultValue = "{ManagementUrl}/Resources/ckeditor/ckeditor.js?v=" + JQueryVersion)]
+		[ConfigurationProperty("ckEditorPath", DefaultValue = "//cdnjs.cloudflare.com/ajax/libs/ckeditor/4.3.2/ckeditor.js?v=" + JQueryVersion)]
         public string CKEditorPath
         {
             get { return (string)base["ckEditorPath"]; }
