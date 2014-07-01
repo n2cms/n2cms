@@ -19,7 +19,7 @@ namespace N2.Edit.Versions
         public ControlPanelPendingVersionAttribute(string toolTip, int sortOrder)
             : base("cpPendingVersion", "{IconsUrl}/book_next_orange.png", null, toolTip, sortOrder, ControlPanelState.Visible)
         {
-            IconClass = "n2-icon-time";
+			IconClass = "fa fa-clock-o";
         }
 
         public override Control AddTo(Control container, PluginContext context)

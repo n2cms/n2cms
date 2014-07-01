@@ -10,7 +10,7 @@ using N2.Engine;
 namespace N2.Templates.Mvc.Models.Pages
 {
     [PageDefinition("Gallery Item",
-        IconClass = "n2-icon-picture")]
+        IconClass = "fa fa-picture")]
     [RestrictParents(typeof (ImageGallery))]
     [TabContainer("advanced", "Advanced", 100)]
     public class GalleryItem : ContentPageBase, IInjectable<IFileSystem>

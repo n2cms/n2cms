@@ -1,0 +1,13 @@
+<item id="9" name="Trash" parent="1" title="Trash" zoneName="" templateKey="" state="1" created="05/06/2014 19:58:13" updated="06/09/2014 21:07:31" published="05/06/2014 19:58:13" expires="" sortOrder="1000000" url="/N2/Content/Trash/Default.aspx?n2page=9" visible="False" savedBy="" typeName="N2.Edit.Trash.TrashContainerItem, N2.Management" discriminator="TrashContainerItem" versionIndex="0" ancestralTrail="/1/" alteredPermissions="0" childState="2">
+  <details>
+    <detail name="KeepDays" typeName="System.Int32, mscorlib" meta="">0</detail>
+  </details>
+  <detailCollections />
+  <children />
+  <authorizations>
+    <role>admin</role>
+    <role>Editors</role>
+    <role>Administrators</role>
+  </authorizations>
+  <properties />
+</item>

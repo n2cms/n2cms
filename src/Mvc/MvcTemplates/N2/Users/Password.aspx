@@ -8,7 +8,7 @@
     <asp:LinkButton ID="btnUnlock" runat="server" OnClick="btnUnlock_Click" 
 		CssClass="command command-action" meta:resourcekey="btnUnlockResource1">Unlock</asp:LinkButton>
     <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="Users.aspx" 
-		CssClass="command cancel" meta:resourcekey="hlBackResource1">Cancel</asp:HyperLink>
+		CssClass="command cancel" meta:resourcekey="hlBackResource1">Close</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
 	<div class="tabPanel">

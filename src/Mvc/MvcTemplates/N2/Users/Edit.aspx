@@ -8,7 +8,7 @@
    <asp:HyperLink ID="hlPassword" runat="server" NavigateUrl="Password.aspx" 
 		CssClass="command action" meta:resourcekey="hlPasswordResource1">Password</asp:HyperLink>
    <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="Users.aspx" 
-		CssClass="command" meta:resourcekey="hlBackResource1">Cancel</asp:HyperLink>
+		CssClass="command" meta:resourcekey="hlBackResource1">Close</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
 	<div class="tabPanel">

@@ -203,7 +203,7 @@ namespace N2.Edit
 
 		public ElementStyle Style
 		{
-			get { return ElementStyle.Empty.Prefix("<b class='n2-icon-plus-sign'></b> "); }
+			get { return ElementStyle.Empty.Prefix("<b class='fa fa-plus-circle'></b> "); }
 		}
 	}
 }

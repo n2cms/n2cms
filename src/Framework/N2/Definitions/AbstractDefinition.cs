@@ -69,7 +69,7 @@ namespace N2.Definitions
 
         protected virtual string DefaultIconClass
         {
-            get { return "n2-icon-file"; }
+            get { return "fa fa-file"; }
         }
 
         public virtual void Refine(ItemDefinition currentDefinition)

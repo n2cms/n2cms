@@ -17,7 +17,7 @@ namespace N2.Security.Items
 {
     [PartDefinition("User List", 
         SortOrder = 2000,
-        IconClass = "n2-icon-user shadow",
+        IconClass = "fa fa-user shadow",
         AuthorizedRoles = new string[0])]
     [WithEditableTitle("Title", 10)]
     [Throwable(AllowInTrash.No)]

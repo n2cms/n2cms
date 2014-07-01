@@ -15,8 +15,6 @@ a { text-decoration: none; color: #000; }
 
 
 #main-wrapper { position: absolute; top: 42px; bottom: 0; width:100%; }
-	#main-wrapper.organize #secondary-area { display:none; }
-	#main-wrapper.organize #main-area { left: 0 !important; width:100% !important; }
 
 #secondary-area { border-top: 1px solid #c7c7c7; border-right: 1px solid #c7c7c7; position: absolute; bottom: 0; top: 0; margin-right: 3px; width: 350px; }
 	#secondary-area .dragbar { position: absolute; right: -5px; margin: auto; top: 40%; }

@@ -18,7 +18,7 @@ namespace N2.Edit
         {
             RequiredPermission = Permission.Write;
             CssClass = "complementary";
-            IconClass = "n2-icon-trash";
+            IconClass = "fa fa-trash-o";
             SortOrder = 100;
         }
 

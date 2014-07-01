@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="<%=MapCssUrl("exportImport.css")%>" type="text/css" />
 </asp:Content>
 <asp:Content ID="CT" ContentPlaceHolderID="Toolbar" runat="server">
-    <edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Cancel</edit:CancelLink>
+    <edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Close</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="CC" ContentPlaceHolderID="Content" runat="server">
 	<edit:PersistentOnlyPanel ID="popNotSupported" runat="server" meta:resourceKey="popNotSupported">
@@ -21,7 +21,7 @@
 				        <asp:RequiredFieldValidator ID="rfvUpload" ControlToValidate="fuImport" runat="server" ErrorMessage="*"  meta:resourceKey="rfvImport"/>
 				    </div>
 				    <div>
-				        <asp:Button ID="btnVerify" runat="server" Text="Upload and examine" OnClick="btnVerify_Click" Display="Dynamic" meta:resourceKey="btnVerify"/>
+				        <asp:Button ID="btnVerify" runat="server" CssClass="btn command" Text="Upload and examine" OnClick="btnVerify_Click" Display="Dynamic" meta:resourceKey="btnVerify"/>
 				        <%--<asp:Button ID="btnUploadImport" runat="server" Text="Import here" OnClick="btnUploadImport_Click"  meta:resourceKey="btnUploadImport"/>--%>
 				    </div>
 			    </div>

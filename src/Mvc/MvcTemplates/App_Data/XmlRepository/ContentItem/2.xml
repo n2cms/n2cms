@@ -1,0 +1,19 @@
+<item id="2" name="start" parent="1" title="Start Page" zoneName="" templateKey="" state="16" created="05/06/2014 12:39:52" updated="06/29/2014 19:47:06" published="05/06/2014 12:39:52" expires="" sortOrder="-10" url="/" visible="False" savedBy="admin" typeName="N2.Templates.Mvc.Models.Pages.StartPage, N2.Templates.Mvc" discriminator="StartPage" versionIndex="3" ancestralTrail="/1/" alteredPermissions="0" childState="0">
+  <details>
+    <detail name="HeadTitle" typeName="System.String, mscorlib" meta="" />
+    <detail name="MetaKeywords" typeName="System.String, mscorlib" meta="" />
+    <detail name="MetaDescription" typeName="System.String, mscorlib" meta="" />
+    <detail name="ParentID" typeName="System.Int32, mscorlib" meta="">1</detail>
+    <detail name="VersionKey" typeName="System.String, mscorlib" meta="" encoded="True"><![CDATA[61827b7a-2b91-44de-9b55-603732a210d2]]></detail>
+  </details>
+  <detailCollections />
+  <children>
+    <child id="12" name="12" versionIndex="1" versionKey="0d92d796-2f91-433c-b50b-0599ad1f47e8" />
+    <child id="13" name="13" versionIndex="2" versionKey="df1fe73e-3b0d-4e5c-afbc-97a50a01fd2a" />
+  </children>
+  <authorizations />
+  <properties>
+    <property name="Summary" typeName="System.String, mscorlib"><![CDATA[2
+]]></property>
+  </properties>
+</item>

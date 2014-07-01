@@ -133,7 +133,7 @@
     <value>Delete "{0}"</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Close</value>
   </data>
   <data name="referencingItems.Legend" xml:space="preserve">
     <value>Referencing items</value>
