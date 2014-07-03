@@ -23,10 +23,11 @@ body .subbar
 body .toolbar, 
 body .framed .optionGroup,
 body .framed .commandOptions .opener,
-body.framed .outside
-{
-    background-color:#ebf7fc;
-	border-color:#d9f0f9;
+body.framed .outside .box-heading{
+    /*background-color:#ebf7fc;
+	border-color:#d9f0f9;*/
+	background-color:#18a0de;
+	color:#fff;
 }
 .framed .outside .box {
 	border-color:#d9f0f9 !important;

@@ -16,7 +16,7 @@ namespace Dinamico.Models
     /// Redirects to the child start page that matches the user agent's language.
     /// </summary>
     [PageDefinition(
-        IconClass = "n2-icon-globe n2-gold",
+        IconClass = "fa fa-globe n2-gold",
         InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
     [RestrictParents(typeof(IRootPage))]
     [TabContainer(Defaults.Containers.Site, "Languages", 1000,

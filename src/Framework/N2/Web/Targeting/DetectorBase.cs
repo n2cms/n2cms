@@ -22,7 +22,7 @@ namespace N2.Web.Targeting
 
         public virtual DetectorDescription Description
         {
-            get { return new DetectorDescription { Title = Regex.Replace(Name, "([a-z](?=[A-Z])|[A-Z](?=[A-Z][a-z]))", "$1 ").TrimEnd(), IconClass = "n2-icon-screenshot" }; }
+            get { return new DetectorDescription { Title = Regex.Replace(Name, "([a-z](?=[A-Z])|[A-Z](?=[A-Z][a-z]))", "$1 ").TrimEnd(), IconClass = "fa fa-screenshot" }; }
         }
 
         public class DetectorDescription

@@ -11,7 +11,7 @@ using System;
 namespace N2.Templates.Mvc.Models.Pages
 {
     [PageDefinition("News", Description = "A news page.", SortOrder = 155,
-        IconClass = "n2-icon-file blue")]
+        IconClass = "fa fa-file blue")]
     [RestrictParents(typeof (NewsContainer))]
     public class News : ContentPageBase, ISyndicatable
     {

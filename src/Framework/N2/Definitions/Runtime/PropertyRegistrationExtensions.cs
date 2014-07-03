@@ -323,7 +323,7 @@ namespace N2.Definitions.Runtime
 
         public static EditableBuilder<T> Help<T>(this EditableBuilder<T> builder, string title, string text = null) where T : AbstractEditableAttribute
         {
-            builder.Configure(e => { e.HelpTitle = title; e.HelpText = text; });
+            builder.Configure(e => { e.HelpTitle = title ?? builder.PropertyName; e.HelpText = text; });
             return builder;
         }
 

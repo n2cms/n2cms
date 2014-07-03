@@ -4,7 +4,7 @@
 @{ Content.Define(ie => 
 	   {
 		   ie.Title = "Listing";
-		   ie.Definition.IconClass = "n2-icon-list-alt";
+		   ie.Definition.IconClass = "fa fa-list-alt";
 		   ie.Link("ListFrom", "List from");
 		   ie.Text("Count", "Number of items").Configure(e => { e.Columns = 3; e.Required = true; e.Validate = true; e.ValidationExpression = "\\d+"; e.DefaultValue = 3; });
 		   ie.CheckBox("Tease", "Tease first item");

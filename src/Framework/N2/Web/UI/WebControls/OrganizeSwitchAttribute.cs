@@ -13,7 +13,7 @@ namespace N2.Web.UI.WebControls
             : base ("cpOrganize", "{ManagementUrl}/Resources/icons/layout_edit.png", "{Selected.Url}", "Organize parts", -10, ControlPanelState.Visible | ControlPanelState.DragDrop)
         {
             UrlEncode = false;
-            IconClass = "n2-icon-th-large";
+            IconClass = "fa fa-th-large";
             Target = Targets.Top;
         }
 

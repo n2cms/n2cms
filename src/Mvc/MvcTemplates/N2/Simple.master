@@ -9,7 +9,7 @@
 		<asp:ContentPlaceHolder ID="Head" runat="server" />
 	</asp:PlaceHolder>
 </head>
-<body class="toolbar-hidden framed <%= Page.GetType().BaseType.Name %>">
+<body class="framed <%= Page.GetType().BaseType.Name %>">
 	<asp:ContentPlaceHolder ID="Frame" runat="server">
 		<div id="toolbar" class="toolbar">
 			<div class="inner">

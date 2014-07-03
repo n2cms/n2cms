@@ -31,7 +31,7 @@ namespace N2
 
         protected override string DefaultIconClass
         {
-            get { return "n2-icon-file-alt"; }
+            get { return "fa fa-file-o"; }
         }
 
         public override void Refine(ItemDefinition currentDefinition)

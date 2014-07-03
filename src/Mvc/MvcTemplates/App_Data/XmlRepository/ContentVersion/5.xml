@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-16"?><ContentVersion xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><ID>5</ID><VersionIndex>0</VersionIndex><Title>Start Page</Title><Master><ID>2</ID></Master><State>Unpublished</State><Published>2014-05-06T14:39:52+02:00</Published><FuturePublish xsi:nil="true" /><Expired>2014-06-28T22:46:17.2583292+02:00</Expired><Saved>2014-06-28T22:46:17.2583292+02:00</Saved><SavedBy>admin</SavedBy><ItemCount>1</ItemCount><VersionDataXml>&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;n2 version="2.6.3.1" exportVersion="2" exportDate="06/28/2014 20:46:17"&gt;
+  &lt;item id="0" name="start" title="Start Page" zoneName="" templateKey="" state="32" created="05/06/2014 12:39:52" updated="06/28/2014 20:46:16" published="05/06/2014 12:39:52" expires="" sortOrder="-10" url="/?n2versionIndex=0" visible="False" savedBy="admin" typeName="N2.Templates.Mvc.Models.Pages.StartPage, N2.Templates.Mvc" discriminator="StartPage" versionIndex="0" ancestralTrail="/" alteredPermissions="0" childState="0" versionOf="2"&gt;
+    &lt;details&gt;
+      &lt;detail name="HeadTitle" typeName="System.String, mscorlib" meta="" /&gt;
+      &lt;detail name="MetaKeywords" typeName="System.String, mscorlib" meta="" /&gt;
+      &lt;detail name="MetaDescription" typeName="System.String, mscorlib" meta="" /&gt;
+      &lt;detail name="ParentID" typeName="System.Int32, mscorlib" meta=""&gt;1&lt;/detail&gt;
+      &lt;detail name="VersionKey" typeName="System.String, mscorlib" meta="" encoded="True"&gt;&lt;![CDATA[81d9cce7-53ff-4ea2-a01d-83a81ed91e08]]&gt;&lt;/detail&gt;
+    &lt;/details&gt;
+    &lt;detailCollections /&gt;
+    &lt;children /&gt;
+    &lt;authorizations /&gt;
+    &lt;properties&gt;
+      &lt;property name="Summary" typeName="System.String, mscorlib"&gt;&lt;![CDATA[test test
+]]&gt;&lt;/property&gt;
+    &lt;/properties&gt;
+  &lt;/item&gt;
+&lt;/n2&gt;</VersionDataXml></ContentVersion>

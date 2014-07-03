@@ -12,7 +12,7 @@ using N2.Management.Api;
 namespace N2.Edit.FileSystem.Items
 {
     [PageDefinition("File",
-        IconClass = "n2-icon-file-text-alt",
+        IconClass = "fa fa-file-text-o",
         InstallerVisibility = InstallerHint.NeverRootOrStartPage,
         SortOrder = 2010)]
     [RestrictParents(typeof(AbstractDirectory))]

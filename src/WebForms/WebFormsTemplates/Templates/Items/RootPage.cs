@@ -12,7 +12,7 @@ namespace N2.Templates.Items
         Description = "A root page used to organize start pages.", 
         SortOrder = 0,
         InstallerVisibility = InstallerHint.PreferredRootPage,
-        IconClass = "n2-icon-sun",
+        IconClass = "fa fa-database",
         TemplateUrl = "{ManagementUrl}/Myself/Root.aspx")]
     [RestrictParents(AllowedTypes.None)]
     [AvailableZone("Left", "Left")]

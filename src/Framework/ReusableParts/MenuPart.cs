@@ -150,7 +150,7 @@ namespace N2.Web
 	/// <summary>
 	/// Provides navigation across child and sibling pages. Ideal for sidebars.
 	/// </summary>
-	[PartDefinition(Title = "Menu", IconClass = "n2-icon-list-ul", RequiredPermission = Security.Permission.Administer)]
+	[PartDefinition(Title = "Menu", IconClass = "fa fa-list-ul", RequiredPermission = Security.Permission.Administer)]
 	[WithEditableTitle]
 	[WithEditableName(HelpText = "The name will be used to set the HTML id of the part")]
 	[FieldSetContainer(NestingContainerName, "Hierarchy View Settings", 400)]

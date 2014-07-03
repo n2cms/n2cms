@@ -16,7 +16,7 @@ namespace N2.Templates.Mvc.Models.Pages
     [PageDefinition("Language root",
         Description = "A starting point for translations of the start page.",
         SortOrder = 450,
-        IconClass = "n2-icon-globe")]
+        IconClass = "fa fa-globe")]
     [RecursiveContainer(LanguageRoot.SiteArea, 70, 
         RequiredPermission = Permission.Administer)]
     [RestrictParents(typeof (StartPage))]

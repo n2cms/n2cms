@@ -148,7 +148,7 @@
 							return factory(scope);
 						}, applicator);
 					} else
-						applicator(null);
+						return applicator(null);
 				}
 
 				scope.evaluateExpression = function(expr) {
@@ -309,7 +309,7 @@
 							$selected.remove();
 						}
 
-						var options = scope.$eval(attrs.sortable)
+						var options = scope.$eval(attrs.sortable);
 
 						if (ctx.operation == "move") {
 							options.move && options.move(ctx);
@@ -372,8 +372,8 @@
 					initialClientValue = e["client" + dir];
 					initialModelValue = modelGet(scope);
 
-					$(document).bind("mousemove.n2Resize", function (e) {
-						modelSet(scope, initialModelValue + e["client" + dir] - initialClientValue);
+					$(document).bind("mousemove.n2Resize", function (evt) {
+						modelSet(scope, initialModelValue + evt["client" + dir] - initialClientValue);
 						scope.$digest();
 					});
 					$(document.body).addClass("resizing");

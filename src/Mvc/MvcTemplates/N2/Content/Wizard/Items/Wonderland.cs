@@ -8,7 +8,7 @@ using N2.Management;
 namespace N2.Edit.Wizard.Items
 {
     [PartDefinition("Wizard Container",
-        IconClass = "n2-icon-magic",
+        IconClass = "fa fa-magic",
         AuthorizedRoles = new string[0])]
     [Throwable(AllowInTrash.No)]
     [Indexable(IsIndexable = false)]

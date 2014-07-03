@@ -133,7 +133,7 @@
     <value>File Manager</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Close</value>
   </data>
   <data name="hlItems.Text" xml:space="preserve">
     <value>&lt;img src="../Resources/icons/page.png" /&gt; Items</value>

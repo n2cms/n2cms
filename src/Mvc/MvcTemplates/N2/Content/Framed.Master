@@ -5,7 +5,7 @@
 	<script src="<%= ResolveUrl("../Resources/bootstrap/js/bootstrap.min.js") %>"></script>
 
 	<link href="<%= ResolveClientUrl("../Resources/bootstrap-components/bootstrap-datepicker.css") %>" type="text/css" rel="stylesheet" />
-	<link href="<%= ResolveUrl("../Resources/font-awesome/css/font-awesome.min.css") %>" rel="stylesheet" />
+	<link href="<%= ResolveUrl("../Resources/font-awesome-4.1.0/css/font-awesome.min.css") %>" rel="stylesheet" />
 	<link href="<%= ResolveUrl("../Resources/icons/flags.css") %>" rel="stylesheet" />
 	<link href="<%= ResolveClientUrl("../Resources/Css/all.css") %>" type="text/css" rel="stylesheet" />
 	<link href="<%= ResolveClientUrl("../Resources/Css/framed.css") %>" type="text/css" rel="stylesheet" />
@@ -14,8 +14,8 @@
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Frame" ID="cf" runat="server">
 	<form id="f" runat="server">
-		<div id="toolbar" class="toolbar">
-			<div class="inner">
+		<div id="framed-navbar" class="navbar navbar-fixed-bottom toolbar-count-<%= Toolbar.Controls.Count %>">
+			<div class="navbar-inner">
 				<asp:ContentPlaceHolder ID="Toolbar" runat="server" />
 			</div>
 		</div>
@@ -38,5 +38,12 @@
 		if (n2ctx.hasTop() != "metro" || modal) {
 			$(document.body).removeClass("toolbar-hidden");
 		}
+		jQuery(function ($) {
+			$(".iconed").each(function () {
+				var icon = $(this).attr("data-icon-class");
+				if (icon)
+					$(this).prepend("<b class='" + icon + "'></b> ");
+			});
+		})
 	</script>
 </asp:Content>

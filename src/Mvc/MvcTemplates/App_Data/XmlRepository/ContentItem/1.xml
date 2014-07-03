@@ -1,0 +1,12 @@
+<item id="1" name="root" title="Root Node" zoneName="" templateKey="" state="1" created="05/06/2014 12:39:52" updated="06/29/2014 19:47:06" published="05/06/2014 12:39:52" expires="" sortOrder="0" url="/N2/Myself/Root.aspx?n2page=1" visible="True" savedBy="admin" typeName="N2.Templates.Mvc.Areas.Management.Models.RootPage, N2.Templates.Mvc" discriminator="RootPage" versionIndex="0" ancestralTrail="/" alteredPermissions="0" childState="8">
+  <details>
+    <detail name="Installation.AppPath" typeName="System.String, mscorlib" meta="" encoded="True"><![CDATA[/]]></detail>
+    <detail name="Installation.Host" typeName="System.String, mscorlib" meta="" encoded="True"><![CDATA[http://localhost:53038]]></detail>
+  </details>
+  <detailCollections />
+  <children>
+    <child id="4" name="TemplateUsers" versionIndex="0" />
+  </children>
+  <authorizations />
+  <properties />
+</item>

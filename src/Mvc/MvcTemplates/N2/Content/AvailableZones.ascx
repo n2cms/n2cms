@@ -8,7 +8,7 @@
 		<ItemTemplate>
 			<dt>
 				<asp:HyperLink CssClass="new" ID="hlNew" meta:resourceKey="hlNew" runat="server" ToolTip="New item" NavigateUrl="<%# GetNewDataItemUrl(Container.DataItem) %>">
-					<b class="n2-icon-plus-sign"></b>
+					<b class="fa fa-plus-circle"></b>
 					<%# GetZoneString((string)Eval("ZoneName")) ?? Eval("Title") %>
 				</asp:HyperLink>
 			</dt>
@@ -28,7 +28,7 @@
 							ToolTip="Move up"
 							ImageUrl="../Resources/icons/bullet_arrow_up.png" OnClick="MoveItemUp"/>
 						<asp:HyperLink NavigateUrl="<%# GetDeleteDataItemUrl(Container.DataItem) %>" CssClass="delete" runat="server" meta:resourceKey="hlDelete" ToolTip="Move to trash">
-							<b class="n2-icon-trash"></b>
+							<b class="fa fa-trash-o"></b>
 						</asp:HyperLink>
 					</div>
 				</ItemTemplate>

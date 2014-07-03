@@ -9,7 +9,7 @@ namespace N2.Edit.Trash
     [PageDefinition("Trash",
         Name = "TrashContainerItem",
         InstallerVisibility = InstallerHint.NeverRootOrStartPage,
-        IconClass = "n2-icon-trash",
+        IconClass = "fa fa-trash-o",
         TemplateUrl = "{ManagementUrl}/Content/Trash/Default.aspx",
         AuthorizedRoles = new string[0])]
     [AllowedChildren(typeof(ContentItem))]

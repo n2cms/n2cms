@@ -54,8 +54,8 @@ namespace N2.Web.UI
             writer.Write(definition.Discriminator);
             writer.Write("'>");
 
-            WriteCommand(writer, "Edit part", "command edit n2-icon-edit-sign", Url.Parse(managementUrls.GetEditExistingItemUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
-            WriteCommand(writer, "Delete part", "command delete n2-icon-trash", Url.Parse(managementUrls.GetDeleteUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
+			WriteCommand(writer, "Edit part", "command edit fa fa-pencil-square", Url.Parse(managementUrls.GetEditExistingItemUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
+            WriteCommand(writer, "Delete part", "command delete fa fa-trash-o", Url.Parse(managementUrls.GetDeleteUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
             WriteTitle(writer, definition);
 
             writer.Write("</div>");

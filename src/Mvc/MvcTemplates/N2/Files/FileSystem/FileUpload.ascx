@@ -3,7 +3,7 @@
 
 <div id="fileupload" class="droparea">
 	<div id="uploadcontrols">
-		<b class="n2-icon-upload"></b>
+		<b class="fa fa-upload"></b>
 		<p><strong><%= GetLocalResourceString("SelectFiles", "Select files to upload") %></strong></p>
 		<p>
 			<input id="fuAlternative" runat="server" type="file" name="files[]" multiple="multiple" />
@@ -68,7 +68,7 @@
             </td>
             <td class="start">{% if (!o.options.autoUpload) { %}
                 <button class="btn btn-primary">
-                    <i class="n2-icon-upload icon-white"></i>
+                    <i class="fa fa-upload icon-white"></i>
                     <span>{%=locale.fileupload.start%}</span>
                 </button>
             {% } %}</td>

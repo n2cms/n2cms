@@ -7,7 +7,7 @@ namespace N2.Management.Content.Templates
 {
     [PartDefinition("Template Container",
         TemplateUrl = "{ManagementUrl}/Empty.aspx",
-        IconClass = "n2-icon-plus-sign-alt",
+        IconClass = "fa fa-plus-sqare-o",
         AuthorizedRoles = new string[0])]
     [AllowedChildren(typeof(ContentItem))]
     [Throwable(AllowInTrash.No)]

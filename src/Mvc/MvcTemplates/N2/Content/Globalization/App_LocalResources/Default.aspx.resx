@@ -133,7 +133,7 @@
     <value>This page cannot be translated. Add it to a language root in to enable globalization.</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Close</value>
   </data>
   <data name="lblSelected.Text" xml:space="preserve">
     <value>Selected: </value>

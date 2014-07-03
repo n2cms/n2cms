@@ -23,7 +23,13 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <n2:TabPanel ID="TabPanel1" ToolTip="Upgrade" runat="server">
+        <n2:TabPanel ID="tpProgress" ToolTip="Progress" runat="server" Visible="false">
+	        <h1>Progress</h1>
+			<p>N2CMS is processing the requested action.</p>
+	        <p><asp:Literal runat="server" ID="lblProgress" Text="Percent complete" /></p>
+			<p><asp:Button runat="server" OnClick="RefreshProgress" Text="Refresh progress"/></p>
+		</n2:TabPanel>
+		<n2:TabPanel ID="TabPanel1" ToolTip="Upgrade" runat="server">
 			<h1>Upgrade database from <%= Checker.Status.DatabaseVersion %> to <%= N2.Edit.Installation.DatabaseStatus.RequiredDatabaseVersion%></h1>
 			
 			<% if (Checker.Status.NeedsUpgrade){ %>

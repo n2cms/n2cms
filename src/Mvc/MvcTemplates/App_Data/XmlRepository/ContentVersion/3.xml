@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-16"?><ContentVersion xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><ID>3</ID><VersionIndex>1</VersionIndex><Title>test2!</Title><Master><ID>10</ID></Master><State>Unpublished</State><Published>2014-05-06T22:28:53.9014824+02:00</Published><FuturePublish xsi:nil="true" /><Expired>2014-05-06T22:49:33.1557999+02:00</Expired><Saved>2014-05-06T22:49:33.1298+02:00</Saved><SavedBy>admin</SavedBy><ItemCount>1</ItemCount><VersionDataXml>&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;n2 version="2.6.3.0" exportVersion="2" exportDate="05/06/2014 20:49:33"&gt;
+  &lt;item id="0" name="test2" title="test2!" zoneName="" templateKey="" state="32" created="05/06/2014 20:28:46" updated="05/06/2014 20:49:32" published="05/06/2014 20:28:40" expires="" sortOrder="0" url="/test2?n2versionIndex=1" visible="True" savedBy="admin" typeName="N2.Templates.Mvc.Models.Pages.TextPage, N2.Templates.Mvc" discriminator="TextPage" versionIndex="1" ancestralTrail="/" alteredPermissions="0" childState="0" versionOf="10"&gt;
+    &lt;details&gt;
+      &lt;detail name="Text" typeName="System.String, mscorlib" meta="" encoded="True"&gt;&lt;![CDATA[&amp;lt;p&amp;gt;test2!&amp;lt;/p&amp;gt;
+]]&gt;&lt;/detail&gt;
+      &lt;detail name="HeadTitle" typeName="System.String, mscorlib" meta="" /&gt;
+      &lt;detail name="MetaKeywords" typeName="System.String, mscorlib" meta="" /&gt;
+      &lt;detail name="MetaDescription" typeName="System.String, mscorlib" meta="" /&gt;
+      &lt;detail name="ParentID" typeName="System.Int32, mscorlib" meta=""&gt;2&lt;/detail&gt;
+      &lt;detail name="VersionKey" typeName="System.String, mscorlib" meta="" encoded="True"&gt;&lt;![CDATA[7ef19a97-9612-4831-ae79-f610554df9ad]]&gt;&lt;/detail&gt;
+    &lt;/details&gt;
+    &lt;detailCollections /&gt;
+    &lt;children /&gt;
+    &lt;authorizations /&gt;
+    &lt;properties&gt;
+      &lt;property name="Syndicate" typeName="System.Boolean, mscorlib"&gt;False&lt;/property&gt;
+      &lt;property name="Summary" typeName="System.String, mscorlib"&gt;&lt;![CDATA[test2!]]&gt;&lt;/property&gt;
+    &lt;/properties&gt;
+  &lt;/item&gt;
+&lt;/n2&gt;</VersionDataXml></ContentVersion>

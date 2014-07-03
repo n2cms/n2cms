@@ -136,7 +136,7 @@
     <value>Save these changes without publishing them. You can publish in future.</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Close</value>
   </data>
   <data name="hlCancel.ToolTip" xml:space="preserve">
     <value />
@@ -202,7 +202,7 @@
     <value>When</value>
   </data>
   <data name="hlCancelSavePublishInFuture.Text" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Close</value>
   </data>
   <data name="ppPermitted.Text" xml:space="preserve">
     <value>You do not have sufficient permissions.</value>
