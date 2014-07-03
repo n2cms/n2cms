@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Caching;
 using System.Web.UI.WebControls;
 using N2.Edit.Installation;
 using N2.Management.Installation;
@@ -35,18 +38,28 @@ namespace N2.Edit.Install
 
             base.OnInit(e);
 
-            foreach(var m in Migrator.GetAllMigrations())
+			// TODO: cache the applicability checks
+
+            foreach(var m in GetAllMigrations())
             {
-                cblMigrations.Items.Add(new ListItem(m.Title, m.GetType().Name) { Selected = m.TryApplicable(Checker.Status) ?? true });
+				cblMigrations.Items.Add(new ListItem(m.Title, m.GetType().Name) { Selected = true /* m.TryApplicable(Checker.Status) ?? true */ });
             }
         }
 
-        protected void btnInstallAndMigrate_Click(object sender, EventArgs e)
+	    private IEnumerable<AbstractMigration> GetAllMigrations()
+	    {
+		    Object o = Cache["AllMigrations"];
+		    if (o != null && o is IEnumerable<AbstractMigration>)
+			    return (IEnumerable<AbstractMigration>) o;
+			var m = Migrator.GetAllMigrations();
+		    Cache.Add("AllMigrations", m, null, Cache.NoAbsoluteExpiration, new TimeSpan(0, 0, 5, 0), CacheItemPriority.High,
+			    null);
+			return m;
+		}
+
+	    protected void btnInstallAndMigrate_Click(object sender, EventArgs e)
         {
-            ExecuteWithErrorHandling(() =>
-                {
-                    ShowResults(Migrator.UpgradeAndMigrate());
-                });
+            ExecuteWithErrorHandling(() => ShowResults(Migrator.UpgradeAndMigrate()));
             Checker.Status = null;
             Installer.UpdateStatus(Checker.Status.Level);
         }
@@ -54,15 +67,82 @@ namespace N2.Edit.Install
         protected void btnMigrate_Click(object sender, EventArgs e)
         {
             ExecuteWithErrorHandling(() =>
-                {
-                    var results = Migrator.GetAllMigrations()
-                        .Where(m => cblMigrations.Items.FindByValue(m.GetType().Name).Selected)
-                        .Select(m => m.Migrate(Checker.Status))
-                        .ToList();
-                    ShowResults(results);
+            {
+	            var results = new List<MigrationResult>();
+				foreach (var m in GetAllMigrations())
+				{
+					if (cblMigrations.Items.FindByValue(m.GetType().Name).Selected)
+					{
+						Session["InstallProgress"] = "Running migration: " + m.Title;
+						results.Add(m.Migrate(Checker.Status));
+					}
+				}
+                ShowResults(results);
                 });
             Checker.Status = null;
         }
+
+        protected void btnInstall_Click(object sender, EventArgs e)
+        {
+            ExecuteWithErrorHandling(Installer.Upgrade);
+	        Checker.Status = null;
+        }
+
+	    protected void ShowProgress()
+	    {
+		    TabPanel1.Visible = false;
+		    tpProgress.Visible = true;
+		    lblProgress.Text = (string)Session["InstallProgress"] ?? "null";
+	    }
+
+	    protected void HideProgress()
+	    {
+		    TabPanel1.Visible = true;
+		    tpProgress.Visible = false;
+			errorLabel.Text = FormatException((Exception)Session["InstallException"]);
+			errorLabel.Visible = true;
+
+			Checker.Status = null;
+			Installer.UpdateStatus(Checker.Status.Level);
+	    }
+
+	    protected void RefreshProgress(object sender, EventArgs e)
+		{
+			Checker.Status = null;
+			Installer.UpdateStatus(Checker.Status.Level);
+		}
+
+		protected void ExecuteWithErrorHandling(Action action)
+		{
+			ShowProgress();
+			if (Cache["busy"] != null)
+			{
+				HideProgress();
+				errorLabel.Text = "A maintenance operation is already in progress.";
+				errorLabel.Visible = true;
+				return;
+			}
+			Session["InstallProgress"] = "Waiting for migration to start";
+			Cache.Add("busy", "busy", null, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
+			ThreadPool.QueueUserWorkItem((obj) =>
+			{
+				try
+				{
+					Cache["InstallProgress"] = "Preparing to migrate";
+					action();
+				}
+				catch (Exception ex)
+				{
+					Session["InstallException"] = ex;
+				}
+				finally
+				{
+					Cache.Remove("busy");
+				}
+				HideProgress();
+				Session.Remove("InstallProgress");
+			});
+		}
 
         private void ShowResults(IEnumerable<MigrationResult> results)
         {
@@ -88,12 +168,6 @@ namespace N2.Edit.Install
             errorLabel.Visible = !string.IsNullOrEmpty(errorLabel.Text);
         }
 
-        protected void btnInstall_Click(object sender, EventArgs e)
-        {
-            ExecuteWithErrorHandling(Installer.Upgrade);
-            Checker.Status = null;
-            Installer.UpdateStatus(Checker.Status.Level);
-        }
 
         protected void btnExportSchema_Click(object sender, EventArgs e)
         {
@@ -105,28 +179,12 @@ namespace N2.Edit.Install
             Response.End();
         }
 
-
-
-        protected Exception ExecuteWithErrorHandling(Action action)
-        {
-            try
-            {
-                action();
-                return null;
-            }
-            catch (Exception ex)
-            {
-                errorLabel.Text = FormatException(ex);
-                errorLabel.Visible = true;
-                return ex;
-            }
-        }
-
         private static string FormatException(Exception ex)
         {
             if (ex == null)
                 return "Unknown error";
             return "<b>" + ex.Message + "</b>" + ex.StackTrace;
         }
+
     }
 }
