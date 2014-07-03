@@ -192,7 +192,7 @@ namespace N2.Persistence.Xml
 
         public override string ExportSchema()
         {
-            return "[No schema required; installing will delete existing content]";
+			return "[No schema required; installing will delete existing content]";
         }
 
         public override void ExportSchema(System.IO.TextWriter output)
@@ -202,7 +202,7 @@ namespace N2.Persistence.Xml
 
         public override string ExportUpgradeSchema()
         {
-            throw new NotImplementedException();
+			return "[No schema required for xml repository]";
         }
     }
 }

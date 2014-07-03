@@ -32,7 +32,8 @@ namespace Management.N2.Content.LinkTracker
 
         public override bool IsApplicable(DatabaseStatus status)
         {
-            return status.DatabaseVersion < 7 || repository.Find(new Parameter("Name", Tracker.LinkDetailName)).Any();
+            return status.DatabaseVersion < 7 
+				|| repository.Count(new Parameter("Name", Tracker.LinkDetailName).Detail()) > 0;
         }
 
         public override MigrationResult Migrate(DatabaseStatus preSchemaUpdateStatus)
