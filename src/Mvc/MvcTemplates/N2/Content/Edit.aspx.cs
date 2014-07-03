@@ -21,7 +21,7 @@ namespace N2.Edit
 	[NavigationLinkPlugin("Edit", "edit", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 20,
 		GlobalResourceClassName = "Navigation",
 		RequiredPermission = Permission.Write,
-		IconClass = "n2-icon-edit-sign",
+		IconClass = "fa fa-pencil-square",
 		Legacy = true)]
 	[ToolbarPlugin("EDIT", "edit", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 50, ToolTip = "edit",
 		GlobalResourceClassName = "Toolbar",
@@ -31,14 +31,14 @@ namespace N2.Edit
 	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}&n2versionIndex={Selected.VersionIndex}", "Edit page", 50, ControlPanelState.Visible | ControlPanelState.DragDrop,
 		CssClass = "complementary",
 		RequiredPermission = Permission.Write,
-		IconClass = "n2-icon-edit-sign")]
+		IconClass = "fa fa-pencil-square")]
 	[ControlPanelPreviewPublish("Publish draft", 70,
 		RequiredPermission = Permission.Publish)]
 	[ControlPanelEditingSave("Save changes", 10,
 		RequiredPermission = Permission.Write)]
 	[ControlPanelLink("cpEditingCancel", "{ManagementUrl}/Resources/icons/cancel.png", "{Selected.Url}", "Cancel changes", 20, ControlPanelState.Editing,
 		UrlEncode = false,
-		IconClass = "n2-icon-check-minus")]
+		IconClass = "fa fa-check-minus")]
 	[N2.Management.Activity.ActivityNotification]
 	public partial class Edit : EditPage, IItemEditor
 	{

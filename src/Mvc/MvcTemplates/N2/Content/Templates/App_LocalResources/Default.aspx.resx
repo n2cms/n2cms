@@ -124,7 +124,7 @@
     <value>Delete</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Close</value>
   </data>
   <data name="LabelResource1.Text" xml:space="preserve">
     <value>Add the selected page as template on the 'Add template' tab.</value>

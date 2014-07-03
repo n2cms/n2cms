@@ -198,7 +198,7 @@ namespace N2.Web.UI.WebControls
                 var toggle = CreateControl(btnGroup, "a", "btn dropdown-toggle");
                 toggle.Attributes["data-toggle"] = "dropdown";
                 toggle.Attributes["href"] = "#";
-                toggle.InnerHtml = "<b class='n2-icon-plus-sign'></b> " + (Utility.GetLocalResourceString("Add") ?? "Add") + " <b class='caret'></b>";
+                toggle.InnerHtml = "<b class='fa fa-plus-circle'></b> " + (Utility.GetLocalResourceString("Add") ?? "Add") + " <b class='caret'></b>";
 
                 var dropdownMenu = CreateControl(btnGroup, "ul", "dropdown-menu");
 

@@ -13,15 +13,6 @@ namespace N2.Edit {
     public partial class Edit {
         
         /// <summary>
-        /// om control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::N2.Web.UI.WebControls.OptionsMenu om;
-        
-        /// <summary>
         /// btnSavePublish control.
         /// </summary>
         /// <remarks>

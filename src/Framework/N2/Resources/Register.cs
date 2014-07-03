@@ -43,7 +43,7 @@ namespace N2.Resources
 		//public const string DefaultBootstrapResponsiveCssPath = DefaultBootstrapRoot + "css/bootstrap-responsive.min.css";
 		//public const string DefaultBootstrapCssPath = DefaultBootstrapRoot + "css/bootstrap.min.css";
         public const string DefaultFancyboxPath = "{ManagementUrl}/Resources/fancybox/";
-        public const string DefaultIconsCssPath = "{ManagementUrl}/Resources/font-awesome/css/font-awesome.min.css";
+        public const string DefaultIconsCssPath = "{ManagementUrl}/Resources/font-awesome-4.1.0/css/font-awesome.min.css";
         public const string DefaultFlagsCssPath = "{ManagementUrl}/Resources/icons/flags.css";
         
         /// <summary>Path to jQuery.</summary>

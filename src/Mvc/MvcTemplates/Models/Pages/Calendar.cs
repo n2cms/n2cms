@@ -10,7 +10,7 @@ namespace N2.Templates.Mvc.Models.Pages
     [PageDefinition("Calendar", 
         Description = "A list of recent events.",
         SortOrder = 120,
-        IconClass = "n2-icon-calendar")]
+        IconClass = "fa fa-calendar")]
     [RestrictParents(typeof (IStructuralPage))]
     [SortChildren(SortBy.Expression, SortExpression = "EventDate")]
     public class Calendar : ContentPageBase

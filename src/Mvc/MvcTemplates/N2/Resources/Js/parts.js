@@ -118,7 +118,7 @@
 					if ($(this).closest("a").length > 0)
 						$(this).click(function (e) { e.preventDefault(); e.stopPropagation(); });
 				});
-				$("<a class='editor n2-icon-pencil' href='" + url + "'></a>").appendTo(this);
+				$("<a class='editor fa fa-pencil' href='" + url + "'></a>").appendTo(this);
 			});
 		},
 		scroll: function () {

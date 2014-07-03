@@ -8,7 +8,7 @@
 	<asp:HyperLink ID="hlCrop" NavigateUrl="Crop.aspx" CssClass="command crop iconed" runat="server" meta:resourceKey="hlCrop">Crop</asp:HyperLink>
 	<asp:LinkButton ID="btnSave" runat="server" Text="Save" CssClass="command" OnCommand="OnSaveCommand" Visible="false" meta:resourceKey="btnSave" />
 	<asp:LinkButton ID="btnEdit" runat="server" Text="Edit" CssClass="command" OnCommand="OnEditCommand" Visible="false" meta:resourceKey="btnEdit" />
-	<asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" CssClass="command cancel" OnCommand="OnCancelCommand" Visible="false" meta:resourceKey="btnCancel" />
+	<asp:LinkButton ID="btnCancel" runat="server" Text="Close" CssClass="command cancel" OnCommand="OnCancelCommand" Visible="false" meta:resourceKey="btnCancel" />
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" runat="server">
 	<h1><% foreach (N2.ContentItem node in Ancestors) { %>/<a href="<%= Url.Parse(node is N2.Definitions.IFileSystemDirectory ? "Directory.aspx" : "File.aspx").AppendSelection(node) %>"><%= node.Title %></a><% } %></h1>

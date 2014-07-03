@@ -213,12 +213,12 @@ namespace N2.Details
 
             if (string.IsNullOrEmpty(text))
             {
-                b.Attributes["class"] = "help help-tooltip n2-icon-question-sign";
+                b.Attributes["class"] = "help help-tooltip fa fa-question-circle";
                 b.Attributes["data-toggle"] = "tooltip";
             }
             else
             {
-                b.Attributes["class"] = "help help-popover n2-icon-question-sign";
+                b.Attributes["class"] = "help help-popover fa fa-question-circle";
                 b.Attributes["data-toggle"] = "popover";
                 b.Attributes["data-content"] = text;
             }

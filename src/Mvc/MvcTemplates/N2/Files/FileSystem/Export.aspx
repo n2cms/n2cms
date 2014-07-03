@@ -6,7 +6,7 @@
 </asp:Content>
 
 <asp:Content ID="CT" ContentPlaceHolderID="Toolbar" runat="server">
-    <edit:CancelLink ID="hlCancel" runat="server">Cancel</edit:CancelLink>
+    <edit:CancelLink ID="hlCancel" runat="server">Close</edit:CancelLink>
 </asp:Content>
 
 <asp:Content ID="CC" ContentPlaceHolderID="Content" runat="server">

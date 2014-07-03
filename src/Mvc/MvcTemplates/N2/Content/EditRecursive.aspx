@@ -18,4 +18,19 @@
 
 		<asp:PlaceHolder ID="phAncestors" runat="server" />
 	</edit:PermissionPanel>
+
+    <script type="text/javascript">
+			$(document).ready(function () {
+
+			// info
+				$(".help-tooltip").tooltip({ });
+				$(".help-popover").each(function () {
+					var title = $(this).attr("title");
+					var content = $(this).attr("data-content");
+					$(this).attr("title", "");
+					$(this).tooltip({ html: true, title: "<h6>" + title + "</h6><p>" + content + "</p>" });
+				});
+			});
+
+		</script>
 </asp:Content>

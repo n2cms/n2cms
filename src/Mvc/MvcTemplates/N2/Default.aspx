@@ -23,7 +23,7 @@
 	<link href="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.TwitterBootstrapCssPath) %>" rel="stylesheet" />
 	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.TwitterBootstrapJsPath) %>"></script>
 
-	<link rel="stylesheet" href="Resources/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="Resources/font-awesome-4.1.0/css/font-awesome.min.css">
 
 	<script src="Resources/angular-ui-0.4.0/angular-ui.min.js"></script>
 	<link href="Resources/angular-ui-0.4.0/angular-ui.min.css" rel="stylesheet" />

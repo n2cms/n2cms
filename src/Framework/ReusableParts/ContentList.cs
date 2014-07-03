@@ -87,7 +87,7 @@ namespace N2.Web
         Expiration = 2
     }
 
-    [PartDefinition("ContentContainer Link", IconClass = "n2-icon-link n2-blue")]
+    [PartDefinition("ContentContainer Link", IconClass = "fa fa-link n2-blue")]
     [RestrictParents(typeof (ContentList))]
     public class ContentListContainerLink : ContentItem, Definitions.IPart
     {
@@ -118,7 +118,7 @@ namespace N2.Web
     [PartDefinition("Content List",
         Description = "A list of pages that can be displayed in a column.",
         SortOrder = 160,
-        IconClass = "n2-icon-list-ul n2-blue")]
+        IconClass = "fa fa-list-ul n2-blue")]
     [WithEditableTitle("Title", 10, Required = false)]
     [AvailableZone("Sources", "Sources")]
     [RestrictChildren(typeof(ContentListContainerLink))]

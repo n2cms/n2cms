@@ -151,7 +151,7 @@
 							<xs:element name="resources" minOccurs="0">
 								<xs:complexType>
 									<xs:attribute name="debug" type="xs:boolean" use="optional" default="false" />
-									<xs:attribute name="angularFolderPath" type="xs:string" use="optional" />
+									<xs:attribute name="angularRoot" type="xs:string" use="optional" />
 									<xs:attribute name="twitterBootstrapRoot" type="xs:string" use="optional" />
 									<xs:attribute name="jQueryPath" type="xs:string" use="optional" />
 									<xs:attribute name="jQueryUiPath" type="xs:string" use="optional" />

@@ -8,18 +8,40 @@
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
-		<div class="rightAligned">
-	 <%--onclick="$(document.body).toggleClass('rightExpanded');"--%>
-		<asp:PlaceHolder runat="server" ID="phPluginArea" />
-		</div>
-		<n2:OptionsMenu id="om" runat="server">
-		<asp:LinkButton ID="btnSavePublish" data-icon-class="n2-icon-play-sign" OnCommand="OnPublishCommand" runat="server" CssClass="command iconed publish" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
-		<asp:LinkButton ID="btnPreview" data-icon-class="n2-icon-eye-open" OnCommand="OnPreviewCommand" runat="server" CssClass="command plain iconed preview" meta:resourceKey="btnPreview">Save and preview</asp:LinkButton>
-		<asp:LinkButton ID="btnSaveUnpublished" data-icon-class="n2-icon-save" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain iconed save" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
-				<asp:HyperLink ID="hlFuturePublish" data-icon-class="n2-icon-time" NavigateUrl="#futurePanel" CssClass="command plain iconed future hidden-action" runat="server" meta:resourceKey="hlSavePublishInFuture">Save and publish version in future</asp:HyperLink>
-		<asp:LinkButton ID="btnUnpublish" data-icon-class="n2-icon-stop" OnCommand="OnUnpublishCommand" runat="server" CssClass="command plain iconed unpublish hidden-action" meta:resourceKey="btnUnpublish">Unpublish</asp:LinkButton>
-		</n2:OptionsMenu>
-		<asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
+	<ul class="nav">
+		<li class="dropdown splitbutton">
+			<asp:LinkButton ID="btnSavePublish" data-icon-class="fa fa-play-circle" 
+				OnCommand="OnPublishCommand" runat="server" 
+				CssClass="command iconed publish" 
+				meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+			<ul class="dropdown-menu">
+				<li>
+					<asp:LinkButton ID="btnPreview" data-icon-class="fa fa-eye" OnCommand="OnPreviewCommand" runat="server" CssClass="command plain iconed preview"
+						meta:resourceKey="btnPreview">Save and preview</asp:LinkButton>
+				</li>
+				<li>
+					<asp:LinkButton ID="btnSaveUnpublished" data-icon-class="fa fa-save" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain iconed save" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
+				</li>
+				<li>
+					<asp:HyperLink ID="hlFuturePublish" data-icon-class="fa fa-clock-o" NavigateUrl="#futurePanel" CssClass="command plain iconed future hidden-action" runat="server" meta:resourceKey="hlSavePublishInFuture">Save and publish version in future</asp:HyperLink>
+				</li>
+				<li>
+					<asp:LinkButton ID="btnUnpublish" data-icon-class="fa fa-stop" OnCommand="OnUnpublishCommand" runat="server" CssClass="command plain iconed unpublish hidden-action" meta:resourceKey="btnUnpublish">Unpublish</asp:LinkButton>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Close</asp:HyperLink>
+		</li>
+	</ul>
+
+	<ul class="nav pull-right">
+		<li>
+			<asp:PlaceHolder runat="server" ID="phPluginArea" />
+		</li>
+	</ul>
+
 </asp:Content>
 <asp:Content ID="co" ContentPlaceHolderID="Outside" runat="server">
 	<uc1:ItemInfo id="ucInfo" runat="server" />
@@ -50,7 +72,7 @@
 		<div id="futurePanel" class="popup">
 				<n2:DatePicker Label-Text="When" ID="dpFuturePublishDate" runat="server" meta:resourceKey="dpFuturePublishDate" />
 				<asp:Button ID="btnSavePublishInFuture" Text="OK" OnCommand="OnSaveFuturePublishCommand" CssClass="ok" runat="server" meta:resourceKey="btnSavePublishInFuture" />
-				<asp:HyperLink ID="hlCancelSavePublishInFuture" NavigateUrl="javascript:void(0);" runat="server" CssClass="cancel" meta:resourceKey="hlCancelSavePublishInFuture">Cancel</asp:HyperLink>
+				<asp:HyperLink ID="hlCancelSavePublishInFuture" NavigateUrl="javascript:void(0);" runat="server" CssClass="cancel" meta:resourceKey="hlCancelSavePublishInFuture">Close</asp:HyperLink>
 		</div>
 
 		<n2:ItemEditor ID="ie" runat="server" />

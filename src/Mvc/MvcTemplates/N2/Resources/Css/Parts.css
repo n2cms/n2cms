@@ -101,12 +101,12 @@
 		text-indent:-2000px;
 		position:absolute; 
 		border: 16px solid transparent;
-		top:0;
-		bottom:0;
+		height:1px;
 	}
 	.sc .sc-toggler.open {
 		border-left-color: #18a0de;
 		right:-16px;
+		bottom:0;
 	}
 	.sc .sc-toggler.open:hover {
 		border-left-color: #74c6eb;
@@ -114,6 +114,7 @@
 	.sc .sc-toggler.close {
 		border-right-color: #18a0de;
 		right:0;
+		top:0;
 	}
 	.sc .sc-toggler.close:hover {
 		border-right-color: #74c6eb;

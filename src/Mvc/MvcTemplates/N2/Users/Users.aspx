@@ -1,9 +1,11 @@
 ﻿<%@ Page Language="C#" MasterPageFile="../Content/Framed.Master" AutoEventWireup="true" CodeBehind="Users.aspx.cs" Inherits="N2.Edit.Membership.Users" Title="Users" meta:resourcekey="PageResource1" %>
 <asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
 </asp:Content>
+<asp:Content ContentPlaceHolderID="Toolbar" runat="server">
+	<asp:HyperLink runat="server" NavigateUrl="New.aspx" meta:resourcekey="HyperLinkResource1">New user</asp:HyperLink>
+</asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
-	<asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="New.aspx" CssClass="btn" meta:resourcekey="HyperLinkResource1">new</asp:HyperLink>
-
+	
 	<asp:GridView ID="dgrUsers" runat="server" DataSourceID="odsUsers" AllowPaging="True"
 		AutoGenerateColumns="False" UseAccessibleHeader="True" OnRowDeleting="dgrUsers_OnRowDeleting"
 		DataKeyNames="UserName" BorderWidth="0px"

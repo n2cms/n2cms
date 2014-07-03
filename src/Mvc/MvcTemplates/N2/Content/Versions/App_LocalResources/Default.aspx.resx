@@ -127,7 +127,7 @@
     <value>Expired</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>Back</value>
+    <value>Close</value>
   </data>
   <data name="published.HeaderText" xml:space="preserve">
     <value>Published</value>

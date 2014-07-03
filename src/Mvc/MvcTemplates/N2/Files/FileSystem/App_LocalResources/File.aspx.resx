@@ -127,6 +127,6 @@
     <value>Save</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Close</value>
   </data>
 </root>
