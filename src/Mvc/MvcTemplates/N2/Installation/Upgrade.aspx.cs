@@ -7,47 +7,56 @@ using System.Threading.Tasks;
 using System.Web.Caching;
 using System.Web.UI.WebControls;
 using N2.Edit.Installation;
+using N2.Management.Content;
 using N2.Management.Installation;
 using N2.Engine;
+using N2.Plugin.Scheduling;
 
 namespace N2.Edit.Install
 {
+
     public partial class Upgrade : System.Web.UI.Page
     {
-        protected IEngine Engine
-        {
-            get { return N2.Context.Current; }
-        }
+        protected IEngine Engine { get { return N2.Context.Current; } }
+        protected InstallationManager Installer{ get { return Engine.Resolve<InstallationManager>(); } }
+        protected MigrationEngine Migrator { get { return Engine.Resolve<MigrationEngine>(); } }
+        protected InstallationChecker Checker { get { return Engine.Resolve<InstallationChecker>(); } }
 
-        protected InstallationManager Installer
-        {
-            get { return Engine.Resolve<InstallationManager>(); }
-        }
-        protected MigrationEngine Migrator
-        {
-            get { return Engine.Resolve<MigrationEngine>(); }
-        }
-        protected InstallationChecker Checker
-        {
-            get { return Engine.Resolve<InstallationChecker>(); }
-        }
+	    protected Action CurrentAction
+	    {
+		    get { return (Action) Session["CurrentAction"]; }
+		    set { Session["CurrentAction"] = value; }
+	    }
 
-        protected override void OnInit(EventArgs e)
+	    protected String CurrentActionProgress
+	    {
+			get { return (String)Session["UpgradeEngineProgress"]; }
+			set { Session["UpgradeEngineProgress"] = value; }
+	    }
+
+	    protected override void OnInit(EventArgs e)
         {
             InstallationUtility.CheckInstallationAllowed(Context);
-
             base.OnInit(e);
-
-			// TODO: cache the applicability checks
-
             foreach(var m in GetAllMigrations())
-            {
-				cblMigrations.Items.Add(new ListItem(m.Title, m.GetType().Name) { Selected = true /* m.TryApplicable(Checker.Status) ?? true */ });
-            }
+				cblMigrations.Items.Add(new ListItem(m.Title, m.GetType().Name) { Selected = m.TryApplicable(Checker.Status) ?? true });
         }
+
+	    protected override void OnLoad(EventArgs e)
+	    {
+		    base.OnLoad(e);
+		    if (CurrentAction != null)
+				ShowProgress();
+			else 
+				HideProgress();
+	    }
 
 	    private IEnumerable<AbstractMigration> GetAllMigrations()
 	    {
+		    return Migrator.GetAllMigrations();
+
+			/* cache migrations currently disabled ***
+			
 		    Object o = Cache["AllMigrations"];
 		    if (o != null && o is IEnumerable<AbstractMigration>)
 			    return (IEnumerable<AbstractMigration>) o;
@@ -55,6 +64,8 @@ namespace N2.Edit.Install
 		    Cache.Add("AllMigrations", m, null, Cache.NoAbsoluteExpiration, new TimeSpan(0, 0, 5, 0), CacheItemPriority.High,
 			    null);
 			return m;
+			
+			*/
 		}
 
 	    protected void btnInstallAndMigrate_Click(object sender, EventArgs e)
@@ -69,15 +80,13 @@ namespace N2.Edit.Install
             ExecuteWithErrorHandling(() =>
             {
 	            var results = new List<MigrationResult>();
-				foreach (var m in GetAllMigrations())
-				{
-					if (cblMigrations.Items.FindByValue(m.GetType().Name).Selected)
-					{
-						Session["InstallProgress"] = "Running migration: " + m.Title;
-						results.Add(m.Migrate(Checker.Status));
-					}
-				}
-                ShowResults(results);
+	            foreach (var m in GetAllMigrations())
+		            if (cblMigrations.Items.FindByValue(m.GetType().Name).Selected)
+		            {
+			            CurrentActionProgress = "Running migration: " + m.Title;
+			            results.Add(m.Migrate(Checker.Status));
+		            }
+	            ShowResults(results);
                 });
             Checker.Status = null;
         }
@@ -92,7 +101,10 @@ namespace N2.Edit.Install
 	    {
 		    TabPanel1.Visible = false;
 		    tpProgress.Visible = true;
-		    lblProgress.Text = (string)Session["InstallProgress"] ?? "null";
+		    if (CurrentAction != null)
+			    lblProgress.Text = CurrentActionProgress ?? "(no status)";
+		    else
+			    lblProgress.Text = "(null upgrade action)";
 	    }
 
 	    protected void HideProgress()
@@ -108,39 +120,38 @@ namespace N2.Edit.Install
 
 	    protected void RefreshProgress(object sender, EventArgs e)
 		{
-			Checker.Status = null;
-			Installer.UpdateStatus(Checker.Status.Level);
 		}
 
 		protected void ExecuteWithErrorHandling(Action action)
 		{
-			ShowProgress();
-			if (Cache["busy"] != null)
+			if (CurrentAction != null)
 			{
 				HideProgress();
 				errorLabel.Text = "A maintenance operation is already in progress.";
 				errorLabel.Visible = true;
 				return;
 			}
-			Session["InstallProgress"] = "Waiting for migration to start";
-			Cache.Add("busy", "busy", null, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
+
+			CurrentAction = action;
+			CurrentActionProgress = "Preparing to run the action: " + CurrentAction.ToString();
+			ShowProgress();
 			ThreadPool.QueueUserWorkItem((obj) =>
 			{
 				try
 				{
-					Cache["InstallProgress"] = "Preparing to migrate";
+					CurrentActionProgress = "Initializing";
 					action();
+					CurrentActionProgress = "Completed";
 				}
 				catch (Exception ex)
 				{
-					Session["InstallException"] = ex;
+					CurrentActionProgress = FormatException(ex);
 				}
 				finally
 				{
-					Cache.Remove("busy");
+					CurrentAction = null;
+					HideProgress();
 				}
-				HideProgress();
-				Session.Remove("InstallProgress");
 			});
 		}
 
@@ -164,7 +175,8 @@ namespace N2.Edit.Install
             }
             lblResult.Text += "</ul>";
 
-            errorLabel.Text = errorText.ToString();
+			HideProgress();
+			errorLabel.Text = errorText.ToString();
             errorLabel.Visible = !string.IsNullOrEmpty(errorLabel.Text);
         }
 
