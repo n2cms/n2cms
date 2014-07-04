@@ -24,7 +24,7 @@ namespace N2.Templates.Mvc.Upgrade
         {
             try
             {
-                return persister.Repository.Find(new Parameter("class", "Redirect")).Where(p => p.Parent is Models.Pages.LanguageRoot).Any();
+                return persister.Repository.Find(new Parameter("class", "Redirect")).Any(p => p.Parent is Models.Pages.LanguageRoot);
             }
             catch (Exception)
             {
@@ -34,11 +34,10 @@ namespace N2.Templates.Mvc.Upgrade
 
         public override MigrationResult Migrate(DatabaseStatus preSchemaUpdateStatus)
         {
-            var redirects = persister.Repository.Find(new Parameter("class", "Redirect")).Where(p => p.Parent is Models.Pages.LanguageRoot).ToList();
             using (var tx = persister.Repository.BeginTransaction())
             {
                 var result = new MigrationResult(this); ;
-                foreach (var redirect in redirects)
+				foreach (var redirect in persister.Repository.Find(new Parameter("class", "Redirect")).Where(p => p.Parent is Models.Pages.LanguageRoot))
                 {
                     persister.Delete(redirect);
                     result.UpdatedItems++;

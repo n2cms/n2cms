@@ -21,10 +21,10 @@ namespace N2.Web
         /// Uses the provided template name instead of the class name to
         /// find the template's location.
         /// </summary>
-        /// <param name="otherTemlpateName">The name used to find the template.</param>
-        public ConventionTemplateAttribute(string otherTemlpateName)
+        /// <param name="otherTemplateName">The name used to find the template.</param>
+        public ConventionTemplateAttribute(string otherTemplateName)
         {
-            this.otherTemplateName = otherTemlpateName;
+            this.otherTemplateName = otherTemplateName;
         }
 
         #region IPathFinder Members

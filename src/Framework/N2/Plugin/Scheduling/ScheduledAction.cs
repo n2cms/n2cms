@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Security.Permissions;
 using N2.Engine;
 using N2.Web;
 
@@ -23,7 +24,10 @@ namespace N2.Plugin.Scheduling
         public ScheduledAction()
         {
             Enabled = true;
+	        Id = Guid.NewGuid();
         }
+
+		public Guid Id { get; set; }
 
         /// <summary>When this setting is false the action is not executed.</summary>
         public bool Enabled { get; set; }
