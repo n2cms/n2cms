@@ -1019,10 +1019,25 @@ namespace N2.Web
 			if (string.IsNullOrEmpty(urlFormat))
 				return urlFormat;
 
-            //TODO: Use a nicer method for replacing tokens. Doesn't work if token values contain other tokens.
-			foreach (var kvp in replacements)
-				urlFormat = urlFormat.Replace(kvp.Key, kvp.Value);
-			return ToAbsolute(urlFormat);
+            //TODO: Use a nicer method for replacing tokens. 
+
+            int maxLevels = 10; // Does work if token values contain other tokens, replacement levels hard limited.
+            for (int level = 0; level < maxLevels; ++level)
+            {
+                bool changed = false;
+                foreach (var kvp in replacements)
+                {
+                    string replaced = urlFormat.Replace(kvp.Key, kvp.Value);
+                    if (replaced != urlFormat)
+                        changed = true;
+                    urlFormat = replaced;
+                }
+
+                if (!changed)
+                    break; // all resolved
+            }
+
+            return ToAbsolute(urlFormat);
 		}
 
 		/// <summary>Formsats this url using replacement tokens.</summary>
