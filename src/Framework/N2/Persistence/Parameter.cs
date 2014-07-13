@@ -47,6 +47,7 @@ namespace N2.Persistence
 
         public Comparison Comparison { get; set; }
 
+        /// <summary> Parameter mode (detail/property) </summary>
         public bool IsDetail { get; set; }
 
         public Parameter(string name, object value)
