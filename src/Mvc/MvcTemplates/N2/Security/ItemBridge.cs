@@ -42,8 +42,24 @@ namespace N2.Security
 
             Type configuredUserType = Type.GetType(config.Membership.UserType);
             if (configuredUserType == null) throw new ArgumentException("Couldn't create configured membership user type: " + config.Membership.UserType);
-            if (!typeof(User).IsAssignableFrom(configuredUserType)) throw new ArgumentException("Configured membership user type '" + config.Membership.UserType + "' doesn't derive from '" + typeof(User).AssemblyQualifiedName + "'");
-            this.userType = configuredUserType;
+            SetUserType(configuredUserType);
+        }
+
+        /// <summary>
+        /// Define N2 User type (application wide)
+        /// </summary>
+        /// <remarks>
+        /// User type shall be assignable to <see cref="User"/> basic user type.
+        /// User type defaults to <see cref="User"/> basic user type or type defined by N2 <see cref="MembershipElement.UserType"/> configuration parameter.
+        /// User type may be explicitly set at start of application, e.g. by custom account system that overrides configured type.
+        /// Limitations: All user records shall be exactly of a specified user type, any records of other user types may be ignored by Bridge.
+        ///              Data migration shall be planned when introducing new user type.
+        /// </remarks>
+        public void SetUserType(Type userType)
+        {
+            if (!typeof(User).IsAssignableFrom(userType))
+                throw new ArgumentException("Configured membership user type '" + userType.AssemblyQualifiedName + "' doesn't derive from '" + typeof(User).AssemblyQualifiedName + "'");
+            this.userType = userType;
         }
 
         public IContentItemRepository Repository
