@@ -66,7 +66,7 @@ namespace N2.Security.Items
                 parameters.Add(Parameter.Equal("Parent", parent));
             parameters.AddRange(new Parameter[] 
 	            {
-	                Parameter.TypeEqual(typeof(UserLoginInfo)),
+	                Parameter.TypeEqual(typeof(UserExternalLoginInfo)),
 	                Parameter.Equal("LoginProvider", loginProvider).Detail(true),
 	                Parameter.Equal("ProviderKey", providerKey).Detail(true)
 	            });
