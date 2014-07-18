@@ -8,7 +8,14 @@ using N2.Security;
 
 namespace N2.Edit.Security
 {
-    [ToolbarPlugin("PERM", "security", "{ManagementUrl}/Content/Security/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/key.png", 100, 
+    [ToolbarPlugin(
+		/* title */ "PERM", 
+		/* name */ "security", 
+		/* url format */ "{ManagementUrl}/Content/Security/Default.aspx?{Selection.SelectedQueryKey}={selected}", 
+		/* toolbar */ ToolbarArea.Preview, 
+		/* target */ Targets.Preview, 
+		/* icon */ "{ManagementUrl}/Resources/icons/key.png", 
+		/* sort */ 100,
         ToolTip = "allowed roles for selected item",
         GlobalResourceClassName = "Toolbar",
         RequiredPermission = Permission.Publish,
@@ -22,27 +29,28 @@ namespace N2.Edit.Security
         protected override void OnInit(EventArgs e)
         {
             InitValues();
-
             base.OnInit(e);
         }
 
         protected override void OnLoad(EventArgs e)
         {
             if(!IsPostBack)
-            {
                 DataBind();
-            }
-
+	        try
+	        {
+		        Page.Title += @": " + Selection.SelectedItem.Title;
+	        }
+	        catch
+	        {
+	        }
             base.OnLoad(e);
         }
 
         protected void rptPermissions_ItemCreated(object sender, RepeaterItemEventArgs args)
         {
-            if(args.Item.ItemType == ListItemType.Item || args.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                int roleIndex = ((RepeaterItem) ((Control) sender).Parent).ItemIndex;
-                map[args.Item.ItemIndex, roleIndex] = args.Item;
-            }
+	        if (args.Item.ItemType != ListItemType.Item && args.Item.ItemType != ListItemType.AlternatingItem) return;
+	        int roleIndex = ((RepeaterItem) ((Control) sender).Parent).ItemIndex;
+	        map[args.Item.ItemIndex, roleIndex] = args.Item;
         }
 
 
@@ -83,10 +91,9 @@ namespace N2.Edit.Security
         
         Permission[] GetAvailablePermissions()
         {
-            List<Permission> permissions = new List<Permission>();
-            permissions.Add(Permission.Read);
-            EditSection config = Engine.Resolve<EditSection>();
-            if (config.Editors.Dynamic)
+			var config = Engine.Resolve<EditSection>();
+			var permissions = new List<Permission> {Permission.Read};
+	        if (config.Editors.Dynamic)
                 permissions.Add(Permission.Write);
             if (config.Writers.Dynamic)
                 permissions.Add(Permission.Publish);
@@ -132,11 +139,10 @@ namespace N2.Edit.Security
             if (System.Web.Security.Roles.Enabled)
                 return System.Web.Security.Roles.GetAllRoles();
 
-            List<string> roles = new List<string>();
-            roles.Add(AuthorizedRole.Everyone);
-            if (Engine.SecurityManager is SecurityManager)
+            var roles = new List<string> {AuthorizedRole.Everyone};
+	        if (Engine.SecurityManager is SecurityManager)
             {
-                SecurityManager sm = Engine.SecurityManager as SecurityManager;
+                var sm = Engine.SecurityManager as SecurityManager;
                 roles.AddRange(sm.Writers.Roles);
                 roles.AddRange(sm.Editors.Roles);
                 roles.AddRange(sm.Administrators.Roles);
@@ -184,9 +190,7 @@ namespace N2.Edit.Security
                             cb.Checked = IsRolePermitted(role, permission);
                         
                         if (cb.Checked)
-                        {
                             checkedRoles.Add(role);
-                        }
                     }
                     DynamicPermissionMap.SetRoles(item, permission, checkedRoles.ToArray());
                 }
@@ -197,7 +201,8 @@ namespace N2.Edit.Security
 
         protected void cvSomethingSelected_ServerValidate(object source, ServerValidateEventArgs args)
         {
-            for (int i = 0; i < Permissions.Length; i++)
+			args.IsValid = true;
+			for (int i = 0; i < Permissions.Length; i++)
             {
                 if (IsDefaultChecked(i))
                     continue;
@@ -205,18 +210,19 @@ namespace N2.Edit.Security
                 bool anyoneChecked = false;
                 for (int j = 0; j < Roles.Length; j++)
                 {
-                    string role = Roles[j];
-                    CheckBox cb = (CheckBox) map[i, j].FindControl("cbRole");
-                    anyoneChecked |= cb.Checked;
+	                if (!((CheckBox) map[i, j].FindControl("cbRole")).Checked) 
+						continue; // not checked, move on to the next one
+
+					// checked- we're done with this row
+	                anyoneChecked = true;
+	                break;
                 }
 
-                if(!anyoneChecked)
-                {
-                    CustomValidator validator = ((CustomValidator)rptEveryone.Items[i].FindControl("cvMarker"));
-                    validator.IsValid = false;
+	            if (anyoneChecked) 
+					continue; // at least this row has 1 checkbox selected, we're OK
 
-                    args.IsValid = false;
-                }
+	            var validator = ((CustomValidator)rptEveryone.Items[i].FindControl("cvMarker"));
+	            validator.IsValid = args.IsValid = false;
             }
         }
 
