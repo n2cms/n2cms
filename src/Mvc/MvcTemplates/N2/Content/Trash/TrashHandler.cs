@@ -99,7 +99,7 @@ namespace N2.Edit.Trash
             }
             catch (PermissionDeniedException ex)
             {
-                throw new PermissionDeniedException("Permission denied while moving item to trash. Try disabling security checks using N2.Context.Security or preventing items from beeing moved to the trash with the [NonThrowable] attribute", ex);
+                throw new PermissionDeniedException("Permission denied while moving item to trash. Try disabling security checks using ISecurityManager.Disable or preventing items from beeing moved to the trash with the [NonThrowable] attribute", ex);
             }
 
             Invoke(ItemThrowed, new ItemEventArgs(item));

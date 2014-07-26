@@ -57,10 +57,9 @@ namespace N2.Edit.Versioning
             return ContentVersion.Deserialize(importer, parser, xml);
         }
 
-
         public IEnumerable<ContentVersion> GetVersions(ContentItem item)
         {
-            var versions = Repository.Find(Parameter.Equal("Master.ID", item.ID));
+            var versions = Repository.Find(Parameter.Equal("Master.ID", item.ID) as IParameter);
             return versions
                 .OrderByDescending(v => v.VersionIndex);
         }

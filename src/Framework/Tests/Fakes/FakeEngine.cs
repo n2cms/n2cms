@@ -9,8 +9,6 @@ using N2.Persistence;
 using N2.Security;
 using N2.Web;
 using N2.Plugin;
-using N2.Persistence.NH;
-using N2.Details;
 using N2.Persistence.Sources;
 using N2.Persistence.Proxying;
 
@@ -178,13 +176,24 @@ namespace N2.Tests.Fakes
 
         public class FakeServiceContainer : IServiceContainer
         {
-            Dictionary<Type, object> services = new Dictionary<Type, object>();
+            readonly Dictionary<Type, object> services = new Dictionary<Type, object>();
 
             #region IServiceContainer Members
 
             public void AddComponent(string key, Type serviceType, Type classType)
             {
-                services[serviceType] = Activator.CreateInstance(classType);
+                try
+                {
+                    services[serviceType] = Activator.CreateInstance(classType);
+                }
+                catch (Exception e)
+                {
+                    // the lack of constructor injection in this fake may cause unit tests to fail
+                    // at the time of container configuration, let's just emit warnings in this step
+                    // resolution will obviuosly fail when attempted
+                    Logger.Warn(string.Format("FakeServiceContainer cannot resolve {0} to {1} : {2}", 
+                        serviceType.FullName, classType.FullName, e.Message));
+                }
             }
 
             public void AddComponentInstance(string key, Type serviceType, object instance)
@@ -204,19 +213,19 @@ namespace N2.Tests.Fakes
 
             public T Resolve<T>() where T: class
             {
-                if(services.ContainsKey(typeof(T)) == false)
-                    throw new InvalidOperationException("No component for service " + typeof(T).Name + " registered");
-
-                return (T)services[typeof(T)];
+                return (T) Resolve(typeof (T));
             }
 
             public T Resolve<T>(string key) where T : class
             {
-                return (T)services[typeof(T)];
+                return (T) Resolve(typeof (T));
             }
 
             public object Resolve(Type type)
             {
+                if (services.ContainsKey(type) == false)
+                    throw new InvalidOperationException("No component for service " + type.Name + " registered");
+
                 return services[type];
             }
 
