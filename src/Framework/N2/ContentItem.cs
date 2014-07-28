@@ -912,14 +912,15 @@ namespace N2
 		{
 			foreach (ContentDetail detail in source.Details.Values)
 			{
+                ContentDetail clonedDetail = detail.Clone();
+                clonedDetail.EnclosingItem = destination;
+
 				if (destination.details.ContainsKey(detail.Name))
 				{
-					destination.details[detail.Name].Value = detail.Value;//.Value should behave polymorphically
+                    destination.details[detail.Name].Value = clonedDetail.Value;//.Value should behave polymorphically
 				}
 				else
 				{
-					ContentDetail clonedDetail = detail.Clone();
-					clonedDetail.EnclosingItem = destination;
 					destination.details[detail.Name] = clonedDetail;
 				}
 			}
