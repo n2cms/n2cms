@@ -986,6 +986,7 @@
     <Compile Include="N2\Myself\EditPassword.aspx.designer.cs">
       <DependentUpon>EditPassword.aspx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Security\Items\UserExternalLoginInfo.cs" />
     <Compile Include="N2\Web\FontHandler.cs" />
     <Compile Include="N2\Resources\IconHandler.ashx.cs">
       <DependentUpon>IconHandler.ashx</DependentUpon>
