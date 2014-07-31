@@ -71,7 +71,7 @@
 
 		<div id="futurePanel" class="popup">
 				<n2:DatePicker Label-Text="When" ID="dpFuturePublishDate" runat="server" meta:resourceKey="dpFuturePublishDate" />
-				<asp:Button ID="btnSavePublishInFuture" Text="OK" OnCommand="OnSaveFuturePublishCommand" CssClass="ok" runat="server" meta:resourceKey="btnSavePublishInFuture" />
+				<asp:Button ID="btnSavePublishInFuture" Text="OK" OnCommand="OnSaveFuturePublishCommand" CssClass="btn btn-primary ok" runat="server" meta:resourceKey="btnSavePublishInFuture" />
 				<asp:HyperLink ID="hlCancelSavePublishInFuture" NavigateUrl="javascript:void(0);" runat="server" CssClass="cancel" meta:resourceKey="hlCancelSavePublishInFuture">Close</asp:HyperLink>
 		</div>
 
@@ -82,18 +82,16 @@
 			$(document).ready(function () {
 				// future publish
 				$("#futurePanel").hide().click(function (e) { e.stopPropagation(); return false; });
-				$(".future").click(function (e) {
-					$("#futurePanel").css({ left: e.clientX + "px", top: e.clientY + "px" }).show();
+				$(".future").attr("href", "javascript:void(0)").click(function (e) {
+					$("#futurePanel").show().css({ left: (e.clientX - 10) + "px", top: (e.clientY - 80) + "px" });
 					$("#futurePanel input:first").focus();
-					e.preventDefault();
-					e.stopPropagation();
 				});
 
 				$("#futurePanel .cancel").click(function () {
 					$("#futurePanel").hide();
 				});
 				$(document.body).click(function (e) {
-					if ($(e.target).closest(".jCalendar").length == 0)
+					if ($(e.target).closest(".jCalendar,.future").length == 0)
 						$("#futurePanel").hide();
 				});
 
