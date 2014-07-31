@@ -109,21 +109,9 @@ namespace N2.Security
         {
             try
             {
-                /* TODO: resolve GetUsers(string,int,int) weakness
-                 *       a simple solution is to use SQL EQ operator instead of LIKE
-                 *       Note: case sensitivity depends on underlying database settings.
-                 *       
-                Items.UserList users = GetUserContainer(false);
-                if (users == null)
-                    return null;
-                var usersFixed = Repository.Find((Parameter.Equal("Parent", users) & Parameter.TypeEqual(userType.Name) & Parameter.Equal("Name", username))).OfType<User>().ToList();
-                if(usersFixed.Count > 1)
-                    throw ...  // this should never happen, username should be unique!
-                */
-                IList<Items.User> users = GetUsers(username, 0, 1);
-                if (users.Count == 0)
-                    return null;
-                return users[0];
+                IList<Items.User> users = GetUsers(username, 0, 100); // workaround for potential issue with SQL LIKE %? by matching results with string comparison here
+                var user = users.FirstOrDefault(u => string.Equals(u.Name, username, StringComparison.InvariantCultureIgnoreCase));
+				return user;
             }
             catch (Exception ex)
             {
@@ -138,11 +126,11 @@ namespace N2.Security
             if (users == null)
                 return new List<Items.User>();
 
-            // TODO: resolve know weakness - SQL like operator evaluates wild characters, e.g. underscore
+            // TODO: consider know weakness - SQL like operator evaluates wild characters, e.g. underscore
             //       what may select additional unwanted users!
-            //       Warning: this is a potential security issue: GetUser(string) may select a wrong user! 
-            return Repository.Find((Parameter.Equal("Parent", users) & Parameter.TypeEqual(userType.Name) & Parameter.Like("Name", username)).Skip(firstResult).Take(maxResults))
-                .OfType<User>().ToList();
+			var query = Parameter.Equal("Parent", users) & Parameter.TypeEqual(userType.Name) & Parameter.Like("Name", username);
+			query = query.Skip(firstResult).Take(maxResults);
+            return Repository.Find(query).OfType<User>().ToList();
         }
 
         #region UserList
