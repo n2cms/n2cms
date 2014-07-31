@@ -45,19 +45,19 @@ namespace N2.Security
                 OnItemSaving(e.AffectedItem);
         }
 
-        private void ItemMovingEvenHandler(object sender, CancellableDestinationEventArgs e)
+        private void ItemMovingEventHandler(object sender, CancellableDestinationEventArgs e)
         {
             if (security.Enabled && security.ScopeEnabled)
                 OnItemMoving(e.AffectedItem, e.Destination);
         }
 
-        private void ItemDeletingEvenHandler(object sender, CancellableItemEventArgs e)
+        private void ItemDeletingEventHandler(object sender, CancellableItemEventArgs e)
         {
             if (security.Enabled && security.ScopeEnabled)
                 OnItemDeleting(e.AffectedItem);
         }
 
-        private void ItemCopyingEvenHandler(object sender, CancellableDestinationEventArgs e)
+        private void ItemCopyingEventHandler(object sender, CancellableDestinationEventArgs e)
         {
             if (security.Enabled && security.ScopeEnabled)
                 OnItemCopying(e.AffectedItem, e.Destination);
@@ -156,18 +156,18 @@ namespace N2.Security
         public virtual void Start()
         {
             persister.ItemSaving += ItemSavingEventHandler;
-            persister.ItemCopying += ItemCopyingEvenHandler;
-            persister.ItemDeleting += ItemDeletingEvenHandler;
-            persister.ItemMoving += ItemMovingEvenHandler;
+            persister.ItemCopying += ItemCopyingEventHandler;
+            persister.ItemDeleting += ItemDeletingEventHandler;
+            persister.ItemMoving += ItemMovingEventHandler;
             activator.ItemCreated += ItemCreatedEventHandler;
         }
 
         public virtual void Stop()
         {
             persister.ItemSaving -= ItemSavingEventHandler;
-            persister.ItemCopying -= ItemCopyingEvenHandler;
-            persister.ItemDeleting -= ItemDeletingEvenHandler;
-            persister.ItemMoving -= ItemMovingEvenHandler;
+            persister.ItemCopying -= ItemCopyingEventHandler;
+            persister.ItemDeleting -= ItemDeletingEventHandler;
+            persister.ItemMoving -= ItemMovingEventHandler;
             activator.ItemCreated -= ItemCreatedEventHandler;
         }
 

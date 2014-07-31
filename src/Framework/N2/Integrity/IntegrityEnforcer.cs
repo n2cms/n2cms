@@ -32,22 +32,22 @@ namespace N2.Integrity
 
         #region Event Dispatchers
 
-        private void ItemSavingEvenHandler(object sender, CancellableItemEventArgs e)
+        private void ItemSavingEventHandler(object sender, CancellableItemEventArgs e)
         {
             OnItemSaving(e.AffectedItem);
         }
 
-        private void ItemMovingEvenHandler(object sender, CancellableDestinationEventArgs e)
+        private void ItemMovingEventHandler(object sender, CancellableDestinationEventArgs e)
         {
             OnItemMoving(e.AffectedItem, e.Destination);
         }
 
-        private void ItemDeletingEvenHandler(object sender, CancellableItemEventArgs e)
+        private void ItemDeletingEventHandler(object sender, CancellableItemEventArgs e)
         {
             OnItemDeleting(e.AffectedItem);
         }
 
-        private void ItemCopyingEvenHandler(object sender, CancellableDestinationEventArgs e)
+        private void ItemCopyingEventHandler(object sender, CancellableDestinationEventArgs e)
         {
             OnItemCopying(e.AffectedItem, e.Destination);
         }
@@ -102,18 +102,18 @@ namespace N2.Integrity
 
         public virtual void Start()
         {
-            persister.ItemCopying += ItemCopyingEvenHandler;
-            persister.ItemDeleting += ItemDeletingEvenHandler;
-            persister.ItemMoving += ItemMovingEvenHandler;
-            persister.ItemSaving += ItemSavingEvenHandler;
+            persister.ItemCopying += ItemCopyingEventHandler;
+            persister.ItemDeleting += ItemDeletingEventHandler;
+            persister.ItemMoving += ItemMovingEventHandler;
+            persister.ItemSaving += ItemSavingEventHandler;
         }
 
         public virtual void Stop()
         {
-            persister.ItemCopying -= ItemCopyingEvenHandler;
-            persister.ItemDeleting -= ItemDeletingEvenHandler;
-            persister.ItemMoving -= ItemMovingEvenHandler;
-            persister.ItemSaving -= ItemSavingEvenHandler;
+            persister.ItemCopying -= ItemCopyingEventHandler;
+            persister.ItemDeleting -= ItemDeletingEventHandler;
+            persister.ItemMoving -= ItemMovingEventHandler;
+            persister.ItemSaving -= ItemSavingEventHandler;
         }
 
         #endregion

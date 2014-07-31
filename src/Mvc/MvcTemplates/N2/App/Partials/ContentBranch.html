@@ -1,7 +1,7 @@
 ﻿<div class='item' ng-class="{ loading: node.Loading, draft: node.Current.State == Content.states.Draft || node.Current.State == Content.states.Waiting || node.Current.MetaInformation.draft, unpublished: node.Current.State == Content.states.Unpublished || node.Current.State == Content.states.Deleted, startpage: node.Current.MetaInformation.authority }">
 	<b class="handle"></b>
 	
-	<a href="#" ng-click="toggle(node)" class="toggle"><b class="toggle-expand fa fa-chevron-right"></b><b class="toggle-collapse icon-chevron-up"></b><b class="toggle-loading icon-repeat"></b></a>
+	<a href="javascript:void(0);" ng-click="toggle(node)" class="toggle"><b class="toggle-expand fa fa-chevron-right"></b><b class="toggle-collapse icon-chevron-up"></b><b class="toggle-loading icon-repeat"></b></a>
 
 	<div class="tags">
 		<b ng-repeat="tag in tags" title="{{tag.ToolTip}}" class="{{tag.IconClass}}"></b>

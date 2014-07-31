@@ -44,6 +44,6 @@
 				if (icon)
 					$(this).prepend("<b class='" + icon + "'></b> ");
 			});
-		})
+		});
 	</script>
 </asp:Content>
