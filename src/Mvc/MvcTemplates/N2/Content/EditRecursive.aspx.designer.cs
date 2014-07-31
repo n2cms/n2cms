@@ -58,6 +58,15 @@ namespace N2.Management.Content {
         protected global::System.Web.UI.WebControls.CustomValidator cvException;
         
         /// <summary>
+        /// aSaved control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Edit.Web.UI.Controls.Alert aSaved;
+        
+        /// <summary>
         /// phAncestors control.
         /// </summary>
         /// <remarks>
