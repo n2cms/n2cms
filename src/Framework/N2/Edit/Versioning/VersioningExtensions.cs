@@ -195,7 +195,8 @@ namespace N2.Edit.Versioning
                 SavedBy = version.SavedBy,
                 State = version.State,
                 Title = version.Title,
-                VersionIndex = version.VersionIndex
+                VersionIndex = version.VersionIndex,
+				PartsCount = version.ItemCount - 1
             };
         }
 
@@ -211,7 +212,8 @@ namespace N2.Edit.Versioning
                 SavedBy = version.SavedBy,
                 State = version.State,
                 Title = version.Title,
-                VersionIndex = version.VersionIndex
+				VersionIndex = version.VersionIndex,
+				PartsCount = N2.Find.EnumerateChildren(version, includeSelf: false, useMasterVersion: false).Count()
             };
         }
     }
