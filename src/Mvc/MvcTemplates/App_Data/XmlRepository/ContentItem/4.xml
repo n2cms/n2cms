@@ -1,0 +1,15 @@
+<item id="4" name="TemplateUsers" parent="1" title="Users" zoneName="" templateKey="" state="1" created="05/06/2014 12:44:20" updated="05/06/2014 12:44:20" published="05/06/2014 12:44:20" expires="" sortOrder="0" url="/N2/Myself/Root.aspx?n2page=1&amp;n2item=4" visible="True" savedBy="" typeName="N2.Security.Items.UserList, N2.Management" discriminator="UserList" versionIndex="0" ancestralTrail="" alteredPermissions="0" childState="0">
+  <details>
+    <detail name="Roles" typeName="System.String, mscorlib" meta="" encoded="True"><![CDATA[Everyone
+Members
+Writers
+Editors
+Administrators]]></detail>
+  </details>
+  <detailCollections />
+  <children>
+    <child id="5" name="admin" versionIndex="0" />
+  </children>
+  <authorizations />
+  <properties />
+</item>

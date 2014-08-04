@@ -1,3 +1,7 @@
+/*
+ * Moved to N2.Management project!
+ * 
+ * 
 using System.Collections.Generic;
 using System.Web.Security;
 using System.Web.UI;
@@ -61,3 +65,4 @@ namespace N2.Security.Details
     }
 
 }
+*/

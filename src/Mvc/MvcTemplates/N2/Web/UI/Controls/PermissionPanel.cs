@@ -11,7 +11,7 @@ namespace N2.Edit.Web.UI.Controls
 {
     public class PermissionPanel : PlaceHolder
     {
-	    readonly CustomValidator cv = new CustomValidator
+        CustomValidator cv = new CustomValidator
         {
             CssClass = "info",
             Text = "You do not have sufficient permissions.",
@@ -29,6 +29,7 @@ namespace N2.Edit.Web.UI.Controls
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
+
             cv.Page = Page;
         }
 

@@ -32,23 +32,13 @@ namespace N2.Management.Content
             }
         }
 
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
-
-			aSaved.Visible = false;
-		}
-
         protected void OnPublishCommand(object sender, CommandEventArgs args)
         {
             foreach (var ie in phAncestors.Controls.OfType<ItemEditor>())
             {
                 Engine.Resolve<CommandDispatcher>().Publish(ie.CreateCommandContext());
             }
-
-			aSaved.Visible = true;
-			//Response.Redirect(Request.Url.ToString());
-            //Refresh(Selection.SelectedItem);
+            Refresh(Selection.SelectedItem);
         }
     }
 }

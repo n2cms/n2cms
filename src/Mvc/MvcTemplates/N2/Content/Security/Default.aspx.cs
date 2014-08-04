@@ -22,6 +22,7 @@ namespace N2.Edit.Security
 		Legacy = true)]
 	public partial class Default : Web.EditPage
 	{
+		private AccountManager AccountManager { get { return N2.Context.Current.Resolve<AccountManager>(); } }
 		protected Permission[] Permissions;
 		protected string[] Roles;
 		Control[,] map;
@@ -136,9 +137,12 @@ namespace N2.Edit.Security
 
 		protected string[] GetAvailableRoles()
 		{
-			if (System.Web.Security.Roles.Enabled)
+			if (AccountManager.AreRolesEnabled())
+                 return AccountManager.GetAllRoles();
+            /* REMOVE: if (System.Web.Security.Roles.Enabled)
 				return System.Web.Security.Roles.GetAllRoles();
-
+            */
+			
 			var roles = new List<string> { AuthorizedRole.Everyone };
 			if (Engine.SecurityManager is SecurityManager)
 			{

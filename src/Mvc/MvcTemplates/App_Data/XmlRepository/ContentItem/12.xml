@@ -1,0 +1,11 @@
+<item id="12" name="" parent="2" title="test" zoneName="Right" templateKey="" state="16" created="06/28/2014 20:46:14" updated="06/29/2014 19:25:58" published="06/28/2014 20:46:17" expires="" sortOrder="-10" url="/?n2item=12" visible="True" savedBy="admin" typeName="N2.Templates.Mvc.Models.Parts.BoxedTextItem, N2.Templates.Mvc" discriminator="BoxedText" versionIndex="1" ancestralTrail="/0/" alteredPermissions="0" childState="0">
+  <details>
+    <detail name="Text" typeName="System.String, mscorlib" meta="" encoded="True"><![CDATA[&lt;p&gt;test&lt;/p&gt;
+]]></detail>
+    <detail name="VersionKey" typeName="System.String, mscorlib" meta="" encoded="True"><![CDATA[0d92d796-2f91-433c-b50b-0599ad1f47e8]]></detail>
+  </details>
+  <detailCollections />
+  <children />
+  <authorizations />
+  <properties />
+</item>

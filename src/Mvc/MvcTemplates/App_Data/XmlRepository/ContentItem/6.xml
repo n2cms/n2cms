@@ -1,0 +1,16 @@
+<item id="6" name="c" parent="3" title="C" zoneName="" templateKey="" state="16" created="05/06/2014 19:54:18" updated="05/06/2014 19:54:38" published="05/06/2014 19:54:14" expires="" sortOrder="0" url="/test/c" visible="True" savedBy="admin" typeName="N2.Templates.Mvc.Models.Pages.Calendar, N2.Templates.Mvc" discriminator="Calendar" versionIndex="0" ancestralTrail="/1/2/3/" alteredPermissions="0" childState="8">
+  <details>
+    <detail name="Text" typeName="System.String, mscorlib" meta="" encoded="True"><![CDATA[&lt;p&gt;ccc&lt;/p&gt;
+]]></detail>
+    <detail name="HeadTitle" typeName="System.String, mscorlib" meta="" />
+    <detail name="MetaKeywords" typeName="System.String, mscorlib" meta="" />
+    <detail name="MetaDescription" typeName="System.String, mscorlib" meta="" />
+  </details>
+  <detailCollections />
+  <children />
+  <authorizations />
+  <properties>
+    <property name="Summary" typeName="System.String, mscorlib"><![CDATA[ccc
+]]></property>
+  </properties>
+</item>

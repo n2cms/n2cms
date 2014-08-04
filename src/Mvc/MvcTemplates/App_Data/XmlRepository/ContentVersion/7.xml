@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-16"?><ContentVersion xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><ID>7</ID><VersionIndex>1</VersionIndex><Title>Start Page</Title><Master><ID>2</ID></Master><State>Unpublished</State><Published>2014-06-28T22:46:17.2583292+02:00</Published><FuturePublish xsi:nil="true" /><Expired>2014-06-29T21:25:57.9746506+02:00</Expired><Saved>2014-06-29T21:25:57.9316482+02:00</Saved><SavedBy>admin</SavedBy><ItemCount>2</ItemCount><VersionDataXml>&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;n2 version="2.6.3.1" exportVersion="2" exportDate="06/29/2014 19:25:57"&gt;
+  &lt;item id="0" name="start" title="Start Page" zoneName="" templateKey="" state="32" created="05/06/2014 12:39:52" updated="06/29/2014 19:25:56" published="05/06/2014 12:39:52" expires="" sortOrder="-10" url="/?n2versionIndex=1" visible="False" savedBy="admin" typeName="N2.Templates.Mvc.Models.Pages.StartPage, N2.Templates.Mvc" discriminator="StartPage" versionIndex="1" ancestralTrail="/" alteredPermissions="0" childState="0" versionOf="2"&gt;
+    &lt;details&gt;
+      &lt;detail name="HeadTitle" typeName="System.String, mscorlib" meta="" /&gt;
+      &lt;detail name="MetaKeywords" typeName="System.String, mscorlib" meta="" /&gt;
+      &lt;detail name="MetaDescription" typeName="System.String, mscorlib" meta="" /&gt;
+      &lt;detail name="ParentID" typeName="System.Int32, mscorlib" meta=""&gt;1&lt;/detail&gt;
+      &lt;detail name="VersionKey" typeName="System.String, mscorlib" meta="" encoded="True"&gt;&lt;![CDATA[61827b7a-2b91-44de-9b55-603732a210d2]]&gt;&lt;/detail&gt;
+    &lt;/details&gt;
+    &lt;detailCollections /&gt;
+    &lt;children&gt;
+      &lt;child id="0" name="" versionIndex="1" versionOf="12" versionKey="0d92d796-2f91-433c-b50b-0599ad1f47e8" /&gt;
+    &lt;/children&gt;
+    &lt;authorizations /&gt;
+    &lt;properties&gt;
+      &lt;property name="Summary" typeName="System.String, mscorlib"&gt;&lt;![CDATA[test test
+]]&gt;&lt;/property&gt;
+    &lt;/properties&gt;
+  &lt;/item&gt;
+  &lt;item id="0" name="" parent="2" parentVersionKey="61827b7a-2b91-44de-9b55-603732a210d2" title="test" zoneName="Right" templateKey="" state="32" created="06/28/2014 20:46:14" updated="06/29/2014 19:25:56" published="06/28/2014 20:46:17" expires="" sortOrder="0" url="/?n2item=12&amp;amp;n2versionIndex=1" visible="True" savedBy="admin" typeName="N2.Templates.Mvc.Models.Parts.BoxedTextItem, N2.Templates.Mvc" discriminator="BoxedText" versionIndex="1" ancestralTrail="/0/" alteredPermissions="0" childState="0" versionOf="12"&gt;
+    &lt;details&gt;
+      &lt;detail name="Text" typeName="System.String, mscorlib" meta="" encoded="True"&gt;&lt;![CDATA[&amp;lt;p&amp;gt;test&amp;lt;/p&amp;gt;
+]]&gt;&lt;/detail&gt;
+      &lt;detail name="VersionKey" typeName="System.String, mscorlib" meta="" encoded="True"&gt;&lt;![CDATA[0d92d796-2f91-433c-b50b-0599ad1f47e8]]&gt;&lt;/detail&gt;
+    &lt;/details&gt;
+    &lt;detailCollections /&gt;
+    &lt;children /&gt;
+    &lt;authorizations /&gt;
+    &lt;properties /&gt;
+  &lt;/item&gt;
+&lt;/n2&gt;</VersionDataXml></ContentVersion>

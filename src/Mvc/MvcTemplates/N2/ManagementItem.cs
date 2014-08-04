@@ -17,9 +17,9 @@ namespace N2.Management
         public override string GetPreviewUrl(ContentItem item, bool allowDraft)
         {
             if (item is UserList)
-                return "{ManagementUrl}/Users/Users.aspx".ResolveUrlTokens();
+                return "{Account.Users.PageUrl}".ResolveUrlTokens();
             if (item is User)
-                return "{ManagementUrl}/Users/Edit.aspx".ToUrl().ResolveTokens().AppendQuery("user", item.Name);
+                return "{Account.Users.Edit.PageUrl}".ToUrl().ResolveTokens().AppendQuery("user", item.Name);
 
             if (item is Wonderland)
                 return "{ManagementUrl}/Content/Wizard/Default.aspx".ToUrl().ResolveTokens().AppendSelection(Engine.UrlParser.StartPage);

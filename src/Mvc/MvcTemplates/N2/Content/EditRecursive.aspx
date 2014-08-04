@@ -16,8 +16,6 @@
 		<asp:ValidationSummary ID="vsEdit" runat="server" CssClass="alert alert-margin" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
 		<asp:CustomValidator ID="cvException" runat="server" CssClass="alert alert-error alert-margin" Display="None" />
 
-		<edit:Alert AlertTypeClass="alert-success" ID="aSaved" runat="server" Text="Settings saved" meta:resourceKey="aSaved"/>
-
 		<asp:PlaceHolder ID="phAncestors" runat="server" />
 	</edit:PermissionPanel>
 

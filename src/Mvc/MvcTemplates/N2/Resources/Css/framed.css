@@ -42,15 +42,6 @@ body {
 		#framed-navbar .navbar-inner .nav > li > a:hover {
 			text-shadow: 0px 1px 10px #0c4964;
 		}
-		#framed-navbar .nav li.dropdown>a .caret {
-			border-top-color: #ccc;
-			border-bottom-color: #ccc;
-		}
-		#framed-navbar .nav li.dropdown>a:hover .caret,
-		#framed-navbar .nav li.dropdown>a:focus .caret {
-			border-top-color: #fff;
-			border-bottom-color: #fff;
-		}
 
 	#framed-navbar .splitbutton > a {
 		margin-right:20px;
@@ -128,6 +119,43 @@ body {
 	display:block;
 	margin:10px 0;
 }
+	/*h1 { margin:1em 10px; }
+	.tabPanel h1 { margin:1em 0; }
+	.panel { margin:0 10px; }*/
+
+/*body.framed select,
+body.framed input,
+body.framed label{
+	vertical-align:middle;
+}
+body.framed .cbl input{
+	vertical-align:middle;
+}
+body.framed .cbl label{
+	float:none;
+	font-weight:normal;
+}
+body.framed #toolbar{
+	z-index:77;
+	white-space:nowrap;
+}
+body.framed #toolbar label{
+	color:#333333;
+	float:none;
+	clear:none;
+}
+ul{
+	list-style-type:disc;
+	margin:0 0 0 10px;
+	padding:0;
+}
+body.framed .formField{
+	clear:both;
+	margin:5px 0;
+}
+body.framed .formField label{
+	vertical-align:top;
+}*/
 
 body.framed .info,
 body.framed .validator{
@@ -322,28 +350,5 @@ input.dp-applied {
 	padding-top:5px;
 	display:block;
 }
-
-#futurePanel{
-	position:fixed;
-}
-	#futurePanel > button,
-	#futurePanel > input {
-		margin-bottom:10px;
-	}
-
-	#futurePanel .ui-datepicker-trigger {
-		vertical-align: middle;
-		margin-right: 5px;
-		border: solid 1px #BBB;
-		background: #F8F8F8;
-		height: 30px;
-		width: 30px;
-		padding: 0;
-		margin-left: -1px;
-		margin-bottom: 10px;
-	}
-	#futurePanel .btn{
-		margin: 0 10px 10px 10px;
-	}
 
 /* jquery ui css fix */
