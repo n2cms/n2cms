@@ -24,12 +24,33 @@ namespace Dinamico.Registrations
 
         void securityEnforcer_AuthorizationFailed(object sender, CancellableItemEventArgs e)
         {
+            string returnUrl = context.Url.LocalUrl;
+            string loginUrl = null;
+
+            // Custom login page:
             var startPage = parser.StartPage as Models.StartPage;
-            if (startPage != null && startPage.LoginPage != null)
+            if (startPage != null && !string.IsNullOrWhiteSpace(startPage.LoginPage))
+            {
+                loginUrl = startPage.LoginPage;
+            }
+
+            // Default login page:
+            if (loginUrl == null)
+            {
+                string loginPageToken = "{Account.Login.PageUrl}";
+                string loginPageUrl = loginPageToken.ResolveUrlTokens();
+                if (loginPageUrl != loginPageToken)
+                {
+                    loginUrl = loginPageUrl;
+                }
+            }
+
+            if (loginUrl != null)
             {
                 e.Cancel = true;
-                context.HttpContext.Response.Redirect(Url.Parse(startPage.LoginPage).AppendQuery("returnUrl", context.Url.LocalUrl));
+                context.HttpContext.Response.Redirect(Url.Parse(loginUrl).AppendQuery("returnUrl", returnUrl));
             }
+
         }
 
         #region IStartable Members
