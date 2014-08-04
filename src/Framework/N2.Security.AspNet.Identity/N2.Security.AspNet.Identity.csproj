@@ -34,8 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNet.Identity.Core">
-      <HintPath>..\..\..\..\..\Jan-Projekti\UJPLUS\UJPLUSWebSolution\packages\Microsoft.AspNet.Identity.Core.2.0.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -59,7 +58,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="_Doc\HowTo_MvcProject.cs" />
     <Compile Include="_Doc\HowTo_SeeAlso.cs" />
-    <Compile Include="_Doc\Todo.cs" />
     <Compile Include="_Doc\ReleaseNotes.cs" />
   </ItemGroup>
   <ItemGroup>
