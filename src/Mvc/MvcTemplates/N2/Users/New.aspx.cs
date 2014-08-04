@@ -3,17 +3,38 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Edit.Web;
+using N2.Security;
 
 namespace N2.Edit.Membership
 {
     public partial class New : EditPage
     {
+        // Note: CreateUserWizard is used internally what may not be appropriate for all account subsystems.
+        //       See AccountResources to register a custom add-new-user page. 
+        private AccountManager AccountManager { get { return N2.Context.Current.Resolve<AccountManager>(); } }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
             createUserWizard.Question = Guid.NewGuid().ToString();
             createUserWizard.Answer = Guid.NewGuid().ToString();
+            createUserWizard.CreatingUser += createUserWizard_CreatingUser;
+        }
+
+        protected bool IsMembershipAccountType()
+        {
+            return AccountManager.IsMembershipAccountType();
+        }
+
+        private void createUserWizard_CreatingUser(object sender, LoginCancelEventArgs e)
+        {
+           if (!IsMembershipAccountType())
+           {
+              // The page is not supported for this type of membership. 
+              // Configure account subsystem to use a specialized page to serve the request.
+              e.Cancel = true;
+           }
         }
 
         protected void createUserWizard_CreatedUser(object sender, EventArgs e)
@@ -33,7 +54,8 @@ namespace N2.Edit.Membership
 
             foreach (ListItem item in cblRoles.Items)
                 if (item.Selected)
-                    Roles.AddUserToRole(_cuw.UserName, item.Value);
+                    AccountManager.AddUserToRole(_cuw.UserName, item.Value);
+                    // REMOVE: Roles.AddUserToRole(_cuw.UserName, item.Value);
         }
 
         protected void createUserWizard_FinishButtonClick(object sender, EventArgs e)

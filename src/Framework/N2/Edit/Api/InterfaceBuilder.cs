@@ -365,8 +365,12 @@ namespace N2.Management.Api
                 {
                     Children = new Node<InterfaceMenuItem>[]
                     {
-                        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "password", Title = "Change password", IconClass = "fa fa-user", ToolTip = "Manage password", Target = Targets.Preview, Url = "{ManagementUrl}/Myself/EditPassword.aspx".ResolveUrlTokens(), SelectedBy = "EditPassword" }),
-                        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "signout", Title = "Sign out", IconClass = "fa fa-signout", ToolTip = "Sign out {{Context.User.Name}}", Url = "{ManagementUrl}/Login.aspx?logout=true".ResolveUrlTokens() }),
+                        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "password", Title = "Change password", IconClass = "fa fa-user", ToolTip = "Manage password", Target = Targets.Preview, Url = "{Account.EditPassword.PageUrl}".ResolveUrlTokens(), SelectedBy = "EditPassword" }),
+  				        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "signout", Title = "Sign out", IconClass = "fa fa-signout", ToolTip = "Sign out {{Context.User.Name}}", Url = "{Account.Logout.PageUrl}".ResolveUrlTokens() }),
+                        /*
+                        REMOVE: new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "password", Title = "Change password", IconClass = "fa fa-user", ToolTip = "Manage password", Target = Targets.Preview, Url = "{ManagementUrl}/Myself/EditPassword.aspx".ResolveUrlTokens(), SelectedBy = "EditPassword" }),
+                        REMOVE: new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "signout", Title = "Sign out", IconClass = "fa fa-signout", ToolTip = "Sign out {{Context.User.Name}}", Url = "{ManagementUrl}/Login.aspx?logout=true".ResolveUrlTokens() }),
+                         */
                     }
                 },
                 new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "info", TemplateUrl = "App/Partials/ContentInfo.html", RequiredPermission = Permission.Read, Alignment = "Right" })
@@ -433,8 +437,12 @@ namespace N2.Management.Api
 
                     new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "divider2", Divider = true }),
         
-                    new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "users", Title = "Users", IconClass = "fa fa-user shadow", ToolTip = "Manage users", Target = Targets.Preview, Url = "{ManagementUrl}/Users/Users.aspx".ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "UsersUsers" }),
-                    new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "roles", Title = "Roles", IconClass = "fa fa-group", ToolTip = "Manage roles", Target = Targets.Preview, Url = "{ManagementUrl}/Roles/Roles.aspx".ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "RolesList" }),
+                    new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "users", Title = "Users", IconClass = "fa fa-user shadow", ToolTip = "Manage users", Target = Targets.Preview, Url = "{Account.Users.PageUrl}".ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "UsersUsers" }),
+  					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "roles", Title = "Roles", IconClass = "fa fa-group", ToolTip = "Manage roles", Target = Targets.Preview, Url = "{Account.Roles.PageUrl}".ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "RolesList" }),
+                    /*
+                    REMOVE: new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "users", Title = "Users", IconClass = "fa fa-user shadow", ToolTip = "Manage users", Target = Targets.Preview, Url = "{ManagementUrl}/Users/Users.aspx".ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "UsersUsers" }),
+                    REMOVE: new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "roles", Title = "Roles", IconClass = "fa fa-group", ToolTip = "Manage roles", Target = Targets.Preview, Url = "{ManagementUrl}/Roles/Roles.aspx".ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "RolesList" }),
+                     */
                 }
             };
         }

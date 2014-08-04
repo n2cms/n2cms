@@ -977,7 +977,11 @@
       <DependentUpon>Roles.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="N2\Security\AccountInfo.cs" />
+    <Compile Include="N2\Security\AccountManager.cs" />
+    <Compile Include="N2\Security\AccountResources.cs" />
     <Compile Include="N2\Security\ContentProfileRepository.cs" />
+    <Compile Include="N2\Security\Details\EditableRolesAttribute.cs" />
     <Compile Include="N2\Security\EditablePassword.cs" />
     <Compile Include="N2\Myself\EditPassword.aspx.cs">
       <DependentUpon>EditPassword.aspx</DependentUpon>
@@ -987,6 +991,8 @@
       <DependentUpon>EditPassword.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Security\Items\UserExternalLoginInfo.cs" />
+    <Compile Include="N2\Security\MembershipAccountManager.cs" />
+    <Compile Include="N2\Security\MembershipAccountResources.cs" />
     <Compile Include="N2\Web\FontHandler.cs" />
     <Compile Include="N2\Resources\IconHandler.ashx.cs">
       <DependentUpon>IconHandler.ashx</DependentUpon>
@@ -1298,6 +1304,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="N2\Web\RootNode.cs" />
+    <Compile Include="N2\Web\UI\Controls\SplitButtons.cs" />
+    <Compile Include="N2\Web\UI\Controls\Alert.cs" />
     <Compile Include="N2\Web\UI\Controls\CancelLink.cs" />
     <Compile Include="N2\Web\UI\Controls\ItemLink.cs" />
     <Compile Include="N2\Web\UI\Controls\PermissionPanel.cs" />
