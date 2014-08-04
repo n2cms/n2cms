@@ -1,9 +1,25 @@
-﻿@if(Request.IsAuthenticated) 
+﻿﻿@using N2.Web
+@if (Request.IsAuthenticated)
 {
-	<a href="@Url.Action("LogOff", "Membership")">@Content.Translate["Log off"] <strong>@Context.User.Identity.Name</strong></a>
+    string manageUrl = "{Account.ManageUser.PageUrl}".ResolveUrlTokens();
+    string logOffUrl = "{Account.Logout.PageUrl}".ResolveUrlTokens();
+  
+    <a href="@Html.Raw(manageUrl)" class="dropdown-toggle" data-toggle="dropdown">
+        @Content.Translate["Hi"] <strong>@Context.User.Identity.Name</strong>
+        <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+        <li> <a href="@Html.Raw(manageUrl)"> @Content.Translate["Manage"] </a></li>
+        <li> <a href="@Html.Raw(logOffUrl)">@Content.Translate["Log off"]</a> </li>
+    </ul>
+
+    @*<a href="@Url.Action("LogOff", "Membership")">@Content.Translate["Log off"] <strong>@Context.User.Identity.Name</strong></a>*@
 }
 else
 {
-	var returnUrl = Request["returnUrl"] ?? Content.Data.Url ?? Content.Traverse.StartPage.Url;
-	@Html.ActionLink(Content.Translate.Text("Log on"), "LogOn", new { controller = "Membership", returnUrl = returnUrl })
+    var returnUrl = Request["returnUrl"] ?? Content.Data.Url ?? Content.Traverse.StartPage.Url;
+    string logOnUrl = N2.Web.Url.ParseTokenized("{Account.Login.PageUrl}").AppendQuery("returnUrl", returnUrl).ToString();
+    <a href="@Html.Raw(logOnUrl)">@Content.Translate.Text("Log on")</a>
+    
+    @*@Html.ActionLink(Content.Translate.Text("Log on"), "LogOn", new { controller = "Membership", returnUrl = returnUrl })*@
 }
