@@ -20,12 +20,18 @@ namespace N2.Edit.Membership
             createUserWizard.Question = Guid.NewGuid().ToString();
             createUserWizard.Answer = Guid.NewGuid().ToString();
             createUserWizard.CreatingUser += createUserWizard_CreatingUser;
+
+			((Button)createUserWizard.CreateUserStep.CustomNavigationTemplateContainer.FindControl("StepNextButtonButton")).CssClass += " btn";
         }
 
         protected bool IsMembershipAccountType()
         {
             return AccountManager.IsMembershipAccountType();
         }
+
+        protected void OnCreateClick(object sender, EventArgs e)
+		{
+		}
 
         private void createUserWizard_CreatingUser(object sender, LoginCancelEventArgs e)
         {
