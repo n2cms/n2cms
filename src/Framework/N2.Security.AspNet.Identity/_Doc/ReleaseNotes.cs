@@ -4,11 +4,36 @@ namespace N2.Security.AspNet.Identity
     /// <summary>
     /// N2 Aspnet.Identity release notes
     /// <ul>
-    ///  <li>           - janpub, JH4 oull request: N2 Identity lib and sample app (Visual Studio 2013 Update 2)
-    ///  
+    ///  <li>2014.08.04 - janpub, JH4 pull request: N2 Identity lib and sample app (Visual Studio 2013 Update 2) <br/>
+    ///  <em>N2CMS Dinamico on ASP.NET Identity.
+    ///      To run DinamicoIdentity you should add N2 and Dinamico subfolders.
+    ///      See also: NamespaceDoc (N2.Security.AspNet.Identity)</em>
     ///  </li>
-    ///  <li>           - janpub, JH3 pull request: N2 (non-breaking) changes to support Identity
-    ///  
+    ///  <li>2014.08.04 - janpub, JH3 pull request: N2 (non-breaking) changes to support Identity <br/>
+    ///   <em>
+    ///   This completes N2 changes to support ASP.NET Identity:
+    ///   a) N2 user management pages may be replaced with custom implementations
+    ///   b) all calls to classic membership are wrapped.
+    ///      Default implementation supports classic-membership to assure no breaking changes are introduced
+    ///      (please review JH 3.4 commit).
+    ///      TODO: wrap n2 installation logics! (It is still unchanged - and classic-membership specific).
+    ///   </em>
+    ///   <pre>
+    ///   JH 3.1 - ItemBridge: additional methods to centralize logics (user roles management, IsAdmin)
+    ///                        and to support upcoming Identity.
+    ///   JH 3.2 - AccountResources: allows to replace N2 Management user management pages with custom implementations
+    ///            MembershipAccountResources: default implementation. 
+    ///            All references to management pages are replaces with token expressions,
+    ///            e.g. "{Account.ManageUser.PageUrl}".ResolveUrlTokens().
+    ///   JH 3.3 - AccountManager: allows to replace membership subsystem.
+    ///            MembershipAccountManager: default classic-membership implementation.
+    ///            All calls to classic-membership API are replaces, e.g.
+    ///            System.Web.Security.Membership.FindUsersByName(..) is replaces with AccountManager.FindUserByName(..)
+    ///   JH 3.4 - EditableRolesAttribute is moved from Framewrok to Management project
+    ///   JH 3.5 - Fixing StartPageController: AccoutManager wrapps calls to System.Web.Roles
+    ///   JH 3.6 - Dinamico LogOn menu gets link to "change password" page
+    ///   JH 3.7 - Dinamico PermissionDenied handler redirect to custom or default login page
+    ///   </pre>
     ///  </li>
     ///  <li>2014.07.14 - janpub, JH2 pull request submitted: Basic N2 User subsystem extensions 
     ///      https://github.com/n2cms/n2cms/pull/544
