@@ -1,7 +1,3 @@
-/*
- * Moved to N2.Management project!
- * 
- * 
 using System.Collections.Generic;
 using System.Web.Security;
 using System.Web.UI;
@@ -14,6 +10,8 @@ namespace N2.Security.Details
     [AttributeUsage(AttributeTargets.Property)]
     public class EditableRolesAttribute : AbstractEditableAttribute
     {
+        private static AccountManager AccountManager { get { return N2.Context.Current.Resolve<AccountManager>(); } }
+
         public override bool UpdateItem(ContentItem item, Control editor)
         {
             CheckBoxList cbl = editor as CheckBoxList;
@@ -55,7 +53,7 @@ namespace N2.Security.Details
         protected override Control AddEditor(Control container)
         {
             CheckBoxList cbl = new CheckBoxList();
-            foreach (string role in Roles.GetAllRoles())
+            foreach (string role in AccountManager.GetAllRoles()) 
             {
                 cbl.Items.Add(role);
             }
@@ -65,4 +63,3 @@ namespace N2.Security.Details
     }
 
 }
-*/
