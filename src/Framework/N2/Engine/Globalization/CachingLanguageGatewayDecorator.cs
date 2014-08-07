@@ -68,7 +68,11 @@ namespace N2.Engine.Globalization
             if (cache.LanguageItems.TryGetValue(item.ID, out language))
                 return language;
 
-            language = GetLanguage(inner.GetLanguage(item).LanguageCode);
+            var innerLanguage = inner.GetLanguage(item);
+
+            if (innerLanguage == null) return null;
+
+            language = GetLanguage(innerLanguage.LanguageCode);
             cache.LanguageItems = new Dictionary<int, ILanguage>(cache.LanguageItems) { { item.ID, language } };
             
             return inner.GetLanguage(item);
@@ -82,7 +86,11 @@ namespace N2.Engine.Globalization
             if (cache.LanguageCodes.TryGetValue(languageCode, out language))
                 return language;
 
-            language = new Language(inner.GetLanguage(languageCode));
+            var innerLanguage = inner.GetLanguage(languageCode);
+
+            if (innerLanguage == null) return null;
+
+            language = new Language(innerLanguage);
             cache.LanguageCodes = new Dictionary<string, ILanguage>(cache.LanguageCodes) { { languageCode, language } };
             return language;
         }
