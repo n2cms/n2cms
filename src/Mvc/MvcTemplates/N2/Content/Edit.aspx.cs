@@ -98,10 +98,13 @@ namespace N2.Edit
 			bool isExisting = ie.CurrentItem.ID != 0;
 
 			btnSavePublish.Visible = isPublicableItem && isPublicableByUser;
-			if (btnSavePublish.Visible)
-				btnSavePublish.CssClass += " primary-action";
-			else
-				btnPreview.CssClass += " primary-action";
+		    if (btnSavePublish.Visible) btnSavePublish.CssClass += " primary-action";
+		    else
+		    {
+                btnPreviewMain.CssClass += " primary-action";
+                btnPreviewMain.Visible = isVersionable && isWritableByUser;
+		    }
+				
 			btnPreview.Visible = isVersionable && isWritableByUser;
 			btnSaveUnpublished.Visible = isVersionable && isWritableByUser;
 			hlFuturePublish.Visible = isVersionable && isPublicableByUser;
