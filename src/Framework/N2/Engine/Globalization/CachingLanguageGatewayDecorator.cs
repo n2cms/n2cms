@@ -74,7 +74,7 @@ namespace N2.Engine.Globalization
 
             language = GetLanguage(innerLanguage.LanguageCode);
             cache.LanguageItems = new Dictionary<int, ILanguage>(cache.LanguageItems) { { item.ID, language } };
-
+            
             return inner.GetLanguage(item);
         }
 
@@ -85,6 +85,7 @@ namespace N2.Engine.Globalization
             ILanguage language;
             if (cache.LanguageCodes.TryGetValue(languageCode, out language))
                 return language;
+
             var innerLanguage = inner.GetLanguage(languageCode);
 
             if (innerLanguage == null) return null;
@@ -126,13 +127,13 @@ namespace N2.Engine.Globalization
 
         private LanguageCache GetLanguageCache()
         {
-            var cache = cacheWrapper.Get<LanguageCache>("CachingLanguageGatewayDecorator_" + masterKey);
+            var cache =  cacheWrapper.Get<LanguageCache>("CachingLanguageGatewayDecorator_" + masterKey);
             if (cache == null)
             {
-                cache = new LanguageCache
-                {
-                    LanguageCodes = new Dictionary<string, ILanguage>(),
-                    LanguageItems = new Dictionary<int, ILanguage>()
+                cache = new LanguageCache 
+                { 
+                    LanguageCodes = new Dictionary<string, ILanguage>(), 
+                    LanguageItems = new Dictionary<int, ILanguage>() 
                 };
                 cacheWrapper.Add("CachingLanguageGatewayDecorator_" + masterKey, cache, new CacheOptions { SlidingExpiration = slidingExpiration });
             }
