@@ -14,6 +14,8 @@
 				OnCommand="OnPublishCommand" runat="server" 
 				CssClass="command iconed publish" 
 				meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
+            					<asp:LinkButton ID="btnPreviewMain" Visible="False" data-icon-class="fa fa-eye" OnCommand="OnPreviewCommand" runat="server" CssClass="command plain iconed preview"
+						meta:resourceKey="btnPreview">Save and preview</asp:LinkButton>
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
 			<ul class="dropdown-menu">
 				<li>
