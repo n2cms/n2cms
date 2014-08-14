@@ -152,10 +152,38 @@
 				var allowed = $(zone).attr("data-allowed") + ",";
 				var title = $(zone).attr("title");
 				if (allowed.indexOf(type + ",") >= 0) {
-					$(zone).append("<div class='dropPoint below'/>");
+				    var dropZoneDiv = $("<div></div>").addClass("dropPoint below");
+
+				    if (type == "ContentBox" || type == "PredefinedSearch") {
+				        var item = $(dragged).next();
+				        dropZoneDiv.css('position', item.css('position'));
+				        dropZoneDiv.css('left', item.css('left'));
+				        dropZoneDiv.css('top', item.css('top'));
+				        dropZoneDiv.css('z-index', '100');
+				        dropZoneDiv.css('height', item.height());
+				        dropZoneDiv.css('width', item.width());
+				    }
+
+				    $(zone).append(dropZoneDiv);
 					$(".zoneItem", zone)
 						.not(function () { return $(this).closest(".dropZone")[0] !== zone; })
-						.each(function (i) { $(this).before("<div class='dropPoint before' title='" + i + "'/>"); });
+						.each(function(i) {
+						    var data = $(this).attr("data-type");
+
+						    var dropZoneDiv = $("<div></div>").addClass("dropPoint before").attr('title', i);
+
+						    if (data == "ContentBox" || data == "PredefinedSearch") {
+						        var item = $(this);
+						        dropZoneDiv.css('position', item.css('position'));
+						        dropZoneDiv.css('left', item.css('left'));
+						        dropZoneDiv.css('top', item.css('top'));
+						        dropZoneDiv.css('z-index', '100');
+						        dropZoneDiv.css('height', item.height());
+						        dropZoneDiv.css('width', item.width());
+						    }
+
+						    $(this).before(dropZoneDiv);
+					});
 				}
 				$(".dropPoint", zone).html("<div class='description'>" + title + "</div>");
 			});
