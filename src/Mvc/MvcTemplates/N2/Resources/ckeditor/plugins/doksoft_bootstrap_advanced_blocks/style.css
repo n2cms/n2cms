@@ -1,0 +1,431 @@
+body:after
+{
+    content: url(./images/add-mini.png)
+    url(./images/add-mini-hover.png)
+    url(./images/delete-mini-hover.png)
+    url(./images/delete-mini.png)
+    url(./images/menu-div.png)
+    url(./images/menu-div-hover.png)
+    url(./images/menu-span.png)
+    url(./images/menu-span-hover.png)
+    url(./images/menu-p.png)
+    url(./images/menu-p-hover.png)
+    url(./images/menu-code.png)
+    url(./images/menu-code-hover.png)
+    url(./images/menu-p.png)
+    url(./images/menu-p-hover.png)
+    url(./images/menu-tag.png)
+    url(./images/menu-tag-hover.png)
+    url(./images/menu-table.png)
+    url(./images/menu-table-hover.png)
+    url(./images/menu-cols.png)
+    url(./images/menu-cols-hover.png);
+    display: none;
+}
+
+.doksoft_bootstrap_advanced_blocks_show div,
+.doksoft_bootstrap_advanced_blocks_show span,
+.doksoft_bootstrap_advanced_blocks_show p
+{
+	position:relative;
+	-moz-box-shadow: inset 0 0 1px #7CBFEB;
+	-webkit-box-shadow: inset 0 0 1px #7CBFEB;
+	box-shadow: inset 0 0 1px #7CBFEB;
+}
+
+.doksoft_bootstrap_advanced_blocks_show span.glyphicon {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.doksoft_bootstrap_advanced_blocks_show table,
+.doksoft_bootstrap_advanced_blocks_show td,
+.doksoft_bootstrap_advanced_blocks_show th
+{
+	position:relative;
+}
+
+.doksoft_bootstrap_advanced_blocks_show table
+{
+	-moz-box-shadow: inset 0 0 1px #2559ac;
+	-webkit-box-shadow: inset 0 0 1px #2559ac;
+	box-shadow: inset 0 0 1px #2559ac;
+}
+
+.doksoft_bootstrap_advanced_blocks_show table.doksoft_bootstrap_advanced_blocks-selected
+{
+	-moz-box-shadow: inset 0 0 1px #2559ac !important;
+	-webkit-box-shadow: inset 0 0 1px #2559ac !important;
+	box-shadow: inset 0 0 1px #2559ac !important;
+}
+
+
+.doksoft_bootstrap_advanced_blocks_show td, .doksoft_bootstrap_advanced_blocks_show th
+{
+	-moz-box-shadow: inset 0 0 1px #4e78bc;
+	-webkit-box-shadow: inset 0 0 1px #4e78bc;
+	box-shadow: inset 0 0 1px #4e78bc;
+}
+
+.doksoft_bootstrap_advanced_blocks_show td.doksoft_bootstrap_advanced_blocks-selected, .doksoft_bootstrap_advanced_blocks_show th.doksoft_bootstrap_advanced_blocks-selected
+{
+	-moz-box-shadow: inset 0 0 1px #4e78bc !important;
+	-webkit-box-shadow: inset 0 0 1px #4e78bc !important;
+	box-shadow: inset 0 0 1px #4e78bc !important;
+}
+
+.doksoft_bootstrap_advanced_blocks_temper_place
+{
+	display:block;
+	position:absolute;
+	right:1px;top:1px;
+	cursor:pointer;
+	z-index:2;
+	max-width:100%;
+}
+
+.doksoft_bootstrap_advanced_blocks_temper_block
+{
+	display:block;
+	float:left;
+	width:17px;
+	height:7px;
+	background:#7CBFEB;
+	background:url(./images/div.png) no-repeat center center;
+}
+
+.doksoft_bootstrap_advanced_blocks_clearex
+{
+float:none;
+clear:both;
+width:0px; 
+height:0px;
+}
+
+.doksoft_bootstrap_advanced_blocks_temper_block_plus
+{
+	display:block;
+	position:absolute;
+	width:17px;
+	height:7px;
+	background:#7CBFEB;
+	right:0px;top:0px;
+	background:url(./images/div.png) no-repeat center center;
+	cursor:pointer;
+	z-index:2;
+}
+.doksoft_bootstrap_advanced_blocks_temper_block_plus
+{
+	width:7px;
+	height:7px;
+	background-image:url(./images/add-mini.png);
+	left:-8px;
+	top:1px;
+	right:auto;
+}
+.doksoft_bootstrap_advanced_blocks_temper_block_plus:hover
+{
+	background-image:url(./images/add-mini-hover.png);
+}
+
+.doksoft_bootstrap_advanced_blocks_temper_block_plus.doksoft_bootstrap_advanced_blocks_temper_block_plus1
+{
+	left:0px;
+}
+
+.doksoft_bootstrap_advanced_blocks_temper_block_plus.doksoft_bootstrap_advanced_blocks_temper_block_plus2
+{
+	left:auto;
+	right:0px;
+	top:auto;
+	bottom:1px;
+}
+.doksoft_bootstrap_advanced_blocks_temper_block_plus.doksoft_bootstrap_advanced_blocks_temper_block_plus3
+{
+	left:auto;
+	right:-8px;
+	top:auto;
+	bottom:1px;
+}
+.doksoft_bootstrap_advanced_blocks_temper_block_plus.doksoft_bootstrap_advanced_blocks_temper_block_plus4
+{
+	width:7px;
+	height:7px;
+	left:auto;
+	right:-8px;
+	background-image:url(./images/delete-mini.png);
+	top:-1px;
+}
+
+.doksoft_bootstrap_advanced_blocks_delimer{background-image:url(./images/delimer.png) !important; width:1px !important;}
+
+i[class~=doksoft_bootstrap_advanced_blocks_eye]{background:no-repeat transparent;}
+.doksoft_bootstrap_advanced_blocks_eye-p{background-image:url(./images/eye-p.png) !important; width:8px !important;margin-left:-8px;}
+.doksoft_bootstrap_advanced_blocks_eye-row{background-image:url(./images/eye-row.png) !important; width:8px !important;margin-left:-8px;}
+.doksoft_bootstrap_advanced_blocks_eye-col{background-image:url(./images/eye-col.png) !important; width:8px !important;margin-left:-8px;}
+.doksoft_bootstrap_advanced_blocks_eye-span{background-image:url(./images/eye-span.png) !important; width:8px !important;margin-left:-8px;}
+.doksoft_bootstrap_advanced_blocks_eye-div{background-image:url(./images/eye-div.png) !important; width:8px !important;margin-left:-8px;}
+
+
+/**** bootstrap ****/
+.doksoft_bootstrap_advanced_blocks_col-lg-x{width:19px !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-1{background-image:url(./images/col-lg-1.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-2{background-image:url(./images/col-lg-2.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-3{background-image:url(./images/col-lg-3.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-4{background-image:url(./images/col-lg-4.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-5{background-image:url(./images/col-lg-5.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-6{background-image:url(./images/col-lg-6.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-7{background-image:url(./images/col-lg-7.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-8{background-image:url(./images/col-lg-8.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-9{background-image:url(./images/col-lg-9.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-10{background-image:url(./images/col-lg-10.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-11{background-image:url(./images/col-lg-11.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-12{background-image:url(./images/col-lg-12.png) !important;}
+
+.doksoft_bootstrap_advanced_blocks_col-md-x{width:19px !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-1{background-image:url(./images/col-md-1.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-2{background-image:url(./images/col-md-2.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-3{background-image:url(./images/col-md-3.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-4{background-image:url(./images/col-md-4.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-5{background-image:url(./images/col-md-5.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-6{background-image:url(./images/col-md-6.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-7{background-image:url(./images/col-md-7.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-8{background-image:url(./images/col-md-8.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-9{background-image:url(./images/col-md-9.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-10{background-image:url(./images/col-md-10.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-11{background-image:url(./images/col-md-11.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-12{background-image:url(./images/col-md-12.png) !important;}
+
+.doksoft_bootstrap_advanced_blocks_col-sm-x{width:19px !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-1{background-image:url(./images/col-sm-1.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-2{background-image:url(./images/col-sm-2.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-3{background-image:url(./images/col-sm-3.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-4{background-image:url(./images/col-sm-4.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-5{background-image:url(./images/col-sm-5.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-6{background-image:url(./images/col-sm-6.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-7{background-image:url(./images/col-sm-7.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-8{background-image:url(./images/col-sm-8.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-9{background-image:url(./images/col-sm-9.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-10{background-image:url(./images/col-sm-10.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-11{background-image:url(./images/col-sm-11.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-12{background-image:url(./images/col-sm-12.png) !important;}
+
+
+.doksoft_bootstrap_advanced_blocks_col-xs-x{width:19px !important;}
+.doksoft_bootstrap_advanced_blocks_col-xs-1{background-image:url(./images/col-xs-1.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-xs-2{background-image:url(./images/col-xs-2.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-xs-3{background-image:url(./images/col-xs-3.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-xs-4{background-image:url(./images/col-xs-4.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-xs-5{background-image:url(./images/col-xs-5.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-xs-6{background-image:url(./images/col-xs-6.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-xs-7{background-image:url(./images/col-xs-7.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-xs-8{background-image:url(./images/col-xs-8.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-xs-9{background-image:url(./images/col-xs-9.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-xs-10{background-image:url(./images/col-xs-10.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-xs-11{background-image:url(./images/col-xs-11.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-xs-12{background-image:url(./images/col-xs-12.png) !important;}
+
+.doksoft_bootstrap_advanced_blocks_col-lg-offset-x{width:16px !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-offset-1{background-image:url(./images/offset-1.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-offset-2{background-image:url(./images/offset-2.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-offset-3{background-image:url(./images/offset-3.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-offset-4{background-image:url(./images/offset-4.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-offset-5{background-image:url(./images/offset-5.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-offset-6{background-image:url(./images/offset-6.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-offset-7{background-image:url(./images/offset-7.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-offset-8{background-image:url(./images/offset-8.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-offset-9{background-image:url(./images/offset-9.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-offset-10{background-image:url(./images/offset-10.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-lg-offset-11{background-image:url(./images/offset-11.png) !important;}
+
+
+.doksoft_bootstrap_advanced_blocks_col-md-offset-x{width:16px !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-offset-1{background-image:url(./images/offset-1.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-offset-2{background-image:url(./images/offset-2.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-offset-3{background-image:url(./images/offset-3.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-offset-4{background-image:url(./images/offset-4.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-offset-5{background-image:url(./images/offset-5.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-offset-6{background-image:url(./images/offset-6.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-offset-7{background-image:url(./images/offset-7.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-offset-8{background-image:url(./images/offset-8.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-offset-9{background-image:url(./images/offset-9.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-offset-10{background-image:url(./images/offset-10.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-md-offset-11{background-image:url(./images/offset-11.png) !important;}
+
+.doksoft_bootstrap_advanced_blocks_col-sm-offset-x{width:16px !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-offset-1{background-image:url(./images/offset-1.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-offset-2{background-image:url(./images/offset-2.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-offset-3{background-image:url(./images/offset-3.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-offset-4{background-image:url(./images/offset-4.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-offset-5{background-image:url(./images/offset-5.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-offset-6{background-image:url(./images/offset-6.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-offset-7{background-image:url(./images/offset-7.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-offset-8{background-image:url(./images/offset-8.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-offset-9{background-image:url(./images/offset-9.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-offset-10{background-image:url(./images/offset-10.png) !important;}
+.doksoft_bootstrap_advanced_blocks_col-sm-offset-11{background-image:url(./images/offset-11.png) !important;}
+
+/**** foundation ****/
+.doksoft_bootstrap_advanced_blocks_large-x{width:19px !important;}
+.doksoft_bootstrap_advanced_blocks_large-1{background-image:url(./images/col-lg-1.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-2{background-image:url(./images/col-lg-2.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-3{background-image:url(./images/col-lg-3.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-4{background-image:url(./images/col-lg-4.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-5{background-image:url(./images/col-lg-5.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-6{background-image:url(./images/col-lg-6.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-7{background-image:url(./images/col-lg-7.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-8{background-image:url(./images/col-lg-8.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-9{background-image:url(./images/col-lg-9.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-10{background-image:url(./images/col-lg-10.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-11{background-image:url(./images/col-lg-11.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-12{background-image:url(./images/col-lg-12.png) !important;}
+
+.doksoft_bootstrap_advanced_blocks_medium-x{width:19px !important;}
+.doksoft_bootstrap_advanced_blocks_medium-1{background-image:url(./images/col-md-1.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-2{background-image:url(./images/col-md-2.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-3{background-image:url(./images/col-md-3.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-4{background-image:url(./images/col-md-4.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-5{background-image:url(./images/col-md-5.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-6{background-image:url(./images/col-md-6.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-7{background-image:url(./images/col-md-7.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-8{background-image:url(./images/col-md-8.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-9{background-image:url(./images/col-md-9.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-10{background-image:url(./images/col-md-10.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-11{background-image:url(./images/col-md-11.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-12{background-image:url(./images/col-md-12.png) !important;}
+
+.doksoft_bootstrap_advanced_blocks_small-x{width:19px !important;}
+.doksoft_bootstrap_advanced_blocks_small-1{background-image:url(./images/col-sm-1.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-2{background-image:url(./images/col-sm-2.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-3{background-image:url(./images/col-sm-3.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-4{background-image:url(./images/col-sm-4.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-5{background-image:url(./images/col-sm-5.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-6{background-image:url(./images/col-sm-6.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-7{background-image:url(./images/col-sm-7.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-8{background-image:url(./images/col-sm-8.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-9{background-image:url(./images/col-sm-9.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-10{background-image:url(./images/col-sm-10.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-11{background-image:url(./images/col-sm-11.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-12{background-image:url(./images/col-sm-12.png) !important;}
+
+
+.doksoft_bootstrap_advanced_blocks_large-offset-x{width:16px !important;}
+.doksoft_bootstrap_advanced_blocks_large-offset-1{background-image:url(./images/offset-1.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-offset-2{background-image:url(./images/offset-2.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-offset-3{background-image:url(./images/offset-3.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-offset-4{background-image:url(./images/offset-4.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-offset-5{background-image:url(./images/offset-5.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-offset-6{background-image:url(./images/offset-6.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-offset-7{background-image:url(./images/offset-7.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-offset-8{background-image:url(./images/offset-8.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-offset-9{background-image:url(./images/offset-9.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-offset-10{background-image:url(./images/offset-10.png) !important;}
+.doksoft_bootstrap_advanced_blocks_large-offset-11{background-image:url(./images/offset-11.png) !important;}
+
+
+.doksoft_bootstrap_advanced_blocks_medium-offset-x{width:16px !important;}
+.doksoft_bootstrap_advanced_blocks_medium-offset-1{background-image:url(./images/offset-1.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-offset-2{background-image:url(./images/offset-2.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-offset-3{background-image:url(./images/offset-3.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-offset-4{background-image:url(./images/offset-4.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-offset-5{background-image:url(./images/offset-5.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-offset-6{background-image:url(./images/offset-6.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-offset-7{background-image:url(./images/offset-7.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-offset-8{background-image:url(./images/offset-8.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-offset-9{background-image:url(./images/offset-9.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-offset-10{background-image:url(./images/offset-10.png) !important;}
+.doksoft_bootstrap_advanced_blocks_medium-offset-11{background-image:url(./images/offset-11.png) !important;}
+
+.doksoft_bootstrap_advanced_blocks_small-offset-x{width:16px !important;}
+.doksoft_bootstrap_advanced_blocks_small-offset-1{background-image:url(./images/offset-1.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-offset-2{background-image:url(./images/offset-2.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-offset-3{background-image:url(./images/offset-3.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-offset-4{background-image:url(./images/offset-4.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-offset-5{background-image:url(./images/offset-5.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-offset-6{background-image:url(./images/offset-6.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-offset-7{background-image:url(./images/offset-7.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-offset-8{background-image:url(./images/offset-8.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-offset-9{background-image:url(./images/offset-9.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-offset-10{background-image:url(./images/offset-10.png) !important;}
+.doksoft_bootstrap_advanced_blocks_small-offset-11{background-image:url(./images/offset-11.png) !important;}
+
+.doksoft_bootstrap_advanced_blocks_row { background-image:url(./images/row.png) !important; width:19px !important; }
+
+.doksoft_bootstrap_advanced_blocks_temper_block_plus4:hover { background-image:url(./images/delete-mini-hover.png); }
+
+.doksoft_bootstrap_advanced_blocks_temper_block.doksoft_bootstrap_advanced_blocks_p { background-image:url(./images/p.png);width:11px; }
+.doksoft_bootstrap_advanced_blocks_temper_block.doksoft_bootstrap_advanced_blocks_span { background-image:url(./images/span.png);width:23px; }
+.doksoft_bootstrap_advanced_blocks_temper_block.doksoft_bootstrap_advanced_blocks_td { background-image:url(./images/td.png);width:11px; }
+.doksoft_bootstrap_advanced_blocks_temper_block.doksoft_bootstrap_advanced_blocks_th { background-image:url(./images/th.png);width:11px; }
+table thead > th:last-child>a>.doksoft_bootstrap_advanced_blocks_temper_block.doksoft_bootstrap_advanced_blocks_th { background-image:url(./images/th-table.png);width:27px; }
+table tr:first-child>td:last-child>a>.doksoft_bootstrap_advanced_blocks_temper_block.doksoft_bootstrap_advanced_blocks_td { background-image:url(./images/td-table.png);width:27px; }
+
+.doksoft_bootstrap_advanced_blocks_temper_block_menu
+{
+	position:absolute;
+	z-index:999;
+}
+.doksoft_bootstrap_advanced_blocks_temper_block_menu>a
+{
+	display:block;
+	height:17px;
+	width:70px;
+	background:url(./images/menu-div.png) no-repeat center center;
+	cursor:pointer;
+}
+.doksoft_bootstrap_advanced_blocks_temper_block_menu>a:hover
+{background-image:url(./images/menu-div-hover.png);}
+
+.doksoft_bootstrap_advanced_blocks_temper_block_menu>a.doksoft_bootstrap_advanced_blocks_temper_block_menu_item_span
+{background-image:url(./images/menu-span.png);}
+
+.doksoft_bootstrap_advanced_blocks_temper_block_menu>a.doksoft_bootstrap_advanced_blocks_temper_block_menu_item_span:hover
+{background-image:url(./images/menu-span-hover.png);}
+
+.doksoft_bootstrap_advanced_blocks_temper_block_menu>a.doksoft_bootstrap_advanced_blocks_temper_block_menu_item_p
+{background-image:url(./images/menu-p.png);height:16px;}
+
+.doksoft_bootstrap_advanced_blocks_temper_block_menu>a.doksoft_bootstrap_advanced_blocks_temper_block_menu_item_p:hover
+{background-image:url(./images/menu-p-hover.png);}
+
+
+.doksoft_bootstrap_advanced_blocks_temper_block_menu>a.doksoft_bootstrap_advanced_blocks_temper_block_menu_item_code
+{background-image:url(./images/menu-code.png); height:18px;}
+
+.doksoft_bootstrap_advanced_blocks_temper_block_menu>a.doksoft_bootstrap_advanced_blocks_temper_block_menu_item_code:hover
+{background-image:url(./images/menu-code-hover.png);}
+
+.doksoft_bootstrap_advanced_blocks_temper_block_menu>a.doksoft_bootstrap_advanced_blocks_temper_block_menu_item_p
+{background-image:url(./images/menu-p.png); height:16px;}
+
+.doksoft_bootstrap_advanced_blocks_temper_block_menu>a.doksoft_bootstrap_advanced_blocks_temper_block_menu_item_p:hover
+{background-image:url(./images/menu-p-hover.png);}
+
+.doksoft_bootstrap_advanced_blocks_temper_block_menu>a.doksoft_bootstrap_advanced_blocks_temper_block_menu_item_tag
+{background-image:url(./images/menu-tag.png);height:16px;}
+
+.doksoft_bootstrap_advanced_blocks_temper_block_menu>a.doksoft_bootstrap_advanced_blocks_temper_block_menu_item_tag:hover
+{background-image:url(./images/menu-tag-hover.png);}
+
+.doksoft_bootstrap_advanced_blocks_temper_block_menu>a.doksoft_bootstrap_advanced_blocks_temper_block_menu_item_table
+{background-image:url(./images/menu-table.png);}
+
+.doksoft_bootstrap_advanced_blocks_temper_block_menu>a.doksoft_bootstrap_advanced_blocks_temper_block_menu_item_table:hover
+{background-image:url(./images/menu-table-hover.png);}
+
+.doksoft_bootstrap_advanced_blocks_temper_block_menu>a.doksoft_bootstrap_advanced_blocks_temper_block_menu_item_cols
+{background-image:url(./images/menu-cols.png);}
+
+.doksoft_bootstrap_advanced_blocks_temper_block_menu>a.doksoft_bootstrap_advanced_blocks_temper_block_menu_item_cols:hover
+{background-image:url(./images/menu-cols-hover.png);}
+
+
+.doksoft_bootstrap_advanced_blocks-top-offset-7 { padding-top:9px; }
+.doksoft_bootstrap_advanced_blocks-top-offset-14 { padding-top:16px; }
+.doksoft_bootstrap_advanced_blocks-top-offset-21 { padding-top:23px; }
+.doksoft_bootstrap_advanced_blocks-top-offset-28 { padding-top:30px; }
+.doksoft_bootstrap_advanced_blocks-top-offset-35 { padding-top:37px; }
+.doksoft_bootstrap_advanced_blocks-top-offset-42 { padding-top:44px; }
+
+.doksoft_bootstrap_advanced_blocks-selected { background-color:#F5F8DB !important; }

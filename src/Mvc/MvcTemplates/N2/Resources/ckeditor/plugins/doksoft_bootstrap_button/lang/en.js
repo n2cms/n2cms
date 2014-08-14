@@ -1,0 +1,1 @@
+CKEDITOR.plugins.setLang(    'doksoft_bootstrap_button',	'en',{			title				:	'doksoft_bootstrap_button'	});
