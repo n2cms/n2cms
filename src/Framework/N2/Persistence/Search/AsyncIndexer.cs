@@ -206,7 +206,9 @@ namespace N2.Persistence.Search
                 return;
 
             string title = itemX.Title;
-            var document = indexer.CreateDocument(itemX);
+			IndexableDocument document = null;
+			if (indexer.IsIndexable(itemX))
+				document = indexer.CreateDocument(itemX);
 
             Execute(new Work
                 {
@@ -214,8 +216,15 @@ namespace N2.Persistence.Search
                     Action = () =>
                     {
                         // update the index
-                        currentWork = "Indexing " + title + " #" + itemID;
-                        indexer.Update(document);
+						if (document != null)
+						{
+							currentWork = "Indexing " + title + " #" + itemID;
+							indexer.Update(document);
+						}
+						else
+						{
+							currentWork = "Skipping " + title + " #" + itemID;
+						}
 
                         if (affectsChildren)
                         {
