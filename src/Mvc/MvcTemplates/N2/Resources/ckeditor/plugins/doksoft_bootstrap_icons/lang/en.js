@@ -1,0 +1,1 @@
+CKEDITOR.plugins.setLang(    'doksoft_bootstrap_icons',	'en', {		title: 'Insert icon',        selectIcon: 'Select icon first!'	});
