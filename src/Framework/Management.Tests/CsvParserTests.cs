@@ -83,7 +83,7 @@ no");
         [TestCase]
         public void Quotes_MayContain_EscapedNewline()
         {
-            var row = p.Parse(new StringReader("\"hell\\nno\"")).Single();
+            var row = p.Parse(new StringReader("\"hell\nno\"")).Single();
             row.Columns[0].ShouldBe(@"hell
 no");
         }

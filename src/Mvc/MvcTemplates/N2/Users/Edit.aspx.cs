@@ -9,21 +9,34 @@ namespace N2.Edit.Membership
 {
     public partial class Edit : EditPage
     {
-        string SelectedUserName;
+        private string SelectedUserName;
         private IAccountInfo SelectedUser;
-        private AccountManager AccountManager { get { return N2.Context.Current.Resolve<AccountManager>(); } }
+
+        private AccountManager AccountManager
+        {
+            get { return N2.Context.Current.Resolve<AccountManager>(); }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             LoadSelectedUser();
             hlPassword.NavigateUrl = "{ManagementUrl}/Users/Password.aspx?user=".ResolveUrlTokens() + Request["user"];
-            if (!IsPostBack)
+            cblRoles.Visible = Roles.Enabled;
+            if (IsPostBack) return;
+
+            txtEmail.Text = SelectedUser.Email;
+
+            if (Roles.Enabled)
             {
                 cblRoles.DataBind();
-                this.txtEmail.Text = SelectedUser.Email;
                 foreach (ListItem item in cblRoles.Items)
                     item.Selected = AccountManager.IsUserInRole(SelectedUserName, item.Value);
-                    // REMOVE: item.Selected = Roles.IsUserInRole(SelectedUserName, item.Value);
+                // REMOVE: item.Selected = Roles.IsUserInRole(SelectedUserName, item.Value);
+            }
+            else
+            {
+                cblRoles.DataSourceID = null;
+                lblRoles.Visible = false;
             }
         }
 
@@ -33,7 +46,7 @@ namespace N2.Edit.Membership
 
             SelectedUser = AccountManager.FindUserByName(SelectedUserName);
             if (SelectedUser == null)
-               throw new N2Exception("User '{0}' not found.", SelectedUserName);
+                throw new N2Exception("User '{0}' not found.", SelectedUserName);
 
             /* REMOVE: MembershipUserCollection muc = System.Web.Security.Membership.FindUsersByName(SelectedUserName);
             if (muc.Count < 1)
@@ -45,42 +58,46 @@ namespace N2.Edit.Membership
         protected void btnSave_Click(object sender, EventArgs e)
         {
             if (SelectedUser == null)
-               throw new N2Exception("User '{0}' not found.", SelectedUserName);
+                throw new N2Exception("User '{0}' not found.", SelectedUserName);
 
+            if (Roles.Enabled)
+            {
+                foreach (ListItem item in cblRoles.Items)
+                {
+                    if (item.Selected && !AccountManager.IsUserInRole(SelectedUserName, item.Value))
+                        AccountManager.AddUserToRole(SelectedUserName, item.Value);
+                    else if (!item.Selected && AccountManager.IsUserInRole(SelectedUserName, item.Value))
+                        AccountManager.RemoveUserFromRole(SelectedUserName, item.Value);
+                }
+                AccountManager.UpdateUserEmail(SelectedUserName, txtEmail.Text);
+                Response.Redirect("Users.aspx");
+
+                /* REMOVE: SelectedUser.Email = txtEmail.Text;
             foreach (ListItem item in cblRoles.Items)
             {
-                if (item.Selected && !AccountManager.IsUserInRole(SelectedUserName, item.Value))
-                    AccountManager.AddUserToRole(SelectedUserName, item.Value);
-                else if (!item.Selected && AccountManager.IsUserInRole(SelectedUserName, item.Value))
-                    AccountManager.RemoveUserFromRole(SelectedUserName, item.Value);
-            }
-            AccountManager.UpdateUserEmail(SelectedUserName, txtEmail.Text);
-            Response.Redirect("Users.aspx");
-
-            /* REMOVE: SelectedUser.Email = txtEmail.Text;
-            foreach (ListItem item in cblRoles.Items)
-            {
-                if (item.Selected && !Roles.IsUserInRole(SelectedUserName, item.Value))
-                    Roles.AddUserToRole(SelectedUserName, item.Value);
-                else if (!item.Selected && Roles.IsUserInRole(SelectedUserName, item.Value))
-                    Roles.RemoveUserFromRole(SelectedUserName, item.Value);
+                    if (item.Selected && !Roles.IsUserInRole(SelectedUserName, item.Value))
+                        Roles.AddUserToRole(SelectedUserName, item.Value);
+                    else if (!item.Selected && Roles.IsUserInRole(SelectedUserName, item.Value))
+                        Roles.RemoveUserFromRole(SelectedUserName, item.Value);
+                }
             }
             System.Web.Security.Membership.UpdateUser(SelectedUser);
             Response.Redirect("Users.aspx");
              */
+            }
+        }
+
+        public static class RolesSource
+        {
+            private static AccountManager AccountManager
+            {
+                get { return N2.Context.Current.Resolve<AccountManager>(); }
+            }
+
+            public static string[] GetAllRoles()
+            {
+                return AccountManager.GetAllRoles();
+            }
         }
     }
-
-
-    public static class RolesSource
-    {
-       private static AccountManager AccountManager { get { return N2.Context.Current.Resolve<AccountManager>(); } }
-
-       public static string[] GetAllRoles()
-       {
-          return AccountManager.GetAllRoles();
-       }
-
-    }
-
 }

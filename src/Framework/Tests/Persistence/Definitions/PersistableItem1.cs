@@ -14,7 +14,11 @@ namespace N2.Tests.Persistence.Definitions
         public virtual string PersistableProperty { get; set; }
 
         [EditableDummy]
-        public virtual List<string> StringList { get; set; }
+        public virtual List<string> StringList
+        {
+            get { return (List<string>)GetDetail("StringList"); }
+            set { SetDetail("StringList", value); }
+        }
 
         [EditableLink]
         public virtual ContentItem EditableLink { get; set; }
@@ -140,8 +144,12 @@ namespace N2.Tests.Persistence.Definitions
         [Persistable]
         public virtual string PersistableProperty { get; set; }
 
-        [EditableDummy]
-        public virtual List<string> StringList { get; set; }
+        [EditableDummy] 
+        public virtual List<string> StringList
+        {
+            get { return (List<string>)GetDetail("StringList"); }
+            set { SetDetail("StringList", value); }
+        }
 
         [EditableLink]
         public virtual ContentItem EditableLink { get; set; }

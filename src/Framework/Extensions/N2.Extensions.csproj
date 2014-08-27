@@ -128,9 +128,6 @@
     <Compile Include="Web\Mvc\ControllerExtensions.cs" />
     <Compile Include="Web\Mvc\Html\ContextExtensions.cs" />
     <Compile Include="Web\Mvc\Html\DetailExtensions.cs" />
-    <Compile Include="Web\Mvc\Html\Displayable.cs" />
-    <Compile Include="Web\Mvc\Html\DisplayExtensions.cs" />
-    <Compile Include="Web\Mvc\Html\ItemHelper.cs" />
     <Compile Include="Web\Mvc\Html\TemplateRenderer.cs" />
     <Compile Include="Web\Mvc\IItemContainer.cs" />
     <Compile Include="Web\Mvc\MvcEngine.cs" />
