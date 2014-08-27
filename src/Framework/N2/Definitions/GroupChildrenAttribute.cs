@@ -201,12 +201,13 @@ namespace N2.Definitions
                     .Select(i => childFactory(query.Parent, (StartPagingTreshold + i * PageSize + 1) + "-" + (StartPagingTreshold + i * PageSize + PageSize), "virtual-grouping/" + i, () => query.Parent.Children.Find(query.AsParameters().Skip(StartPagingTreshold + i * PageSize).Take(PageSize)))));
             }
 
-	        var page = previousChildren.Take(StartPagingTreshold).ToList();
+            var prevChildren = previousChildren as ContentItem[] ?? previousChildren.ToArray();
+            var page = prevChildren.Take(StartPagingTreshold).ToList();
 	        if (page.Count < StartPagingTreshold)
 		        return page;
 			return page.Concat(
-                    Enumerable.Range(0, (page.Count - StartPagingTreshold + PageSize - 1) / PageSize)
-                        .Select(i => childFactory(query.Parent, (StartPagingTreshold + i * PageSize + 1) + "-" + (StartPagingTreshold + i * PageSize + PageSize), "virtual-grouping/" + i, () => previousChildren.Skip(StartPagingTreshold + i * PageSize).Take(PageSize))));
+                    Enumerable.Range(0, (prevChildren.Length - StartPagingTreshold + PageSize - 1) / PageSize)
+                        .Select(i => childFactory(query.Parent, (StartPagingTreshold + i * PageSize + 1) + "-" + (StartPagingTreshold + i * PageSize + PageSize), "virtual-grouping/" + i, () => prevChildren.Skip(StartPagingTreshold + i * PageSize).Take(PageSize))));
         }
 
         private IEnumerable<ContentItem> ChildrenByPage(IEnumerable<ContentItem> previousChildren, Query query, GroupFactoryDelegate childFactory)
