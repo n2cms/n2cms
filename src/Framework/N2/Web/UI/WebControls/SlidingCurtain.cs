@@ -25,20 +25,33 @@ namespace N2.Web.UI.WebControls
             set { ViewState["ScriptUrl"] = value; }
         }
 
-        public string StyleSheetUrl
+        /// <summary>
+        /// Specifies the URL to the N2CMS Admin Parts Style sheet. By default, this uses the path under {ManagementUrl} however you can override the styles if your page needs special configuration.
+        /// </summary>
+		public string StyleSheetUrl
         {
             get { return (string)(ViewState["StyleSheetUrl"] ?? "{ManagementUrl}/Resources/Css/Parts.css"); }
             set { ViewState["StyleSheetUrl"] = value; }
         }
 
-        private static readonly string scriptFormat = "n2SlidingCurtain.init('#{0}',{1});";
+	    /// <summary>
+	    /// Causes N2CMS to not load the JQuery library on this page. Set this to 'true' if your site already uses JQuery.
+	    /// </summary>
+		public bool SkipJQuery
+	    {
+		    get { return (bool) (ViewState["SkipJQuery"] ?? false); }
+		    set { ViewState["SkipJQuery"] = value; }
+	    }
+
+	    private static readonly string scriptFormat = "n2SlidingCurtain.init('#{0}',{1});";
 
         protected override void OnPreRender(System.EventArgs e)
         {
             if (string.IsNullOrEmpty(ID))
                 ID = "SC";
 
-            Register.JQuery(Page);
+			if (!SkipJQuery)
+				Register.JQuery(Page);
             Register.JQueryPlugins(Page);
             Register.JavaScript(Page, ScriptUrl);
             Register.StyleSheet(Page, StyleSheetUrl);
