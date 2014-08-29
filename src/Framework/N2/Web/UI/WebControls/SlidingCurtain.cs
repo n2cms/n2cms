@@ -70,29 +70,30 @@ namespace N2.Web.UI.WebControls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            writer.Write("<div id='");
+            writer.Write(@"<div id=""");
             writer.Write(ClientID);
-            writer.Write("' class='sc");
+            writer.Write(@""" class=""sc");
             var item = ItemUtility.FindCurrentItem(this);
             if (item != null)
                 writer.Write(" state" + item.State.ToString());
-            writer.Write("'");
+            writer.Write("\"");
             if (BackgroundUrl.Length > 0)
             {
                 WriteBgStyle(BackgroundUrl, writer);
             }
             writer.Write(">");
-            writer.Write("<div class='scContent'>");
 
-            base.Render(writer);
-            writer.Write("<a href='javascript:void(0);' class='close sc-toggler' title='Close'>&laquo;</a><a href='javascript:void(0);' class='open sc-toggler' title='Open'>&raquo;</a>");
-            writer.Write("</div></div>");
+		    writer.Write(@"<div class=""scContent"">");
+		    base.Render(writer);
+		    writer.Write(
+			    @"<a href=""javascript:void(0);"" class=""close sc-toggler"" title=""Close"">&laquo;</a><a href=""javascript:void(0);"" class=""open sc-toggler"" title=""Open"">&raquo;</a>");
+	        writer.Write("</div>");
         }
 
         private void WriteBgStyle(string url, HtmlTextWriter writer)
         {
             url = N2.Web.Url.ToAbsolute(url);
-            writer.Write(" style='background-image:url({0});'", url);
+            writer.Write(@" style=""background-image:url({0});""", url);
         }
     }
 }
