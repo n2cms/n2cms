@@ -1,17 +1,13 @@
 using N2.Edit;
-using N2.Engine;
 using N2.Management.Api;
-using N2.Tests.Content;
 using N2.Tests.Fakes;
 using N2.Tests.Persistence;
 using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
 using Shouldly;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using System.Text;
 
 namespace N2.Tests.Edit.Api
 {
@@ -77,7 +73,7 @@ namespace N2.Tests.Edit.Api
 		[TestCase("templates")]
 		[TestCase("wizards")]
 		[TestCase("users")]
-		[TestCase("roles")]
+		// depends on config [TestCase("roles")]
         public void MainMenu_ContainsMenuItems(string expectedMenuItem)
         {
             var definition = builder.GetInterfaceDefinition(new FakeHttpContext(), new SelectionUtility(item, null));

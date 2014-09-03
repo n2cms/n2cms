@@ -1,8 +1,7 @@
+using System.Web.Security;
 using N2.Collections;
 using N2.Edit;
-using N2.Edit.Trash;
 using N2.Engine;
-using N2.Persistence;
 using N2.Security;
 using N2.Web;
 using System;
@@ -143,7 +142,7 @@ namespace N2.Management.Api
     [Service]
     public class InterfaceBuilder
     {
-        private IEngine engine;
+        private readonly IEngine engine;
 
         public InterfaceBuilder(IEngine engine)
         {
@@ -197,14 +196,16 @@ namespace N2.Management.Api
             var children = node.Children.ToList();
             for (int i = children.Count - 1; i >= 0; i--)
             {
-                RemoveRemovedComponentsRecursive(children[i], removedComponents);
+                if (children[i] != null)
+                {
+                    RemoveRemovedComponentsRecursive(children[i], removedComponents);
 
-                if (children[i].Current == null || !removedComponents.Contains(children[i].Current.Name))
-                    continue;
-
+                    if (children[i].Current == null || !removedComponents.Contains(children[i].Current.Name))
+                        continue;
+                }
                 children.RemoveAt(i);
-                node.Children = children.ToArray();
             }
+            node.Children = children.ToArray();
         }
 
         private InterfacePartials GetPartials(HttpContextBase context)
@@ -277,7 +278,7 @@ namespace N2.Management.Api
             });
         }
 
-        static Dictionary<string, string> replacements = new Dictionary<string, string>
+        static readonly Dictionary<string, string> replacements = new Dictionary<string, string>
         {
              { "{selected}", "{{Context.CurrentItem.Path}}" },
              { "{memory}", "{{Context.Memory.Path}}" },
@@ -318,7 +319,7 @@ namespace N2.Management.Api
             {
                 new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "preview", ToolTip = "Fullscreen", Url = "{{Context.CurrentItem.PreviewUrl}}", Target = Targets.Top, IconClass = "fa fa-eye" })
                 {
-                    Children = new Node<InterfaceMenuItem>[]
+                    Children = new[]
                     {
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "fullscreen", Title = "Fullscreen", IconClass = "fa fa-eye", Target = Targets.Top, Url = "{{Context.CurrentItem.PreviewUrl}}" }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "previewdivider1", Divider = true }),
@@ -329,13 +330,13 @@ namespace N2.Management.Api
                             ClientAction = "setViewPreference('published')",
                             SelectedBy = "Viewpublished"  }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "previewdivider2", Divider = true }),
-                        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "links", Title = "Show links", IconClass = "fa fa-link", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/LinkTracker/Default.aspx')}}".ResolveUrlTokens() }),
+                        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "links", Title = "Show links", IconClass = "fa fa-link", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/LinkTracker/Default.aspx')}}".ResolveUrlTokens() })
                     }
                 },
                 new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "add", TemplateUrl = "App/Partials/ContentAdd.html", RequiredPermission = Permission.Write }),
                 new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "edit", Title = "Edit", TemplateUrl = "App/Partials/MenuNodeLastChild.html", RequiredPermission = Permission.Write })
                 {
-                    Children = new Node<InterfaceMenuItem>[]
+                    Children = new[]
                     {
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "organize", Title = "Organize parts", IconClass = "fa fa-th-large", Target = Targets.Preview, Url = "{{appendQuery(Context.CurrentItem.PreviewUrl, 'edit=drag')}}", RequiredPermission = Permission.Write }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "editdetails", Title = "Properties", IconClass = "fa fa-pencil-square", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Edit.aspx', true)}}".ResolveUrlTokens(), RequiredPermission = Permission.Write }),
@@ -343,14 +344,14 @@ namespace N2.Management.Api
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "security", Title = "Manage security", IconClass = "fa fa-lock", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Security/Default.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Administer }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "bulk", Title = "Bulk editing", IconClass = "fa fa-edit", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Export/BulkEditing.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Publish }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "export", Title = "Export", IconClass = "fa fa-cloud-download", ToolTip = "Export content to file", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Export/Export.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Administer }),
-                        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "import", Title = "Import", IconClass = "fa fa-cloud-upload", ToolTip = "Import content from file", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Export/Default.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Administer }),
+                        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "import", Title = "Import", IconClass = "fa fa-cloud-upload", ToolTip = "Import content from file", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Export/Default.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Administer })
                     }
                 },
                 new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "versions", TemplateUrl = "App/Partials/ContentVersions.html", Url = "{{appendSelection('{ManagementUrl}/Content/Versions/')}}".ResolveUrlTokens(), RequiredPermission = Permission.Publish }),
                 new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "language", TemplateUrl = "App/Partials/ContentLanguage.html", Url = "{{appendSelection('{ManagementUrl}/Content/Globalization/')}}".ResolveUrlTokens(), RequiredPermission = Permission.Write }),
                 new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "transitions", TemplateUrl = "App/Partials/ContentTransitions.html", RequiredPermission = Permission.Publish })
                 {
-                    Children = new Node<InterfaceMenuItem>[]
+                    Children = new[]
                     {
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "delete", Title = "Delete", IconClass = "fa fa-trash-o", Url = "{{appendSelection('{ManagementUrl}/Content/Delete.aspx')}}".ResolveUrlTokens(), ToolTip = "Move selected item to trash", RequiredPermission = Permission.Publish, HiddenBy = "Deleted" }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "publish", Title = "Publish", IconClass = "fa fa-play-sign", ClientAction = "publish()", RequiredPermission = Permission.Publish, HiddenBy = "Published" }),
@@ -363,7 +364,7 @@ namespace N2.Management.Api
                 new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "search", Alignment = "Right", TemplateUrl = "App/Partials/ContentSearch.html" }),
                 new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "me", Url = engine.Content.Traverse.RootPage.Url, ToolTip = context.User.Identity.Name, Alignment = "Right", IconClass = "fa fa-user" })
                 {
-                    Children = new Node<InterfaceMenuItem>[]
+                    Children = new[]
                     {
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "password", Title = "Change password", IconClass = "fa fa-user", ToolTip = "Manage password", Target = Targets.Preview, Url = "{Account.EditPassword.PageUrl}".ResolveUrlTokens(), SelectedBy = "EditPassword" }),
   				        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "signout", Title = "Sign out", IconClass = "fa fa-signout", ToolTip = "Sign out {{Context.User.Name}}", Url = "{Account.Logout.PageUrl}".ResolveUrlTokens() }),
@@ -410,41 +411,33 @@ namespace N2.Management.Api
             var selectedItem = selection.ParseSelectionFromRequest();
             if (selectedItem == null && profile.Settings.ContainsKey("Selected"))
                 selectedItem = selection.ParseSelected((string)profile.Settings["Selected"]);
-            if (selectedItem == null)
-                selectedItem = selection.Traverse.StartPage;
-            return selectedItem;
+            return selectedItem ?? (selection.Traverse.StartPage);
         }
 
         protected virtual Node<TreeNode> GetStructure(HierarchyNode<ContentItem> structure, ItemFilter filter)
         {
-            return ApiExtensions.CreateNode(structure, engine.Resolve<IContentAdapterProvider>(), filter);
+            return structure.CreateNode(engine.Resolve<IContentAdapterProvider>(), filter);
         }
 
         protected virtual Node<InterfaceMenuItem> GetMainMenu()
         {
-            return new Node<InterfaceMenuItem>
+            var items = new List<Node<InterfaceMenuItem>>
             {
-                Children = new Node<InterfaceMenuItem>[]
-                {
-                    new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "dashboard", Title = "Dashboard", IconClass = "fa fa-home" , Target = Targets.Preview, Url = engine.Content.Traverse.RootPage.Url, SelectedBy = "MyselfRoot" }),
-                    new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "pages", Title = "Pages", IconClass = "fa fa-edit", Target = "_top", Url = "{ManagementUrl}".ResolveUrlTokens(), SelectedBy = "ContentPages" }),
+                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "dashboard", Title = "Dashboard", IconClass = "fa fa-home" , Target = Targets.Preview, Url = engine.Content.Traverse.RootPage.Url, SelectedBy = "MyselfRoot" }),           
+                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "pages", Title = "Pages", IconClass = "fa fa-edit", Target = "_top", Url = "{ManagementUrl}".ResolveUrlTokens(), SelectedBy = "ContentPages" }),                   
+                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "divider1", Divider = true }),
                     
-                    new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "divider1", Divider = true }),
-                    
-                    new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "sitesettings", Title = "Site Settings", IconClass = "fa fa-cog", ToolTip = "Edit site settings", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/EditRecursive.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Write, SelectedBy = "ContentEditRecursive" }),
-                    new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "templates", Title = "Templates", IconClass = "fa fa-plus-square-o", ToolTip = "Show predefined templates with content", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Templates/Default.aspx')}}".ResolveUrlTokens().ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "ContentTemplatesDefault" }),
-                    new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "wizards", Title = "Wizards", IconClass = "fa fa-magic", ToolTip = "Show predefined types and locations for content", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Wizard/Default.aspx')}}".ResolveUrlTokens(), SelectedBy = "ContentWizardDefault" }),
-
-                    new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "divider2", Divider = true }),
+                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "sitesettings", Title = "Site Settings", IconClass = "fa fa-cog", ToolTip = "Edit site settings", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/EditRecursive.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Write, SelectedBy = "ContentEditRecursive" }),
+                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "templates", Title = "Templates", IconClass = "fa fa-plus-square-o", ToolTip = "Show predefined templates with content", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Templates/Default.aspx')}}".ResolveUrlTokens().ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "ContentTemplatesDefault" }),
+                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "wizards", Title = "Wizards", IconClass = "fa fa-magic", ToolTip = "Show predefined types and locations for content", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Wizard/Default.aspx')}}".ResolveUrlTokens(), SelectedBy = "ContentWizardDefault" }),
+                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "divider2", Divider = true }),
         
-                    new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "users", Title = "Users", IconClass = "fa fa-user shadow", ToolTip = "Manage users", Target = Targets.Preview, Url = "{Account.Users.PageUrl}".ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "UsersUsers" }),
-  					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "roles", Title = "Roles", IconClass = "fa fa-group", ToolTip = "Manage roles", Target = Targets.Preview, Url = "{Account.Roles.PageUrl}".ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "RolesList" }),
-                    /*
-                    REMOVE: new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "users", Title = "Users", IconClass = "fa fa-user shadow", ToolTip = "Manage users", Target = Targets.Preview, Url = "{ManagementUrl}/Users/Users.aspx".ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "UsersUsers" }),
-                    REMOVE: new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "roles", Title = "Roles", IconClass = "fa fa-group", ToolTip = "Manage roles", Target = Targets.Preview, Url = "{ManagementUrl}/Roles/Roles.aspx".ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "RolesList" }),
-                     */
-                }
+                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "users", Title = "Users", IconClass = "fa fa-user shadow", ToolTip = "Manage users", Target = Targets.Preview, Url = "{Account.Users.PageUrl}".ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "UsersUsers" }),
             };
+            if (Roles.Enabled)
+                items.Add (new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "roles", Title = "Roles", IconClass = "fa fa-group", ToolTip = "Manage roles", Target = Targets.Preview, Url = "{Account.Roles.PageUrl}".ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "RolesList" }));
+
+            return new Node<InterfaceMenuItem> { Children = items.ToArray() };
         }
     }
 }

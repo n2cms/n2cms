@@ -134,7 +134,18 @@ namespace N2.Security.AspNet.Identity
             TUser user = UserStore.FindUserByName(userName);
             if (user == null)
                 return false;
-            UserManager.AddPassword(user.Id, newPassword); // will store hash of the password 
+
+            /*
+            // variant a:
+            if (UserManager.HasPassword(user.Id))
+                UserManager.RemovePassword(user.Id);
+            var result = UserManager.AddPassword(user.Id, newPassword); // will store hash of the password 
+            return result.Succeeded;
+            */
+
+            // variant b:
+            String newHashed = UserManager.PasswordHasher.HashPassword(newPassword);
+            UserStore.SetPasswordHashAsync(user, newHashed).Wait();  // assuring password is changed before leaving the method
             return true;
         }
 
