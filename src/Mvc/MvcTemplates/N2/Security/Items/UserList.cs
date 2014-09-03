@@ -41,16 +41,24 @@ namespace N2.Security.Items
             set { SetDetail("Roles", value, "Everyone"); }
         }
 
+        /// <summary>List of all known roles </summary>
         public virtual string[] GetRoleNames()
         {
             return Roles.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        /// <summary>Is role already present? </summary>
+        /// <param name="roleName">The role</param>
+        public virtual bool HasRole(string roleName)
+        {
+            return (Array.IndexOf<string>(GetRoleNames(), roleName) >= 0);
         }
 
         /// <summary>Adds a role if not already present.</summary>
         /// <param name="roleName">The role to add.</param>
         public virtual void AddRole(string roleName)
         {
-            if(Array.IndexOf<string>(GetRoleNames(), roleName) < 0)
+            if (!HasRole(roleName))
                 Roles += Environment.NewLine + roleName;
         }
 

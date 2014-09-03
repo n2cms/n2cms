@@ -14,7 +14,8 @@ namespace N2.Edit.Versioning
         public DateTime? Published { get; set; }
         public DateTime? FuturePublish { get; set; }
         public DateTime? Expires { get; set; }
-        public int VersionIndex { get; set; }
+		public int VersionIndex { get; set; }
+		public int PartsCount { get; set; }
         public string SavedBy { get; set; }
 
         public ContentItem Content { get { return ContentFactory(); } }

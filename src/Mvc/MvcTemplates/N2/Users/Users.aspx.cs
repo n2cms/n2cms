@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Web.Security;
 using System.Web.UI.WebControls;
 using N2.Edit.Web;
@@ -28,23 +29,30 @@ namespace N2.Edit.Membership
 
     public static class UsersSource
     {
-        public const int PageSize = 100;
+        private static AccountManager AccountManager { get { return N2.Context.Current.Resolve<AccountManager>(); } }
+ 
+        public static int PageSize { get { return AccountManager.PageSize; } }
 
-        public static MembershipUserCollection GetUsers(int start, int max)
+        public static IList<IAccountInfo> GetUsers(int start, int max)
         {
-            int page = start/max;
+            return AccountManager.GetUsers(start, max);
+            
+            /* REMOVE: int page = start/max;
             int total;
             MembershipUserCollection users = System.Web.Security.Membership.GetAllUsers(page, max, out total);
 
             return users;
+             */
         }
 
         public static int GetUsersCount()
         {
-            int total;
+            return AccountManager.GetUsersCount();
+ 
+            /* REMOVE: int total;
             System.Web.Security.Membership.GetAllUsers(0, PageSize, out total);
 
-            return total;
+            return total; */
         }
 
         public static void DeleteUser(string userName)
@@ -52,7 +60,8 @@ namespace N2.Edit.Membership
             if (userName == null)
                 throw new ArgumentNullException("userName");
 
-            System.Web.Security.Membership.DeleteUser(userName, true);
+            AccountManager.DeleteUser(userName);
+            // REMOVE: System.Web.Security.Membership.DeleteUser(userName, true);
         }
     }
 }

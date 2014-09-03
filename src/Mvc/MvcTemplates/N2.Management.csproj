@@ -977,7 +977,11 @@
       <DependentUpon>Roles.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="N2\Security\AccountInfo.cs" />
+    <Compile Include="N2\Security\AccountManager.cs" />
+    <Compile Include="N2\Security\AccountResources.cs" />
     <Compile Include="N2\Security\ContentProfileRepository.cs" />
+    <Compile Include="N2\Security\Details\EditableRolesAttribute.cs" />
     <Compile Include="N2\Security\EditablePassword.cs" />
     <Compile Include="N2\Myself\EditPassword.aspx.cs">
       <DependentUpon>EditPassword.aspx</DependentUpon>
@@ -986,6 +990,9 @@
     <Compile Include="N2\Myself\EditPassword.aspx.designer.cs">
       <DependentUpon>EditPassword.aspx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Security\Items\UserExternalLoginInfo.cs" />
+    <Compile Include="N2\Security\MembershipAccountManager.cs" />
+    <Compile Include="N2\Security\MembershipAccountResources.cs" />
     <Compile Include="N2\Web\FontHandler.cs" />
     <Compile Include="N2\Resources\IconHandler.ashx.cs">
       <DependentUpon>IconHandler.ashx</DependentUpon>
@@ -1297,6 +1304,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="N2\Web\RootNode.cs" />
+    <Compile Include="N2\Web\UI\Controls\SplitButtons.cs" />
+    <Compile Include="N2\Web\UI\Controls\Alert.cs" />
     <Compile Include="N2\Web\UI\Controls\CancelLink.cs" />
     <Compile Include="N2\Web\UI\Controls\ItemLink.cs" />
     <Compile Include="N2\Web\UI\Controls\PermissionPanel.cs" />
@@ -1489,7 +1498,6 @@
     <Content Include="N2\Resources\img\tabs_begin.gif" />
     <Content Include="N2\Resources\img\tab_end.gif" />
     <Content Include="N2\Resources\Js\parts.js" />
-    <Content Include="N2\Users\Css\Membership.css" />
     <Content Include="N2\Users\Edit.aspx" />
     <Content Include="N2\Users\New.aspx" />
     <Content Include="N2\Users\Password.aspx" />
@@ -1584,10 +1592,6 @@
     <Content Include="N2\Resources\KeepAlive\ping.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\IoC.Windsor\N2.IoC.Windsor3.csproj">
-      <Project>{7a9c0479-64af-4df1-818c-118866db8a3d}</Project>
-      <Name>N2.IoC.Windsor3</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Framework\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>
