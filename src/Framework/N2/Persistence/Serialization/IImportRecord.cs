@@ -9,7 +9,8 @@ namespace N2.Persistence.Serialization
         ContentItem RootItem { get; }
         IList<Attachment> Attachments { get; }
         IList<Attachment> FailedAttachments { get; }
-        IList<Exception> Errors { get; }
+		IList<Tuple<ContentItem, Exception>> FailedContentItems { get; } 
+		IList<Exception> Errors { get; }
         IList<UnresolvedLink> UnresolvedLinks { get; }
     }
 }
