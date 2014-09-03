@@ -63,8 +63,12 @@ namespace N2.Edit
                 item.AddTo(null);
                 item.AddTo(parent);
             }
-            else if (item.Parent == null || !parent.Children.Contains(item))
-                item.AddTo(parent);
+			else if (item.Parent == null || !parent.Children.Contains(item))
+			{
+				item.AddTo(parent);
+				if (ItemMoved != null)
+					ItemMoved.Invoke(this, new DestinationEventArgs(item, parent));
+			}
 
             using (var tx = persister.Repository.BeginTransaction())
             {
@@ -78,13 +82,17 @@ namespace N2.Edit
 
         public void MoveTo(ContentItem item, ContentItem parent, int index)
         {
-            if (item.Parent != parent || !parent.Children.Contains(item))
-                item.AddTo(parent);
-            else if (parent.Children.Contains(item) && parent.Children.Last() != item)
-            {
-                item.AddTo(null);
-                item.AddTo(parent);
-            }
+			if (item.Parent != parent || !parent.Children.Contains(item))
+			{
+				item.AddTo(parent);
+				if (ItemMoved != null)
+					ItemMoved.Invoke(this, new DestinationEventArgs(item, parent));
+			}
+			else if (parent.Children.Contains(item) && parent.Children.Last() != item)
+			{
+				item.AddTo(null);
+				item.AddTo(parent);
+			}
 
             IList<ContentItem> siblings = parent.Children;
             Utility.MoveToIndex(siblings, item, index);
@@ -118,31 +126,46 @@ namespace N2.Edit
             if (relativeTo == null) throw new ArgumentNullException("item");
             if (relativeTo == null) throw new ArgumentNullException("relativeTo");
             if (relativeTo.Parent == null) throw new ArgumentException("The supplied item '" + relativeTo + "' has no parent to add to.", "relativeTo");
-            
-            if (item.Parent == null 
-                || item.Parent != relativeTo.Parent
-                || !item.Parent.Children.Contains(item))
-                item.AddTo(relativeTo.Parent);
 
-            IList<ContentItem> siblings = item.Parent.Children;
+			using (var tx = persister.Repository.BeginTransaction())
+			{
+				if (item.Parent == null 
+					|| item.Parent != relativeTo.Parent
+					|| !item.Parent.Children.Contains(item))
+				{
+					item.AddTo(relativeTo.Parent);
+					if (ItemMoved != null)
+						ItemMoved.Invoke(this, new DestinationEventArgs(item, relativeTo.Parent));
+					//foreach (ContentItem updatedItem in item.UpdateAncestralTrailRecursive(relativeTo.Parent))
+					//{
+					//	persister.Repository.SaveOrUpdate(updatedItem);
+					//}
+				}
+
+				IList<ContentItem> siblings = item.Parent.Children;
             
-            int itemIndex = siblings.IndexOf(item);
-            int relativeToIndex = siblings.IndexOf(relativeTo);
+				int itemIndex = siblings.IndexOf(item);
+				int relativeToIndex = siblings.IndexOf(relativeTo);
             
-            if(itemIndex < 0)
-            {
-                if(position == NodePosition.Before)
-                    siblings.Insert(relativeToIndex, item);
-                else
-                    siblings.Insert(relativeToIndex + 1, item);
-            }
-            else if(itemIndex < relativeToIndex && position == NodePosition.Before)
-                MoveTo(item, relativeToIndex - 1);
-            else if (itemIndex > relativeToIndex && position == NodePosition.After)
-                MoveTo(item, relativeToIndex + 1);
-            else
-                MoveTo(item, relativeToIndex);
+				if(itemIndex < 0)
+				{
+					if(position == NodePosition.Before)
+						siblings.Insert(relativeToIndex, item);
+					else
+						siblings.Insert(relativeToIndex + 1, item);
+				}
+				else if(itemIndex < relativeToIndex && position == NodePosition.Before)
+					MoveTo(item, relativeToIndex - 1);
+				else if (itemIndex > relativeToIndex && position == NodePosition.After)
+					MoveTo(item, relativeToIndex + 1);
+				else
+					MoveTo(item, relativeToIndex);
+
+				tx.Commit();
+			}
         }
         #endregion
-    }
+
+		public event EventHandler<DestinationEventArgs> ItemMoved;
+	}
 }
