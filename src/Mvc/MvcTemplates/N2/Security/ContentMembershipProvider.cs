@@ -410,8 +410,17 @@ namespace N2.Security
             }
 
             var users = Bridge.Repository.Find(Parameter.Equal("ID", _userId)
-                & Parameter.TypeEqual(typeof(User).Name)
-                & Parameter.Equal("Parent", userContainer)).OfType<User>();
+                & Parameter.Equal("Parent", userContainer)
+                // & Parameter.TypeEqual(typeof(User).Name)  // review (JH): this might be a problem - 
+                                                          //                 ItemBridge supports User or any type extended from User!
+                                                          // Solution:    remove the term -
+                                                          //              it does not contribute to query effectiveness due to low selectivity,
+                                                          //              and does not contribute to logics.
+                                                          // Note: Linq method OfType returns object that can be casted to specific type,
+                                                          //       on the ohter hand Parameter.TypeEqual returns object of exactly the specified type.
+                                                          //       http://msdn.microsoft.com/en-us/library/vstudio/bb360913(v=vs.100).aspx
+                )
+                .OfType<User>();
 
             return users.Select(u => u.GetMembershipUser(Name)).FirstOrDefault();
         }
@@ -422,9 +431,12 @@ namespace N2.Security
             if (userContainer == null)
                 return null;
 
-            var users = Bridge.Repository.Find(
-				Parameter.TypeEqual(typeof(User).Name) 
-				& Parameter.Equal("Parent", userContainer)).ToList();
+            var users = Bridge.Repository.Find(Parameter.Equal("Parent", userContainer)
+                // & Parameter.TypeEqual(typeof(User).Name)  // review (JH): this might be a problem
+                                                             //              See discussion above.
+                                                             //              The proposed solution is the same: remove the term!
+				)
+                .OfType<User>().ToList();
 
             // default admin account does not have an email field by default, to test first.
 	        var userNames = from x in users

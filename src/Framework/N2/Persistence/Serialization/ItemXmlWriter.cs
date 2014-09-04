@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Globalization;
 using System.Xml;
 using N2.Definitions;
 using N2.Engine;
@@ -95,11 +96,11 @@ namespace N2.Persistence.Serialization
                 throw new ArgumentNullException("item");
 
             itemElement.WriteAttribute("id", item.ID);
-            itemElement.WriteAttribute("name", item.ID.ToString() == item.Name ? "" : item.Name);
+            itemElement.WriteAttribute("name", item.ID.ToString(CultureInfo.InvariantCulture) == item.Name ? "" : item.Name);
             if (item.Parent != null)
             {
                 if (item.Parent.ID != 0)
-                    itemElement.WriteAttribute("parent", item.Parent.ID.ToString());
+                    itemElement.WriteAttribute("parent", item.Parent.ID.ToString(CultureInfo.InvariantCulture));
                 else
                 {
                     itemElement.WriteAttribute("parent", item.Parent.VersionOf.ID.ToString());
@@ -107,6 +108,17 @@ namespace N2.Persistence.Serialization
                         itemElement.WriteAttribute("parentVersionKey", item.Parent.GetVersionKey());
                 }
             }
+
+	        string typeAndAssemblyName = null;
+	        try
+	        {
+		        SerializationUtility.GetTypeAndAssemblyName(item.GetContentType());
+	        }
+	        catch (Exception ex)
+	        {
+		        throw new Exception("Couldn't get type/assembly name.", ex);
+	        }
+
             itemElement.WriteAttribute("title", item.Title);
             itemElement.WriteAttribute("zoneName", item.ZoneName);
             itemElement.WriteAttribute("templateKey", item.TemplateKey);
@@ -121,7 +133,7 @@ namespace N2.Persistence.Serialization
             itemElement.WriteAttribute("url", item.Url);
             itemElement.WriteAttribute("visible", item.Visible);
             itemElement.WriteAttribute("savedBy", item.SavedBy);
-            itemElement.WriteAttribute("typeName", SerializationUtility.GetTypeAndAssemblyName(item.GetContentType()));
+            itemElement.WriteAttribute("typeName", typeAndAssemblyName);
             itemElement.WriteAttribute("discriminator", definitions.GetDefinition(item).Discriminator);
             itemElement.WriteAttribute("versionIndex", item.VersionIndex);
             itemElement.WriteAttribute("ancestralTrail", item.AncestralTrail);

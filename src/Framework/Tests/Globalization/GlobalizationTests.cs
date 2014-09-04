@@ -5,6 +5,7 @@ using N2.Edit.Trash;
 using N2.Engine;
 using N2.Engine.Globalization;
 using N2.Persistence;
+using N2.Security;
 using N2.Tests.Globalization.Items;
 using N2.Tests.Persistence;
 using N2.Web;
@@ -302,8 +303,11 @@ namespace N2.Tests.Globalization
             {
                 engine.Persister.Save(swedish1);
             }
-            engine.Persister.Delete(english1);
 
+            using (engine.SecurityManager.Disable())
+            {
+                engine.Persister.Delete(english1);
+            }
             Assert.That(swedish.Children.Count, Is.EqualTo(1 + initialCount));
             Assert.That(engine.Persister.Get(swedish1.ID), Is.EqualTo(swedish1));
         }
@@ -517,8 +521,10 @@ namespace N2.Tests.Globalization
             ILanguageGateway gateway = engine.Resolve<ILanguageGateway>();
             gateway.Associate(new[] { english1, swedish1 });
 
-            engine.Persister.Delete(english1);
-
+            using (engine.SecurityManager.Disable())
+            {
+                engine.Persister.Delete(english1);
+            }
             Assert.That(!gateway.FindTranslations(swedish1).Contains(english1));
             Assert.That(english1.TranslationKey, Is.Null, "Expected language association to be cleared from copy.");
             Assert.That(gateway.FindTranslations(swedish1).Count(), Is.EqualTo(1));

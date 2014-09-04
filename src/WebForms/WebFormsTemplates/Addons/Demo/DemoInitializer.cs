@@ -3,7 +3,6 @@ using System.Configuration;
 using System.IO;
 using System.Web;
 using N2;
-using N2.Details;
 using N2.Plugin;
 using N2.Persistence.Serialization;
 using N2.Edit.Versioning;

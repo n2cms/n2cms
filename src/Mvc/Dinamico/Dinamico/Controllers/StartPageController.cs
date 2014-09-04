@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -5,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Dinamico.Models;
 using N2;
+using N2.Security;
 using N2.Definitions;
 using N2.Engine.Globalization;
 using N2.Persistence.Search;
@@ -19,6 +21,8 @@ namespace Dinamico.Controllers
     /// </summary>
     public class StartPageController : ContentController<StartPage>
     {
+        private AccountManager AccountManager { get { return N2.Context.Current.Resolve<AccountManager>(); } }
+
         public ActionResult NotFound()
         {
             var closestMatch = Content.Traverse.Path(Request.AppRelativeCurrentExecutionFilePath.Trim('~', '/')).StopItem;
@@ -72,10 +76,13 @@ namespace Dinamico.Controllers
 
 		protected virtual string[] GetRolesForUser(string username)
 		{
+            return AccountManager.GetRolesForUser(username);
+            /* REMOVE:
 			if (Roles.Enabled)
 				return Roles.GetRolesForUser(username);
 			else
 				return new [] { N2.Security.AuthorizedRole.Everyone };
+             */
 		}
 
         [ContentOutputCache]

@@ -546,22 +546,14 @@ namespace N2
 			object o = null;
 			try
 			{
-				if (Details.ContainsKey(detailName))
-				{
-					o = Details[detailName].Value;
-					if (typeof(T).IsEnum && o != null && o.GetType() == typeof(string) && Enum.IsDefined(typeof(T), o))
-					{
-						return (T)Enum.Parse(typeof(T), (string)o); // Special case: Handle enum
-					}
-					else
-					{
-						return (T)(o == null ? null : o); // Attempt regular cast conversion
-					}
-				}
-				else
-				{
-					return defaultValue;
-				}
+			    if (!Details.ContainsKey(detailName)) return defaultValue;
+			    
+                o = Details[detailName].Value;
+			    if (typeof(T).IsEnum && o is string && Enum.IsDefined(typeof(T), o))
+			    {
+			        return (T)Enum.Parse(typeof(T), (string)o); // Special case: Handle enum
+			    }
+			    return (T)(o); // Attempt regular cast conversion
 			}
 			catch (InvalidCastException inner)
 			{
@@ -581,10 +573,10 @@ namespace N2
 		[NonInterceptable]
 		protected internal virtual void SetDetail<T>(string detailName, T value, T defaultValue)
 		{
-			if (value == null || !value.Equals(defaultValue))
+            if (!EqualityComparer<T>.Default.Equals(value, defaultValue))
 				SetDetail(detailName, value);
 			else if (Details.ContainsKey(detailName))
-				details.Remove(detailName);
+				Details.Remove(detailName);
 		}
 
 		/// <summary>Set a value into the <see cref="Details"/> bag. If a value with the same name already exists it is overwritten.</summary>
@@ -912,14 +904,15 @@ namespace N2
 		{
 			foreach (ContentDetail detail in source.Details.Values)
 			{
+                ContentDetail clonedDetail = detail.Clone();
+                clonedDetail.EnclosingItem = destination;
+
 				if (destination.details.ContainsKey(detail.Name))
 				{
-					destination.details[detail.Name].Value = detail.Value;//.Value should behave polymorphically
+                    destination.details[detail.Name].Value = clonedDetail.Value;//.Value should behave polymorphically
 				}
 				else
 				{
-					ContentDetail clonedDetail = detail.Clone();
-					clonedDetail.EnclosingItem = destination;
 					destination.details[detail.Name] = clonedDetail;
 				}
 			}

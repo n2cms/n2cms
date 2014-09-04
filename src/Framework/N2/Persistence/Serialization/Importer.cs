@@ -9,7 +9,7 @@ namespace N2.Persistence.Serialization
 {
     public class Importer
     {
-        private Engine.Logger<Importer> logger; // TODO: Figure out how/where this gets initialized.
+        private Engine.Logger<Importer> logger;
         private readonly IPersister persister;
         private readonly IItemXmlReader reader;
         private readonly IFileSystem fs;
@@ -19,6 +19,7 @@ namespace N2.Persistence.Serialization
 			this.persister = persister;
 			this.reader = reader;
             this.fs = fs;
+	        //TODO: Initialize 'logger' ---> this.logger =;
         }
 
         public IPersister Persister
@@ -73,16 +74,41 @@ namespace N2.Persistence.Serialization
             if ((options & ImportOption.AllItems) == ImportOption.AllItems)
             {
                 record.RootItem.AddTo(destination);
-                persister.SaveRecursive(record.RootItem);
+	            try
+	            {
+		            persister.SaveRecursive(record.RootItem);
+	            }
+	            catch (Exception ex)
+	            {
+		            logger.Warn(ex);
+					if (record.RootItem != null)
+						record.FailedContentItems.Add(new Tuple<ContentItem, Exception>(record.RootItem, ex));
+	            }
             }
             else if ((options & ImportOption.Children) == ImportOption.Children)
             {
                 RemoveReferences(record.ReadItems, record.RootItem);
                 while (record.RootItem.Children.Count > 0)
                 {
-                    ContentItem child = record.RootItem.Children[0];
-                    child.AddTo(destination);
-                    persister.SaveRecursive(child);
+	                ContentItem child = null;
+	                bool added = false;
+	                try
+	                {
+		                child = record.RootItem.Children[0];
+		                child.AddTo(destination);
+		                added = true;
+		                persister.SaveRecursive(child);
+	                }
+	                catch (Exception ex)
+	                {
+						logger.Warn(ex);
+						if (child != null)
+							record.FailedContentItems.Add(new Tuple<ContentItem, Exception>(child, ex));
+
+						// ROLL BACK: Undo child.AddTo if SaveRecursive failed. That way the import can still continue successfully.
+		                if (added && destination != null && child != null)
+			                destination.Children.Remove(child); 
+	                }
                 }
             }
             else

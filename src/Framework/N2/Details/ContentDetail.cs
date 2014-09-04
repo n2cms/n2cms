@@ -19,10 +19,13 @@
 #endregion
 
 using System;
-using N2.Collections;
-using System.Diagnostics;
 using System.Collections;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using N2.Collections;
 using N2.Persistence;
 
 namespace N2.Details
@@ -556,7 +559,21 @@ namespace N2.Details
             cloned.DoubleValue = this.DoubleValue;
             cloned.IntValue = this.IntValue;
             cloned.LinkedItem = this.LinkedItem;
-            cloned.ObjectValue = this.ObjectValue;
+
+            if (ObjectValue == null)
+                cloned.ObjectValue = null;
+            else
+            {
+                if (ObjectValue is ICloneable)
+                    cloned.objectValue = (ObjectValue as ICloneable).Clone();
+                else if (ObjectValue.GetType().IsValueType)
+                    cloned.objectValue = ObjectValue;
+                else if (ObjectValue.GetType().IsSerializable)
+                    cloned.objectValue = ObjectCopier.Clone(ObjectValue);
+                else
+                    throw new InvalidDataException("Detail cannot be cloned: " + Name + " - " + ObjectValue.GetType().FullName);
+            }
+
             cloned.StringValue = this.StringValue;
             cloned.ValueTypeKey = this.ValueTypeKey;
             return cloned;
@@ -637,6 +654,44 @@ namespace N2.Details
                 return ((ContentItem)value).ID;
 
             return value;
+        }
+    }
+
+
+    /// <summary>
+    /// Reference Article http://www.codeproject.com/KB/tips/SerializedObjectCloner.aspx
+    /// Provides a method for performing a deep copy of an object.
+    /// Binary Serialization is used to perform the copy.
+    /// </summary>
+    public static class ObjectCopier
+    {
+        /// <summary>
+        /// Perform a deep Copy of the object.
+        /// </summary>
+        /// <typeparam name="T">The type of object being copied.</typeparam>
+        /// <param name="source">The object instance to copy.</param>
+        /// <returns>The copied object.</returns>
+        public static T Clone<T>(T source)
+        {
+            if (!typeof(T).IsSerializable)
+            {
+                throw new ArgumentException("The type must be serializable.", "source");
+}
+
+            // Don't serialize a null object, simply return the default for that object
+            if (ReferenceEquals(source, null))
+            {
+                return default(T);
+            }
+
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new MemoryStream();
+            using (stream)
+            {
+                formatter.Serialize(stream, source);
+                stream.Seek(0, SeekOrigin.Begin);
+                return (T)formatter.Deserialize(stream);
+            }
         }
     }
 }

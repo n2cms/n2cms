@@ -9,6 +9,8 @@ using NUnit.Framework;
 
 namespace N2.Edit.Tests.Trash
 {
+    // NOTE: Do not use Utility.CurrentTime = () => N2.Utility.CurrentTime()... to avoid recursion in test!
+ 
     [TestFixture]
     public class TrashCleanupAgentTests : ItemTestsBase
     {
@@ -65,6 +67,7 @@ namespace N2.Edit.Tests.Trash
         [TestCase(TrashPurgeInterval.Yearly)]
         public void Trash_IsNotPurged_Before_PurgeInterval_HasElapsed(TrashPurgeInterval interval)
         {
+            Utility.CurrentTime = currentTimeBackup;
             trash.PurgeInterval = interval;
             engine.Persister.Save(trash);
 
@@ -74,7 +77,7 @@ namespace N2.Edit.Tests.Trash
             engine.Persister.Save(item);
             engine.Persister.Delete(item);
 
-            Utility.CurrentTime = () => N2.Utility.CurrentTime().AddDays((int)interval).AddSeconds(-10);
+            Utility.CurrentTime = () => DateTime.Now.AddDays((int)interval).AddSeconds(-10);
 
             engine.Resolve<ITrashHandler>().PurgeOldItems();
 
@@ -92,7 +95,7 @@ namespace N2.Edit.Tests.Trash
             engine.Persister.Save(item);
             engine.Persister.Delete(item);
 
-            Utility.CurrentTime = () => N2.Utility.CurrentTime().AddDays(1000);
+            Utility.CurrentTime = () => DateTime.Now.AddDays(1000);
 
             engine.Resolve<ITrashHandler>().PurgeOldItems();
 
@@ -106,6 +109,7 @@ namespace N2.Edit.Tests.Trash
         [TestCase(TrashPurgeInterval.Yearly)]
         public void Trash_CanBePurged_OfOldItems(TrashPurgeInterval interval)
         {
+            Utility.CurrentTime = currentTimeBackup;
             trash.PurgeInterval = interval;
             engine.Persister.Save(trash);
             
@@ -115,7 +119,7 @@ namespace N2.Edit.Tests.Trash
             engine.Persister.Save(item);
             engine.Persister.Delete(item);
 
-            Utility.CurrentTime = () => N2.Utility.CurrentTime().AddDays((int)interval);
+            Utility.CurrentTime = () => DateTime.Now.AddDays((int)interval); // do not use recursion here!
 
             engine.Resolve<ITrashHandler>().PurgeOldItems();
 

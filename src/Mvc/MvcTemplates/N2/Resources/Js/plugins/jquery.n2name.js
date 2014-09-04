@@ -66,7 +66,7 @@
                 checkboxHandler.call(this);
             });
             
-            $("#" + options.titleId).keyup(invokeUpdateName);
+            $("#" + options.titleId).keyup(invokeUpdateName).blur(invokeUpdateName);
 
             var expected = getName(options.titleId, options.whitespaceReplacement, options.toLower, options.replacements);
             var actual = $("#" + options.nameId).attr("value");

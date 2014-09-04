@@ -29,6 +29,7 @@
 			<asp:BoundField HeaderText="Published" DataField="Published" meta:resourceKey="published" />
 			<asp:BoundField HeaderText="Expired" DataField="Expires" meta:resourceKey="expires" />
 			<asp:BoundField HeaderText="Saved by" DataField="SavedBy" meta:resourceKey="savedBy" />
+			<asp:BoundField HeaderText="Parts count" DataField="PartsCount" meta:resourceKey="partsCount" />
 			<asp:TemplateField>
 				<ItemTemplate>
 					<asp:HyperLink runat="server" ID="hlEdit" meta:resourceKey="hlEdit" Text="Edit" NavigateUrl='<%# Engine.ManagementPaths.GetEditExistingItemUrl((N2.ContentItem)Eval("Content")) %>' />
@@ -45,6 +46,7 @@
 						OnClientClick="return confirm('Are you sure you want to Delete this version?');" />
 				</ItemTemplate>
 			</asp:TemplateField>
+
 		</Columns>
 	</asp:GridView>
 	</edit:PermissionPanel>

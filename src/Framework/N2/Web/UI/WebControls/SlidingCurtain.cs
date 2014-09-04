@@ -25,20 +25,33 @@ namespace N2.Web.UI.WebControls
             set { ViewState["ScriptUrl"] = value; }
         }
 
-        public string StyleSheetUrl
+        /// <summary>
+        /// Specifies the URL to the N2CMS Admin Parts Style sheet. By default, this uses the path under {ManagementUrl} however you can override the styles if your page needs special configuration.
+        /// </summary>
+		public string StyleSheetUrl
         {
             get { return (string)(ViewState["StyleSheetUrl"] ?? "{ManagementUrl}/Resources/Css/Parts.css"); }
             set { ViewState["StyleSheetUrl"] = value; }
         }
 
-        private static readonly string scriptFormat = "n2SlidingCurtain.init('#{0}',{1});";
+	    /// <summary>
+	    /// Causes N2CMS to not load the JQuery library on this page. Set this to 'true' if your site already uses JQuery.
+	    /// </summary>
+		public bool SkipJQuery
+	    {
+		    get { return (bool) (ViewState["SkipJQuery"] ?? false); }
+		    set { ViewState["SkipJQuery"] = value; }
+	    }
+
+	    private static readonly string scriptFormat = "n2SlidingCurtain.init('#{0}',{1});";
 
         protected override void OnPreRender(System.EventArgs e)
         {
             if (string.IsNullOrEmpty(ID))
                 ID = "SC";
 
-            Register.JQuery(Page);
+			if (!SkipJQuery)
+				Register.JQuery(Page);
             Register.JQueryPlugins(Page);
             Register.JavaScript(Page, ScriptUrl);
             Register.StyleSheet(Page, StyleSheetUrl);
@@ -57,29 +70,30 @@ namespace N2.Web.UI.WebControls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            writer.Write("<div id='");
+            writer.Write(@"<div id=""");
             writer.Write(ClientID);
-            writer.Write("' class='sc");
+            writer.Write(@""" class=""sc");
             var item = ItemUtility.FindCurrentItem(this);
             if (item != null)
                 writer.Write(" state" + item.State.ToString());
-            writer.Write("'");
+            writer.Write("\"");
             if (BackgroundUrl.Length > 0)
             {
                 WriteBgStyle(BackgroundUrl, writer);
             }
             writer.Write(">");
-            writer.Write("<div class='scContent'>");
 
-            base.Render(writer);
-            writer.Write("<a href='javascript:void(0);' class='close sc-toggler' title='Close'>&laquo;</a><a href='javascript:void(0);' class='open sc-toggler' title='Open'>&raquo;</a>");
-            writer.Write("</div></div>");
+		    writer.Write(@"<div class=""scContent"">");
+		    base.Render(writer);
+		    writer.Write(
+			    @"<a href=""javascript:void(0);"" class=""close sc-toggler"" title=""Close"">&laquo;</a><a href=""javascript:void(0);"" class=""open sc-toggler"" title=""Open"">&raquo;</a>");
+	        writer.Write("</div>");
         }
 
         private void WriteBgStyle(string url, HtmlTextWriter writer)
         {
             url = N2.Web.Url.ToAbsolute(url);
-            writer.Write(" style='background-image:url({0});'", url);
+            writer.Write(@" style=""background-image:url({0});""", url);
         }
     }
 }
