@@ -7,6 +7,7 @@ using NUnit.Framework;
 using N2.Tests.Fakes;
 using N2.Web;
 using N2.Edit.Versioning;
+using N2.Edit;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -26,7 +27,7 @@ namespace N2.Tests.Persistence.NH
                 function(null);
                 return true;
             };
-            tracker = new TrailTracker(persister);
+            tracker = new TrailTracker(persister, new TreeSorter(persister, null, null));
             tracker.Start();
         }
 
