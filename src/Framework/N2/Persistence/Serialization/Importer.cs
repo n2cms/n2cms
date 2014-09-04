@@ -74,7 +74,16 @@ namespace N2.Persistence.Serialization
             if ((options & ImportOption.AllItems) == ImportOption.AllItems)
             {
                 record.RootItem.AddTo(destination);
-                persister.SaveRecursive(record.RootItem);
+	            try
+	            {
+		            persister.SaveRecursive(record.RootItem);
+	            }
+	            catch (Exception ex)
+	            {
+		            logger.Warn(ex);
+					if (record.RootItem != null)
+						record.FailedContentItems.Add(new Tuple<ContentItem, Exception>(record.RootItem, ex));
+	            }
             }
             else if ((options & ImportOption.Children) == ImportOption.Children)
             {

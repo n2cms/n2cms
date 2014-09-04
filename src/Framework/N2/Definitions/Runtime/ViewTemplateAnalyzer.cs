@@ -98,6 +98,9 @@ namespace N2.Definitions.Runtime
 
         private ContentRegistration RenderViewForRegistration(VirtualFile file, Type modelType, ControllerContext cctx, ViewEngineResult result)
         {
+			if (file == null)
+				throw new ArgumentNullException("file");
+
             var re = new ContentRegistration(map.CreateDefinition(modelType, N2.Web.Url.RemoveAnyExtension(file.Name)));
             re.IsDefined = false;
             re.Context.TouchedPaths.Add(file.VirtualPath);
@@ -118,7 +121,7 @@ namespace N2.Definitions.Runtime
                 {
                     logger.Error(file.VirtualPath, ex);
                     if (re.IsDefined)
-                        throw;
+                        throw new Exception(String.Format("Failed to render view {0} for registrations", file.VirtualPath), ex);
                     return null;
                 }
                 finally
