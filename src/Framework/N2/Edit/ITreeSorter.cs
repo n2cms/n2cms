@@ -1,3 +1,4 @@
+using System;
 namespace N2.Edit
 {
     public interface ITreeSorter
@@ -8,5 +9,7 @@ namespace N2.Edit
         void MoveTo(ContentItem item, ContentItem parent, int index);
         void MoveTo(ContentItem item, int index);
         void MoveTo(ContentItem item, NodePosition position, ContentItem relativeTo);
+
+		event EventHandler<DestinationEventArgs> ItemMoved;
     }
 }
