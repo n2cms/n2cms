@@ -606,6 +606,16 @@ namespace N2
             return ancestralTrail + item.ID + "/";
         }
 
+		public static IEnumerable<ContentItem> UpdateAncestralTrailRecursive(ContentItem item, ContentItem parent)
+		{
+			item.AncestralTrail = parent.GetTrail();
+			yield return item;
+
+			foreach (var child in item.Children)
+				foreach (var descendant in UpdateAncestralTrailRecursive(child, item))
+					yield return descendant;
+		}
+
         /// <summary>Gets the base types of a given item.</summary>
         /// <param name="type">The type whose base types to get.</param>
         /// <returns>The base types of the type.</returns>

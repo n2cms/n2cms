@@ -72,6 +72,9 @@ namespace N2.Web.Mvc
         /// <returns>A content helper with a different scope than the surrounding page.</returns>
         public new virtual DynamicContentHelper At(ContentItem otherContentItem)
         {
+			if (otherContentItem == null)
+				throw new ArgumentNullException("otherContentItem");
+
             EnsureAuthorized(otherContentItem);
 
             return new DynamicContentHelper(Html, Current.EngineGetter, () => new PathData { CurrentItem = otherContentItem, CurrentPage = otherContentItem.IsPage ? otherContentItem : Current.Page });
