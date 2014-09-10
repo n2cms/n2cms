@@ -78,10 +78,17 @@ namespace N2.Configuration
 
 		[ConfigurationProperty("twitterBootstrapRoot", DefaultValue = "{ManagementUrl}/Resources/bootstrap/")]
 		public string TwitterBootstrapRoot
-        {
+		{
 			get { return (string)base["twitterBootstrapRoot"]; }
 			set { base["twitterBootstrapRoot"] = value; }
-        }
+		}
+
+		[ConfigurationProperty("twitterBootstrapJsRoot", DefaultValue = "{ManagementUrl}/Resources/bootstrap/")]
+		public string TwitterBootstrapJsRoot
+		{
+			get { return (string)base["TwitterBootstrapJsRoot"]; }
+			set { base["TwitterBootstrapJsRoot"] = value; }
+		}
 
         [ConfigurationProperty("iconsCssPath", DefaultValue = N2.Resources.Register.DefaultIconsCssPath)]
         public string IconsCssPath

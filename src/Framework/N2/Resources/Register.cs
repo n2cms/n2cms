@@ -19,12 +19,14 @@ namespace N2.Resources
             JQueryPath = "{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".min.js";
             JQueryUiPath = "{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + JQueryVersion;
             JQueryPluginsPath = "{ManagementUrl}/Resources/Js/plugins.ashx?v=" + JQueryVersion;
-			AngularRoot = "{ManagementUrl}/Resources/angular-1.2.8/";
+			AngularRoot = DefaultAngularRoot;
             CKEditorPath = "{ManagementUrl}/Resources/ckeditor/ckeditor.js?v=" + JQueryVersion;
             PartsJsPath = "{ManagementUrl}/Resources/Js/parts.js?v=" + JQueryVersion;
             PartsCssPath = "{ManagementUrl}/Resources/Css/parts.css?v=" + JQueryVersion;
 			TwitterBootstrapRoot = "{ManagementUrl}/Resources/bootstrap/";
             IconsCssPath = DefaultIconsCssPath;
+	        FancyboxCssPath = DefaultFancyboxCssPath;
+	        FancyboxJsPath = DefaultFancyboxJsPath;
         }
 
         private static bool? debug;
@@ -42,9 +44,14 @@ namespace N2.Resources
 		//public const string DefaultBootstrapJsPath = DefaultBootstrapRoot + "js/bootstrap.min.js";
 		//public const string DefaultBootstrapResponsiveCssPath = DefaultBootstrapRoot + "css/bootstrap-responsive.min.css";
 		//public const string DefaultBootstrapCssPath = DefaultBootstrapRoot + "css/bootstrap.min.css";
-        public const string DefaultFancyboxPath = "{ManagementUrl}/Resources/fancybox/";
-        public const string DefaultIconsCssPath = "{ManagementUrl}/Resources/font-awesome-4.1.0/css/font-awesome.min.css";
-        public const string DefaultFlagsCssPath = "{ManagementUrl}/Resources/icons/flags.css";
+		public const string DefaultFancyboxJsPath = "//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js";
+		public const string DefaultFancyboxCssPath = "//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css";
+		public const string DefaultIconsCssPath = "//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css";
+		public const string DefaultAngularRoot = "//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.8/";
+		public const string DefaultFlagsCssPath = "{ManagementUrl}/Resources/icons/flags.css";
+		public const string DefaultBootstrapJsPath = "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js";
+		public const string DefaultBootstrapCssPath = "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css";
+
         
         /// <summary>Path to jQuery.</summary>
         public static string JQueryPath { get; set; }
@@ -63,6 +70,7 @@ namespace N2.Resources
 
         /// <summary> The path to angular-resources used by N2. </summary>
 		public static string AngularResourcePath { get { return AngularRoot + "angular-resource.min.js"; } }
+		
 		[Obsolete("Use AngularResourcePath")]
 		public static string AngularResourcesPath { get { return AngularRoot + "angular-resource.min.js"; } }
         
@@ -91,7 +99,11 @@ namespace N2.Resources
         public static string IconsCssPath { get; set; }
 
         /// <summary>The path to the Fancybox library.</summary>
-        public static string FancyboxPath { get; set; }
+        [Obsolete]
+		public static string FancyboxPath { get; set; }
+
+	    public static string FancyboxJsPath { get; set; }
+		public static string FancyboxCssPath { get; set; }
 
         #region page StyleSheet
 

@@ -248,9 +248,6 @@
     <Content Include="N2\Resources\ckeditor\plugins\templates\templates\images\template2.gif" />
     <Content Include="N2\Resources\ckeditor\plugins\templates\templates\images\template3.gif" />
     <Content Include="N2\Resources\Css\n2.css" />
-    <Content Include="N2\Resources\font-awesome-4.1.0\css\font-awesome.css" />
-    <Content Include="N2\Resources\font-awesome-4.1.0\css\font-awesome.min.css" />
-    <Content Include="N2\Resources\font-awesome-4.1.0\fonts\fontawesome-webfont.svg" />
     <Content Include="N2\Resources\img\arrow-down.png" />
     <Content Include="N2\Resources\img\grabber.png" />
     <Content Include="N2\Resources\img\logo.png" />
@@ -616,10 +613,6 @@
     <Content Include="N2\Resources\angular-1.2.8\errors.json" />
     <Content Include="N2\Resources\angular-1.2.8\version.json" />
     <Content Include="N2\Resources\Js\jquery-1.11.0.min.map" />
-    <Content Include="N2\Resources\font-awesome-4.1.0\fonts\fontawesome-webfont.eot" />
-    <Content Include="N2\Resources\font-awesome-4.1.0\fonts\fontawesome-webfont.ttf" />
-    <Content Include="N2\Resources\font-awesome-4.1.0\fonts\fontawesome-webfont.woff" />
-    <Content Include="N2\Resources\font-awesome-4.1.0\fonts\FontAwesome.otf" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Framework\AssemblyVersion.cs">
