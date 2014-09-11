@@ -15,13 +15,15 @@
 		<language>en-US</language>
 		<tags>N2CMS</tags>
 		<dependencies>
-			<dependency id="AngularJS.Core" version="1.2.23" />
-			<dependency id="AngularJS.Route" version="1.2.23" />
-			<dependency id="bootstrap" version="3.2.0" />
+			<dependency id="AngularJS.Core" version="(,1.2.23]" />
+			<dependency id="AngularJS.Route" version="(,1.2.23]" />
+            <dependency id="AngularJS.Resource" version="(,1.2.23]" />
+            <dependency id="angular-strap" version="2.0.5" />
+			<dependency id="bootstrap" version="[3.2.0]" />
 			<dependency id="ckeditor-full" version="4.4.4" />
 			<dependency id="Fancybox" version="2.1.5" />
 			<dependency id="FontAwesome" version="4.2.0" />
-			<dependency id="jQuery" version="1.9.0" />
+			<dependency id="jQuery" version="[1.9.0]" />
 		</dependencies>
 	</metadata>
 </package>

@@ -7,7 +7,7 @@ using System.Text;
 namespace N2.Configuration
 {
     /// <summary>
-    /// Represents the configuration entity for the CKEditor WYSIWYG HTML editor.
+    /// Represents the configuration entity for the CkEditor WYSIWYG HTML editor.
     /// </summary>
     public class CkEditorElement : ConfigurationElement
     {

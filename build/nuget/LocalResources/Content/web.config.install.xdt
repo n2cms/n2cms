@@ -1,18 +1,10 @@
 <configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
   
   <n2 xmlns="http://n2cms.com/schemas/configuration/v3" xdt:Transform="InsertIfMissing">
-    <resources 
-        jQueryPath="/Scripts/jquery-1.9.0.min.js"
-        jQueryUiPath="/Scripts/jquery-ui.min.js"
-        angularRoot="/Scripts/"
-        ckEditorPath="/Scripts/ckeditor/ckeditor.js"
-        fancyboxJsPath="/Scripts/jquery.fancybox.min.css"
-        fancyboxCssPath="/Content/jquery.fancybox.min.css"
-        twitterBootstrapRoot="/Content/"
-        twitterBootstrapJsRoot="/Scripts/"
-        iconsCssPath="/Content/font-awesome.min.css"
+    <!--<resources 
+
         xdt:Transform="SetAttributes(jQueryPath,jQueryUiPath,angularRoot,ckEditorPath,FancyboxPath,twitterBootstrapRoot,twitterBootstrapJsRoot,iconsCssPath)"
-        />
+        />-->
   </n2>
   
 </configuration>
