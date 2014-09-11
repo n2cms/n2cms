@@ -38,10 +38,10 @@ namespace N2.Persistence.MongoDB
                 String resourceEtag = CalculateEtag(context.Request.Path, fileData.Updated);
                 string clientEtag = context.Request.Headers.Get("If-None-Match");
 
-                // Cache response for one day
-                context.Response.Cache.SetMaxAge(new TimeSpan(1, 0, 00));
                 context.Response.Cache.SetCacheability(HttpCacheability.Public);
-
+                // Cache response for one day - SetMaxAge does not seem to work as expected when using SetETag as well. This does the trick.
+                context.Response.Cache.AppendCacheExtension(string.Concat("max-age=", new TimeSpan(1, 00, 00).TotalSeconds));
+                
                 if (!string.Equals(resourceEtag, clientEtag, StringComparison.InvariantCultureIgnoreCase))
                 {
                     context.Response.Cache.SetETag(resourceEtag);
