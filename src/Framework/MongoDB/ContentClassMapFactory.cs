@@ -64,6 +64,8 @@ namespace N2.Persistence.MongoDB
                         else
                             cm.UnmapProperty(p.Name);
                     }
+
+                    cm.SetIgnoreExtraElements(true);
                 });
         }
 
