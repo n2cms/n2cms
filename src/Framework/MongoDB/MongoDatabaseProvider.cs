@@ -115,7 +115,12 @@ namespace N2.Persistence.MongoDB
             settings.ConnectTimeout = TimeSpan.FromSeconds(10);
             var client = new MongoClient(settings);
             var server = client.GetServer();
-            Database = server.GetDatabase(config.Sections.Database.TablePrefix);
+            var databaseSettings = new MongoDatabaseSettings()
+            {
+                ReadPreference = ReadPreference.Nearest,
+                WriteConcern = WriteConcern.Acknowledged,
+            };
+            Database = server.GetDatabase(config.Sections.Database.TablePrefix, databaseSettings);
             try
             {
                 GetCollection<ContentItem>().EnsureIndex("Details.Name", "Details.LinkedItem", "Details.StringValue");
