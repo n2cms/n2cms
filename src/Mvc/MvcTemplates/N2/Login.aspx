@@ -1,11 +1,10 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="N2.Edit.Login" Title="Login" meta:resourceKey="LoginPage" %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
 	<title>Log in</title>
-	<link href="Resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-	<link rel="stylesheet" href="Resources/Css/All.css" type="text/css" />
+	<link rel="stylesheet" id="bootstrap" type="text/css" runat="server" />
+	<link rel="stylesheet" href="Resources/Css/All.css" type="text/css" runat="server" />
 	<style>
 		body { background:#fff url(Resources/Img/logo.png) no-repeat 98% 10px; }
 		.container { width:400px; position:absolute; top:50%; left:50%; margin-top:-100px; margin-left:-200px; }
@@ -36,3 +35,12 @@
 	</form>
 </body>
 </html>
+<script runat="server">
+
+	protected override void OnLoad(EventArgs e)
+	{
+		base.OnLoad(e);
+		bootstrap.Href = N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath);
+	}
+	
+</script>

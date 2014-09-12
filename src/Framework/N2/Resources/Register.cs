@@ -53,7 +53,7 @@ namespace N2.Resources
 		public const string JQueryUiVersion = "1.10.4";
 		public const string AngularJsVersion = "1.2.20";
 		public const string CkEditorVersion = "4.3.2";
-		public const string BootstrapVersion = "3.2.0";
+		public const string BootstrapVersion = "2.3.2";
 
 		public const string DefaultFlagsCssPath = "{ManagementUrl}/Resources/icons/flags.css";
 		public const string DefaultJQueryJsPath = "//cdnjs.cloudflare.com/ajax/libs/jquery/" + JQueryVersion + "/jquery.min.js";

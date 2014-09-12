@@ -1,11 +1,14 @@
 <%@ Master MasterPageFile="../Simple.master" Language="C#" AutoEventWireup="true" CodeBehind="Framed.master.cs" Inherits="N2.Edit.Framed" meta:resourceKey="FramedResource" %>
 
 <asp:Content ContentPlaceHolderID="Head" runat="server">
-	<link href="<%= ResolveUrl("../Resources/bootstrap/css/bootstrap.min.css") %>" rel="stylesheet" />
-	<script src="<%= ResolveUrl("../Resources/bootstrap/js/bootstrap.min.js") %>"></script>
+	<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath) %>" type="text/css" rel="stylesheet" />
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapJsPath)  %>" type="text/javascript"></script>
 
-	<link href="<%= ResolveClientUrl("../Resources/bootstrap-components/bootstrap-datepicker.css") %>" type="text/css" rel="stylesheet" />
-	<link href="<%= ResolveUrl("../Resources/font-awesome-4.1.0/css/font-awesome.min.css") %>" rel="stylesheet" />
+	<link rel="stylesheet" href="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.IconsCssPath) %>" />
+
+	<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapDatePickerCssPath) %>" type="text/css" rel="stylesheet" />
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapDatePickerJsPath)  %>" type="text/javascript"></script>
+
 	<link href="<%= ResolveUrl("../Resources/icons/flags.css") %>" rel="stylesheet" />
 	<link href="<%= ResolveClientUrl("../Resources/Css/all.css") %>" type="text/css" rel="stylesheet" />
 	<link href="<%= ResolveClientUrl("../Resources/Css/framed.css") %>" type="text/css" rel="stylesheet" />
