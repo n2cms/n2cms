@@ -1,6 +1,4 @@
-﻿@import url("../jquery-ui-1.10.4.custom/css/smoothness/jquery-ui-1.10.4.custom.min.css");
-
-/* FRAMED */
+﻿/* FRAMED */
 a img,
 .command img{ margin-right:1px; vertical-align:middle; }
 .nav-tabs > li > a { border-radius:0 !important; }

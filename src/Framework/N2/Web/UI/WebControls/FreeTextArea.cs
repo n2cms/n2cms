@@ -92,7 +92,7 @@ namespace N2.Web.UI.WebControls
             if (EnableFreeTextArea)
             {
                 Register.JQuery(Page);
-                Register.CKEditor(Page);
+                Register.CkEditor(Page);
 
                 string freeTextAreaInitScript = string.Format("CKEDITOR.replace('{0}', {1});",
                     ClientID,
@@ -110,7 +110,7 @@ namespace N2.Web.UI.WebControls
         {
             IDictionary<string, string> overrides = new Dictionary<string, string>();
             overrides["elements"] = ClientID;
-            overrides["contentsCss"] = contentCssUrl ?? Register.TwitterBootstrapCssPath;
+            overrides["contentsCss"] = contentCssUrl ?? Register.BootstrapCssPath;
 
             overrides["filebrowserBrowseUrl"] = Url.Parse(Page.Engine().ManagementPaths.EditTreeUrl)
                 .AppendQuery("location", "selection")

@@ -4,7 +4,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{3F230DAB-AAB4-41DE-A550-98E3ADAB35E2}
 AppName=N2CMS NuGet Packages
-AppVersion=2.5.6
+AppVersion=2.6.3.3
 AppPublisher=Benjamin Herila
 AppPublisherURL=http://n2cms.com
 AppSupportURL=http://n2cms.com

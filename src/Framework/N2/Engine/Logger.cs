@@ -1,7 +1,9 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Threading;
 using N2.Engine.Globalization;
+using NHibernate.Hql.Ast.ANTLR.Tree;
 
 namespace N2.Engine
 {
@@ -113,7 +115,7 @@ namespace N2.Engine
         }
 
         [Conditional("DEBUG")]
-        public void DebugFormat(string format, params object[] args)
+        public void DebugFormat(string format, [Pure]params object[] args)
         {
             Writer.Debug(format, args);
         }
@@ -280,7 +282,7 @@ namespace N2.Engine
         {
         }
 
-        public virtual void Debug(string message)
+		public virtual void Debug(string message)
         {
         }
         public virtual void Debug(string format, object[] args)

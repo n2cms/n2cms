@@ -94,8 +94,8 @@ namespace N2.Persistence.NH
                 .SetParameter("trail", target.GetTrail() + "%")
                 .List<ContentDetail>();
 
-            HashSet<ContentItem> toUpdate = new HashSet<ContentItem>();
-            int count = 0;
+            var toUpdate = new HashSet<ContentItem>();
+            var count = 0;
             foreach (var cd in details)
             {
                 toUpdate.Add(cd.EnclosingItem);

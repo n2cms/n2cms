@@ -32,6 +32,7 @@ namespace N2.Management.Installation
                 if (!version.IsPage)
                 {
                     context.Response.Write(new { success = true, master = new { id = version.VersionOf.ID }, message = "Part version removed" }.ToJson());
+					Engine.Persister.Delete(version);
                     return;
                 }
 

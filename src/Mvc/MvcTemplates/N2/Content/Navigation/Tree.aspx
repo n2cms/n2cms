@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Tree.aspx.cs" Inherits="N2.Edit.Navigation.Tree" meta:resourceKey="treePage" %>
+<%@ Import Namespace="N2.Resources" %>
 <%@ Register TagPrefix="edit" TagName="ContextMenu" Src="ContextMenu.ascx" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 
@@ -8,19 +9,20 @@
     <head runat="server">
         <title>Navigation</title>
         <asp:PlaceHolder runat="server">
-		<link rel="stylesheet" href="<%= MapCssUrl("all.css")%>" type="text/css" />
-		<link rel="stylesheet" href="<%= MapCssUrl("../font-awesome-4.1.0/css/font-awesome.min.css")%>" type="text/css" />
-		<link rel="stylesheet" href="<%= MapCssUrl("framed.css")%>" type="text/css" />
-		<link rel="stylesheet" href="<%= MapCssUrl("tree.css")%>" type="text/css" />
+		<link rel="stylesheet" type="text/css" href="<%= MapCssUrl("all.css")%>" />
+	    <link rel="stylesheet" type="text/css" href="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.IconsCssPath) %>" />
+		<link rel="stylesheet" type="text/css" href="<%= MapCssUrl("framed.css")%>" />
+		<link rel="stylesheet" type="text/css" href="<%= MapCssUrl("tree.css")%>" />
 		</asp:PlaceHolder>
 		<script src="../../Resources/Js/ContextMenu.js?v2" type="text/javascript" ></script>
 		<script src="Tree.js" type="text/javascript"></script>
-		<style>
-			.FileUpload
-			{
+		<style type="text/css">
+			.FileUpload {
 				display:none;
 				padding:4px 7px;
 				border-bottom:solid 1px silver;
+				-webkit-box-shadow:0 0 10px #ccc;
+				-ms-box-shadow:0 0 10px #ccc;
 				box-shadow:0 0 10px #ccc;
 			}
 		</style>

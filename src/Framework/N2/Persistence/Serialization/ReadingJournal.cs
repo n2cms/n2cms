@@ -12,8 +12,9 @@ namespace N2.Persistence.Serialization
         readonly IList<Attachment> attachments = new List<Attachment>();
         readonly IList<Attachment> failedAttachments = new List<Attachment>();
         readonly IList<Exception> errors = new List<Exception>();
+	    readonly IList<Tuple<ContentItem, Exception>> failedContentItems = new List<Tuple<ContentItem, Exception>>();
 
-        public event EventHandler<ItemEventArgs> ItemAdded;
+	    public event EventHandler<ItemEventArgs> ItemAdded;
 
         public ReadingJournal()
         {
@@ -54,6 +55,12 @@ namespace N2.Persistence.Serialization
         {
             get { return failedAttachments; }
         }
+
+
+		public IList<Tuple<ContentItem, Exception>> FailedContentItems
+		{
+			get { return failedContentItems; }
+		}
 
         public IList<Exception> Errors
         {
@@ -138,5 +145,7 @@ namespace N2.Persistence.Serialization
                 return null;
             return ReadItems.FirstOrDefault(i => i.GetVersionKey() == versionKey);
         }
-    }
+
+
+	}
 }

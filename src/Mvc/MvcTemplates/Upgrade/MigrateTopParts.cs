@@ -24,7 +24,7 @@ namespace N2.Templates.Mvc.Upgrade
         {
             try
             {
-                return persister.Repository.Find(new Parameter("class", "Top")).Where(p => p.State != ContentState.Deleted).Any();
+                return persister.Repository.Find(new Parameter("class", "Top")).Any(p => p.State != ContentState.Deleted);
             }
             catch (Exception)
             {

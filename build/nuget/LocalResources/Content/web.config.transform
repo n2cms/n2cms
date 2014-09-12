@@ -1,0 +1,18 @@
+<configuration>
+    <n2>
+        <resources 
+            angularJsRoot="~/Scripts/"
+            angularUiJsPath="~/Content/angular-ui.js"
+            angularUiCssPath="~/Content/angular-ui.css"
+            angularStrapJsPath="~/Scripts/angular-strap.js"
+            bootstrapCssPath="~/Content/bootstrap.min.css"
+            bootstrapJsPath="~/Scripts/bootstrap.js"
+            ckEditorJsPath="~/Scripts/ckeditor/ckeditor.js"
+            fancyboxJsPath="~/Scripts/jquery.fancybox.min.css"
+            fancyboxCssPath="~/Content/jquery.fancybox.min.css"
+            iconsCssPath="~/Content/font-awesome.min.css"
+            jQueryJsPath="~/Scripts/jquery-1.9.0.min.js"
+            jQueryUiPath="~/Scripts/jquery-ui.min.js"
+        />
+    </n2>
+</configuration>

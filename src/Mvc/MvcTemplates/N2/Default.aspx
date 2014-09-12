@@ -13,29 +13,28 @@
 	<title>N2 Management</title>
 	<meta name="viewport" content="width=device-width">
 
-	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.JQueryPath) %>"></script>
-	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.JQueryUiPath) %>"></script>
+	<script type="text/javascript" src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.JQueryJsPath) %>"></script>
+	<script type="text/javascript" src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.JQueryUiPath) %>"></script>
+	<script type="text/javascript" src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularJsPath) %>"></script>
+	<script type="text/javascript" src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularJsResourcePath) %>"></script>
+	<script type="text/javascript" src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularJsRoot + "angular-route.js") %>"></script>
+	<script type="text/javascript" src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularUiJsPath) %>"></script>
+	<script type="text/javascript" src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularStrapJsPath) %>"></script>
 
-	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularPath) %>"></script>
-	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularResourcePath) %>"></script>
-	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularRoot + "angular-route.js") %>"></script>
+	<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath) %>" type="text/css" rel="stylesheet" />
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapJsPath)  %>" type="text/javascript"></script>
 
-	<link href="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.TwitterBootstrapCssPath) %>" rel="stylesheet" />
-	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.TwitterBootstrapJsPath) %>"></script>
+	<link rel="stylesheet" href="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.IconsCssPath) %>" />
 
-	<link rel="stylesheet" href="Resources/font-awesome-4.1.0/css/font-awesome.min.css">
+	<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapDatePickerCssPath) %>" type="text/css" rel="stylesheet" />
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapDatePickerJsPath)  %>" type="text/javascript"></script>
+	<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapTimePickerCssPath) %>" type="text/css" rel="stylesheet" />
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapTimePickerJsPath)  %>" type="text/javascript"></script>
+	
 
-	<script src="Resources/angular-ui-0.4.0/angular-ui.min.js"></script>
-	<link href="Resources/angular-ui-0.4.0/angular-ui.min.css" rel="stylesheet" />
-
-	<link href="Resources/bootstrap-components/bootstrap-datepicker.css" rel="stylesheet" />
-	<script src="Resources/bootstrap-components/bootstrap-datepicker.js"></script>
-
-	<link href="Resources/bootstrap-components/bootstrap-timepicker.css" rel="stylesheet" />
-	<script src="Resources/bootstrap-components/bootstrap-timepicker.js"></script>
 	<link href="Resources/icons/flags.css" rel="stylesheet" />
 
-	<script src="Resources/bootstrap-components/angular-strap.min.js"></script>
+	<!--<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularStrapJsPath) %>"></script>-->
 
 	<script src="Resources/js/n2.js"></script>
 	<link rel="stylesheet" href="Resources/css/n2.css">

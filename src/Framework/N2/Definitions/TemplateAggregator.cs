@@ -58,6 +58,8 @@ namespace N2.Definitions
 
         void definitions_DefinitionResolving(object sender, DefinitionEventArgs e)
         {
+			if (e == null)
+				throw new ArgumentNullException("e");
             if (e.AffectedItem != null)
             {
                 var t = GetTemplate(e.AffectedItem);

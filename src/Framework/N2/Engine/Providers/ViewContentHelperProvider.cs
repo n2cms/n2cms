@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Web.Hosting;
 using System.Web.Mvc;
@@ -22,6 +23,8 @@ namespace N2.Engine.Providers
 
         public ViewContentHelper Get()
         {
+			if (htmlHelperProvider == null)
+				throw new NullReferenceException("Failed to get view content because htmlHelperProvider was null.");
             return new ViewContentHelper(htmlHelperProvider.Get());
         }
 
