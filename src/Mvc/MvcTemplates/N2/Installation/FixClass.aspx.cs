@@ -21,6 +21,7 @@ namespace N2.Edit.Install
 
         protected void Page_Load(object sender, EventArgs e)
         {
+			Header.DataBind();
             if (!IsPostBack)
             {
                 using (IDbConnection conn = installer.GetConnection())

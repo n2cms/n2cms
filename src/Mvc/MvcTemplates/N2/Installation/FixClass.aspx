@@ -6,11 +6,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title></title>
-    <link rel="stylesheet" type="text/css" href="../Resources/bootstrap/css/bootstrap.min.css" />
+	<link href="<%#  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath) %>" type="text/css" rel="stylesheet" />
+	<script src="<%# N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapJsPath)  %>" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" href="../Resources/Css/all.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/framed.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/themes/default.css" />
-    <style>b { color:red;}pre{margin:10px 0;border-left:solid 10px #eee;padding-left:10px;}input{vertical-align:middle} .msg{font-weight:bold; font-size:1.4em;color:green;background-color:Yellow;padding:10px 0;}</style>
+    <style type="text/css">
+    	b {
+    		color: red;
+    	}
+
+    	pre {
+    		margin: 10px 0;
+    		border-left: solid 10px #eee;
+    		padding-left: 10px;
+    	}
+
+    	input {
+    		vertical-align: middle;
+    	}
+
+    	.msg {
+    		font-weight: bold;
+    		font-size: 1.4em;
+    		color: green;
+    		background-color: Yellow;
+    		padding: 10px 0;
+    	}
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">

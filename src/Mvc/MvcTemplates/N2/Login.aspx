@@ -3,7 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
 	<title>Log in</title>
-	<link rel="stylesheet" id="bootstrap" type="text/css" runat="server" />
+	<link href="<%#  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath) %>" type="text/css" rel="stylesheet" />
+	<script src="<%# N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapJsPath)  %>" type="text/javascript"></script>
+    
 	<link rel="stylesheet" href="Resources/Css/All.css" type="text/css" runat="server" />
 	<style>
 		body { background:#fff url(Resources/Img/logo.png) no-repeat 98% 10px; }
@@ -35,12 +37,3 @@
 	</form>
 </body>
 </html>
-<script runat="server">
-
-	protected override void OnLoad(EventArgs e)
-	{
-		base.OnLoad(e);
-		bootstrap.Href = N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath);
-	}
-	
-</script>

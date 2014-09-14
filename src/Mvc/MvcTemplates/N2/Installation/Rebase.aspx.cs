@@ -32,7 +32,7 @@ namespace N2.Management.Installation
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+			Header.DataBind();
         }
 
         protected void btnRebase_Click(object sender, EventArgs e)

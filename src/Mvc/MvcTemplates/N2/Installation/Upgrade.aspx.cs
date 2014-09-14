@@ -45,6 +45,7 @@ namespace N2.Edit.Install
 	    protected override void OnLoad(EventArgs e)
 	    {
 		    base.OnLoad(e);
+			Header.DataBind();
 		    if (CurrentAction != null)
 				ShowProgress();
 			else 

@@ -41,7 +41,7 @@ namespace N2.Edit.Install
         protected override void OnLoad(EventArgs e)
         {
             host = N2.Context.Current.Resolve<IHost>();
-
+			Header.DataBind();
             base.OnLoad(e);
         }
 
