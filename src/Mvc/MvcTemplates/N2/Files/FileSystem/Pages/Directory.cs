@@ -89,6 +89,8 @@ namespace N2.Edit.FileSystem.Items
                     FileSystem.CreateDirectory(to);
 
                 Parent = newParent;
+
+                ClearUrl();
             }
             else if (newParent != null)
             {
