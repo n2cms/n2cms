@@ -1,3 +1,4 @@
+using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using System;
 using System.Collections.Generic;
@@ -6,12 +7,17 @@ using System.Text;
 
 namespace N2.Persistence.MongoDB
 {
-    public class IgnoreUnderscoreMemberFinderConvention : IMemberFinderConvention
+	public class IgnoreUnderscoreMemberFinderConvention : IMemberMapConvention
     {
-        PublicMemberFinderConvention convention = new PublicMemberFinderConvention();
-        public IEnumerable<System.Reflection.MemberInfo> FindMembers(Type type)
-        {
-            return convention.FindMembers(type).Where(mi => !mi.Name.StartsWith("_"));
-        }
-    }
+		public string Name
+		{
+			get { return "IgnoreUnderscoreContention"; }
+		}
+
+		public void Apply(BsonMemberMap memberMap)
+		{
+			if (memberMap.MemberName.StartsWith("_"))
+				memberMap.SetShouldSerializeMethod(o => false);
+		}
+	}
 }

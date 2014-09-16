@@ -127,17 +127,32 @@ namespace N2.Persistence.MongoDB
             }
         }
 
+		class ContentConventionPack : IConventionPack
+		{
+			public IEnumerable<IConvention> Conventions
+			{
+				get 
+				{
+					return new IConvention[] 
+					{
+						new IgnoreIfNullConvention(true),
+						new IgnoreUnderscoreMemberFinderConvention()
+					};
+				}
+			}
+		}
+
+
         private void Register(IDefinitionProvider[] definitionProviders, IProxyFactory proxies)
         {
             if (isRegistered)
                 return;
             isRegistered = true;
 
-            var conventions = new ConventionProfile();
-            conventions.SetIgnoreIfNullConvention(new AlwaysIgnoreIfNullConvention());
-            conventions.SetMemberFinderConvention(new IgnoreUnderscoreMemberFinderConvention());
-            
-            BsonClassMap.RegisterConventions(conventions, t => true);
+			//conventions.SetIgnoreIfNullConvention(new AlwaysIgnoreIfNullConvention());
+			//conventions.SetMemberFinderConvention(new IgnoreUnderscoreMemberFinderConvention());
+
+			ConventionRegistry.Register("ContentConventions", new ContentConventionPack(), t => true);
 
             BsonSerializer.RegisterSerializationProvider(new ContentSerializationProvider(this, proxies));
 

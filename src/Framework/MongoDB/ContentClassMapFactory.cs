@@ -87,7 +87,8 @@ namespace N2.Persistence.MongoDB
 
         public override BsonClassMap Create(Definitions.ItemDefinition definition, IEnumerable<Definitions.ItemDefinition> allDefinitions)
         {
-            return Create<T>(definition, allDefinitions);
+			var map = Create<T>(definition, allDefinitions);
+			return map;
         }
     }
 }
