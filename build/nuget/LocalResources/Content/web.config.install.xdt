@@ -1,0 +1,10 @@
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  
+  <n2 xmlns="http://n2cms.com/schemas/configuration/v3" xdt:Transform="InsertIfMissing">
+    <!--<resources 
+
+        xdt:Transform="SetAttributes(jQueryPath,jQueryUiPath,angularRoot,ckEditorPath,FancyboxPath,twitterBootstrapRoot,twitterBootstrapJsRoot,iconsCssPath)"
+        />-->
+  </n2>
+  
+</configuration>

@@ -5,6 +5,7 @@
   <PropertyGroup>
     <Framework-DeployFolder>$(DeployFolder)\$(DeployPrefix)Framework</Framework-DeployFolder>
     <Config-NugetFolder>$(DeployFolder)\$(DeployPrefix)Config_Nuget</Config-NugetFolder>
+    <LocalResources-NugetFolder>$(DeployFolder)\$(DeployPrefix)LocalResources_Nuget</LocalResources-NugetFolder>
     <Framework-NugetFolder>$(DeployFolder)\$(DeployPrefix)Framework_Nuget</Framework-NugetFolder>
     <Management-NugetFolderZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_Zip</Management-NugetFolderZip>
 		<Management-NugetFolderNoZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_NoZip</Management-NugetFolderNoZip>
@@ -34,6 +35,16 @@
     <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Config-NugetFolder)\" />
   </Target>
   
+  <Target Name="LocalResources-NuGet">
+    <!--<Copy SourceFiles="@(nugetLibraryBinFiles)" DestinationFolder="$(LocalResources-NugetFolder)\lib" />-->
+    <ItemGroup>
+      <LocalResourcesNugetIncludes Include="$(BuildFolder)\Nuget\LocalResources\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(LocalResourcesNugetIncludes)" DestinationFolder="$(LocalResources-NugetFolder)\%(RecursiveDir)" />
+    <FileUpdate Files="$(LocalResources-NugetFolder)\N2.LocalResources.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+    <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(LocalResources-NugetFolder)\" />
+  </Target>
+  
   <Target Name="Framework-Deploy" DependsOnTargets="Framework-CreateItemGroups">
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Framework-DeployFolder)\bin" />
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Framework-DeployFolder)\N2\%(RecursiveDir)" SkipUnchangedFiles="true" UseHardlinksIfPossible="true" />
@@ -51,7 +62,7 @@
 		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-LocalizedResourcesFolder)\" />
 	</Target>
 
-	<Target Name="Library-NuGet" DependsOnTargets="Config-NuGet;Framework-Deploy">
+	<Target Name="Library-NuGet" DependsOnTargets="Config-NuGet;Framework-Deploy;LocalResources-NuGet">
     <ItemGroup>
       <nugetLibraryBinFiles Include="$(ManagementFolder)\bin\N2.dll;
                        $(ManagementFolder)\bin\N2.pdb;

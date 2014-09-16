@@ -15,13 +15,7 @@ CKEDITOR.editorConfig = function( config ) {
 		config.uiColor = '#F8F8F8';
 	    config.filebrowserWindowWidth = 300;
 	    config.filebrowserWindowHeight = 600;
-	    config.extraPlugins = 'codemirror';
 	    config.height = 300;
-	    config.codemirror = {
-		showFormatButton: true,
-		showCommentButton: false,
-		showUncommentButton: false
-	};
 
 	// extra allowed content for Twitter Bootstrap styles
 	config.extraAllowedContent =

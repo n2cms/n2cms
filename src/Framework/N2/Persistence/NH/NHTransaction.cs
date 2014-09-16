@@ -56,7 +56,7 @@ namespace N2.Persistence.NH
             }
             else
             {
-                logger.InfoFormat("Not commiting {0}, isOriginator:{1}, wasCommitted:{2}, wasRolledBack:{3}", transaction.GetHashCode(), isOriginator, transaction.WasCommitted, transaction.WasRolledBack);
+                logger.WarnFormat("Not commiting {0}, isOriginator:{1}, wasCommitted:{2}, wasRolledBack:{3}", transaction.GetHashCode(), isOriginator, transaction.WasCommitted, transaction.WasRolledBack);
             }
         }
 

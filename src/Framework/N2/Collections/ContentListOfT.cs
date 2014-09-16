@@ -76,7 +76,7 @@ namespace N2.Collections
 
         public void Insert(int index, T item)
         {
-            Inner.Insert(index, item);
+            Inner.Insert(Math.Max(0,index), item);
         }
 
         public void RemoveAt(int index)

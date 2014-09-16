@@ -5,7 +5,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
 	<title>Install N2</title>
-	<link href="../Resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="<%#  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath) %>" type="text/css" rel="stylesheet" />
+	<script src="<%# N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapJsPath)  %>" type="text/javascript"></script>
 	<link rel="stylesheet" type="text/css" href="../Resources/Css/all.css" />
 	<link rel="stylesheet" type="text/css" href="../Resources/Css/framed.css" />
 	<link rel="stylesheet" type="text/css" href="../Resources/Css/themes/default.css" />
@@ -22,7 +23,7 @@
 	<script type="text/javascript">
 		function show(id) {
 			var el = document.getElementById(id);
-			if (!el) return;
+			if (!el) return false;
 			el.style.display = "block";
 			this.style.display = "none";
 			return false;

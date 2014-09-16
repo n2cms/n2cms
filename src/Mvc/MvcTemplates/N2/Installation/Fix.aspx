@@ -5,11 +5,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title>Fix</title>
-    <link rel="stylesheet" type="text/css" href="../Resources/bootstrap/css/bootstrap.min.css" />
+	<link href="<%#  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath) %>" type="text/css" rel="stylesheet" />
+	<script src="<%# N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapJsPath)  %>" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" href="../Resources/Css/all.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/framed.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/themes/default.css" />
-    <style>
+    <style type="text/css">
     	body {font-size:.7em;font-family:Verdana;}
 		td {white-space:nowrap;}
     </style>
