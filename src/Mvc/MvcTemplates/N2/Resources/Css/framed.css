@@ -10,41 +10,41 @@ td,th { vertical-align:top; }
 body {
 	padding-bottom:30px;
 }
-#framed-navbar {
+.framed-navbar {
 	position:fixed !important;
 	margin-left:0;
 	margin-right:0;
 }
-#framed-navbar.toolbar-count-0 {
+.framed-navbar.toolbar-count-0 {
 	display:none;
 }
-	#framed-navbar .navbar-inner {
+	.framed-navbar .navbar-inner {
 		background-color:#18a0de;
 		background-image:none;
 		padding:0;
 	}
-		#framed-navbar .navbar-inner > a {
+		.framed-navbar .navbar-inner > a {
 			padding: 10px 15px 10px;
 			display:inline-block;
 			color:#fff;
 			text-decoration:none;
 			text-shadow: 0 1px 0 #1789bd;
 		}
-		#framed-navbar .navbar-inner > a:hover {
+		.framed-navbar .navbar-inner > a:hover {
 			text-shadow: 0px 1px 10px #0c4964;
 		}
-		#framed-navbar .navbar-inner .nav > li > a {
+		.framed-navbar .navbar-inner .nav > li > a {
 			color:#fff;
 			text-shadow: 0 1px 0 #1789bd;
 		}
-		#framed-navbar .navbar-inner .nav > li > a:hover {
+		.framed-navbar .navbar-inner .nav > li > a:hover {
 			text-shadow: 0px 1px 10px #0c4964;
 		}
 
-	#framed-navbar .splitbutton > a {
+	.framed-navbar .splitbutton > a {
 		margin-right:20px;
 	}
-	#framed-navbar .splitbutton > .dropdown-toggle {
+	.framed-navbar .splitbutton > .dropdown-toggle {
 		position:absolute;
 		top:0;
 		right:0;

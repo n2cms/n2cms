@@ -18,7 +18,7 @@
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Frame" ID="cf" runat="server">
 	<form id="f" runat="server">
-		<div id="framednavbar" runat="server">
+		<div id="framednavbar" class="framed-navbar" runat="server">
 			<div class="navbar-inner">
 				<asp:ContentPlaceHolder ID="Toolbar" runat="server" />
 			</div>
@@ -55,7 +55,6 @@
 	protected override void OnLoad(EventArgs e)
 	{
 		base.OnLoad(e);
-		framednavbar.Attributes["class"] = String.Format("navbar navbar-fixed-bottom toolbar-count-{0}", Toolbar.Controls.Count);
-		framednavbar.ClientID = "framed-navbar";
+		framednavbar.Attributes["class"] = String.Format("framed-navbar navbar navbar-fixed-bottom toolbar-count-{0}", Toolbar.Controls.Count);
 	}
 </script>
