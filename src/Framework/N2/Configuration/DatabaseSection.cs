@@ -157,9 +157,6 @@ namespace N2.Configuration
 
         public override void ApplyComponentConfigurationKeys(List<string> configurationKeys)
         {
-            if (Files.StorageLocation == FileStoreLocation.Database)
-                configurationKeys.Add("dbfs");
-
 			if (!string.IsNullOrEmpty(Search.Type))
 				configurationKeys.Add(Search.Type);
 
@@ -193,6 +190,18 @@ namespace N2.Configuration
 				configurationKeys.Add("nosql");
 			else
 				configurationKeys.Add("sql");
+
+            if (Files.StorageLocation == FileStoreLocation.Database)
+            {
+                if (Flavour == DatabaseFlavour.MongoDB)
+                {
+                    configurationKeys.Add("mongofs");
+                }
+                else
+                {
+                    configurationKeys.Add("dbfs");
+                }
+            }
         }
 
     }

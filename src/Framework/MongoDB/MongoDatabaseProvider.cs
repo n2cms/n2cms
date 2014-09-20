@@ -115,7 +115,12 @@ namespace N2.Persistence.MongoDB
             settings.ConnectTimeout = TimeSpan.FromSeconds(10);
             var client = new MongoClient(settings);
             var server = client.GetServer();
-            Database = server.GetDatabase(config.Sections.Database.TablePrefix);
+            var databaseSettings = new MongoDatabaseSettings()
+            {
+                ReadPreference = ReadPreference.Nearest,
+                WriteConcern = WriteConcern.Acknowledged,
+            };
+            Database = server.GetDatabase(config.Sections.Database.TablePrefix, databaseSettings);
             try
             {
                 GetCollection<ContentItem>().EnsureIndex("Details.Name", "Details.LinkedItem", "Details.StringValue");
@@ -151,7 +156,7 @@ namespace N2.Persistence.MongoDB
 
 			//conventions.SetIgnoreIfNullConvention(new AlwaysIgnoreIfNullConvention());
 			//conventions.SetMemberFinderConvention(new IgnoreUnderscoreMemberFinderConvention());
-
+            
 			ConventionRegistry.Register("ContentConventions", new ContentConventionPack(), t => true);
 
             BsonSerializer.RegisterSerializationProvider(new ContentSerializationProvider(this, proxies));
@@ -161,6 +166,7 @@ namespace N2.Persistence.MongoDB
                 cm.AutoMap();
                 cm.UnmapProperty(cd => cd.ID);
                 cm.UnmapField(cd => cd.EnclosingItem);
+                cm.SetIgnoreExtraElements(true);
             });
             BsonClassMap.RegisterClassMap<ContentDetail>(cm =>
             {
@@ -172,21 +178,24 @@ namespace N2.Persistence.MongoDB
                 cm.MapProperty(cd => cd.LinkedItem).SetSerializer(new ContentRelationSerializer(this));
                 cm.UnmapProperty(cd => cd.LinkValue);
                 cm.GetMemberMap(cd => cd.DateTimeValue).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
-
+                cm.SetIgnoreExtraElements(true);
             });
             BsonClassMap.RegisterClassMap<DetailCollection>(cm =>
             {
                 cm.AutoMap();
                 cm.UnmapProperty(dc => dc.ID);
                 cm.UnmapProperty(dc => dc.EnclosingItem);
+                cm.SetIgnoreExtraElements(true);
             });
             BsonClassMap.RegisterClassMap<Relation<ContentItem>>(cm =>
                 {
                     cm.MapProperty(r => r.ID);
                     cm.MapProperty(r => r.ValueAccessor).SetSerializer(new RelationValueAccessorSerializer<ContentItem>(this));
+                cm.SetIgnoreExtraElements(true);
                 });
             BsonClassMap.RegisterClassMap<ContentRelation>(cm =>
                 {
+                cm.SetIgnoreExtraElements(true);
                 });
             BsonClassMap.RegisterClassMap<ContentVersion>(cm =>
                 {
@@ -196,6 +205,7 @@ namespace N2.Persistence.MongoDB
                     cm.GetMemberMap(cv => cv.Saved).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
                     cm.GetMemberMap(cv => cv.FuturePublish).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
                     cm.GetMemberMap(cv => cv.Expired).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
+                cm.SetIgnoreExtraElements(true);
                 });
             BsonClassMap.RegisterClassMap<ContentItem>(cm =>
             {
@@ -209,6 +219,7 @@ namespace N2.Persistence.MongoDB
                 cm.GetMemberMap(ci => ci.Published).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
                 cm.GetMemberMap(ci => ci.Expires).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
                 cm.SetIsRootClass(isRootClass: true);
+                cm.SetIgnoreExtraElements(true);
             });
 
             var definitions = definitionProviders.SelectMany(dp => dp.GetDefinitions()).ToList();
