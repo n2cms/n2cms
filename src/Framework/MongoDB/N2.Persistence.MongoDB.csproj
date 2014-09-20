@@ -43,6 +43,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -64,6 +65,8 @@
     <Compile Include="MongoContentItemRepository.cs" />
     <Compile Include="IntIdGenerator.cs" />
     <Compile Include="MongoDatabaseProvider.cs" />
+    <Compile Include="MongoFileHttpHandler.cs" />
+    <Compile Include="MongoFileSystem.cs" />
     <Compile Include="MongoFinder.cs" />
     <Compile Include="MongoInstallationManager.cs" />
     <Compile Include="MongoRepository.cs" />
