@@ -30,10 +30,22 @@ namespace Dinamico
 
         private void RegisterViewTemplates(IEngine engine)
         {
-            engine.RegisterViewTemplates<Controllers.ContentPagesController>()
-                .Add<Controllers.ContentPartsController>()
-                .Add<Controllers.SlideshowController>();
+			var reg = engine.RegisterViewTemplates<Controllers.ContentPagesController>();
+            TryRegisterViewTemplate<Controllers.ContentPartsController>(reg);
+            TryRegisterViewTemplate<Controllers.SlideshowController>(reg);
         }
+
+	    private void TryRegisterViewTemplate<T>(ViewTemplateRegistrator registrator) where T : IController
+	    {
+		    try
+		    {
+				registrator.Add<T>();
+		    }
+		    catch (System.Exception ex)
+		    {
+			    Logger.Error(ex);
+		    }
+	    }
 
         public static void RegisterControllerFactory(ControllerBuilder controllerBuilder, IEngine engine)
         {
