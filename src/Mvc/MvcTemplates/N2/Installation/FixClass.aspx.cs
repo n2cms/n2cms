@@ -21,13 +21,24 @@ namespace N2.Edit.Install
 
         protected void Page_Load(object sender, EventArgs e)
         {
+	        if (String.IsNullOrEmpty(Request["id"]))
+	        {
+		        throw new ArgumentException("HTTP request parameter 'id' is required.");
+	        }
+	        int id;
+	        if (!int.TryParse(Request["id"], out id))
+	        {
+		        throw new ArgumentException(String.Format("Failed to parse the given id '{0}' as an integer.", Request["id"]));
+	        }
+
 			Header.DataBind();
+
             if (!IsPostBack)
             {
                 using (IDbConnection conn = installer.GetConnection())
                 {
                     conn.Open();
-                    string discriminator = GetDiscriminator(conn, int.Parse(Request["id"]));
+                    string discriminator = GetDiscriminator(conn, id);
                     string itemsSql = string.Format("select * from {0}item where Type = '{1}'", tablePrefix, discriminator);
                     using (IDbCommand cmd = installer.GenerateCommand(CommandType.Text, itemsSql))
                     {
