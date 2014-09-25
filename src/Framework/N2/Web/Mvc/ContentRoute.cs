@@ -96,34 +96,47 @@ namespace N2.Web.Mvc
         public override RouteData GetRouteData(HttpContextBase httpContext)
         {
             string path = httpContext.Request.AppRelativeCurrentExecutionFilePath;
-            if (path.StartsWith(managementPath, StringComparison.InvariantCultureIgnoreCase))
-                return new RouteData(this, new StopRoutingHandler());
-            if (path.EndsWith(".axd", StringComparison.InvariantCultureIgnoreCase))
-                return new RouteData(this, new StopRoutingHandler());
-            if (path.EndsWith(".ashx", StringComparison.InvariantCultureIgnoreCase))
-                return new RouteData(this, new StopRoutingHandler());
+			RouteData routeData = null;
 
-            RouteData routeData = null;
+	        try
+	        {
+		        if (path.StartsWith(managementPath, StringComparison.InvariantCultureIgnoreCase))
+			        return new RouteData(this, new StopRoutingHandler());
+		        if (path.EndsWith(".axd", StringComparison.InvariantCultureIgnoreCase))
+			        return new RouteData(this, new StopRoutingHandler());
+		        if (path.EndsWith(".ashx", StringComparison.InvariantCultureIgnoreCase))
+			        return new RouteData(this, new StopRoutingHandler());
+		        if (httpContext.Request.QueryString["_escaped_fragment_"] != null)
+			        return new RouteData(this, new StopRoutingHandler());
 
-            if(httpContext.Request.QueryString[ContentPartKey] != null)
-                // part in query string, this is an indicator of a request to a part, takes precendence over friendly urls
-                routeData = CheckForContentController(httpContext);
+		        if (httpContext.Request.QueryString[ContentPartKey] != null)
+			        // part in query string, this is an indicator of a request to a part, takes precendence over friendly urls
+			        routeData = CheckForContentController(httpContext);
 
-            if(routeData == null)
-                // this might be a friendly url
-                routeData = GetRouteDataForPath(httpContext.Request);
+		        if (routeData == null)
+			        // this might be a friendly url
+			        routeData = GetRouteDataForPath(httpContext.Request);
 
-            if(routeData == null)
-                // fallback to route to controller/action
-                routeData = CheckForContentController(httpContext);
-
-            logger.DebugFormat("GetRouteData for '{0}' got values: {1}", path, new RouteExtensions.QueryStringOutput(routeData));
-
-            return routeData;
-        }
+		        if (routeData == null)
+			        // fallback to route to controller/action
+			        routeData = CheckForContentController(httpContext);
+	        }
+	        finally
+	        {
+		        logger.Debug(String.Format("GetRouteData for '{0}' got values: {1}", path,
+			        new RouteExtensions.QueryStringOutput(routeData)));
+	        }
+			return routeData;
+		}
 
         private RouteData GetRouteDataForPath(HttpRequestBase request)
         {
+			if (request == null)
+				throw new ArgumentNullException("request");
+
+			if (request.Url == null)
+				throw new ArgumentException("Request has no URL", "request");
+
             //On a multi-lingual site with separate domains per language,
             //the full url (with host) should be passed to UrlParser.ResolvePath():
             string host = (request.Url.IsDefaultPort) ? request.Url.Host : request.Url.Authority;
