@@ -27,11 +27,13 @@ namespace N2.Web.UI.WebControls
 			Controls.Add(DatePickerBox);
 			DatePickerBox.CssClass = "datePicker";
 			DatePickerBox.TextChanged += OnTextChanged;
+			DatePickerBox.Attributes["placeholder"] = Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern;
 
 			TimePickerBox.ID = "time";
 			Controls.Add(TimePickerBox);
 			TimePickerBox.CssClass = "timePicker";
 			TimePickerBox.TextChanged += OnTextChanged;
+			TimePickerBox.Attributes["placeholder"] = Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern;
 
 			base.CreateChildControls();
 		}

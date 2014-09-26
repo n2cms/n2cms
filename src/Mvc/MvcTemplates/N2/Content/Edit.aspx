@@ -71,11 +71,20 @@
 		<asp:ValidationSummary ID="vsEdit" runat="server" CssClass="alert alert-block alert-margin" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
 		<asp:CustomValidator ID="cvException" runat="server" Display="None" />
 
-		<div id="futurePanel" class="popup">
-				<n2:DatePicker Label-Text="When" ID="dpFuturePublishDate" runat="server" meta:resourceKey="dpFuturePublishDate" />
-				<asp:Button ID="btnSavePublishInFuture" Text="OK" OnCommand="OnSaveFuturePublishCommand" CssClass="ok" runat="server" meta:resourceKey="btnSavePublishInFuture" />
-				<asp:HyperLink ID="hlCancelSavePublishInFuture" NavigateUrl="javascript:void(0);" runat="server" CssClass="cancel" meta:resourceKey="hlCancelSavePublishInFuture">Close</asp:HyperLink>
+		<div id="futurePanel" class="modal" tabindex="-1" role="dialog">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 meta:resourceKey="h3futureHeading">Schedule publishing</h3>
+			</div>
+			<div class="modal-body" style="min-height: 100px;">
+				<n2:DatePicker Label-Text="When should this content be published" ID="dpFuturePublishDate" runat="server" meta:resourceKey="dpFuturePublishDate" />
+			</div>
+			<div class="modal-footer">
+				<asp:Button ID="btnSavePublishInFuture" Text="OK" OnCommand="OnSaveFuturePublishCommand" CssClass="btn btn-primary" runat="server" meta:resourceKey="btnSavePublishInFuture" />
+				<asp:HyperLink ID="hlCancelSavePublishInFuture" NavigateUrl="javascript:void(0);" runat="server" CssClass="btn" meta:resourceKey="hlCancelSavePublishInFuture">Close</asp:HyperLink>
+			</div>
 		</div>
+		<div class="future-panel-backdrop modal-backdrop fade in" style="display:none"></div>
 
 		<n2:ItemEditor ID="ie" runat="server" />
 	</edit:PermissionPanel>
@@ -83,19 +92,23 @@
 		<script type="text/javascript">
 			$(document).ready(function () {
 				// future publish
-				$("#futurePanel").hide().click(function (e) { e.stopPropagation(); return false; });
-				$(".future").click(function (e) {
-					$("#futurePanel").css({ left: e.clientX + "px", top: e.clientY + "px" }).show();
-					$("#futurePanel input:first").focus();
-					e.preventDefault();
+				$("#futurePanel").hide().click(function (e) {
 					e.stopPropagation();
+				});
+				$(".future").click(function (e) {
+					$("#futurePanel").show().addClass("modal");
+					$("#futurePanel input:first").focus();
+					$("#future-panel-backdrop").show();
+					e.stopPropagation();
+					e.preventDefault();
+					$(this).closest(".open").removeClass("open");
 				});
 
 				$("#futurePanel .cancel").click(function () {
 					$("#futurePanel").hide();
 				});
 				$(document.body).click(function (e) {
-					if ($(e.target).closest(".jCalendar").length == 0)
+					if ($(e.target).closest(".datepicker,.day,.week,.month,.year").length == 0)
 						$("#futurePanel").hide();
 				});
 
