@@ -1,11 +1,11 @@
 ﻿<%@ Page Language="C#" MasterPageFile="../Content/Framed.Master" AutoEventWireup="true" CodeBehind="Edit.aspx.cs" Inherits="N2.Edit.Membership.Edit" Title="Edit user" meta:resourcekey="PageResource1" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="Toolbar" runat="server">
    <asp:LinkButton ID="btnSave" runat="server" OnClick="btnSave_Click" 
-		CssClass="command primary-action" meta:resourcekey="btnSaveResource1">Save</asp:LinkButton>
+		CssClass="btn btn-primary command primary-action" meta:resourcekey="btnSaveResource1">Save</asp:LinkButton>
    <asp:HyperLink ID="hlPassword" runat="server" NavigateUrl="Password.aspx" 
-		CssClass="command action" meta:resourcekey="hlPasswordResource1">Password</asp:HyperLink>
+		CssClass="btn command action" meta:resourcekey="hlPasswordResource1">Password</asp:HyperLink>
    <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="Users.aspx" 
-		CssClass="command" meta:resourcekey="hlBackResource1">Close</asp:HyperLink>
+		CssClass="btn command" meta:resourcekey="hlBackResource1">Close</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
 	<div class="tabPanel">

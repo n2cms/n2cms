@@ -16,6 +16,7 @@ namespace N2.Edit.Web.UI.Controls
             Text = "This is not supported for this type of item.",
             Display = ValidatorDisplay.Dynamic
         };
+		private bool isInvalid;
 
         public string Text
         {
@@ -30,10 +31,17 @@ namespace N2.Edit.Web.UI.Controls
             cv.Page = Page;
         }
 
+		protected override void OnPreRender(EventArgs e)
+		{
+			var item = new SelectionUtility(this, Page.GetEngine()).SelectedItem;
+			isInvalid = item == null || item.ID == 0;
+
+			base.OnPreRender(e);
+		}
+
         protected override void Render(HtmlTextWriter writer)
         {
-            var item = new SelectionUtility(this, Page.GetEngine()).SelectedItem;
-            if (item == null || item.ID == 0)
+            if (isInvalid)
             {
                 cv.IsValid = false;
                 cv.RenderControl(writer);

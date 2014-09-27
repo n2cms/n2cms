@@ -1,3 +1,4 @@
+using N2.Edit.Versioning;
 using N2.Web;
 using System;
 using System.Collections.Generic;
@@ -25,8 +26,16 @@ namespace N2.Edit.Web.UI.Controls
             base.OnPreRender(e);
         
             var item = DataSource as ContentItem;
-            if (item == null)
-                return;
+			if (item == null)
+			{
+				var version = DataSource as ContentVersion;
+				if (version != null)
+				{
+					item = version.GetVersionInfo(N2.Context.Current.Resolve<ContentVersionRepository>()).Content;
+				}
+
+				return;
+			}
 
             if (string.IsNullOrEmpty(InterfaceUrl))
                 this.NavigateUrl = N2.Context.Current.GetContentAdapter<NodeAdapter>(item).GetPreviewUrl(item);

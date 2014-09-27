@@ -1021,6 +1021,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="N2\Web\RootNode.cs" />
+    <Compile Include="N2\Web\UI\Controls\ButtonGroup.cs" />
     <Compile Include="N2\Web\UI\Controls\SplitButtons.cs" />
     <Compile Include="N2\Web\UI\Controls\Alert.cs" />
     <Compile Include="N2\Web\UI\Controls\CancelLink.cs" />

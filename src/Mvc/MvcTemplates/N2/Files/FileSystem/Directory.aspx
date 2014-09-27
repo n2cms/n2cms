@@ -4,8 +4,8 @@
 <%@ Import Namespace="N2.Web" %>
 <asp:Content ContentPlaceHolderID="Toolbar" runat="server">
 	<n2:OptionsMenu id="om" runat="server">
-		<asp:LinkButton ID="btnDelete" runat="server" Text="Delete selected" CssClass="command primary-action" OnCommand="OnDeleteCommand" OnClientClick="return confirm('Delete selected files and folders?');" meta:resourceKey="btnDelete" />
-		<asp:HyperLink ID="hlEdit" runat="server" Text="Edit" CssClass="command edit" meta:resourceKey="hlEdit" />
+		<asp:LinkButton ID="btnDelete" runat="server" Text="Delete selected" CssClass="btn btn-danger command primary-action" OnCommand="OnDeleteCommand" OnClientClick="return confirm('Delete selected files and folders?');" meta:resourceKey="btnDelete" />
+		<asp:HyperLink ID="hlEdit" runat="server" Text="Edit" CssClass="btn command edit" meta:resourceKey="hlEdit" />
 	</n2:OptionsMenu>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" runat="server">	

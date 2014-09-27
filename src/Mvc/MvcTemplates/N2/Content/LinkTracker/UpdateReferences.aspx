@@ -3,8 +3,8 @@
 <%@ Register Src="../AffectedItems.ascx" TagName="AffectedItems" TagPrefix="uc1" %>
 
 <asp:Content ContentPlaceHolderID="Toolbar" runat="server">
-    <asp:LinkButton ID="btnUpdate" meta:resourceKey="btnUpdate" runat="server" OnCommand="OnUpdateCommand" CssClass="command primary-action"><img src='../../Resources/Icons/link_edit.png' /> Update links</asp:LinkButton>
-	<edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel" CssClass="command cancel">Close</edit:CancelLink>
+    <asp:LinkButton ID="btnUpdate" meta:resourceKey="btnUpdate" runat="server" OnCommand="OnUpdateCommand" CssClass="btn btn-primary command primary-action"><img src='../../Resources/Icons/link_edit.png' /> Update links</asp:LinkButton>
+	<edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel" CssClass="btn command cancel">Close</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
 	<div class="tabPanel" data-flag="Management">

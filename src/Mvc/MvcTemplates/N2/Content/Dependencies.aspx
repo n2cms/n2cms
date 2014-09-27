@@ -11,7 +11,7 @@
 	Namespace	= "N2.Edit.Web.UI.Controls"
 	Assembly	= "N2.Management" %>
 <asp:Content ID="ContentToolbar" ContentPlaceHolderID="Toolbar" runat="server">
-		<asp:HyperLink ID="hlBack" runat="server" CssClass="plain command" meta:resourceKey="hlBack">back</asp:HyperLink>
+		<asp:HyperLink ID="hlBack" runat="server" CssClass="btn plain command" meta:resourceKey="hlBack">Close</asp:HyperLink>
 </asp:Content>
 <asp:Content
 		ID="ContentContent"

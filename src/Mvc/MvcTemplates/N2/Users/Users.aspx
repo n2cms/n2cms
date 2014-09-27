@@ -2,7 +2,7 @@
 <asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Toolbar" runat="server">
-	<asp:HyperLink runat="server" NavigateUrl="New.aspx" meta:resourcekey="HyperLinkResource1">New user</asp:HyperLink>
+	<asp:HyperLink runat="server" NavigateUrl="New.aspx" CssClass="btn" meta:resourcekey="HyperLinkResource1">New user</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
 	
