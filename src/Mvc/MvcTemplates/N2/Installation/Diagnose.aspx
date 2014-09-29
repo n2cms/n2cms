@@ -8,8 +8,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="Head1" runat="server">
     <title>Diagnose N2</title>
-	<link href="<%#  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath) %>" type="text/css" rel="stylesheet" />
-	<script src="<%# N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapJsPath)  %>" type="text/javascript"></script>
+	<asp:PlaceHolder runat="server">
+		<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath) %>" type="text/css" rel="stylesheet" />
+		<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapJsPath)  %>" type="text/javascript"></script>
+	</asp:PlaceHolder>
     <link rel="stylesheet" href="../Resources/Css/All.css" type="text/css" />
     <style type="text/css">
         label{font-weight:bold;margin:5px 10px 0 0;}
