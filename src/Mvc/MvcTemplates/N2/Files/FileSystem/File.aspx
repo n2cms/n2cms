@@ -3,9 +3,17 @@
 <%@ Import Namespace="N2.Web" %>
 
 <asp:Content ContentPlaceHolderID="Toolbar" runat="server">
-	<asp:LinkButton ID="btnDownload" runat="server" Text="Download" CssClass="btn command iconed download" OnCommand="OnDownloadCommand" meta:resourceKey="btnDownload" />
-	<n2:OptionsMenu id="omSizes" runat="server"/>
-	<asp:HyperLink ID="hlCrop" NavigateUrl="Crop.aspx" CssClass="btn command crop iconed" runat="server" meta:resourceKey="hlCrop">Crop</asp:HyperLink>
+	<asp:LinkButton ID="btnDownload" runat="server" CssClass="btn command iconed download" OnCommand="OnDownloadCommand">
+		<b class="fa fa-download"></b>
+		<%= GetLocalResourceString("btnDownload.Text", "Download") %>
+	</asp:LinkButton>
+	
+	<edit:ButtonGroup ID="bgSizes" runat="server"></edit:ButtonGroup>
+	
+	<asp:HyperLink ID="hlCrop" NavigateUrl="Crop.aspx" CssClass="btn command crop iconed" runat="server">
+		<b class="fa fa-crop"></b>
+		<%= GetLocalResourceString("hlCrop.Text", "Crop") %>
+	</asp:HyperLink>
 	<asp:LinkButton ID="btnSave" runat="server" Text="Save" CssClass="btn btn-primary command" OnCommand="OnSaveCommand" Visible="false" meta:resourceKey="btnSave" />
 	<asp:LinkButton ID="btnEdit" runat="server" Text="Edit" CssClass="btn command" OnCommand="OnEditCommand" Visible="false" meta:resourceKey="btnEdit" />
 	<asp:LinkButton ID="btnCancel" runat="server" Text="Close" CssClass="btn command cancel" OnCommand="OnCancelCommand" Visible="false" meta:resourceKey="btnCancel" />

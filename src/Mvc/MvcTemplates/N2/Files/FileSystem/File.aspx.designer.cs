@@ -22,13 +22,13 @@ namespace N2.Edit.FileSystem {
         protected global::System.Web.UI.WebControls.LinkButton btnDownload;
         
         /// <summary>
-        /// omSizes control.
+        /// bgSizes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Web.UI.WebControls.OptionsMenu omSizes;
+        protected global::N2.Edit.Web.UI.Controls.ButtonGroup bgSizes;
         
         /// <summary>
         /// hlCrop control.
