@@ -54,7 +54,16 @@ namespace N2.Edit.Versioning
 
         public ContentItem Deserialize(string xml)
         {
-            return ContentVersion.Deserialize(importer, parser, xml);
+			var previousIgnoreMissingTypes = importer.Reader.IgnoreMissingTypes;
+			try
+			{
+				importer.Reader.IgnoreMissingTypes = true;
+				return ContentVersion.Deserialize(importer, parser, xml);
+			}
+			finally
+			{
+				importer.Reader.IgnoreMissingTypes = previousIgnoreMissingTypes;
+			}
         }
 
         public IEnumerable<ContentVersion> GetVersions(ContentItem item)
@@ -182,11 +191,20 @@ namespace N2.Edit.Versioning
 
 		public virtual ContentItem DeserializeVersion(ContentVersion version)
 		{
-			var item = ContentVersion.Deserialize(importer, parser, version.VersionDataXml);
-			if (version.FuturePublish.HasValue)
-				item["FuturePublishDate"] = version.FuturePublish;
-			item.Updated = version.Saved;
-			return item;
+			var initialIgnoreMissingTypes = importer.Reader.IgnoreMissingTypes;
+			importer.Reader.IgnoreMissingTypes = true;
+			try
+			{
+				var item = ContentVersion.Deserialize(importer, parser, version.VersionDataXml);
+				if (version.FuturePublish.HasValue)
+					item["FuturePublishDate"] = version.FuturePublish;
+				item.Updated = version.Saved;
+				return item;
+			}
+			finally
+			{
+				importer.Reader.IgnoreMissingTypes = initialIgnoreMissingTypes;
+			}
 		}
 
 		public virtual void SerializeVersion(ContentVersion version, ContentItem item)

@@ -11,7 +11,8 @@ namespace N2.Persistence.Serialization
     {
         private Engine.Logger<Importer> logger;
         private readonly IPersister persister;
-        private readonly IItemXmlReader reader;
+		private readonly IItemXmlReader reader;
+
         private readonly IFileSystem fs;
 
         public Importer(IPersister persister, IItemXmlReader reader, IFileSystem fs)
@@ -25,7 +26,12 @@ namespace N2.Persistence.Serialization
         public IPersister Persister
         {
             get { return persister; }
-        } 
+        }
+
+		public IItemXmlReader Reader
+		{
+			get { return reader; }
+		} 
 
         public virtual IImportRecord Read(string path)
         {
