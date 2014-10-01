@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using N2.Collections;
 using N2.Configuration;
 using N2.Definitions;
@@ -322,13 +323,25 @@ namespace N2.Edit.Versioning
             if (publishedItem.ID == 0)
                 return new [] { publishedItem.GetVersionInfo() };
 
-            var versions = Repository.GetVersions(publishedItem).Select(v => v.GetVersionInfo(Repository))
-                .Concat(new[] { publishedItem.GetVersionInfo() })
-                .OrderByDescending(i => i.VersionIndex)
-                .Skip(skip).Take(take)
-                .ToList();
+	        var versionQuery = Repository.GetVersions(publishedItem).Select(v => v.GetVersionInfo(Repository))
+		        .Concat(new[] {publishedItem.GetVersionInfo()})
+		        .OrderByDescending(i => i.VersionIndex)
+		        .Skip(skip).Take(take);
 
-            return versions;
+	        var versionList = new List<VersionInfo>();
+	        foreach (var version in versionQuery)
+	        {
+		        try
+		        {
+			        versionList.Add(version);
+		        }
+		        catch (Exception ex)
+		        {
+			        versionList.Add(new InvalidVersionInfo() {InnerException = ex});
+		        }
+	        }
+
+	        return versionList;
         }
 
         /// <summary>Removes exessive versions.</summary>

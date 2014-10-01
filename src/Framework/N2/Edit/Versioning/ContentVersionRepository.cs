@@ -66,6 +66,9 @@ namespace N2.Edit.Versioning
 
         public ContentVersion Save(ContentItem item, bool asPreviousVersion = true)
         {
+			if (item == null)
+				throw new ArgumentNullException("item");
+
             item = Find.ClosestPage(item);
             var master = GetMaster(item);
             var version = GetVersion(master, item.VersionIndex)
@@ -79,24 +82,39 @@ namespace N2.Edit.Versioning
             version.ItemCount = N2.Find.EnumerateChildren(item, includeSelf: true, useMasterVersion: false).Count();
             if (asPreviousVersion)
             {
-                version.Published = GetVersions(master)
-                    .Where(v => v.VersionIndex < item.VersionIndex)
-                    .OrderByDescending(v => v.VersionIndex)
-                    .Select(v => v.Expired)
-                    .FirstOrDefault()
-                    ?? item.Published;
-                version.Expired = Utility.CurrentTime();
+	            try
+	            {
+		            version.Published = GetVersions(master)
+			            .Where(v => v.VersionIndex < item.VersionIndex)
+			            .OrderByDescending(v => v.VersionIndex)
+			            .Select(v => v.Expired)
+			            .FirstOrDefault()
+		                                ?? item.Published;
+	            }
+	            catch (Exception ex)
+	            {
+		            Logger.Error("Failure in ContentVersionRepository::Save", ex);
+		            version.Published = item.Published; // recover
+	            }
+	            version.Expired = Utility.CurrentTime();
             }
             else
                 version.Published = null;
 
-            using (var tx = Repository.BeginTransaction())
-            {
-                Repository.SaveOrUpdate(version);
-                tx.Commit();
-            }
+	        try
+	        {
+		        using (var tx = Repository.BeginTransaction())
+		        {
+			        Repository.SaveOrUpdate(version);
+			        tx.Commit();
+		        }
+	        }
+	        catch (Exception ex)
+	        {
+		        throw new N2Exception("Failed to commit version to repository", ex);
+	        }
 
-            if (VersionsChanged != null)
+	        if (VersionsChanged != null)
                 VersionsChanged(this, new VersionsChangedEventArgs { Version = version });
 
             return version;
@@ -124,6 +142,9 @@ namespace N2.Edit.Versioning
 
         public void Delete(ContentItem item)
         {
+			if (item == null)
+				throw new ArgumentNullException("item");
+
             using (var tx = Repository.BeginTransaction())
             {
                 if (item.IsPage)
@@ -139,7 +160,10 @@ namespace N2.Edit.Versioning
                     var version = GetVersion(page, page.VersionIndex);
                     if (version == null)
                         return;
+
                     var versionedPage = DeserializeVersion(version);
+	                if (versionedPage == null)
+		                return;
 					var versionedItem = versionedPage.FindPartVersion(item);
                     if (versionedItem == null)
                         return;

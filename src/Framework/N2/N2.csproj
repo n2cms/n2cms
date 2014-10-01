@@ -161,6 +161,7 @@
     <Compile Include="Configuration\ServerElement.cs" />
     <Compile Include="Definitions\DefinitionEventArgs.cs" />
     <Compile Include="Definitions\IPlaceholder.cs" />
+    <Compile Include="Edit\Versioning\InvalidVersionInfo.cs" />
     <Compile Include="Edit\Versioning\VersionInfo.cs" />
     <Compile Include="Persistence\LinqQueryFacade.cs" />
     <Compile Include="Persistence\NH\LinqNHQueryFacade.cs" />
