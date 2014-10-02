@@ -1,7 +1,4 @@
-﻿.framed .download.iconed { background-image:url(../../Resources/icons/page_white_put.png); }
-.framed .crop.iconed { background-image:url(../../Resources/icons/image_edit.png); }
-
-.resize { position:relative; display:inline-block; }
+﻿.resize { position:relative; display:inline-block; }
 .resize span { color:#fff; position:absolute; left:40%; top:33%; }
 .resize-warning .jcrop-vline,.resize-warning .jcrop-hline { background-color:red; }
 

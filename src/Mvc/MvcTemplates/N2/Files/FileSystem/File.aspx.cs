@@ -72,12 +72,11 @@ namespace N2.Edit.FileSystem
                     hl.Text += GetSizeText(size.Width, size.Height);
                     hl.CssClass = "command";
                     if (path == Selection.SelectedItem.Url)
-                        omSizes.Controls.AddAt(0, hl);
+						bgSizes.Controls.AddAt(0, hl);
                     else
-                        omSizes.Controls.Add(hl);
+						bgSizes.Controls.Add(hl);
                 }
             }
-            omSizes.Visible = omSizes.Controls.Count > 1;
         }
 
         private static string GetSizeText(int w, int h)

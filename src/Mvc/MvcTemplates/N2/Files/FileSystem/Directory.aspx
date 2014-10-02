@@ -3,10 +3,10 @@
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <%@ Import Namespace="N2.Web" %>
 <asp:Content ContentPlaceHolderID="Toolbar" runat="server">
-	<n2:OptionsMenu id="om" runat="server">
+	<edit:ButtonGroup runat="server" CssClass="btn btn-danger">
 		<asp:LinkButton ID="btnDelete" runat="server" Text="Delete selected" CssClass="command primary-action" OnCommand="OnDeleteCommand" OnClientClick="return confirm('Delete selected files and folders?');" meta:resourceKey="btnDelete" />
 		<asp:HyperLink ID="hlEdit" runat="server" Text="Edit" CssClass="command edit" meta:resourceKey="hlEdit" />
-	</n2:OptionsMenu>
+	</edit:ButtonGroup>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" runat="server">	
 	<h1><% foreach (N2.ContentItem node in ancestors) { %>/<a href="<%= Url.Parse("Directory.aspx").AppendSelection(node) %>"><%= node.Title %></a><% } %></h1>

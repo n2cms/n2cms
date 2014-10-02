@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" MasterPageFile="../Content/Framed.Master" AutoEventWireup="true" CodeBehind="New.aspx.cs" Inherits="N2.Edit.Membership.New" Title="New user" meta:resourcekey="PageResource1" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="Toolbar" runat="server">
-	<asp:HyperLink runat="server" NavigateUrl="Users.aspx" CssClass="command" 
+	<asp:HyperLink runat="server" NavigateUrl="Users.aspx" CssClass="btn command" 
 		meta:resourcekey="HyperLinkResource1">Close</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">

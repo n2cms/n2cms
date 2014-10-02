@@ -1,7 +1,7 @@
 ﻿<%@ Page MasterPageFile="../Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Trash.Default" %>
 <asp:Content ID="ContentToolbar" ContentPlaceHolderID="Toolbar" runat="server">
-    <asp:LinkButton ID="btnClear" runat="server" CssClass="command restore primary-action" meta:resourceKey="btnClear" OnClientClick="return confirm('really empty trash?');" OnClick="btnClear_Click">Empty trash</asp:LinkButton>
-    <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Close</asp:HyperLink>
+    <asp:LinkButton ID="btnClear" runat="server" CssClass="btn btn-danger command restore primary-action" meta:resourceKey="btnClear" OnClientClick="return confirm('really empty trash?');" OnClick="btnClear_Click">Empty trash</asp:LinkButton>
+    <asp:HyperLink ID="hlCancel" runat="server" CssClass="btn cancel command" meta:resourceKey="hlCancel">Close</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
 	<n2:ItemDataSource id="idsTrash" runat="server" />

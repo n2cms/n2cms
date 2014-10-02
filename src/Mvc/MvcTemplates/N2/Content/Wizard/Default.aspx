@@ -4,7 +4,7 @@
 <asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
 </asp:Content>
 <asp:Content ID="ContentToolbar" ContentPlaceHolderID="Toolbar" runat="server">
-	<edit:CancelLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Close</edit:CancelLink>
+	<edit:CancelLink ID="hlCancel" runat="server" CssClass="btn cancel command" meta:resourceKey="hlCancel">Close</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
 	<edit:PersistentOnlyPanel runat="server" meta:resourceKey="popNotSupported">

@@ -1,8 +1,10 @@
 ﻿<%@ Page Title="Roles" Language="C#" MasterPageFile="~/N2/Content/Framed.Master" AutoEventWireup="True" CodeBehind="Roles.aspx.cs" Inherits="N2.Edit.Membership.ListRoles" meta:resourcekey="Page" %>
 
-<asp:Content ContentPlaceHolderID="Content" runat="server">
+<asp:Content ContentPlaceHolderID="Toolbar" runat="server">
     <asp:HyperLink NavigateUrl="New.aspx" Text="New" CssClass="btn" meta:resourcekey="NewButton" runat="server" />
+</asp:Content>
 
+<asp:Content ContentPlaceHolderID="Content" runat="server">
     <asp:GridView
         ID="dgrRoles"
         AutoGenerateColumns="false"

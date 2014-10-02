@@ -13,15 +13,6 @@ namespace N2.Edit.Security {
     public partial class Default {
         
         /// <summary>
-        /// om control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::N2.Web.UI.WebControls.OptionsMenu om;
-        
-        /// <summary>
         /// btnSave control.
         /// </summary>
         /// <remarks>

@@ -187,14 +187,9 @@
     <Message Text="Management-NuGet-ItemGroups:" Importance="high" />
     <ItemGroup>
       <nugetFrameworkBinFiles
-        Include="$(ManagementFolder)\bin\N2*.dll;
-                 $(ManagementFolder)\bin\N2*.pdb;
-                 $(SrcFolder)\Framework\Packaging\bin\$(Configuration)\N2.Packaging.dll;"
-        Exclude="$(ManagementFolder)\bin\N2.???;
-                 $(ManagementFolder)\bin\N2.Security.*;
-                 $(ManagementFolder)\bin\N2.Templates.*;" />
-      <luceneBinFiles
-        Include="$(SrcFolder)\packages\Lucene.Net.3.0.3-RC2\lib\**\Lucene.*" />
+        Include="$(ManagementFolder)\bin\N2.Extensions.*;
+                 $(ManagementFolder)\bin\N2.Management.*;
+                 $(ManagementFolder)\bin\N2.Extensions.*;" />
       <NoZipFrameworkDeployFiles
         Include="$(Framework-DeployFolder)\N2\**\*"/>
     </ItemGroup>
@@ -202,7 +197,8 @@
 
 
   <Target Name="Management-Zip-NuGet" DependsOnTargets="Management-NuGet-ItemGroups">
-    <Copy SourceFiles="@(nugetFrameworkBinFiles)" DestinationFolder="$(Management-NugetFolderZip)\lib" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(nugetFrameworkBinFiles)" DestinationFolder="$(Management-NugetFolderZip)\lib" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="$(SrcFolder)\Framework\Packaging\bin\$(Configuration)\N2.Packaging.dll" DestinationFolder="$(Management-NugetFolderZip)\lib" SkipUnchangedFiles="true" />
 
     <!-- Using DotNetZip since MSBuild Community Tasks Zip doesn't include directory entries -->
     <Delete Files="$(Management-NugetFolderZip)\content\N2\N2.zip" Condition="Exists('$(Management-NugetFolderZip)\content\N2\N2.zip')" />

@@ -32,7 +32,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Toolbar" runat="server">
    <asp:LinkButton ID="btnSave" runat="server" OnClick="btnSave_Click" 
-		CssClass="command primary-action" meta:resourcekey="btnSaveResource1">Save</asp:LinkButton>        
+		CssClass="btn btn-primary command primary-action" meta:resourcekey="btnSaveResource1">Save</asp:LinkButton>        
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
 	<div class="tabPanel">

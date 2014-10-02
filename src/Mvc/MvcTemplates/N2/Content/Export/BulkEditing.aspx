@@ -1,13 +1,14 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/N2/Content/Framed.master" AutoEventWireup="true" CodeBehind="BulkEditing.aspx.cs" Inherits="N2.Management.Content.Export.BulkEditing" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="Toolbar" runat="server">
-    <edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlClose">Close</edit:CancelLink>
+    <edit:CancelLink ID="hlCancel" runat="server" CssClass="btn" meta:resourceKey="hlClose">Close</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Outside" runat="server">
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
 
 <div class="tabPanel">
+	<h1>Bulk editing</h1>
 	<input type="hidden" id="EditableNameFilter" runat="server" />
 	<asp:MultiView ID="mvWizard" runat="server" ActiveViewIndex="1">
 		<asp:View ID="vNone" runat="server">
