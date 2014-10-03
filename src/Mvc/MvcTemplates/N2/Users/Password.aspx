@@ -11,7 +11,7 @@
 	<div class="tabPanel">
     <asp:Label ID="Label1" runat="server" AssociatedControlID="txtPassword" 
 		Text="New password" meta:resourcekey="Label1Resource1"></asp:Label>
-    <asp:TextBox ID="txtPassword" runat="server" 
+    <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"
 		meta:resourcekey="txtPasswordResource1"></asp:TextBox>
 	</div>
 </asp:Content>
