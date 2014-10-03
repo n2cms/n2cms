@@ -28,6 +28,7 @@ namespace N2.Edit.Membership
 
 			if (cblRoles.Visible)
             {
+				cblRoles.DataSourceID = null;
 				cblRoles.DataSource = AccountManager.GetAllRoles();
                 cblRoles.DataBind();
                 foreach (ListItem item in cblRoles.Items)
