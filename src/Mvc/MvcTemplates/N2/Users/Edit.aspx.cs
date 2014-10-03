@@ -21,13 +21,15 @@ namespace N2.Edit.Membership
         {
             LoadSelectedUser();
             hlPassword.NavigateUrl = "{ManagementUrl}/Users/Password.aspx?user=".ResolveUrlTokens() + Request["user"];
-            cblRoles.Visible = Roles.Enabled;
+			cblRoles.Visible = AccountManager.AreRolesEnabled();
             if (IsPostBack) return;
 
             txtEmail.Text = SelectedUser.Email;
 
-            if (Roles.Enabled)
+			if (cblRoles.Visible)
             {
+				cblRoles.DataSourceID = null;
+				cblRoles.DataSource = AccountManager.GetAllRoles();
                 cblRoles.DataBind();
                 foreach (ListItem item in cblRoles.Items)
                     item.Selected = AccountManager.IsUserInRole(SelectedUserName, item.Value);
@@ -86,18 +88,18 @@ namespace N2.Edit.Membership
              */
             }
         }
-
-        public static class RolesSource
-        {
-            private static AccountManager AccountManager
-            {
-                get { return N2.Context.Current.Resolve<AccountManager>(); }
-            }
-
-            public static string[] GetAllRoles()
-            {
-                return AccountManager.GetAllRoles();
-            }
-        }
     }
+
+	public static class RolesSource
+	{
+		private static AccountManager AccountManager
+		{
+			get { return N2.Context.Current.Resolve<AccountManager>(); }
+		}
+
+		public static string[] GetAllRoles()
+		{
+			return AccountManager.GetAllRoles();
+		}
+	}
 }
