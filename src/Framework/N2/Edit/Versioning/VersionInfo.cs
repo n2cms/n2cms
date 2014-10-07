@@ -7,18 +7,18 @@ namespace N2.Edit.Versioning
 {
     public class VersionInfo
     {
-        public int ID { get; set; }
-        public string Title { get; set; }
-        public ContentState State { get; set; }
-        public string IconUrl { get; set; }
-        public DateTime? Published { get; set; }
-        public DateTime? FuturePublish { get; set; }
-        public DateTime? Expires { get; set; }
-		public int VersionIndex { get; set; }
-		public int PartsCount { get; set; }
-        public string SavedBy { get; set; }
+        public virtual int ID { get; set; }
+        public virtual string Title { get; set; }
+        public virtual ContentState State { get; set; }
+        public virtual string IconUrl { get; set; }
+        public virtual DateTime? Published { get; set; }
+        public virtual DateTime? FuturePublish { get; set; }
+        public virtual DateTime? Expires { get; set; }
+		public virtual int VersionIndex { get; set; }
+		public virtual int PartsCount { get; set; }
+        public virtual string SavedBy { get; set; }
 
-        public ContentItem Content { get { return ContentFactory(); } }
-        public Func<ContentItem> ContentFactory { get; set; }
+        public virtual ContentItem Content { get { return ContentFactory(); } }
+        public virtual Func<ContentItem> ContentFactory { get; set; }
     }
 }
