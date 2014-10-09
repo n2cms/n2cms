@@ -27,13 +27,13 @@ namespace N2.Web.UI.WebControls
 			Controls.Add(DatePickerBox);
 			DatePickerBox.CssClass = "datePicker";
 			DatePickerBox.TextChanged += OnTextChanged;
-			DatePickerBox.Attributes["placeholder"] = Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern;
+			DatePickerBox.Attributes["placeholder"] = FormatInfo.ShortDatePattern;
 
 			TimePickerBox.ID = "time";
 			Controls.Add(TimePickerBox);
 			TimePickerBox.CssClass = "timePicker";
 			TimePickerBox.TextChanged += OnTextChanged;
-			TimePickerBox.Attributes["placeholder"] = Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern;
+			TimePickerBox.Attributes["placeholder"] = FormatInfo.ShortTimePattern;
 
 			base.CreateChildControls();
 		}
@@ -77,17 +77,24 @@ namespace N2.Web.UI.WebControls
 			Register.JQuery(Page);
 			Register.JQueryUi(Page);
 			Register.JQueryPlugins(Page);
+
 			// ReSharper disable once FormatStringProblem
-			var script = string.Format(DateScriptFormat, 
-				/* {0} */ FirstDayOfWeek,
-				/* {1} */ DateFormat,
-				/* {2} */ FirstDate,
-				/* {3} */ ToJsonArray(FormatInfo.ShortestDayNames),
-				/* {4} */ ToJsonArray(FormatInfo.DayNames),
-				/* {5} */ ToJsonArray(FormatInfo.AbbreviatedMonthNames),
-				/* {6} */ ToJsonArray(FormatInfo.MonthNames),
-				/* {7} */ Url.ResolveTokens("{ManagementUrl}/Resources/icons/calendar.png"),
-				/* {8} */ datePicker.ClientID
+            var i18nScript = string.Format(I18nScriptFormat,
+				/* {0} */ CurrentCultureInfo.Name,
+                /* {1} */ ToJsonArray(FormatInfo.DayNames),
+                /* {2} */ ToJsonArray(FormatInfo.AbbreviatedDayNames),
+                /* {3} */ ToJsonArray(FormatInfo.ShortestDayNames),
+                /* {4} */ ToJsonArray(FormatInfo.MonthNames),
+                /* {5} */ ToJsonArray(FormatInfo.AbbreviatedMonthNames),
+                /* {6} */ FirstDayOfWeek,
+                /* {7} */ DateFormat,
+				/* {8} */ CurrentCultureInfo.TextInfo.IsRightToLeft.ToString().ToLowerInvariant()
+                );
+            Register.JavaScript(Page, i18nScript, ScriptOptions.DocumentReady);
+
+			var script = string.Format(DateScriptFormat,
+				/* {0} */ CurrentCultureInfo.Name,
+				/* {1} */ datePicker.ClientID
 				);
 			Register.JavaScript(Page, script, ScriptOptions.DocumentReady);
 			// ReSharper restore InvokeAsExtensionMethod
@@ -95,33 +102,76 @@ namespace N2.Web.UI.WebControls
 
 		private static string ToJsonArray(IEnumerable<string> strings)
 		{
-			return '[' + string.Join(",", strings.Select(s => '\'' + s + '\'').ToArray()) + ']';
+			return '[' + string.Join(",", strings.Select(s => '\'' + s + '\'')) + ']';
 		}
 
 		protected const string DateScriptFormat = @"
-jQuery('#{8}').n2datepicker({{ firstDay:{0}, dateFormat:'{1}', dayNamesMin:{3}, dayNames:{4}, monthNamesShort:{5}, monthNames:{6}, showOn:'button', buttonImage:'{7}' }});";
+jQuery('#{1}').n2datepicker({{ language:'{0}' }});";
+
+		protected const string I18nScriptFormat = @"
+;(function($){{
+	$.fn.datepicker.dates['{0}'] = {{
+		days: {1},
+		daysShort: {2},
+		daysMin: {3},
+		months: {4},
+		monthsShort: {5},
+		weekStart: {6},
+		format: '{7}',
+		rtl: {8}
+	}};
+}}(jQuery));";
 
 		protected virtual int FirstDayOfWeek
 		{
 			get { return (int)FormatInfo.FirstDayOfWeek; }
 		}
 
+		private static CultureInfo CurrentCultureInfo
+		{
+			get { return Thread.CurrentThread.CurrentCulture; }
+		}
+
 		private static DateTimeFormatInfo FormatInfo
 		{
-			get { return Thread.CurrentThread.CurrentCulture.DateTimeFormat; }
+			get { return CurrentCultureInfo.DateTimeFormat; }
 		}
 
 		protected virtual string DateFormat
 		{
-			get
-			{
-				var culture = Thread.CurrentThread.CurrentCulture;
-				var datePattern = culture.DateTimeFormat.ShortDatePattern;
-				datePattern = Regex.Replace(datePattern, "M+", "mm");
-				datePattern = Regex.Replace(datePattern, "d+", "dd");
-				datePattern = Regex.Replace(datePattern, "y+", m => m.Value.Length < 3 ? "y" : "yy");
-				return datePattern;
-			}
+            get
+            {
+                var datePattern = FormatInfo.ShortDatePattern;
+
+                datePattern = datePattern.Replace("dddd", "DD");
+                datePattern = datePattern.Replace("ddd", "D");
+
+                switch (datePattern.Count(p => p == 'M'))
+                {
+                    case 4:
+                        datePattern = datePattern.Replace("MMMM", "MM");
+                        break;
+
+                    case 3:
+                        datePattern = datePattern.Replace("MMM", "M");
+                        break;
+
+                    case 2:
+                        datePattern = datePattern.Replace("MM", "mm");
+                        break;
+
+                    case 1:
+                        datePattern = datePattern.Replace("M", "m");
+                        break;
+
+                    default:
+                        datePattern = Regex.Replace(datePattern, "M+", "mm");
+                        break;
+                }
+
+                datePattern = Regex.Replace(datePattern, "y+", m => m.Value.Length < 3 ? "yy" : "yyyy");
+                return datePattern;
+            }
 		}
 
 		protected virtual string FirstDate
