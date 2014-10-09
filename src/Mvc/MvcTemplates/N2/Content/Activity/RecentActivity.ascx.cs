@@ -28,13 +28,24 @@ namespace N2.Management.Content.Activity
 
         protected override void  OnDataBinding(EventArgs e)
         {
-            var allVersions = Engine.Resolve<IVersionManager>().GetVersionsOf(CurrentItem.VersionOf.Value ?? CurrentItem, skip: 0, take: 4);
-            
-            var activities = ManagementActivity.GetActivity(Engine, CurrentItem);
-            ActivitiesJson = ManagementActivity.ToJson(activities);
-            ShowActivities = activities.Count > 0;
+	        try
+	        {
+		        var allVersions = Engine.Resolve<IVersionManager>()
+			        .GetVersionsOf(CurrentItem.VersionOf.Value ?? CurrentItem, skip: 0, take: 4);
 
-            base.OnDataBinding(e);
+		        var activities = ManagementActivity.GetActivity(Engine, CurrentItem);
+		        ActivitiesJson = ManagementActivity.ToJson(activities);
+		        ShowActivities = activities.Count > 0;
+
+		        base.OnDataBinding(e);
+	        }
+	        catch (Exception ex)
+	        {
+		        Logger.Error(ex);
+		        activityTemplatePlaceholder.Visible = false;
+		        errorDisplay.Visible = true;
+		        errorDisplayText.Text = ex.ToString();
+	        }
         }
 
         public ContentItem CurrentItem { get; set; }

@@ -254,7 +254,21 @@ namespace N2.Management.Api
         {
             var adapter = engine.GetContentAdapter<NodeAdapter>(Selection.SelectedItem);
             var versions = engine.Resolve<IVersionManager>().GetVersionsOf(Selection.SelectedItem);
-            return versions.Select(v => new Node<TreeNode>(adapter.GetTreeNode(v.Content, allowDraft: false)));
+
+	        foreach (var v in versions)
+	        {
+		        Node<TreeNode> node;
+		        try
+		        {
+				    node = new Node<TreeNode>(adapter.GetTreeNode(v.Content, allowDraft: false));
+		        }
+		        catch (Exception ex)
+		        {
+					Logger.Error("Failure in GetVersions(HttpContextBase)", ex);
+					node = new Node<TreeNode>(new TreeNode() { Title = "(invalid version)", ToolTip = ex.ToString() });
+		        }
+		        yield return node;
+	        }
         }
 
         private IEnumerable<Node<InterfaceMenuItem>> GetTranslations(HttpContextBase context)
