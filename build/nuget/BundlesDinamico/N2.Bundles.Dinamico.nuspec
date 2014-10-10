@@ -20,6 +20,7 @@
 			<dependency id="N2CMS.Library" version="{Version}" />
 			<dependency id="N2CMS.Management" version="{Version}" />
 			<dependency id="N2CMS.Dinamico" version="{Version}" />
+			<dependency id="N2CMS.Dinamico.DemoContent" version="{Version}" />
 			<dependency id="N2CMS.Search.Lucene" version="{Version}" />
 		</dependencies>
 	</metadata>

@@ -4,8 +4,8 @@ a img,
 .nav-tabs > li > a { border-radius:0 !important; }
 .framed .tab-content { overflow:visible; }
 td,th { vertical-align:top; }
-h1 { font-size:1.6em; margin-top:0; }
-h2 { font-size:1.4em; }
+h1 { font-size:1.6em; margin-top:0; font-family: Segoe UI, Georgia, sans-serif; }
+h2 { font-size:1.4em; font-family: Segoe UI, Georgia, sans-serif; }
 h3 { font-size:1.2em; }
 h4 { font-size:1.1em; }
 .btn {

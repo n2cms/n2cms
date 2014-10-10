@@ -8,6 +8,7 @@
 		<Dinamico-DeployFolder>$(DeployFolder)\$(DeployPrefix)Dinamico_Mvc</Dinamico-DeployFolder>
 		<Dinamico-DeployFolder-Path>$(Dinamico-DeployFolder)\N2CMS</Dinamico-DeployFolder-Path>
 		<Dinamico-NugetFolder>$(DeployFolder)\$(DeployPrefix)Dinamico_Nuget</Dinamico-NugetFolder>
+		<DinamicoDemoContent-NugetFolder>$(DeployFolder)\$(DeployPrefix)DinamicoDemoContent_Nuget</DinamicoDemoContent-NugetFolder>
 		<Bundle-Dinamico-NugetFolder>$(DeployFolder)\$(DeployPrefix)BundleDinamico_Nuget</Bundle-Dinamico-NugetFolder>
 	</PropertyGroup>
 
@@ -47,6 +48,12 @@
 												$(Dinamico-SourceFolder)\App_Data\Temp\**\*;
 												$(Dinamico-SourceFolder)\N2\**\*;
 												$(Dinamico-SourceFolder)\N2.Management.*" />
+			<dinamicoNugetFiles Include="$(Dinamico-SourceFolder)\Dinamico\**\*" />
+			<dinamicoNugetExtrasFiles Include="$(Dinamico-SourceFolder)\*.png;
+																				 $(Dinamico-SourceFolder)\*.ico;
+																				 $(Dinamico-SourceFolder)\**\Upload\**\*.png;
+																				 $(Dinamico-SourceFolder)\**\Upload\**\*.jpg;
+																				 $(Dinamico-SourceFolder)\**\App_Data\Sample*.*;" />
 		</ItemGroup>
 	</Target>
 
@@ -83,22 +90,8 @@
 
 	<Target Name="Dinamico-Nuget" DependsOnTargets="Dinamico-CreateItemGroups;">
 		<RemoveDir Directories="$(Dinamico-NugetFolder)" Condition="Exists('$(Dinamico-NugetFolder)')" ContinueOnError="true" />
-		<ItemGroup>
-			<dinamicoFilesWithExceptions Include="@(dinamicoFiles)" 
-										 Exclude="$(Dinamico-SourceFolder)\bin\**\*;
-												  $(Dinamico-SourceFolder)\Global.*;
-												  $(Dinamico-SourceFolder)\Dinamico.*;
-												  $(Dinamico-SourceFolder)\*.config;
-												  $(Dinamico-SourceFolder)\Properties\*;
-												  $(Dinamico-SourceFolder)\*.log;
-												  $(Dinamico-SourceFolder)\*.user;
-												  $(Dinamico-SourceFolder)\**\*.orig;
-												  $(Dinamico-SourceFolder)\x*\*;
-												  $(Dinamico-SourceFolder)\App_Data\*.sdf;
-												  $(Dinamico-SourceFolder)\App_Data\*.db;
-												  $(Dinamico-SourceFolder)\App_Data\*.log;" />
-		</ItemGroup>
-		<Copy SourceFiles="@(dinamicoFilesWithExceptions)" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension)" />
+		
+		<Copy SourceFiles="@(dinamicoNugetFiles)" DestinationFiles="$(Dinamico-NugetFolder)\Content\Dinamico\%(RecursiveDir)\%(FileName)%(Extension)" />
 
 		<ItemGroup>
 			<dinamicoNugetIncludes Include="$(BuildFolder)\Nuget\Dinamico\**\*" />
@@ -108,7 +101,21 @@
 
 		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Dinamico-NugetFolder)\" />
 	</Target>
-	
+
+	<Target Name="Dinamico-DemoContent-Nuget" DependsOnTargets="Dinamico-CreateItemGroups;">
+		<RemoveDir Directories="$(DinamicoDemoContent-NugetFolder)" Condition="Exists('$(DinamicoDemoContent-NugetFolder)')" ContinueOnError="true" />
+
+		<Copy SourceFiles="@(dinamicoNugetExtrasFiles)" DestinationFiles="$(DinamicoDemoContent-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension)" />
+
+		<ItemGroup>
+			<dinamicoDemoContentNugetIncludes Include="$(BuildFolder)\Nuget\Dinamico.DemoContent\**\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(dinamicoDemoContentNugetIncludes)" DestinationFolder="$(DinamicoDemoContent-NugetFolder)\%(RecursiveDir)" />
+		<FileUpdate Files="$(DinamicoDemoContent-NugetFolder)\N2.Dinamico.DemoContent.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(DinamicoDemoContent-NugetFolder)\" />
+	</Target>
+
 	<Target Name="Dinamico-ZipDeploy" DependsOnTargets="Dinamico-Deploy;Dinamico-Zip">
 	</Target>
 
