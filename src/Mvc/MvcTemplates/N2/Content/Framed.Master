@@ -55,6 +55,7 @@
 	protected override void OnLoad(EventArgs e)
 	{
 		base.OnLoad(e);
-		framednavbar.Attributes["class"] = String.Format("framed-navbar navbar navbar-fixed-bottom toolbar-count-{0}", Toolbar.Controls.Count);
+		var config = N2.Context.Current.Resolve<N2.Configuration.EditSection>();
+		framednavbar.Attributes["class"] = String.Format("framed-navbar navbar navbar-fixed-{1} toolbar-count-{0}", Toolbar.Controls.Count, config != null && config.IsToolbarOnBottom ? "bottom" : "top");
 	}
 </script>
