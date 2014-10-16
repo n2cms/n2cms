@@ -52,19 +52,27 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 @if (Content.Has.ImageFirst && Content.Data.ImageFirst)
 {
-	<div class="imageAndText container-fluid">
-		<div class="row-fluid">
-			<div class="span3"><img class="@imgCssClass" alt="@Content.Data.Title" src="@Content.Data.Image" /></div>
-			<div class="span9">@Content.Display.Description</div>
+	<div class="imageAndText container">
+		<div class="row">
+			<div class="col-xs-3"><img class="@imgCssClass" alt="@Content.Data.Title" src="@Content.Data.Image" /></div>
+			<div class="col-xs-9">
+				@{ Html.DroppableZone("AboveText").Render(); }
+				@Content.Display.Description
+				@{ Html.DroppableZone("BelowText").Render(); }
+			</div>
 		</div>
 	</div>
 }
 else
 {
-	<div class="imageAndText container-fluid">
-		<div class="row-fluid">
-			<div class="span9">@Content.Display.Description</div>
-			<div class="span3"><img class="@imgCssClass" alt="@Content.Data.Title" src="@Content.Data.Image" /></div>
+	<div class="imageAndText container">
+		<div class="row">
+			<div class="col-xs-9">
+				@{ Html.DroppableZone("AboveText").Render(); }
+				@Content.Display.Description
+				@{ Html.DroppableZone("BelowText").Render(); }
+			</div>
+			<div class="col-xs-3"><img class="@imgCssClass" alt="@Content.Data.Title" src="@Content.Data.Image" /></div>
 		</div>
 	</div>
 }
