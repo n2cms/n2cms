@@ -52,8 +52,8 @@ namespace N2.Extensions
             if (dd.Length - nSkip >= 0)
             {
                 Rows = new string[Math.Max(dd.Length - nSkip, 0)][];
-                for (int i = nSkip; i < dd.Length && i < Rows.Length; ++i)
-                    Rows[i] = dd[i].Split(dc);
+	            for (int i = nSkip; i < dd.Length && i < Rows.Length; ++i)
+		            Rows[i] = SplitWithEscape(dd[i], dc);
 
                 if (Model.GetDetail("Sort", false))
                     Rows = Rows.Where(f => f.Length > 0).OrderBy(f => f[0]).ToArray();
@@ -62,6 +62,49 @@ namespace N2.Extensions
             if (bSkip)
                 HeaderRow = dd[0].Split(dc);
         }
+
+	    private static string[] SplitWithEscape(string str, char delimiter)
+	    {
+		    var items = new List<string>();
+			var sb = new StringBuilder();
+		    var escaped = false;
+		    var esc = '\\';
+		    foreach (var c in str)
+		    {
+			    if (c == esc)
+			    {
+				    if (escaped)
+				    {
+					    sb.Append(c);
+					    escaped = false;
+				    }
+				    else
+				    {
+					    escaped = true;
+				    }
+			    }
+				else if (c == delimiter)
+				{
+					if (escaped)
+					{
+						sb.Append(c);
+						escaped = false;
+					}
+					else
+					{
+						items.Add(sb.ToString());
+						sb.Clear();
+					}
+				}
+				else
+				{
+					sb.Append(c);
+				}
+		    }
+			if (sb.Length > 0)
+				items.Add(sb.ToString());
+		    return items.ToArray();
+	    }
 
 
         public bool HasHeader { get; set; }
