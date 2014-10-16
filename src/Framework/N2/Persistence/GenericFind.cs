@@ -276,7 +276,17 @@ namespace N2.Persistence
             if(includeSelf)
                 yield return item;
 
-            foreach (ContentItem child in item.Children)
+	        try
+	        {
+		        if (item.Children == null)
+			        yield break;
+	        }
+	        catch
+	        {
+		        yield break;
+	        }
+
+	        foreach (ContentItem child in item.Children)
             {
                 yield return child;
                 foreach (ContentItem descendant in EnumerateChildren(child, false, useMasterVersion))

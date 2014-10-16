@@ -773,7 +773,37 @@ namespace N2
 		[NonInterceptable]
 		public virtual ItemList GetChildren(ItemFilter filter)
 		{
-			IEnumerable<ContentItem> items = !VersionOf.HasValue ? Children : VersionOf.Children;
+			if (VersionOf.HasValue && VersionOf == null)
+			{
+				throw new NullReferenceException(String.Format(
+					"ContentItem #{0} (type: {1}, templateKey: {2}) can't get children because it's not a valid version of any ContentItem.", 
+					ID, TypeName, TemplateKey));
+			}
+
+			IEnumerable<ContentItem> items;
+
+			if (!VersionOf.HasValue)
+			{
+				try { items = Children; }
+				catch (Exception x) { 
+					throw new N2Exception(
+						String.Format("ContentItem #{0} (type: {1}, templateKey: {2}) failed to get Children.",
+							ID, TypeName, TemplateKey), 
+					x); 
+				}
+			}
+
+			else
+			{
+				try { items = VersionOf.Children; }
+				catch (Exception x) { 
+					throw new N2Exception(
+						String.Format("ContentItem #{0} (type: {1}, templateKey: {2}) failed to get VersionOf.Children (VersionOf: {3})",
+							ID, TypeName, TemplateKey, VersionOf), 
+					x); 
+				}
+			}
+
 			return new ItemList(items, filter);
 		}
 
