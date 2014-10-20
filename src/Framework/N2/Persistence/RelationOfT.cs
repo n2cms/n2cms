@@ -142,34 +142,45 @@ namespace N2.Persistence
             }
         }
 
+		private T GetValueValue<T>(Func<ContentItem, T> valueFactory)
+		{
+			if (!HasValue)
+				return default(T);
+			var value = Value;
+			if (value == null)
+				return default(T);
+
+			return valueFactory(value);
+		}
+
         public string Path
         {
-            get { return HasValue && Value != null ? Value.Path : null; }
+            get { return GetValueValue(ci => ci.Path); }
         }
         public string Name
         {
-            get { return HasValue && Value != null ? Value.Name : null; }
+            get { return GetValueValue(ci => ci.Name); }
         }
         public ContentRelation Parent 
         {
-            get { return HasValue ? Value.Parent : null; } 
+            get { return GetValueValue(ci => ci.Parent); } 
         }
         public ContentRelation VersionOf
         {
-            get { return HasValue && Value != null ? Value.VersionOf : null; }
+            get { return GetValueValue(ci => ci.VersionOf); }
         }
         public PathData FindPath(string remainingUrl) 
-        { 
-            return HasValue ? Value.FindPath(remainingUrl) : PathData.Empty; 
+        {
+			return GetValueValue(ci => ci.FindPath(remainingUrl));
         }
         public IContentItemList<ContentItem> Children 
         { 
-            get { return HasValue ? Value.Children : new ItemList<ContentItem>(); } 
+            get { return GetValueValue(ci => ci.Children) ?? new ItemList<ContentItem>(); } 
         }
 
         public static implicit operator ContentItem(ContentRelation relation)
         {
-            if(relation.HasValue)
+            if (relation.HasValue)
                 return relation.Value;
             return null;
         }
@@ -180,20 +191,6 @@ namespace N2.Persistence
                 return new ContentRelation();
             return new ContentRelation(item);
         }
-
-        //public static bool operator ==(ContentRelation first, ContentRelation second)
-        //{
-        //  if (first is ContentRelation)
-        //      return first.Equals(second);
-        //  return false;
-        //}
-
-        //public static bool operator !=(ContentRelation first, ContentRelation second)
-        //{
-        //  if (first is ContentRelation)
-        //      return !first.Equals(second);
-        //  return false;
-        //}
 
         public override bool Equals(object obj)
         {
