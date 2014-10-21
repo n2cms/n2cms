@@ -1,3 +1,5 @@
+using System;
+using System.ComponentModel;
 using System.Configuration;
 using N2.Resources;
 
@@ -110,6 +112,14 @@ namespace N2.Configuration
 		{
 			get { return (string)base["bootstrapCssPath"]; }
 			set { base["bootstrapCssPath"] = value; }
+		}
+
+		[ConfigurationProperty("bootstrapVersion", DefaultValue = Register.DefaultBootstrapVersion)]
+		[TypeConverter(typeof(Utility.String2Version))]
+		public Version BootstrapVersion
+		{
+			get { return Version.Parse((string)base["bootstrapVersion"]); }
+			set { base["bootstrapVersion"] = value.ToString(); }
 		}
 
 		[ConfigurationProperty("bootstrapDatePickerJsPath", DefaultValue = Register.DefaultBootstrapDatePickerJsPath)]
