@@ -199,11 +199,17 @@ namespace N2.Security
             if (users == null)
                 return new List<Items.User>();
 
-            // TODO: consider know weakness - SQL like operator evaluates wild characters, e.g. underscore
-            //       what may select additional unwanted users!
-            var query = Parameter.Equal("Parent", users) & Parameter.TypeEqual(userType.Name) & Parameter.Like("Name", username);
-            query = query.Skip(firstResult).Take(maxResults);
-            return Repository.Find(query).OfType<User>().ToList();
+			var query = 
+				Parameter.Equal("Parent", users) 
+				& Parameter.TypeEqual(userType.Name);
+            
+			var cachedResults = Repository.Find(query).OfType<User>().ToList();
+
+			// TODO: Eventually move this filter to the Parameter above (e.g. &Parameter.Like("Name", username); ) once Parameter supports Like filters properly.
+			// TODO: Also do paging in the query, e.g.  `query = query.Skip(firstResult).Take(maxResults);`
+			return (from user in cachedResults
+					where user.Name.Contains(username)
+					select user).Skip(firstResult).Take(maxResults).ToList();
         }
 
         public IList<Items.User> GetUsers(int firstResult, int maxResults)
