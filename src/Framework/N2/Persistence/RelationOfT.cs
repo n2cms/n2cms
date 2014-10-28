@@ -50,6 +50,11 @@ namespace N2.Persistence
             else
                 writer.Write("null");
         }
+
+	    public override string ToString()
+	    {
+		    return string.Format("{{ContentRelation id={0}, value={1} }}", ID, Value);
+	    }
     }
 
     public class ContentRelationConverter : TypeConverter

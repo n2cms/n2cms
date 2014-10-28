@@ -73,6 +73,64 @@ namespace N2.Web.Mvc.Html
 			return registrator.JavaScript(Register.JQueryUiPath.ResolveUrlTokens());
 		}
 
+		public static ResourcesHelper BootstrapJs(this ResourcesHelper registrator)
+		{
+			return registrator.JavaScript(N2.Resources.Register.BootstrapJsPath.ResolveUrlTokens());
+		}
+
+		public static ResourcesHelper BootstrapCss(this ResourcesHelper registrator)
+		{
+			return registrator.StyleSheet(N2.Resources.Register.BootstrapCssPath.ResolveUrlTokens());
+		}
+
+		public static ResourcesHelper Bootstrap(this ResourcesHelper registrator)
+		{
+			return registrator.BootstrapCss().BootstrapJs();
+		}
+
+		public static ResourcesHelper BootstrapRowClass(this ResourcesHelper registrator, bool fluid = false)
+		{
+			if (N2.Resources.Register.BootstrapVersion.Major > 2 || !fluid)
+				return registrator.HtmlLiteral("row");
+			else
+				return registrator.HtmlLiteral("row-fluid");
+		}
+
+		public enum BootstrapScreenSize
+		{
+			xs,
+			sm,
+			md,
+			lg
+		}
+
+		public static ResourcesHelper BootstrapColumnClass(this ResourcesHelper registrator, int colSpan, BootstrapScreenSize size)
+		{
+			if (colSpan < 0 || colSpan > 12)
+				throw new ArgumentException("colSpan should be between 1 and 12, inclusive");
+
+			if (N2.Resources.Register.BootstrapVersion.Major < 3)
+			{
+				return registrator.HtmlLiteral("span" + colSpan);
+			}
+			else
+			{
+				switch (size)
+				{
+					case BootstrapScreenSize.lg:
+						return registrator.HtmlLiteral("col-lg-" + colSpan);
+					case BootstrapScreenSize.md:
+						return registrator.HtmlLiteral("col-md-" + colSpan);
+					case BootstrapScreenSize.sm:	
+						return registrator.HtmlLiteral("col-sm-" + colSpan);
+					case BootstrapScreenSize.xs:
+						return registrator.HtmlLiteral("col-xs-" + colSpan);
+					default:
+						throw new ArgumentException("size");
+				}
+			}
+		}
+
 		public static IEnumerable<ResourcesHelper> PartsJs(this ResourcesHelper registrator)
 		{
 			List<ResourcesHelper> result = new List<ResourcesHelper>();
@@ -116,6 +174,12 @@ namespace N2.Web.Mvc.Html
 			public ResourcesHelper StyleSheet(string resourceUrl)
 			{
 				Writer.Write(N2.Resources.Register.StyleSheet(StateCollection, resourceUrl));
+				return this;
+			}
+
+			public ResourcesHelper HtmlLiteral(string html)
+			{
+				Writer.Write(html);
 				return this;
 			}
 

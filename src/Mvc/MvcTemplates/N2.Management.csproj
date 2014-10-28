@@ -164,6 +164,7 @@
     <Content Include="N2\Files\Js\jquery.color.js" />
     <Content Include="N2\Files\Js\jquery.Jcrop.min.js" />
     <Content Include="N2\Files\Js\jquery.MultiFile.js" />
+    <Content Include="N2\Installation\Relations.aspx" />
     <Content Include="N2\Installation\UpgradeVersions.aspx" />
     <Content Include="N2\Installation\Rebase.aspx" />
     <Content Include="N2\Resources\chosen_v1.1.0\chosen-sprite%402x.png" />
@@ -321,6 +322,7 @@
     <Content Include="N2\Installation\log4net.config" />
     <Content Include="N2\Installation\system.diagnostics.trace.config" />
     <Content Include="N2\Content\LinkTracker\UpdateReferencesTo.ashx" />
+    <Content Include="N2\Installation\InstallerPage.Master" />
     <None Include="N2\Installation\mysql.upgrade.2.sql" />
     <Content Include="N2\Simple.master" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2expandable.js" />
@@ -635,6 +637,13 @@
     <Compile Include="N2\Installation\Migrations\RebuildImageSizesMigration.cs" />
     <Compile Include="N2\Installation\Migrations\RecordedAssemblyVersionMigration.cs" />
     <Compile Include="N2\Installation\Migrations\EditableItemMigration.cs" />
+    <Compile Include="N2\Installation\Relations.aspx.cs">
+      <DependentUpon>Relations.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Installation\Relations.aspx.designer.cs">
+      <DependentUpon>Relations.aspx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Installation\UpgradeVersion.ashx.cs">
       <DependentUpon>UpgradeVersion.ashx</DependentUpon>
     </Compile>

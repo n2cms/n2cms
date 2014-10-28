@@ -12,29 +12,10 @@
 	<hr />
 }
 <div class="columns twocolumns row">
-	<div class="column span col-md-6">
+	<div class="column span  @Html.Resources().BootstrapColumnClass(6, ResourcesExtensions.BootstrapScreenSize.lg)">
 		@{ Html.DroppableZone("Left").Render(); }
 	</div>
-	<div class="column column2 col-md-6">
+	<div class="column column2  @Html.Resources().BootstrapColumnClass(6, ResourcesExtensions.BootstrapScreenSize.lg)">
 		@{ Html.DroppableZone("Right").Render(); }
 	</div>
 </div>
-
-<ul>
-	@foreach (var item in Html.CurrentItem().Children.OfType<Dinamico.Models.ContentPart>())
-	{
-		<li>@item (@item.ZoneName)</li>
-	}
-</ul>
-<ul>
-	@foreach (var item in Html.CurrentItem().Children.FindParts())
-	{
-		<li>@item (@item.ZoneName)</li>
-	}
-</ul>
-<ul>
-	@foreach (var item in Html.CurrentItem().GetChildren())
-	{
-		<li>@item (@item.ZoneName)</li>
-	}
-</ul>

@@ -28,6 +28,7 @@ namespace N2.Resources
 			BootstrapTimePickerJsPath = DefaultBootstrapTimePickerJsPath;
 			BootstrapDatePickerCssPath = DefaultBootstrapDatePickerCssPath;
 			BootstrapTimePickerCssPath = DefaultBootstrapTimePickerCssPath;
+			BootstrapVersion = new Version(DefaultBootstrapVersion);
 			CkEditorJsPath = DefaultCkEditorPath;//"{ManagementUrl}/Resources/ckeditor/ckeditor.js?v=" + JQueryVersion;
 			FancyboxCssPath = DefaultFancyboxCssPath;
 			FancyboxJsPath = DefaultFancyboxJsPath;
@@ -53,7 +54,7 @@ namespace N2.Resources
 		public const string JQueryUiVersion = "1.10.4";
 		public const string AngularJsVersion = "1.2.20";
 		public const string CkEditorVersion = "4.3.2";
-		public const string BootstrapVersion = "2.3.2";
+		public const string DefaultBootstrapVersion = "2.3.2";
 
 		public const string DefaultFlagsCssPath = "{ManagementUrl}/Resources/icons/flags.css";
 		public const string DefaultJQueryJsPath = "//cdnjs.cloudflare.com/ajax/libs/jquery/" + JQueryVersion + "/jquery.min.js";
@@ -64,8 +65,8 @@ namespace N2.Resources
 		public const string DefaultAngularJsRoot = "//cdnjs.cloudflare.com/ajax/libs/angular.js/" + AngularJsVersion + "/";
 		public const string DefaultAngularStrapJsRoot = "//cdnjs.cloudflare.com/ajax/libs/angular-strap/0.7.4/angular-strap.min.js";
 		public const string DefaultAngularUiJsPath = "//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js";
-		public const string DefaultBootstrapJsPath = "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/" + BootstrapVersion + "/js/bootstrap.min.js";
-		public const string DefaultBootstrapCssPath = "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/" + BootstrapVersion + "/css/bootstrap.min.css";
+		public const string DefaultBootstrapJsPath =  "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/" + DefaultBootstrapVersion + "/js/bootstrap.min.js";
+		public const string DefaultBootstrapCssPath = "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/" + DefaultBootstrapVersion + "/css/bootstrap.min.css";
 
 		public const string DefaultBootstrapDatePickerJsPath = "{ManagementUrl}/Resources/bootstrap-components/bootstrap-datepicker.js";
 		public const string DefaultBootstrapDatePickerCssPath = "{ManagementUrl}/Resources/bootstrap-components/bootstrap-datepicker.css";
@@ -109,6 +110,7 @@ namespace N2.Resources
 
 		/// <summary>The path to Twitter Bootstrap JS library.</summary>
 		public static string BootstrapJsPath { get; set; }
+		public static Version BootstrapVersion { get; set; }
 
 		/// <summary>The path to the icon css classes.</summary>
 		public static string IconsCssPath { get; set; }

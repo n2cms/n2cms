@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -23,6 +24,37 @@ namespace N2
     /// </summary>
     public static class Utility
     {
+	    public class String2Version : TypeConverter
+	    {
+		    public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+		    {
+			    if (sourceType == typeof (String))
+				    return true;
+			    return false;
+		    }
+
+		    public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+		    {
+			    return (destinationType == typeof (Version));
+		    }
+
+		    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+		    {
+				if (value == null)
+					throw new ArgumentNullException("value");
+				return Version.Parse(value.ToString());
+		    }
+
+		    public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+		    {
+				if (value == null)
+					throw new ArgumentNullException("value");
+			    if (destinationType == typeof (Version))
+				    return Version.Parse(value.ToString());
+				throw new NotSupportedException("destinationType isn't supported, can only convert to System.Version");
+		    }
+	    }
+
         /// <summary>A global settings indicating whether persistence events should be triggered for versions of items.</summary>
         public static bool VersionsTriggersEvents { get; set; }
 
