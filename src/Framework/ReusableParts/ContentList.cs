@@ -29,6 +29,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using N2.Collections;
 using N2.Details;
 using N2.Integrity;
@@ -142,7 +143,15 @@ namespace N2.Web
         {
             get
             {
-				return GetChildPartsUnfiltered().Cast<ContentListContainerLink>();
+                try
+                {
+					return GetChildPartsUnfiltered().Cast<ContentListContainerLink>();
+                }
+                catch (Exception x)
+                {
+                    Exceptions.Add(x.ToString());
+                    return new List<ContentListContainerLink>();
+                }
             }
         }
 
