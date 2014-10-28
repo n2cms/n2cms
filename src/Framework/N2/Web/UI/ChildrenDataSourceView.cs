@@ -104,8 +104,8 @@ namespace N2.Web.UI
 
         private Collections.ItemList GetAllItems()
         {
-            if (allItems == null && parentItem != null)
-                allItems = parentItem.GetChildren();
+			if (allItems == null && parentItem != null)
+				allItems = parentItem.Children.WhereAccessible();
             return allItems;
         }
 

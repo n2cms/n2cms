@@ -112,7 +112,7 @@ namespace N2.Edit
         {
             var item = (ContentItem)dataItem;
 
-            return CurrentItem.GetChildren(new ZoneFilter(item.ZoneName), new AccessFilter()).IndexOf(item) > 0;
+            return CurrentItem.GetChildPartsUnfiltered(item.ZoneName).WhereAccessible().IndexOf(item) > 0;
         }
 
         protected string MoveItemUpClass(object dataItem)
@@ -124,7 +124,7 @@ namespace N2.Edit
         {
             var item = (ContentItem)dataItem;
 
-			var siblings = CurrentItem.GetChildren(new ZoneFilter(item.ZoneName), new AccessFilter());
+			var siblings = CurrentItem.GetChildPartsUnfiltered(item.ZoneName).WhereAccessible();
 
             return siblings.IndexOf(item) < siblings.Count - 1;
         }
@@ -141,7 +141,7 @@ namespace N2.Edit
             var id = Int32.Parse(image.CommandArgument);
 
             var item = Engine.Persister.Get(id);
-			var siblings = CurrentItem.GetChildren(new ZoneFilter(item.ZoneName), new AccessFilter());
+			var siblings = CurrentItem.GetChildPartsUnfiltered(item.ZoneName).WhereAccessible();
             var itemIndex = siblings.IndexOf(item);
 
             if (itemIndex == 0)
@@ -159,7 +159,7 @@ namespace N2.Edit
             var id = Int32.Parse(image.CommandArgument);
 
             var item = Engine.Persister.Get(id);
-			var siblings = CurrentItem.GetChildren(new ZoneFilter(item.ZoneName), new AccessFilter());
+			var siblings = CurrentItem.GetChildPartsUnfiltered(item.ZoneName).WhereAccessible();
             var itemIndex = siblings.IndexOf(item);
 
             if (itemIndex >= siblings.Count - 1)

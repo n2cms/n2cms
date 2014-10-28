@@ -99,9 +99,7 @@ namespace N2.Security.AspNet.Identity
             {
                 try
                 {
-                    var childItems = GetChildren();
-                    if (childItems == null)
-                        return new List<UserExternalLoginInfo>();
+                    var childItems = Children.WhereAccessible();
                     return childItems.Cast<UserExternalLoginInfo>();
                 }
                 catch (Exception ex)

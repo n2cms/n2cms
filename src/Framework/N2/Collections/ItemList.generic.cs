@@ -20,10 +20,12 @@
 
 #endregion
 
+using N2.Security;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Web.UI;
 
 namespace N2.Collections
@@ -145,6 +147,31 @@ namespace N2.Collections
         {
             return new ItemList<OtherT>(this, TypeFilter.Of<OtherT>());
         }
+
+		public ItemList<T> WhereNavigatable(IPrincipal byUser = null, ISecurityManager security = null)
+		{
+			return new ItemList<T>(this, new NavigationFilter(byUser, security));
+		}
+
+		public ItemList<T> WhereAccessible(IPrincipal byUser = null, ISecurityManager security = null)
+		{
+			return new ItemList<T>(this, new AccessFilter(byUser, security));
+		}
+
+		public ItemList<T> Where(params ItemFilter[] filters)
+		{
+			return new ItemList<T>(this, filters);
+		}
+
+		public ItemList<T> Skip(int skip)
+		{
+			return new ItemList<T>(this, new CountFilter(skip, int.MaxValue));
+		}
+
+		public ItemList<T> Take(int take)
+		{
+			return new ItemList<T>(this, new CountFilter(0, take));
+		}
         #endregion
 
         #region IZonedList<T> Members
@@ -190,5 +217,10 @@ namespace N2.Collections
             return Find(parameters).Select(i => properties.ToDictionary(p => p, p => i[p]));
         }
         #endregion
+
+		public static implicit operator ItemList(ItemList<T> items)
+		{
+			return new ItemList(items);
+		}
     }
 }

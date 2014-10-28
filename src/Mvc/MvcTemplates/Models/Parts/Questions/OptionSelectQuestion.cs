@@ -50,7 +50,7 @@ namespace N2.Templates.Mvc.Models.Parts.Questions
             get
             {
                 var options = new List<Option>();
-                foreach (Option o in GetChildren())
+				foreach (Option o in Children.WhereAccessible().OfType<Option>())
                     options.Add(o);
                 return options;
             }

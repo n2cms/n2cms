@@ -79,7 +79,7 @@ namespace Dinamico
 
 		private static IEnumerable<StartPage> GetTranslations(ContentItem currentPage)
 		{
-			return currentPage.GetChildren().OfType<StartPage>();
+			return currentPage.Children.FindPages().OfType<StartPage>();
 		}
     }
 }

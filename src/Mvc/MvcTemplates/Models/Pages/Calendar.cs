@@ -4,6 +4,7 @@ using N2.Collections;
 using N2.Integrity;
 using N2.Web.Mvc;
 using N2.Definitions;
+using System.Linq;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
@@ -17,16 +18,12 @@ namespace N2.Templates.Mvc.Models.Pages
     {
         public virtual IEnumerable<Event> GetEvents()
         {
-            foreach (Event child in GetChildren(new TypeFilter(typeof (Event)), new AccessFilter()))
-                yield return child;
+			return Children.WhereAccessible().OfType<Event>();
         }
 
         public virtual IList<Event> GetEvents(DateTime day)
         {
-            return
-                GetChildren(new TypeFilter(typeof (Event)), new AccessFilter(),
-                            new DelegateFilter(c => ((Event) c).EventDate.HasValue && ((Event) c).EventDate.Value.Date == day.Date))
-                    .Cast<Event>();
+			return GetEvents().Where(e => e.EventDate.HasValue && e.EventDate.Value == day.Date).ToList();
         }
     }
 }

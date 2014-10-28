@@ -30,6 +30,7 @@ namespace N2.Tests.Details.Models
         [EditableItem]
         public virtual OtherItem TheItem { get; set; }
 
+		[Obsolete]
         public override ItemList GetChildren(string childZoneName)
         {
             return base.GetChildren(new ZoneFilter(childZoneName));

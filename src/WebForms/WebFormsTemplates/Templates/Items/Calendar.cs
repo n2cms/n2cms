@@ -4,6 +4,7 @@ using N2.Collections;
 using N2.Integrity;
 using N2.Web;
 using N2.Definitions;
+using System.Linq;
 
 namespace N2.Templates.Items
 {
@@ -15,17 +16,15 @@ namespace N2.Templates.Items
     [ConventionTemplate("CalendarList")]
     [SortChildren(SortBy.Expression, SortExpression = "EventDate")]
     public class Calendar : AbstractContentPage
-    {
-        public virtual IEnumerable<Event> GetEvents()
-        {
-            foreach (Event child in GetChildren(new TypeFilter(typeof(Event)), new AccessFilter()))
-                yield return child;
-        }
+	{
+		public virtual IEnumerable<Event> GetEvents()
+		{
+			return Children.WhereAccessible().OfType<Event>();
+		}
 
-        public virtual IList<Event> GetEvents(DateTime day)
-        {
-            return GetChildren(new TypeFilter(typeof (Event)), new AccessFilter(), new DelegateFilter(c => ((Event) c).EventDate.HasValue && ((Event) c).EventDate.Value.Date == day.Date))
-                .Cast<Event>();
-        }
+		public virtual IList<Event> GetEvents(DateTime day)
+		{
+			return GetEvents().Where(e => e.EventDate.HasValue && e.EventDate.Value == day.Date).ToList();
+		}
     }
 }

@@ -1,7 +1,9 @@
+using System;
 using System.Web.UI;
 
 namespace N2.Web.UI
 {
+	[Obsolete]
     public class ItemHierarchicalDataSourceView : HierarchicalDataSourceView
     {
         public ItemHierarchicalDataSourceView(ContentItem parentItem)
@@ -61,7 +63,7 @@ namespace N2.Web.UI
 
                 bool IHierarchyData.HasChildren
                 {
-                    get { return item.GetChildren().Count > 0; }
+                    get { return item.GetChildPagesUnfiltered().WhereNavigatable().Count > 0; }
                 }
 
                 object IHierarchyData.Item
@@ -86,7 +88,7 @@ namespace N2.Web.UI
 
             public System.Collections.IEnumerator GetEnumerator()
             {
-                return this.parentItem.GetChildren().GetEnumerator();
+                return this.parentItem.GetChildPagesUnfiltered().WhereNavigatable().GetEnumerator();
             }
         }
 

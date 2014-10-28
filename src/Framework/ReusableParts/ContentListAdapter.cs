@@ -57,7 +57,6 @@ namespace N2.Web.Mvc
             var sb = new System.Text.StringBuilder(50*1024 + chH.Length + chF.Length);
             var allNews = new List<ContentItem>();
             var containerLinks = currentItem.Containers as IEnumerable<ContentListContainerLink>;
-            Func<ContentItem, bool> pageCriteria = x => x.IsPage && x.Published.HasValue;
             if (containerLinks == null)
             {
                 sb.Append(@"<div class=""alert alert-error"">Content List: ContainerLinks is null.</div>");
@@ -70,27 +69,13 @@ namespace N2.Web.Mvc
             {
                 foreach (var containerLink in containerLinks.Where(c => c.Container != null && c.Container.IsPage))
                 {
-                    var aChildren =
-                        currentItem.EnforcePermissions ?
-                        containerLink.Container.GetChildren().Where(pageCriteria).ToList() :
-                        containerLink.Container.Children.Where(pageCriteria).ToList();
-
-                    var cycleCheck = new List<ContentItem>();
+					var aChildren = containerLink.Children.FindPages()
+						.Where(Content.Is.AccessiblePage())
+						.ToList();
+                    
                     if (containerLink.Recursive)
                     {
-                        while (aChildren.Count > 0)
-                        {
-                            var child = aChildren[0];
-                            aChildren.RemoveAt(0);
-                            var chr =
-                                currentItem.EnforcePermissions ?
-                                child.GetChildren().Where(pageCriteria).Where(f => !cycleCheck.Contains(f)) :
-                                child.Children.Where(pageCriteria).Where(f => !cycleCheck.Contains(f));
-                            var chrX = chr as ContentItem[] ?? chr.ToArray(); /* otherwise possible multiple enumeration to follow */
-                            aChildren.AddRange(chrX);
-                            cycleCheck.AddRange(chrX);
-                            allNews.Add(child);
-                        }
+						allNews.AddRange(aChildren.Concat(aChildren.SelectMany(c => c.Children.FindPages().Where(Content.Is.AccessiblePage()))).Distinct());
                     }
                     else
                     {
@@ -108,7 +93,7 @@ namespace N2.Web.Mvc
                 sb.AppendFormat("<h{0}>{1}</h{0}>", currentItem.TitleLevel, currentItem.Title);
             }
 
-            var newsEnumerable = allNews.Where(pageCriteria);
+            var newsEnumerable = allNews.Where(Content.Is.AccessiblePage());
             {
                 // apply sort order ***
                 var sortAscending = currentItem.SortDirection == SortDirection.Ascending;

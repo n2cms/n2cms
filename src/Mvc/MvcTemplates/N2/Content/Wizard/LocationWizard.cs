@@ -33,7 +33,7 @@ namespace N2.Edit.Wizard
             if (container == null)
                 yield break;
 
-            foreach (var child in container.GetChildren().OfType<MagicLocation>())
+			foreach (var child in container.Children.WhereAccessible().OfType<MagicLocation>())
             {
                 if (child.Location == null || child.Location.State == ContentState.Deleted)
                     continue;

@@ -18,7 +18,7 @@ namespace N2.Templates.Mvc.Models.Pages
     {
         public IList<News> NewsItems
         {
-            get { return GetChildren(new TypeFilter(typeof (News))).OfType<News>().ToList(); }
+            get { return Children.OfType<News>().ToList(); }
         }
     }
 }

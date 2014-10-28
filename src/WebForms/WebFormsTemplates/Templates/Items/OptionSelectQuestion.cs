@@ -11,7 +11,7 @@ namespace N2.Templates.Items
             get
             {
                 List<Option> options = new List<Option>();
-                foreach (Option o in GetChildren())
+                foreach (Option o in Children.WhereAccessible())
                     options.Add(o);
                 return options;
             }

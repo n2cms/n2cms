@@ -32,5 +32,6 @@ namespace N2.Collections
             : base(filter.Pipe(items))
         {
         }
+
     }
 }

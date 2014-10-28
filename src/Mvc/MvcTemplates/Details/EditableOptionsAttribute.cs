@@ -51,7 +51,7 @@ namespace N2.Templates.Details
         {
             TextBox tb = (TextBox)editor;
             tb.Text = string.Empty;
-            foreach (ContentItem child in item.GetChildren())
+			foreach (ContentItem child in item.Children.WhereAccessible())
             {
                 tb.Text += child.Title + Environment.NewLine;
             }

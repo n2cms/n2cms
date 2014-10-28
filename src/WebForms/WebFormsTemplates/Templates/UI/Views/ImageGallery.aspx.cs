@@ -1,6 +1,7 @@
 using System;
 using N2.Collections;
 using N2.Templates.Items;
+using System.Linq;
 
 namespace N2.Templates.UI.Views
 {
@@ -9,9 +10,9 @@ namespace N2.Templates.UI.Views
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-
+			
             N2.Resources.Register.JQuery(this);
-            rptImages.DataSource = CurrentPage.GetChildren(new AccessFilter(), new TypeFilter(typeof (GalleryItem)));
+            rptImages.DataSource = CurrentPage.Children.WhereAccessible().OfType<GalleryItem>();
             rptImages.DataBind();
         }
     }

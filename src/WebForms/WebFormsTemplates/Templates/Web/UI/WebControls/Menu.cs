@@ -117,7 +117,7 @@ namespace N2.Templates.Web.UI.WebControls
             if (currentItem == null)
                 currentItem = startPage;
 
-            ItemList children = currentItem.GetChildren();
+            var children = currentItem.Children.WhereNavigatable();
             if (children.Count > 0)
                 currentItem = children[0];
             IEnumerable<ContentItem> ancestors = GetAncestors(currentItem, startPage);

@@ -1041,5 +1041,34 @@ namespace N2
 
 			return second == null;
 		}
+
+		public static IEnumerable<T> Filter<T>(this IEnumerable<T> items, params ItemFilter[] filters)
+			where T : ContentItem
+		{
+			return new ItemList<T>(items, filters);
+		}
+
+		public static ItemList ToContentList(this IEnumerable<ContentItem> items)
+		{
+			return new ItemList(items);
+		}
+
+		public static ItemList<T> ToContentList<T>(this IEnumerable<T> items)
+			where T: ContentItem
+		{
+			return new ItemList<T>(items);
+		}
+
+		public static ItemList<T> WhereNavigatable<T>(this IContentList<T> items, System.Security.Principal.IPrincipal byUser = null, N2.Security.ISecurityManager security = null)
+			where T : ContentItem
+		{
+			return new ItemList<T>(items, new NavigationFilter(byUser, security));
+		}
+
+		public static ItemList<T> WhereAccessible<T>(this IContentList<T> items, System.Security.Principal.IPrincipal byUser = null, N2.Security.ISecurityManager security = null)
+			where T : ContentItem
+		{
+			return new ItemList<T>(items, new AccessFilter(byUser, security));
+		}
 	}
 }

@@ -7,7 +7,7 @@ namespace N2.Collections
     /// </summary>
     public abstract class HierarchyBuilder
     {
-        ChildFactoryDelegate getChildren = (item) => item.GetChildren();
+        ChildFactoryDelegate getChildren = (item) => item.Children;
 
 
         public ChildFactoryDelegate GetChildren
@@ -35,7 +35,7 @@ namespace N2.Collections
                 ? filters[0]
                 : new AllFilter(filters);
 
-            GetChildren = (item) => item.GetChildren(filters);
+            GetChildren = (item) => item.Children.Filter(filters);
             return this;
         }
 

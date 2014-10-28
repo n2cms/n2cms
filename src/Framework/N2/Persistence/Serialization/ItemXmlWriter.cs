@@ -112,7 +112,7 @@ namespace N2.Persistence.Serialization
 	        string typeAndAssemblyName = null;
 	        try
 	        {
-		        SerializationUtility.GetTypeAndAssemblyName(item.GetContentType());
+				typeAndAssemblyName = SerializationUtility.GetTypeAndAssemblyName(item.GetContentType());
 	        }
 	        catch (Exception ex)
 	        {

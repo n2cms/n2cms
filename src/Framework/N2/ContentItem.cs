@@ -739,10 +739,29 @@ namespace N2
 				|| (Name + Extension).Equals(name, StringComparison.InvariantCultureIgnoreCase);
 		}
 
-		/// <summary>Gets child items the current user is allowed to access.</summary>
+		/// <summary>Gets all direct child pages of the published version of this item without regards to user access, visibility or published state.</summary>
 		/// <returns>A list of content items.</returns>
 		/// <remarks>This method is used by N2 for site map providers, and for data source controls. Keep this in mind when overriding this method.</remarks>
 		[NonInterceptable]
+		public virtual ItemList GetChildPagesUnfiltered()
+		{
+			var master = VersionOf.HasValue ? VersionOf.Value : this ?? this;
+			return new ItemList(master.Children.FindPages());
+		}
+
+		/// <summary>Gets direct child parts of the item without regards to user access, visibility or published state.</summary>
+		/// <returns>A list of content items.</returns>
+		/// <remarks>This method is used by N2 for site map providers, and for data source controls. Keep this in mind when overriding this method.</remarks>
+		[NonInterceptable]
+		public virtual ItemList GetChildPartsUnfiltered(string zoneName = null)
+		{
+			return new ItemList(string.IsNullOrEmpty(zoneName) ? Children.FindParts() : children.FindParts(zoneName));
+		}
+
+		/// <summary>Gets child items the current user is allowed to access.</summary>
+		/// <returns>A list of content items.</returns>
+		/// <remarks>This method is used by N2 for site map providers, and for data source controls. Keep this in mind when overriding this method.</remarks>
+		[NonInterceptable, Obsolete("Use GetChildPagesUnfiltered().WhereNavigatable() or GetChildPartsUnfiltered().WhereNavigatable() instead. Don't forget to apply security filters to the result list")]
 		public virtual ItemList GetChildren()
 		{
 			return GetChildren(new AccessFilter());
@@ -752,7 +771,7 @@ namespace N2
 		/// <param name="childZoneName">The name of the zone.</param>
 		/// <returns>A list of items that have the specified zone name.</returns>
 		/// <remarks>This method is used by N2 when when non-page items are added to a zone on a page and in edit mode when displaying which items are placed in a certain zone. Keep this in mind when overriding this method.</remarks>
-		[NonInterceptable, Obsolete("Use GetChildren(new ZoneFilter(\"childZoneName\"), new AccessFilter()) instead. This method will be removed in N2CMS 3.0.")]
+		[NonInterceptable, Obsolete("Use GetChildPartsUnfiltered(childZoneName). This method will be removed in N2CMS 3.0.")]
 		public virtual ItemList GetChildren(string childZoneName)
 		{
 			return GetChildren(new AllFilter(new ZoneFilter(childZoneName), new AccessFilter()));
@@ -761,7 +780,7 @@ namespace N2
 		/// <summary>Gets children applying filters.</summary>
 		/// <param name="filters">The filters to apply on the children.</param>
 		/// <returns>A list of filtered child items.</returns>
-		[NonInterceptable]
+		[NonInterceptable, Obsolete("Use GetChildPagesUnfiltered().Where(filters) or GetChildPartsUnfiltered().Where(filters)")]
 		public virtual ItemList GetChildren(params ItemFilter[] filters)
 		{
 			return GetChildren(new AllFilter(filters));
@@ -770,7 +789,7 @@ namespace N2
 		/// <summary>Gets children applying filters.</summary>
 		/// <param name="filter">The filters to apply on the children.</param>
 		/// <returns>A list of filtered child items.</returns>
-		[NonInterceptable]
+		[NonInterceptable, Obsolete("Use GetChildPagesUnfiltered().Where(filter) or GetChildPartsUnfiltered().Where(filter)")]
 		public virtual ItemList GetChildren(ItemFilter filter)
 		{
 			IEnumerable<ContentItem> items = !VersionOf.HasValue ? Children : VersionOf.Children;
@@ -782,7 +801,7 @@ namespace N2
 		/// <param name="take">Number of child items to take at the database level.</param>
 		/// <param name="filter">The filters to apply on the children after they have been loaded from the database.</param>
 		/// <returns>A list of filtered child items.</returns>
-		[NonInterceptable]
+		[NonInterceptable, Obsolete("Use GetChildPagesUnfiltered().Skip(skip).Take(take).Where(filter) or GetChildPartsUnfiltered().Skip(skip).Take(take).Where(filter)")]
 		public virtual ItemList GetChildren(int skip, int take, ItemFilter filter)
 		{
 			var items = !VersionOf.HasValue ? Children : VersionOf.Children;

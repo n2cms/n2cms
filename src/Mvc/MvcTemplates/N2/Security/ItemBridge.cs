@@ -303,7 +303,7 @@ namespace N2.Security
         {
             if (user == null)
                 throw new ArgumentNullException("user");
-            return user.GetChildren().OfType<UserExternalLoginInfo>();
+            return user.Children.WhereAccessible().OfType<UserExternalLoginInfo>();
         }
 
         public virtual bool AddUserExternalLoginInfo(Items.User user, string loginProvider, string providerKey)

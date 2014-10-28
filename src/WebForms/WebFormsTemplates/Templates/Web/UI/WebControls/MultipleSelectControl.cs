@@ -28,7 +28,7 @@ namespace N2.Templates.Web.UI.WebControls
             if (item.ID > 0)
                 list.ID = "q" + item.ID;
             list.CssClass = "alternatives";
-            list.DataSource = item.GetChildren();
+			list.DataSource = item.Children.WhereAccessible();
             list.DataTextField = "Title";
             list.DataValueField = "ID";
             list.DataBind();

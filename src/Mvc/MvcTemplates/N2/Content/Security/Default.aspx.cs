@@ -162,7 +162,7 @@ namespace N2.Edit.Security
 		private void ApplyRolesRecursive(ContentItem item)
 		{
 			ApplyRoles(item);
-			foreach (ContentItem child in item.GetChildren())
+			foreach (ContentItem child in item.Children.WhereAccessible())
 			{
 				ApplyRolesRecursive(child);
 			}

@@ -36,7 +36,7 @@ namespace N2.Templates.Mvc.Controllers
 
         private IEnumerable<IQuestion> GetQuestions()
         {
-	        var questions = CurrentItem.GetChildren(new ZoneFilter(Zones.Questions));
+	        var questions = CurrentItem.GetChildPartsUnfiltered(Zones.Questions);
 	        return questions.OfType<IQuestion>();
         }
 

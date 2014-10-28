@@ -65,7 +65,7 @@ namespace N2.Web
                 try
                 {
                     var list = new List<ISlideshowEntryProvider>();
-                    var children = GetChildren();
+                    var children = Children.WhereAccessible();
                     if (children != null)
                         list.AddRange(children.Select(child => child as ISlideshowEntryProvider));
                     return list;

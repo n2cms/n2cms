@@ -42,7 +42,7 @@ namespace N2.Templates.Items
         [EditableChildren("Form fields", "Questions", "FormFields", 110, ContainerName = FieldsTab)]
         public virtual IList<ContentItem> FormFields
         {
-            get { return GetChildren(); }
+            get { return Children.WhereAccessible(); }
         }
 
         [EditableText("Mail from", 120, ContainerName = EmailTab)]
