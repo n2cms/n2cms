@@ -45,27 +45,32 @@ namespace N2.Edit.Globalization
             }
         }
 
-        protected IEnumerable<ContentItem> GetChildren(bool getPages)
+        private IEnumerable<ContentItem> GetChildren(bool getPages)
         {
-            ItemList items = new ItemList();
-            foreach (ContentItem parent in gateway.FindTranslations(Selection.SelectedItem))
+            var items = new ItemList();
+            foreach (var parent in gateway.FindTranslations(Selection.SelectedItem))
             {
-                foreach (ContentItem child in parent.GetChildren(Engine.EditManager.GetEditorFilter(User)))
-                {
-                    if (!items.ContainsAny(gateway.FindTranslations(child)))
-                    {
-                        items.Add(child);
-                    }
-                }
+	            if (getPages)
+	            {
+		            foreach (ContentItem child in parent.GetChildPagesUnfiltered().Where(Engine.EditManager.GetEditorFilter(User)))
+			            if (!items.ContainsAny(gateway.FindTranslations(child)))
+				            items.Add(child);
+	            }
+	            else
+	            {
+					foreach (ContentItem child in parent.GetChildPartsUnfiltered().Where(Engine.EditManager.GetEditorFilter(User)))
+						if (!items.ContainsAny(gateway.FindTranslations(child)))
+							items.Add(child);
+	            }
             }
             items.Sort();
 
             foreach (ContentItem item in items)
             {
-                if (item is ILanguage)
+	            if (item is ILanguage)
                     continue;
-                else if (item.IsPage == getPages)
-                    yield return item;
+	            if (item.IsPage == getPages)
+		            yield return item;
             }
         }
 
