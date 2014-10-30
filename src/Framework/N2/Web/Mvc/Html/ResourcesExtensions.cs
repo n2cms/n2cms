@@ -106,25 +106,30 @@ namespace N2.Web.Mvc.Html
 
 		public static ResourcesHelper BootstrapColumnClass(this ResourcesHelper registrator, int colSpan, BootstrapScreenSize size)
 		{
+			return registrator.HtmlLiteral(BootstrapColumnClass(colSpan, size));
+		}
+
+		public static string BootstrapColumnClass(int colSpan, BootstrapScreenSize size)
+		{
 			if (colSpan < 0 || colSpan > 12)
 				throw new ArgumentException("colSpan should be between 1 and 12, inclusive");
 
 			if (N2.Resources.Register.BootstrapVersion.Major < 3)
 			{
-				return registrator.HtmlLiteral("span" + colSpan);
+				return ("span" + colSpan);
 			}
 			else
 			{
 				switch (size)
 				{
 					case BootstrapScreenSize.lg:
-						return registrator.HtmlLiteral("col-lg-" + colSpan);
+						return ("col-lg-" + colSpan);
 					case BootstrapScreenSize.md:
-						return registrator.HtmlLiteral("col-md-" + colSpan);
-					case BootstrapScreenSize.sm:	
-						return registrator.HtmlLiteral("col-sm-" + colSpan);
+						return ("col-md-" + colSpan);
+					case BootstrapScreenSize.sm:
+						return ("col-sm-" + colSpan);
 					case BootstrapScreenSize.xs:
-						return registrator.HtmlLiteral("col-xs-" + colSpan);
+						return ("col-xs-" + colSpan);
 					default:
 						throw new ArgumentException("size");
 				}
