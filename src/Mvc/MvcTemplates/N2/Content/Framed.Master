@@ -23,12 +23,20 @@
 				<asp:ContentPlaceHolder ID="Toolbar" runat="server" />
 			</div>
 		</div>
-		<div id="outside" class="outside">
-			<asp:ContentPlaceHolder ID="Outside" runat="server" />
-		</div>
-		<div id="content" class="content">
+		
+		<div class="container-fluid">
+		<div class="<%= ResourcesExtensions.BootstrapRowClass(true) %>">
+			<!-- main area --> 
+			<div id="content" class="content <%= ResourcesExtensions.BootstrapColumnClass(8, ResourcesExtensions.BootstrapScreenSize.xs) %>">
 			<h1 id="h1" runat="server" />
 			<asp:ContentPlaceHolder ID="Content" runat="server" />
+			</div>
+		
+			<!-- right panel --> 
+			<div id="outside" class="outside <%= ResourcesExtensions.BootstrapColumnClass(4, ResourcesExtensions.BootstrapScreenSize.xs) %>">
+			<asp:ContentPlaceHolder ID="Outside" runat="server" />
+			</div>
+		</div>
 		</div>
 	</form>
 	<script type="text/javascript">
@@ -56,6 +64,6 @@
 	{
 		base.OnLoad(e);
 		var config = N2.Context.Current.Resolve<N2.Configuration.EditSection>();
-		framednavbar.Attributes["class"] = String.Format("framed-navbar navbar navbar-fixed-{1} toolbar-count-{0}", Toolbar.Controls.Count, config != null && config.IsToolbarOnBottom ? "bottom" : "top");
+		framednavbar.Attributes["class"] = String.Format("framed-navbar navbar {1} toolbar-count-{0}", Toolbar.Controls.Count, config != null && config.IsToolbarOnBottom ? "navbar-fixed-bottom" : "");
 	}
 </script>

@@ -6,7 +6,12 @@ body.toolbar-hidden .rightOpener { top:0; }
 	.framed .rightOpener.opener-closed .rightOpener-close { display:none; }
 	.framed .rightOpener.opener-closed .rightOpener-open { display:inline; }
 
-.framed .outside { border-left:solid 1px #E8E8D8; border-bottom:solid 1px #E8E8D8; position:absolute; top:0; right:0; width:280px; z-index:10; overflow:hidden; margin-bottom:40px }
+.framed .outside { border-left:solid 1px #E8E8D8; 
+	border-bottom:solid 1px #E8E8D8; 
+	/* TODO: Remove when not needed... 
+		position:absolute; top:0; right:0; width:280px; z-index:10; overflow:hidden; */
+	margin-bottom: 40px !important; }
+
 body.toolbar-hidden .outside { top:0; right:0; }
 	.framed .outside .box { border-top:solid 1px #E8E8D8; border-bottom:solid 1px #CCCCCC; }
 		.framed .outside .box .box-heading { padding:5px 10px 5px 20px; margin:0; cursor:pointer; font-weight: normal; }

@@ -28,11 +28,13 @@ h4 { font-size:1.1em; }
 body {
 	padding-bottom:30px;
 }
+/*TODO: Remove when no longer needed. 
 .framed-navbar {
 	position:fixed !important;
 	margin-left:0;
 	margin-right:0;
-}
+}*/
+
 .framed-navbar.toolbar-count-0 {
 	display:none;
 }
@@ -46,11 +48,10 @@ body {
 		padding-right:8px;
 	}
 	.framed-navbar .cancel {
-		float:right;
 	}
 
 	/* Toolbox */
-#top{ position:relative; }
+#top { position:relative; }
 
 #sort {
     background-image: none;

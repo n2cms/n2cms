@@ -90,10 +90,15 @@ namespace N2.Web.Mvc.Html
 
 		public static ResourcesHelper BootstrapRowClass(this ResourcesHelper registrator, bool fluid = false)
 		{
+			return registrator.HtmlLiteral(BootstrapRowClass(fluid));
+		}
+
+		public static string BootstrapRowClass( bool fluid = false)
+		{
 			if (N2.Resources.Register.BootstrapVersion.Major > 2 || !fluid)
-				return registrator.HtmlLiteral("row");
+				return ("row");
 			else
-				return registrator.HtmlLiteral("row-fluid");
+				return ("row-fluid");
 		}
 
 		public enum BootstrapScreenSize
