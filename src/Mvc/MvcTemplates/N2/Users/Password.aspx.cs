@@ -52,7 +52,7 @@ namespace N2.Edit.Membership
 
         protected void btnUnlock_Click(object sender, EventArgs e)
         {
-            if (SelectedUser != null)
+            if (SelectedUser == null)
                 throw new N2.N2Exception("User '{0}' not found.", SelectedUserName);
             AccountManager.UnlockUser(SelectedUser.UserName);
             
