@@ -1,4 +1,5 @@
 <%@ Master MasterPageFile="../Simple.master" Language="C#" AutoEventWireup="true" CodeBehind="Framed.master.cs" Inherits="N2.Edit.Framed" meta:resourceKey="FramedResource" %>
+<%@ Import Namespace="N2.Web.UI" %>
 
 <asp:Content ContentPlaceHolderID="Head" runat="server">
 	<asp:PlaceHolder runat="server">
@@ -55,7 +56,9 @@
 	protected override void OnLoad(EventArgs e)
 	{
 		base.OnLoad(e);
-		var config = N2.Context.Current.Resolve<N2.Configuration.EditSection>();
-		framednavbar.Attributes["class"] = String.Format("framed-navbar navbar navbar-fixed-{1} toolbar-count-{0}", Toolbar.Controls.Count, config != null && config.IsToolbarOnBottom ? "bottom" : "top");
+		var engine = Page.GetEngine();
+		bool isBottom = engine.Config.Sections.Management.IsToolbarOnBottom;
+		framednavbar.Attributes["class"] = String.Format("framed-navbar navbar navbar-fixed-{1} toolbar-count-{0}", Toolbar.Controls.Count, isBottom ? "bottom" : "top");
+		f.Attributes["class"] = isBottom ? "n2-toolbar-bottom" : "n2-toolbar-top";
 	}
 </script>

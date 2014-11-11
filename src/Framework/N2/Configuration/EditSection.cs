@@ -73,7 +73,7 @@ namespace N2.Configuration
 		/// <summary>
 		/// Configures if the edit toolbar is displayed on the bottom of the page. If false, the edit toolbar is placed at the top of the page.
 		/// </summary>
-		[ConfigurationProperty("toolbarOnBottom")]
+		[ConfigurationProperty("toolbarOnBottom", DefaultValue = true)]
 		public bool IsToolbarOnBottom
 		{
 			get { return (bool)base["toolbarOnBottom"]; }

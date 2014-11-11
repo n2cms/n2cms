@@ -25,8 +25,11 @@ h4 { font-size:1.1em; }
 
 /* toolbar */
 
-body {
+form.n2-toolbar-bottom {
 	padding-bottom:30px;
+}
+form.n2-toolbar-top {
+	padding-top:30px;
 }
 .framed-navbar {
 	position:fixed !important;

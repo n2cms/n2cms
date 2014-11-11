@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using N2.Web.UI;
 
 namespace N2.Edit.Web.UI.Controls
 {
@@ -21,7 +22,8 @@ namespace N2.Edit.Web.UI.Controls
 				return;
 			}
 
-			writer.Write("<div class='btn-group dropup'>");
+			var engine = Page.GetEngine();
+			writer.Write("<div class='btn-group" + (engine.Config.Sections.Management.IsToolbarOnBottom ? " dropup" : "") + "'>");
 			
 			visibleChildren[0].CssClass += " btn " + CssClass;
 			visibleChildren[0].RenderControl(writer);
