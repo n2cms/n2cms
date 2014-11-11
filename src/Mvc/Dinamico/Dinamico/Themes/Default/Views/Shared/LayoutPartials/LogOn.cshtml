@@ -1,5 +1,4 @@
-﻿﻿@using N2.Web
-@if (Request.IsAuthenticated)
+﻿@if (Request.IsAuthenticated)
 {
     string manageUrl = "{Account.ManageUser.PageUrl}".ResolveUrlTokens();
     string logOffUrl = "{Account.Logout.PageUrl}".ResolveUrlTokens();
