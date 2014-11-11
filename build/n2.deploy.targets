@@ -298,6 +298,7 @@
                                                Razor-NuGet;
                                                Mvc-NuGet;
                                                Dinamico-NuGet;
+																							 Dinamico-DemoContent-Nuget;
                                                Bundle-Dinamico-Nuget;
                                                Windsor3-NuGet;
                                                MongoDB-NuGet;
