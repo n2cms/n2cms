@@ -186,7 +186,13 @@
 			<textarea>&lt;n2&gt;
   &lt;edit&gt;
 	&lt;installer allowInstallation="false"/&gt;</textarea>
-  ...
+			<p>You might also want to increase the maximum upload size by adjusting your web.config file. The below example will set the maximum upload size to approximately 25 MB.</p>
+			<textarea>&lt;configuration&gt;
+  &lt;system.web&gt;
+     &lt;httpRuntime maxRequestLength="25000000" /&gt;
+  &lt;/system.web&gt;
+&lt;/configuration&gt;
+</textarea>
 			<%} %>
 		</n2:TabPanel>
 		<hr />
