@@ -256,7 +256,7 @@ namespace N2.Edit.Versioning
 				version.SavedBy = item.SavedBy;
 				version.Title = item.Title;
 				version.State = item.State;
-				version.VersionDataXml = ContentVersion.Serialize(exporter, item);
+				version.VersionDataXml = Serialize(item);
 			}
 		}
     }
