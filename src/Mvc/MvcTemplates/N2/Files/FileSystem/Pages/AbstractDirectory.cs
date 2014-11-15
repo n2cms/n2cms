@@ -92,7 +92,8 @@ namespace N2.Edit.FileSystem.Items
             }
         }
 
-        public override ItemList GetChildren(ItemFilter filter)
+        [Obsolete("Use GetChildPagesUnfiltered to get the directories and files below this element.")]
+		public override ItemList GetChildren(ItemFilter filter)
         {
             ItemList items = new ItemList();
             items.AddRange(filter.Pipe(GetDirectories()));
@@ -100,7 +101,31 @@ namespace N2.Edit.FileSystem.Items
             return items;
         }
 
-        class TitleComparer<T> : IComparer<T> where T: ContentItem
+
+		/// <summary>
+		/// Gets the files and directories that are contained within this AbstractDirectory.
+		/// </summary>
+		/// <returns>ItemList of files and directories within this AbstractDirectory.</returns>
+		public override ItemList GetChildPagesUnfiltered()
+		{
+			var items = new ItemList();
+			items.AddRange(GetDirectories());
+			items.AddRange(GetFiles());
+			return items;
+		}
+
+		/// <summary>
+		/// Gets the child parts that are part of this AbstractDirectory. This is always an empty ItemList. 
+		/// </summary>
+		/// <param name="zoneName"></param>
+		/// <returns>Always returns an empty ItemList.</returns>
+		public override ItemList GetChildPartsUnfiltered(string zoneName = null)
+		{
+			return new ItemList();
+		}
+
+        ///
+		class TitleComparer<T> : IComparer<T> where T: ContentItem
         {
             #region IComparer<ContentItem> Members
 

@@ -14,7 +14,7 @@ namespace N2.Addons.AddonCatalog.UI
 
             Register.StyleSheet(this, Paths.UI + "AddonStyle.css");
 
-            ItemList<ContentItem> addons = CurrentPage.GetChildren(new AllFilter(new AccessFilter(), new TypeFilter(typeof (Items.Addon))));
+            ItemList<ContentItem> addons = CurrentPage.GetChildPagesUnfiltered().Where(new AllFilter(new AccessFilter(), new TypeFilter(typeof (Items.Addon))));
             foreach(Items.Addon addon in addons)
             {
                 AddonSummary uc = LoadControl("AddonSummary.ascx") as AddonSummary;

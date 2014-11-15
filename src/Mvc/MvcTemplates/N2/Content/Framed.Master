@@ -1,5 +1,4 @@
 <%@ Master MasterPageFile="../Simple.master" Language="C#" AutoEventWireup="true" CodeBehind="Framed.master.cs" Inherits="N2.Edit.Framed" meta:resourceKey="FramedResource" %>
-<%@ Import Namespace="N2.Web.UI" %>
 
 <asp:Content ContentPlaceHolderID="Head" runat="server">
 	<asp:PlaceHolder runat="server">
@@ -24,12 +23,20 @@
 				<asp:ContentPlaceHolder ID="Toolbar" runat="server" />
 			</div>
 		</div>
-		<div id="outside" class="outside">
-			<asp:ContentPlaceHolder ID="Outside" runat="server" />
-		</div>
-		<div id="content" class="content">
+		
+		<div class="container-fluid">
+		<div class="<%= ResourcesExtensions.BootstrapRowClass(true) %>">
+			<!-- main area --> 
+			<div id="content" class="content <%= ResourcesExtensions.BootstrapColumnClass(8, ResourcesExtensions.BootstrapScreenSize.xs) %>">
 			<h1 id="h1" runat="server" />
 			<asp:ContentPlaceHolder ID="Content" runat="server" />
+			</div>
+		
+			<!-- right panel --> 
+			<div id="outside" class="outside <%= ResourcesExtensions.BootstrapColumnClass(4, ResourcesExtensions.BootstrapScreenSize.xs) %>">
+			<asp:ContentPlaceHolder ID="Outside" runat="server" />
+			</div>
+		</div>
 		</div>
 	</form>
 	<script type="text/javascript">
@@ -56,9 +63,7 @@
 	protected override void OnLoad(EventArgs e)
 	{
 		base.OnLoad(e);
-		var engine = Page.GetEngine();
-		bool isBottom = engine.Config.Sections.Management.IsToolbarOnBottom;
-		framednavbar.Attributes["class"] = String.Format("framed-navbar navbar navbar-fixed-{1} toolbar-count-{0}", Toolbar.Controls.Count, isBottom ? "bottom" : "top");
-		f.Attributes["class"] = isBottom ? "n2-toolbar-bottom" : "n2-toolbar-top";
+		var config = N2.Context.Current.Resolve<N2.Configuration.EditSection>();
+		framednavbar.Attributes["class"] = String.Format("framed-navbar navbar {1} toolbar-count-{0}", Toolbar.Controls.Count, config != null && config.IsToolbarOnBottom ? "navbar-fixed-bottom" : "");
 	}
 </script>

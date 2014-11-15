@@ -8,13 +8,13 @@
 	   });
 }
 <div class="columns threecolumns clearfix row @((bool)(Content.Data.Separator ?? false) ? "separator" : "")">
-	<div class="column column1 @Html.Resources().BootstrapColumnClass(4, ResourcesExtensions.BootstrapScreenSize.sm)">
+	<div class="column column1 @ResourcesExtensions.BootstrapColumnClass(4, ResourcesExtensions.BootstrapScreenSize.sm)">
 		@{ Html.DroppableZone("Left").Render(); }
 	</div>
-	<div class="column column2 @Html.Resources().BootstrapColumnClass(4, ResourcesExtensions.BootstrapScreenSize.sm)">
+	<div class="column column2 @ResourcesExtensions.BootstrapColumnClass(4, ResourcesExtensions.BootstrapScreenSize.sm)">
 		@{ Html.DroppableZone("Center").Render(); }
 	</div>
-	<div class="column column3 @Html.Resources().BootstrapColumnClass(4, ResourcesExtensions.BootstrapScreenSize.sm)">
+	<div class="column column3 @ResourcesExtensions.BootstrapColumnClass(4, ResourcesExtensions.BootstrapScreenSize.sm)">
 		@{ Html.DroppableZone("Right").Render(); }
 	</div>
 </div>

@@ -4,6 +4,7 @@
 <head id="Head1" runat="server">
 	<title>Log in</title>
 	<asp:PlaceHolder runat="server">
+		<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.JQueryJsPath)  %>" type="text/javascript"></script>
 		<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath) %>" type="text/css" rel="stylesheet" />
 		<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapJsPath)  %>" type="text/javascript"></script>
 	</asp:PlaceHolder>
