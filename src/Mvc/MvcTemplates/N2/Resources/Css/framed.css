@@ -25,17 +25,16 @@ h4 { font-size:1.1em; }
 
 /* toolbar */
 
-form.n2-toolbar-bottom {
+body {
 	padding-bottom:30px;
 }
-form.n2-toolbar-top {
-	padding-top:30px;
-}
+/*TODO: Remove when no longer needed. 
 .framed-navbar {
 	position:fixed !important;
 	margin-left:0;
 	margin-right:0;
-}
+}*/
+
 .framed-navbar.toolbar-count-0 {
 	display:none;
 }
@@ -49,11 +48,10 @@ form.n2-toolbar-top {
 		padding-right:8px;
 	}
 	.framed-navbar .cancel {
-		float:right;
 	}
 
 	/* Toolbox */
-#top{ position:relative; }
+#top { position:relative; }
 
 #sort {
     background-image: none;

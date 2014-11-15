@@ -54,12 +54,16 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 {
 	<div class="imageAndText container">
 		<div class="row">
-			<div class="@Html.Resources().BootstrapColumnClass(3, ResourcesExtensions.BootstrapScreenSize.xs)"><img class="@imgCssClass" alt="@Content.Data.Title" src="@Content.Data.Image" /></div>
-			<div class="@Html.Resources().BootstrapColumnClass(9, ResourcesExtensions.BootstrapScreenSize.xs)">
-				@{ Html.DroppableZone("AboveText").Render(); }
+			@using (Html.BeginBootstrapXsDiv(3))
+			{
+				<img class="@imgCssClass" alt="@Content.Data.Title" src="@Content.Data.Image" />
+			}
+			@using (Html.BeginBootstrapXsDiv(9))
+			{
+				Html.DroppableZone("AboveText").Render();
 				@Content.Display.Description
-				@{ Html.DroppableZone("BelowText").Render(); }
-			</div>
+				Html.DroppableZone("BelowText").Render();
+			}
 		</div>
 	</div>
 }
@@ -67,12 +71,16 @@ else
 {
 	<div class="imageAndText container">
 		<div class="row">
-			<div class="@Html.Resources().BootstrapColumnClass(9, ResourcesExtensions.BootstrapScreenSize.xs)">
-				@{ Html.DroppableZone("AboveText").Render(); }
+			@using (Html.BeginBootstrapXsDiv(9))
+			{
+				Html.DroppableZone("AboveText").Render();
 				@Content.Display.Description
-				@{ Html.DroppableZone("BelowText").Render(); }
-			</div>
-			<div class="@Html.Resources().BootstrapColumnClass(3, ResourcesExtensions.BootstrapScreenSize.xs)"><img class="@imgCssClass" alt="@Content.Data.Title" src="@Content.Data.Image" /></div>
+				Html.DroppableZone("BelowText").Render();
+			}
+			@using (Html.BeginBootstrapXsDiv(3))
+			{
+				<img class="@imgCssClass" alt="@Content.Data.Title" src="@Content.Data.Image" />
+			}
 		</div>
 	</div>
 }

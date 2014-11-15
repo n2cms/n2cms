@@ -279,7 +279,7 @@ namespace N2
 			set { detailCollections = value; }
 		}
 
-		/// <summary>Gets or sets all a collection of child items of this item ignoring permissions. If you want the children the current user has permission to use <see cref="GetChildren()"/> instead.</summary>
+		/// <summary>Gets or sets all a collection of child items of this item ignoring permissions. If you want the children the current user has permission to use <see cref="GetChildPagesUnfiltered()"/> and <see cref="GetChildPartsUnfiltered()" /> instead.</summary>
 		[NonInterceptable]
 		public virtual IContentItemList<ContentItem> Children
 		{
@@ -755,7 +755,7 @@ namespace N2
 		[NonInterceptable]
 		public virtual ItemList GetChildPartsUnfiltered(string zoneName = null)
 		{
-			return new ItemList(string.IsNullOrEmpty(zoneName) ? Children.FindParts() : children.FindParts(zoneName));
+			return new ItemList(string.IsNullOrEmpty(zoneName) ? Children.FindParts() : Children.FindParts(zoneName));
 		}
 
 		/// <summary>Gets child items the current user is allowed to access.</summary>

@@ -12,10 +12,10 @@
 	<hr />
 }
 <div class="columns twocolumns row">
-	<div class="column span  @Html.Resources().BootstrapColumnClass(6, ResourcesExtensions.BootstrapScreenSize.lg)">
+	<div class="column span  @ResourcesExtensions.BootstrapColumnClass(6, ResourcesExtensions.BootstrapScreenSize.lg)">
 		@{ Html.DroppableZone("Left").Render(); }
 	</div>
-	<div class="column column2  @Html.Resources().BootstrapColumnClass(6, ResourcesExtensions.BootstrapScreenSize.lg)">
+	<div class="column column2  @ResourcesExtensions.BootstrapColumnClass(6, ResourcesExtensions.BootstrapScreenSize.lg)">
 		@{ Html.DroppableZone("Right").Render(); }
 	</div>
 </div>
