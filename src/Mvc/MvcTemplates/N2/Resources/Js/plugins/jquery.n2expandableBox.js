@@ -25,7 +25,7 @@
 		});
 	};
 
-	$.fn.n2expandableBootstrapColumn = function (args) {
+	$.fn.n2expandableBootstrapColumn = function (args) { /* TODO: Not done */
 		args = $.extend({ selector: this.selector, openerClosedClass: "opener-closed", boxClosedClass: "box-closed" }, args);
 		this.each(function () {
 			var box = this;
