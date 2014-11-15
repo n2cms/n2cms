@@ -38,7 +38,7 @@ namespace N2.Configuration
                 return !Regex.IsMatch(filename, UploadsBlacklistExpression, RegexOptions.IgnoreCase);
 
 			//DefaultRequestPathInvalidCharacters
-			foreach (var ch in "<>*%&:\\?,") { //TODO: Do something better with HttpRuntimeConfig, see https://github.com/Microsoft/referencesource/blob/fa352bbcac7dd189f66546297afaffc98f6a7d15/System.Web/Configuration/HttpRuntimeSection.cs#L48
+			foreach (var ch in "<>*%&:\\?,") //TODO: Do something better with HttpRuntimeConfig, see https://github.com/Microsoft/referencesource/blob/fa352bbcac7dd189f66546297afaffc98f6a7d15/System.Web/Configuration/HttpRuntimeSection.cs#L48
 				if (filename.IndexOf(ch) >= 0)
 					return false;
 
