@@ -28,7 +28,7 @@ namespace N2.Templates.UI.Layouts
         {
             ContentItem branchRoot = Find.AncestorAtLevel(StartLevel, Find.EnumerateParents(CurrentPage, StartPage), CurrentPage);
 
-            if (branchRoot != null && branchRoot.GetChildren(new NavigationFilter()).Count > 0)
+            if (branchRoot != null && branchRoot.GetChildPagesUnfiltered().Where(new NavigationFilter()).Count > 0)
                 hsm.Text = N2.Web.Link.To(branchRoot).ToString();
             else
                 this.Visible = false;

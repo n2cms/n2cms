@@ -97,7 +97,7 @@ namespace N2.Web
         /// Link to a container of news or blog items.
         /// </summary>
         [EditableLink("Content Container (Parent)", 100, SelectableTypes = new[] {typeof (ContentItem)})]
-        public virtual ContentItem Container
+        public virtual ContentItem LinkedPage
         {
             get { return (ContentItem) GetDetail("Container"); }
             set
@@ -139,13 +139,13 @@ namespace N2.Web
         }
 
         [EditableChildren("Content Containers", "Sources", 100)]
-        public virtual IList<ContentListContainerLink> Containers
+        public virtual IEnumerable<ContentListContainerLink> ContainerLinks
         {
             get
             {
                 try
                 {
-					return GetChildPartsUnfiltered().Cast<ContentListContainerLink>();
+					return GetChildPartsUnfiltered().OfType<ContentListContainerLink>();
                 }
                 catch (Exception x)
                 {

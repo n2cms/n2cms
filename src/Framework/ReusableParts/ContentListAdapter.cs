@@ -29,8 +29,10 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using N2.Engine;
+using N2.Web.Mvc.Html;
 using N2.Web.Parts;
 
 namespace N2.Web.Mvc
@@ -50,45 +52,47 @@ namespace N2.Web.Mvc
             if (!(model is ContentList))
                 return ("{adapter failure - Model is not a NewsList}"); // nothing to do 
 
-            var errorList = new List<string>();
-            var currentItem = model as ContentList;
+	        var currentItem = model as ContentList;
             var chH = currentItem.HtmlHeader ?? string.Empty;
             var chF = currentItem.HtmlFooter ?? string.Empty;
             var sb = new System.Text.StringBuilder(50*1024 + chH.Length + chF.Length);
             var allNews = new List<ContentItem>();
-            var containerLinks = currentItem.Containers as IEnumerable<ContentListContainerLink>;
-            if (containerLinks == null)
-            {
-                sb.Append(@"<div class=""alert alert-error"">Content List: ContainerLinks is null.</div>");
-            }
-            else if (currentItem.Containers.Count == 0)
-            {
-                sb.Append(@"<div class=""alert alert-warning"">Content List: ContainerLinks is empty. Edit the content list and add at least one content container.</div>");
-            }
-            else
-            {
-                foreach (var containerLink in containerLinks.Where(c => c.Container != null && c.Container.IsPage))
-                {
-					var aChildren = containerLink.Children.FindPages()
-						.Where(Content.Is.AccessiblePage())
-						.ToList();
-                    
-                    if (containerLink.Recursive)
-                    {
-						allNews.AddRange(aChildren.Concat(aChildren.SelectMany(c => c.Children.FindPages().Where(Content.Is.AccessiblePage()))).Distinct());
-                    }
-                    else
-                    {
-                        allNews.AddRange(aChildren);
-                    }
-                }
-            }
 
+			if (currentItem.ContainerLinks == null)
+			{
+				return @"<div class=""alert alert-error"">Content List: ContainerLinks is null.</div>";
+			}
+			
+			var containerLinks = currentItem.ContainerLinks.Where(c => c != null).ToList();
+	        bool any = false;
+		    foreach (var containerLink in containerLinks)
+		    {
+				if (containerLink.LinkedPage == null)
+					continue;
+			    any = true;
 
-            foreach (var x in currentItem.Exceptions)
-                errorList.Add(x.ToString());
+			    var aChildren = containerLink.LinkedPage.GetChildPagesUnfiltered() // get one level of child pages
+				    .Where(Content.Is.AccessiblePage())
+				    .ToList();
 
-            if (!String.IsNullOrEmpty(currentItem.Title))
+			    if (containerLink.Recursive) // additional levels of child pages -- recurse
+			    {
+				    allNews.AddRange(
+					    aChildren.Concat(aChildren.SelectMany(c => c.GetChildPagesUnfiltered().Where(Content.Is.AccessiblePage())))
+						    .Distinct() /* but only keep unique child pages */);
+			    }
+			    else
+			    {
+				    allNews.AddRange(aChildren);
+			    }
+		    }
+	        if (!any)
+		        sb.Append(
+			        @"<div class=""alert alert-warning"">Content List: ContainerLinks is empty. Edit the content list and add at least one content container.</div>");
+
+	        var errorList = currentItem.Exceptions.Select(x => x.ToString(CultureInfo.InvariantCulture)).ToList();
+
+	        if (!String.IsNullOrEmpty(currentItem.Title))
             {
                 sb.AppendFormat("<h{0}>{1}</h{0}>", currentItem.TitleLevel, currentItem.Title);
             }

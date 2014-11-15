@@ -167,13 +167,11 @@ namespace N2.Edit.Navigation
         private static void ExpandRecursive(IFileSystem fs, HierarchyNode<ContentItem> parent, List<ContentItem> selectionTrail)
         {
             int index = selectionTrail.FindIndex(ci => string.Equals(ci.Url, parent.Current.Url, StringComparison.InvariantCultureIgnoreCase));
-            if (index >= 0)
-            {
-                foreach (var child in parent.Current.GetChildren(new NullFilter()))
-                {
-                    parent.Children.Add(CreateDirectoryNode(fs, child, parent, selectionTrail));
-                }
-            }
+	        if (index < 0) return;
+	        foreach (var child in parent.Current.GetChildPagesUnfiltered())
+	        {
+		        parent.Children.Add(CreateDirectoryNode(fs, child, parent, selectionTrail));
+	        }
         }
 
         protected override string GetToolbarSelectScript(string toolbarPluginName)

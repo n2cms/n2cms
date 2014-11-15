@@ -36,7 +36,7 @@
 	<uc1:AvailableZones id="ucZones" runat="server" />
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
-	<a href="javascript:void(0);" class="rightOpener"><span class='rightOpener-open'>&laquo;</span><span class='rightOpener-close'>&raquo;</span></a>
+	<a href="javascript:void(0);" class="rightOpener"><span class="rightOpener-open">&laquo;</span><span class="rightOpener-close">&raquo;</span></a>
 
 <%--  	
 <table>

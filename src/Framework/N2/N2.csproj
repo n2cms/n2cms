@@ -727,6 +727,7 @@
     <Compile Include="Web\Mvc\Html\DroppableZoneHelper.cs" />
     <Compile Include="Web\Mvc\Html\HtmlExtensions.cs" />
     <Compile Include="Web\Mvc\Html\ItemHelper.cs" />
+    <Compile Include="Web\Mvc\Html\MvcDiv.cs" />
     <Compile Include="Web\Mvc\Html\ZoneExtensions.cs" />
     <Compile Include="Web\Mvc\Html\ZoneHelper.cs" />
     <Compile Include="Web\Mvc\MvcExtensions.cs" />
