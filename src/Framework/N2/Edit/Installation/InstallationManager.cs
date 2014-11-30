@@ -10,6 +10,7 @@ using N2.Configuration;
 using N2.Definitions;
 using N2.Definitions.Static;
 using N2.Details;
+using N2.Edit.Trash;
 using N2.Edit.Versioning;
 using N2.Engine;
 using N2.Installation;
@@ -363,7 +364,27 @@ namespace N2.Edit.Installation
             }
         }
 
-        private bool UpdateItems(DatabaseStatus status)
+	    /// <summary>
+	    /// Determines if the given item is in the trash or is the trash can itself. There will be problems if the root node or start page is trashed.
+	    /// </summary>
+	    /// <param name="item"></param>
+	    /// <returns></returns>
+		private bool IsTrashed(ContentItem item)
+	    {
+		    if (item == null)
+			    return false;
+
+			if (item is ITrashCan)
+			    return true;
+
+			/* N2 should detect if item is in trash */
+		    if (Context.Current.Resolve<ITrashHandler>().IsInTrash(item))
+			    return true;
+
+		    return false;
+	    }
+
+	    private bool UpdateItems(DatabaseStatus status)
         {
             try
             {
@@ -371,9 +392,10 @@ namespace N2.Edit.Installation
                 status.RootItemID = host.DefaultSite.RootItemID;
                 status.StartPage = persister.Get(status.StartPageID);
                 status.RootItem = persister.Get(status.RootItemID);
-                status.IsInstalled = status.RootItem != null && status.StartPage != null;
+	            status.IsInstalled = status.RootItem != null && status.StartPage != null
+					&& !IsTrashed(status.RootItem) && !IsTrashed(status.StartPage) /* fix #583 -- ~/N2 should detect if the RootNode is Trash */;
 
-                return true;
+	            return true;
             }
             catch (Exception ex)
             {
