@@ -1,6 +1,7 @@
 <configuration>
     <n2>
         <host>
+            <!-- Warning: If you are using a ConfigSource for the <host> section, you need to move the <resources> element to the file specified by the ConfigSource. -->
             <resources 
                 angularJsRoot="~/Scripts/"
                 angularUiJsPath="~/Content/angular-ui.js"
