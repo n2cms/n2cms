@@ -478,7 +478,7 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 					if (!zone)
 						continue;
 					var child = {
-						Current: { Title: zone, IconClass: "fa fa-columns silver", MetaInformation: [] },
+						Current: { Title: zone, IconClass: "fa fa-columns silver", MetaInformation: [], PreviewUrl: new Uri(node.Current.PreviewUrl).appendQuery("n2zone", zone).toString() },
 						HasChildren: true,
 						Children: zones[zone]
 					};
