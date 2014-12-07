@@ -119,13 +119,18 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 			return url + (url.indexOf("?") < 0 ? "?" : "&") + keyValue;
 	};
 
-	$scope.appendSelection = function(url, appendVersionIndex) {
+	$scope.appendSelection = function(url, appendPreviewQueries) {
 		var ctx = $scope.Context;
 		if (!ctx.CurrentItem)
 			return url;
 		url = $scope.appendQuery(url, ctx.Paths.SelectedQueryKey + "=" + ctx.CurrentItem.Path + "&" + ctx.Paths.ItemQueryKey + "=" + ctx.CurrentItem.ID);
-		if (appendVersionIndex)
-			url += "&n2versionIndex=" + ctx.CurrentItem.VersionIndex;
+		if (appendPreviewQueries) {
+			for (var key in $scope.Context.PreviewQueries) {
+				url += "&" + key + "=" + $scope.Context.PreviewQueries[key];
+			}
+			//console.log("appendSelection", url, appendVersionIndex);
+			//url += "&n2versionIndex=" + ctx.CurrentItem.VersionIndex;
+		}
 		return url;
 	};
 

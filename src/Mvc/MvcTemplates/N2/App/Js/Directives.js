@@ -443,4 +443,48 @@ span.null {color:silver}\
 	    };
 	});
 
+	module.directive("debug", function () {
+		return {
+			restrict: "A",
+			link: function (scope, element, attrs) {
+				element.hide();
+				function attach(e) {
+					if (e.keyCode != 68 || !e.shiftKey || !e.altKey)
+						return;
+
+					angular.element(document).unbind("keydown", attach);
+					element.show().addClass("n2-debug").html(angular.toJson(scope.$eval(attrs.debug), true));
+
+					scope.$watch(attrs.debug, function (debug) {
+						element.html(angular.toJson(debug, true));
+					}, true);
+
+					element.click(function () {
+						setTimeout(function () {
+							if (element.is(".n2-debug-pinned")) {
+								element.toggleClass("n2-debug-pinned-left");
+							} else if (document.body.createTextRange) {
+								range = document.body.createTextRange();
+								range.moveToElementText(element[0]);
+								range.select();
+							} else if (window.getSelection) {
+								selection = window.getSelection();
+								range = document.createRange();
+								range.selectNodeContents(element[0]);
+								selection.removeAllRanges();
+								selection.addRange(range);
+							}
+						}, 200);
+					});
+
+					element.dblclick(function () {
+						element.toggleClass("n2-debug-pinned");
+						element.focus();
+					});
+				}
+				angular.element(document).keydown(attach);
+			}
+		}
+	});
+
 })(angular.module('n2.directives', ['n2.localization']));

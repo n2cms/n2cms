@@ -280,3 +280,16 @@ a[disabled=disabled]:hover {
 .modal {
     border-radius:0;
 }
+
+/* DEBUG PANEL */
+.n2-debug:before { content: "π"; text-shadow: 0 0 3px black; color: white; }
+.n2-debug { float: right; position: absolute; height: 18px; width: 12px; overflow: hidden; z-index: 1000; display: block; font-family: monospace; transition: .15s ease-in-out; margin: 0 1px; text-transform: none; padding: 1px; white-space: pre-wrap; font-size: .7em; text-indent: 5px; }
+	.n2-debug:hover:before,
+	.n2-debug-pinned:before { content: ""; }
+	.n2-debug:hover,
+	.n2-debug-pinned { height: auto; width: auto; max-width: 1000px; opacity: 1; background-color: white; padding: 10px; border: solid 1px silver; box-shadow: 8px 2px 10px rgba(0, 0, 0, 0.50); max-height:99%; overflow:auto; }
+
+.n2-debug-pinned { position: fixed; top: 0; bottom: 0; right: 0; overflow: auto; }
+	.n2-debug-pinned:before { content: "<" !important; float: right; cursor: pointer; color: #fff; font-size: 13px; text-shadow: none; text-align: center; text-indent: 0; text-shadow: 0; width: 20px; height: 20px; background-color: #5FB998; border-radius: 50%; }
+	.n2-debug-pinned.n2-debug-pinned-left { left: 0; right: auto; }
+		.n2-debug-pinned.n2-debug-pinned-left:before { content: ">" !important; }

@@ -45,36 +45,6 @@
 			self.scroll();
 		},
 
-		//showDialog: function (href, dialogOptions) {
-		//	href += (href.indexOf('?') >= 0 ? '&' : "?") + "modal=true";
-		//	if (dialog) dialog.remove();
-		//	dialog = $('<div id="editorDialog" />').appendTo(document.body).hide();
-		//	var iframe = document.createElement('iframe');
-		//	dialog.append(iframe);
-		//	iframe.src = href;
-		//	$(iframe).load(function () {
-		//		var doc = $(iframe.contentWindow.document);
-		//		doc.find('#toolbar a.cancel').click(function () {
-		//			dialog.dialog('close');
-		//		});
-		//	});
-
-		//	dialog.dialog($.extend({
-		//		modal: true,
-		//		width: Math.min(1000, $(window).width() - 50),
-		//		height: Math.min(800, $(window).height() - 100),
-		//		closeOnEscape: true,
-		//		resizable: true
-		//	}, dialogOptions));
-
-		//	window.n2ScrollBack = (function (x, y) {
-		//		return function () {
-		//			// workaround to maintain scroll position
-		//			setTimeout(function () { window.scrollTo(x, y); }, 10);
-		//		}
-		//	})(window.pageXOffset, window.pageYOffset);
-		//},
-
 		makeDraggable: function () {
 			$('.definition').draggable({
 				dragPrevention: 'a,input,textarea,select,img',
