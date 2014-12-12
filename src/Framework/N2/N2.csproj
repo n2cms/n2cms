@@ -163,6 +163,8 @@
     <Compile Include="Definitions\IPlaceholder.cs" />
     <Compile Include="Edit\Versioning\InvalidVersionInfo.cs" />
     <Compile Include="Edit\Versioning\VersionInfo.cs" />
+    <Compile Include="Engine\EventsManager.cs" />
+    <Compile Include="Engine\IEventsManager.cs" />
     <Compile Include="Persistence\LinqQueryFacade.cs" />
     <Compile Include="Persistence\NH\LinqNHQueryFacade.cs" />
     <Compile Include="Persistence\Xml\CacheBox.cs" />

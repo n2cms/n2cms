@@ -56,6 +56,7 @@ namespace N2
 	    }
 
         /// <summary>A global settings indicating whether persistence events should be triggered for versions of items.</summary>
+		//[Obsolete("Moved to N2.Engine.EventsManager")]
         public static bool VersionsTriggersEvents { get; set; }
 
         /// <summary>Converts a value to a destination type.</summary>
@@ -572,7 +573,8 @@ namespace N2
         /// <param name="item">The item affected by this operation.</param>
         /// <param name="sender">The source of the event.</param>
         /// <param name="finalAction">The default action to execute if the event didn't signal cancel.</param>
-        public static void InvokeEvent(EventHandler<CancellableItemEventArgs> preHandlers, ContentItem item, object sender, Action<ContentItem> finalAction, EventHandler<ItemEventArgs> postHandlers)
+		//[Obsolete("Moved to N2.Engine.EventsManager")]
+		public static void InvokeEvent(EventHandler<CancellableItemEventArgs> preHandlers, ContentItem item, object sender, Action<ContentItem> finalAction, EventHandler<ItemEventArgs> postHandlers)
         {
             if (preHandlers != null && (VersionsTriggersEvents || !item.VersionOf.HasValue))
             {
@@ -603,6 +605,7 @@ namespace N2
         /// <param name="sender">The source of the event.</param>
         /// <param name="finalAction">The default action to execute if the event didn't signal cancel.</param>
         /// <returns>The result of the action (if any).</returns>
+		//[Obsolete("Moved to N2.Engine.EventsManager")]
         public static ContentItem InvokeEvent(EventHandler<CancellableDestinationEventArgs> handler, object sender, ContentItem source, ContentItem destination, Func<ContentItem, ContentItem, ContentItem> finalAction, EventHandler<DestinationEventArgs> postHandler)
         {
             if (handler != null && (VersionsTriggersEvents || !source.VersionOf.HasValue))

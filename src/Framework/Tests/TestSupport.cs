@@ -153,7 +153,8 @@ namespace N2.Tests
         public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, IContentItemRepository itemRepository, IRepository<ContentDetail> linkRepository, SchemaExport schemaCreator)
         {
             var source = SetupContentSource(itemRepository);
-            persister = new ContentPersister(source, itemRepository);
+	        var eventsManager = SetupEventsManager(source);
+            persister = new ContentPersister(source, itemRepository, eventsManager);
             new BehaviorInvoker(persister, new N2.Definitions.Static.DefinitionMap()).Start();
 
             schemaCreator.Execute(false, true, false, sessionProvider.OpenSession.Session.Connection, null);
@@ -163,6 +164,11 @@ namespace N2.Tests
         {
             return new ContentSource(MockRepository.GenerateStub<ISecurityManager>(), new SourceBase[] { new ActiveContentSource(), new DatabaseSource(MockRepository.GenerateStub<IHost>(), itemRepository) });
         }
+
+	    public static EventsManager SetupEventsManager(ContentSource contentSource)
+	    {
+		    return new EventsManager(contentSource);
+	    }
 
         internal static void Setup(out ContentPersister persister, FakeSessionProvider sessionProvider, SchemaExport schemaCreator)
         {
@@ -183,7 +189,8 @@ namespace N2.Tests
             repository = new Fakes.FakeContentItemRepository();
 
             var sources = SetupContentSource(repository);
-            return new ContentPersister(sources, repository);
+			var eventsManager = SetupEventsManager(sources);
+            return new ContentPersister(sources, repository, eventsManager);
         }
 
 		public static ContentPersister SetupFakePersister(out IContentItemRepository repository, IProxyFactory proxyFactory = null)
@@ -191,7 +198,8 @@ namespace N2.Tests
 			repository = new Fakes.FakeContentItemRepository(proxyFactory);
 
             var sources = SetupContentSource(repository);
-            return new ContentPersister(sources, repository);
+			var eventsManager = SetupEventsManager(sources);
+			return new ContentPersister(sources, repository, eventsManager);
         }
 
         public static UrlParser Setup(IPersister persister, FakeWebContextWrapper wrapper, IHost host)
