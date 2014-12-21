@@ -5,14 +5,16 @@ namespace N2.Engine
 
 	public interface IEventsManager
 	{
-		// todo : introduce ItemVersionSaving and ItemVersionSaved 
+		// todo: Implement interface once EventsManger is done
 
-		/// <summary>Invoked before item has been saved</summary>
-		event EventHandler<CancellableItemEventArgs> ItemSaving;
+		//// todo : introduce ItemVersionSaving and ItemVersionSaved 
 
-		/// <summary>Invoked after item has been saved</summary>
-		event EventHandler<ItemEventArgs> ItemSaved;
+		///// <summary>Invoked before item has been saved</summary>
+		//event EventHandler<CancellableItemEventArgs> ItemSaving;
 
-		void ItemSave(ContentItem item, object sender);
+		///// <summary>Invoked after item has been saved</summary>
+		//event EventHandler<ItemEventArgs> ItemSaved;
+
+		//void TriggerSave(ContentItem item, object sender);
 	}
 }

@@ -30,10 +30,10 @@ namespace N2.Persistence
 	{
 		private readonly IContentItemRepository repository;
 		private readonly ContentSource sources;
-		private readonly IEventsManager eventsManager;
+		private readonly EventsManager eventsManager;
 
 		/// <summary>Creates a new instance of the DefaultPersistenceManager.</summary>
-		public ContentPersister(ContentSource sources, IContentItemRepository itemRepository, IEventsManager eventsManager)
+		public ContentPersister(ContentSource sources, IContentItemRepository itemRepository, EventsManager eventsManager)
 		{
 			this.sources = sources;
 			this.repository = itemRepository;
@@ -70,16 +70,12 @@ namespace N2.Persistence
 		{
 			// todo : fire IPersister.Saving and IPersister.Saved
 
-			this.eventsManager.ItemSave(unsavedItem, this);
 
-			/*
 			using (var tx = Repository.BeginTransaction())
 			{
-				tx.Committed += (s, a) => Invoke(ItemSaved, new ItemEventArgs(unsavedItem));
-				Utility.InvokeEvent(ItemSaving, unsavedItem, this, sources.Save, null);
+				this.eventsManager.TriggerSave(unsavedItem, sources.Save, tx);
 				tx.Commit();
 			}
-			*/
 		}
 
 		/// <summary>Deletes an item an all sub-items</summary>

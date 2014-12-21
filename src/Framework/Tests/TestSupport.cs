@@ -153,7 +153,7 @@ namespace N2.Tests
         public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, IContentItemRepository itemRepository, IRepository<ContentDetail> linkRepository, SchemaExport schemaCreator)
         {
             var source = SetupContentSource(itemRepository);
-	        var eventsManager = SetupEventsManager(source);
+	        var eventsManager = SetupEventsManager();
             persister = new ContentPersister(source, itemRepository, eventsManager);
             new BehaviorInvoker(persister, new N2.Definitions.Static.DefinitionMap()).Start();
 
@@ -165,9 +165,9 @@ namespace N2.Tests
             return new ContentSource(MockRepository.GenerateStub<ISecurityManager>(), new SourceBase[] { new ActiveContentSource(), new DatabaseSource(MockRepository.GenerateStub<IHost>(), itemRepository) });
         }
 
-	    public static EventsManager SetupEventsManager(ContentSource contentSource)
+	    public static EventsManager SetupEventsManager()
 	    {
-		    return new EventsManager(contentSource);
+		    return new EventsManager();
 	    }
 
         internal static void Setup(out ContentPersister persister, FakeSessionProvider sessionProvider, SchemaExport schemaCreator)
@@ -189,7 +189,7 @@ namespace N2.Tests
             repository = new Fakes.FakeContentItemRepository();
 
             var sources = SetupContentSource(repository);
-			var eventsManager = SetupEventsManager(sources);
+			var eventsManager = SetupEventsManager();
             return new ContentPersister(sources, repository, eventsManager);
         }
 
@@ -198,7 +198,7 @@ namespace N2.Tests
 			repository = new Fakes.FakeContentItemRepository(proxyFactory);
 
             var sources = SetupContentSource(repository);
-			var eventsManager = SetupEventsManager(sources);
+			var eventsManager = SetupEventsManager();
 			return new ContentPersister(sources, repository, eventsManager);
         }
 

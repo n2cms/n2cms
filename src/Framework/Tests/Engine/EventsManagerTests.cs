@@ -16,74 +16,55 @@ namespace N2.Tests.Engine
 	using NUnit.Framework;
 
 	using Rhino.Mocks;
+	using Shouldly;
 
 	[TestFixture]
 	public class EventsManagerTests
 	{
-		private Fakes.FakeEngine engine;
+		private EventsManager events;
+		private ContentPersister persister;
 
-		[TestFixtureSetUp]
-		public void TestFixtureSetUp()
+		[SetUp]
+		public void SetUp()
 		{
-			TestSupport.InitializeHttpContext("/", "");
-
-			N2.Context.Replace(engine = new Fakes.FakeEngine());
-			engine.Initialize();
-			engine.AddComponentInstance<IPersister>(new ContentPersister(
-					MockRepository.GenerateStub<ContentSource>(),
-					MockRepository.GenerateStub<IContentItemRepository>(),
-					MockRepository.GenerateStub<IEventsManager>()
-				));
-		}
-
-		[TestFixtureTearDown]
-		public void TestFixtureTearDown()
-		{
-			N2.Context.Replace(null);
+			var repository = new Fakes.FakeContentItemRepository();
+			var sources = TestSupport.SetupContentSource(repository);
+			events = new EventsManager();
+			persister = new ContentPersister(sources, repository, events);
 		}
 
 		[Test]
-		public void Saving_Item_Fires_Events()
+		public void Saving_Item_Fires_PreEvents()
 		{
-			//bool itemSavingRaised = false;
-			//bool itemSavedRaised = false;
+			bool preEventWasCalled = false;
 
-			//N2.Context.Current.EventsManager.ItemSaving += (s, e) => itemSavingRaised = true;
-			//N2.Context.Current.EventsManager.ItemSaving += (s, e) => itemSavedRaised = true;
+			events.ItemSaving += (s, e) => preEventWasCalled = true;
+			persister.Save(new AnItem());
 
-			//MockRepository mocks = new MockRepository();
-			//IPersister persister = mocks.DynamicMock<IPersister>();
-			//IEngine eng = mocks.DynamicMock<IEngine>(persister);
-			//mocks.ReplayAll();
-			
-			AnItem item = new AnItem();
-			this.engine.Persister.Save(item);
+			preEventWasCalled.ShouldBe(true);
+		}
 
-			this.engine.Persister.AssertWasCalled(x => x.Save(item));
-			this.engine.Persister.VerifyAllExpectations();
+		[Test]
+		public void Saving_Item_Fires_PostEvents()
+		{
+			bool postEventWasCalled = false;
 
-			//Assert.IsTrue(itemSavingRaised);
-			//Assert.IsTrue(itemSavedRaised);
+			events.ItemSaved += (s, e) => postEventWasCalled = true;
+			persister.Save(new AnItem());
+
+			postEventWasCalled.ShouldBe(true);
 		}
 
 		[Test]
 		public void Cancelled_Saving_Item_DoesNot_Fires_Events()
 		{
-			//N2.Context.Current.Persister = MockRepository.GenerateStub<IPersister>();
+			bool postEventWasCalled = false;
 
-			//N2.Context.Current.EventsManager.ItemSaving += (s, e) =>
-			//{
-			//	e.Cancel = true; 
-			//	itemSavingRaised = true; 
-			//};
+			events.ItemSaving += (s, e) => e.Cancel = true;
+			events.ItemSaved += (s, e) => postEventWasCalled = true;
+			persister.Save(new AnItem());
 
-			//N2.Context.Current.EventsManager.ItemSaving += (s, e) => itemSavedRaised = true;
-
-			//AnItem item = new AnItem();
-			//N2.Context.Persister.Save(item);
-
-			//Assert.IsTrue(itemSavingRaised);
-			//Assert.IsTrue(itemSavedRaised);
+			postEventWasCalled.ShouldBe(false);
 		}
 	}
 }

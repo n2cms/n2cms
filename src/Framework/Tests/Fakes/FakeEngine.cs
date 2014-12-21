@@ -40,7 +40,7 @@ namespace N2.Tests.Fakes
 			AddComponentInstance<ISecurityManager>(security);
 			var source = new ContentSource(security, new [] { new DatabaseSource(host, itemRepository) });
 			AddComponentInstance(source);
-			var eventsManager = new EventsManager(source);
+			var eventsManager = new EventsManager();
 			AddComponentInstance<IPersister>(new ContentPersister(source, itemRepository, eventsManager));
 			AddComponentInstance<IWebContext>(webContext);
 			var proxyFactory = new InterceptingProxyFactory();
