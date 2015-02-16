@@ -220,7 +220,7 @@ namespace N2.Integrity
                 Definitions.ItemDefinition sourceDefinition = definitions.GetDefinition(source);
                 Definitions.ItemDefinition destinationDefinition = definitions.GetDefinition(destination);
 
-                return destinationDefinition.IsChildAllowed(definitions, destination, sourceDefinition);
+                return destinationDefinition.IsChildAllowed(definitions, destination, sourceDefinition, source);
             }
             return true;
         }

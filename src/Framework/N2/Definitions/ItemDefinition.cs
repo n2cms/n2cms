@@ -211,12 +211,25 @@ namespace N2.Definitions
         /// <summary>Gets or sets additional child types allowed below this item.</summary>
         public IEnumerable<ItemDefinition> GetAllowedChildren(IDefinitionManager definitions, ContentItem parentItem)
         {
-            return definitions.GetDefinitions().AllowedBelow(this, parentItem, definitions);
+            return definitions.GetDefinitions().AllowedBelow(this, parentItem, null, definitions);
+        }
+
+        // Fixes #614 pages marked with RestrictCardinality cannot be sorted
+        /// <summary>Gets or sets additional child types allowed below this item.</summary>
+        public IEnumerable<ItemDefinition> GetAllowedChildren(IDefinitionManager definitions, ContentItem parentItem, ContentItem childItem)
+        {
+            return definitions.GetDefinitions().AllowedBelow(this, parentItem, childItem, definitions);
         }
 
         public bool IsChildAllowed(IDefinitionManager definitions, ContentItem parentItem, ItemDefinition childDefinition)
         {
             return GetAllowedChildren(definitions, parentItem).Any(d => d.ItemType == childDefinition.ItemType);
+        }
+
+        // Fixes #614 pages marked with RestrictCardinality cannot be sorted
+        public bool IsChildAllowed(IDefinitionManager definitions, ContentItem parentItem, ItemDefinition childDefinition, ContentItem childItem)
+        {
+            return GetAllowedChildren(definitions, parentItem, childItem).Any(d => d.ItemType == childDefinition.ItemType);
         }
 
         /// <summary>Find out if this item is allowed in a zone.</summary>

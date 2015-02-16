@@ -5,6 +5,7 @@ namespace N2.Definitions
         public IDefinitionManager Definitions { get; set; }
         public ContentItem Parent { get; set; }
         public ItemDefinition ParentDefinition { get; set; }
+        public ContentItem Child { get; set; }
         public ItemDefinition ChildDefinition { get; set; }
     }
 }

@@ -15,11 +15,11 @@ namespace N2.Definitions
             return allSecurable.Where(s => security.IsAuthorized(s, user, parentItem));
         }
 
-        public static IEnumerable<ItemDefinition> AllowedBelow(this IEnumerable<ItemDefinition> allDefinitions, ItemDefinition parentDefinition, ContentItem parentItem, IDefinitionManager definitions)
+        public static IEnumerable<ItemDefinition> AllowedBelow(this IEnumerable<ItemDefinition> allDefinitions, ItemDefinition parentDefinition, ContentItem parentItem, ContentItem childItem, IDefinitionManager definitions)
         {
             foreach (var definition in allDefinitions)
             {
-                if (IsAllowed(definition, parentItem, parentDefinition, definitions))
+                if (IsAllowed(childItem, definition, parentItem, parentDefinition, definitions))
                     yield return definition;
             }
         }
@@ -28,15 +28,15 @@ namespace N2.Definitions
         {
             foreach (var template in allTemplates)
             {
-                if (IsAllowed(template.Definition, parentItem, parentDefinition, definitions))
+                if (IsAllowed(null, template.Definition, parentItem, parentDefinition, definitions))
                     yield return template;
             }
         }
 
-        private static bool IsAllowed(ItemDefinition definition, ContentItem parentItem, ItemDefinition parentDefinition, IDefinitionManager definitions)
+        private static bool IsAllowed(ContentItem childItem, ItemDefinition childDefinition, ContentItem parentItem, ItemDefinition parentDefinition, IDefinitionManager definitions)
         {
-            var ctx = new AllowedDefinitionQuery { Parent = parentItem, ParentDefinition = parentDefinition, ChildDefinition = definition, Definitions = definitions };
-            var filters = parentDefinition.AllowedChildFilters.Union(definition.AllowedParentFilters).ToList();
+            var ctx = new AllowedDefinitionQuery { Parent = parentItem, ParentDefinition = parentDefinition, Child = childItem, ChildDefinition = childDefinition, Definitions = definitions };
+            var filters = parentDefinition.AllowedChildFilters.Union(childDefinition.AllowedParentFilters).ToList();
             if (filters.Any(f => f.IsAllowed(ctx) == AllowedDefinitionResult.Allow))
                 // filter specificly allows -> allow
                 return true;
