@@ -13,7 +13,7 @@
 <div class="part teaser">
 @if (Content.Has.ForwardsTo)
 {
-	@Html.Partial("Partials/ContentLink", (N2.ContentItem)Content.Data.ForwardsTo, new ViewDataDictionary { { "preferredSize", Dinamico.Defaults.ImageSize(Content.Data.ImageSize, Content.Current.Item.ZoneName) } })
+	@Html.Partial("Partials/ContentLink", (N2.ContentItem)Content.Data.ForwardsTo, new ViewDataDictionary { { "preferredSize", Dinamico.Defaults.ImageSize(Content.Data.ImageSize, Content.Current.Item.ZoneName) }, { "contentClass", Dinamico.Defaults.ContentClass(Content.Current.Item.ZoneName) } })
 }
 else
 {

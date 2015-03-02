@@ -1,8 +1,12 @@
 ﻿@{ if(Content.Current.Language != null)
 {
-	<a id="translationsopener" href="@Url.Action("Translations", new { item = Content.Traverse.StartPage, id = Content.Current.Page.ID })">
+	<a id="translationsopener" href="@Url.Action("Translations", new { n2item = Content.Traverse.StartPage, id = Content.Current.Page.ID })" class="dropdown-toggle" data-toggle="dropdown">
 		<span class="@Content.Current.LanguageCode.Split('-').LastOrDefault() sprite"></span>
 		@Content.Current.Language.LanguageTitle.Split('(')[0]
+		<b class="caret"></b>
 	</a>
+	<ul class="dropdown-menu">
+		<li class='loading'>@Content.Translate["Loading..."]</li>
+	</ul>
 }
 }

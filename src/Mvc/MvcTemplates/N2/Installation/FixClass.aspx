@@ -1,23 +1,6 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="FixClass.aspx.cs" Inherits="N2.Edit.Install.FixClass" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="FixClass.aspx.cs" Inherits="N2.Edit.Install.FixClass" MasterPageFile="InstallerPage.Master" %>
 
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" >
-<head runat="server">
-    <title></title>
-    <link rel="stylesheet" type="text/css" href="../Resources/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="../Resources/Css/all.css" />
-    <link rel="stylesheet" type="text/css" href="../Resources/Css/framed.css" />
-    <link rel="stylesheet" type="text/css" href="../Resources/Css/themes/default.css" />
-    <style>b { color:red;}pre{margin:10px 0;border-left:solid 10px #eee;padding-left:10px;}input{vertical-align:middle} .msg{font-weight:bold; font-size:1.4em;color:green;background-color:Yellow;padding:10px 0;}</style>
-</head>
-<body>
-    <form id="form1" runat="server">
-	<ul class="tabs">
-		<li class="tab selected"><a href="#">Invalid class fixing tool</a></li>
-	</ul>
-    <div class="tabPanel">
+<asp:Content runat="server" ContentPlaceHolderID="mainContent">
         <asp:Label CssClass="msg" runat="server" ID="lblResult" />
         <h1>Invalid item(s) in database (class namechange or missing dll?)</h1>
         <p>An invalid class was found in the database (NHibernate.InvalidClassException). A few possible explanations:</p>
@@ -50,7 +33,4 @@ public class MyPage...</pre>
         <p>These are are the problematic classes in the database. Their type/discriminator doesn't match any content class definition (class name or attribute name/discriminator) in the application:</p>
         <asp:DataGrid ID="dgrItems" runat="server" CssClass="table table-striped table-hover table-condensed"></asp:DataGrid>
 
-    </div>
-    </form>
-</body>
-</html>
+</asp:Content>

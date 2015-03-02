@@ -64,7 +64,7 @@ namespace N2.Management.Content.Navigation
         private ItemFilter CreateFilter(string filterText, string selectableTypes, string selectableExtensions)
         {
             return CreateFilter(filterText)
-                & new DelegateFilter(ci => TreeUtility.IsSelectable(ci, selectableTypes, selectableExtensions) || ci.GetChildren().Any());
+				& new DelegateFilter(ci => TreeUtility.IsSelectable(ci, selectableTypes, selectableExtensions) || ci.Children.WhereAccessible().Any());
         }
 
         private ItemFilter CreateFilter(string filter)

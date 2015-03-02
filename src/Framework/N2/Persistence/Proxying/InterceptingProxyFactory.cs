@@ -34,6 +34,10 @@ namespace N2.Persistence.Proxying
         private readonly ProxyGenerator generator = new ProxyGenerator();
         private readonly Type[] additionalInterfacesToProxy = new Type[] { typeof(IInterceptedType) };
 
+		public InterceptingProxyFactory()
+		{
+		}
+
         public override void Initialize(IEnumerable<ItemDefinition> interceptedTypes)
         {
             foreach (var definition in interceptedTypes)

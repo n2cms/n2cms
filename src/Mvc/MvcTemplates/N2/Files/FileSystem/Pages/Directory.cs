@@ -8,7 +8,7 @@ using N2.Management.Api;
 namespace N2.Edit.FileSystem.Items
 {
     [PageDefinition("Directory",
-        IconClass = "n2-icon-folder-close",
+        IconClass = "fa fa-folder-close",
         InstallerVisibility = InstallerHint.NeverRootOrStartPage,
         SortOrder = 2015)]
     [RestrictParents(typeof(AbstractDirectory))]
@@ -63,7 +63,7 @@ namespace N2.Edit.FileSystem.Items
             get
             {
                 if (base.GetFiles().Count > 0)
-                    return "n2-icon-folder-open";
+                    return "fa fa-folder-open";
                 return base.IconClass;
             }
         }
@@ -89,6 +89,8 @@ namespace N2.Edit.FileSystem.Items
                     FileSystem.CreateDirectory(to);
 
                 Parent = newParent;
+
+                ClearUrl();
             }
             else if (newParent != null)
             {

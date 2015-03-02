@@ -5,11 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="Head1" runat="server">
     <title>Rebase N2</title>
-	<link href="../Resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<asp:PlaceHolder runat="server">
+		<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath) %>" type="text/css" rel="stylesheet" />
+		<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapJsPath)  %>" type="text/javascript"></script>
+	</asp:PlaceHolder>
     <link rel="stylesheet" type="text/css" href="../Resources/Css/all.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/framed.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/themes/default.css" />
-    <style>
+    <style type="text/css">
     	form{font-size:1.1em;width:800px;margin:10px auto;}
     	a{color:#00e;}
     	li{margin-bottom:10px}

@@ -1,0 +1,18 @@
+<item id="7" name="eee" parent="6" title="Eee" zoneName="" templateKey="" state="16" created="05/06/2014 19:54:38" updated="05/06/2014 19:54:38" published="05/06/2014 19:54:25" expires="" sortOrder="0" url="/test/c/eee" visible="False" savedBy="admin" typeName="N2.Templates.Mvc.Models.Pages.Event, N2.Templates.Mvc" discriminator="Event" versionIndex="0" ancestralTrail="/1/2/3/6/" alteredPermissions="0" childState="2">
+  <details>
+    <detail name="Text" typeName="System.String, mscorlib" meta="" encoded="True"><![CDATA[&lt;p&gt;eeee&lt;/p&gt;
+]]></detail>
+    <detail name="HeadTitle" typeName="System.String, mscorlib" meta="" />
+    <detail name="MetaKeywords" typeName="System.String, mscorlib" meta="" />
+    <detail name="MetaDescription" typeName="System.String, mscorlib" meta="" />
+  </details>
+  <detailCollections />
+  <children />
+  <authorizations />
+  <properties>
+    <property name="EventDate" typeName="System.DateTime, mscorlib">05/30/2014 22:00:00</property>
+    <property name="Summary" typeName="System.String, mscorlib"><![CDATA[eeee
+]]></property>
+    <property name="Syndicate" typeName="System.Boolean, mscorlib">False</property>
+  </properties>
+</item>

@@ -22,7 +22,7 @@ namespace N2.Web
 		static readonly string[] querySplitter = new[] {"&amp;", Amp};
 		static readonly char[] slashes = new char[] { '/' };
 		static readonly char[] dotsAndSlashes = new char[] { '.', '/' };
-		static string defaultExtension = ".aspx";
+		static string defaultExtension = "";
 		static string defaultDocument = "Default.aspx";
 
 		private static readonly HashSet<string> contentParameters = new HashSet<string>
@@ -102,7 +102,8 @@ namespace N2.Web
 			fragment = null;
 		}
 
-		void EnsureTrailingSlashOnPath()
+#if SAFE_URL_HANDLING
+        void EnsureTrailingSlashOnPath()
 		{
 			// Addition by James Tharpe w/ Rollins, Inc.
 			// --------------------------------------------------------------------------------
@@ -114,6 +115,7 @@ namespace N2.Web
 			if (Extension == null && !path.EndsWith("/")) //TODO: Add a forceTralingSlash option?
 				path += "/";
 		}
+#endif
 
 		void LoadSiteRelativeUrl(string url, int queryIndex, int hashIndex)
 		{
@@ -131,7 +133,10 @@ namespace N2.Web
 			else
 				path = "";
 
+#if SAFE_URL_HANDLING
+            // alternatively it's possible to set extension="/"
 			EnsureTrailingSlashOnPath(); // jamestharpe
+#endif
 		}
 
 		void LoadBasedUrl(string url, int queryIndex, int hashIndex, int authorityIndex)
@@ -148,7 +153,9 @@ namespace N2.Web
 				else
 					path = url.Substring(slashIndex); // http://site.com/foo/bar -> /foo/bar
 
+#if SAFE_URL_HANDLING
 				EnsureTrailingSlashOnPath(); // jamestharpe
+#endif
 			}
 			else
 			{
@@ -1012,10 +1019,25 @@ namespace N2.Web
 			if (string.IsNullOrEmpty(urlFormat))
 				return urlFormat;
 
-            //TODO: Use a nicer method for replacing tokens. Doesn't work if token values contain other tokens.
-			foreach (var kvp in replacements)
-				urlFormat = urlFormat.Replace(kvp.Key, kvp.Value);
-			return ToAbsolute(urlFormat);
+            //TODO: Use a nicer method for replacing tokens. 
+
+            int maxLevels = 10; // Does work if token values contain other tokens, replacement levels hard limited.
+            for (int level = 0; level < maxLevels; ++level)
+            {
+                bool changed = false;
+                foreach (var kvp in replacements)
+                {
+                    string replaced = urlFormat.Replace(kvp.Key, kvp.Value);
+                    if (replaced != urlFormat)
+                        changed = true;
+                    urlFormat = replaced;
+                }
+
+                if (!changed)
+                    break; // all resolved
+            }
+
+            return ToAbsolute(urlFormat);
 		}
 
 		/// <summary>Formsats this url using replacement tokens.</summary>

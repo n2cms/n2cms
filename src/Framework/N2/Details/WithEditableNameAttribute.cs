@@ -52,14 +52,6 @@ namespace N2.Details
             set { toLower = value; }
         }
 
-        /// <summary>Gets or sets wether non-ascii characters will be removed from the name.</summary>
-        [Obsolete]
-        public bool? Ascii
-        {
-            get { return ascii; }
-            set { ascii = value; }
-        }
-
         /// <summary>Allow editor to choose wether to update name automatically.</summary>
         public bool? ShowKeepUpdated
         {

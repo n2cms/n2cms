@@ -25,7 +25,7 @@ namespace N2.Templates.Mvc.Upgrade
         {
             try
             {
-                return GetNews().Any();
+	            return persister.Repository.Count(new Parameter("class", "News")) > 0;
             }
             catch (Exception)
             {

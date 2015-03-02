@@ -2,6 +2,7 @@ using System.Configuration;
 using NHibernate.Mapping.ByCode;
 using System.Collections.Generic;
 using System.Data;
+using N2.Engine;
 
 namespace N2.Configuration
 {
@@ -10,6 +11,8 @@ namespace N2.Configuration
     /// </summary>
     public class DatabaseSection : ContentConfigurationSectionBase
     {
+		Logger<DatabaseSection> logger;
+
         /// <summary>Whether cacheing should be enabled.</summary>
         [ConfigurationProperty("caching", DefaultValue = false)]
         public bool Caching
@@ -154,16 +157,25 @@ namespace N2.Configuration
 
         public override void ApplyComponentConfigurationKeys(List<string> configurationKeys)
         {
-            if (Files.StorageLocation == FileStoreLocation.Database)
-                configurationKeys.Add("dbfs");
+			if (!string.IsNullOrEmpty(Search.Type))
+				configurationKeys.Add(Search.Type);
 
-            if (Search.Type == SearchIndexType.Lucene)
-                configurationKeys.Add("lucene");
+			var flavour = Flavour;
+			if (flavour == DatabaseFlavour.AutoDetect)
+			{
+				try
+				{
+					var cs = ConfigurationManager.ConnectionStrings[ConnectionStringName];
+					if (cs != null && cs.ConnectionString != null && cs.ConnectionString.Contains("XmlRepositoryPath="))
+						flavour = DatabaseFlavour.Xml;
+				}
+				catch (System.Exception ex)
+				{
+					logger.Warn(ex);
+				}
+			}
 
-            if (Search.Type == SearchIndexType.RemoteServer)
-                configurationKeys.Add("remote");
-
-            switch (Flavour)
+            switch (flavour)
             {
                 case DatabaseFlavour.MongoDB:
                     configurationKeys.Add("mongo");
@@ -172,6 +184,23 @@ namespace N2.Configuration
                 case DatabaseFlavour.Xml:
                     configurationKeys.Add("xml");
                     break;
+            }
+
+			if ((flavour & DatabaseFlavour.NoSql) == DatabaseFlavour.NoSql)
+				configurationKeys.Add("nosql");
+			else
+				configurationKeys.Add("sql");
+
+            if (Files.StorageLocation == FileStoreLocation.Database)
+            {
+                if (Flavour == DatabaseFlavour.MongoDB)
+                {
+                    configurationKeys.Add("mongofs");
+                }
+                else
+                {
+                    configurationKeys.Add("dbfs");
+                }
             }
         }
 

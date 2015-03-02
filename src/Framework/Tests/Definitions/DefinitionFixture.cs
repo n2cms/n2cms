@@ -137,7 +137,7 @@ namespace N2.Tests.Definitions
         public void Definition_UsesDefinedIconClass_NotRuntimeIconUrl()
         {
             ItemDefinition definition = engine.Definitions.GetDefinition(typeof (ItemWithDetails));
-            Assert.AreEqual("n2-icon-file", definition.IconClass);
+            Assert.AreEqual("fa fa-file", definition.IconClass);
         }
 
         [Test]

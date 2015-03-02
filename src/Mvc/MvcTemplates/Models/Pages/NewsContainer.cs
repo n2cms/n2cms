@@ -10,7 +10,7 @@ namespace N2.Templates.Mvc.Models.Pages
     [PageDefinition("News Container",
         Description = "A list of news. News items can be added to this page.",
         SortOrder = 150,
-        IconClass = "n2-icon-list blue")]
+        IconClass = "fa fa-list blue")]
     [RestrictParents(typeof (IStructuralPage))]
     [SortChildren(SortBy.PublishedDescending)]
     [GroupChildren(GroupChildrenMode.PublishedYear)]
@@ -18,7 +18,7 @@ namespace N2.Templates.Mvc.Models.Pages
     {
         public IList<News> NewsItems
         {
-            get { return GetChildren(new TypeFilter(typeof (News))).OfType<News>().ToList(); }
+            get { return Children.OfType<News>().ToList(); }
         }
     }
 }

@@ -86,7 +86,14 @@ namespace N2.Details
                 fileName = Regex.Replace(fileName, InvalidCharactersExpression, "-");
                 string filePath = VirtualPathUtility.Combine(directoryPath, fileName);
 
-                fs.WriteFile(filePath, postedFile.InputStream);
+                if (Engine.Config.Sections.Management.UploadFolders.IsTrusted(fileName))
+                {
+                    fs.WriteFile(filePath, postedFile.InputStream);
+                }
+                else
+                {
+                    throw new Security.PermissionDeniedException("Invalid file name");
+                }
 
                 item[Name] = Url.ToAbsolute(filePath);
                 return true;
@@ -100,19 +107,22 @@ namespace N2.Details
 
             return false;
         }
+		public bool ReadOnly { get; set; }
 
         public override void UpdateEditor(ContentItem item, Control editor)
         {
-            SelectingUploadCompositeControl composite = (SelectingUploadCompositeControl)editor;
+            var composite = (SelectingUploadCompositeControl)editor;
             composite.Select(item[Name] as string);
         }
 
         protected override Control AddEditor(Control container)
         {
-            SelectingUploadCompositeControl composite = new SelectingUploadCompositeControl();
+            var composite = new SelectingUploadCompositeControl();
             composite.ID = Name;
             composite.UploadLabel.Text = UploadText ?? "Upload";
             composite.SelectorControl.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
+			if (ReadOnly)
+				composite.SelectorControl.Attributes["readonly"] = "readonly";
             container.Controls.Add(composite);
             return composite;
         }
@@ -122,21 +132,18 @@ namespace N2.Details
         /// <param name="editor">The editor control to validate.</param>
         protected override Control AddRequiredFieldValidator(Control container, Control editor)
         {
-            SelectingUploadCompositeControl composite = editor as SelectingUploadCompositeControl;
-            if (composite != null)
-            {
-                RequireEitherFieldValidator rfv = new RequireEitherFieldValidator();
-                rfv.ID = Name + "_rfv";
-                rfv.ControlToValidate = composite.SelectorControl.ID;
-                rfv.OtherControlToValidate = composite.UploadControl.ID;
-                rfv.Display = ValidatorDisplay.Dynamic;
-                rfv.Text = GetLocalizedText("RequiredText") ?? RequiredText;
-                rfv.ErrorMessage = GetLocalizedText("RequiredMessage") ?? RequiredMessage;
-                editor.Controls.Add(rfv);
+            var composite = (SelectingUploadCompositeControl)editor;
+			if (composite == null) return null;
+	        var rfv = new RequireEitherFieldValidator();
+	        rfv.ID = Name + "_rfv";
+	        rfv.ControlToValidate = composite.SelectorControl.ID;
+	        rfv.OtherControlToValidate = composite.UploadControl.ID;
+	        rfv.Display = ValidatorDisplay.Dynamic;
+	        rfv.Text = GetLocalizedText("RequiredText") ?? RequiredText;
+	        rfv.ErrorMessage = GetLocalizedText("RequiredMessage") ?? RequiredMessage;
+	        editor.Controls.Add(rfv);
 
-                return rfv;
-            }
-            return null;
+	        return rfv;
         }
 
 

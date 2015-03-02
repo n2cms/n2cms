@@ -70,14 +70,15 @@ namespace N2.Configuration
             set { base["theme"] = value; }
         }
 
-
-        [Obsolete("TinyMCE is no longer used. Please use CKEditor instead.")]
-        [ConfigurationProperty("tinyMCE")]
-        public TinyMCEElement TinyMCE
-        {
-            get { return (TinyMCEElement)base["tinyMCE"]; }
-            set { base["tinyMCE"] = value; }
-        }
+		/// <summary>
+		/// Configures if the edit toolbar is displayed on the bottom of the page. If false, the edit toolbar is placed at the top of the page.
+		/// </summary>
+		[ConfigurationProperty("toolbarOnBottom", DefaultValue = true)]
+		public bool IsToolbarOnBottom
+		{
+			get { return (bool)base["toolbarOnBottom"]; }
+			set { base["toolbarOnBottom"] = value; }
+		}
 
         [ConfigurationProperty("ckeditor")]
         public CkEditorElement CkEditor

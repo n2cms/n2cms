@@ -12,7 +12,7 @@ using N2.Web.UI.WebControls;
 namespace N2.ReusableParts
 {
 
-    [PartDefinition("Html Anchor", IconClass = "n2-icon-anchor")]
+    [PartDefinition("Html Anchor", IconClass = "fa fa-anchor")]
     [WithEditableTitle]
     class HtmlAnchor : ContentItem
     {
@@ -25,7 +25,7 @@ namespace N2.ReusableParts
         {
             StringBuilder sb = new StringBuilder();
             if (designMode)
-                sb.Append(@"<span class=""label""><i class=""n2-icon-anchor""></i> ");
+                sb.Append(@"<span class=""label""><i class=""fa fa-anchor""></i> ");
             sb.AppendFormat(@"<a name=""{0}"" />", part.Title);
             if (designMode)
                 sb.Append("</span>");

@@ -31,16 +31,17 @@ namespace N2.Engine
             AddComponentInstance(engine.Container, broker);
 
             var skipTypes = configuration.Sections.Engine.Components.GetConfiguredServiceTypes();
-            AddComponentUnlessConfigured(engine.Container, typeof(BasicTemporaryFileHelper), typeof(BasicTemporaryFileHelper), skipTypes);
-            AddComponentUnlessConfigured(engine.Container, typeof(TypeCache), typeof(TypeCache), skipTypes);
-            AddComponentUnlessConfigured(engine.Container, typeof(ITypeFinder), typeof(WebAppTypeFinder), skipTypes);
-            AddComponentUnlessConfigured(engine.Container, typeof(ServiceRegistrator), typeof(ServiceRegistrator), skipTypes);
+	        var skipList = skipTypes as Type[] ?? skipTypes.ToArray(); // eagerly evaluate the collection for slightly better perf...
+	        AddComponentUnlessConfigured(engine.Container, typeof(BasicTemporaryFileHelper), typeof(BasicTemporaryFileHelper), skipList);
+            AddComponentUnlessConfigured(engine.Container, typeof(TypeCache), typeof(TypeCache), skipList);
+            AddComponentUnlessConfigured(engine.Container, typeof(ITypeFinder), typeof(WebAppTypeFinder), skipList);
+            AddComponentUnlessConfigured(engine.Container, typeof(ServiceRegistrator), typeof(ServiceRegistrator), skipList);
 
             var registrator = engine.Container.Resolve<ServiceRegistrator>();
             var services = registrator.FindServices();
             var configurationKeys = configuration.GetComponentConfigurationKeys();
             services = registrator.FilterServices(services, configurationKeys);
-            services = registrator.FilterServices(services, skipTypes);
+            services = registrator.FilterServices(services, skipList);
             registrator.RegisterServices(services);
 
             InitializeUrlParser(engine.Container);
@@ -71,9 +72,9 @@ namespace N2.Engine
 
                 var skipList = config.Engine.Components.GetConfiguredServiceTypes();
                 if (config.Web.Web.IsWeb)
-                    AddComponentUnlessConfigured(container, typeof(N2.Web.IWebContext), typeof(N2.Web.AdaptiveContext), skipList);
+                    AddComponentUnlessConfigured(container, typeof(IWebContext), typeof(AdaptiveContext), skipList);
                 else
-                    AddComponentUnlessConfigured(container, typeof(N2.Web.IWebContext), typeof(N2.Web.ThreadContext), skipList);
+                    AddComponentUnlessConfigured(container, typeof(IWebContext), typeof(ThreadContext), skipList);
             }
             if (config.Management != null)
             {

@@ -152,7 +152,7 @@ namespace N2.Edit.Tests.FileSystem
 
             var result = vnf.Get("/upload/");
 
-            var children = result.GetChildren(new NullFilter());
+            var children = result.GetChildPagesUnfiltered().Where(new NullFilter());//TODO: Not sure if this is correct.
             Assert.That(children.Count, Is.EqualTo(4));
             Assert.That(children.Any(c => c.Name == "Folder 2"));
             Assert.That(children.Any(c => c.Name == "Folder1"));

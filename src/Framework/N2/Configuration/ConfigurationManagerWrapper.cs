@@ -64,7 +64,10 @@ namespace N2.Configuration
         public virtual string GetConnectionString()
         {
             string connectionStringName = GetContentSection<DatabaseSection>("database").ConnectionStringName;
-            return GetConnectionStringsSection().ConnectionStrings[connectionStringName].ConnectionString;
+			var element = GetConnectionStringsSection().ConnectionStrings[connectionStringName];
+			if (element == null)
+				throw new ConfigurationErrorsException("The connection string '" + connectionStringName + "' referenced by n2/database[connectionStringName] was not found.");
+			return element.ConnectionString;
         }
 
 

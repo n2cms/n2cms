@@ -22,7 +22,7 @@
 .dragging .titleBar { display:none; }
 
 /* hide/show droppables */
-.dropPoint { position:relative; background-color:#cec; border:solid 1px #efe; margin:-1px 0; }
+.dropPoint { position:relative; background-color:#cec; border:solid 1px #efe; margin:-1px 0; clear: both; }
 	.dropPoint .description { font-size:9px; padding:0 3px;  }
 .dragging .dragShadow { cursor:move; }
 .dragged { outline:dotted 1px #c33; }
@@ -43,7 +43,7 @@
 		.controlPanel a,.controlPanel a:visited { }
 	.controlPanel a { padding:1px; }
 		.controlPanel a b { font-size:18px; }
-	.controlPanel .plugins { padding:1px 6px 1px 1px; height:30px; }
+	.controlPanel .plugins { padding:1px 17px 1px 1px; height:30px; }
 		.controlPanel .plugins a {
 			box-sizing:content-box;
 			display:block;
@@ -61,6 +61,7 @@
 			text-align:center;
 			height:16px;
 			text-decoration:none;
+			z-index: 1;
 		}
 		.controlPanel .plugins a:hover,
 		.controlPanel .plugins a.toggled {
@@ -90,25 +91,51 @@
 		.sc.stateDeleted .plugins a.toggled {
 			background-color:#E16C62;
 		}
-
-	
-	.sc .sc-toggler { text-indent:-2000px; position:absolute; top:1px; right:0; height:28px; width:1px; cursor:pointer; cursor:hand; display:block; margin-left:1px; border:solid 2px #18a0de; background-color:transparent; }
-	.sc .sc-toggler:hover { border-color: #74c6eb; }
+		
 	.sc .close { display:none; }
-	.opened .open { display:none; }
-	.opened .close { display:inline;}
-	.dragDrop .sc .open { top:auto; bottom: 0; }
-	.sc .open { border-left-style:dotted; }
-	.sc .open:hover { outline:solid 1px #fff; margin-right:-1px; width:2px; }
-	.sc .close { border-right-style:dotted; }
-	.sc.stateDeleted .sc-toggler,
-	.sc.stateUnpublished .sc-toggler { border-color: #EE3300; }
-	.sc.stateDeleted .sc-toggler:hover,
-	.sc.stateUnpublished .sc-toggler:hover { border-color: #E16C62; } 
-	.sc.stateWaiting .sc-toggler,
-	.sc.stateDraft .sc-toggler { border-color: #FF8822; } 
-	.sc.stateWaiting .sc-toggler:hover,
-	.sc.stateDraft .sc-toggler:hover { border-color: #FF9933; } 
+	.sc .scContent { overflow:hidden; }
+	.sc.opened .open { display:none; }
+	.sc.opened .close { display:inline; }
+	
+	.sc .sc-toggler {
+		text-indent:-2000px;
+		position:absolute; 
+		border: 16px solid transparent;
+		height:1px;
+	}
+	.sc .sc-toggler.open {
+		border-left-color: #18a0de;
+		right:-16px;
+		bottom:0;
+	}
+	.sc .sc-toggler.open:hover {
+		border-left-color: #74c6eb;
+	}
+	.sc .sc-toggler.close {
+		border-right-color: #18a0de;
+		right:0;
+		top:0;
+	}
+	.sc .sc-toggler.close:hover {
+		border-right-color: #74c6eb;
+	}
+	
+	.sc.stateDeleted .sc-toggler.open,
+	.sc.stateUnpublished .sc-toggler.open { border-left-color: #EE3300; }
+	.sc.stateDeleted .sc-toggler.open:hover,
+	.sc.stateUnpublished .sc-toggler.open:hover { border-left-color: #E16C62; } 
+	.sc.stateWaiting .sc-toggler.open,
+	.sc.stateDraft .sc-toggler.open { border-left-color: #FF8822; } 
+	.sc.stateWaiting .sc-toggler.open:hover,
+	.sc.stateDraft .sc-toggler.open:hover { border-left-color: #FF9933; }
+	.sc.stateDeleted .sc-toggler.close,
+	.sc.stateUnpublished .sc-toggler.close { border-right-color: #EE3300; }
+	.sc.stateDeleted .sc-toggler.close:hover,
+	.sc.stateUnpublished .sc-toggler.close:hover { border-right-color: #E16C62; } 
+	.sc.stateWaiting .sc-toggler.close,
+	.sc.stateDraft .sc-toggler.close { border-right-color: #FF8822; } 
+	.sc.stateWaiting .sc-toggler.close:hover,
+	.sc.stateDraft .sc-toggler.close:hover { border-right-color: #FF9933; }
 
 .definitions,.controlPanel .new { padding:10px 0 25px 0; clear:left; max-height:200px; overflow:auto; margin-bottom:0; }
     .definition { cursor:move; padding:1px 10px; }
@@ -125,11 +152,11 @@
 
 a .creator-add { background: url(../../Resources/icons/add.png) no-repeat 50% 50%; width:10px; height:10px; height:10px; display:inline-block; margin-right:2px; vertical-align:middle; overflow:hidden; }
 
-.editable { display:inline-block; position:relative; }
-	.editable .editor { position:absolute; top:0; right:-10px; padding:2px; overflow:hidden; opacity:.33; text-decoration:none; }
-.editable:hover { outline:dotted 1px #4488ff; }
-	.editable:hover .editor { opacity:.66;}
-	.editable .editor:hover { opacity:1; text-decoration:none; background-color:#74c6eb; color:#fff; }
+.dragDrop .editable { display:inline-block; position:relative; }
+	.dragDrop .editable .editor { position:absolute; top:0; right:-10px; padding:2px; overflow:hidden; opacity:.33; text-decoration:none; }
+.dragDrop .editable:hover { outline:dotted 1px #4488ff; }
+	.dragDrop .editable:hover .editor { opacity:.66;}
+	.dragDrop .editable .editor:hover { opacity:1; text-decoration:none; background-color:#74c6eb; color:#fff; }
 
 #editorDialog { overflow:hidden; }
 

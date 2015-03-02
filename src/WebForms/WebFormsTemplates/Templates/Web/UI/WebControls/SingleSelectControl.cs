@@ -37,7 +37,7 @@ namespace N2.Templates.Web.UI.WebControls
                 lc.ID = "q" + question.ID;
             lc.DataTextField = "Title";
             lc.DataValueField = "ID";
-            lc.DataSource = question.GetChildren();
+			lc.DataSource = question.Children.WhereAccessible();
             lc.DataBind();
 
             l = new Label();

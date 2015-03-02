@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using N2.Persistence;
 using N2.Persistence.NH;
+using N2.Persistence.Proxying;
 
 namespace N2.Tests.Fakes
 {
     public class FakeContentItemRepository : FakeRepository<ContentItem>, IContentItemRepository
     {
+		public FakeContentItemRepository(IProxyFactory proxyFactory = null)
+			: base(proxyFactory)
+		{
+		}
+
         public IEnumerable<DiscriminatorCount> FindDescendantDiscriminators(ContentItem ancestor)
         {
             throw new NotImplementedException();
@@ -30,16 +36,18 @@ namespace N2.Tests.Fakes
     }
 
 
-    public class FakeRepository<TEntity> : INHRepository<TEntity> where TEntity : class
+    public class FakeRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private string lastOperation;
         public int maxID;
         public Dictionary<object, TEntity> database = new Dictionary<object, TEntity>();
         private FakeTransaction transaction;
+		private IProxyFactory proxies;
 
-        public FakeRepository()
-        {
-        }
+		public FakeRepository(IProxyFactory proxyFactory = null)
+		{
+			this.proxies = proxyFactory ?? new InterceptingProxyFactory();
+		}
 
         public string LastOperation
         {
@@ -94,6 +102,7 @@ namespace N2.Tests.Fakes
             LastOperation = "Save(" + entity + ")";
 
             object key = GetKey(entity);
+			proxies.OnSaving(entity);
             database[key] = entity;
 
             if (key is int)

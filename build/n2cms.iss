@@ -4,7 +4,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{3F230DAB-AAB4-41DE-A550-98E3ADAB35E2}
 AppName=N2CMS NuGet Packages
-AppVersion=2.5.6
+AppVersion=2.6.3.3
 AppPublisher=Benjamin Herila
 AppPublisherURL=http://n2cms.com
 AppSupportURL=http://n2cms.com
@@ -26,7 +26,7 @@ CompressionThreads=2
 LZMANumBlockThreads=8
 InternalCompressLevel=ultra
 PrivilegesRequired=lowest
-Compression=lzma2/ultra64
+Compression=lzma2/max
 LZMAUseSeparateProcess=yes
 MinVersion=0,6.0.6001sp2
 DisableFinishedPage=True

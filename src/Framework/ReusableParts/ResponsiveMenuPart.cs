@@ -7,7 +7,7 @@ using N2.Engine;
 
 namespace N2.Web
 {
-	[PartDefinition(Title = ResponsiveMenuPart.S_RM, IconClass = "n2-icon-list-ul", RequiredPermission = N2.Security.Permission.Administer)]
+	[PartDefinition(Title = ResponsiveMenuPart.S_RM, IconClass = "fa fa-list-ul", RequiredPermission = N2.Security.Permission.Administer)]
 	public class ResponsiveMenuPart : MenuPart
 	{
 		public const string S_RM = "Responive Menu";

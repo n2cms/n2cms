@@ -59,29 +59,53 @@ namespace N2.Web.Parts
         private string CreateItem(TemplateDefinition template, NameValueCollection request)
         {
             var path = new PathData(navigator.Navigate(request["below"]));
-            if (!versionRepository.TryParseVersion(request[PathData.VersionIndexQueryKey], request["versionKey"], path))
+            if (!versionRepository.TryParseVersion(request[PathData.VersionIndexQueryKey], request[PathData.VersionKeyQueryKey], path))
                 path.CurrentItem = versions.AddVersion(path.CurrentItem, asPreviousVersion: false);
-            var parent = path.CurrentItem;
+            var page = path.CurrentItem;
 
-            ContentItem item = activator.CreateInstance(template.Definition.ItemType, parent);
+            ContentItem item = activator.CreateInstance(template.Definition.ItemType, page);
             item.ZoneName = request["zone"];
             item.TemplateKey = template.Name;
 
             string beforeVersionKey = request["beforeVersionKey"];
             string beforeSortOrder = request["beforeSortOrder"];
+			string belowVersionKey = request["belowVersionKey"];
             string before = request["before"];
-            if (string.IsNullOrEmpty(beforeSortOrder))
-            {
-                item.AddTo(parent);
-            }
-            else
-            {
-                int index = int.Parse(beforeSortOrder);
-                parent.InsertChildBefore(item, index);
-            }
 
-            versionRepository.Save(parent);
-            return request["returnUrl"].ToUrl().SetQueryParameter(PathData.VersionIndexQueryKey, parent.VersionIndex);
+			if (!string.IsNullOrEmpty(beforeVersionKey))
+			{
+				var beforeSibling = page.FindDescendantByVersionKey(beforeVersionKey);
+				if (beforeSibling != null && beforeSibling.Parent != null)
+				{
+					beforeSibling.Parent.InsertChildBefore(item, beforeSibling.SortOrder);
+				}
+				else
+				{
+					item.AddTo(page);
+				}
+			}
+			else
+			{
+				var parentToAddTo = page;
+				if (!string.IsNullOrEmpty(belowVersionKey))
+				{
+					parentToAddTo = page.FindDescendantByVersionKey(belowVersionKey)
+					?? page;
+				}
+
+				if (string.IsNullOrEmpty(beforeSortOrder))
+				{
+					item.AddTo(parentToAddTo);
+				}
+				else
+				{
+					int index = int.Parse(beforeSortOrder);
+					parentToAddTo.InsertChildBefore(item, index);
+				}
+			}
+
+            versionRepository.Save(page);
+            return request["returnUrl"].ToUrl().SetQueryParameter(PathData.VersionIndexQueryKey, page.VersionIndex);
         }
 
         private string GetRedirectUrl(TemplateDefinition template, NameValueCollection request)
@@ -109,12 +133,10 @@ namespace N2.Web.Parts
             if (!string.IsNullOrEmpty(request[PathData.VersionIndexQueryKey]))
                 url = url.SetQueryParameter(PathData.VersionIndexQueryKey, request[PathData.VersionIndexQueryKey]);
             
-            //if (!string.IsNullOrEmpty(request["versionKey"]))
-            //    url = url.SetQueryParameter("versionKey", request["versionKey"]);
             if (!string.IsNullOrEmpty(request["belowVersionKey"]))
-                url = url.SetQueryParameter("versionKey", request["belowVersionKey"]);
+                url = url.SetQueryParameter(PathData.VersionKeyQueryKey, request["belowVersionKey"]);
             if (!string.IsNullOrEmpty(request["belowVersionKey"]))
-                url = url.SetQueryParameter("versionKey", request["belowVersionKey"]);
+                url = url.SetQueryParameter(PathData.VersionKeyQueryKey, request["belowVersionKey"]);
             if (!string.IsNullOrEmpty(request["beforeVersionKey"]))
                 url = url.SetQueryParameter("beforeVersionKey", request["beforeVersionKey"]);
     

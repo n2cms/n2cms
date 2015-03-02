@@ -44,10 +44,10 @@ namespace N2.Tests.Workflow
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
 
-            var pageVersions = versions.GetVersionsOf(page);
+            var pageVersions = versions.GetVersionsOf(page).ToList();
             pageVersions.Count.ShouldBeGreaterThan(0);
             pageVersions.First().State.ShouldBe(ContentState.Draft);
-            pageVersions.First().Children.Single().Title.ShouldBe("New part");
+            pageVersions.First().Content.Children.Single().Title.ShouldBe("New part");
         }
 
         [Test]

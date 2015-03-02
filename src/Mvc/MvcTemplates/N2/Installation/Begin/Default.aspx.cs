@@ -71,7 +71,13 @@ namespace N2.Edit.Install.Begin
             }
         }
 
-        protected void OkCommand(object sender, CommandEventArgs args)
+	    protected override void OnLoad(EventArgs e)
+	    {
+		    base.OnLoad(e);
+			Page.Header.DataBind();
+	    }
+
+	    protected void OkCommand(object sender, CommandEventArgs args)
         {
             try
             {

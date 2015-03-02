@@ -10,7 +10,7 @@ using N2.Edit.Workflow;
 using N2.Persistence;
 using N2.Persistence.Proxying;
 using N2.Persistence.Serialization;
-using N2.Persistence.Html;
+using N2.Persistence.Xml;
 using N2.Tests.Fakes;
 using N2.Tests.Serialization.Items;
 using N2.Web;
@@ -106,21 +106,22 @@ namespace N2.Tests.Serialization
     {
         protected override IItemXmlWriter CreateWriter()
         {
-            return (new ItemXmlWriter(definitions, parser, new FakeMemoryFileSystem()));
+            return (new ItemXmlWriter(definitions, new FakeMemoryFileSystem()));
         }
 
         protected override Exporter CreateExporter()
         {
             return CreateExporter(new FakeMemoryFileSystem());
         }
+
         protected override Exporter CreateExporter(IFileSystem fs)
         {
-            return new Exporter(new ItemXmlWriter(definitions, parser, fs));
+            return new Exporter(new ItemXmlWriter(definitions, fs));
         }
 
         protected override IItemXmlReader CreateReader()
         {
-            return new ItemXmlReader(definitions, activator, persister.Repository);
+            return new ItemXmlReader(definitions, activator);
         }
 
         protected override Importer CreateImporter()
@@ -130,7 +131,7 @@ namespace N2.Tests.Serialization
 
         protected override Importer CreateImporter(IFileSystem fs)
         {
-            return new Importer(persister, new ItemXmlReader(definitions, activator, persister.Repository), fs);
+            return new Importer(persister, new ItemXmlReader(definitions, activator), fs);
         }
     }
 

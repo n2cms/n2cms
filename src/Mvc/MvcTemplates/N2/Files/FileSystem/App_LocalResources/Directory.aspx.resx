@@ -124,7 +124,7 @@
     <value>Delete selected</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Close</value>
   </data>
   <data name="hlNewFile.OnClientClick" xml:space="preserve">
     <value>return confirm('Delete selected files and folders?');</value>

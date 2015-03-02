@@ -122,7 +122,7 @@ namespace N2.Collections
             if (parent == null) return Enumerable.Empty<ContentItem>();
             TryMasterVersion(ref parent);
             
-            return parent.GetChildren(filter ?? DefaultFilter);
+            return parent.Children.Where(filter ?? DefaultFilter);
         }
 
         /// <summary>Pages below a given item.</summary>
@@ -270,7 +270,7 @@ namespace N2.Collections
             if (item.Parent == null) return Enumerable.Empty<ContentItem>();
             TryMasterVersion(ref item);
 
-            return item.Parent.GetChildren(filter ?? DefaultFilter);
+            return item.Parent.Children.Where(filter ?? DefaultFilter);
         }
 
         /// <summary>The previous sibling among a given item's parent's children.</summary>

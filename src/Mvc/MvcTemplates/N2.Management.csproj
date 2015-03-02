@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -60,13 +60,13 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data.SQLite, Version=1.0.86.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+    <Reference Include="System.Data.SQLite, Version=1.0.90.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\System.Data.SQLite.1.0.86.0\lib\net40\System.Data.SQLite.dll</HintPath>
+      <HintPath>..\..\packages\System.Data.SQLite.1.0.90.0\lib\net40\System.Data.SQLite.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data.SQLite.Linq, Version=1.0.86.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.90.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\System.Data.SQLite.1.0.86.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
+      <HintPath>..\..\packages\System.Data.SQLite.1.0.90.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Security" />
@@ -111,6 +111,7 @@
     <Content Include="N2\App\Js\Controllers.js" />
     <Content Include="N2\App\Js\Directives.js" />
     <Content Include="N2\App\Js\Services.js" />
+    <Content Include="N2\App\Partials\ManagementConfirm.html" />
     <Content Include="N2\App\Partials\Main.html" />
     <Content Include="N2\App\Partials\Loading.html" />
     <Content Include="N2\App\Partials\Framework.html" />
@@ -163,328 +164,17 @@
     <Content Include="N2\Files\Js\jquery.color.js" />
     <Content Include="N2\Files\Js\jquery.Jcrop.min.js" />
     <Content Include="N2\Files\Js\jquery.MultiFile.js" />
+    <Content Include="N2\Installation\Relations.aspx" />
     <Content Include="N2\Installation\UpgradeVersions.aspx" />
     <Content Include="N2\Installation\Rebase.aspx" />
-    <Content Include="N2\Resources\angular-1.2.8\angular-cookies.js" />
-    <Content Include="N2\Resources\angular-1.2.8\angular-cookies.min.js" />
-    <Content Include="N2\Resources\angular-1.2.8\angular-csp.css" />
-    <Content Include="N2\Resources\angular-1.2.8\angular-resource.js" />
-    <Content Include="N2\Resources\angular-1.2.8\angular-resource.min.js" />
-    <Content Include="N2\Resources\angular-1.2.8\angular-route.js" />
-    <Content Include="N2\Resources\angular-1.2.8\angular-route.min.js" />
-    <Content Include="N2\Resources\angular-1.2.8\angular-sanitize.js" />
-    <Content Include="N2\Resources\angular-1.2.8\angular-sanitize.min.js" />
-    <Content Include="N2\Resources\angular-1.2.8\angular-scenario.js" />
-    <Content Include="N2\Resources\angular-1.2.8\angular.js" />
-    <Content Include="N2\Resources\angular-1.2.8\angular.min.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_af-na.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_af-za.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_af.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_am-et.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_am.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-001.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-ae.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-bh.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-dz.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-eg.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-iq.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-jo.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-kw.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-lb.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-ly.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-ma.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-om.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-qa.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-sa.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-sd.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-sy.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-tn.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar-ye.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ar.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_bg-bg.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_bg.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_bn-bd.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_bn-in.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_bn.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ca-ad.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ca-es.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ca.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_cs-cz.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_cs.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_da-dk.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_da.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_de-at.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_de-be.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_de-ch.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_de-de.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_de-li.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_de-lu.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_de.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_el-cy.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_el-gr.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_el.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-as.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-au.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-bb.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-be.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-bm.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-bw.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-bz.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-ca.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-dsrt-us.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-dsrt.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-fm.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-gb.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-gu.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-gy.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-hk.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-ie.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-in.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-iso.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-jm.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-mh.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-mp.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-mt.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-mu.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-na.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-nz.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-ph.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-pk.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-pr.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-pw.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-sg.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-tc.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-tt.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-um.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-us.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-vg.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-vi.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-za.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en-zw.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_en.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-419.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-ar.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-bo.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-cl.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-co.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-cr.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-do.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-ea.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-ec.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-es.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-gq.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-gt.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-hn.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-ic.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-mx.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-ni.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-pa.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-pe.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-pr.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-py.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-sv.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-us.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-uy.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es-ve.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_es.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_et-ee.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_et.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_eu-es.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_eu.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fa-af.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fa-ir.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fa.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fi-fi.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fi.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fil-ph.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fil.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-be.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-bf.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-bi.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-bj.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-bl.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-ca.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-cd.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-cf.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-cg.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-ch.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-ci.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-cm.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-dj.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-fr.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-ga.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-gf.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-gn.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-gp.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-gq.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-km.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-lu.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-mc.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-mf.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-mg.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-ml.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-mq.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-ne.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-re.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr-yt.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_fr.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_gl-es.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_gl.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_gsw-ch.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_gsw.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_gu-in.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_gu.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_he-il.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_he.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_hi-in.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_hi.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_hr-hr.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_hr.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_hu-hu.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_hu.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_id-id.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_id.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_in.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_is-is.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_is.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_it-it.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_it-sm.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_it.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_iw.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ja-jp.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ja.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_kn-in.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_kn.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ko-kr.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ko.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ln-cd.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ln.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_lt-lt.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_lt.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_lv-lv.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_lv.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ml-in.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ml.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_mr-in.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_mr.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ms-my.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ms.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_mt-mt.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_mt.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_nl-cw.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_nl-nl.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_nl-sx.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_nl.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_no.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_or-in.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_or.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_pl-pl.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_pl.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_pt-br.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_pt-pt.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_pt.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ro-ro.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ro.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ru-ru.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ru.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_sk-sk.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_sk.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_sl-si.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_sl.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_sq-al.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_sq.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_sr-cyrl-rs.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_sr-latn-rs.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_sr.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_sv-se.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_sv.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_sw-tz.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_sw.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ta-in.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ta.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_te-in.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_te.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_th-th.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_th.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_tl.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_tr-tr.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_tr.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_uk-ua.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_uk.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ur-pk.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_ur.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_vi-vn.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_vi.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_zh-cn.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_zh-hans-cn.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_zh-hk.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_zh-tw.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_zh.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_zu-za.js" />
-    <Content Include="N2\Resources\angular-1.2.8\i18n\angular-locale_zu.js" />
-    <Content Include="N2\Resources\angular-1.2.8\version.txt" />
-    <Content Include="N2\Resources\ckeditor\plugins\about\dialogs\about.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\about\dialogs\logo_ckeditor.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\colordialog\dialogs\colordialog.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\div\dialogs\div.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\find\dialogs\find.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\flash\dialogs\flash.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\flash\images\placeholder.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\forms\dialogs\button.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\forms\dialogs\checkbox.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\forms\dialogs\form.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\forms\dialogs\hiddenfield.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\forms\dialogs\radio.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\forms\dialogs\select.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\forms\dialogs\textarea.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\forms\dialogs\textfield.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\forms\images\hiddenfield.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\iframe\dialogs\iframe.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\iframe\images\placeholder.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\liststyle\dialogs\liststyle.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\pagebreak\images\pagebreak.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\preview\preview.html" />
-    <Content Include="N2\Resources\ckeditor\plugins\showblocks\images\block_address.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\showblocks\images\block_blockquote.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\showblocks\images\block_div.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\showblocks\images\block_h1.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\showblocks\images\block_h2.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\showblocks\images\block_h3.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\showblocks\images\block_h4.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\showblocks\images\block_h5.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\showblocks\images\block_h6.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\showblocks\images\block_p.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\showblocks\images\block_pre.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\dialogs\smiley.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\angel_smile.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\angry_smile.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\broken_heart.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\confused_smile.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\cry_smile.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\devil_smile.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\embaressed_smile.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\embarrassed_smile.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\envelope.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\heart.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\kiss.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\lightbulb.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\omg_smile.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\regular_smile.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\sad_smile.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\shades_smile.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\teeth_smile.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\thumbs_down.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\thumbs_up.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\tongue_smile.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\tounge_smile.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\whatchutalkingabout_smile.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\smiley\images\wink_smile.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\templates\dialogs\templates.css" />
-    <Content Include="N2\Resources\ckeditor\plugins\templates\dialogs\templates.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\templates\templates\default.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\templates\templates\images\template1.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\templates\templates\images\template2.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\templates\templates\images\template3.gif" />
+    <Content Include="N2\Resources\chosen_v1.1.0\chosen-sprite%402x.png" />
+    <Content Include="N2\Resources\chosen_v1.1.0\chosen-sprite.png" />
+    <Content Include="N2\Resources\chosen_v1.1.0\chosen.css" />
+    <Content Include="N2\Resources\chosen_v1.1.0\chosen.jquery.js" />
+    <Content Include="N2\Resources\chosen_v1.1.0\chosen.jquery.min.js" />
+    <Content Include="N2\Resources\chosen_v1.1.0\chosen.min.css" />
+    <Content Include="N2\Resources\chosen_v1.1.0\index.html" />
+    <Content Include="N2\Resources\chosen_v1.1.0\options.html" />
     <Content Include="N2\Resources\Css\n2.css" />
     <Content Include="N2\Resources\img\arrow-down.png" />
     <Content Include="N2\Resources\img\grabber.png" />
@@ -510,221 +200,25 @@
     <Content Include="N2\Resources\jQuery-File-Upload-8.5.0\js\main.js" />
     <Content Include="N2\Resources\jQuery-File-Upload-8.5.0\js\vendor\jquery.ui.widget.js" />
     <Content Include="N2\Resources\Js\frameInteraction.js" />
-    <Content Include="N2\Resources\Js\jquery-1.10.2.min.js" />
+    <Content Include="N2\Resources\Js\jquery-1.11.0.js" />
+    <Content Include="N2\Resources\Js\jquery-1.11.0.min.js" />
     <Content Include="N2\Resources\Js\less-1.4.1.min.js" />
     <Content Include="N2\Resources\Js\n2.js" />
-    <Content Include="N2\Resources\angular-ui-0.4.0\angular-ui-ieshiv.js" />
-    <Content Include="N2\Resources\angular-ui-0.4.0\angular-ui-ieshiv.min.js" />
-    <Content Include="N2\Resources\angular-ui-0.4.0\angular-ui.css" />
-    <Content Include="N2\Resources\angular-ui-0.4.0\angular-ui.js" />
-    <Content Include="N2\Resources\angular-ui-0.4.0\angular-ui.min.css" />
-    <Content Include="N2\Resources\angular-ui-0.4.0\angular-ui.min.js" />
     <Content Include="N2\Resources\bootstrap-components\bootstrap-datepicker.css" />
     <Content Include="N2\Resources\bootstrap-components\bootstrap-datepicker.js" />
     <Content Include="N2\Resources\bootstrap-components\bootstrap-timepicker.css" />
     <Content Include="N2\Resources\bootstrap-components\bootstrap-timepicker.js" />
-    <Content Include="N2\Resources\bootstrap\css\bootstrap.css" />
-    <Content Include="N2\Resources\bootstrap\css\bootstrap.min.css" />
-    <Content Include="N2\Resources\bootstrap\img\glyphicons-halflings-white.png" />
-    <Content Include="N2\Resources\bootstrap\img\glyphicons-halflings.png" />
-    <Content Include="N2\Resources\bootstrap\js\bootstrap.js" />
-    <Content Include="N2\Resources\bootstrap\js\bootstrap.min.js" />
-    <Content Include="N2\Resources\ckeditor\build-config.js" />
-    <Content Include="N2\Resources\ckeditor\ckeditor.js" />
     <Content Include="N2\Resources\ckeditor\config.js" />
-    <Content Include="N2\Resources\ckeditor\contents.css" />
-    <Content Include="N2\Resources\ckeditor\lang\en.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\a11yhelp.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\ar.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\bg.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\ca.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\cs.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\cy.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\da.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\de.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\el.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\en.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\eo.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\es.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\et.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\fa.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\fi.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\fr.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\gu.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\he.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\hi.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\hr.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\hu.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\it.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\ja.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\km.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\ku.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\lt.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\lv.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\mk.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\mn.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\nb.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\nl.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\no.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\pl.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\pt-br.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\pt.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\ro.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\ru.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\sk.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\sl.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\sv.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\th.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\tr.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\ug.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\uk.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\vi.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\zh-cn.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\a11yhelp\dialogs\lang\_translationstatus.txt" />
-    <Content Include="N2\Resources\ckeditor\plugins\clipboard\dialogs\paste.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\css\codemirror.ckeditor.css" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\css\codemirror.min.css" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\icons\AutoFormat.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\icons\CommentSelectedRange.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\icons\UncommentSelectedRange.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\addon\dialog\dialog.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\addon\edit\closebrackets.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\addon\edit\closetag.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\addon\edit\continuelist.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\addon\edit\matchbrackets.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\addon\foldcode\foldcode.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\addon\format\autoFormatAll.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\addon\format\formatting.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\addon\search\match-highlighter.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\addon\search\search.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\addon\search\searchcursor.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\codemirror.addons.min.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\codemirror.min.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\codemirror.modes.min.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\codemirror.search-addons.min.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\mode\css.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\mode\htmlmixed.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\mode\javascript.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\js\mode\xml.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\lang\en.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\plugin.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\dialog\dialogDefinition.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\fakeobjects\images\spacer.gif" />
-    <Content Include="N2\Resources\ckeditor\plugins\filebrowser\plugin.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\icons.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\image\dialogs\image.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\image\images\noimage.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\link\dialogs\anchor.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\link\dialogs\link.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\link\images\anchor.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\magicline\images\icon.png" />
-    <Content Include="N2\Resources\ckeditor\plugins\pastefromword\filter\default.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\scayt\dialogs\options.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\scayt\dialogs\toolbar.css" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\ca.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\cs.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\cy.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\de.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\el.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\en.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\eo.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\et.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\fa.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\fi.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\fr.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\he.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\hr.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\it.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\ku.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\lv.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\nb.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\nl.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\no.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\pl.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\pt-br.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\sk.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\sv.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\th.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\tr.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\ug.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\zh-cn.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\lang\_translationstatus.txt" />
-    <Content Include="N2\Resources\ckeditor\plugins\specialchar\dialogs\specialchar.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\tabletools\dialogs\tableCell.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\table\dialogs\table.js" />
-    <Content Include="N2\Resources\ckeditor\plugins\wsc\dialogs\ciframe.html" />
-    <Content Include="N2\Resources\ckeditor\plugins\wsc\dialogs\tmpFrameset.html" />
-    <Content Include="N2\Resources\ckeditor\plugins\wsc\dialogs\wsc.css" />
-    <Content Include="N2\Resources\ckeditor\plugins\wsc\dialogs\wsc.js" />
-    <Content Include="N2\Resources\ckeditor\skins\moono\dialog.css" />
-    <Content Include="N2\Resources\ckeditor\skins\moono\dialog_ie.css" />
-    <Content Include="N2\Resources\ckeditor\skins\moono\dialog_ie7.css" />
-    <Content Include="N2\Resources\ckeditor\skins\moono\dialog_ie8.css" />
-    <Content Include="N2\Resources\ckeditor\skins\moono\dialog_iequirks.css" />
-    <Content Include="N2\Resources\ckeditor\skins\moono\dialog_opera.css" />
-    <Content Include="N2\Resources\ckeditor\skins\moono\editor.css" />
-    <Content Include="N2\Resources\ckeditor\skins\moono\editor_gecko.css" />
-    <Content Include="N2\Resources\ckeditor\skins\moono\editor_ie.css" />
-    <Content Include="N2\Resources\ckeditor\skins\moono\editor_ie7.css" />
-    <Content Include="N2\Resources\ckeditor\skins\moono\editor_ie8.css" />
-    <Content Include="N2\Resources\ckeditor\skins\moono\editor_iequirks.css" />
-    <Content Include="N2\Resources\ckeditor\skins\moono\icons.png" />
-    <Content Include="N2\Resources\ckeditor\skins\moono\images\arrow.png" />
-    <Content Include="N2\Resources\ckeditor\skins\moono\images\close.png" />
-    <Content Include="N2\Resources\ckeditor\skins\moono\images\mini.png" />
-    <Content Include="N2\Resources\ckeditor\styles.js" />
     <Content Include="N2\Resources\Css\jquery.multiselect.css" />
     <Content Include="N2\Resources\Css\jquery.multiselect.filter.css" />
     <Content Include="N2\Resources\Css\smoothness\jquery-ui-1.8.22.dialog.css" />
     <Content Include="N2\Resources\Css\smoothness\jquery-ui-1.8.22.full.css" />
     <Content Include="N2\Resources\Css\tree.css" />
-    <Content Include="N2\Resources\font-awesome\css\font-awesome-ie7.css" />
-    <Content Include="N2\Resources\font-awesome\css\font-awesome-ie7.min.css" />
-    <Content Include="N2\Resources\font-awesome\css\font-awesome.css" />
-    <Content Include="N2\Resources\font-awesome\css\font-awesome.min.css" />
-    <Content Include="N2\Resources\font-awesome\font\fontawesome-webfont.svg" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\images\animated-overlay.gif" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\images\ui-icons_222222_256x240.png" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\images\ui-icons_454545_256x240.png" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\images\ui-icons_888888_256x240.png" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\jquery-ui-1.10.2.custom.css" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\jquery-ui-1.10.2.custom.min.css" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\index.html" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\js\jquery-ui-1.10.2.custom.js" />
-    <Content Include="N2\Resources\jquery-ui-1.10.2.custom\js\jquery-ui-1.10.2.custom.min.js" />
-    <Content Include="N2\Resources\bootstrap-components\angular-strap.js" />
-    <Content Include="N2\Resources\bootstrap-components\angular-strap.min.js" />
-    <Content Include="N2\Resources\fancybox\blank.gif" />
-    <Content Include="N2\Resources\fancybox\fancybox_loading%402x.gif" />
-    <Content Include="N2\Resources\fancybox\fancybox_loading.gif" />
-    <Content Include="N2\Resources\fancybox\fancybox_overlay.png" />
-    <Content Include="N2\Resources\fancybox\fancybox_sprite%402x.png" />
-    <Content Include="N2\Resources\fancybox\fancybox_sprite.png" />
-    <Content Include="N2\Resources\fancybox\helpers\fancybox_buttons.png" />
-    <Content Include="N2\Resources\fancybox\helpers\jquery.fancybox-buttons.css" />
-    <Content Include="N2\Resources\fancybox\helpers\jquery.fancybox-buttons.js" />
-    <Content Include="N2\Resources\fancybox\helpers\jquery.fancybox-media.js" />
-    <Content Include="N2\Resources\fancybox\helpers\jquery.fancybox-thumbs.css" />
-    <Content Include="N2\Resources\fancybox\helpers\jquery.fancybox-thumbs.js" />
-    <Content Include="N2\Resources\fancybox\jquery.fancybox.css" />
-    <Content Include="N2\Resources\fancybox\jquery.fancybox.pack.js" />
     <Content Include="N2\Resources\IconHandler.ashx" />
     <Content Include="N2\Resources\icons\flags.css" />
     <Content Include="N2\Resources\icons\flags.png" />
     <Content Include="N2\Resources\icons\silk.css" />
     <Content Include="N2\Resources\icons\silk.png" />
-    <Content Include="N2\Resources\Js\jquery.multiselect.filter.js" />
-    <Content Include="N2\Resources\Js\jquery.multiselect.js" />
     <Content Include="N2\Resources\Js\plugins\aaa.js" />
     <Content Include="N2\Resources\syntaxhighlighter\index.html" />
     <Content Include="N2\Resources\syntaxhighlighter\scripts\shAutoloader.js" />
@@ -819,13 +313,16 @@
     <Content Include="N2\Content\Versions\App_LocalResources\RecentVersions.ascx.resx" />
     <Content Include="N2\Content\Activity\Notify.ashx" />
     <Content Include="N2\Roles\App_LocalResources\Roles.aspx.resx" />
-    <Content Include="N2\Roles\App_LocalResources\New.aspx.resx" />
+    <Content Include="N2\Roles\App_LocalResources\New.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="N2\Roles\App_LocalResources\Edit.aspx.resx" />
     <None Include="N2\Content\Dependencies.aspx" />
     <Content Include="N2\Files\FileSystem\UploadFile.ashx" />
     <Content Include="N2\Installation\log4net.config" />
     <Content Include="N2\Installation\system.diagnostics.trace.config" />
     <Content Include="N2\Content\LinkTracker\UpdateReferencesTo.ashx" />
+    <Content Include="N2\Installation\InstallerPage.Master" />
     <None Include="N2\Installation\mysql.upgrade.2.sql" />
     <Content Include="N2\Simple.master" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2expandable.js" />
@@ -841,24 +338,7 @@
     <Content Include="N2\Resources\MessageSink.ashx" />
     <Content Include="packages.config" />
     <Content Include="N2\Installation\UpgradeVersion.ashx" />
-    <Content Include="N2\Resources\ckeditor\LICENSE.md" />
-    <Content Include="N2\Resources\ckeditor\skins\moono\readme.md" />
-    <Content Include="N2\Resources\ckeditor\plugins\scayt\LICENSE.md" />
-    <Content Include="N2\Resources\ckeditor\plugins\scayt\README.md" />
-    <Content Include="N2\Resources\ckeditor\plugins\wsc\LICENSE.md" />
-    <Content Include="N2\Resources\ckeditor\plugins\wsc\README.md" />
-    <Content Include="N2\Resources\ckeditor\plugins\codemirror\README.md" />
-    <Content Include="N2\Resources\font-awesome\font\fontawesome-webfont.eot" />
-    <Content Include="N2\Resources\font-awesome\font\fontawesome-webfont.ttf" />
-    <Content Include="N2\Resources\font-awesome\font\fontawesome-webfont.woff" />
-    <Content Include="N2\Resources\font-awesome\font\FontAwesome.otf" />
-    <Content Include="N2\Resources\angular-1.2.8\angular-cookies.min.js.map" />
-    <Content Include="N2\Resources\angular-1.2.8\angular-resource.min.js.map" />
-    <Content Include="N2\Resources\angular-1.2.8\angular-route.min.js.map" />
-    <Content Include="N2\Resources\angular-1.2.8\angular-sanitize.min.js.map" />
-    <Content Include="N2\Resources\angular-1.2.8\angular.min.js.map" />
-    <Content Include="N2\Resources\angular-1.2.8\errors.json" />
-    <Content Include="N2\Resources\angular-1.2.8\version.json" />
+    <Content Include="N2\Resources\Js\jquery-1.11.0.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Framework\AssemblyVersion.cs">
@@ -1157,6 +637,13 @@
     <Compile Include="N2\Installation\Migrations\RebuildImageSizesMigration.cs" />
     <Compile Include="N2\Installation\Migrations\RecordedAssemblyVersionMigration.cs" />
     <Compile Include="N2\Installation\Migrations\EditableItemMigration.cs" />
+    <Compile Include="N2\Installation\Relations.aspx.cs">
+      <DependentUpon>Relations.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Installation\Relations.aspx.designer.cs">
+      <DependentUpon>Relations.aspx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Installation\UpgradeVersion.ashx.cs">
       <DependentUpon>UpgradeVersion.ashx</DependentUpon>
     </Compile>
@@ -1216,7 +703,11 @@
       <DependentUpon>Roles.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="N2\Security\AccountInfo.cs" />
+    <Compile Include="N2\Security\AccountManager.cs" />
+    <Compile Include="N2\Security\AccountResources.cs" />
     <Compile Include="N2\Security\ContentProfileRepository.cs" />
+    <Compile Include="N2\Security\Details\EditableRolesAttribute.cs" />
     <Compile Include="N2\Security\EditablePassword.cs" />
     <Compile Include="N2\Myself\EditPassword.aspx.cs">
       <DependentUpon>EditPassword.aspx</DependentUpon>
@@ -1225,6 +716,9 @@
     <Compile Include="N2\Myself\EditPassword.aspx.designer.cs">
       <DependentUpon>EditPassword.aspx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Security\Items\UserExternalLoginInfo.cs" />
+    <Compile Include="N2\Security\MembershipAccountManager.cs" />
+    <Compile Include="N2\Security\MembershipAccountResources.cs" />
     <Compile Include="N2\Web\FontHandler.cs" />
     <Compile Include="N2\Resources\IconHandler.ashx.cs">
       <DependentUpon>IconHandler.ashx</DependentUpon>
@@ -1536,6 +1030,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="N2\Web\RootNode.cs" />
+    <Compile Include="N2\Web\UI\Controls\ButtonGroup.cs" />
+    <Compile Include="N2\Web\UI\Controls\SplitButtons.cs" />
+    <Compile Include="N2\Web\UI\Controls\Alert.cs" />
     <Compile Include="N2\Web\UI\Controls\CancelLink.cs" />
     <Compile Include="N2\Web\UI\Controls\ItemLink.cs" />
     <Compile Include="N2\Web\UI\Controls\PermissionPanel.cs" />
@@ -1728,7 +1225,6 @@
     <Content Include="N2\Resources\img\tabs_begin.gif" />
     <Content Include="N2\Resources\img\tab_end.gif" />
     <Content Include="N2\Resources\Js\parts.js" />
-    <Content Include="N2\Users\Css\Membership.css" />
     <Content Include="N2\Users\Edit.aspx" />
     <Content Include="N2\Users\New.aspx" />
     <Content Include="N2\Users\Password.aspx" />
@@ -1823,10 +1319,6 @@
     <Content Include="N2\Resources\KeepAlive\ping.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\IoC.Windsor\N2.IoC.Windsor3.csproj">
-      <Project>{7a9c0479-64af-4df1-818c-118866db8a3d}</Project>
-      <Name>N2.IoC.Windsor3</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Framework\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>
@@ -1872,12 +1364,14 @@
     </Content>
   </ItemGroup>
   <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+	<PropertyGroup>
+		<VSToolsPath Condition="Exists('$(HOMEDRIVE)\ProgramFiles(x86)\MSBuild\Microsoft\VisualStudio\v12.0\Microsoft.WebApplication.targets')">$(HOMEDRIVE)\ProgramFiles(x86)\MSBuild\Microsoft\VisualStudio\v12.0</VSToolsPath>
+	</PropertyGroup>
+	<Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

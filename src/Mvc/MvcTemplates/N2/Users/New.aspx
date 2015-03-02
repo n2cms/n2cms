@@ -1,13 +1,13 @@
 ﻿<%@ Page Language="C#" MasterPageFile="../Content/Framed.Master" AutoEventWireup="true" CodeBehind="New.aspx.cs" Inherits="N2.Edit.Membership.New" Title="New user" meta:resourcekey="PageResource1" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="server">
-	<link rel="stylesheet" href="Css/membership.css" type="text/css" />
-</asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Toolbar" runat="server">
-	<asp:HyperLink runat="server" NavigateUrl="Users.aspx" CssClass="command" 
-		meta:resourcekey="HyperLinkResource1">Cancel</asp:HyperLink>
+	<asp:HyperLink runat="server" NavigateUrl="Users.aspx" CssClass="btn command" 
+		meta:resourcekey="HyperLinkResource1">Close</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
 	<div class="tabPanel">
+    <% if(!IsMembershipAccountType()) { %>
+        <div class="warning">Adding a new user is supported for classic Membership only. See "logout and register as a new user". </div>
+    <% } else { %>
 	<asp:CreateUserWizard ID="createUserWizard" runat="server" 
 		OnCreatedUser="createUserWizard_CreatedUser" 
 		OnContinueButtonClick="createUserWizard_FinishButtonClick" 
@@ -41,7 +41,7 @@
 							<asp:CheckBoxList ID="cblRoles" runat="server" CssClass="cbl" 
 							DataSourceID="odsRoles" meta:resourcekey="cblRolesResource1" RepeatLayout="Flow" />
 						</div>
-						<asp:ObjectDataSource ID="odsRoles" runat="server" TypeName="System.Web.Security.Roles" SelectMethod="GetAllRoles" />
+						<asp:ObjectDataSource ID="odsRoles" runat="server" TypeName="N2.Edit.Membership.RolesSource" SelectMethod="GetAllRoles" />
 					</div>
 				</ContentTemplate>
 			</asp:CreateUserWizardStep>
@@ -49,5 +49,6 @@
 			</asp:CompleteWizardStep>
 		</WizardSteps>
 	</asp:CreateUserWizard>
+    <% } %>
 	</div>
 </asp:Content>

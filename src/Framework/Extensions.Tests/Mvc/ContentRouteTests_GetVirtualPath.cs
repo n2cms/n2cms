@@ -43,7 +43,7 @@ namespace N2.Extensions.Tests.Mvc
         {
             RequestingUrl("/about/");
 
-            var result = urlHelper.Action("Index", new { item = executives });
+            var result = urlHelper.Action("Index", new { n2item = executives });
 
             Assert.That(result, Is.EqualTo("/about/executives"));
         }
@@ -83,7 +83,7 @@ namespace N2.Extensions.Tests.Mvc
         {
             RequestingUrl("/search/");
 
-            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { item = executives }));
+            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2item = executives }));
 
             Assert.That(vpd.VirtualPath, Is.EqualTo("about/executives"));
         }
@@ -93,7 +93,7 @@ namespace N2.Extensions.Tests.Mvc
         {
             RequestingUrl("/search/");
 
-            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { page = executives }));
+            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2page = executives }));
 
             Assert.That(vpd.VirtualPath, Is.Not.EqualTo("about/executives"));
         }
@@ -135,7 +135,7 @@ namespace N2.Extensions.Tests.Mvc
         {
             RequestingUrl("/about/executives/");
 
-            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { item = search, action = "find" }));
+            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2item = search, action = "find" }));
 
             Assert.That(vpd.VirtualPath, Is.EqualTo("search/find"));
         }
@@ -145,7 +145,7 @@ namespace N2.Extensions.Tests.Mvc
         {
             RequestingUrl("/about/executives/");
 
-            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { item = search, action = "find", q = "what", x = "y" }));
+            var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2item = search, action = "find", q = "what", x = "y" }));
 
             Assert.That(vpd.VirtualPath, Is.EqualTo("search/find?q=what&x=y"));
         }

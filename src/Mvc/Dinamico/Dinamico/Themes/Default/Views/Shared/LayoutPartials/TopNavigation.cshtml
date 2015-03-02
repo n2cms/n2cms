@@ -1,1 +1,2 @@
-﻿@Html.Tree(Content.Parse(Request["returnUrl"]) ?? Content.Traverse.StartPage, htmlAttributes: new { id = "menu", @class = "topmenu menu clearfix level1" }, appendCreatorNode: true)
+﻿@Html.Tree(Content.Parse(Request["returnUrl"]) ?? Content.Traverse.StartPage,
+	htmlAttributes: new { id = "menu", @class = "nav nav-pills level1" })

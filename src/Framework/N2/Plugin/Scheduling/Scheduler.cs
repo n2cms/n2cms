@@ -19,12 +19,12 @@ namespace N2.Plugin.Scheduling
     {
         private readonly Engine.Logger<Scheduler> logger;
 
-        IList<ScheduledAction> actions = new List<ScheduledAction>();
-        IHeart heart;
+	    readonly IList<ScheduledAction> actions = new List<ScheduledAction>();
+	    readonly IHeart heart;
         readonly IWorker worker;
-        Web.IWebContext context;
-        IErrorNotifier errorHandler;
-        IEngine engine;
+	    readonly IWebContext context;
+	    readonly IErrorNotifier errorHandler;
+	    readonly IEngine engine;
         private bool enabled;
         private bool asyncActions;
         private bool runWhileDebuggerAttached;
@@ -90,11 +90,11 @@ namespace N2.Plugin.Scheduling
         [MethodImpl(MethodImplOptions.Synchronized)]
         void heart_Beat(object sender, EventArgs e)
         {
-            ExecutActions();
+            ExecuteActions();
         }
 
         /// <summary>Executes the scheduled actions that are scheduled for executions.</summary>
-        public void ExecutActions()
+        public void ExecuteActions()
         {
             if (!enabled)
                 return;

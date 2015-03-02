@@ -6,7 +6,7 @@
 </asp:Content>
 
 <asp:Content ID="CT" ContentPlaceHolderID="Toolbar" runat="server">
-    <edit:CancelLink ID="hlCancel" runat="server">Cancel</edit:CancelLink>
+    <edit:CancelLink ID="hlCancel" runat="server" CssClass="btn">Close</edit:CancelLink>
 </asp:Content>
 
 <asp:Content ID="CC" ContentPlaceHolderID="Content" runat="server">
@@ -25,7 +25,7 @@
 		    </asp:View>
 
 		    <asp:View runat="server">
-                <n2:h4 Text="Imported files" runat="server" />
+                <n2:hn Text="Imported files" runat="server" />
 			    <asp:Repeater ID="rptImportedFiles" runat="server">
 			        <ItemTemplate>
 			            <div class="file"><asp:Image runat="server" ImageUrl="../../Resources/icons/page_white.png" alt="file" /><%# Container.DataItem %></div>

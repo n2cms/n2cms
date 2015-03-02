@@ -115,8 +115,8 @@ namespace N2.Management.Tests.Trash
             item2 = persister.Get<ThrowableItem>(item2.ID);
             
             var versions = engine.Resolve<IVersionManager>().GetVersionsOf(item2).ToList();
-            versions[0]["Relation"].ShouldBe(null);
-            versions[1]["Relation"].ShouldBe(null);
+            versions[0].Content["Relation"].ShouldBe(null);
+            versions[1].Content["Relation"].ShouldBe(null);
         }
 
         [Test]
@@ -192,7 +192,8 @@ namespace N2.Management.Tests.Trash
 
             persister.Dispose();
             item2 = persister.Get<ThrowableItem>(item2.ID);
-            version = engine.Resolve<ContentVersionRepository>().GetVersion(item2, version.VersionIndex).Version; 
+			var repository = engine.Resolve<ContentVersionRepository>();
+			version = repository.DeserializeVersion(repository.GetVersion(item2, version.VersionIndex)); 
             // persister.Get<ThrowableItem>(version.ID);
             
             item2.GetDetailCollection("Links", false).Count.ShouldBe(0);

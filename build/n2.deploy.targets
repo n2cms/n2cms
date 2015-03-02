@@ -4,8 +4,8 @@
 
   <PropertyGroup>
     <Framework-DeployFolder>$(DeployFolder)\$(DeployPrefix)Framework</Framework-DeployFolder>
-    
     <Config-NugetFolder>$(DeployFolder)\$(DeployPrefix)Config_Nuget</Config-NugetFolder>
+    <LocalResources-NugetFolder>$(DeployFolder)\$(DeployPrefix)LocalResources_Nuget</LocalResources-NugetFolder>
     <Framework-NugetFolder>$(DeployFolder)\$(DeployPrefix)Framework_Nuget</Framework-NugetFolder>
     <Management-NugetFolderZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_Zip</Management-NugetFolderZip>
 		<Management-NugetFolderNoZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_NoZip</Management-NugetFolderNoZip>
@@ -22,14 +22,28 @@
     <RemoteSearch-NugetFolder>$(DeployFolder)\$(DeployPrefix)RemoteSearch_Nuget</RemoteSearch-NugetFolder>
 </PropertyGroup>
 
+	<ItemGroup>
+		<nugetFxTargets Include="net40;net45"/>
+	</ItemGroup>
+
   <Target Name="Config-NuGet">
-    <Copy SourceFiles="@(nugetLibraryBinFiles)" DestinationFolder="$(Library-NugetFolder)\lib" />
+    <!--<Copy SourceFiles="@(nugetLibraryBinFiles)" DestinationFolder="$(Library-NugetFolder)\lib" />-->
     <ItemGroup>
       <configNugetIncludes Include="$(BuildFolder)\Nuget\Config\**\*" />
     </ItemGroup>
     <Copy SourceFiles="@(configNugetIncludes)" DestinationFolder="$(Config-NugetFolder)\%(RecursiveDir)" />
     <FileUpdate Files="$(Config-NugetFolder)\N2.Config.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
     <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Config-NugetFolder)\" />
+  </Target>
+  
+  <Target Name="LocalResources-NuGet">
+    <!--<Copy SourceFiles="@(nugetLibraryBinFiles)" DestinationFolder="$(LocalResources-NugetFolder)\lib" />-->
+    <ItemGroup>
+      <LocalResourcesNugetIncludes Include="$(BuildFolder)\Nuget\LocalResources\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(LocalResourcesNugetIncludes)" DestinationFolder="$(LocalResources-NugetFolder)\%(RecursiveDir)" />
+    <FileUpdate Files="$(LocalResources-NugetFolder)\N2.LocalResources.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+    <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(LocalResources-NugetFolder)\" />
   </Target>
   
   <Target Name="Framework-Deploy" DependsOnTargets="Framework-CreateItemGroups">
@@ -49,13 +63,13 @@
 		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-LocalizedResourcesFolder)\" />
 	</Target>
 
-	<Target Name="Library-NuGet" DependsOnTargets="Config-NuGet;Framework-Deploy">
+	<Target Name="Library-NuGet" DependsOnTargets="Config-NuGet;Framework-Deploy;LocalResources-NuGet">
     <ItemGroup>
       <nugetLibraryBinFiles Include="$(ManagementFolder)\bin\N2.dll;
                        $(ManagementFolder)\bin\N2.pdb;
                        $(ManagementFolder)\bin\N2.xml;"/>
     </ItemGroup>
-    <Copy SourceFiles="@(nugetLibraryBinFiles)" DestinationFolder="$(Library-NugetFolder)\lib" />
+    <Copy SourceFiles="@(nugetLibraryBinFiles)" DestinationFolder="$(Library-NugetFolder)\lib\%(nugetFxTargets.Identity)\" />
 
     <ItemGroup>
       <libraryNugetIncludes Include="$(BuildFolder)\Nuget\Library\**\*" />
@@ -141,7 +155,7 @@
 			<nugetRazorBinFiles Include="$(SrcFolder)\Framework\Razor\bin\$(Configuration)\N2.Razor.*;" />
 		</ItemGroup>
 		<Copy SourceFiles="@(razorNugetIncludes)" DestinationFolder="$(Razor-NugetFolder)\%(RecursiveDir)" />
-		<Copy SourceFiles="@(nugetRazorBinFiles)" DestinationFolder="$(Razor-NugetFolder)\lib\NET40" />
+		<Copy SourceFiles="@(nugetRazorBinFiles)" DestinationFolder="$(Razor-NugetFolder)\lib\%(nugetFxTargets.Identity)\" />
 		<FileUpdate Files="$(Razor-NugetFolder)\N2.Razor.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
 		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Razor-NugetFolder)\" />
@@ -174,15 +188,9 @@
     <Message Text="Management-NuGet-ItemGroups:" Importance="high" />
     <ItemGroup>
       <nugetFrameworkBinFiles
-        Include="$(ManagementFolder)\bin\N2*.dll;
-                 $(ManagementFolder)\bin\N2*.pdb;
-                 $(SrcFolder)\Framework\Packaging\bin\$(Configuration)\N2.Packaging.dll;"
-        Exclude="$(ManagementFolder)\bin\N2.???;
-                 $(ManagementFolder)\bin\N2.Management.*.???;
-                 $(ManagementFolder)\bin\N2.Security.*;
-                 $(ManagementFolder)\bin\N2.Templates.*;" />
-      <luceneBinFiles
-        Include="$(SrcFolder)\packages\Lucene.Net.3.0.3-RC2\lib\**\Lucene.*" />
+        Include="$(ManagementFolder)\bin\N2.Extensions.*;
+                 $(ManagementFolder)\bin\N2.Management.*;
+                 $(ManagementFolder)\bin\N2.Extensions.*;" />
       <NoZipFrameworkDeployFiles
         Include="$(Framework-DeployFolder)\N2\**\*"/>
     </ItemGroup>
@@ -191,10 +199,12 @@
 
   <Target Name="Management-Zip-NuGet" DependsOnTargets="Management-NuGet-ItemGroups">
     <Copy SourceFiles="@(nugetFrameworkBinFiles)" DestinationFolder="$(Management-NugetFolderZip)\lib" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="$(SrcFolder)\Framework\Packaging\bin\$(Configuration)\N2.Packaging.dll" DestinationFolder="$(Management-NugetFolderZip)\lib" SkipUnchangedFiles="true" />
 
     <!-- Using DotNetZip since MSBuild Community Tasks Zip doesn't include directory entries -->
     <Delete Files="$(Management-NugetFolderZip)\content\N2\N2.zip" Condition="Exists('$(Management-NugetFolderZip)\content\N2\N2.zip')" />
     <Copy SourceFiles="$(Framework-DeployFolder)\N2\web.config"	DestinationFolder="$(Management-NugetFolderZip)\content\N2\" />
+    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Management-NugetFolderZip)\content\N2\" />
     <Exec Command="$(BuildFolder)\lib\BuildSupport.exe ZipDirectory &quot;$(Management-NugetFolderZip)\content\N2\N2.zip&quot; &quot;$(Framework-DeployFolder)\N2&quot; &quot;N2&quot;" />
 
     <ItemGroup>
@@ -205,18 +215,18 @@
     <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-NugetFolderZip)\" />
   </Target>
 
-	<Target Name="Management-NoZip-NuGet" DependsOnTargets="Management-NuGet-ItemGroups" Condition="'@(NoZipFrameworkDeployFiles)' != ''">
-		<Message Text="Management-NoZip-NuGet:" Importance="high" />
-		<Copy SourceFiles="@(nugetFrameworkBinFiles)" DestinationFolder="$(Management-NugetFolderNoZip)\lib" SkipUnchangedFiles="true" />
-		<Copy SourceFiles="@(NoZipFrameworkDeployFiles)" DestinationFolder="$(Management-NugetFolderNoZip)\content\N2\%(RecursiveDir)" UseHardlinksIfPossible="true" SkipUnchangedFiles="true" />
+  <Target Name="Management-NoZip-NuGet" DependsOnTargets="Management-NuGet-ItemGroups" Condition="'@(NoZipFrameworkDeployFiles)' != ''">
+    <Message Text="Management-NoZip-NuGet:" Importance="high" />
+    <Copy SourceFiles="@(nugetFrameworkBinFiles)" DestinationFolder="$(Management-NugetFolderNoZip)\lib" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(NoZipFrameworkDeployFiles)" DestinationFolder="$(Management-NugetFolderNoZip)\content\N2\%(RecursiveDir)" UseHardlinksIfPossible="true" SkipUnchangedFiles="true" />
 
-		<ItemGroup>
-			<managementNugetIncludesN Include="$(BuildFolder)\Nuget\ManagementNoZip\**\*" />
-		</ItemGroup>
-		<Copy SourceFiles="@(managementNugetIncludesN)" DestinationFolder="$(Management-NugetFolderNoZip)\%(RecursiveDir)" />
-		<FileUpdate Files="$(Management-NugetFolderNoZip)\N2.Management.NoZip.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
-		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-NugetFolderNoZip)\" />
-	</Target>
+    <ItemGroup>
+      <managementNugetIncludesN Include="$(BuildFolder)\Nuget\ManagementNoZip\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(managementNugetIncludesN)" DestinationFolder="$(Management-NugetFolderNoZip)\%(RecursiveDir)" />
+    <FileUpdate Files="$(Management-NugetFolderNoZip)\N2.Management.NoZip.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+    <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-NugetFolderNoZip)\" />
+  </Target>
 
 	<Target Name="Management-Targeting-NuGet">
 		<ItemGroup>
@@ -235,7 +245,7 @@
 		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-Targeting-NugetFolder)\" />
 	</Target>
 
-	<Target Name="Framework-NuGet" DependsOnTargets="Management-Zip-NuGet;Management-NoZip-NuGet">
+  <Target Name="Framework-NuGet" DependsOnTargets="Management-Zip-NuGet;Management-NoZip-NuGet">
     <Message Text="Framework-NuGet:" Importance="high" />
     <ItemGroup>
       <frameworkNugetIncludes Include="$(BuildFolder)\Nuget\Framework\**\*" />
@@ -300,7 +310,20 @@
     <WriteLinesToFile Lines="@(buildLine)" File="$(DeployFolder)\BuildAll.bat" Overwrite="true" />
   </Target>
 
-  <Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Mvc-NuGet;Dinamico-NuGet;Bundle-Dinamico-Nuget;Windsor3-NuGet;MongoDB-NuGet;RemoteSearch-NuGet;Framework-LocalizedResources-Nuget;ReusableParts-NuGet;LuceneSearch-NuGet">
+  <Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;
+                                               Library-NuGet;
+                                               SQLite-NuGet;
+                                               Razor-NuGet;
+                                               Mvc-NuGet;
+                                               Dinamico-NuGet;
+																							 Dinamico-DemoContent-Nuget;
+                                               Bundle-Dinamico-Nuget;
+                                               Windsor3-NuGet;
+                                               MongoDB-NuGet;
+                                               RemoteSearch-NuGet;
+                                               Framework-LocalizedResources-Nuget;
+                                               ReusableParts-NuGet;
+                                               LuceneSearch-NuGet">
   </Target>
 
 	<Target Name="Publish-NuGet" DependsOnTargets="Push-NuGet">

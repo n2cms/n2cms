@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -66,6 +66,10 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.SQLite, Version=1.0.90.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\System.Data.SQLite.1.0.90.0\lib\net40\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -123,7 +127,6 @@
     <Compile Include="Templates\Items\Comment.cs" />
     <Compile Include="Templates\Items\CommentInput.cs" />
     <Compile Include="Templates\Items\CommentList.cs" />
-    <Compile Include="Templates\Items\ControlPanel.cs" />
     <Compile Include="Templates\Items\DatabaseSearch.cs" />
     <Compile Include="Templates\Items\Event.cs" />
     <Compile Include="Templates\Items\Faq.cs" />
@@ -193,13 +196,6 @@
     </Compile>
     <Compile Include="Templates\UI\Parts\CommentList.ascx.designer.cs">
       <DependentUpon>CommentList.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\UI\Parts\ControlPanel.ascx.cs">
-      <DependentUpon>ControlPanel.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\UI\Parts\ControlPanel.ascx.designer.cs">
-      <DependentUpon>ControlPanel.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Comment.ascx.cs">
       <DependentUpon>Comment.ascx</DependentUpon>
@@ -758,7 +754,6 @@
     <Content Include="Templates\UI\Parts\Columns.ascx" />
     <Content Include="Templates\UI\Parts\CommentInput.ascx" />
     <Content Include="Templates\UI\Parts\CommentList.ascx" />
-    <Content Include="Templates\UI\Parts\ControlPanel.ascx" />
     <Content Include="Templates\UI\Parts\Comment.ascx" />
     <Content Include="Templates\UI\Parts\Empty.ascx" />
     <Content Include="Templates\UI\Parts\Login.ascx" />
@@ -855,12 +850,14 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+	<PropertyGroup>
+		<VSToolsPath Condition="Exists('$(HOMEDRIVE)\ProgramFiles(x86)\MSBuild\Microsoft\VisualStudio\v12.0\Microsoft.WebApplication.targets')">$(HOMEDRIVE)\ProgramFiles(x86)\MSBuild\Microsoft\VisualStudio\v12.0</VSToolsPath>
+	</PropertyGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

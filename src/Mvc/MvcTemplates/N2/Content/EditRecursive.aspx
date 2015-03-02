@@ -7,8 +7,8 @@
 </asp:Content>
 
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
-	<asp:LinkButton ID="btnSave" OnCommand="OnPublishCommand" runat="server" CssClass="command iconed publish primary-action" meta:resourceKey="btnSave">Save</asp:LinkButton>
-	<edit:CancelLink ID="hlCancel" runat="server" Text="Cancel" meta:resourceKey="hlCancel" />
+	<asp:LinkButton ID="btnSave" OnCommand="OnPublishCommand" runat="server" CssClass="btn btn-primary command iconed publish primary-action" meta:resourceKey="btnSave">Save</asp:LinkButton>
+	<edit:CancelLink ID="hlCancel" runat="server" Text="Cancel" CssClass="btn" meta:resourceKey="hlCancel" />
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
@@ -18,4 +18,19 @@
 
 		<asp:PlaceHolder ID="phAncestors" runat="server" />
 	</edit:PermissionPanel>
+
+    <script type="text/javascript">
+			$(document).ready(function () {
+
+			// info
+				$(".help-tooltip").tooltip({ });
+				$(".help-popover").each(function () {
+					var title = $(this).attr("title");
+					var content = $(this).attr("data-content");
+					$(this).attr("title", "");
+					$(this).tooltip({ html: true, title: "<h6>" + title + "</h6><p>" + content + "</p>" });
+				});
+			});
+
+		</script>
 </asp:Content>

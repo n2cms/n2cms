@@ -34,7 +34,7 @@ namespace N2.Edit
     [NavigationLinkPlugin("New", "new", "{ManagementUrl}/Content/New.aspx?{Selection.SelectedQueryKey}={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/add.png", 10,
         GlobalResourceClassName = "Navigation",
         RequiredPermission = Permission.Write,
-        IconClass = "n2-icon-plus-sign",
+        IconClass = "fa fa-plus-circle",
         Legacy = true)]
     [ToolbarPlugin("", "new_tool", "{ManagementUrl}/Content/New.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/add.png", 40, ToolTip = "new",
         GlobalResourceClassName = "Toolbar",
@@ -43,7 +43,7 @@ namespace N2.Edit
     [ControlPanelLink("cpNew", "{ManagementUrl}/Resources/icons/add.png", "{ManagementUrl}/Content/New.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible,
         CssClass = "complementary",
         RequiredPermission = Permission.Write,
-        IconClass = "n2-icon-plus-sign")]
+        IconClass = "fa fa-plus-circle")]
     public partial class New : Web.EditPage
     {
         ItemDefinition ParentItemDefinition = null;
@@ -159,7 +159,7 @@ namespace N2.Edit
             if (isCurrent)
                 format = "<strong>" + format + "</strong>";
 
-            return string.Format(format, ResolveUrl(item.IconUrl), Engine.Resolve<ISafeContentRenderer>().GetSafeHtml(item.Title), item.Url, "icon", "current", item.IconClass);
+            return string.Format(format, ResolveUrl(item.IconUrl), HtmlSanitizer.Current.Clean(item.Title), item.Url, "icon", "current", item.IconClass);
         }
 
         private static ContentItem Last(IList<ContentItem> children, ItemFilter filter)

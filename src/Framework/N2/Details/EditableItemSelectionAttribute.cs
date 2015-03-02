@@ -28,7 +28,7 @@ namespace N2.Details
         {
             LinkedType = typeof(ContentItem);
             ExcludedType = typeof(ISystemNode);
-            SearchTreshold = 20;
+            SearchTreshold = 10;
             Include = EditableItemSelectionFilter.Pages;
         }
 

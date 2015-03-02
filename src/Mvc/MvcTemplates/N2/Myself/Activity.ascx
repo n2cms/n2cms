@@ -33,7 +33,7 @@
 		</HeaderTemplate>
 		<ItemTemplate>
 			<tr><td>
-				<edit:ItemLink ID="ItemLink1" DataSource='<%# Eval("Version") %>' runat="server" />
+				<edit:ItemLink ID="ItemLink1" DataSource='<%# Container.DataItem %>' runat="server" />
 			</td><td>
 				<%# Eval("VersionIndex")%>
 			</td><td>

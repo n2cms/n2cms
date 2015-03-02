@@ -32,12 +32,6 @@ namespace N2.Persistence.Search
                 q += string.Format(" +Types:({0})", string.Join(" ", query.Types));
             if (query.LanguageCode != null)
                 q += string.Format(" +Language:({0})", query.LanguageCode);
-            if (query.Exclution != null)
-                q += string.Format(" -({0})", ToLuceneQuery(query.Exclution));
-            if (query.Intersection != null)
-                q = string.Format("+({0}) +({1})", q, ToLuceneQuery(query.Intersection));
-            if (query.Union != null)
-                q = string.Format("({0}) ({1})", q, ToLuceneQuery(query.Union));
             if (query.Details.Count > 0)
                 foreach (var kvp in query.Details)
                 {
@@ -45,7 +39,13 @@ namespace N2.Persistence.Search
                         q += string.Format(" +{0}:({1})", kvp.Key, kvp.Value);
                     else
                         q += string.Format(" +Detail.{0}:({1})", kvp.Key, kvp.Value);
-                }
+				}
+			if (query.Exclution != null)
+				q += string.Format(" -({0})", ToLuceneQuery(query.Exclution));
+			if (query.Intersection != null)
+				q = string.Format("+({0}) +({1})", q, ToLuceneQuery(query.Intersection));
+			if (query.Union != null)
+				q = string.Format("({0}) ({1})", q, ToLuceneQuery(query.Union));
             return q;
         }
     }

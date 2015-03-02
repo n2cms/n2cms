@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using N2.Edit.Installation;
 using N2.Persistence;
 using N2.Collections;
@@ -11,7 +8,7 @@ namespace N2.Management.Installation
     [N2.Engine.Service(typeof(AbstractMigration))]
     public class UpdateChildStateMigration : AbstractMigration
     {
-        private IContentItemRepository repository;
+        private readonly IContentItemRepository repository;
 
         public UpdateChildStateMigration(IContentItemRepository repository)
         {
@@ -22,9 +19,9 @@ namespace N2.Management.Installation
 
         public override bool IsApplicable(DatabaseStatus status)
         {
-            return status.DatabaseVersion < DatabaseStatus.RequiredDatabaseVersion
-                || !status.HasSchema
-                || repository.Find("ChildState", Collections.CollectionState.Unknown).Any();
+	        return status.DatabaseVersion < DatabaseStatus.RequiredDatabaseVersion
+	               || !status.HasSchema
+	               || repository.Count(new Parameter("ChildState", Collections.CollectionState.Unknown)) > 0;
         }
 
         public override MigrationResult Migrate(DatabaseStatus preSchemaUpdateStatus)

@@ -1,7 +1,20 @@
 ﻿/* clearfix */
-.cf:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
-.cf { *display: inline-block; }
-* html .cf { height: 1px; }
+/* For modern browsers */
+.cf:before,
+.cf:after,
+.box .inner:before,
+.box .inner:after {
+    content:"";
+    display:table;
+}
+.box .inner:after,
+.cf:after {
+    clear:both;
+}
+/* For IE 6/7 (trigger hasLayout) */
+.box .inner,.cf {
+    zoom:1;
+}
 a img { border:none; vertical-align:middle; }
 .menu,.menu ul { list-style-type:none;}
 

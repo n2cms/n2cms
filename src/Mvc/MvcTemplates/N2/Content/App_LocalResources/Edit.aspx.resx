@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnSave.Text" xml:space="preserve">
     <value>Save and publish</value>
@@ -136,7 +136,7 @@
     <value>Save these changes without publishing them. You can publish in future.</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Close</value>
   </data>
   <data name="hlCancel.ToolTip" xml:space="preserve">
     <value />
@@ -199,10 +199,10 @@
     <value>OK</value>
   </data>
   <data name="dpFuturePublishDate.Label.Text" xml:space="preserve">
-    <value>When</value>
+    <value>When should this content be published</value>
   </data>
   <data name="hlCancelSavePublishInFuture.Text" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Close</value>
   </data>
   <data name="ppPermitted.Text" xml:space="preserve">
     <value>You do not have sufficient permissions.</value>

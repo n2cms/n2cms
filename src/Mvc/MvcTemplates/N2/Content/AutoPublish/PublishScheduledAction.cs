@@ -82,7 +82,7 @@ namespace N2.Edit.AutoPublish
             var scheduledForAutoPublish = versionRepository.GetVersionsScheduledForPublish(Utility.CurrentTime()).ToList();
             foreach (var version in scheduledForAutoPublish)
             {
-                var scheduledVersion = version.Version;
+                var scheduledVersion = versionRepository.DeserializeVersion(version);
                 scheduledVersion["FuturePublishDate"] = null;
                 versioner.Publish(persister, scheduledVersion);
             }

@@ -1,9 +1,9 @@
-﻿<a class="page-action" 
-	href='{{Context.Paths.Create}}?{{Context.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}'
-	target='preview' 
-	translate="add.link"
-	title='Add'>
-	<b class='ico n2-icon-plus-sign'></b>
+﻿<a class="page-action"
+   href='{{Context.Paths.Create}}?{{Context.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&n2item={{Context.CurrentItem.ID}}'
+   target='preview'
+   translate="add.link"
+   title='Add'>
+    <b class='ico fa fa-plus-circle'></b>
 </a>
 
 <a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-controller='AddCtrl'
@@ -14,10 +14,10 @@
 
 <ul class="dropdown-menu add" ng-show="item.Children.length">
 	<li ng-repeat="child in item.Children">
-		<a target="preview" href="{{Context.Paths.Edit}}?{{Context.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}&discriminator={{child.Discriminator}}" title="{{child.Title}}" class="page-action page-action-description">
-			<b class='ico' ng-show='child.IconClass || child.IconUrl' ng-class="child.IconClass || 'ico-custom'" x-background-image='child.IconUrl'></b>
-			{{child.Title}}<br />
-			<span>{{child.Description}}</span>
-		</a>
+        <a target="preview" href="{{Context.Paths.Edit}}?{{Context.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&n2item={{Context.CurrentItem.ID}}&discriminator={{child.Discriminator}}" title="{{child.Title}}" class="page-action page-action-description">
+            <b class='ico' ng-show='child.IconClass || child.IconUrl' ng-class="child.IconClass || 'ico-custom'" x-background-image='child.IconUrl'></b>
+            {{child.Title}}<br />
+            <span>{{child.Description}}</span>
+        </a>
 	</li>
 </ul>

@@ -61,14 +61,14 @@ namespace N2.Web
 
                 path.CurrentItem = path.CurrentPage;
 
-                if (draftRepository.Versions.TryParseVersion(url[PathData.VersionIndexQueryKey], url["versionKey"], path))
+                if (draftRepository.Versions.TryParseVersion(url[PathData.VersionIndexQueryKey], url[PathData.VersionKeyQueryKey], path))
                     return path;
 
                 string viewPreferenceParameter = url.GetQuery(WebExtensions.ViewPreferenceQueryString);
                 if (viewPreferenceParameter == WebExtensions.DraftQueryValue && draftRepository.HasDraft(path.CurrentItem))
                 {
                     var draft = draftRepository.Versions.GetVersion(path.CurrentPage);
-                    path.TryApplyVersion(draft, url["versionKey"]);
+					path.TryApplyVersion(draft, url["versionKey"], draftRepository.Versions);
                 }
 
                 return path;

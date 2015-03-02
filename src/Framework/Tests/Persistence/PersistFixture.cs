@@ -2,6 +2,7 @@ using System;
 using N2.Persistence;
 using NUnit.Framework;
 using N2.Edit.Versioning;
+using System.Linq;
 
 namespace N2.Tests.Persistence
 {
@@ -135,7 +136,7 @@ namespace N2.Tests.Persistence
                 // check that everything is still there in the next session
                 root = engine.Persister.Get(root.ID);
                 Assert.AreEqual(root.Children.Count, 2);
-                Assert.AreEqual(root.GetChildren(new N2.Collections.AccessFilter(null, engine.SecurityManager)).Count, 2);
+                Assert.AreEqual(root.Children.Where(new N2.Collections.AccessFilter(null, engine.SecurityManager)).Count(), 2);
                 Assert.IsNotNull(root.GetChild("item1"));
                 Assert.IsNotNull(root.GetChild("item2"));
             }

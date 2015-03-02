@@ -38,13 +38,34 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             ie.Text("Delimiter").Required().DefaultValue(",").Configure(f => f.MaxLength = 2);
             ie.CheckBox("Headers", "First row contains headers").DefaultValue(false);
             ie.CheckBox("Sort", "Sort data on the first column").DefaultValue(false);
+	        ie.CheckBox("Bordered", "Show table borders").DefaultValue(false);
+	        ie.CheckBox("Hover", "Highlight table rows on hover").DefaultValue(false);
+			ie.CheckBox("Condensed", "Condensed spacing").DefaultValue(false);
+			ie.CheckBox("Responsive", "Make table scroll horizontally on small devices").DefaultValue(false);
         }
     );
 
     N2.Extensions.CsvImport du = new N2.Extensions.CsvImport(Model);
-    
+
+	var tableClass = "table";
+	if (Content.Has.Bordered && Content.Data.Bordered)
+	{
+		tableClass += " table-bordered";
+	}
+	if (Content.Has.Hover && Content.Data.Hover)
+	{
+		tableClass += " table-hover";
+	}
+	if (Content.Has.Condensed && Content.Data.Condensed)
+	{
+		tableClass += " table-condensed";
+	}
+	if (Content.Has.Responsive && Content.Data.Responsive)
+	{
+		tableClass += " table-responsive";
+	}
 }
-<table class="table">
+<table class="@tableClass">
     @if (du.HasHeader) {
     <thead>
         <tr>

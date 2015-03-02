@@ -39,7 +39,7 @@ using System.Diagnostics;
 namespace N2.Persistence.NH
 {
     [Obsolete("Use NHRepository<TEntity>")]
-    [Service(typeof(IRepository<,>), Key = "n2.repository.generic2")]
+	[Service(typeof(IRepository<,>), Configuration = "sql", Key = "n2.repository.generic2")]
     public class NHRepository<TKey, TEntity> : NHRepository<TEntity>, IRepository<int, TEntity> where TEntity : class
     {
         public NHRepository(ISessionProvider sessionProvider)
@@ -62,9 +62,9 @@ namespace N2.Persistence.NH
         #endregion
     }
 
-    [Service(typeof(IRepository<>), Key = "n2.repository.generic")]
+    [Service(typeof(IRepository<>), Configuration = "sql", Key = "n2.repository.generic")]
 #pragma warning disable 612, 618
-    [Service(typeof(INHRepository<>), Key = "n2.nhrepository.generic")]
+	[Service(typeof(INHRepository<>), Configuration = "sql", Key = "n2.nhrepository.generic")]
     public class NHRepository<TEntity> : 
         INHRepository<TEntity>,
 #pragma warning restore 612, 618

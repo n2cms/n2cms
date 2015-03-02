@@ -124,7 +124,7 @@ namespace N2.Addons.Tagging.Details
         {
             foreach (var ancestor in Find.EnumerateParents(item, null, true))
             {
-                ItemList tagContainers = ancestor.GetChildren(new TypeFilter(typeof(Items.TagGroup)));
+                ItemList tagContainers = ancestor.GetChildPagesUnfiltered().Where(new TypeFilter(typeof(Items.TagGroup)));
                 if (tagContainers.Count > 0)
                     return tagContainers.Cast<TagGroup>();
             }

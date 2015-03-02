@@ -1,0 +1,16 @@
+<item id="10" name="test2" parent="2" title="test2!!" zoneName="" templateKey="" state="16" created="05/06/2014 20:28:46" updated="05/06/2014 20:49:33" published="05/06/2014 20:28:40" expires="" sortOrder="-5" url="/test2" visible="True" savedBy="admin" typeName="N2.Templates.Mvc.Models.Pages.TextPage, N2.Templates.Mvc" discriminator="TextPage" versionIndex="2" ancestralTrail="/1/2/" alteredPermissions="0" childState="0">
+  <details>
+    <detail name="Text" typeName="System.String, mscorlib" meta="" encoded="True"><![CDATA[&lt;p&gt;test2!&lt;/p&gt;
+]]></detail>
+    <detail name="HeadTitle" typeName="System.String, mscorlib" meta="" />
+    <detail name="MetaKeywords" typeName="System.String, mscorlib" meta="" />
+    <detail name="MetaDescription" typeName="System.String, mscorlib" meta="" />
+  </details>
+  <detailCollections />
+  <children />
+  <authorizations />
+  <properties>
+    <property name="Syndicate" typeName="System.Boolean, mscorlib">False</property>
+    <property name="Summary" typeName="System.String, mscorlib"><![CDATA[test2!!]]></property>
+  </properties>
+</item>

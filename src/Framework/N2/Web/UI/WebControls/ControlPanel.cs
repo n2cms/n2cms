@@ -75,7 +75,7 @@ namespace N2.Web.UI.WebControls
                     return currentItem;
 
                 int selectedItemID;
-                if (int.TryParse(Page.Request["item"], out selectedItemID))
+                if (int.TryParse(Page.Request[PathData.ItemQueryKey], out selectedItemID))
                 {
                     return currentItem = Engine.Persister.Get(selectedItemID);
                 }
@@ -198,7 +198,7 @@ jQuery(document).ready(function(){{
                 availableDefinitions = GetPossibleDefinitions(adapter, pageZones, user);
 
             return from x in availableDefinitions
-                orderby x ascending, x.SortOrder ascending
+                orderby x ascending, x.Title ascending
                 select x;
         }
 

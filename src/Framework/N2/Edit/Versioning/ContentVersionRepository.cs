@@ -38,20 +38,11 @@ namespace N2.Edit.Versioning
             if (versionIndex >= 0)
             {
                 return Repository.Find(Parameter.Equal("Master.ID", GetMaster(item).ID) & Parameter.Equal("VersionIndex", versionIndex))
-                    .Select(v => Inject(v))
                     .FirstOrDefault();
             }
 
             return GetVersions(item)
-                .Select(v => Inject(v))
                 .FirstOrDefault();
-        }
-
-        internal ContentVersion Inject(ContentVersion v)
-        {
-            v.Serializer = Serialize;
-            v.Deserializer = Deserialize;
-            return v;
         }
 
         public string Serialize(ContentItem item)
@@ -63,39 +54,76 @@ namespace N2.Edit.Versioning
 
         public ContentItem Deserialize(string xml)
         {
-            return ContentVersion.Deserialize(importer, parser, xml);
+			var previousIgnoreMissingTypes = importer.Reader.IgnoreMissingTypes;
+			try
+			{
+				importer.Reader.IgnoreMissingTypes = true;
+				return ContentVersion.Deserialize(importer, parser, xml);
+			}
+			finally
+			{
+				importer.Reader.IgnoreMissingTypes = previousIgnoreMissingTypes;
+			}
         }
-
 
         public IEnumerable<ContentVersion> GetVersions(ContentItem item)
         {
-            var versions = Repository.Find(Parameter.Equal("Master.ID", item.ID));
+            var versions = Repository.Find(Parameter.Equal("Master.ID", item.ID) as IParameter);
             return versions
-                .Select(v => Inject(v))
                 .OrderByDescending(v => v.VersionIndex);
         }
 
-        public ContentVersion Save(ContentItem item)
+        public ContentVersion Save(ContentItem item, bool asPreviousVersion = true)
         {
+			if (item == null)
+				throw new ArgumentNullException("item");
+
             item = Find.ClosestPage(item);
-            var version = GetVersion(GetMaster(item), item.VersionIndex)
-                ?? Inject(new ContentVersion());
+            var master = GetMaster(item);
+            var version = GetVersion(master, item.VersionIndex)
+                ?? new ContentVersion();
 
             ApplyCommonValuesRecursive(item);
 
             version.Master = GetMaster(item);
             version.Saved = Utility.CurrentTime();
-            version.Version = item;
+			SerializeVersion(version, item);
             version.ItemCount = N2.Find.EnumerateChildren(item, includeSelf: true, useMasterVersion: false).Count();
-
-
-            using (var tx = Repository.BeginTransaction())
+            if (asPreviousVersion)
             {
-                Repository.SaveOrUpdate(version);
-                tx.Commit();
+	            try
+	            {
+		            version.Published = GetVersions(master)
+			            .Where(v => v.VersionIndex < item.VersionIndex)
+			            .OrderByDescending(v => v.VersionIndex)
+			            .Select(v => v.Expired)
+			            .FirstOrDefault()
+		                                ?? item.Published;
+	            }
+	            catch (Exception ex)
+	            {
+		            Logger.Error("Failure in ContentVersionRepository::Save", ex);
+		            version.Published = item.Published; // recover
+	            }
+	            version.Expired = Utility.CurrentTime();
             }
+            else
+                version.Published = null;
 
-            if (VersionsChanged != null)
+	        try
+	        {
+		        using (var tx = Repository.BeginTransaction())
+		        {
+			        Repository.SaveOrUpdate(version);
+			        tx.Commit();
+		        }
+	        }
+	        catch (Exception ex)
+	        {
+		        throw new N2Exception("Failed to commit version to repository", ex);
+	        }
+
+	        if (VersionsChanged != null)
                 VersionsChanged(this, new VersionsChangedEventArgs { Version = version });
 
             return version;
@@ -123,6 +151,9 @@ namespace N2.Edit.Versioning
 
         public void Delete(ContentItem item)
         {
+			if (item == null)
+				throw new ArgumentNullException("item");
+
             using (var tx = Repository.BeginTransaction())
             {
                 if (item.IsPage)
@@ -138,11 +169,15 @@ namespace N2.Edit.Versioning
                     var version = GetVersion(page, page.VersionIndex);
                     if (version == null)
                         return;
-                    var versionedItem = version.Version.FindPartVersion(item);
+
+                    var versionedPage = DeserializeVersion(version);
+	                if (versionedPage == null)
+		                return;
+					var versionedItem = versionedPage.FindPartVersion(item);
                     if (versionedItem == null)
                         return;
                     versionedItem.AddTo(null);
-                    Save(version.Version);
+					Save(versionedItem);
                 }
                 tx.Commit();
             }
@@ -155,7 +190,7 @@ namespace N2.Edit.Versioning
         public virtual ContentItem GetLatestVersion(ContentItem item)
         {
             var latestVersion = GetVersions(item).FirstOrDefault();
-            return (latestVersion != null && latestVersion.VersionIndex > item.VersionIndex) ? latestVersion.Version : item;
+            return (latestVersion != null && latestVersion.VersionIndex > item.VersionIndex) ? DeserializeVersion(latestVersion) : item;
         }
 
         public virtual int GetGreatestVersionIndex(ContentItem item)
@@ -177,5 +212,52 @@ namespace N2.Edit.Versioning
                 Parameter.Equal("State", ContentState.Waiting)
                 & Parameter.LessOrEqual("FuturePublish", publishVersionsScheduledBefore));
         }
+
+		public virtual ContentItem DeserializeVersion(ContentVersion version)
+		{
+			var initialIgnoreMissingTypes = importer.Reader.IgnoreMissingTypes;
+			importer.Reader.IgnoreMissingTypes = true;
+			try
+			{
+				var item = ContentVersion.Deserialize(importer, parser, version.VersionDataXml);
+				if (version.FuturePublish.HasValue)
+					item["FuturePublishDate"] = version.FuturePublish;
+				item.Updated = version.Saved;
+				return item;
+			}
+			finally
+			{
+				importer.Reader.IgnoreMissingTypes = initialIgnoreMissingTypes;
+			}
+		}
+
+		public virtual void SerializeVersion(ContentVersion version, ContentItem item)
+		{
+			if (item == null)
+			{
+				version.Published = null;
+				version.FuturePublish = null;
+				version.Expired = null;
+				version.VersionDataXml = null;
+				version.VersionIndex = 0;
+				version.Title = null;
+				version.State = ContentState.None;
+				version.ItemCount = 0;
+				version.VersionDataXml = null;
+			}
+			else
+			{
+				version.VersionIndex = item.VersionIndex;
+				version.Published = item.Published;
+				version.FuturePublish = item["FuturePublishDate"] as DateTime?;
+				if (version.FuturePublish.HasValue)
+					item["FuturePublishDate"] = null;
+				version.Expired = item.Expires;
+				version.SavedBy = item.SavedBy;
+				version.Title = item.Title;
+				version.State = item.State;
+				version.VersionDataXml = Serialize(item);
+			}
+		}
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Resources;
@@ -105,7 +106,7 @@ jQuery('#{1}').bind('dpClosed', function(e, selectedDates) {{
         private string ToString(DateTime? date)
         {
             if (date != null)
-                return date.ToString();
+                return date.Value.ToString(CultureInfo.InvariantCulture);
             else
                 return string.Empty;
         }

@@ -14,12 +14,12 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Edit.Installation;
 using N2.Engine;
 using N2.Web;
 using N2.Management.Installation;
+using N2.Persistence;
 
 namespace N2.Edit.Install
 {
@@ -41,7 +41,7 @@ namespace N2.Edit.Install
         protected override void OnLoad(EventArgs e)
         {
             host = N2.Context.Current.Resolve<IHost>();
-
+			Header.DataBind();
             base.OnLoad(e);
         }
 
@@ -80,7 +80,9 @@ namespace N2.Edit.Install
 
             try
             {
-                recentChanges = N2.Find.Items.All.MaxResults(5).OrderBy.Updated.Desc.Select().Select(i => i.SavedBy + ": #" + i.ID + " " + i.Title + " (" + i.Updated + ")").ToArray();
+                //recentChanges = N2.Find.Items.All.MaxResults(5).OrderBy.Updated.Desc.Select().Select(i => i.SavedBy + ": #" + i.ID + " " + i.Title + " (" + i.Updated + ")").ToArray();
+				recentChanges = Engine.Resolve<IContentItemRepository>().Find(ParameterCollection.Empty.OrderBy("Updated DESC").Take(5)).Select(i => i.SavedBy + ": #" + i.ID + " " + i.Title + " (" + i.Updated + ")").ToArray();
+					//N2.Find.Items.All.MaxResults(5).OrderBy.Updated.Desc.Select().Select(i => i.SavedBy + ": #" + i.ID + " " + i.Title + " (" + i.Updated + ")").ToArray();
             }
             catch (Exception ex)
             {

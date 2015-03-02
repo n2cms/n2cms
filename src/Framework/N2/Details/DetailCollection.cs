@@ -28,7 +28,7 @@ using System.Diagnostics;
 namespace N2.Details
 {
     /// <summary>A named collection of details. This is used by content items to group related details together.</summary>
-    [DebuggerDisplay("DetailCollection: Count = {Details.Count}")]
+    [DebuggerDisplay("DetailCollection, {name}, #{id}: Count = {Details.Count}")]
     public class DetailCollection : IList, ICloneable, INameable, IEnumerable<object>
     {
         #region Constructors
@@ -95,7 +95,8 @@ namespace N2.Details
         } 
 
         /// <summary>Gets or sets the the item containing this collection.</summary>
-        public virtual N2.ContentItem EnclosingItem
+		[System.Xml.Serialization.XmlIgnore]
+		public virtual N2.ContentItem EnclosingItem
         {
             get { return enclosingItem; }
             set { enclosingItem = value; }

@@ -13,6 +13,11 @@ namespace N2.Security
         {
         }
 
+        public PermissionDeniedException(string message)
+            : base(401, message)
+        {
+        }
+
         public PermissionDeniedException(ContentItem item)
             : base(401, "Permission denied")
         {

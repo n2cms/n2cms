@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -5,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Dinamico.Models;
 using N2;
+using N2.Security;
 using N2.Definitions;
 using N2.Engine.Globalization;
 using N2.Persistence.Search;
@@ -19,6 +21,8 @@ namespace Dinamico.Controllers
     /// </summary>
     public class StartPageController : ContentController<StartPage>
     {
+        private AccountManager AccountManager { get { return N2.Context.Current.Resolve<AccountManager>(); } }
+
         public ActionResult NotFound()
         {
             var closestMatch = Content.Traverse.Path(Request.AppRelativeCurrentExecutionFilePath.Trim('~', '/')).StopItem;
@@ -39,17 +43,15 @@ namespace Dinamico.Controllers
         {
             var start = this.Content.Traverse.StartPage;
             string content = Tree.From(start)
-                .Filters(N2.Content.Is.Accessible())
+                .Filters(N2.Content.Is.Navigatable())
                 .ExcludeRoot(true).ToString();
-            return Content("<ul>" 
-                + "<li>" + Link.To(start) + "</li>"
-                + content + "</ul>");
+            return Content("<li>" + Link.To(start) + "</li>" + content);
         }
 
         public ActionResult Search(string q)
         {
             if (string.IsNullOrWhiteSpace(q))
-                return Content("<ul><li>A search term is required</li></ul>");
+                return Content("<li>A search term is required</li>");
 
             var hits = GetSearchResults(CurrentPage ?? this.Content.Traverse.StartPage, q, 50);
 
@@ -60,9 +62,9 @@ namespace Dinamico.Controllers
             }
             
             if (results.Length == 0)
-                return Content("<ul><li>No hits</li></ul>");
+                return Content("<li>No hits</li>");
 
-            return Content("<ul>" + results + "</ul>");
+            return Content(results.ToString());
         }
 
         private IEnumerable<ContentItem> GetSearchResults(ContentItem root, string text, int take)
@@ -74,10 +76,13 @@ namespace Dinamico.Controllers
 
 		protected virtual string[] GetRolesForUser(string username)
 		{
+            return AccountManager.GetRolesForUser(username);
+            /* REMOVE:
 			if (Roles.Enabled)
 				return Roles.GetRolesForUser(username);
 			else
 				return new [] { N2.Security.AuthorizedRole.Everyone };
+             */
 		}
 
         [ContentOutputCache]
@@ -92,9 +97,9 @@ namespace Dinamico.Controllers
                 sb.Append("<li>").Append(Link.To(language).Text(lg.GetLanguage(language).LanguageTitle)).Append("</li>");
 
             if (sb.Length == 0)
-                return Content("<ul><li>This page is not translated</li></ul>");
+                return Content("<li>This page is not translated</li>");
 
-            return Content("<ul>" + sb + "</ul>");
+            return Content(sb.ToString());
         }
     }
 }

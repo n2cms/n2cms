@@ -1,8 +1,8 @@
 ﻿<%@ Page Language="C#" MasterPageFile="../Content/Framed.Master" AutoEventWireup="true" CodeBehind="Crop.aspx.cs" Inherits="N2.Management.Files.Crop" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <asp:Content ContentPlaceHolderID="Toolbar" runat="server">
-	<asp:LinkButton ID="btnSave" runat="server" Text="Save" CssClass="command save primary-action" OnCommand="OnSaveCommand" meta:resourceKey="btnSave" />
-    <edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Cancel</edit:CancelLink>
+	<asp:LinkButton ID="btnSave" runat="server" Text="Save" CssClass="btn btn-primary command save primary-action" OnCommand="OnSaveCommand" meta:resourceKey="btnSave" />
+    <edit:CancelLink ID="hlCancel" runat="server" CssClass="btn" meta:resourceKey="hlCancel">Close</edit:CancelLink>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" runat="server">
 	<div class="resize">

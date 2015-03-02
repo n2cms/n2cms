@@ -5,7 +5,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title>Upgrade N2</title>
-	<link href="../Resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<asp:PlaceHolder runat="server">
+		<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath) %>" type="text/css" rel="stylesheet" />
+		<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapJsPath)  %>" type="text/javascript"></script>
+	</asp:PlaceHolder>
     <link rel="stylesheet" type="text/css" href="../Resources/Css/all.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/framed.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/themes/default.css" />
@@ -23,7 +26,16 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <n2:TabPanel ID="TabPanel1" ToolTip="Upgrade" runat="server">
+        <n2:TabPanel ID="tpProgress" ToolTip="Progress" runat="server" Visible="false">
+	        <h1>Progress</h1>
+			<p>N2CMS is processing the requested action.</p>
+			<hr/>
+	        <p style="font-weight: bold;"><asp:Literal runat="server" ID="lblProgress" Text="Percent complete" /></p>
+			<hr/>
+			<p>Progress will be updated in 10 seconds. <asp:Button runat="server" OnClick="RefreshProgress" Text="Update now" CssClass="btn btn-primary" /></p>
+			<script type="text/javascript"> setTimeout("document.forms[0].submit();", 10000);</script>
+		</n2:TabPanel>
+		<n2:TabPanel ID="TabPanel1" ToolTip="Upgrade" runat="server">
 			<h1>Upgrade database from <%= Checker.Status.DatabaseVersion %> to <%= N2.Edit.Installation.DatabaseStatus.RequiredDatabaseVersion%></h1>
 			
 			<% if (Checker.Status.NeedsUpgrade){ %>
@@ -51,7 +63,7 @@
 			<% } %>
             <p>
 				This looks fine and <em>I have back up</em> of my data.<br />
-				<asp:Button ID="btnUpgrade" runat="server" OnClick="btnInstallAndMigrate_Click" Text="Update tables and run migratinos" OnClientClick="return confirm('Updating the database makes changes to the information on the site. I confirm that everything is backed-up and want to continue.');" ToolTip="Click this button to update the database and execute the migrations" CausesValidation="false" CssClass="btn btn-primary"/>
+				<asp:Button ID="btnUpgrade" runat="server" OnClick="btnInstallAndMigrate_Click" Text="Update tables and run migrations" OnClientClick="return confirm('Updating the database makes changes to the information on the site. I confirm that everything is backed-up and want to continue.');" ToolTip="Click this button to update the database and execute the migrations" CausesValidation="false" CssClass="btn btn-primary"/>
 			</p>
 			<asp:Label ID="lblResult" runat="server" />
 		    <script type="text/javascript">

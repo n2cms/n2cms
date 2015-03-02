@@ -21,24 +21,24 @@ namespace N2.Edit
 	[NavigationLinkPlugin("Edit", "edit", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 20,
 		GlobalResourceClassName = "Navigation",
 		RequiredPermission = Permission.Write,
-		IconClass = "n2-icon-edit-sign",
+		IconClass = "fa fa-pencil-square",
 		Legacy = true)]
 	[ToolbarPlugin("EDIT", "edit", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 50, ToolTip = "edit",
 		GlobalResourceClassName = "Toolbar",
 		RequiredPermission = Permission.Write,
 		OptionProvider = typeof(EditOptionProvider),
 		Legacy = true)]
-	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}&versionIndex={Selected.VersionIndex}", "Edit page", 50, ControlPanelState.Visible | ControlPanelState.DragDrop,
+	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}&n2versionIndex={Selected.VersionIndex}", "Edit page", 50, ControlPanelState.Visible | ControlPanelState.DragDrop,
 		CssClass = "complementary",
 		RequiredPermission = Permission.Write,
-		IconClass = "n2-icon-edit-sign")]
+		IconClass = "fa fa-pencil-square")]
 	[ControlPanelPreviewPublish("Publish draft", 70,
 		RequiredPermission = Permission.Publish)]
 	[ControlPanelEditingSave("Save changes", 10,
 		RequiredPermission = Permission.Write)]
 	[ControlPanelLink("cpEditingCancel", "{ManagementUrl}/Resources/icons/cancel.png", "{Selected.Url}", "Cancel changes", 20, ControlPanelState.Editing,
 		UrlEncode = false,
-		IconClass = "n2-icon-check-minus")]
+		IconClass = "fa fa-check-minus")]
 	[N2.Management.Activity.ActivityNotification]
 	public partial class Edit : EditPage, IItemEditor
 	{
@@ -86,11 +86,6 @@ namespace N2.Edit
 
 		private void InitButtons()
 		{
-			if (Request["cancel"] == "reloadTop")
-				hlCancel.NavigateUrl = "javascript:window.top.location.reload();";
-			else
-				hlCancel.NavigateUrl = CancelUrl();
-
 			bool isPublicableByUser = Security.IsAuthorized(User, ie.CurrentItem, Permission.Publish);
 			bool isPublicableItem = ie.CurrentItem.IsPage || !ie.CurrentItem.IsVersionable();
 			bool isVersionable = Versions.IsVersionable(ie.CurrentItem);
@@ -98,10 +93,6 @@ namespace N2.Edit
 			bool isExisting = ie.CurrentItem.ID != 0;
 
 			btnSavePublish.Visible = isPublicableItem && isPublicableByUser;
-			if (btnSavePublish.Visible)
-				btnSavePublish.CssClass += " primary-action";
-			else
-				btnPreview.CssClass += " primary-action";
 			btnPreview.Visible = isVersionable && isWritableByUser;
 			btnSaveUnpublished.Visible = isVersionable && isWritableByUser;
 			hlFuturePublish.Visible = isVersionable && isPublicableByUser;
@@ -261,7 +252,7 @@ namespace N2.Edit
 				var version = Engine.Resolve<N2.Edit.Versioning.DraftRepository>().FindDrafts(page).FirstOrDefault();
 				if (version != null && version.Saved > item.Updated)
 				{
-					DisplayThisHasNewerVersionInfo(version.Version.FindPartVersion(item));
+					DisplayThisHasNewerVersionInfo(Repository.DeserializeVersion(version).FindPartVersion(item));
 				}
 			}
 		}
@@ -293,10 +284,11 @@ namespace N2.Edit
 
 		private void InitTitle()
 		{
+			ItemDefinition definition = Definitions.GetDefinition(ie.CurrentItemType);
+			string definitionTitle = GetGlobalResourceString("Definitions", definition.Discriminator + ".Title") ?? definition.Title;
+
 			if (ie.CurrentItem.ID == 0 && !ie.CurrentItem.VersionOf.HasValue)
 			{
-				ItemDefinition definition = Definitions.GetDefinition(ie.CurrentItemType);
-				string definitionTitle = GetGlobalResourceString("Definitions", definition.Discriminator + ".Title") ?? definition.Title;
 				string format = GetLocalResourceString("EditPage.TitleFormat.New", "New \"{0}\"");
 
 				string template = Request["template"];
@@ -312,7 +304,7 @@ namespace N2.Edit
 			else
 			{
 				string format = GetLocalResourceString("EditPage.TitleFormat.Update", "Edit \"{0}\"");
-				Title = string.Format(format, ie.CurrentItem.Title);
+				Title = string.Format(format, string.IsNullOrEmpty(ie.CurrentItem.Title) ? definitionTitle : ie.CurrentItem.Title);
 			}
 		}
 

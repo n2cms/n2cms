@@ -52,14 +52,6 @@ namespace N2.Templates.Mvc.Models.Parts
             set { SetDetail("Boxed", value, true); }
         }
 
-        [Obsolete]
-        public IEnumerable<News> FilteredNewsItems
-        {
-            get { return Container != null 
-                ? Container.GetChildren(new TypeFilter(typeof(News)), new CountFilter(0, MaxNews)).Cast<News>()
-                : Enumerable.Empty<News>(); }
-        }
-
         public bool IsCentered()
         {
             return ZoneName == Zones.Content || ZoneName == Zones.ColumnLeft || ZoneName == Zones.ColumnRight;

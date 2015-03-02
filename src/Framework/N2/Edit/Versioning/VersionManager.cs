@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using N2.Collections;
 using N2.Configuration;
 using N2.Definitions;
@@ -67,16 +68,17 @@ namespace N2.Edit.Versioning
             if (item.Parent != null)
                 version["ParentID"] = item.Parent.ID;
 
+			//ContentVersion savedVersion;
             if (asPreviousVersion)
             {
-                Repository.Save(version);
+				/*savedVersion = */Repository.Save(version, asPreviousVersion);
                 item.VersionIndex = Repository.GetGreatestVersionIndex(item) + 1;
                 itemRepository.SaveOrUpdate(item);
             }
             else
             {
                 version.VersionIndex = Repository.GetGreatestVersionIndex(item) + 1;
-                Repository.Save(version);
+				/*savedVersion = */Repository.Save(version, asPreviousVersion);
             }
 
             if (ItemSavedVersion != null)
@@ -84,7 +86,7 @@ namespace N2.Edit.Versioning
 
             TrimVersionCountTo(item, maximumVersionsPerItem);
 
-            return version;
+			return version;// Repository.DeserializeVersion(savedVersion);
         }
 
         /// <summary>Updates a version.</summary>
@@ -245,8 +247,8 @@ namespace N2.Edit.Versioning
                 {
                     var clone = replacingChild.Clone(false);
                     clone.State = ContentState.Published;
-                    clone.Published = Utility.CurrentTime();
-                    clone.Expires = null;
+                    if (!clone.Published.HasValue)
+                        clone.Published = Utility.CurrentTime();
                     clone.AddTo(currentItem);
                     RelinkMasterVersion(clone);
                     yield return clone;
@@ -301,14 +303,14 @@ namespace N2.Edit.Versioning
                 var version = Repository.GetVersion(publishedItem, versionIndex);
                 if (version == null)
                     return null;
-                return version.Version;
+                return Repository.DeserializeVersion(version);
             }
             else
             {
                 var version = Repository.GetVersion(Find.ClosestPage(publishedItem), versionIndex);
                 if (version == null)
                     return null;
-                return version.Version.FindPartVersion(publishedItem);
+                return Repository.DeserializeVersion(version).FindPartVersion(publishedItem);
             }
         }
 
@@ -316,17 +318,30 @@ namespace N2.Edit.Versioning
         /// <param name="publishedItem">The item whose versions to get.</param>
         /// <param name="count">The number of versions to get.</param>
         /// <returns>A list of versions of the item.</returns>
-        public virtual IList<ContentItem> GetVersionsOf(ContentItem publishedItem, int skip = 0, int take = 100)
+        public virtual IEnumerable<VersionInfo> GetVersionsOf(ContentItem publishedItem, int skip = 0, int take = 1000)
         {
             if (publishedItem.ID == 0)
-                return new ItemList { publishedItem };
+                return new [] { publishedItem.GetVersionInfo() };
 
-            var versions = Repository.GetVersions(publishedItem).Select(v => v.Version)
-                .Concat(new[] { publishedItem })
-                .OrderByDescending(i => i.VersionIndex)
-                .Skip(skip).Take(take)
-                .ToList();
-            return versions;
+	        var versionQuery = Repository.GetVersions(publishedItem).Select(v => v.GetVersionInfo(Repository))
+		        .Concat(new[] {publishedItem.GetVersionInfo()})
+		        .OrderByDescending(i => i.VersionIndex)
+		        .Skip(skip).Take(take);
+
+	        var versionList = new List<VersionInfo>();
+	        foreach (var version in versionQuery)
+	        {
+		        try
+		        {
+			        versionList.Add(version);
+		        }
+		        catch (Exception ex)
+		        {
+			        versionList.Add(new InvalidVersionInfo() {InnerException = ex});
+		        }
+	        }
+
+	        return versionList;
         }
 
         /// <summary>Removes exessive versions.</summary>
@@ -344,22 +359,6 @@ namespace N2.Edit.Versioning
                 Repository.Repository.Flush();
                 transaction.Commit();
             }
-
-            //IList<ContentItem> versions = GetVersionsOf(publishedItem);
-            //versions.Remove(publishedItem);
-            //int max = maximumNumberOfVersions - 1;
-
-            //if (versions.Count <= max) return;
-
-            //using (ITransaction transaction = itemRepository.BeginTransaction())
-            //{
-            //    for (int i = max; i < versions.Count; i++)
-            //    {
-            //        this.itemRepository.Delete(versions[i]);
-            //    }
-            //    itemRepository.Flush();
-            //    transaction.Commit();
-            //}
         }
 
         /// <summary>Checks whether an item  may have versions.</summary>

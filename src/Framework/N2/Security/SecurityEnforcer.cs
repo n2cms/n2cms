@@ -12,6 +12,8 @@ namespace N2.Security
     [Service(typeof(ISecurityEnforcer))]
     public class SecurityEnforcer : ISecurityEnforcer, IAutoStart
     {
+        Logger<SecurityEnforcer> logger;
+
         /// <summary>
         /// Is invoked when a security violation is encountered. The security 
         /// exception can be cancelled by setting the cancel property on the event 
@@ -85,8 +87,13 @@ namespace N2.Security
                     if (AuthorizationFailed != null)
                         AuthorizationFailed.Invoke(this, args);
 
-                    if (!args.Cancel)
+                    if (args.Cancel)
+                        logger.Info("AuthorizeRequest: Default permission denied handling cancelled by event handler.");
+                    else
+                    {
+                        logger.InfoFormat("AuthorizeRequest: Executing default permission denied action with http code {0}.", permissionDeniedHttpCode);
                         throw new PermissionDeniedException(permissionDeniedHttpCode, permissionDeniedHttpCode == 401 ? "Unauthorized" : "Not Found", page, user);
+                    }
                 }
             }
         }
@@ -96,7 +103,10 @@ namespace N2.Security
         protected virtual void OnItemSaving(ContentItem item)
         {
             if (!security.IsAuthorized(item, this.webContext.User))
+            {
+                logger.InfoFormat("OnItemSaving: User {0} not authorized for {1}.", webContext.User, item);
                 throw new PermissionDeniedException(item, this.webContext.User);
+            }
             IPrincipal user = this.webContext.User;
             if (user != null)
                 item.SavedBy = user.Identity.Name;
@@ -110,7 +120,10 @@ namespace N2.Security
         protected virtual void OnItemMoving(ContentItem source, ContentItem destination)
         {
             if (!security.IsAuthorized(source, this.webContext.User) || !security.IsAuthorized(destination, this.webContext.User))
+            {
+                logger.InfoFormat("OnItemMoving: User {0} not authorized for {1} to {2}.", webContext.User, source, destination);
                 throw new PermissionDeniedException(source, this.webContext.User);
+            }
         }
 
         /// <summary>Is invoked when an item is to be deleted.</summary>
@@ -119,7 +132,10 @@ namespace N2.Security
         {
             IPrincipal user = webContext.User;
             if (!security.IsAuthorized(item, user))
+            {
+                logger.InfoFormat("OnItemDeleting: User {0} not authorized for {1}.", webContext.User, item);
                 throw new PermissionDeniedException(item, user);
+            }
         }
 
         /// <summary>Is invoked when an item is to be copied.</summary>
@@ -128,7 +144,10 @@ namespace N2.Security
         protected virtual void OnItemCopying(ContentItem source, ContentItem destination)
         {
             if (!security.IsAuthorized(source, this.webContext.User) || !security.IsAuthorized(destination, this.webContext.User))
+            {
+                logger.InfoFormat("OnItemCopying: User {0} not authorized for {1} to {2}.", webContext.User, source, destination);
                 throw new PermissionDeniedException(source, this.webContext.User);
+            }
         }
         #endregion
 

@@ -122,7 +122,9 @@ namespace N2.Edit
         {
             string returnUrl = page.Request["returnUrl"];
             if (!string.IsNullOrEmpty(returnUrl))
-                return Url.Parse(returnUrl).SetQueryParameter(PathData.VersionIndexQueryKey, item.VersionIndex).SetQueryParameter("versionKey", item.GetVersionKey());
+                return Url.Parse(returnUrl)
+                    .SetQueryParameter(PathData.VersionIndexQueryKey, item.VersionIndex)
+                    .SetQueryParameter(PathData.VersionKeyQueryKey, item.GetVersionKey());
             return engine.ResolveAdapter<NodeAdapter>(item).GetPreviewUrl(item);
         }
 
@@ -201,7 +203,7 @@ namespace N2.Edit
 
 		public ElementStyle Style
 		{
-			get { return ElementStyle.Empty.Prefix("<b class='n2-icon-plus-sign'></b> "); }
+			get { return ElementStyle.Empty.Prefix("<b class='fa fa-plus-circle'></b> "); }
 		}
 	}
 }

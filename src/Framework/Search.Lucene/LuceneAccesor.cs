@@ -20,7 +20,7 @@ namespace N2.Persistence.Search
     /// <summary>
     /// Simplifies access to the lucene API.
     /// </summary>
-    [Service(Configuration = "lucene")]
+    [Service(Configuration = "Lucene")]
     public class LuceneAccesor : IDisposable
     {
         private Engine.Logger<LuceneAccesor> logger;

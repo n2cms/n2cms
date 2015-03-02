@@ -38,7 +38,15 @@ namespace N2.Edit.Navigation
 
                 string fileName = System.IO.Path.GetFileName(inputFile.PostedFile.FileName);
                 string filePath = Url.Combine(uploadFolder, fileName);
-                FS.WriteFile(filePath, inputFile.PostedFile.InputStream);
+
+                if (Engine.Config.Sections.Management.UploadFolders.IsTrusted(fileName))
+                {
+                    FS.WriteFile(filePath, inputFile.PostedFile.InputStream);
+                }
+                else
+                {
+                    throw new N2.Security.PermissionDeniedException("Invalid file name");
+                }
 
                 ClientScript.RegisterStartupScript(typeof(Tree), "select", "updateOpenerWithUrlAndClose('" + ResolveUrl(filePath) + "');", true);
             }
@@ -159,13 +167,11 @@ namespace N2.Edit.Navigation
         private static void ExpandRecursive(IFileSystem fs, HierarchyNode<ContentItem> parent, List<ContentItem> selectionTrail)
         {
             int index = selectionTrail.FindIndex(ci => string.Equals(ci.Url, parent.Current.Url, StringComparison.InvariantCultureIgnoreCase));
-            if (index >= 0)
-            {
-                foreach (var child in parent.Current.GetChildren(new NullFilter()))
-                {
-                    parent.Children.Add(CreateDirectoryNode(fs, child, parent, selectionTrail));
-                }
-            }
+	        if (index < 0) return;
+	        foreach (var child in parent.Current.GetChildPagesUnfiltered())
+	        {
+		        parent.Children.Add(CreateDirectoryNode(fs, child, parent, selectionTrail));
+	        }
         }
 
         protected override string GetToolbarSelectScript(string toolbarPluginName)

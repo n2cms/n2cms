@@ -41,7 +41,7 @@ namespace N2.Management.Content.Templates
         protected void btnAdd_Command(object sender, CommandEventArgs args)
         {
             var template = Selection.SelectedItem.Clone(false);
-            var children = Selection.SelectedItem.GetChildren();
+			var children = Selection.SelectedItem.Children.WhereAccessible();
             for (int i = 0; i < children.Count; i++)
             {
                 CheckBox chkChildren = (CheckBox)rptChildren.Items[i].FindControl("chkChildren");

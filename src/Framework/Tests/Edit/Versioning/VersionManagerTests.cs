@@ -1,6 +1,5 @@
 using System;
 using N2.Persistence;
-using N2.Persistence.NH;
 using N2.Tests.Fakes;
 using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
@@ -8,8 +7,6 @@ using Shouldly;
 using System.Linq;
 using N2.Edit.Versioning;
 using N2.Tests.Persistence;
-using N2.Persistence.Proxying;
-using N2.Definitions;
 using System.Collections.Generic;
 
 namespace N2.Tests.Edit.Versioning
@@ -31,10 +28,13 @@ namespace N2.Tests.Edit.Versioning
         }
 
         [TestFixtureTearDown]
-        public void TestFixtureTearDown()
+        public override void TestFixtureTearDown()
         {
+            N2.Utility.CurrentTime = () => DateTime.Now;
             engine.SecurityManager.ScopeEnabled = true;
-        }
+
+			base.TestFixtureTearDown();
+		}
 
         // versioning
 
@@ -97,11 +97,11 @@ namespace N2.Tests.Edit.Versioning
             item.VersionIndex++;
             persister.Save(item);
 
-            var versions = versioner.GetVersionsOf(item);
+            var versions = versioner.GetVersionsOf(item).ToList();
 
             Assert.That(versions.Count, Is.EqualTo(2));
-            Assert.That(versions[0], Is.EqualTo(item));
-            Assert.That(versions[1], Is.EqualTo(version));
+            Assert.That(versions[0].Content, Is.EqualTo(item));
+            Assert.That(versions[1].Content, Is.EqualTo(version));
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace N2.Tests.Edit.Versioning
             PersistableItem item = CreateOneItem<PersistableItem>(0, "item", null);
             persister.Save(item);
 
-            var versions = versioner.GetVersionsOf(item);
+            var versions = versioner.GetVersionsOf(item).ToList();
 
             Assert.That(versions.Count, Is.EqualTo(1));
         }
@@ -128,10 +128,10 @@ namespace N2.Tests.Edit.Versioning
             item.VersionIndex++;
             persister.Save(item);
 
-            var versions = versioner.GetVersionsOf(item, 0, 1);
+            var versions = versioner.GetVersionsOf(item, 0, 1).ToList();
 
             Assert.That(versions.Count, Is.EqualTo(1));
-            Assert.That(versions[0], Is.EqualTo(item));
+            Assert.That(versions[0].Content, Is.EqualTo(item));
         }
 
         [Test]
@@ -144,7 +144,7 @@ namespace N2.Tests.Edit.Versioning
 
             versioner.TrimVersionCountTo(item, 2);
 
-            var versions = versioner.GetVersionsOf(item);
+            var versions = versioner.GetVersionsOf(item).ToList();
             Assert.That(versions.Count, Is.EqualTo(2));
         }
 
@@ -160,7 +160,7 @@ namespace N2.Tests.Edit.Versioning
 
             versioner.TrimVersionCountTo(item, 2);
 
-            var versions = versioner.GetVersionsOf(item);
+            var versions = versioner.GetVersionsOf(item).ToList();
             Assert.That(versions.Count, Is.EqualTo(2));
         }
 
@@ -176,9 +176,9 @@ namespace N2.Tests.Edit.Versioning
 
             versioner.TrimVersionCountTo(item, 1);
 
-            var versions = versioner.GetVersionsOf(item);
+            var versions = versioner.GetVersionsOf(item).ToList();
             Assert.That(versions.Count, Is.EqualTo(1));
-            Assert.That(versions[0], Is.EqualTo(item));
+            Assert.That(versions[0].Content, Is.EqualTo(item));
         }
 
         // version index
@@ -259,9 +259,9 @@ namespace N2.Tests.Edit.Versioning
                 referenced = persister.Get(referenced.ID);
                 persister.Delete(referenced);
 
-                var loadedVersioin = versioner.Repository.GetVersion(item, version.VersionIndex).Version;
+				var loadedVersion = versioner.Repository.DeserializeVersion(versioner.Repository.GetVersion(item, version.VersionIndex));
                 //persister.Get(version.ID);
-                Assert.That(loadedVersioin["Reference"], Is.Null);
+                Assert.That(loadedVersion["Reference"], Is.Null);
             }
         }
 
@@ -802,7 +802,7 @@ namespace N2.Tests.Edit.Versioning
             persister.Save(item);
             versioner.AddVersion(item);
 
-            versioner.Repository.GetVersions(item).Single().Version.VersionOf.Value.ShouldBe(item);
+            versioner.Repository.DeserializeVersion(versioner.Repository.GetVersions(item).Single()).VersionOf.Value.ShouldBe(item);
             versioner.Repository.DeleteVersionsOf(item);
             versioner.Repository.GetVersions(item).ShouldBeEmpty();
         }
@@ -1051,6 +1051,188 @@ namespace N2.Tests.Edit.Versioning
         [Test, Ignore("TODO")]
         public void NewDetailCollections_AreAdded()
         {
+        }
+
+        [Test]
+        public void PublishingDraft_CreatesNewPart_WithoutRemovingExpiryDate()
+        {
+            PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
+            persister.Save(root);
+            
+            var draft = versioner.AddVersion(root, asPreviousVersion: false);
+            var part = new PersistablePart { Title = "part", Name = "part" };
+            part.ZoneName = "TheZone";
+            var now = DateTime.Now.StripMilliseconds();
+            part.Expires = now;
+            part.AddTo(draft);
+
+            var master = versioner.MakeMasterVersion(draft);
+
+            var addedChild = master.Children.Single();
+            addedChild.Expires.Value.ShouldBe(now);
+        }
+
+        [Test]
+        public void AddPreviousVersion_MasterShouldKeep_OriginalPublishedExpiration()
+        {
+            var now = DateTime.Now;
+            using (N2.Utility.TimeCapsule(now.AddMinutes(-1)))
+            {
+                PersistableItem master = CreateOneItem<PersistableItem>(0, "root", null);
+                persister.Save(master);
+
+                using (N2.Utility.TimeCapsule(now))
+                {
+                    versioner.AddVersion(master, asPreviousVersion: true);
+                }
+
+                var versions = versioner.GetVersionsOf(master).ToList();
+                var masterInfo = versions[0];
+                masterInfo.Published.ShouldBe(now.AddMinutes(-1));
+                masterInfo.Expires.ShouldBe(null);
+            }
+        }
+
+        [Test]
+        public void AddSinglePreviousVersion_VersionShouldBorrow_PublishedFromMaster_AndExpiresFromCurrentTime()
+        {
+            var now = DateTime.Now;
+            using (N2.Utility.TimeCapsule(now.AddMinutes(-1)))
+            {
+                PersistableItem master = CreateOneItem<PersistableItem>(0, "root", null);
+                persister.Save(master);
+
+                using (N2.Utility.TimeCapsule(now))
+                {
+                    versioner.AddVersion(master, asPreviousVersion: true);
+                }
+
+                var versions = versioner.GetVersionsOf(master).ToList();
+                var previousVersion = versions[1];
+                previousVersion.Published.ShouldBe(now.AddMinutes(-1));
+                previousVersion.Expires.ShouldBe(now);
+            }
+        }
+
+        [Test]
+        public void AddMultiplePreviousVersions_VersionShouldBorrow_PublishedFromPreviousExpires_AndExpiresFromCurrentTime()
+        {
+            var now = DateTime.Now;
+            using (N2.Utility.TimeCapsule(now.AddMinutes(-2)))
+            {
+                PersistableItem master = CreateOneItem<PersistableItem>(0, "root", null);
+                persister.Save(master);
+
+                using (N2.Utility.TimeCapsule(now.AddMinutes(-1)))
+                {
+                    versioner.AddVersion(master, asPreviousVersion: true);
+                }
+
+                using (N2.Utility.TimeCapsule(now))
+                {
+                    versioner.AddVersion(master, asPreviousVersion: true);
+                }
+
+                var versions = versioner.GetVersionsOf(master).ToList();
+                var previousVersion = versions[1];
+                previousVersion.Published.ShouldBe(now.AddMinutes(-1));
+                previousVersion.Expires.ShouldBe(now);
+                
+                var oldestVersion = versions[2];
+                oldestVersion.Published.ShouldBe(now.AddMinutes(-2));
+                oldestVersion.Expires.ShouldBe(now.AddMinutes(-1));
+            }
+
+        }
+
+        [Test]
+        public void AddDraftVersion_VersionShouldHave_NoPublishedDate()
+        {
+            var now = DateTime.Now;
+            using (N2.Utility.TimeCapsule(now.AddMinutes(-1)))
+            {
+                PersistableItem master = CreateOneItem<PersistableItem>(0, "root", null);
+                persister.Save(master);
+
+                using (N2.Utility.TimeCapsule(now))
+                {
+                    versioner.AddVersion(master, asPreviousVersion: false);
+                }
+
+                var versions = versioner.GetVersionsOf(master).ToList();
+                var draft = versions[0];
+                draft.Published.ShouldBe(null);
+                draft.Expires.ShouldBe(null);
+            }
+        }
+
+        [Test]
+        public void AddDraftVersion_Master_ShouldNotBeAffected()
+        {
+            var now = DateTime.Now;
+            using (N2.Utility.TimeCapsule(now.AddMinutes(-1)))
+            {
+                PersistableItem master = CreateOneItem<PersistableItem>(0, "root", null);
+                persister.Save(master);
+
+                using (N2.Utility.TimeCapsule(now))
+                {
+                    versioner.AddVersion(master, asPreviousVersion: false);
+                }
+
+                var versions = versioner.GetVersionsOf(master).ToList();
+                var masterInfo = versions[1];
+                masterInfo.Published.ShouldBe(now.AddMinutes(-1));
+                masterInfo.Expires.ShouldBe(null);
+            }
+        }
+
+        [Test]
+        public void PublishDraftVersion_DraftShouldBorrow_PublishedExpiresFromCurrentMaster()
+        {
+            var now = DateTime.Now;
+            using (N2.Utility.TimeCapsule(now.AddMinutes(-1)))
+            {
+                PersistableItem master = CreateOneItem<PersistableItem>(0, "root", null);
+                persister.Save(master);
+
+                var draft = versioner.AddVersion(master, asPreviousVersion: false);
+                using (N2.Utility.TimeCapsule(now))
+                {
+                    versioner.ReplaceVersion(master, draft, storeCurrentVersion: true);
+                }
+
+                var versions = versioner.GetVersionsOf(master).ToList();
+                var masterInfo = versions[0];
+                masterInfo.Published.ShouldBe(now.AddMinutes(-1));
+                masterInfo.Expires.ShouldBe(null);
+            }
+        }
+
+        [Test]
+        public void PublishDraftVersion_MasterShouldExpireNow_AndBorrowPublishedFromPreviousVersion()
+        {
+            var now = DateTime.Now;
+            using (N2.Utility.TimeCapsule(now.AddMinutes(-2)))
+            {
+                PersistableItem master = CreateOneItem<PersistableItem>(0, "root", null);
+                persister.Save(master);
+                using (N2.Utility.TimeCapsule(now.AddMinutes(-1)))
+                {
+                    var version = versioner.AddVersion(master, asPreviousVersion: true);
+                }
+
+                var draft = versioner.AddVersion(master, asPreviousVersion: false);
+                using (N2.Utility.TimeCapsule(now))
+                {
+                    versioner.ReplaceVersion(master, draft, storeCurrentVersion: true);
+                }
+
+                var versions = versioner.GetVersionsOf(master).ToList();
+                var previousMaster = versions[1];
+                previousMaster.Published.ShouldBe(now.AddMinutes(-1));
+                previousMaster.Expires.ShouldBe(now);
+            }
         }
     }
 }

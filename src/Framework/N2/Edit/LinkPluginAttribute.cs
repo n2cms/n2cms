@@ -58,8 +58,6 @@ namespace N2.Edit
             set { globalResourceClassName = value; }
         }
 
-        public string IconClass { get; set; }
-
         public override Control AddTo(Control container, PluginContext context)
         {
             HyperLink a = AddAnchor(container, context);

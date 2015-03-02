@@ -1,135 +1,51 @@
-# N2CMS
-#### The best Content Management System (CMS) for custom ASP.NET MVC and WebForm applications
+## Welcome to N2CMS
 
-##Give your content managers this user experience
-Sharing control of your web application's content makes the site better. 
-The site will grow naturally and you won't have to push builds nearly as often.
+**N2CMS is a lightweight CMS framework.** With just a few strokes of your keyboard a 
+wonderful strongly-typed model emerges complete with a management UI. You can 
+spend the rest of your day building the best site imaginable.
 
-**Main**
+**It's so .NET!** With N2CMS, you build the model of the data that needs to be managed using C# or 
+VB code in Visual Studio. The type below is picked up by the N2 engine at runtime 
+and made available to be edited. The code uses an open API with multiple built-in 
+options and unlimited customization options.
 
-![Management Console](https://pbs.twimg.com/media/BPziGS2CYAAqg7S.png:large)
-
-**Page or Part Edit**
-
-![Page / Part Edit](http://content.screencast.com/users/brianmatic/folders/Jing/media/b9c58f64-853e-4484-8dc1-317eeb2fe80b/00000003.png)
-
-## How do I integrate it in my code?
-
-###MVC Projects
-
-**Model**
+*All you have to do is design your model class (inherit N2.ContentItem) and define 
+which properties are editable by adding attributes*
 
 ```csharp
-[PageDefinition("My Page")]
-public class MyPage : N2.ContentItem
+[PageDefinition(TemplateUrl = "~/my/pageitemtemplate.aspx")]
+public class PageItem : N2.ContentItem
 {
-	[EditableFreeTextArea]
-	public virtual string Text { get; set; }
+    [EditableFreeTextArea]
+    public virtual string Text { get; set; }
 }
 ```
 
-**View**
+### Quick Start
 
-```html
-@model MyPage
+**For a quick start**, follow these instructions, which assume that you are using ASP.NET MVC + Razor (the "Dinamico" template pack -- see below for details). 
 
-<html>
-	<head>
-		<title>
-			@model.Title
-		</title>
-	</head>
-	<body>
-		<h1>@model.Title</h1>
-		
-		<p>This CMS makes it so easy to publish @model.Text!</p>
-	</body>
-</html>
+1. Create a new, empty Web Application Project in Visual Studio 2012 or 2013. 
+2. Go to *Tools > Library Package Manager > Package Manager Console*
+3. In the Package Manager console run the following commands: 
+  ```
+Install-Package N2CMS.Dinamico
+Install-Package N2CMS.Management
 ```
 
-**Controller**
+Please note, N2CMS supports the following ASP.NET view engines:
+* ASP.NET MVC + Razor ("Dinamico" template pack)
+* ASP.NET MVC + MVC Views ("MVC" template pack)
+* ASP.NET Web Forms
 
-```c#
-using N2.Web;
+
+Detailed installation instructions are available at: https://github.com/n2cms/n2cms/blob/master/README_SETUP.md
+or in our documentation wiki: https://n2cmsdocs.atlassian.net/wiki/display/N2CMS/Getting+Started+using+N2CMS
 
 
-/// <summary>
-/// This controller will handle pages deriving from AbstractPage which are not 
-/// defined by another controller [Controls(typeof(MyPage))]. The default 
-/// behavior is to render a template with this pattern:
-///  * "~/Views/SharedPages/{ContentTypeName}.aspx"
-/// </summary>
-[Controls(typeof(MyPage))]
-public class MyPage : N2.ContentController<MyPage>
-{
-	
-}
-```
+----
 
-###WebForm Projects
-
-**Class**
-
-```csharp
-[PageDefinition("My Page", TemplateUrl = "~/MyPage.aspx")]
-[AvailableZones("My zone for N2 Parts", "MyZone")]
-public class MyPage : N2.ContentItem
-{
-	[EditableFreeTextArea]
-	public virtual string Text { get; set; }
-}
-
-```
-
-**Page**
-
-```html
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MyPage.aspx.cs" Inherits="App.UI.Page" %>
-
-<asp:Content ContentPlaceHolderID="content" runat="server">
-	<!-- master page and theme is defined in web.config -->
-
-	<!-- The droppable zone enables drop of parts onto the tempalate when in drag&drop mode -->        
-    <div class="zone">
-		<n2:DroppableZone ID="DroppableZone1" runat="server" ZoneName="MyZone"/>
-	</div>
-
-    <asp:SiteMapPath ID="Path" runat="server" CssClass="breadcrumb" />
-
-    <!-- The display control uses the default presentation for an item's property, the title in this case uses header 1 -->
-    <n2:Display ID="TitleDisplay" PropertyName="Title" runat="server" />
-    <div>
-        <!-- This is a way to inject data into a webforms control, in this case we're injecting the current page's text property -->
-        <p>N2CMS makes it so easy to publish <asp:Literal ID="TextLiteral" Text="<%$ CurrentPage: Text %>" runat="server" />.</p>
-    </div>
-</asp:Content>
-```
-
-**Here are some other interesting WebControls**
-
-Binds a control to the current page's text property: 
-```html
-<asp:Literal Text="<%$ CurrentItem: Text %>" runat="server" />
-```
-
-Provides create, read, update, delete access to content through ASP.NET the databinding API:
-```html
-<n2:ItemDataSource ID="Level1Items" runat="server" Path="/" />
-<asp:DataGrid DataSourceID="Level1Items" runat="server" />
-```
-
-Renders non-page items added to the "RightColumn" zone:
-
-```html
-<n2:Zone ZoneName="MyZone" runat="server" />
-```
-
-Outputs content using the default control (a literal in this case):
-```html
-<n2:Display PropertyName="Text" runat="server" />
-```
-
-###API
+##API
 
 You can use the API within your methods and properties to develop advanced content manageable features.
 
@@ -159,25 +75,36 @@ There are more API usage examples here: http://n2cms.com/Documentation/Manipulat
 
 >We know... we need to move this to github wiki or our public site.  We are the cobblers kids.  Would love help if you are interested.  Contact us.
 
-###Examples
+
+## Screenshots
+
+### Management Console 
+
+![Management Console](https://pbs.twimg.com/media/BPziGS2CYAAqg7S.png:large)
+
+### Page or Part Edit
+
+![Page / Part Edit](http://content.screencast.com/users/brianmatic/folders/Jing/media/b9c58f64-853e-4484-8dc1-317eeb2fe80b/00000003.png)
+
+
+## Examples
 
 **We currently post them on CodePlex: http://n2cms.codeplex.com/releases/**.  You can also find them in the source code within this repo.
 
->**We recommend starting with the minimal examples if you are new to N2CMS.  This release has easy to download minimal examples: http://n2cms.codeplex.com/releases/view/70951.**
 
->You may have to make certain configuration changes when moving the code to a 
->hosting provider. Common issues are addressed here:
->http://n2cms.com/wiki/Troubleshooting-site-deployment.aspx
+You may have to make certain configuration changes when moving the code to a 
+hosting provider. Common issues are addressed here:
+http://n2cms.com/wiki/Troubleshooting-site-deployment.aspx
 
 ##Clone the Source Code and Contribute to N2CMS
 
-##What is here?
+### What is here?
 
 Here you will find the N2 CMS framework and a number of template projects that 
 demonstrate alternative ways to use this CMS. They all share a framework that 
 consists of N2.dll and the UI management files residing below the /N2/ folder.
-
-##How do I setup my development environment?
+ 
+### How do I setup my development environment?
 
 1. Clone this repo to your PC.
 2. Double-click on Prepare_AllDependencies.bat
@@ -195,9 +122,7 @@ consists of N2.dll and the UI management files residing below the /N2/ folder.
 6. Set the a web site project as startup project (N2.Templates.* or Dinamico in src)
 7. Compile and run (Ctrl+F5)
 
-
-> Heads up
-> N2 CMS supports many databases, this code is set up to use the SQLite embedded 
+N2 CMS supports many databases, this code is set up to use the SQLite embedded 
 database. You may want to use SQL Server or MySQL in production.
 
 ##More Resources and Documentation
@@ -210,16 +135,22 @@ database. You may want to use SQL Server or MySQL in production.
 * http://stackoverflow.com/questions/tagged/n2cms
 
 
-##Feedback
+## Feedback
 
-You are very welcome to let me know about your build experiences in the 
-issues so I can improve things.
+You are very welcome to let us know about your build experiences in the issues 
+so we can continue to improve things. Pull requests are also welcomed. 
 
-##Frequently Asked Questions
 
-####What does the N2 in N2CMS stand for?
-> It is short for "en tva" (1-2 in swedish).
 
-####I want to create an open source project based on N2CMS.  I want N2CMS to be part of branding my project. Do you have guidance on naming my project?
-> Yes, please use the entire project name "N2CMS" in your project name.  For example, N2CMS.BootstrapBlog would be great project name.
-> We feel that just using "N2" is too generic.  Using N2CMS will help with organic search results.
+## Frequently Asked Questions
+
+*What does the N2 in N2CMS stand for?*
+It is short for "en tva" (1-2 in swedish).
+
+*I want to create an open source project based on N2CMS.  I want N2CMS to be 
+part of branding my project. Do you have guidance on naming my project?*
+
+Yes, please use the entire project name "N2CMS" in your project name.  For 
+example, N2CMS.BootstrapBlog would be great project name. We feel that just 
+using "N2" is too generic.  Using N2CMS will help with organic search results.
+

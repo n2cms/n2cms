@@ -1,11 +1,15 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="UpgradeVersions.aspx.cs" Inherits="N2.Edit.Install.UpgradeVersions" %>
+<%@ Import Namespace="N2.Web" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title>Upgrade N2</title>
-    <link rel="stylesheet" type="text/css" href="../Resources/bootstrap/css/bootstrap.min.css" />
+	<asp:PlaceHolder runat="server">
+		<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath) %>" type="text/css" rel="stylesheet" />
+		<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapJsPath)  %>" type="text/javascript"></script>
+	</asp:PlaceHolder>
     <link rel="stylesheet" type="text/css" href="../Resources/Css/all.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/framed.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/themes/default.css" />
@@ -21,7 +25,7 @@
     	textarea { width:95%;height:120px;border:none;background-color:#FFB; }
     	#StopMigration { display:none; }
     </style>
-	<script>
+	<script type="text/javascript">
 		var stop = false;
 		var error = false;
 		function StartMigration() {
@@ -36,7 +40,7 @@
 			var $next = $(".version:not(.error):first");
 			if ($next.length) {
 				$next.css("background-color", "moccasin");
-				$.post("UpgradeVersion.ashx", { item: $next.children(".version-id").text() }, function (result) {
+				$.post("UpgradeVersion.ashx", { n2Item: $next.children(".version-id").text() }, function (result) {
 					if (result.success) {
 						$next.css("background-color", "green").remove();
 					} else {

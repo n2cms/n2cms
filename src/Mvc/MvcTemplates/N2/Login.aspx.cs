@@ -10,8 +10,10 @@ namespace N2.Edit
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Login1.Focus();
-            if (Request.QueryString["logout"] == null) 
+			Header.DataBind();
+			Login1.Focus();
+
+			if (Request.QueryString["logout"] == null) 
                 return;
             
             // Otherwise, sign out:
@@ -21,7 +23,7 @@ namespace N2.Edit
             if (string.IsNullOrEmpty(logoutUrl)) logoutUrl = "login.aspx?returnUrl=.";
             if (!string.IsNullOrEmpty(returnUrl)) logoutUrl = returnUrl;
             Response.Redirect(logoutUrl);
-        }
+		}
 
         protected void Login1_LoggingIn(object sender, LoginCancelEventArgs e)
         {

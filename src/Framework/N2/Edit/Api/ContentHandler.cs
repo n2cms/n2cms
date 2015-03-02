@@ -117,12 +117,12 @@ namespace N2.Management.Api
                     EnsureValidSelection();
                     switch (context.Request.PathInfo)
                     {
-						case "":
-							Create(context);
-							break;
-						case "/update":
-							Update(context);
-							break;
+                        case "":
+                            Create(context);
+                            break;
+                        case "/update":
+                            Update(context);
+                            break;
                         case "/sort":
                         case "/move":
                             Move(context, Selection.RequestValueAccessor);
@@ -148,21 +148,11 @@ namespace N2.Management.Api
                     EnsureValidSelection();
                     Delete(context);
                     break;
-				case "PUT":
+                case "PUT":
                     EnsureValidSelection();
-					Update(context);
-					break;
+                    Update(context);
+                    break;
             }
-		}
-
-		private void Update(HttpContextBase context)
-		{
-			throw new NotImplementedException();
-		}
-
-		private void Create(HttpContextBase context)
-		{
-			throw new NotImplementedException();
         }
 
         private void Authorize(IPrincipal user, ContentItem item)
@@ -264,7 +254,21 @@ namespace N2.Management.Api
         {
             var adapter = engine.GetContentAdapter<NodeAdapter>(Selection.SelectedItem);
             var versions = engine.Resolve<IVersionManager>().GetVersionsOf(Selection.SelectedItem);
-            return versions.Select(v => new Node<TreeNode>(adapter.GetTreeNode(v, allowDraft: false)));
+
+	        foreach (var v in versions)
+	        {
+		        Node<TreeNode> node;
+		        try
+		        {
+				    node = new Node<TreeNode>(adapter.GetTreeNode(v.Content, allowDraft: false));
+		        }
+		        catch (Exception ex)
+		        {
+					Logger.Error("Failure in GetVersions(HttpContextBase)", ex);
+					node = new Node<TreeNode>(new TreeNode() { Title = "(invalid version)", ToolTip = ex.ToString() });
+		        }
+		        yield return node;
+	        }
         }
 
         private IEnumerable<Node<InterfaceMenuItem>> GetTranslations(HttpContextBase context)
@@ -359,6 +363,9 @@ namespace N2.Management.Api
         {
             var sorter = engine.Resolve<ITreeSorter>();
             var from = Selection.ParseSelectionFromRequest();
+
+			using (var tx = engine.Persister.Repository.BeginTransaction())
+			{
             if (!string.IsNullOrEmpty(request("before")))
             {
                 var before = engine.Resolve<Navigator>().Navigate(request("before"));
@@ -374,8 +381,11 @@ namespace N2.Management.Api
                 PerformMoveChecks(context, from, to);
 
                 sorter.MoveTo(from, to);
+					engine.Resolve<ITrashHandler>().HandleMoved(from);
+				}
+				engine.Persister.Save(from);
+				tx.Commit();
             }
-
             context.Response.WriteJson(new { Moved = true, Current = engine.GetNodeAdapter(from).GetTreeNode(from) });
         }
 

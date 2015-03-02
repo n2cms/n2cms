@@ -15,7 +15,7 @@ namespace N2.Edit
     [NavigationLinkPlugin("Delete", "delete", "{ManagementUrl}/Content/delete.aspx?{Selection.SelectedQueryKey}={selected}&alert=true", Targets.Preview, "{ManagementUrl}/Resources/icons/cross.png", 30, 
         GlobalResourceClassName = "Navigation",
         RequiredPermission = Permission.Publish,
-        IconClass = "n2-icon-trash",
+        IconClass = "fa fa-trash-o",
         Legacy = true)]
     [ToolbarPlugin("", "delete_tool", "{ManagementUrl}/Content/delete.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/cross.png", 60, 
         ToolTip = "delete",
@@ -43,20 +43,10 @@ namespace N2.Edit
                     query &= Parameter.Like(LinkTracker.Tracker.LinkDetailName, selectedItem.Url).Detail();
                 var count = Engine.Persister.Repository.Count(query);
 
-                //var q = Engine.Resolve<IItemFinder>().Where.State.NotEq(ContentState.Deleted);
-
-                //q = q.And.OpenBracket()
-                //  .Detail(LinkTracker.Tracker.LinkDetailName).Like(selectedItem.Url);
-                //if (selectedItem.ID != 0)
-                //  q = q.Or.Detail().Eq(selectedItem);
-                //q = q.CloseBracket();
-
-                //int count = q.Count();
                 if (count > 0)
                 {
                     chkAllow.Text += " (" + count + ")";
                     rptReferencing.DataSource = Engine.Persister.Repository.Find(query.Take(10)).Where(Content.Is.Distinct());
-                        //q.MaxResults(10).Filters(N2.Content.Is.Distinct()).Select();
                     rptReferencing.DataBind();
                     hlReferencingItems.Visible = (count > 10);
                 }

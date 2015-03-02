@@ -158,9 +158,12 @@ namespace N2.Web.Parts
         /// <returns>Item definitions allowed by zone, parent restrictions and security.</returns>
         public virtual IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem parentItem, IPrincipal user)
         {
-            return Definitions.GetAllowedChildren(parentItem)
-                .Where(d => d.Enabled && d.AllowedIn != Integrity.AllowedZones.None && d.Enabled)
-                .WhereAuthorized(Security, user, parentItem);
+            return new[] { parentItem }
+                .Concat(parentItem.Children.FindParts().SelectMany(Find.EnumerateTree))
+				.SelectMany(ci => Definitions.GetAllowedChildren(ci))
+				.Where(d => d.Enabled)
+				.Where(d => d.AllowedIn != Integrity.AllowedZones.None)
+                .Distinct();
         }
 
         /// <summary>Adds a content item part to a containing control hierarchy (typically a zone control). Override this method to adapt how a parent gets it's children added.</summary>
@@ -281,11 +284,12 @@ namespace N2.Web.Parts
                 ?? RendererSelector.ResolveRenderer(part.GetContentType());
             if (renderer != null)
             {
+                logger.DebugFormat("Using renderer {0} for part {1}", renderer, part);
                 renderer.Render(new Rendering.ContentRenderingContext { Content = part, Html = html }, writer ?? html.ViewContext.Writer);
                 return;
             }
 
-            logger.WarnFormat("Using legacy template rendering for part {0}", part);
+            logger.DebugFormat("Using fallback template rendering for part {0}", part);
             new LegacyTemplateRenderer(Engine.Resolve<IControllerMapper>()).RenderTemplate(part, html);
         }
 

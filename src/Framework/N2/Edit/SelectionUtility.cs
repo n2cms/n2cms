@@ -122,7 +122,7 @@ namespace N2.Edit
             {
                 var draft = dr.GetDraftInfo(selectedItem);
                 var cvr = Engine.Resolve<ContentVersionRepository>();
-                selectedItem = cvr.ParseVersion(draft.VersionIndex.ToString(), RequestValueAccessor("versionKey"), selectedItem);
+                selectedItem = cvr.ParseVersion(draft.VersionIndex.ToString(), RequestValueAccessor(PathData.VersionKeyQueryKey), selectedItem);
             }
             return selectedItem;
         }
@@ -130,7 +130,7 @@ namespace N2.Edit
         private ContentItem ParseSpecificVersion(ContentItem selectedItem)
         {
             var cvr = Engine.Resolve<ContentVersionRepository>();
-            selectedItem = cvr.ParseVersion(RequestValueAccessor(PathData.VersionIndexQueryKey), RequestValueAccessor("versionKey"), selectedItem);
+            selectedItem = cvr.ParseVersion(RequestValueAccessor(PathData.VersionIndexQueryKey), RequestValueAccessor(PathData.VersionKeyQueryKey), selectedItem);
             return selectedItem;
         }
 
@@ -173,8 +173,12 @@ namespace N2.Edit
             if (drafts.HasDraft(selectedItem))
             {
                 var version = drafts.Versions.GetVersion(selectedItem);
-                if (version != null && version.Version != null)
-                    selectedItem = version.Version;
+                if (version != null)
+				{
+					var item = drafts.Versions.DeserializeVersion(version);
+					if (item != null)
+						selectedItem = item;
+				}
             }
             return selectedItem;
         }

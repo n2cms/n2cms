@@ -99,7 +99,7 @@ namespace N2.Edit.Trash
             }
             catch (PermissionDeniedException ex)
             {
-                throw new PermissionDeniedException("Permission denied while moving item to trash. Try disabling security checks using N2.Context.Security or preventing items from beeing moved to the trash with the [NonThrowable] attribute", ex);
+                throw new PermissionDeniedException("Permission denied while moving item to trash. Try disabling security checks using ISecurityManager.Disable or preventing items from beeing moved to the trash with the [NonThrowable] attribute", ex);
             }
 
             Invoke(ItemThrowed, new ItemEventArgs(item));
@@ -216,7 +216,7 @@ namespace N2.Edit.Trash
             var containerItem = GetTrashContainer(create: false);
             if (containerItem == null) return;
 
-            var children = containerItem.GetChildren(new AccessFilter(webContext.User, security)).ToList()
+            var children = containerItem.Children
                 .Select(c => new { Item = c, DescendantCount = persister.Repository.CountDescendants(c) }).ToList();
 
             int deletedCount = 0;
@@ -253,5 +253,27 @@ namespace N2.Edit.Trash
         public event EventHandler<CancellableItemEventArgs> ItemThrowing;
         /// <summary>Occurs after an item has been thrown.</summary>
         public event EventHandler<ItemEventArgs> ItemThrowed;
-    }
+
+		public void HandleMoved(ContentItem movedItem)
+		{
+			if (movedItem.State == ContentState.Deleted && !IsInTrash(movedItem))
+			{
+				using (var tx = persister.Repository.BeginTransaction())
+				{
+					RestoreValuesRecursive(movedItem);
+					persister.Repository.SaveOrUpdate(movedItem);
+					tx.Commit();
+				}
+			}
+			else if (movedItem.State != ContentState.Deleted && IsInTrash(movedItem))
+			{
+				using (var tx = persister.Repository.BeginTransaction())
+				{
+					ExpireTrashedItemsRecursive(movedItem);
+					persister.Repository.SaveOrUpdate(movedItem);
+					tx.Commit();
+				}
+			}
+		}
+	}
 }

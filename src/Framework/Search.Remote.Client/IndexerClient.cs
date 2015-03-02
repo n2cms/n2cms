@@ -15,7 +15,7 @@ using N2.Persistence.Search;
 namespace N2.Search.Remote.Client
 {
     [Service]
-    [Service(typeof(IIndexer), Replaces = typeof(EmptyIndexer), Configuration = "remote")]
+	[Service(typeof(IIndexer), Replaces = typeof(EmptyIndexer), Configuration = "RemoteServer")]
     public class IndexerClient : IIndexer
     {
         private readonly Engine.Logger<IndexerClient> logger;

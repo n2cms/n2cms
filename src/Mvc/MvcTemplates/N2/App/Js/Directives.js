@@ -118,6 +118,23 @@
 		};
 	});
 
+	module.directive("pageActionIconClass", function () {
+		return {
+			restrict: "A",
+			link: function (scope, element, attrs) {
+				if (attrs.pageActionIconClass)
+					scope.$watch(function () {
+						var i = scope.$eval(attrs.pageActionIconClass);
+						return i && i.Current && (i.Current.IconClass || i.Current.IconUrl)
+					}, function (icon) {
+						element.addClass(icon ? "page-action-iconified" : "page-action-plain");
+					});
+				else
+					element.addClass("page-action-iconified");
+			}
+		}
+	});
+
 	module.directive("pageActionLink", function ($interpolate) {
 		return {
 			restrict: "A",
@@ -131,7 +148,7 @@
 							return factory(scope);
 						}, applicator);
 					} else
-						applicator(null);
+						return applicator(null);
 				}
 
 				scope.evaluateExpression = function(expr) {
@@ -173,7 +190,7 @@
 
 						element.attr("target", current.Target);
 
-						element.attr("class", current.Description ? "page-action page-action-description" : "page-action");
+						element.attr("class", (current.Description ? "page-action page-action-description" : "page-action") + (current.IconClass || current.IconUrl ? " page-action-iconified" : " page-action-plain"));
 
 						element.click(function(e) {
 							if (current.ClientAction) {
@@ -288,7 +305,11 @@
 
 						ctx.scopes.from.node.Children.splice(ctx.indexes.from, 1);
 
-						var options = scope.$eval(attrs.sortable)
+						ctx.callback = function () {
+							$selected.remove();
+						}
+
+						var options = scope.$eval(attrs.sortable);
 
 						if (ctx.operation == "move") {
 							options.move && options.move(ctx);
@@ -351,8 +372,8 @@
 					initialClientValue = e["client" + dir];
 					initialModelValue = modelGet(scope);
 
-					$(document).bind("mousemove.n2Resize", function (e) {
-						modelSet(scope, initialModelValue + e["client" + dir] - initialClientValue);
+					$(document).bind("mousemove.n2Resize", function (evt) {
+						modelSet(scope, initialModelValue + evt["client" + dir] - initialClientValue);
 						scope.$digest();
 					});
 					$(document.body).addClass("resizing");
@@ -399,6 +420,71 @@ span.boolean {color:green}\
 span.null {color:silver}\
 </style><pre>" + syntaxHighlight(obj) + "</pre>";
 		};
+	});
+
+	module.directive('n2DelayClass', function ($timeout, $compile) {
+	    return {
+	        link: function (scope, element, attrs) {
+	            scope.$watch(attrs.n2DelayClass, function (options) {
+	                if (!options)
+	                    return;
+
+	                $timeout(function () {
+	                    for (var k in options) {
+	                        if (options[k]) {
+	                            element.addClass(k);
+	                        } else {
+	                            element.removeClass(k);
+	                        }
+	                    }
+	                }, 10);
+	            }, true);
+	        }
+	    };
+	});
+
+	module.directive("debug", function () {
+		return {
+			restrict: "A",
+			link: function (scope, element, attrs) {
+				element.hide();
+				function attach(e) {
+					if (e.keyCode != 68 || !e.shiftKey || !e.altKey)
+						return;
+
+					angular.element(document).unbind("keydown", attach);
+					element.show().addClass("n2-debug").html(angular.toJson(scope.$eval(attrs.debug), true));
+
+					scope.$watch(attrs.debug, function (debug) {
+						element.html(angular.toJson(debug, true));
+					}, true);
+
+					element.click(function () {
+						setTimeout(function () {
+							if (element.is(".n2-debug-pinned")) {
+								element.toggleClass("n2-debug-pinned-left");
+							} else if (document.body.createTextRange) {
+								range = document.body.createTextRange();
+								range.moveToElementText(element[0]);
+								range.select();
+							} else if (window.getSelection) {
+								selection = window.getSelection();
+								range = document.createRange();
+								range.selectNodeContents(element[0]);
+								selection.removeAllRanges();
+								selection.addRange(range);
+							}
+						}, 200);
+					});
+
+					element.dblclick(function () {
+						element.toggleClass("n2-debug-pinned");
+						element.focus();
+					});
+				}
+				angular.element(document).keydown(attach);
+			}
+		}
 	});
 
 })(angular.module('n2.directives', ['n2.localization']));

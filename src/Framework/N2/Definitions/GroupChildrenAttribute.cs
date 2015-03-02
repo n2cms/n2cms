@@ -1,4 +1,5 @@
 using N2.Definitions.Static;
+using N2.Details;
 using N2.Engine;
 using N2.Persistence;
 using N2.Persistence.Sources;
@@ -25,6 +26,7 @@ namespace N2.Definitions
             PageSize = 25;
             StartPagingTreshold = 100;
             DaysBeforeArchived = 365;
+	        MinGroupSize = 1;
         }
 
         private DefinitionMap map;
@@ -39,6 +41,10 @@ namespace N2.Definitions
         public int PageSize { get; set; }
         public int DaysBeforeArchived { get; set; }
         public bool AllowDirectQuery { get; set; }
+		/// <summary>
+		/// Minimum size for a single group. If there aren't enough similar items to form a group, then those items won't be grouped and will instead be shown individually (alongside any other groups).
+		/// </summary>
+		public int MinGroupSize { get; set; }
 
         public IEnumerable<ContentItem> FilterChildren(IEnumerable<ContentItem> previousChildren, Query query, GroupFactoryDelegate groupFactory)
         {
@@ -67,6 +73,13 @@ namespace N2.Definitions
             }
         }
 
+	    private IEnumerable<IGrouping<TKey, T>> GroupByWithMinSize<T, TKey>(IEnumerable<T> enumerable, Func<T, TKey> groupSelector)
+	    {
+		    var groups = enumerable.GroupBy(groupSelector).ToList();
+
+		    return groups;
+	    }
+
         private IEnumerable<ContentItem> ChildrenByGroup(IEnumerable<ContentItem> previousChildren, Query query, GroupFactoryDelegate childFactory)
         {
             if (AllowDirectQuery)
@@ -78,7 +91,7 @@ namespace N2.Definitions
                         .Select(z => childFactory(query.Parent, z, "virtual-grouping/" + z, () => query.Parent.Children.FindParts(z))));
             }
 
-            return previousChildren.GroupBy(c => c.ZoneName)
+            return GroupByWithMinSize(previousChildren, c => c.ZoneName)
                 .OrderBy(g => g.Key)
                 .SelectMany(g => g.Key == null ? (IEnumerable<ContentItem>)g : new ContentItem[] { childFactory(query.Parent, g.Key, "virtual-grouping/" + g.Key, () => g) });
         }
@@ -87,15 +100,15 @@ namespace N2.Definitions
         {
             if (AllowDirectQuery)
             {
-                var types = query.Parent.Children.Select(query.AsParameters(), "class")
-                    .Select(r => (string)r["class"])
-                    .Distinct()
-                    .OrderBy(t => t);
+	            var types = query.Parent.Children.Select(query.AsParameters(), "class")
+		            .Select(r => (string) r["class"])
+		            .Distinct()
+		            .OrderBy(t => t);
 
                 return types.Select(t => childFactory(query.Parent, t, "virtual-grouping/" + t, () => query.Parent.Children.Find(query.AsParameters() & Parameter.Equal("class", t))));
             }
 
-            return previousChildren.GroupBy(c => c.GetContentType())
+            return GroupByWithMinSize(previousChildren, c => c.GetContentType()) // previousChildren.GroupBy(c => c.GetContentType())
                 .OrderBy(g => g.Key)
                 .Select(g => childFactory(query.Parent, Map.GetOrCreateDefinition(g.Key).Title, "virtual-grouping/" + g.Key.FullName, () => g));
         }
@@ -113,7 +126,7 @@ namespace N2.Definitions
                 return letters.Select(l => childFactory(query.Parent, l.ToString().ToUpper(), "virtual-grouping/" + l, () => query.Parent.Children.Find(query.AsParameters() & Parameter.Like("Title", l + "%"))));
             }
 
-            return previousChildren.GroupBy(c => string.IsNullOrEmpty(c.Title) ? '-' : c.Title.ToUpper().FirstOrDefault())
+			return GroupByWithMinSize(previousChildren, c => string.IsNullOrEmpty(c.Title) ? '-' : c.Title.ToUpper().FirstOrDefault())
                 .Select(g => childFactory(query.Parent, g.Key.ToString(), "virtual-grouping/" + g.Key, () => g));
         }
 
@@ -129,7 +142,7 @@ namespace N2.Definitions
                 return dates.Select(ym => childFactory(query.Parent, ym.HasValue ? ym.Value.ToShortDateString() : "-", "virtual-grouping/" + (ym.HasValue ? ym.Value.ToString("yyyy-MM-dd") : "-"), () => query.Parent.Children.Find(query.AsParameters() & (ym.HasValue ? (Parameter.GreaterOrEqual("Published", ym.Value) & Parameter.LessThan("Published", ym.Value.AddDays(1))) : Parameter.IsNull("Published")))));
             }
 
-            return previousChildren.GroupBy(c => c.Published.HasValue ? c.Published.Value.Date.ToShortDateString() : "-")
+			return GroupByWithMinSize(previousChildren, c => c.Published.HasValue ? c.Published.Value.Date.ToShortDateString() : "-")
                 .Select(g => childFactory(query.Parent, g.Key, "virtual-grouping/" + g.Key, () => g));
         }
 
@@ -145,7 +158,7 @@ namespace N2.Definitions
                 return yearsMonths.Select(ym => childFactory(query.Parent, ToString(ym), "virtual-grouping/" + ToString(ym), () => query.Parent.Children.Find(query.AsParameters() & (ym.HasValue ? (Parameter.GreaterOrEqual("Published", ym.Value) & Parameter.LessThan("Published", ym.Value.AddMonths(1))) : Parameter.IsNull("Published")))));
             }
 
-            return previousChildren.GroupBy(c => c.Published.HasValue ? c.Published.Value.Date.ToString("yyyy-MM") : "-")
+			return GroupByWithMinSize(previousChildren, c => c.Published.HasValue ? c.Published.Value.Date.ToString("yyyy-MM") : "-")
                 .Select(g => childFactory(query.Parent, g.Key, "virtual-grouping/" + g.Key, () => g));
         }
 
@@ -168,7 +181,7 @@ namespace N2.Definitions
                 return years.Select(y => childFactory(query.Parent, y, "virtual-grouping/" + y, () => query.Parent.Children.Find(query.AsParameters() & (y != "-" ? (Parameter.GreaterOrEqual("Published", new DateTime(int.Parse(y), 1, 1)) & Parameter.LessThan("Published", new DateTime(int.Parse(y) + 1, 1, 1))) : Parameter.IsNull("Published")))));
             }
 
-            return previousChildren.GroupBy(c => c.Published.HasValue ? c.Published.Value.Date.ToString("yyyy") : "-")
+			return GroupByWithMinSize(previousChildren, c => c.Published.HasValue ? c.Published.Value.Date.ToString("yyyy") : "-")
                 .Select(g => childFactory(query.Parent, g.Key, "virtual-grouping/" + g.Key, () => g));
         }
 
@@ -188,13 +201,13 @@ namespace N2.Definitions
                     .Select(i => childFactory(query.Parent, (StartPagingTreshold + i * PageSize + 1) + "-" + (StartPagingTreshold + i * PageSize + PageSize), "virtual-grouping/" + i, () => query.Parent.Children.Find(query.AsParameters().Skip(StartPagingTreshold + i * PageSize).Take(PageSize)))));
             }
 
-            int count = previousChildren.Count();
-            if (count < StartPagingTreshold)
-                return previousChildren;
-            else
-                return previousChildren.Take(StartPagingTreshold).Concat(
-                    Enumerable.Range(0, (count - StartPagingTreshold + PageSize - 1) / PageSize)
-                        .Select(i => childFactory(query.Parent, (StartPagingTreshold + i * PageSize + 1) + "-" + (StartPagingTreshold + i * PageSize + PageSize), "virtual-grouping/" + i, () => previousChildren.Skip(StartPagingTreshold + i * PageSize).Take(PageSize))));
+            var prevChildren = previousChildren as ContentItem[] ?? previousChildren.ToArray();
+            var page = prevChildren.Take(StartPagingTreshold).ToList();
+	        if (page.Count < StartPagingTreshold)
+		        return page;
+			return page.Concat(
+                    Enumerable.Range(0, (prevChildren.Length - StartPagingTreshold + PageSize - 1) / PageSize)
+                        .Select(i => childFactory(query.Parent, (StartPagingTreshold + i * PageSize + 1) + "-" + (StartPagingTreshold + i * PageSize + PageSize), "virtual-grouping/" + i, () => prevChildren.Skip(StartPagingTreshold + i * PageSize).Take(PageSize))));
         }
 
         private IEnumerable<ContentItem> ChildrenByPage(IEnumerable<ContentItem> previousChildren, Query query, GroupFactoryDelegate childFactory)

@@ -44,7 +44,7 @@ namespace N2.Templates.Mvc.Models.Parts
         [EditableChildren("Form fields", "Questions", "FormFields", 110, ContainerName = FieldsTab)]
         public virtual IEnumerable<IQuestion> FormFields
         {
-            get { return GetChildren().OfType<IQuestion>(); }
+            get { return Children.OfType<IQuestion>(); }
         }
 
         [EditableText("Mail from", 120, ContainerName = EmailTab)]

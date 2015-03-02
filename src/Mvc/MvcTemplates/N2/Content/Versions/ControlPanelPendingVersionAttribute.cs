@@ -19,7 +19,7 @@ namespace N2.Edit.Versions
         public ControlPanelPendingVersionAttribute(string toolTip, int sortOrder)
             : base("cpPendingVersion", "{IconsUrl}/book_next_orange.png", null, toolTip, sortOrder, ControlPanelState.Visible)
         {
-            IconClass = "n2-icon-time";
+			IconClass = "fa fa-clock-o";
         }
 
         public override Control AddTo(Control container, PluginContext context)
@@ -34,7 +34,8 @@ namespace N2.Edit.Versions
             var draft = engine.Resolve<DraftRepository>().GetDraftInfo(context.Selected);
             if (draft == null)
                 return null;
-            var latestVersion = engine.Resolve<DraftRepository>().FindDrafts(context.Selected).Select(v => v.Version).FirstOrDefault();
+			var drafts = engine.Resolve<DraftRepository>();
+			var latestVersion = drafts.FindDrafts(context.Selected).Select(v => drafts.Versions.DeserializeVersion(v)).FirstOrDefault();
             if (latestVersion == null)
                 return null;
 

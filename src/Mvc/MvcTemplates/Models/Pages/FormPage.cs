@@ -8,7 +8,7 @@ namespace N2.Templates.Mvc.Models.Pages
     [PageDefinition("Form page",
         Description = "A page with a form that can be sumitted and sent to an email address.",
         SortOrder = 240,
-        IconClass = "n2-icon-text-width")]
+        IconClass = "fa fa-text-width")]
     [TabContainer(FormPage.FormTab, "Form", Tabs.ContentIndex + 2)]
     public class FormPage : ContentPageBase
     {

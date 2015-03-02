@@ -25,7 +25,7 @@ namespace N2.Templates.Mvc.Models.Parts
         {
             get
             {
-                ItemList children = GetChildren();
+				ItemList children = Children.WhereAccessible();
                 if (children.Count > 0)
                 {
                     return children[children.Count - 1] as SingleSelect;

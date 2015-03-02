@@ -23,5 +23,9 @@ namespace N2.Persistence.Serialization
             this.VersionKey = versionKey;
             this.Setter = setter;
         }
-    }
+
+		public ContentItem ReferencingItem { get; set; }
+
+		public string RelationType { get; set; }
+	}
 }

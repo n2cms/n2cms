@@ -327,7 +327,7 @@ namespace N2.Tests.Serialization
 
 			var navigator = SerializeAndReadOutput(root);
 
-			ItemXmlReader reader = new ItemXmlReader(TestSupport.SetupDefinitions(typeof(XmlableItem)), activator, persister.Repository);
+			ItemXmlReader reader = new ItemXmlReader(TestSupport.SetupDefinitions(typeof(XmlableItem)), activator);
 			reader.IgnoreMissingTypes = true;
 			var readRoot = reader.Read(navigator);
 

@@ -7,11 +7,14 @@ namespace N2.Persistence.Serialization
 {
     public class ReadingJournal : IImportRecord
     {
-        readonly IList<ContentItem> readItems = new List<ContentItem>();
+		readonly IList<ContentItem> readItems = new List<ContentItem>();
+
         readonly IList<Attachment> attachments = new List<Attachment>();
         readonly IList<Attachment> failedAttachments = new List<Attachment>();
         readonly IList<Exception> errors = new List<Exception>();
-        public event EventHandler<ItemEventArgs> ItemAdded;
+	    readonly IList<Tuple<ContentItem, Exception>> failedContentItems = new List<Tuple<ContentItem, Exception>>();
+
+	    public event EventHandler<ItemEventArgs> ItemAdded;
 
         public ReadingJournal()
         {
@@ -52,11 +55,17 @@ namespace N2.Persistence.Serialization
         {
             get { return failedAttachments; }
         }
+
+
+		public IList<Tuple<ContentItem, Exception>> FailedContentItems
+		{
+			get { return failedContentItems; }
+		}
+
         public IList<Exception> Errors
         {
             get { return errors; }
         }
-
 
         public void Report(ContentItem item)
         {
@@ -88,10 +97,15 @@ namespace N2.Persistence.Serialization
         }
 
         public IList<UnresolvedLink> UnresolvedLinks { get; set; }
+		
+        public void RegisterParentRelation(int parentID, ContentItem item)
+		{
+			Register(parentID, (laterParent) => item.AddTo(laterParent), isChild: true, relationType: "parent", referencingItem: item);
+		}
 
-        public void Register(int referencedItemID, Action<ContentItem> action, bool isChild = false)
+		public void Register(int referencedItemID, Action<ContentItem> action, bool isChild = false, string relationType = null, ContentItem referencingItem = null)
         {
-            var resolver = new UnresolvedLink(referencedItemID, action) { IsChild = isChild };
+			var resolver = new UnresolvedLink(referencedItemID, action) { IsChild = isChild, RelationType = relationType, ReferencingItem = referencingItem };
             UnresolvedLinks.Add(resolver);
             EventHandler<ItemEventArgs> handler = null;
             handler = delegate(object sender, ItemEventArgs e)
@@ -131,5 +145,7 @@ namespace N2.Persistence.Serialization
                 return null;
             return ReadItems.FirstOrDefault(i => i.GetVersionKey() == versionKey);
         }
-    }
+
+
+	}
 }

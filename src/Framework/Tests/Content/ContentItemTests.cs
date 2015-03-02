@@ -3,6 +3,8 @@ using N2.Details;
 using N2.Security;
 using NUnit.Framework;
 using Shouldly;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace N2.Tests.Content
 {
@@ -219,12 +221,12 @@ namespace N2.Tests.Content
         }
 
         [Test]
-        public void GetChild_NameIncludingAspx_IsFound()
+        public void GetChild_NameIncludingSlash_IsFound()
         {
             AnItem root = CreateOneItem<AnItem>(1, "root", null);
             AnItem item1 = CreateOneItem<AnItem>(2, "item1", root);
 
-            Assert.That(root.GetChild("item1.aspx"), Is.EqualTo(item1));
+            Assert.That(root.GetChild("item1/"), Is.EqualTo(item1));
         }
 
         [Test]
@@ -237,12 +239,12 @@ namespace N2.Tests.Content
         }
 
         [Test]
-        public void GetChild_NameIncluding_DotAndAspx_IsFound()
+        public void GetChild_NameIncluding_Slash_IsFound()
         {
             AnItem root = CreateOneItem<AnItem>(1, "root", null);
             AnItem item1 = CreateOneItem<AnItem>(2, "item.1", root);
 
-            Assert.That(root.GetChild("item.1.aspx"), Is.EqualTo(item1));
+            Assert.That(root.GetChild("item.1/"), Is.EqualTo(item1));
         }
 
         [Test]
@@ -271,7 +273,7 @@ namespace N2.Tests.Content
             AnItem item1 = CreateOneItem<AnItem>(2, "item1", root);
             AnItem item2 = CreateOneItem<AnItem>(2, "item2", item1);
 
-            Assert.That(root.GetChild("item1/item2.aspx"), Is.EqualTo(item2));
+            Assert.That(root.GetChild("item1/item2/"), Is.EqualTo(item2));
         }
 
         [Test]
@@ -376,6 +378,44 @@ namespace N2.Tests.Content
             Assert.AreEqual(root.Name, clonedRoot.Name);
             Assert.AreEqual(root.Title, clonedRoot.Title);
         }
+
+		[Test]
+		public void Clone_Equality()
+		{
+			var original = CreateItem<AnItem>("parent", null);
+			original.ID = 1234;
+			var referenced = CreateItem<AnItem>("parent", null);
+			referenced.ID = 2345;
+
+			original.Title = "N2 CMS Templates example";
+			original["Text"] = @"<p>Welcome to the templates project. This site features a number of functions built with the N2 CMS framework. Use as is and/or build your own.</p>
+<p>The most commonly used features are added below the feature page.</p>
+<p>Don't forget to log into the administrative interface and experiment how content is edited. If you edit the start page you can try some other themes as well.</p>";
+			original["Number"] = 123567;
+			original["Decimal"] = 12345.123456;
+			original["Guid"] = Guid.NewGuid();
+			original["Boolean"] = true;
+			original["Date"] = DateTime.Now;
+			original["Timespan"] = TimeSpan.FromSeconds(12.34);
+			original["Link"] = referenced;
+			original.DetailCollections["Hello"].Add("World");
+
+
+			var clone = original.Clone(includeChildren: false, includeIdentifier: true);
+
+			
+			var ignoredProperties = new HashSet<string> { "WritableGuid", "ReadOnlyGuid", "Details", "DetailCollections", "Item" };
+			foreach (var pi in original.GetContentType().GetProperties().Where(p => !ignoredProperties.Contains(p.Name)))
+				clone[pi.Name].ShouldBe(original[pi.Name]);
+
+			clone.GetContentType().ShouldBe(original.GetContentType());
+			clone.Details.Count.ShouldBe(original.Details.Count);
+			foreach (var d in original.Details)
+				clone.Details[d.Name].Value.ShouldBe(d.Value);
+			clone.DetailCollections.Count.ShouldBe(original.DetailCollections.Count);
+			foreach (var dc in original.DetailCollections)
+				clone.DetailCollections[dc.Name].FirstOrDefault().ShouldBe(dc.FirstOrDefault());
+		}
 
         [Test]
         public void CanSetDetail_ByIndexer()

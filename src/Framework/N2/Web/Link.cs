@@ -129,7 +129,7 @@ namespace N2.Web
 
             Url = link.Url;
             Target = link.Target;
-            Contents = link.Contents;
+            Contents = HtmlSanitizer.Current.Encode(link.Contents);
             ToolTip = link.ToolTip;
 
 			var styleable = link as IStyleable;

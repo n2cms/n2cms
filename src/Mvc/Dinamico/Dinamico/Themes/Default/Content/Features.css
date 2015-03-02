@@ -12,57 +12,6 @@ div.contentlink.cubeSize a.img  { float:left; margin-right:10px; }
 div.contentlink h3 { display:inline; margin-right:10px; }
 div.contentlink:hover { background-color:#F0F8FF; outline: solid 1px #09F; }
 
-/*
-    AnythingSlider v1.4.1+ Default (base) theme
-
-    By Chris Coyier: http://css-tricks.com
-    with major improvements by Doug Neiner: http://pixelgraphics.us/
-    based on work by Remy Sharp: http://jqueryfordesigners.com/
-*/
-
-/* Content within anythingSlider */
-div.contentSlider div.textual img[style='float: left;'] { margin:0 20px 20px 0; }
-div.contentSlider div.textual img[style='float: right;'] { margin:0 0 20px 20px; }
-div.contentSlider div.textual-inner { padding:20px; }
-
-/* Parts within anythingSlider */
-div.partSlider div.part { margin:0 }
-div.partSlider div.halfSize { margin:20px 20px 35px 20px; }
-div.partSlider div.halfSize a.img { float:left; margin-right:20px; }
-div.partSlider div.listing { background:#333; height:100%; }
-	div.partSlider div.listing div.contentlink:hover { background:#363639; height:100%; }
-	div.partSlider div.listing a { color:#fff; }
-	div.partSlider div.listing .list-item { padding:20px 20px 0 20px; margin:0; }
-		div.partSlider div.listing .list-item div.halfSize { margin:0; }
-div.partSlider div.wideSize { position:relative; }
-div.partSlider div.wideSize div.content { position:absolute; padding:20px 20px 50px 20px; bottom:0; left:0; right:0; background:transparent url(../../../../N2/Resources/img/bg_00050.png); }
-div.partSlider div.wideSize div.content a { color:#fff; }
-
-/* anythingSlider viewport window */
-div.anythingSlider { width: 960px; height: 480px; border-bottom:solid 1px #eee; overflow: hidden; /* needed for Opera and Safari */ position: relative; }
-	div.anythingSlider .anythingWindow { overflow: hidden; position: relative; width: 100%; height: 100%; }
-/* anythingSlider base UL */
-ul.anythingBase { background: transparent; list-style: none; position: absolute; top: 0; left: 0; margin: 0; padding: 0; }
-	ul.anythingBase li.panel { background: transparent; display: block; overflow: hidden; float: left; padding: 0; margin: 0; }
-
-/* Navigation Links */
-div.anythingSlider .thumbNav a.cur, div.anythingSlider .thumbNav a { background: #fff; color: #000; }
-div.anythingSlider .thumbNav a.cur, div.anythingSlider .thumbNav a:hover { box-shadow: #ced 0 0 10px 0; }
-div.anythingSlider .thumbNav a.cur { background:#222; color:#ddd; }
-
-div.anythingSlider .anythingControls { outline: 0; position:absolute; width:100%; bottom:0; }
-div.anythingSlider .thumbNav { margin:10px 20px; padding:0; }
-div.anythingSlider .thumbNav li { display: inline; }
-div.anythingSlider .thumbNav a { display: inline-block; text-decoration: none; padding: 2px 8px; height: 18px; margin: 0 5px 0 0; background-repeat: repeat-x; text-align: center; outline: 0; border-radius:2px; }
-
-/* Autoplay Start/Stop button */
-div.anythingSlider .start-stop { width: 22px; height: 22px; overflow:hidden; text-align: center; text-decoration: none; float: right; z-index: 100; outline: 0; background:#222 url(../../../../N2/Resources/Icons/control_play.png) no-repeat 50% 50%; text-indent:-9999px; margin:10px; border-radius:2px; }
-div.anythingSlider .start-stop.playing { background-image:url(../../../../N2/Resources/Icons/control_stop.png); }
-div.anythingSlider .start-stop:hover, div.anythingSlider .start-stop.hover { }
-
-div.anythingSlider, div.anythingSlider .anythingWindow, div.anythingSlider .thumbNav a, div.anythingSlider .arrow a, div.anythingSlider .start-stop { transition-duration: 0; -o-transition-duration: 0; -moz-transition-duration: 0; -webkit-transition-duration: 0; }
-
-
 div.gmap > div
 {
 	height:450px;

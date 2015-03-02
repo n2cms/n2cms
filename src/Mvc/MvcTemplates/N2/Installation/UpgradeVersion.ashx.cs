@@ -23,7 +23,7 @@ namespace N2.Management.Installation
             context.Response.ContentType = "application/json";
             try
             {
-                var version = Engine.Persister.Get(int.Parse(context.Request["item"]));
+                var version = Engine.Persister.Get(int.Parse(context.Request[PathData.ItemQueryKey]));
                 if (!version.VersionOf.HasValue)
                 {
                     context.Response.Write(new { success = false, message = "Item #" + version.ID + " is not a version." }.ToJson());
@@ -32,6 +32,7 @@ namespace N2.Management.Installation
                 if (!version.IsPage)
                 {
                     context.Response.Write(new { success = true, master = new { id = version.VersionOf.ID }, message = "Part version removed" }.ToJson());
+					Engine.Persister.Delete(version);
                     return;
                 }
 
@@ -41,7 +42,7 @@ namespace N2.Management.Installation
             }
             catch (Exception ex)
             {
-                new Logger<UpgradeVersionHandler>().Error("Error migrating #" + context.Request["item"], ex);
+                new Logger<UpgradeVersionHandler>().Error("Error migrating #" + context.Request[PathData.ItemQueryKey], ex);
                 context.Response.Write(new { success = false, message = ex.Message, stacktrace = ex.ToString() }.ToJson());
             }
         }

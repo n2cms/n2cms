@@ -48,10 +48,19 @@ namespace N2.Edit.Web
         /// <returns>True if the user is authorized.</returns>
         protected virtual void Authorize(IPrincipal user)
         {
-            if(Engine.SecurityManager.IsAuthorized(user, Permission.Write))
-                Engine.Resolve<ISecurityEnforcer>().AuthorizeRequest(user, Selection.SelectedItem, Permission.Read);
-            else
-                Engine.Resolve<ISecurityEnforcer>().AuthorizeRequest(user, Selection.SelectedItem, Permission.Write);
+	        try
+	        {
+		        if (Engine.SecurityManager.IsAuthorized(user, Permission.Write))
+			        Engine.Resolve<ISecurityEnforcer>().AuthorizeRequest(user, Selection.SelectedItem, Permission.Read);
+		        else
+			        Engine.Resolve<ISecurityEnforcer>().AuthorizeRequest(user, Selection.SelectedItem, Permission.Write);
+	        }
+	        catch (PermissionDeniedException ex)
+	        {
+		        Response.StatusCode = ex.GetHttpCode();
+		        Response.Write(ex.GetHtmlErrorMessage() ?? string.Empty);
+				Response.End();
+	        }
         }
 
         protected override void OnInit(EventArgs e)
@@ -109,7 +118,7 @@ namespace N2.Edit.Web
         {
             Register.JQuery(this);
             Register.JQueryPlugins(this);
-            Register.FrameInteraction(this);
+            //Register.FrameInteraction(this);
         }
 
         /// <summary>Selects a toolbar item in the top frame</summary>
@@ -343,11 +352,11 @@ namespace N2.Edit.Web
 
         #region Properties
 
-	    private ISafeContentRenderer safeContentRenderer;
-	    public ISafeContentRenderer SafeContentRenderer
+        private HtmlSanitizer sanitizer;
+        public HtmlSanitizer Sanitizer
 	    {
-		    get { return safeContentRenderer ?? (safeContentRenderer = Engine.Resolve<ISafeContentRenderer>()); }
-			set { safeContentRenderer = value; }
+            get { return sanitizer ?? (sanitizer = Engine.Resolve<HtmlSanitizer>()); }
+			set { sanitizer = value; }
 	    }
 
         Engine.IEngine engine;

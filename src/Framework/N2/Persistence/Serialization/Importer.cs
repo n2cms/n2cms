@@ -9,22 +9,29 @@ namespace N2.Persistence.Serialization
 {
     public class Importer
     {
-        private Engine.Logger<Importer> logger; // TODO: Figure out how/where this gets initialized.
-        private readonly IPersister _persister;
-        private readonly IItemXmlReader _reader;
-        private readonly IFileSystem _fs;
+        private Engine.Logger<Importer> logger;
+        private readonly IPersister persister;
+		private readonly IItemXmlReader reader;
+
+        private readonly IFileSystem fs;
 
         public Importer(IPersister persister, IItemXmlReader reader, IFileSystem fs)
         {
-            _persister = persister;
-            _reader = reader;
-            _fs = fs;
+			this.persister = persister;
+			this.reader = reader;
+            this.fs = fs;
+	        //TODO: Initialize 'logger' ---> this.logger =;
         }
 
         public IPersister Persister
         {
-            get { return _persister; }
-        } 
+            get { return persister; }
+        }
+
+		public IItemXmlReader Reader
+		{
+			get { return reader; }
+		} 
 
         public virtual IImportRecord Read(string path)
         {
@@ -51,7 +58,10 @@ namespace N2.Persistence.Serialization
             if (2 != version)
                 throw new WrongVersionException("Invalid export version, expected 2 but was " + version);
 
-            return _reader.Read(navigator);
+            var record = reader.Read(navigator);
+			foreach (var item in record.ReadItems)
+				item.VersionOf.ValueAccessor = Persister.Repository.Get;
+			return record;
         }
 
         protected virtual XPathNavigator CreateNavigator(TextReader input)
@@ -70,16 +80,41 @@ namespace N2.Persistence.Serialization
             if ((options & ImportOption.AllItems) == ImportOption.AllItems)
             {
                 record.RootItem.AddTo(destination);
-                _persister.SaveRecursive(record.RootItem);
+	            try
+	            {
+		            persister.SaveRecursive(record.RootItem);
+	            }
+	            catch (Exception ex)
+	            {
+		            logger.Warn(ex);
+					if (record.RootItem != null)
+						record.FailedContentItems.Add(new Tuple<ContentItem, Exception>(record.RootItem, ex));
+	            }
             }
             else if ((options & ImportOption.Children) == ImportOption.Children)
             {
                 RemoveReferences(record.ReadItems, record.RootItem);
                 while (record.RootItem.Children.Count > 0)
                 {
-                    ContentItem child = record.RootItem.Children[0];
-                    child.AddTo(destination);
-                    _persister.SaveRecursive(child);
+	                ContentItem child = null;
+	                bool added = false;
+	                try
+	                {
+		                child = record.RootItem.Children[0];
+		                child.AddTo(destination);
+		                added = true;
+		                persister.SaveRecursive(child);
+	                }
+	                catch (Exception ex)
+	                {
+						logger.Warn(ex);
+						if (child != null)
+							record.FailedContentItems.Add(new Tuple<ContentItem, Exception>(child, ex));
+
+						// ROLL BACK: Undo child.AddTo if SaveRecursive failed. That way the import can still continue successfully.
+		                if (added && destination != null && child != null)
+			                destination.Children.Remove(child); 
+	                }
                 }
             }
             else
@@ -93,7 +128,7 @@ namespace N2.Persistence.Serialization
                 {
                     try
                     {
-                        a.Import(_fs);
+                        a.Import(fs);
                     }
                     catch (Exception ex)
                     {

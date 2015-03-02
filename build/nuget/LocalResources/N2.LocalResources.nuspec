@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>N2CMS.LocalResources</id>
+		<version>2.6.2</version>
+		<title>N2CMS Local Resources</title>
+		<authors>Ben Herila</authors>
+		<owners>Ben Herila</owners>
+		<licenseUrl>http://n2cms.com/Project/License.aspx</licenseUrl>
+		<projectUrl>http://n2cms.com/</projectUrl>
+		<iconUrl>http://n2cms.com/Upload/logo-5.png</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>Install this package to configure a local copy of common JavaScript and CSS resources. Without this package installed, N2 CMS uses CDNJS as the runtime source of these libraries.</description>
+		<summary>Install this package to configure a local copy of common JavaScript and CSS resources. Without this package installed, N2 CMS uses CDNJS as the runtime source of these libraries.</summary>
+		<language>en-US</language>
+		<tags>N2CMS</tags>
+		<dependencies>
+			<dependency id="AngularJS.Core" version="(,1.2.23]" />
+			<dependency id="AngularJS.Route" version="(,1.2.23]" />
+            <dependency id="AngularJS.Resource" version="(,1.2.23]" />
+            <dependency id="angular-strap" version="2.0.5" />
+			<dependency id="bootstrap" version="[3.2.0]" />
+			<dependency id="ckeditor-full" version="4.4.4" />
+			<dependency id="Fancybox" version="2.1.5" />
+			<dependency id="FontAwesome" version="4.2.0" />
+			<dependency id="jQuery" version="[1.9.0]" />
+		</dependencies>
+	</metadata>
+</package>

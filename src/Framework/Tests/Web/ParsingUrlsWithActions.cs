@@ -57,7 +57,7 @@ namespace N2.Tests.Web
         [Test]
         public void MasterDetails_WithDetailsAction()
         {
-            Url url = "/master/details.aspx";
+            Url url = "/master/details";
             PathData data = startItem.FindPath(url);
 
             Assert.That(data.Action, Is.EqualTo("details"));
@@ -77,7 +77,7 @@ namespace N2.Tests.Web
         [Test]
         public void ListDetails_WithListAction()
         {
-            Url url = "/list/details.aspx";
+            Url url = "/list/details";
             PathData data = startItem.FindPath(url);
 
             Assert.That(data.Action, Is.EqualTo("details"));
@@ -87,7 +87,7 @@ namespace N2.Tests.Web
         [Test]
         public void ListDetails_WithListAction_AndArguments()
         {
-            Url url = "/list/details/123.aspx";
+            Url url = "/list/details/123";
             PathData data = startItem.FindPath(url);
 
             Assert.That(data.Action, Is.EqualTo("details"));
@@ -98,7 +98,7 @@ namespace N2.Tests.Web
         [Test]
         public void ListDetails_WithListAction_AndMultipleArguments()
         {
-            Url url = "/list/details/123/and/321.aspx";
+            Url url = "/list/details/123/and/321";
             PathData data = startItem.FindPath(url);
 
             Assert.That(data.Action, Is.EqualTo("details"));
@@ -109,7 +109,7 @@ namespace N2.Tests.Web
         [Test]
         public void SimpleRegex()
         {
-            Url url = "/regex/abcdefg.aspx";
+            Url url = "/regex/abcdefg";
             PathData data = startItem.FindPath(url);
 
             Assert.That(data.Action, Is.Null);
@@ -129,7 +129,7 @@ namespace N2.Tests.Web
         [Test]
         public void SimpleRegex_WithAction()
         {
-            Url url = "/regex/zabcdefg.aspx";
+            Url url = "/regex/zabcdefg";
             PathData data = startItem.FindPath(url);
 
             Assert.That(data.Action, Is.EqualTo("zee"));

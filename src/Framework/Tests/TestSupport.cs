@@ -31,6 +31,7 @@ using System.Collections;
 using System.IO;
 using N2.Engine.Globalization;
 using System.Text;
+using N2.Edit.FileSystem;
 
 namespace N2.Tests
 {
@@ -92,6 +93,15 @@ namespace N2.Tests
             return definitions;
         }
 
+		public static IDefinitionManager SetupDefinitions(out ContentActivator activator, out InterceptingProxyFactory proxyFactory, params Type[] itemTypes)
+		{
+			IItemNotifier notifier;
+			IDefinitionProvider[] definitionProviders;
+			IDefinitionManager definitions;
+			Setup(out definitionProviders, out definitions, out activator, out notifier, out proxyFactory, itemTypes);
+			return definitions;
+		}
+
         public static void Setup(out IDefinitionProvider[] definitionProviders, out IDefinitionManager definitions, out ContentActivator activator, out IItemNotifier notifier, out InterceptingProxyFactory proxyFactory, params Type[] itemTypes)
         {
             var map = new DefinitionMap();
@@ -100,8 +110,9 @@ namespace N2.Tests
             proxyFactory = new InterceptingProxyFactory();
             activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);
             definitions = new DefinitionManager(definitionProviders, activator, new StateChanger(), new DefinitionMap());
-            ((DefinitionManager)definitions).Start();
-        }
+			((DefinitionManager)definitions).Start();
+			activator.Initialize(definitions.GetDefinitions());
+		}
 
         public static void Setup(out IDefinitionManager definitions, out ITemplateAggregator templates, out ContentActivator activator, params Type[] itemTypes)
         {
@@ -161,13 +172,13 @@ namespace N2.Tests
             Setup(out persister, sessionProvider, itemRepository, linkRepository, schemaCreator);
         }
 
-        public static ContentPersister SetupFakePersister()
+        public static ContentPersister SetupFakePersister(IProxyFactory proxyFactory = null)
         {
             IContentItemRepository repository;
-            return SetupFakePersister(out repository);
+            return SetupFakePersister(out repository, proxyFactory);
         }
 
-        public static ContentPersister SetupFakePersister(out FakeContentItemRepository repository)
+		public static ContentPersister SetupFakePersister(out FakeContentItemRepository repository)
         {
             repository = new Fakes.FakeContentItemRepository();
 
@@ -175,9 +186,9 @@ namespace N2.Tests
             return new ContentPersister(sources, repository);
         }
 
-        public static ContentPersister SetupFakePersister(out IContentItemRepository repository)
+		public static ContentPersister SetupFakePersister(out IContentItemRepository repository, IProxyFactory proxyFactory = null)
         {
-            repository = new Fakes.FakeContentItemRepository();
+			repository = new Fakes.FakeContentItemRepository(proxyFactory);
 
             var sources = SetupContentSource(repository);
             return new ContentPersister(sources, repository);
@@ -236,27 +247,23 @@ namespace N2.Tests
 
         public static ContentVersionRepository CreateVersionRepository(ref IPersister persister, ref ContentActivator activator, ref IRepository<ContentVersion> versionRepository, params Type[] definedTypes)
         {
-            if (persister == null)
-                persister = SetupFakePersister();
-            var definitions = SetupDefinitions(definedTypes);
+			InterceptingProxyFactory proxyFactory;
+			var definitions = SetupDefinitions(out activator, out proxyFactory, definedTypes);
+			if (persister == null)
+				persister = SetupFakePersister(proxyFactory);
             var parser = new UrlParser(persister, new ThreadContext(), new Host(new ThreadContext(), new HostSection()), new ConnectionMonitor(), new HostSection());
-            var proxyFactory = new InterceptingProxyFactory();
-            if (activator == null)
-            {
-                activator = new ContentActivator(new StateChanger(), new ItemNotifier(), proxyFactory);
-                activator.Initialize(definitions.GetDefinitions());
-            }
+			
             if (versionRepository == null)
-                versionRepository = new FakeRepository<ContentVersion>();
+			{
+				versionRepository = new FakeRepository<ContentVersion>(proxyFactory);
+			}
             var importer = new Importer(persister,
                 new ItemXmlReader(definitions,
-                    activator,
-                    persister.Repository),
+                    activator),
                 new Fakes.FakeMemoryFileSystem());
             var exporter = new Exporter(
                 new ItemXmlWriter(
                     definitions,
-                    parser,
                     new FakeMemoryFileSystem()));
             return new ContentVersionRepository(
                 versionRepository,
@@ -340,5 +347,15 @@ namespace N2.Tests
         //      new EditableHierarchyBuilder(new FakeSecurityManager(), new EngineSection()),
         //      new EditSection());
         //}
-    }
+
+		internal static IUrlParser SetupUrlParser()
+		{
+			return new FakeUrlParser();
+		}
+
+		internal static N2.Edit.FileSystem.IFileSystem SetupFileSystem()
+		{
+			return new FakeMemoryFileSystem();
+		}
+	}
 }

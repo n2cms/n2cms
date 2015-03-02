@@ -18,6 +18,7 @@
  */
 #endregion
 
+using System;
 using System.Web.Compilation;
 
 namespace N2.Web.Compilation
@@ -35,16 +36,18 @@ namespace N2.Web.Compilation
             get { return UI.ItemUtility.CurrentContentItem; }
         }
 
-        /// <summary>Gets the value of an exression.</summary>
+        /// <summary>Gets the value of an expression.</summary>
         /// <param name="expression">The expression whose value to get.</param>
         /// <returns>The value a given expression.</returns>
         public static object GetCurrentItemValue(string expression)
         {
-            ContentItem item = CurrentItemInContext;
-            if (item != null)
-                return item[expression];
-            else
-                return Context.CurrentPage[expression];
+	        if (UI.ItemUtility.ItemStack.Count > 0)
+	        {
+		        var item = CurrentItemInContext;
+		        if (item != null)
+			        return item[expression];
+	        }
+	        return Context.CurrentPage[expression];
         }
 
         /// <summary>Gets the expression format for this expression.</summary>

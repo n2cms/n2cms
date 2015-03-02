@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
 
 	<!-- EXAMPLES -->
 
@@ -24,13 +24,6 @@
 		<Message Text="Skipping mklink (folder exists): $(Examples-CS-SourceFolder)\wwwroot\N2\" Condition="Exists('$(Examples-CS-SourceFolder)\wwwroot\N2\')" />
 		<Exec Command="mklink /D $(Examples-CS-SourceFolder)\wwwroot\N2\ $(EditFolder)\" Condition="!Exists('$(Examples-CS-SourceFolder)\wwwroot\N2\')" ContinueOnError="true" />
 		<MSBuild Projects="n2.proj" Targets="CopyManagementFilesToManagementFilesDestination" Properties="ManagementFilesDestination=$(Examples-CS-SourceFolder)\wwwroot\N2" Condition="!Exists('$(Examples-CS-SourceFolder)\wwwroot\N2\')" />
-	</Target>
-	<Target Name="Examples-VisualBasic-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Examples-VB-SourceFolder)\wwwroot\bin" />
-
-		<Message Text="Skipping mklink (folder exists): $(Examples-VB-SourceFolder)\wwwroot\N2\" Condition="Exists('$(Examples-VB-SourceFolder)\wwwroot\N2\')" />
-		<Exec Command="mklink /D $(Examples-VB-SourceFolder)\wwwroot\N2\ $(EditFolder)\" Condition="!Exists('$(Examples-VB-SourceFolder)\wwwroot\N2\')" ContinueOnError="true" />
-		<MSBuild Projects="n2.proj" Targets="CopyManagementFilesToManagementFilesDestination" Properties="ManagementFilesDestination=$(Examples-VB-SourceFolder)\wwwroot\N2" Condition="!Exists('$(Examples-VB-SourceFolder)\wwwroot\N2\')" />
 	</Target>
 	<Target Name="Examples-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
 		<Copy SourceFiles="$(SrcFolder)\Framework\Extensions\bin\$(Configuration)\N2.Extensions.dll;"

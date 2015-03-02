@@ -54,16 +54,16 @@ namespace N2.Tests.Web.Parts
             var part = CreateOneItem<Items.DataItem>(0, "part", root);
             part.ZoneName = "ZoneOne";
 
-            request["item"] = part.Path;
+            request[PathData.ItemQueryKey] = part.Path;
             request["below"] = root.Path;
             request["zone"] = "ZoneTwo";
 
             var response = copyer.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children.Count.ShouldBe(2);
-            draft.Version.Children[0].ZoneName.ShouldBe("ZoneOne");
-            draft.Version.Children[1].ZoneName.ShouldBe("ZoneTwo");
+            versionRepository.DeserializeVersion(draft).Children.Count.ShouldBe(2);
+            versionRepository.DeserializeVersion(draft).Children[0].ZoneName.ShouldBe("ZoneOne");
+            versionRepository.DeserializeVersion(draft).Children[1].ZoneName.ShouldBe("ZoneTwo");
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace N2.Tests.Web.Parts
             var part2 = CreateOneItem<Items.DataItem>(0, "part2", root);
             part2.ZoneName = "ZoneOne";
 
-            request["item"] = part2.Path;
+            request[PathData.ItemQueryKey] = part2.Path;
             request["below"] = root.Path;
             request["before"] = part.Path;
             request["zone"] = "ZoneOne";
@@ -83,9 +83,9 @@ namespace N2.Tests.Web.Parts
             var response = copyer.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children[0].Title.ShouldBe("part2");
-            draft.Version.Children[1].Title.ShouldBe("part");
-            draft.Version.Children[2].Title.ShouldBe("part2");
+            versionRepository.DeserializeVersion(draft).Children[0].Title.ShouldBe("part2");
+            versionRepository.DeserializeVersion(draft).Children[1].Title.ShouldBe("part");
+            versionRepository.DeserializeVersion(draft).Children[2].Title.ShouldBe("part2");
         }
 
         [Test]
@@ -98,17 +98,17 @@ namespace N2.Tests.Web.Parts
             part = version.Children[0] as Items.DataItem;
             versionRepository.GetVersions(root).Count().ShouldBe(1);
 
-            request["item"] = part.Path;
-            request["versionKey"] = part.GetVersionKey();
-            request["versionIndex"] = part.VersionIndex.ToString();
+            request[PathData.ItemQueryKey] = part.Path;
+            request[PathData.VersionKeyQueryKey] = part.GetVersionKey();
+            request[PathData.VersionIndexQueryKey] = part.VersionIndex.ToString();
             request["below"] = root.Path;
             request["zone"] = "ZoneTwo";
 
             var response = copyer.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children.Any(c => c.ZoneName == "ZoneOne").ShouldBe(true);
-            draft.Version.Children.Any(c => c.ZoneName == "ZoneTwo").ShouldBe(true);
+            versionRepository.DeserializeVersion(draft).Children.Any(c => c.ZoneName == "ZoneOne").ShouldBe(true);
+            versionRepository.DeserializeVersion(draft).Children.Any(c => c.ZoneName == "ZoneTwo").ShouldBe(true);
         }
 
         [Test]
@@ -125,18 +125,18 @@ namespace N2.Tests.Web.Parts
             part2 = version.Children[1] as Items.DataItem;
             versionRepository.GetVersions(root).Count().ShouldBe(1);
 
-            request["item"] = part2.Path;
-            request["versionKey"] = part2.GetVersionKey();
-            request["versionIndex"] = part2.VersionIndex.ToString();
+            request[PathData.ItemQueryKey] = part2.Path;
+            request[PathData.VersionKeyQueryKey] = part2.GetVersionKey();
+            request[PathData.VersionIndexQueryKey] = part2.VersionIndex.ToString();
             request["before"] = part.Path;
             request["zone"] = "ZoneTwo";
 
             var response = copyer.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children[0].Title.ShouldBe("part2");
-            draft.Version.Children[1].Title.ShouldBe("part");
-            draft.Version.Children[2].Title.ShouldBe("part2");
+            versionRepository.DeserializeVersion(draft).Children[0].Title.ShouldBe("part2");
+            versionRepository.DeserializeVersion(draft).Children[1].Title.ShouldBe("part");
+            versionRepository.DeserializeVersion(draft).Children[2].Title.ShouldBe("part2");
         }
 
         [Test]
@@ -150,17 +150,17 @@ namespace N2.Tests.Web.Parts
             part.SetVersionKey("one");
             versionRepository.Save(version);
 
-            request["item"] = root.Path;
+            request[PathData.ItemQueryKey] = root.Path;
             request["below"] = root.Path;
-            request["versionKey"] = part.GetVersionKey();
-            request["versionIndex"] = version.VersionIndex.ToString();
+            request[PathData.VersionKeyQueryKey] = part.GetVersionKey();
+            request[PathData.VersionIndexQueryKey] = version.VersionIndex.ToString();
             request["zone"] = "ZoneTwo";
 
             var response = copyer.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children.Single(c => c.ZoneName == "ZoneTwo").Name.ShouldBe(null);
-            draft.Version.Children.Single(c => c.ZoneName == "ZoneOne").Name.ShouldBe("part");
+			versionRepository.DeserializeVersion(draft).Children.Single(c => c.ZoneName == "ZoneTwo").Name.ShouldBe(null);
+            versionRepository.DeserializeVersion(draft).Children.Single(c => c.ZoneName == "ZoneOne").Name.ShouldBe("part");
         }
 
         [Test]
@@ -179,9 +179,9 @@ namespace N2.Tests.Web.Parts
             part2.SetVersionKey("two");
             versionRepository.Save(version);
 
-            request["item"] = root.Path;
-            request["versionKey"] = part2.GetVersionKey();
-            request["versionIndex"] = version.VersionIndex.ToString();
+            request[PathData.ItemQueryKey] = root.Path;
+            request[PathData.VersionKeyQueryKey] = part2.GetVersionKey();
+            request[PathData.VersionIndexQueryKey] = version.VersionIndex.ToString();
             request["before"] = "";
             request["beforeVersionKey"] = part.GetVersionKey();
             request["zone"] = "ZoneOne";
@@ -189,9 +189,9 @@ namespace N2.Tests.Web.Parts
             var response = copyer.HandleRequest(request);
 
             var draft = versionRepository.GetVersions(root).Single();
-            draft.Version.Children[0].Title.ShouldBe("part2");
-            draft.Version.Children[1].Title.ShouldBe("part");
-            draft.Version.Children[2].Title.ShouldBe("part2");
+            versionRepository.DeserializeVersion(draft).Children[0].Title.ShouldBe("part2");
+            versionRepository.DeserializeVersion(draft).Children[1].Title.ShouldBe("part");
+            versionRepository.DeserializeVersion(draft).Children[2].Title.ShouldBe("part2");
         }
 
         [Test]
@@ -200,13 +200,13 @@ namespace N2.Tests.Web.Parts
             var part = CreateOneItem<Items.DataItem>(0, "part", root);
             part.ZoneName = "ZoneOne";
 
-            request["item"] = part.Path;
+            request[PathData.ItemQueryKey] = part.Path;
             request["below"] = root.Path;
             request["zone"] = "ZoneTwo";
 
             var response = copyer.HandleRequest(request);
 
-            response["redirect"].ShouldStartWith("/root.aspx?versionIndex=1&edit=drag");
+            response["redirect"].ShouldStartWith("/root?n2versionIndex=1&edit=drag");
         }
 
     }

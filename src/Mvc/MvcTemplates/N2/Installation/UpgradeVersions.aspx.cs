@@ -39,9 +39,18 @@ namespace N2.Edit.Install
         {
         }
 
-        protected override void OnPreInit(EventArgs e)
+	    protected override void OnLoad(EventArgs e)
+	    {
+		    base.OnLoad(e);
+			Header.DataBind();
+	    }
+
+	    protected override void OnPreInit(EventArgs e)
         {
-            rptVersions.DataSource = Repository.Find(N2.Persistence.Parameter.GreaterThan("VersionOf.ID", 0));
+	        var c = Repository.Find(N2.Persistence.Parameter.GreaterThan("VersionOf.ID", 0));
+
+
+	        rptVersions.DataSource = c.OrderBy(o => o.Published).Take(1000);
             rptVersions.DataBind();
 
             base.OnPreInit(e);

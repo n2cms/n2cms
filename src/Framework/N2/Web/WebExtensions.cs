@@ -234,21 +234,22 @@ namespace N2.Web
             {
                 int versionIndex = int.Parse(versionIndexParameterValue);
                 var version = versionRepository.GetVersion(path.CurrentPage, versionIndex);
-                return path.TryApplyVersion(version, versionKey);
+				return path.TryApplyVersion(version, versionKey, versionRepository);
             }
             return false;
         }
 
-        public static bool TryApplyVersion(this PathData path, ContentVersion version, string versionKey)
+        public static bool TryApplyVersion(this PathData path, ContentVersion version, string versionKey, ContentVersionRepository repository)
         {
             if (version != null)
             {
-                if (!string.IsNullOrEmpty(versionKey))
+				var page = repository.DeserializeVersion(version);
+				if (!string.IsNullOrEmpty(versionKey))
                 {
-                    var item = version.Version.FindDescendantByVersionKey(versionKey);
+                    var item = page.FindDescendantByVersionKey(versionKey);
                     if (item != null)
                     {
-                        path.CurrentPage = version.Version;
+                        path.CurrentPage = page;
                         path.CurrentItem = item;
                         return true;
                     }
@@ -257,13 +258,13 @@ namespace N2.Web
                 if (path.CurrentItem.IsPage)
                 {
                     path.CurrentPage = null;
-                    path.CurrentItem = version.Version;
+					path.CurrentItem = page;
                 }
                 else
                 {
-                    path.CurrentPage = version.Version;
-                    path.CurrentItem = version.Version.FindDescendantByVersionKey(versionKey)
-                        ?? version.Version.FindPartVersion(path.CurrentItem);
+					path.CurrentPage = page;
+					path.CurrentItem = page.FindDescendantByVersionKey(versionKey)
+						?? page.FindPartVersion(path.CurrentItem);
                 }
 
                 return true;
@@ -287,7 +288,7 @@ namespace N2.Web
                 return (key) =>
                 {
                     if (json.ContainsKey(key))
-                        return json[key] != null ? json[key].ToString() : null;
+                        return json[key] != null ? Convert.ToString(json[key]) : null;
                     return context.Request[key];
                 };
 

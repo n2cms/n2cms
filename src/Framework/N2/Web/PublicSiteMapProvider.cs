@@ -54,7 +54,7 @@ namespace N2.Web
             // Add published nodes that are pages
             if (item != null)
             {
-                foreach (ContentItem child in item.GetChildren(GetFilter()))
+                foreach (ContentItem child in item.GetChildPagesUnfiltered().Where(GetFilter()))
                     nodes.Add(Convert(child));
             }
 

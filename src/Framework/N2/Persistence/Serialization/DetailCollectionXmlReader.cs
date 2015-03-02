@@ -52,7 +52,7 @@ namespace N2.Persistence.Serialization
                                 collection.EnclosingItem,
                                 attributes["name"],
                                 item));
-                        });
+                        }, relationType: "collectionlink");
                 }
             }
             else if (type == typeof(Enum))

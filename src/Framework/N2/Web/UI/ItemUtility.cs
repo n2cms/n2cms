@@ -9,8 +9,7 @@ using System.Web.UI;
 namespace N2.Web.UI
 {
     /// <summary>
-    /// Some helpful methods that havn't founda better place yet (use at your 
-    /// own risk).
+    /// Some helpful methods that havn't found a better place yet (use at your own risk).
     /// </summary>
     public static class ItemUtility
     {
@@ -125,18 +124,18 @@ namespace N2.Web.UI
 
         internal static ContentItem CurrentContentItem
         {
-            get { return ItemStack.Peek(); }
+            get { return ItemStack.Count > 0 ? ItemStack.Peek() : null; }
         }
 
         internal static Stack<ContentItem> ItemStack
         {
             get
             {
-                Stack<ContentItem> stack = HttpContextItems["ItemStack"] as Stack<ContentItem>;
+                var stack = HttpContextItems["ItemStack"] as Stack<ContentItem>;
                 if (stack == null)
                 {
                     HttpContextItems["ItemStack"] = stack = new Stack<ContentItem>();
-                    ContentItem currentPage = HttpContextItems["CurrentPage"] as ContentItem;
+                    var currentPage = HttpContextItems["CurrentPage"] as ContentItem;
                     if (currentPage != null)
                         stack.Push(currentPage);
                 }
@@ -169,10 +168,7 @@ namespace N2.Web.UI
         {
             if (item != null && !(item is T))
             {
-                throw new N2Exception("Cannot cast the current page " + item
-                    + " from type '" + item.GetContentType()
-                    + "' to type '" + typeof(T)
-                    + "' required by this template. It might help to change the generic argument of the template to something less explicit (like N2.ContentItem) or moving a user control to a page with the correct type or overriding the TemplateUrl property and referencing a more specific template.");
+                throw new N2Exception(string.Format("Cannot cast the current page {0} from type '{1}' to type '{2}' required by this template. It might help to change the generic argument of the template to something less explicit (like N2.ContentItem) or moving a user control to a page with the correct type or overriding the TemplateUrl property and referencing a more specific template.", item, item.GetContentType(), typeof(T)));
             }
             return (T)item;
         }

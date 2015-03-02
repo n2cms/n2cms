@@ -76,7 +76,7 @@ namespace N2.Persistence.Serialization
                 }
                 else
                 {
-                    journal.Register(referencedItemID, setter);
+					journal.Register(referencedItemID, setter, relationType: "link");
                 }
             }
             else if (!string.IsNullOrEmpty(versionKey))

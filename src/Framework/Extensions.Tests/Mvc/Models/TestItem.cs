@@ -9,7 +9,7 @@ namespace N2.Extensions.Tests.Mvc.Models
 
         public override string Url
         {
-            get { return Parent.Url + "?item=" + ID; }
+            get { return Parent.Url + "?n2item=" + ID; }
         }
     }
 }

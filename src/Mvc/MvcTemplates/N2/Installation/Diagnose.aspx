@@ -8,13 +8,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="Head1" runat="server">
     <title>Diagnose N2</title>
-	<link href="../Resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<asp:PlaceHolder runat="server">
+		<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath) %>" type="text/css" rel="stylesheet" />
+		<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapJsPath)  %>" type="text/javascript"></script>
+	</asp:PlaceHolder>
     <link rel="stylesheet" href="../Resources/Css/All.css" type="text/css" />
     <style type="text/css">
         label{font-weight:bold;margin:5px 10px 0 0;}
         input{vertical-align:middle;margin-bottom:5px;}
         ul,li{margin-top:0;margin-bottom:0;}
         textarea{height:55px;width:70%;background-color:#FFA07A;border:none;font-size:11px}
+		th {text-align:right; vertical-align:top; background-color:#eee; border:solid 1px #fff; }
         .t {font-size:.8em; width:100%;}
         .t thead td{ font-weight:bold; background-color:#eee;}
 		.t th h2 { margin:0; padding:.1em; background-color:#ccc; width:auto;}
@@ -47,18 +51,30 @@
 			<table class="t">
 				<tbody>
 					<tr><th colspan="2"><h2>Database</h2></th></tr>
-<% try { %>
-					<tr><th>Connection provider</th><td><%= System.Configuration.ConfigurationManager.ConnectionStrings[Engine.Resolve<N2.Configuration.DatabaseSection>().ConnectionStringName].ProviderName %></td></tr>
-<% } catch (Exception ex) { Response.Write("<tr><td>" + ex + "</td></tr>"); } %>
+					<tr><th>Connection string name</th><td><%
+															string connectionStringName = Engine.Resolve<N2.Configuration.DatabaseSection>().ConnectionStringName;
+															Response.Write(connectionStringName);
+															%></td></tr>
+					
+					<tr><th>Connection provider</th><td><%
+					try {
+						if (string.IsNullOrEmpty(connectionStringName))
+							Response.Write("No connection string name configured");
+						else if (System.Configuration.ConfigurationManager.ConnectionStrings[connectionStringName] == null)
+							Response.Write("No connection string with name '" + connectionStringName + "'");
+						else
+							Response.Write(System.Configuration.ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName);
+					} catch (Exception ex) { Response.Write("<tr><td>" + ex + "</td></tr>"); }
+					%></td></tr>
 					<tr><th>Connection</th><td><asp:Label ID="lblDbConnection" runat="server" /></td></tr>
 					<tr><th>Root item</th><td><asp:Label ID="lblRootNode" runat="server" /></td></tr>
 					<tr><th>Start page</th><td><asp:Label ID="lblStartNode" runat="server" /></td></tr>
-					<tr><th>N2 version (recorded)</th><td><%= Status.RecordedAssemblyVersion %> (<%= Status.RecordedFileVersion %>)</td></tr>
-					<tr><th>N2 file version (recorded)</th><td><%= Status.RecordedFileVersion %> (<%= Status.RecordedFileVersion %>)</td></tr>
-					<tr><th rowspan="<%= Status.RecordedFeatures.Length %>">Installed features (recorded)</th>
+					<tr><th>N2 version (recorded)</th><td><%= typeof(N2.Content).Assembly.GetName().Version %> (<%= Status.RecordedAssemblyVersion %>)</td></tr>
+					<tr><th rowspan="<%= 1 + Status.RecordedFeatures.Length %>">Installed features (recorded)</th>
 						<% foreach (string feature in Status.RecordedFeatures){ %>
 						<td><%= feature %></td>
 						<% } %>
+						<td></td>
 					</tr>
 					<tr><th>Needs <a href="Upgrade.aspx">upgrade</a></th><td><%= Status.NeedsUpgrade %></td></tr>
 					<tr><th>Needs <a href="Rebase.aspx">rebase</a></th><td><%= Status.NeedsRebase %></td></tr>

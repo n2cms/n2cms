@@ -45,36 +45,6 @@
 			self.scroll();
 		},
 
-		//showDialog: function (href, dialogOptions) {
-		//	href += (href.indexOf('?') >= 0 ? '&' : "?") + "modal=true";
-		//	if (dialog) dialog.remove();
-		//	dialog = $('<div id="editorDialog" />').appendTo(document.body).hide();
-		//	var iframe = document.createElement('iframe');
-		//	dialog.append(iframe);
-		//	iframe.src = href;
-		//	$(iframe).load(function () {
-		//		var doc = $(iframe.contentWindow.document);
-		//		doc.find('#toolbar a.cancel').click(function () {
-		//			dialog.dialog('close');
-		//		});
-		//	});
-
-		//	dialog.dialog($.extend({
-		//		modal: true,
-		//		width: Math.min(1000, $(window).width() - 50),
-		//		height: Math.min(800, $(window).height() - 100),
-		//		closeOnEscape: true,
-		//		resizable: true
-		//	}, dialogOptions));
-
-		//	window.n2ScrollBack = (function (x, y) {
-		//		return function () {
-		//			// workaround to maintain scroll position
-		//			setTimeout(function () { window.scrollTo(x, y); }, 10);
-		//		}
-		//	})(window.pageXOffset, window.pageYOffset);
-		//},
-
 		makeDraggable: function () {
 			$('.definition').draggable({
 				dragPrevention: 'a,input,textarea,select,img',
@@ -98,8 +68,8 @@
 		appendSelection: function (url, command) {
 			return url
 				+ (url.indexOf("?") >= 0 ? "&" : "?") + (n2SelectedQueryKey || "selected") + "=" + command.below
-				+ (this.context.isMasterVersion ? "" : "&versionIndex=" + this.context.versionIndex)
-				+ (!command.versionKey ? "" : "&versionKey=" + command.versionKey);
+				+ (this.context.isMasterVersion ? "" : "&n2versionIndex=" + this.context.versionIndex)
+				+ (!command.n2versionKey ? "" : "&n2versionKey=" + command.n2versionKey);
 		},
 
 		makeEditable: function () {
@@ -108,7 +78,7 @@
 				var $t = $(this);
 				var url = self.appendSelection(self.urls.editsingle, { below: $t.attr("data-path") })
 					+ "&property=" + $t.attr("data-property")
-					+ "&versionKey=" + $t.attr("data-versionKey")
+					+ "&n2versionKey=" + $t.attr("data-versionKey")
 					+ "&returnUrl=" + encodeURIComponent(window.location.pathname + window.location.search)
 					+ "&edit=drag";
 				
@@ -118,7 +88,7 @@
 					if ($(this).closest("a").length > 0)
 						$(this).click(function (e) { e.preventDefault(); e.stopPropagation(); });
 				});
-				$("<a class='editor n2-icon-pencil' href='" + url + "'></a>").appendTo(this);
+				$("<a class='editor fa fa-pencil' href='" + url + "'></a>").appendTo(this);
 			});
 		},
 		scroll: function () {
@@ -200,9 +170,9 @@
 				var $next = $droppable.filter(".before").next();
 				var data = {
 					ctrlKey: e.ctrlKey,
-					item: $draggable.attr("data-item"),
-					versionKey: $draggable.attr("data-versionKey"),
-					versionIndex: $draggable.attr("data-versionIndex") || n2ddcp.context.versionIndex,
+					n2item: $draggable.attr("data-item"),
+					n2versionKey: $draggable.attr("data-versionKey"),
+					n2versionIndex: $draggable.attr("data-versionIndex") || n2ddcp.context.versionIndex,
 					discriminator: $draggable.attr("data-type"),
 					template: $draggable.attr("data-template"),
 					before: ($next.attr("data-versionKey") ? "" : $next.attr("data-item")) || "", // data-item may be page+index+key when new part
@@ -264,7 +234,7 @@
 
 		process: function (command) {
 			var self = this;
-			if (command.item)
+			if (command.n2item)
 				command.action = command.ctrlKey ? "copy" : "move";
 			else
 				command.action = "create";
@@ -311,7 +281,7 @@
 
 		recalculate: function () {
 			var $sc = $(this.selector)
-			this.closedPos = { top: (33 - $sc.height()) + "px", left: (5 - $sc.width()) + "px" };
+			this.closedPos = { top: (33 - $sc.height()) + "px", left: (17 - $sc.width()) + "px" };
 			if (!this.isOpen()) $sc.css(this.closedPos);
 		},
 

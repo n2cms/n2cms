@@ -1,4 +1,3 @@
-using System.Linq;
 using N2.Edit.Installation;
 using N2.Persistence;
 
@@ -7,7 +6,7 @@ namespace N2.Management.Installation
     [N2.Engine.Service(typeof(AbstractMigration))]
     public class CleanZoneNameMigration : AbstractMigration
     {
-        IRepository<ContentItem> repository;
+	    readonly IRepository<ContentItem> repository;
 
         public CleanZoneNameMigration(IRepository<ContentItem> repository)
         {
@@ -19,7 +18,7 @@ namespace N2.Management.Installation
 
         public override bool IsApplicable(DatabaseStatus status)
         {
-            return status.DatabaseVersion < 4 || !status.HasSchema || repository.Find("ZoneName", "").Any();
+	        return status.DatabaseVersion < 4 || !status.HasSchema || repository.Count(new Parameter("ZoneName", "")) > 0;
         }
 
         public override MigrationResult Migrate(DatabaseStatus preSchemaUpdateStatus)
