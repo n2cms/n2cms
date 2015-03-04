@@ -36,7 +36,7 @@ namespace N2.Integrity
             if (query.Parent == null) return AllowedDefinitionResult.DontCare;
 
             var type = ComparableType ?? query.ChildDefinition.ItemType;
-            int childrenOfTypeCount = query.Parent.Children.Count(i => type.IsAssignableFrom(i.GetContentType()));
+            int childrenOfTypeCount = query.Parent.Children.Count(i => (query.Child == null || query.Child.ID != i.ID) && type.IsAssignableFrom(i.GetContentType()));
             if (childrenOfTypeCount >= MaximumCount)
                 return AllowedDefinitionResult.Deny;
 
