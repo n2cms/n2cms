@@ -25,6 +25,12 @@ namespace N2.Configuration
             get { return (string)base["varyByParam"]; }
             set { base["varyByParam"] = value; }
         }
+        [ConfigurationProperty("varyByCustom", DefaultValue = "")]
+        public string VaryByCustom
+        {
+            get { return (string)base["varyByCustom"]; }
+            set { base["varyByCustom"] = value; }
+        }
 
         [ConfigurationProperty("cacheProfile")]
         public string CacheProfile
