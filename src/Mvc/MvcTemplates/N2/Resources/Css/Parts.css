@@ -41,7 +41,7 @@
 		.controlPanel { }
 		.controlPanel img { border:none; vertical-align:middle; margin-right:3px; }
 		.controlPanel a,.controlPanel a:visited { }
-	.controlPanel a { padding:1px; }
+	.controlPanel a { padding:1px; min-height:14px; min-width:18px; }
 		.controlPanel a b { font-size:18px; }
 	.controlPanel .plugins { padding:1px 17px 1px 1px; height:30px; }
 		.controlPanel .plugins a {
