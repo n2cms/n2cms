@@ -162,7 +162,10 @@ namespace N2.Security
 
         public override string[] GetRolesForUser(string userName)
         {
-            return Roles.GetRolesForUser(userName);
+			if (Roles.Enabled)
+				return Roles.GetRolesForUser(userName);
+			else
+				return new string[0];
         }
 
         public override bool IsUserInRole(string userName, string roleName)
