@@ -7,8 +7,8 @@
 	});
 })(angular.module('n2', ['n2.directives', 'n2.services', 'n2.localization', 'ui', '$strap.directives', "ngRoute"], function ($routeProvider, $locationProvider) {
     if (history.pushState) {
-        $locationProvider.html5Mode(true);
-        $locationProvider.hashPrefix("!");
+	$locationProvider.html5Mode(true);
+	$locationProvider.hashPrefix("!");
     }
 	$routeProvider.otherwise({
 	    templateUrl: "App/Partials/Framework.html",
@@ -141,7 +141,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 
 	decorate(FrameContext, "refresh", function (ctx) {
 		// legacy refresh call from frame
-	    if (ctx.force) {
+		if (ctx.force) {
 			$scope.reloadNode(ctx.path);
 			$scope.reloadChildren(ctx.path);
 			if (ctx.previewUrl) {
@@ -234,7 +234,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 		$scope.saveUserSettings = function () {
 			$scope.Context.User.$saved = true;
 			Profile.save({}, $scope.Context.User, function (data) {
-			});
+	});
 		}
 	});
 
@@ -271,7 +271,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 	}
 
 	$scope.select = function (nodeOrPath, versionIndex, keepFlags, forceContextRefresh, preventReload, disregardNodeUrl) {
-	    if (typeof nodeOrPath == "string") {
+		if (typeof nodeOrPath == "string") {
 			var path = nodeOrPath;
 			var node = findNodeRecursive($scope.Context.Content, path);
 			if (!node) {
@@ -314,7 +314,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 			: parentPathOrNode;
 
 		if (node)
-		    Content.loadChildren(node, callback);
+		Content.loadChildren(node, callback);
 		else if (pathNotFound)
 		    pathNotFound(parentPathOrNode);
 	};
@@ -389,9 +389,9 @@ function ManagementConfirmCtrl($rootScope, $scope) {
         $scope.settings = settings;
         if (!$scope.$$phase) {
             // specific sceanrio: move
-            $scope.$digest();
+			$scope.$digest();
         }
-    });
+	});
 }
 
 function NavigationCtrl($scope, ContextMenuFactory) {
@@ -437,6 +437,11 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 			$scope.Context.SelectedNode = findNodeRecursive($scope.Context.Content, ctx.CurrentItem.Path);
 		else
 			$scope.Context.SelectedNode = null;
+
+		//if (ctx.Organize)
+		//	$scope.setPreviewQuery("edit", "drag");
+		//else
+		//	$scope.setPreviewQuery("edit", null);
 	});
 	$scope.nodeClicked = function (node) {
 		$scope.Context.User.Settings.Selected = node.Current.Path;
@@ -661,7 +666,7 @@ function SearchCtrl($scope, $rootScope, Content, Eventually) {
         query: "",
         searching: false,
         focused: undefined,
-    };
+	};
     $scope.$watch("search.query", function (searchQuery) {
         Eventually(function () {
             $scope.search.execute(searchQuery);
@@ -701,10 +706,10 @@ function PagePublishCtrl($scope, $rootScope, $modal, Content, Confirm, Translate
 	        item: $scope.Context.CurrentItem,
 	        template: "<b class='ico' ng-show='settings.item.IconClass || settings.item.IconUrl' ng-class='settings.item.IconClass' x-background-image='settings.item.IconUrl'></b> {{settings.item.Title}}",
 	        confirmed: function () {
-	            Content.unpublish(Content.applySelection({}, $scope.Context.CurrentItem), function (result) {
-	                $scope.previewUrl(result.Current.PreviewUrl);
-
-	                $scope.reloadNode(result.Current.Path, $scope.refreshContext);
+		Content.unpublish(Content.applySelection({}, $scope.Context.CurrentItem), function (result) {
+			$scope.previewUrl(result.Current.PreviewUrl);
+			
+			$scope.reloadNode(result.Current.Path, $scope.refreshContext);
 	            })
 	        }
 	    };

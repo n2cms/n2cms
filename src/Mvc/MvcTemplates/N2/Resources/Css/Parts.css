@@ -9,7 +9,7 @@
 .dropZone .titleBar { position:absolute; left:-2px; top:-2px; z-index:900; padding-left:18px }
 	.zoneItem .zoneItem .titleBar	{ left:6px; top:6px; }
 		.zoneItem .zoneItem .zoneItem .titleBar	{ left:0; top:0; }
-    .titleBar .command { cursor:pointer; padding:2px; display:inline-block; vertical-align:middle; font-size:16px; text-decoration:none; }
+    .titleBar .command { cursor:pointer; padding:2px; display:inline-block; vertical-align:middle; font-size:16px; }
     .titleBar .title { background:transparent none no-repeat 5px 33%; color:#333; padding-left:24px; padding-right:10px; font-size:13px; line-height:20px; height:20px; border-left:solid 1px #e3e5e4; margin-left:10px; vertical-align:middle; }
 .dropZone .titleBar { opacity:.66; overflow:hidden; width:18px; }
 .dropZone .titleBar * { display:inline-block; vertical-align:middle; }
@@ -41,7 +41,7 @@
 		.controlPanel { }
 		.controlPanel img { border:none; vertical-align:middle; margin-right:3px; }
 		.controlPanel a,.controlPanel a:visited { }
-	.controlPanel a { padding:1px; }
+	.controlPanel a { padding:1px; min-height:14px; min-width:18px; }
 		.controlPanel a b { font-size:18px; }
 	.controlPanel .plugins { padding:1px 17px 1px 1px; height:30px; }
 		.controlPanel .plugins a {

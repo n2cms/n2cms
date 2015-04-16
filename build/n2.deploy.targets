@@ -9,6 +9,7 @@
     <Framework-NugetFolder>$(DeployFolder)\$(DeployPrefix)Framework_Nuget</Framework-NugetFolder>
     <Management-NugetFolderZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_Zip</Management-NugetFolderZip>
 		<Management-NugetFolderNoZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_NoZip</Management-NugetFolderNoZip>
+		<Management-Targeting-NugetFolder>$(DeployFolder)\$(DeployPrefix)Management_Targeting_Nuget</Management-Targeting-NugetFolder>
 		<Management-LocalizedResourcesFolder>$(DeployFolder)\$(DeployPrefix)Management_LocalizedResources_Nuget</Management-LocalizedResourcesFolder>
     <Library-NugetFolder>$(DeployFolder)\$(DeployPrefix)Library_Nuget</Library-NugetFolder>
 		<LuceneSearch-NugetFolder>$(DeployFolder)\$(DeployPrefix)LuceneSearch_Nuget</LuceneSearch-NugetFolder>
@@ -19,13 +20,13 @@
     <Windsor3-NugetFolder>$(DeployFolder)\$(DeployPrefix)Windsor3_Nuget</Windsor3-NugetFolder>
     <MongoDB-NugetFolder>$(DeployFolder)\$(DeployPrefix)MongoDB_Nuget</MongoDB-NugetFolder>
     <RemoteSearch-NugetFolder>$(DeployFolder)\$(DeployPrefix)RemoteSearch_Nuget</RemoteSearch-NugetFolder>
-	</PropertyGroup>
+</PropertyGroup>
 
 	<ItemGroup>
 		<nugetFxTargets Include="net40;net45"/>
 	</ItemGroup>
 
-	<Target Name="Config-NuGet">
+  <Target Name="Config-NuGet">
     <!--<Copy SourceFiles="@(nugetLibraryBinFiles)" DestinationFolder="$(Library-NugetFolder)\lib" />-->
     <ItemGroup>
       <configNugetIncludes Include="$(BuildFolder)\Nuget\Config\**\*" />
@@ -197,7 +198,7 @@
 
 
   <Target Name="Management-Zip-NuGet" DependsOnTargets="Management-NuGet-ItemGroups">
-		<Copy SourceFiles="@(nugetFrameworkBinFiles)" DestinationFolder="$(Management-NugetFolderZip)\lib" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(nugetFrameworkBinFiles)" DestinationFolder="$(Management-NugetFolderZip)\lib" SkipUnchangedFiles="true" />
 		<Copy SourceFiles="$(SrcFolder)\Framework\Packaging\bin\$(Configuration)\N2.Packaging.dll" DestinationFolder="$(Management-NugetFolderZip)\lib" SkipUnchangedFiles="true" />
 
     <!-- Using DotNetZip since MSBuild Community Tasks Zip doesn't include directory entries -->
@@ -226,6 +227,23 @@
     <FileUpdate Files="$(Management-NugetFolderNoZip)\N2.Management.NoZip.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
     <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-NugetFolderNoZip)\" />
   </Target>
+
+	<Target Name="Management-Targeting-NuGet">
+		<ItemGroup>
+			<managementTargetingIncludes Include="$(BuildFolder)\Nuget\ManagementTargeting\**\*" />
+			<managementTargetingBinFiles Include="$(ManagementFolder)\N2\Targeting\Bin\N2.Management.Targeting.dll;" />
+			<managementTargetingDeployFiles Include="$(ManagementFolder)\N2\Targeting\**\*.css;
+																							 $(ManagementFolder)\N2\Targeting\**\*.js;
+																							 $(ManagementFolder)\N2\Targeting\**\*.html;
+																							 $(ManagementFolder)\N2\Targeting\**\*.as?x;" />
+		</ItemGroup>
+		<Copy SourceFiles="@(managementTargetingIncludes)" DestinationFolder="$(Management-Targeting-NugetFolder)\%(RecursiveDir)" />
+		<Copy SourceFiles="@(managementTargetingBinFiles)" DestinationFolder="$(Management-Targeting-NugetFolder)\lib" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(managementTargetingDeployFiles)" DestinationFolder="$(Management-Targeting-NugetFolder)\content\N2\Targeting\%(RecursiveDir)" UseHardlinksIfPossible="true" SkipUnchangedFiles="true" />
+
+		<FileUpdate Files="$(Management-Targeting-NugetFolder)\N2.Management.Targeting.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-Targeting-NugetFolder)\" />
+	</Target>
 
   <Target Name="Framework-NuGet" DependsOnTargets="Management-Zip-NuGet;Management-NoZip-NuGet">
     <Message Text="Framework-NuGet:" Importance="high" />

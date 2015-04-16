@@ -366,26 +366,26 @@ namespace N2.Management.Api
 
 			using (var tx = engine.Persister.Repository.BeginTransaction())
 			{
-				if (!string.IsNullOrEmpty(request("before")))
-				{
-					var before = engine.Resolve<Navigator>().Navigate(request("before"));
+            if (!string.IsNullOrEmpty(request("before")))
+            {
+                var before = engine.Resolve<Navigator>().Navigate(request("before"));
 
-					PerformMoveChecks(context, from, before.Parent);
+                PerformMoveChecks(context, from, before.Parent);
 
-					sorter.MoveTo(from, NodePosition.Before, before);
-				}
-				else
-				{
-					var to = engine.Resolve<Navigator>().Navigate(request("to"));
+                sorter.MoveTo(from, NodePosition.Before, before);
+            }
+            else
+            {
+                var to = engine.Resolve<Navigator>().Navigate(request("to"));
 
-					PerformMoveChecks(context, from, to);
+                PerformMoveChecks(context, from, to);
 
-					sorter.MoveTo(from, to);
+                sorter.MoveTo(from, to);
 					engine.Resolve<ITrashHandler>().HandleMoved(from);
 				}
 				engine.Persister.Save(from);
 				tx.Commit();
-			}
+            }
             context.Response.WriteJson(new { Moved = true, Current = engine.GetNodeAdapter(from).GetTreeNode(from) });
         }
 

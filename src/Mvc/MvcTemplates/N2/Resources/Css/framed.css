@@ -292,23 +292,30 @@ input.dp-applied {
         {
 	        display:block;
 	        overflow: hidden;
-		text-overflow:ellipsis;
-		white-space: nowrap;
+			text-overflow:ellipsis;
+			white-space: nowrap;
         }
-    .droparea, .pickarea { margin:20px 0 0 0; padding:10px; border:dashed 1px silver; border-radius:3px; clear:both; opacity:.5; background-color:#f8f8f8; }
-    .droparea:hover, .pickarea:hover { border-style:solid; opacity:1; }
+    .droparea, .pickarea { margin:20px 0 0 0; padding:10px; clear:both; opacity:.5; background-color:#f8f8f8; border:none; }
+    .droparea:hover, .pickarea:hover { opacity:1; }
         .droparea em, .pickarea em { margin-left:10px; display:none; }
         .droparea:hover em, .pickarea:hover em  { display:inline; }
-	.droparea { padding-left:110px; position:relative; }
-	.droparea b {
-		font-size:80px;
-		color: #ddd;
-		color: rgba(222, 222, 222, 0.75);
-		position:absolute;
-		top:20px;
-		left:20px;
-		text-shadow: 1px 4px 6px #fff, 0 0 0 #000, 1px 4px 6px #fff;
-	}
+	.droparea { min-height: 100px; max-height: 200px; overflow:auto; }
+		.droparea #uploadcontrols {
+			padding-left:120px; position:relative; 
+		}
+			.droparea #uploadcontrols b {
+				font-size:80px;
+				color: #ddd;
+				position:absolute;
+				top:20px;
+				left:20px;
+			}
+		.droparea .fileupload-content p {
+			opacity:.25;
+		}
+		.droparea .fileupload-content p:first-of-type {
+			opacity:1;
+		}
 
 .itemListEditor { margin:20px 0 0 0; clear:both; }
 	.itemListEditor .item { position:relative; border: dotted 1px #DDC; margin-top: 10px;}

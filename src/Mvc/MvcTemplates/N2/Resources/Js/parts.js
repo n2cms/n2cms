@@ -281,8 +281,9 @@
 
 		recalculate: function () {
 			var $sc = $(this.selector)
-			this.closedPos = { top: (33 - $sc.height()) + "px", left: (17 - $sc.width()) + "px" };
-			if (!this.isOpen()) $sc.css(this.closedPos);
+			this.closedPos = { top: (33 - $sc.height()) + "px", left: (15 - $sc.width()) + "px" };
+			if (!this.isOpen())
+				$sc.css(this.closedPos);
 		},
 
 		isOpen: function () {
@@ -296,7 +297,7 @@
 
 			$(function () {
 				self.recalculate();
-				setTimeout(function () { self.recalculate(); }, 100);
+				setTimeout(function () { self.recalculate(); }, 500);
 			});
 
 			self.open = function (e) {

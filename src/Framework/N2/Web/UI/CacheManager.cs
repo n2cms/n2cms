@@ -15,6 +15,7 @@ namespace N2.Web.UI
 
         bool enabled = false;
         string varyByParam = "*";
+        string varyByHeader = "";
         string cacheProfile = "";
         int duration = 60;
 
@@ -29,6 +30,7 @@ namespace N2.Web.UI
         {
             enabled = config.OutputCache.Enabled;
             varyByParam = config.OutputCache.VaryByParam;
+            varyByHeader = config.OutputCache.VaryByHeader;
             cacheProfile = config.OutputCache.CacheProfile;
             duration = config.OutputCache.Duration;
         }
@@ -71,6 +73,8 @@ namespace N2.Web.UI
             //parameters.VaryByControl = VaryByControl;
             //parameters.VaryByCustom = VaryByCustom;
             //parameters.VaryByHeader = VaryByHeader;
+            if (!string.IsNullOrEmpty(varyByHeader))
+                parameters.VaryByHeader = varyByHeader;
             parameters.VaryByParam = varyByParam;
             return parameters;
         }

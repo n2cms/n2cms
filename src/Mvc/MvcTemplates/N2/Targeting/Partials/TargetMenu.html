@@ -1,0 +1,13 @@
+﻿<b class="submenu-toggle n2-icon-caret-right" ng-show="child.Children.length"></b>
+
+<a page-action-link="child"></a>
+
+<ul class="dropdown-menu sub-menu" ng-show="child.Children.length">
+	<li ng-repeat="grandchild in child.Children"
+		title="selected: {{isFlagged(grandchild.Current.SelectedBy)}}"
+		ng-class="{ divider: grandchild.Current.Divider, selected: isFlagged(grandchild.Current.SelectedBy) }">
+		<a page-action-link="grandchild"></a>
+	</li>
+	<li class="divider"></li>
+	<li ng-class="{ selected: isFlagged('TargetsBlank') }"><div class="page-action"><a href="#" ng-click="$emit('targets-clear', {})" translate="targeting.targets.clear"><b class="n2-icon-remove"></b> Clear targets</a></div></li>
+</ul>
