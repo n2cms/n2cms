@@ -40,7 +40,8 @@ namespace N2.Tests.Security
             TestSupport.Setup(out definitions, out activator, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, persistedTypes);
             var repository = new ContentItemRepository(sessionProvider);
             var sources = TestSupport.SetupContentSource(repository);
-            persister = new ContentPersister(sources, repository);
+			var events = new EventsManager();
+			persister = new ContentPersister(sources, repository, events);
         }
 
         [SetUp]

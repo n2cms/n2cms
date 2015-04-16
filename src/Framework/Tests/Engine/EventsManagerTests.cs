@@ -2,20 +2,10 @@
 namespace N2.Tests.Engine
 {
 	using System;
-
-	using N2.Definitions;
-	using N2.Edit;
-	using N2.Edit.Versioning;
 	using N2.Engine;
 	using N2.Persistence;
-	using N2.Persistence.Sources;
-	using N2.Plugin;
 	using N2.Tests.Content;
-	using N2.Tests.Details.Models;
-
 	using NUnit.Framework;
-
-	using Rhino.Mocks;
 	using Shouldly;
 
 	[TestFixture]
@@ -33,38 +23,92 @@ namespace N2.Tests.Engine
 			persister = new ContentPersister(sources, repository, events);
 		}
 
-		[Test]
-		public void Saving_Item_Fires_PreEvents()
-		{
-			bool preEventWasCalled = false;
+		#region Save Item
 
-			events.ItemSaving += (s, e) => preEventWasCalled = true;
+		[Test]
+		public void Saving_Item_Fires_Events()
+		{
+			bool itemSavingRaised = false;
+			bool itemSavedRaised = false;
+
+			bool legacyItemSavingRaised = false;
+			bool legacyItemSavedRaised = false;
+
+			// EventManager events
+			events.ItemSaving += (s, e) => itemSavingRaised = true;
+			events.ItemSaved += (s, e) => itemSavedRaised = true;
+
+			// Legacy IPersister events
+			persister.ItemSaving += (s, e) => legacyItemSavingRaised = true;
+			persister.ItemSaved += (s, e) => legacyItemSavedRaised = true;
+
 			persister.Save(new AnItem());
 
-			preEventWasCalled.ShouldBe(true);
+			// EventsManagers events
+			itemSavingRaised.ShouldBe(true);
+			itemSavedRaised.ShouldBe(true);
+
+			// Legacy IPersister events
+			legacyItemSavingRaised.ShouldBe(true);
+			legacyItemSavedRaised.ShouldBe(true);
 		}
 
 		[Test]
-		public void Saving_Item_Fires_PostEvents()
+		public void Cancelled_Saving_Item_DoesNot_Fires_Post_Events()
 		{
-			bool postEventWasCalled = false;
+			bool itemSavingRaised = false;
+			bool itemSavedRaised = false;
 
-			events.ItemSaved += (s, e) => postEventWasCalled = true;
+			bool legacyItemSavingRaised = false;
+			bool legacyItemSavedRaised = false;
+
+			// EventManager events
+			events.ItemSaving += (s, e) => { e.Cancel = true; itemSavingRaised = true; };
+			events.ItemSaved += (s, e) => itemSavedRaised = true;
+
+			// Legacy IPersister events
+			persister.ItemSaving += (s, e) => legacyItemSavingRaised = true;
+			persister.ItemSaved += (s, e) => legacyItemSavedRaised = true;
+
 			persister.Save(new AnItem());
 
-			postEventWasCalled.ShouldBe(true);
+			// EventsManagers events
+			itemSavingRaised.ShouldBe(true);
+			itemSavedRaised.ShouldBe(false);
+
+			// Legacy IPersister events
+			legacyItemSavingRaised.ShouldBe(true);
+			legacyItemSavedRaised.ShouldBe(false);
 		}
 
 		[Test]
-		public void Cancelled_Saving_Item_DoesNot_Fires_Events()
+		public void Legacy_Cancelled_Saving_Item_DoesNot_Fires_Post_Events()
 		{
-			bool postEventWasCalled = false;
+			bool itemSavingRaised = false;
+			bool itemSavedRaised = false;
 
-			events.ItemSaving += (s, e) => e.Cancel = true;
-			events.ItemSaved += (s, e) => postEventWasCalled = true;
+			bool legacyItemSavingRaised = false;
+			bool legacyItemSavedRaised = false;
+
+			// EventManager events
+			events.ItemSaving += (s, e) => itemSavingRaised = true;
+			events.ItemSaved += (s, e) => itemSavedRaised = true;
+
+			// Legacy IPersister events
+			persister.ItemSaving += (s, e) => { e.Cancel = true; legacyItemSavingRaised = true; };
+			persister.ItemSaved += (s, e) => legacyItemSavedRaised = true;
+
 			persister.Save(new AnItem());
 
-			postEventWasCalled.ShouldBe(false);
+			// EventsManagers events
+			itemSavingRaised.ShouldBe(true);
+			itemSavedRaised.ShouldBe(false);
+
+			// Legacy IPersister events
+			legacyItemSavingRaised.ShouldBe(true);
+			legacyItemSavedRaised.ShouldBe(false);
 		}
+
+		#endregion
 	}
 }

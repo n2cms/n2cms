@@ -2,19 +2,20 @@
 namespace N2.Engine
 {
 	using System;
+	using N2.Persistence;
 
 	public interface IEventsManager
 	{
-		// todo: Implement interface once EventsManger is done
+		event EventHandler<CancellableItemEventArgs> ItemSaving;
+		event EventHandler<ItemEventArgs> ItemSaved;
 
 		//// todo : introduce ItemVersionSaving and ItemVersionSaved 
 
-		///// <summary>Invoked before item has been saved</summary>
-		//event EventHandler<CancellableItemEventArgs> ItemSaving;
-
-		///// <summary>Invoked after item has been saved</summary>
-		//event EventHandler<ItemEventArgs> ItemSaved;
-
-		//void TriggerSave(ContentItem item, object sender);
+		void TriggerItemSave(
+			EventHandler<CancellableItemEventArgs> legacyPreHandler,
+			ContentItem item, 
+			Action<ContentItem> finalAction,
+			EventHandler<ItemEventArgs> legacyPostHandler,
+			ITransaction commitTriggersPostEvent = null);
 	}
 }

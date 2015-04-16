@@ -2,8 +2,8 @@
 namespace N2.Engine
 {
 	using System;
-	using N2.Persistence.Sources;
-using N2.Persistence;
+	using System.Collections.Generic;
+	using N2.Persistence;
 
 	[Service]
 	[Service(typeof(IEventsManager))]
@@ -16,28 +16,39 @@ using N2.Persistence;
 
 		#endregion
 
-		public void TriggerSave(ContentItem item, Action<ContentItem> finalAction, ITransaction commitTriggersPostEvent = null)
+		public void TriggerItemSave(
+			EventHandler<CancellableItemEventArgs> legacyPreHandler,
+			ContentItem item, 
+			Action<ContentItem> finalAction,
+			EventHandler<ItemEventArgs> legacyPostHandler,
+			ITransaction commitTriggersPostEvent = null)
 		{
-			this.InvokeEvent(ItemSaving, item, finalAction, ItemSaved, commitTriggersPostEvent);
+			var preHandlers = new List<EventHandler<CancellableItemEventArgs>> { this.ItemSaving };
+			if (legacyPreHandler != null) preHandlers.Add(legacyPreHandler);
+
+			var postHandlers = new List<EventHandler<ItemEventArgs>> { this.ItemSaved };
+			if (legacyPostHandler != null) postHandlers.Add(legacyPostHandler);
+
+			this.InvokeEvent(preHandlers, item, finalAction, postHandlers, commitTriggersPostEvent);
 		}
 
-		/// <summary>Invokes an event and and executes an action unless the event is cancelled.</summary>
-		/// <param name="preHandlers">The event handler to signal.</param>
-		/// <param name="item">The item affected by this operation.</param>
-		/// <param name="sender">The source of the event.</param>
-		/// <param name="finalAction">The default action to execute if the event didn't signal cancel.</param>
-		/// <param name="postHandlers">The event handler to signal after action completes execution.</param>
+		/// <summary>Invokes an event and executes an action unless the event is cancelled</summary>
+		/// <param name="preHandlers">Event handlers to signal</param>
+		/// <param name="item">Item affected by this operation</param>
+		/// <param name="finalAction">Default action to execute if the event didn't signal cancel</param>
+		/// <param name="postHandlers">Event handlers to signal after action completes execution</param>
+		/// <param name="tx">Transaction</param>
 		private void InvokeEvent(
-			EventHandler<CancellableItemEventArgs> preHandlers, 
+			IEnumerable<EventHandler<CancellableItemEventArgs>> preHandlers, 
 			ContentItem item, 
 			Action<ContentItem> finalAction, 
-			EventHandler<ItemEventArgs> postHandlers,
+			IEnumerable<EventHandler<ItemEventArgs>> postHandlers,
 			ITransaction tx)
 		{
 			var args = new CancellableItemEventArgs(item, finalAction);
 
-			if (preHandlers != null)
-				preHandlers.Invoke(this, args);
+			InvokeEventHandlers(preHandlers, args);
+
 			if (args.Cancel)
 				return;
 
@@ -46,13 +57,46 @@ using N2.Persistence;
 			if (postHandlers != null)
 			{
 				if (tx != null)
+				{
 					// delaying post-event until commit is neccessary for some reason (probably id-generation and/or cascaded entities)
-					tx.Committed += (s, e) => postHandlers(this, args);
+					tx.Committed += (s, e) => InvokeEventHandlers(postHandlers, args);				
+				}
 				else
-					postHandlers(this, args);
+				{
+					InvokeEventHandlers(postHandlers, args);
+				}
 			}
 		}
 
+		private void InvokeEventHandlers(
+			IEnumerable<EventHandler<CancellableItemEventArgs>> handlers,
+			CancellableItemEventArgs args)
+		{
+			if (handlers != null)
+			{
+				foreach (var handler in handlers)
+				{
+					if (handler != null)
+						handler.Invoke(this, args);
+				}
+			}
+		}
+
+		private void InvokeEventHandlers(
+			IEnumerable<EventHandler<ItemEventArgs>> handlers,
+			CancellableItemEventArgs args)
+		{
+			if (handlers != null)
+			{
+				foreach (var handler in handlers)
+				{
+					if (handler != null)
+						handler.Invoke(this, args);
+				}
+			}
+		}
+
+		/*
 		/// <summary>Invokes an event and and executes an action unless the event is cancelled.</summary>
 		/// <param name="preHandlers">The event handler to signal.</param>
 		/// <param name="source">The item affected by this operation.</param>
@@ -87,5 +131,6 @@ using N2.Persistence;
 			}
 			return result2;
 		}
+		*/
 	}
 }

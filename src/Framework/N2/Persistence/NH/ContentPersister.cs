@@ -68,12 +68,9 @@ namespace N2.Persistence
 		/// <param name="unsavedItem">Item to save</param>
 		public virtual void Save(ContentItem unsavedItem)
 		{
-			// todo : fire IPersister.Saving and IPersister.Saved
-
-
 			using (var tx = Repository.BeginTransaction())
 			{
-				this.eventsManager.TriggerSave(unsavedItem, sources.Save, tx);
+				this.eventsManager.TriggerItemSave(ItemSaving, unsavedItem, sources.Save, ItemSaved, tx);
 				tx.Commit();
 			}
 		}
