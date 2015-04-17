@@ -11,7 +11,10 @@ namespace N2.Engine
 	{
 		#region Events
 
+		/// <summary>Occurs before an item is saved</summary>
 		public event EventHandler<CancellableItemEventArgs> ItemSaving;
+
+		/// <summary>Occurs when an item has been saved</summary>
 		public event EventHandler<ItemEventArgs> ItemSaved;
 
 		#endregion

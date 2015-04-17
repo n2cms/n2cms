@@ -155,7 +155,7 @@ namespace N2.Tests
             var source = SetupContentSource(itemRepository);
 	        var eventsManager = SetupEventsManager();
             persister = new ContentPersister(source, itemRepository, eventsManager);
-            new BehaviorInvoker(persister, new N2.Definitions.Static.DefinitionMap()).Start();
+			new BehaviorInvoker(persister, new N2.Definitions.Static.DefinitionMap(), eventsManager).Start();
 
             schemaCreator.Execute(false, true, false, sessionProvider.OpenSession.Session.Connection, null);
         }

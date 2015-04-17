@@ -1,121 +1,122 @@
-using N2.Engine;
-using N2.Persistence;
-using N2.Plugin;
 
 namespace N2.Integrity
 {
-    /// <summary>
-    /// Subscribes to persister envents and throws exceptions if something 
-    /// illegal is about to be done.
-    /// </summary>
-    [Service(typeof(IIntegrityEnforcer))]
-    public class IntegrityEnforcer : IIntegrityEnforcer, IAutoStart
-    {
-        private readonly IPersister persister;
-        private readonly IIntegrityManager integrity;
-        private readonly ContentActivator activator;
-        private bool enabled = true;
+	using N2.Engine;
+	using N2.Persistence;
+	using N2.Plugin;
 
-        public IntegrityEnforcer(IPersister persister, IIntegrityManager integrity, ContentActivator activator)
-        {
-            this.persister = persister;
-            this.integrity = integrity;
-            this.activator = activator;
-        }
+	/// <summary>
+	/// Subscribes to persister envents and throws exceptions if something 
+	/// illegal is about to be done.
+	/// </summary>
+	[Service(typeof(IIntegrityEnforcer))]
+	public class IntegrityEnforcer : IIntegrityEnforcer, IAutoStart
+	{
+		private readonly IPersister persister;
+		private readonly IIntegrityManager integrity;
+		private readonly IEventsManager eventsManager;
+		private bool enabled = true;
 
-        /// <summary>Gets or sets wether the integrity is enforced.</summary>
-        public bool Enabled
-        {
-            get { return enabled; }
-            set { enabled = value; }
-        }
+		public IntegrityEnforcer(IPersister persister, IIntegrityManager integrity, IEventsManager eventsManager)
+		{
+			this.persister = persister;
+			this.integrity = integrity;
+			this.eventsManager = eventsManager;
+		}
 
-        #region Event Dispatchers
+		/// <summary>Gets or sets wether the integrity is enforced.</summary>
+		public bool Enabled
+		{
+			get { return enabled; }
+			set { enabled = value; }
+		}
 
-        private void ItemSavingEvenHandler(object sender, CancellableItemEventArgs e)
-        {
-            OnItemSaving(e.AffectedItem);
-        }
+		#region Event Dispatchers
 
-        private void ItemMovingEvenHandler(object sender, CancellableDestinationEventArgs e)
-        {
-            OnItemMoving(e.AffectedItem, e.Destination);
-        }
+		private void ItemSavingEvenHandler(object sender, CancellableItemEventArgs e)
+		{
+			OnItemSaving(e.AffectedItem);
+		}
 
-        private void ItemDeletingEvenHandler(object sender, CancellableItemEventArgs e)
-        {
-            OnItemDeleting(e.AffectedItem);
-        }
+		private void ItemMovingEvenHandler(object sender, CancellableDestinationEventArgs e)
+		{
+			OnItemMoving(e.AffectedItem, e.Destination);
+		}
 
-        private void ItemCopyingEvenHandler(object sender, CancellableDestinationEventArgs e)
-        {
-            OnItemCopying(e.AffectedItem, e.Destination);
-        }
+		private void ItemDeletingEvenHandler(object sender, CancellableItemEventArgs e)
+		{
+			OnItemDeleting(e.AffectedItem);
+		}
 
-        #endregion
+		private void ItemCopyingEvenHandler(object sender, CancellableDestinationEventArgs e)
+		{
+			OnItemCopying(e.AffectedItem, e.Destination);
+		}
 
-        #region Event Handlers
+		#endregion
 
-        protected virtual void OnItemSaving(ContentItem item)
-        {
-            var ex = integrity.GetSaveException(item);
-            if (Enabled && ex != null)
-                throw ex;
-        }
+		#region Event Handlers
 
-        protected virtual void OnItemMoving(ContentItem source, ContentItem destination)
-        {
-            var ex = integrity.GetMoveException(source, destination);
-            if (Enabled && ex != null)
-                throw ex;
-        }
+		protected virtual void OnItemSaving(ContentItem item)
+		{
+			var ex = integrity.GetSaveException(item);
+			if (Enabled && ex != null)
+				throw ex;
+		}
 
-        protected virtual void OnItemDeleting(ContentItem item)
-        {
-            var ex = integrity.GetDeleteException(item);
-            if (Enabled && ex != null)
-                throw ex;
-        }
+		protected virtual void OnItemMoving(ContentItem source, ContentItem destination)
+		{
+			var ex = integrity.GetMoveException(source, destination);
+			if (Enabled && ex != null)
+				throw ex;
+		}
 
-        protected virtual void OnItemCopying(ContentItem source, ContentItem destination)
-        {
-            var ex = integrity.GetCopyException(source, destination);
-            if (Enabled && ex != null)
-                throw ex;
-        }
+		protected virtual void OnItemDeleting(ContentItem item)
+		{
+			var ex = integrity.GetDeleteException(item);
+			if (Enabled && ex != null)
+				throw ex;
+		}
 
-        protected virtual void ItemCreatedEventHandler(object sender, ItemEventArgs e)
-        {
-            var item = e.AffectedItem;
-            var parentItem = e.AffectedItem.Parent;
-            if (parentItem == null)
-                return;
+		protected virtual void OnItemCopying(ContentItem source, ContentItem destination)
+		{
+			var ex = integrity.GetCopyException(source, destination);
+			if (Enabled && ex != null)
+				throw ex;
+		}
 
-            var ex = integrity.GetCreateException(item, parentItem);
-            if (ex != null)
-                throw ex;
-        }
+		protected virtual void ItemCreatedEventHandler(object sender, ItemEventArgs e)
+		{
+			var item = e.AffectedItem;
+			var parentItem = e.AffectedItem.Parent;
+			if (parentItem == null)
+				return;
 
-        #endregion
+			var ex = integrity.GetCreateException(item, parentItem);
+			if (ex != null)
+				throw ex;
+		}
 
-        #region IStartable Members
+		#endregion
 
-        public virtual void Start()
-        {
-            persister.ItemCopying += ItemCopyingEvenHandler;
-            persister.ItemDeleting += ItemDeletingEvenHandler;
-            persister.ItemMoving += ItemMovingEvenHandler;
-            persister.ItemSaving += ItemSavingEvenHandler;
-        }
+		#region IStartable Members
 
-        public virtual void Stop()
-        {
-            persister.ItemCopying -= ItemCopyingEvenHandler;
-            persister.ItemDeleting -= ItemDeletingEvenHandler;
-            persister.ItemMoving -= ItemMovingEvenHandler;
-            persister.ItemSaving -= ItemSavingEvenHandler;
-        }
+		public virtual void Start()
+		{
+			persister.ItemCopying += ItemCopyingEvenHandler;
+			persister.ItemDeleting += ItemDeletingEvenHandler;
+			persister.ItemMoving += ItemMovingEvenHandler;
+			this.eventsManager.ItemSaving += ItemSavingEvenHandler;
+		}
 
-        #endregion
-    }
+		public virtual void Stop()
+		{
+			persister.ItemCopying -= ItemCopyingEvenHandler;
+			persister.ItemDeleting -= ItemDeletingEvenHandler;
+			persister.ItemMoving -= ItemMovingEvenHandler;
+			this.eventsManager.ItemSaving -= ItemSavingEvenHandler;
+		}
+
+		#endregion
+	}
 }

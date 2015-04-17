@@ -121,9 +121,11 @@ namespace N2.Persistence
 		#region IPersistenceEventSource
 
 		/// <summary>Occurs before an item is saved</summary>
+		[Obsolete("Use EventsManager.ItemSaving")]
 		public event EventHandler<CancellableItemEventArgs> ItemSaving;
 
 		/// <summary>Occurs when an item has been saved</summary>
+		[Obsolete("Use EventsManager.ItemSaved")]
 		public event EventHandler<ItemEventArgs> ItemSaved;
 
 		/// <summary>Occurs before an item is deleted</summary>
