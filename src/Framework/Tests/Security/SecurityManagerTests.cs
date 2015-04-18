@@ -20,7 +20,7 @@ namespace N2.Tests.Security
 		SecurityEnforcer enforcer;
 		N2.Web.IUrlParser parser;
 		N2.Web.IWebContext context;
-		private EventsManager events;
+		private IEventsManager events;
 
 		private IEventRaiser moving;
 		private IEventRaiser copying;
@@ -37,7 +37,7 @@ namespace N2.Tests.Security
 			CreatePersister();
 			parser = mocks.StrictMock<N2.Web.IUrlParser>();
 			context = CreateWebContext(false);
-			events = new EventsManager();
+			events = TestSupport.SetupEventsManager();
 
 			EditSection editSection = new EditSection();
 			security = new SecurityManager(context, editSection);

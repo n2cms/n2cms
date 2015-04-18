@@ -5,6 +5,7 @@ namespace N2.Edit.Tests.LinkTracker
 	using NUnit.Framework;
 	using N2.Persistence;
 	using N2.Engine;
+	using N2.Tests;
 
 	[TestFixture]
 	public class FindLinksFixture
@@ -24,7 +25,7 @@ namespace N2.Edit.Tests.LinkTracker
 		[SetUp]
 		public void SetUp()
 		{
-			linkFactory = new Tracker(new ContentPersister(null, null, new EventsManager()), null, new N2.Plugin.ConnectionMonitor(), null, new Configuration.EditSection(), new EventsManager());
+			linkFactory = new Tracker(new ContentPersister(null, null, TestSupport.SetupEventsManager()), null, new N2.Plugin.ConnectionMonitor(), null, new Configuration.EditSection(), new EventsManager());
 		}
 
 		[Test]

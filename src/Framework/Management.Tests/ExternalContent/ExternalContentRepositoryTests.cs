@@ -29,7 +29,7 @@ namespace N2.Management.Tests.ExternalContent
 			IContentItemRepository itemRepository;
 			var persister = TestSupport.SetupFakePersister(out itemRepository);
 			var activator = new Persistence.ContentActivator(new Edit.Workflow.StateChanger(), MockRepository.GenerateStub<IItemNotifier>(), new Persistence.Proxying.EmptyProxyFactory());
-			var events = new EventsManager();
+			var events = TestSupport.SetupEventsManager();
 			itemRepository.SaveOrUpdate(root = new ExternalItem { ID = 1, Name = "root" });
 			itemRepository.SaveOrUpdate(start = new ExternalItem { ID = 2, Name = "start" });
 

@@ -57,7 +57,7 @@ namespace N2.Tests.Persistence.NH
         {
             InterceptingProxyFactory proxyFactory;
             ItemFinder finder;
-            TestSupport.Setup(out definitions, out activator, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, typeof(PropertyItemType), typeof(PropertyItemInheritor1));
+            TestSupport.Setup(out definitions, out activator, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, out events, typeof(PropertyItemType), typeof(PropertyItemInheritor1));
         }
 
         // string

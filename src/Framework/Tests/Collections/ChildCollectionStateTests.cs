@@ -1,24 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using N2.Persistence.Behaviors;
-using Shouldly;
-using N2.Collections;
-using N2.Definitions;
-using N2.Engine.Globalization;
 
 namespace N2.Tests.Collections
 {
-	using N2.Engine;
+	using System;
+	using NUnit.Framework;
+	using N2.Persistence.Behaviors;
+	using Shouldly;
+	using N2.Collections;
+	using N2.Definitions;
+	using N2.Engine.Globalization;
 
 	[TestFixture]
 	public class ChildCollectionStateTests : ItemPersistenceMockingBase
 	{
 		private BehaviorInvoker invoker;
 		private N2.Definitions.Static.DefinitionMap map;
-		private EventsManager events;
 		private FirstItem root;
 		
 		[TestFixtureSetUp]
@@ -31,7 +26,6 @@ namespace N2.Tests.Collections
 		public override void SetUp()
 		{
 			base.SetUp();
-			events = new EventsManager();
 
 			root = CreateOneItem<FirstItem>(0, "root", null);
 

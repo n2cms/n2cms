@@ -11,7 +11,7 @@ namespace N2.Tests.Engine
 	[TestFixture]
 	public class EventsManagerTests
 	{
-		private EventsManager events;
+		private IEventsManager events;
 		private ContentPersister persister;
 
 		[SetUp]

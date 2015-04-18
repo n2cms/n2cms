@@ -6,7 +6,6 @@ namespace N2.Tests.Persistence.NH
 	using N2.Web;
 	using NUnit.Framework;
 	using N2.Persistence.Behaviors;
-	using N2.Engine;
 
 	[TestFixture]
 	public class PersisterIntegrityTests : PersisterTestsBase

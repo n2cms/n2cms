@@ -23,7 +23,7 @@ namespace N2.Tests.Integrity
 		private IDefinitionManager definitions;
 		private IUrlParser parser;
 		private IntegrityManager integrityManger;
-		private EventsManager events;
+		private IEventsManager events;
 
 		private IEventRaiser moving;
 		private IEventRaiser copying;
@@ -37,7 +37,7 @@ namespace N2.Tests.Integrity
 		public override void SetUp()
 		{
 			base.SetUp();
-			events = new EventsManager();
+
 
 			CreatePersister();
 
@@ -51,6 +51,7 @@ namespace N2.Tests.Integrity
 			activator = new ContentActivator(changer, notifier, new EmptyProxyFactory());
 			definitions = new DefinitionManager(new[] { new DefinitionProvider(builder) }, activator, changer, new DefinitionMap());
 			integrityManger = new IntegrityManager(definitions, persister.Repository, parser);
+			events = TestSupport.SetupEventsManager();
 			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrityManger, events);
 			enforcer.Start();
 		}

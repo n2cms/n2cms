@@ -27,7 +27,7 @@ namespace N2.Tests.Persistence.NH
 		public virtual void TestFixtureSetup()
 		{
 			ItemFinder finder;
-			TestSupport.Setup(out definitions, out activator, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, persistedTypes);
+			TestSupport.Setup(out definitions, out activator, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, out events, persistedTypes);
 		}
 
 		[SetUp]

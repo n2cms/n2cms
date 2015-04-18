@@ -19,7 +19,6 @@ namespace N2.Tests.Definitions
 	using NUnit.Framework;
 	using Rhino.Mocks;
 	using Shouldly;
-	using N2.Engine;
 
 	[TestFixture]
 	public class DefinitionTests : TypeFindingBase
@@ -30,7 +29,6 @@ namespace N2.Tests.Definitions
 		private DefinitionManager definitions;
 		private ContentActivator activator;
 		private DefinitionMap map;
-		private EventsManager events;
 
 		protected override Type[] GetTypes()
 		{
@@ -77,7 +75,6 @@ namespace N2.Tests.Definitions
 			var changer = new N2.Edit.Workflow.StateChanger();
 			activator = new ContentActivator(changer, notifier, new EmptyProxyFactory());
 			definitions = new DefinitionManager(new[] { new DefinitionProvider(builder) }, activator, changer, new DefinitionMap());
-			events = new EventsManager();
 		}
 
 		#endregion
