@@ -165,9 +165,11 @@ namespace N2.Tests
             return new ContentSource(MockRepository.GenerateStub<ISecurityManager>(), new SourceBase[] { new ActiveContentSource(), new DatabaseSource(MockRepository.GenerateStub<IHost>(), itemRepository) });
         }
 
-	    public static EventsManager SetupEventsManager()
+	    private static IEventsManager _eventsManager = null;
+	    public static IEventsManager SetupEventsManager()
 	    {
-		    return new EventsManager();
+			if (_eventsManager == null) _eventsManager = new EventsManager();
+		    return _eventsManager;
 	    }
 
         internal static void Setup(out ContentPersister persister, FakeSessionProvider sessionProvider, SchemaExport schemaCreator)

@@ -30,10 +30,10 @@ namespace N2.Persistence
 	{
 		private readonly IContentItemRepository repository;
 		private readonly ContentSource sources;
-		private readonly EventsManager eventsManager;
+		private readonly IEventsManager eventsManager;
 
 		/// <summary>Creates a new instance of the DefaultPersistenceManager.</summary>
-		public ContentPersister(ContentSource sources, IContentItemRepository itemRepository, EventsManager eventsManager)
+		public ContentPersister(ContentSource sources, IContentItemRepository itemRepository, IEventsManager eventsManager)
 		{
 			this.sources = sources;
 			this.repository = itemRepository;

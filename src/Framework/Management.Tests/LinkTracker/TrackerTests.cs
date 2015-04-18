@@ -24,7 +24,6 @@ namespace N2.Edit.Tests.LinkTracker
 
 		private Tracker tracker;
 		private IUrlParser parser;
-		private EventsManager events;
 
 		ContentItem root;
 		ContentItem item1;
@@ -38,7 +37,6 @@ namespace N2.Edit.Tests.LinkTracker
 
 			var wrapper = new N2.Tests.Fakes.FakeWebContextWrapper();
 			parser = TestSupport.Setup(persister, wrapper, new Host(wrapper, 1, 1));
-			events = new EventsManager();
 
 			root = CreateOneItem<N2.Tests.Edit.LinkTracker.Items.TrackableItem>(1, "root", null);
 			item1 = CreateOneItem<N2.Tests.Edit.LinkTracker.Items.TrackableItem>(2, "item1", root);

@@ -12,13 +12,11 @@ namespace N2.Tests.Persistence.NH
 	public class PersisterIntegrityTests : PersisterTestsBase
 	{
 		IUrlParser parser;
-		private EventsManager events;
 
 		[SetUp]
 		public override void SetUp()
 		{
 			base.SetUp();
-			events = new EventsManager();
 
 			parser = mocks.StrictMock<IUrlParser>();
 			mocks.ReplayAll();
