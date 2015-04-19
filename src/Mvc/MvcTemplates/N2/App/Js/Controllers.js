@@ -239,8 +239,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 		}, true);
 		$scope.saveUserSettings = function () {
 			$scope.Context.User.$saved = true;
-			Profile.save({}, $scope.Context.User, function (data) {
-	});
+			Profile.save({}, $scope.Context.User, function (data) {});
 		}
 	});
 
@@ -710,12 +709,14 @@ function MessagesCtrl($scope, $rootScope, Context, Content) {
 			$scope.Context.User.Settings.LastDismissed = max;
 			$scope.Context.Messages = [];
 			this.close();
-		},
+			$scope.saveUserSettings();
+			},
 		loadAll: function () {
 			delete $scope.Context.User.Settings.LastDismissed;
 			Context.messages(Content.applySelection({}, $scope.Context.CurrentItem), function (result) {
 				$scope.messages.list = result.Messages;
 			});
+			$scope.saveUserSettings();
 		}
 	};
 
