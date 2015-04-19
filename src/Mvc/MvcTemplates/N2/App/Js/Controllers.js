@@ -714,13 +714,15 @@ function MessagesCtrl($scope, $rootScope, Context, Content) {
 	};
 
 	$scope.$watch("Context.Messages", function (messages) {
-		if ($scope.messages.show)
-			$scope.messages.list = messages;
-		else if (messages && messages.length)
+		if (messages && messages.length) {
 			angular.forEach(messages, function (message) {
-				if (message.Alert)
+				if (message.Alert) {
+					message.Expanded = true;
 					$scope.messages.open(messages);
+				}
 			});
+		} else if ($scope.messages.show)
+			$scope.messages.list = messages;
 	})
 }
 

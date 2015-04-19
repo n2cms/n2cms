@@ -9,15 +9,15 @@
 		</a>
 	</div>
 	<ul class="message-list dropdown-menu pull-right" ng-show="messages.show">
-		<li ng-repeat="message in messages.list" ng-class="{ selected: expanded }">
-			<a href ng-click="expanded = !expanded">
+		<li ng-repeat="message in messages.list" ng-class="{ selected: message.Expanded }">
+			<a href ng-click="message.Expanded = !message.Expanded">
 				<b class="ico fa fa-envelope"></b>
 				{{message.Title}}
 				<time datetime="{{message.Updated}}">{{message.Updated | date: 'short'}}</time>
-				<p ng-show="expanded">{{message.Text}}</p>
+				<p ng-show="message.Expanded">{{message.Text}}</p>
 			</a>
 		</li>
-		<li ng-show="messages.list.length"><a href ng-click="messages.clear()"><b class="ico fa fa-times"></b> Clear</a></li>
-		<li ng-show="!messages.list.length"><a href ng-click="messages.loadAll()"><b class="ico fa fa-refresh"></b> Show cleared</a></li>
+		<li ng-show="messages.list.length"><a href ng-click="messages.clear()" translate="messages.dismiss"><b class="ico fa fa-times"></b> Dismiss</a></li>
+		<li ng-show="!messages.list.length"><a href ng-click="messages.loadAll()" translate="messages.showDissmissed"><b class="ico fa fa-refresh"></b> Show dismissed</a></li>
 	</ul>
 </div>

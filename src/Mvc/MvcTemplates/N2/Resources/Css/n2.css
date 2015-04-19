@@ -11,7 +11,8 @@ a { text-decoration: none; color: #000; }
 
 
 #top-area { }
-	#top-area .navbar { text-transform:lowercase; }
+	#top-area .navbar { text-transform: lowercase; }
+		#top-area .navbar ul { text-transform: none; }
 
 
 #main-wrapper { position: absolute; top: 42px; bottom: 0; width:100%; }
