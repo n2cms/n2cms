@@ -2,11 +2,12 @@
 
 <div ng-controller="SearchCtrl" ng-class="{ open: search.show, closed: !search.show }">
     <div class="page-action">
-        <input class="search-query" placeholder="Search" type="search"
-               ng-model="search.query"
-               n2-key-enter="search.execute(search.query)"
-               n2-focus="search.show"
-               translate="search.query" />
+		<input class="search-query" placeholder="Search" type="search"
+			   ng-model="search.query"
+			   n2-key-enter="search.execute(search.query)"
+			   n2-key-esc="toggleSearch()"
+			   n2-focus="search.show"
+			   translate="search.query" />
         <a href="#" ng-click="toggleSearch()">
             <b ng-hide="search.show" class="ico fa fa-search"></b>
             <b ng-show="search.show" class="ico fa fa-remove"></b>
