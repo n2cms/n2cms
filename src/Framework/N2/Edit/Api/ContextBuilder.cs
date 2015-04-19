@@ -1,4 +1,5 @@
 using N2.Edit;
+using N2.Edit.Collaboration;
 using N2.Edit.Versioning;
 using N2.Engine;
 using N2.Engine.Globalization;
@@ -123,12 +124,9 @@ namespace N2.Management.Api
 
             data.Actions = CreateActions(context);
 
-			
-			var messageContext = new Edit.Collaboration.CollaborationContext { SelectedItem = item }
-				.ParseLastDismissed(context.Request["lastDismissed"] ?? engine.Resolve<IProfileRepository>().GetOrCreate(context.User).Settings.TryGet("LastDismissed") as string);
-
-			data.Messages = engine.Resolve<N2.Edit.Collaboration.ManagementMessageCollector>().GetMessages(messageContext).ToList();
-			data.Flags.AddRange(engine.Resolve<N2.Edit.Collaboration.ManagementFlagCollector>().GetFlags(messageContext));
+			var collaborationContext = CollaborationContext.Create(engine.Resolve<IProfileRepository>(), item, context);
+			data.Messages = engine.Resolve<N2.Edit.Collaboration.ManagementMessageCollector>().GetMessages(collaborationContext).ToList();
+			data.Flags.AddRange(engine.Resolve<N2.Edit.Collaboration.ManagementFlagCollector>().GetFlags(collaborationContext));
 
             if (ContextBuilt != null)
                 ContextBuilt(this, new ContextBuiltEventArgs { Data = data });

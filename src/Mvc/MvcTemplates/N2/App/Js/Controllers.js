@@ -184,6 +184,12 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 		}
 	};
 
+	$scope.$on("changecontext", function (e, args) {
+		angular.extend($scope.Context, args);
+		if (!$scope.$$phase)
+			$scope.$digest();
+	});
+
 	function translateMenuRecursive(node) {
 		var translation = node.Current && node.Current.Name && Translate(node.Current.Name);
 		if (translation) {

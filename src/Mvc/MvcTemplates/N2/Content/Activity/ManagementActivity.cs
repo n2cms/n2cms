@@ -27,10 +27,11 @@ namespace N2.Management.Activity
                 .ToList();
         }
 
-        public static string ToJson(IEnumerable<ManagementActivity> activity)
+        public static string ToJson(IEnumerable<ManagementActivity> activity, List<N2.Edit.Collaboration.CollaborationMessage> messages = null)
         {
             return new
             {
+				Messages = messages,
                 Activities = activity
                     .Select(a => new { AddedDate = a.AddedDate.ToString(), a.Operation, a.PerformedBy })
                     .OfType<object>(),

@@ -1,7 +1,9 @@
 ﻿using N2.Engine;
+using N2.Management.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 
 namespace N2.Edit.Collaboration
@@ -9,10 +11,12 @@ namespace N2.Edit.Collaboration
 	[Service]
 	public class ManagementMessageCollector : IMessageSource
 	{
+		private IProfileRepository profiles;
 		private IEnumerable<IMessageSource> sources;
 
-		public ManagementMessageCollector(IMessageSource[] sources)
+		public ManagementMessageCollector(IProfileRepository profiles, IMessageSource[] sources)
 		{
+			this.profiles = profiles;
 			this.sources = sources;
 		}
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using N2.Management.Api;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -17,6 +18,12 @@ namespace N2.Edit.Collaboration
 			if (DateTime.TryParse(lastDismissed, CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out date))
 				LastDismissed = date;
 			return this;
+		}
+
+		public static CollaborationContext Create(IProfileRepository profiles, ContentItem item, System.Web.HttpContextBase context)
+		{
+			return new CollaborationContext { SelectedItem = item }
+				.ParseLastDismissed(context.Request["lastDismissed"] ?? profiles.GetProfileSetting(context.User, "LastDismissed") as string);
 		}
 	}
 }
