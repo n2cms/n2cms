@@ -553,7 +553,9 @@ namespace N2
                 return GetLocalResourceString(resourceKey);
         }
 
-        public static Func<DateTime> CurrentTime = () => DateTime.Now;
+		public static bool UseUniversalTime { get; set; }
+		public static Func<DateTime> CurrentTime = () => UseUniversalTime ? DateTime.UtcNow : DateTime.Now;
+		public static Func<DateTime, DateTime> ToUtc = (contentTime) => UseUniversalTime ? contentTime : contentTime.ToUniversalTime();
 
         public static IDisposable TimeCapsule(DateTime frozenTime)
         {

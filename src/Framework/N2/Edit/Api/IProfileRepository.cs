@@ -46,6 +46,16 @@ namespace N2.Management.Api
             return GetOrCreate(repository, username);
         }
 
+		public static object GetProfileSetting(this IProfileRepository repository, IPrincipal user, string settingKey)
+		{
+			string username = GetUserName(user);
+			if (string.IsNullOrEmpty(username))
+				return null;
+
+			var profile = GetOrCreate(repository, username);
+			return profile.Settings.TryGet("LastDismissed");
+		}
+
         public static ProfileUser GetOrCreate(this IProfileRepository repository, string username)
         {
             var user = repository.Get(username);

@@ -67,7 +67,7 @@
 		return frameManipulator;
 	});
 
-	module.factory('FrameContext', function () {
+	module.factory('FrameContext', function ($rootScope) {
 		window.top.n2ctx = {
 			refresh: function (ctx) {
 			},
@@ -81,6 +81,11 @@
 				return "metro";
 			},
 			toolbarSelect: function () {
+			},
+			context: function (context) {
+				if (context.Messages && context.Messages.length) {
+					$rootScope.$broadcast("changecontext", { Messages: context.Messages });
+				}
 			}
 		};
 		return window.top.n2ctx;
@@ -182,7 +187,8 @@
 	module.factory('Context', function ($resource) {
 		var res = $resource('Api/Context.ashx/:target', { target: '' }, {
 			'interface': { method: 'GET', params: { target: 'interface' } },
-			'full': { method: 'GET', params: { target: 'full' } }
+			'full': { method: 'GET', params: { target: 'full' } },
+			'messages': { method: 'GET', params: { target: 'messages' } }
 		});
 
 		return res;

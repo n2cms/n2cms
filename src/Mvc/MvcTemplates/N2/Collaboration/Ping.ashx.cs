@@ -7,13 +7,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using N2.Edit.Collaboration;
+using N2.Management.Api;
 
-namespace N2.Management.Content.Activity
+namespace N2.Management.Collaboration
 {
     /// <summary>
     /// Summary description for Notify
     /// </summary>
-    public class Notify : IHttpHandler
+    public class Ping : IHttpHandler
     {
         public void ProcessRequest(HttpContext context)
         {
@@ -34,6 +36,13 @@ namespace N2.Management.Content.Activity
             var selection = new SelectionUtility(context, engine);
             if (selection.SelectedItem != null)
                 engine.AddActivity(new ManagementActivity { Operation = "View", PerformedBy = context.User.Identity.Name, ID = selection.SelectedItem.ID, Path = selection.SelectedItem.Path });
+
+			context.Response.WriteJson(new
+			{
+				Messages = engine.Resolve<ManagementMessageCollector>()
+				.GetMessages(CollaborationContext.Create(engine.Resolve<IProfileRepository>(), selection.SelectedItem, context))
+					.ToList()
+			});
         }
 
         private void NotifyEditing(IEngine engine, HttpContextWrapper context)
@@ -43,8 +52,11 @@ namespace N2.Management.Content.Activity
                 engine.AddActivity(new ManagementActivity { Operation = "Edit", PerformedBy = context.User.Identity.Name, ID = selection.SelectedItem.ID, Path = selection.SelectedItem.Path });
 
             var activities = ManagementActivity.GetActivity(engine, selection.SelectedItem);
+			var messages = engine.Resolve<N2.Edit.Collaboration.ManagementMessageCollector>()
+				.GetMessages(CollaborationContext.Create(engine.Resolve<IProfileRepository>(), selection.SelectedItem, context))
+				.ToList();
             context.Response.ContentType = "application/json";
-            context.Response.Write(ManagementActivity.ToJson(activities));
+			context.Response.Write(ManagementActivity.ToJson(activities, messages));
         }
 
         public bool IsReusable

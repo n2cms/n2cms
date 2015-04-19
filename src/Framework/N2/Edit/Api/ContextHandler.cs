@@ -50,6 +50,9 @@ namespace N2.Management.Api
                         Context = engine.Resolve<ContextBuilder>().GetInterfaceContextData(context, Selection)
                     });
                     return;
+                case "/messages":
+                    context.Response.WriteJson(engine.Resolve<ContextBuilder>().GetMessages(context, Selection));
+                    return;
                 default:
                     context.Response.WriteJson(engine.Resolve<ContextBuilder>().GetInterfaceContextData(context, Selection));
                     return;

@@ -20,9 +20,10 @@ namespace N2.Web
         HashSet<object> visitedObjects = new HashSet<object>();
         TextWriter writer;
 
-        public JsonWriter(TextWriter sw)
+        public JsonWriter(TextWriter sw, bool dateCompatibility = false)
         {
             this.writer = sw;
+			this.dateCompatibility = dateCompatibility;
         }
 
         public void Write(object value)
@@ -67,6 +68,7 @@ namespace N2.Web
         }
 
         static DateTime beginningOfTime = new DateTime(1970, 01, 01);
+		private bool dateCompatibility;
         private bool TryWriteKnownType(object value)
         {
             var valueType = value.GetType();
@@ -91,7 +93,10 @@ namespace N2.Web
                 case TypeCode.DateTime:
                     {
                         var date = (DateTime)value;
-                        writer.Write("\"\\/Date(" + (long)date.Subtract(beginningOfTime).TotalMilliseconds + ")\\/\"");
+						if (dateCompatibility)
+							writer.Write("\"\\/Date(" + (long)date.Subtract(beginningOfTime).TotalMilliseconds + ")\\/\"");
+						else
+							writer.Write("\"" + (Utility.UseUniversalTime ? date : date.ToUniversalTime()).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'") + "\"");
                     }
                     return true;
                 case TypeCode.String:

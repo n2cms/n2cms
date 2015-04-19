@@ -1,4 +1,5 @@
 using N2.Edit;
+using N2.Edit.Collaboration;
 using N2.Edit.Versioning;
 using N2.Engine;
 using N2.Engine.Globalization;
@@ -25,7 +26,9 @@ namespace N2.Management.Api
         public string ReturnUrl { get; set; }
 
         public Dictionary<string, object> Actions { get; set; }
-    }
+
+		public List<Edit.Collaboration.CollaborationMessage> Messages { get; set; }
+	}
 
     public class ContextLanguage
     {
@@ -121,6 +124,10 @@ namespace N2.Management.Api
 
             data.Actions = CreateActions(context);
 
+			var collaborationContext = CollaborationContext.Create(engine.Resolve<IProfileRepository>(), item, context);
+			data.Messages = engine.Resolve<N2.Edit.Collaboration.ManagementMessageCollector>().GetMessages(collaborationContext).ToList();
+			data.Flags.AddRange(engine.Resolve<N2.Edit.Collaboration.ManagementFlagCollector>().GetFlags(collaborationContext));
+
             if (ContextBuilt != null)
                 ContextBuilt(this, new ContextBuiltEventArgs { Data = data });
 
@@ -183,5 +190,15 @@ namespace N2.Management.Api
             }
             return data;
         }
-    }
+
+		public object GetMessages(HttpContextBase context, SelectionUtility selection)
+		{
+			var messageContext = new Edit.Collaboration.CollaborationContext { SelectedItem = selection.ParseSelectionFromRequest() }
+				.ParseLastDismissed(context.Request["lastDismissed"]);
+			return new
+			{
+				Messages = engine.Resolve<N2.Edit.Collaboration.ManagementMessageCollector>().GetMessages(messageContext).ToList()
+			};
+		}
+	}
 }

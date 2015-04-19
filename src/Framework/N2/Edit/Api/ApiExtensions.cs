@@ -90,5 +90,11 @@ namespace N2.Management.Api
             return structure;
         }
 
+		internal static T TryGet<T>(this IDictionary<string, T> settings, string key)
+		{
+			if (settings.ContainsKey(key))
+				return settings[key];
+			return default(T);
+		}
     }
 }

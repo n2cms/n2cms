@@ -184,6 +184,12 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 		}
 	};
 
+	$scope.$on("changecontext", function (e, args) {
+		angular.extend($scope.Context, args);
+		if (!$scope.$$phase)
+			$scope.$digest();
+	});
+
 	function translateMenuRecursive(node) {
 		var translation = node.Current && node.Current.Name && Translate(node.Current.Name);
 		if (translation) {
@@ -233,13 +239,13 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 		}, true);
 		$scope.saveUserSettings = function () {
 			$scope.Context.User.$saved = true;
-			Profile.save({}, $scope.Context.User, function (data) {
-	});
+			Profile.save({}, $scope.Context.User, function (data) {});
 		}
 	});
 
-	$scope.refreshContext = function(node, versionIndex, keepFlags, callback) {
-		Context.get(Content.applySelection({ view: $scope.Context.User.Settings.ViewPreference, n2versionIndex: versionIndex }, node.Current), function(ctx) {
+	$scope.refreshContext = function (node, versionIndex, keepFlags, callback) {
+		var settings = $scope.Context.User.Settings;
+		Context.get(Content.applySelection({ view: settings.ViewPreference, n2versionIndex: versionIndex, lastDismissed: settings.LastDismissed }, node.Current), function (ctx) {
 			//console.log("select -> contextchanged", node, versionIndex, ctx);
 			if (keepFlags)
 				angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
@@ -673,6 +679,58 @@ function SearchCtrl($scope, $rootScope, Content, Eventually) {
             $scope.$digest();
         }, 400);
     });
+}
+
+function MessagesCtrl($scope, $rootScope, Context, Content) {
+	$scope.messages = {
+		show: false,
+		list: null,
+		toggle: function () {
+			if (this.show) {
+				this.close();
+			} else {
+				this.open($scope.Context.Messages)
+			}
+		},
+		open: function (messages) {
+			this.show = true;
+			this.list = messages
+		},
+		close: function (messages) {
+			this.show = false;
+			this.list = null;
+		},
+		clear: function () {
+			var max = null;
+			angular.forEach(this.list, function (message) {
+				if (!max || max < message.Updated)
+					max = message.Updated;
+			});
+			$scope.Context.User.Settings.LastDismissed = max;
+			$scope.Context.Messages = [];
+			this.close();
+			$scope.saveUserSettings();
+			},
+		loadAll: function () {
+			delete $scope.Context.User.Settings.LastDismissed;
+			Context.messages(Content.applySelection({}, $scope.Context.CurrentItem), function (result) {
+				$scope.messages.list = result.Messages;
+			});
+			$scope.saveUserSettings();
+		}
+	};
+
+	$scope.$watch("Context.Messages", function (messages) {
+		if (messages && messages.length) {
+			angular.forEach(messages, function (message) {
+				if (message.Alert) {
+					message.Expanded = true;
+					$scope.messages.open(messages);
+				}
+			});
+		} else if ($scope.messages.show)
+			$scope.messages.list = messages;
+	})
 }
 
 function PageInfoCtrl($scope, Content) {

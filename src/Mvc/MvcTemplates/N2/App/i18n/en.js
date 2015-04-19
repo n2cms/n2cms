@@ -124,5 +124,9 @@
         },
         "confirm": { "text" : "Confirm" },
         "close": { "text" : "Close" }
-    }
+    },
+	"messages":{
+		"dismiss": { "text": " Dismiss" },
+		"showDismissed": { "text": " Show dismissed" }
+	}
 }

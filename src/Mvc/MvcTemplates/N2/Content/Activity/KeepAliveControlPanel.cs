@@ -21,12 +21,13 @@ namespace N2.Management.Content.Activity
             if (context.Selected == null)
                 return null;
 
-            if (!context.Engine.Config.Sections.Management.Collaboration.ActivityTrackingEnabled)
+			var collaboration = context.Engine.Config.Sections.Management.Collaboration;
+			if (!collaboration.ActivityTrackingEnabled)
                 return null;
 
             var script = new LiteralControl(string.Format(@"<script>
-setInterval(function() {{ $.get('{0}?activity=View&{1}={2}'); }}, 60000);
-</script>", Url.ResolveTokens("{ManagementUrl}/Content/Activity/Notify.ashx"), PathData.SelectedQueryKey, context.Selected.Path));
+setInterval(function() {{ $.get('{0}?activity=View&{1}={2}', function(result){{ try {{ n2 && n2.context && n2.context(result) }} catch (ex) {{ console.log(ex); }} }}); }}, {3});
+</script>", Url.ResolveTokens("{ManagementUrl}/Collaboration/Ping.ashx"), PathData.SelectedQueryKey, context.Selected.Path, collaboration.PingInterval * 1000));
             container.Controls.Add(script);
             return script;
         }

@@ -111,6 +111,7 @@
     <Content Include="N2\App\Js\Controllers.js" />
     <Content Include="N2\App\Js\Directives.js" />
     <Content Include="N2\App\Js\Services.js" />
+    <Content Include="N2\App\Partials\Messages.html" />
     <Content Include="N2\App\Partials\ManagementConfirm.html" />
     <Content Include="N2\App\Partials\Main.html" />
     <Content Include="N2\App\Partials\Loading.html" />
@@ -311,7 +312,7 @@
     <Content Include="N2\Web.config" />
     <Content Include="N2\Content\LinkTracker\App_LocalResources\UpdateReferences.aspx.resx" />
     <Content Include="N2\Content\Versions\App_LocalResources\RecentVersions.ascx.resx" />
-    <Content Include="N2\Content\Activity\Notify.ashx" />
+    <Content Include="N2\Collaboration\Ping.ashx" />
     <Content Include="N2\Roles\App_LocalResources\Roles.aspx.resx" />
     <Content Include="N2\Roles\App_LocalResources\New.aspx.resx">
       <SubType>Designer</SubType>
@@ -347,8 +348,8 @@
     <Compile Include="N2\Content\Activity\ActivityNotificationAttribute.cs" />
     <Compile Include="N2\Content\Activity\KeepAliveControlPanel.cs" />
     <Compile Include="N2\Content\Activity\ManagementActivity.cs" />
-    <Compile Include="N2\Content\Activity\Notify.ashx.cs">
-      <DependentUpon>Notify.ashx</DependentUpon>
+    <Compile Include="N2\Collaboration\Ping.ashx.cs">
+      <DependentUpon>Ping.ashx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Activity\RecentActivity.ascx.cs">
       <DependentUpon>RecentActivity.ascx</DependentUpon>
@@ -682,6 +683,8 @@
     <Compile Include="N2\Myself\Analytics\Models\ManageAnalyticsPart.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="N2\Myself\Collaboration\ManagementFlagPart.cs" />
+    <Compile Include="N2\Myself\Collaboration\ManagementMessagePart.cs" />
     <Compile Include="N2\Roles\Roles.aspx.designer.cs">
       <DependentUpon>Roles.aspx</DependentUpon>
     </Compile>
@@ -1368,10 +1371,10 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-	<PropertyGroup>
-		<VSToolsPath Condition="Exists('$(HOMEDRIVE)\ProgramFiles(x86)\MSBuild\Microsoft\VisualStudio\v12.0\Microsoft.WebApplication.targets')">$(HOMEDRIVE)\ProgramFiles(x86)\MSBuild\Microsoft\VisualStudio\v12.0</VSToolsPath>
-	</PropertyGroup>
-	<Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <PropertyGroup>
+    <VSToolsPath Condition="Exists('$(HOMEDRIVE)\ProgramFiles(x86)\MSBuild\Microsoft\VisualStudio\v12.0\Microsoft.WebApplication.targets')">$(HOMEDRIVE)\ProgramFiles(x86)\MSBuild\Microsoft\VisualStudio\v12.0</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
