@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace REMOVE.N2.Content.Export.App_LocalResources {
+namespace N2.Management.Content.Export.App_LocalResources {
     using System;
     
     

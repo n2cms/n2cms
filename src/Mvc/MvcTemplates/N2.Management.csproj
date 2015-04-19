@@ -682,6 +682,8 @@
     <Compile Include="N2\Myself\Analytics\Models\ManageAnalyticsPart.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="N2\Myself\Collaboration\ManagementFlagPart.cs" />
+    <Compile Include="N2\Myself\Collaboration\ManagementMessagePart.cs" />
     <Compile Include="N2\Roles\Roles.aspx.designer.cs">
       <DependentUpon>Roles.aspx</DependentUpon>
     </Compile>
@@ -1368,10 +1370,10 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-	<PropertyGroup>
-		<VSToolsPath Condition="Exists('$(HOMEDRIVE)\ProgramFiles(x86)\MSBuild\Microsoft\VisualStudio\v12.0\Microsoft.WebApplication.targets')">$(HOMEDRIVE)\ProgramFiles(x86)\MSBuild\Microsoft\VisualStudio\v12.0</VSToolsPath>
-	</PropertyGroup>
-	<Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <PropertyGroup>
+    <VSToolsPath Condition="Exists('$(HOMEDRIVE)\ProgramFiles(x86)\MSBuild\Microsoft\VisualStudio\v12.0\Microsoft.WebApplication.targets')">$(HOMEDRIVE)\ProgramFiles(x86)\MSBuild\Microsoft\VisualStudio\v12.0</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

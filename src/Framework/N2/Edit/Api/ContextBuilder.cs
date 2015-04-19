@@ -25,7 +25,9 @@ namespace N2.Management.Api
         public string ReturnUrl { get; set; }
 
         public Dictionary<string, object> Actions { get; set; }
-    }
+
+		public List<Edit.Collaboration.CollaborationMessage> Messages { get; set; }
+	}
 
     public class ContextLanguage
     {
@@ -120,6 +122,10 @@ namespace N2.Management.Api
                 data.Flags.Add("ContentPages");
 
             data.Actions = CreateActions(context);
+
+			var messageContext = new Edit.Collaboration.CollaborationContext { SelectedItem = item };
+			data.Messages = engine.Resolve<N2.Edit.Collaboration.ManagementMessageCollector>().GetMessages(messageContext).ToList();
+			data.Flags.AddRange(engine.Resolve<N2.Edit.Collaboration.ManagementFlagCollector>().GetFlags(messageContext));
 
             if (ContextBuilt != null)
                 ContextBuilt(this, new ContextBuiltEventArgs { Data = data });

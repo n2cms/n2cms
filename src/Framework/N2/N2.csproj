@@ -161,6 +161,14 @@
     <Compile Include="Configuration\ServerElement.cs" />
     <Compile Include="Definitions\DefinitionEventArgs.cs" />
     <Compile Include="Definitions\IPlaceholder.cs" />
+    <Compile Include="Edit\Collaboration\ContentFlagSource.cs" />
+    <Compile Include="Edit\Collaboration\ContentMessageSource.cs" />
+    <Compile Include="Edit\Collaboration\IFlagSource.cs" />
+    <Compile Include="Edit\Collaboration\IMessageSource.cs" />
+    <Compile Include="Edit\Collaboration\ManagementFlagCollector.cs" />
+    <Compile Include="Edit\Collaboration\ManagementMessageCollector.cs" />
+    <Compile Include="Edit\Collaboration\CollaborationMessage.cs" />
+    <Compile Include="Edit\Collaboration\CollaborationContext.cs" />
     <Compile Include="Edit\Versioning\InvalidVersionInfo.cs" />
     <Compile Include="Edit\Versioning\VersionInfo.cs" />
     <Compile Include="Persistence\LinqQueryFacade.cs" />

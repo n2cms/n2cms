@@ -14,5 +14,12 @@ namespace N2.Configuration
             get { return (bool)base["activityTrackingEnabled"]; }
             set { base["activityTrackingEnabled"] = value; }
         }
+
+		[ConfigurationProperty("pingInterval", DefaultValue = 60)]
+		public int PingInterval
+		{
+			get { return (int)base["pingInterval"]; }
+			set { base["pingInterval"] = value; }
+		}
     }
 }
