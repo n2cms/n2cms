@@ -182,7 +182,8 @@
 	module.factory('Context', function ($resource) {
 		var res = $resource('Api/Context.ashx/:target', { target: '' }, {
 			'interface': { method: 'GET', params: { target: 'interface' } },
-			'full': { method: 'GET', params: { target: 'full' } }
+			'full': { method: 'GET', params: { target: 'full' } },
+			'messages': { method: 'GET', params: { target: 'messages' } }
 		});
 
 		return res;

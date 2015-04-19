@@ -18,7 +18,10 @@ namespace N2.Edit.Collaboration
 
 		public virtual IEnumerable<CollaborationMessage> GetMessages(CollaborationContext context)
 		{
-			return sources.SelectMany(s => s.GetMessages(context));
+			var messages = sources.SelectMany(s => s.GetMessages(context));
+			if (context.LastDismissed > DateTime.MinValue)
+				messages = messages.Where(m => m.Updated > context.LastDismissed);
+			return messages;
 		}
 	}
 }

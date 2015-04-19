@@ -238,8 +238,9 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 		}
 	});
 
-	$scope.refreshContext = function(node, versionIndex, keepFlags, callback) {
-		Context.get(Content.applySelection({ view: $scope.Context.User.Settings.ViewPreference, n2versionIndex: versionIndex }, node.Current), function(ctx) {
+	$scope.refreshContext = function (node, versionIndex, keepFlags, callback) {
+		var settings = $scope.Context.User.Settings;
+		Context.get(Content.applySelection({ view: settings.ViewPreference, n2versionIndex: versionIndex, lastDismissed: settings.LastDismissed }, node.Current), function (ctx) {
 			//console.log("select -> contextchanged", node, versionIndex, ctx);
 			if (keepFlags)
 				angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
@@ -675,22 +676,52 @@ function SearchCtrl($scope, $rootScope, Content, Eventually) {
     });
 }
 
-function MessagesCtrl($scope, $rootScope, Content, Eventually) {
+function MessagesCtrl($scope, $rootScope, Context, Content) {
 	$scope.messages = {
 		show: false,
 		list: null,
 		toggle: function () {
-			this.show = !this.show;
 			if (this.show) {
-				this.list = $scope.Context.Messages;
+				this.close();
 			} else {
-				this.list = null;
+				this.open($scope.Context.Messages)
 			}
+		},
+		open: function (messages) {
+			this.show = true;
+			this.list = messages
+		},
+		close: function (messages) {
+			this.show = false;
+			this.list = null;
+		},
+		clear: function () {
+			var max = null;
+			angular.forEach(this.list, function (message) {
+				if (!max || max < message.Updated)
+					max = message.Updated;
+			});
+			$scope.Context.User.Settings.LastDismissed = max;
+			$scope.Context.Messages = [];
+			this.close();
+		},
+		loadAll: function () {
+			delete $scope.Context.User.Settings.LastDismissed;
+			Context.messages(Content.applySelection({}, $scope.Context.CurrentItem), function (result) {
+				$scope.messages.list = result.Messages;
+			});
 		}
 	};
-	$scope.$watchCollection("Context.Messages", function (messages) {
-		console.log("messages", messages);
-	});
+
+	$scope.$watch("Context.Messages", function (messages) {
+		if ($scope.messages.show)
+			$scope.messages.list = messages;
+		else if (messages && messages.length)
+			angular.forEach(messages, function (message) {
+				if (message.Alert)
+					$scope.messages.open(messages);
+			});
+	})
 }
 
 function PageInfoCtrl($scope, Content) {

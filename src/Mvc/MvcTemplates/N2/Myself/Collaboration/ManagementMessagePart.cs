@@ -24,7 +24,7 @@ namespace N2.Management.Myself.Collaboration
 		public IEnumerable<CollaborationMessage> GetMessages(CollaborationContext context)
 		{
 			if (this.IsPublished())
-				yield return new CollaborationMessage { Title = Title, Alert = Alert, Text = Text, Updated = Updated };
+				yield return new CollaborationMessage { ID = ID.ToString(), Title = Title, Alert = Alert, Text = Text, Updated = Updated };
 		}
 	}
 }

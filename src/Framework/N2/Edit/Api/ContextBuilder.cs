@@ -123,7 +123,10 @@ namespace N2.Management.Api
 
             data.Actions = CreateActions(context);
 
-			var messageContext = new Edit.Collaboration.CollaborationContext { SelectedItem = item };
+			
+			var messageContext = new Edit.Collaboration.CollaborationContext { SelectedItem = item }
+				.ParseLastDismissed(context.Request["lastDismissed"] ?? engine.Resolve<IProfileRepository>().GetOrCreate(context.User).Settings.TryGet("LastDismissed") as string);
+
 			data.Messages = engine.Resolve<N2.Edit.Collaboration.ManagementMessageCollector>().GetMessages(messageContext).ToList();
 			data.Flags.AddRange(engine.Resolve<N2.Edit.Collaboration.ManagementFlagCollector>().GetFlags(messageContext));
 
@@ -189,5 +192,15 @@ namespace N2.Management.Api
             }
             return data;
         }
-    }
+
+		public object GetMessages(HttpContextBase context, SelectionUtility selection)
+		{
+			var messageContext = new Edit.Collaboration.CollaborationContext { SelectedItem = selection.ParseSelectionFromRequest() }
+				.ParseLastDismissed(context.Request["lastDismissed"]);
+			return new
+			{
+				Messages = engine.Resolve<N2.Edit.Collaboration.ManagementMessageCollector>().GetMessages(messageContext).ToList()
+			};
+		}
+	}
 }

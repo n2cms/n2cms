@@ -96,7 +96,7 @@ namespace N2.Web
 						if (dateCompatibility)
 							writer.Write("\"\\/Date(" + (long)date.Subtract(beginningOfTime).TotalMilliseconds + ")\\/\"");
 						else
-							writer.Write("\"" + date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'") + "\"");
+							writer.Write("\"" + (Utility.UseUniversalTime ? date : date.ToUniversalTime()).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'") + "\"");
                     }
                     return true;
                 case TypeCode.String:
