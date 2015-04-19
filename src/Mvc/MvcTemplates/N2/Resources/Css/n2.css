@@ -147,6 +147,13 @@ a { text-decoration: none; color: #000; }
 			#search .search-results li a:hover { color:#fff; background-color: #18a0de; }
 				#search .search-results li a .ico-custom { height:16px; width:16px; display:inline-block; vertical-align:middle; }
 
+#messages {}
+	#messages .badge { color:#fff; background-color: #E32F48; position:absolute; margin: 15px 0 0 -15px; z-index:1111; }
+	#messages .message-list { width:400px; }
+	#messages .message-list li a p { margin: 5px 0; padding: 5px; background: #fff; border-radius: 4px; white-space:normal; }
+	#messages .message-list li a time { color:#666; text-transform: none; font-size: 11px; font-family: Arial; }
+
+
 .info-menu { position: absolute; top: 100%; right: 0; z-index: 100; display: none; float: left; min-width: 160px; padding: 5px; list-style: none; background-color: #ffffff; margin:0; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); font-size:14px; text-transform:none; }
 #menu .info-menu a { color:#18a0de }
 .info-menu.open { display:block; }

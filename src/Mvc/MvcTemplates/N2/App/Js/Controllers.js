@@ -675,6 +675,24 @@ function SearchCtrl($scope, $rootScope, Content, Eventually) {
     });
 }
 
+function MessagesCtrl($scope, $rootScope, Content, Eventually) {
+	$scope.messages = {
+		show: false,
+		list: null,
+		toggle: function () {
+			this.show = !this.show;
+			if (this.show) {
+				this.list = $scope.Context.Messages;
+			} else {
+				this.list = null;
+			}
+		}
+	};
+	$scope.$watchCollection("Context.Messages", function (messages) {
+		console.log("messages", messages);
+	});
+}
+
 function PageInfoCtrl($scope, Content) {
 	$scope.exctractLanguage = function(language) {
 		return language && language.replace(/[(].*?[)]/, "");

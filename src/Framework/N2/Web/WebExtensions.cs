@@ -95,31 +95,31 @@ namespace N2.Web
                 container.Controls.Add(c);
             return c;
         }
-        
-        public static string ToJson(this object value)
+
+		public static string ToJson(this object value, bool dateCompatibility = false)
         {
             using (var sw = new StringWriter())
             {
-                value.ToJson(sw);
+                value.ToJson(sw, dateCompatibility);
                 return sw.ToString();
             }
         }
         
-        public static void ToJson(this object value, TextWriter sw)
+        public static void ToJson(this object value, TextWriter sw, bool dateCompatibility = false)
         {
-            new JsonWriter(sw).Write(value);
+			new JsonWriter(sw, dateCompatibility).Write(value);
         }
 
-        public static void WriteJson(this HttpResponse response, object value)
+		public static void WriteJson(this HttpResponse response, object value, bool dateCompatibility = false)
         {
             response.ContentType = "application/json";
-            value.ToJson(response.Output);
+            value.ToJson(response.Output, dateCompatibility);
         }
 
-        public static void WriteJson(this HttpResponseBase response, object value)
+		public static void WriteJson(this HttpResponseBase response, object value, bool dateCompatibility = false)
         {
             response.ContentType = "application/json";
-            value.ToJson(response.Output);
+            value.ToJson(response.Output, dateCompatibility);
         }
 
         public static string ResolveUrlTokens(this string url)
