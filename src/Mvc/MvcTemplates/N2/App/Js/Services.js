@@ -86,6 +86,9 @@
 				if (context.Messages && context.Messages.length) {
 					$rootScope.$broadcast("changecontext", { Messages: context.Messages });
 				}
+			},
+			failure: function (response) {
+				$rootScope.$broadcast("communicationfailure", { status: response.status, statusText: response.statusText });
 			}
 		};
 		return window.top.n2ctx;
@@ -189,7 +192,8 @@
 		var res = $resource('Api/Context.ashx/:target', { target: '' }, {
 			'interface': { method: 'GET', params: { target: 'interface' } },
 			'full': { method: 'GET', params: { target: 'full' } },
-			'messages': { method: 'GET', params: { target: 'messages' } }
+			'messages': { method: 'GET', params: { target: 'messages' } },
+			'status': { method: 'GET', params: { target: 'status' } }
 		});
 
 		return res;

@@ -17,18 +17,29 @@ namespace N2.Management.Collaboration
     /// </summary>
     public class Ping : IHttpHandler
     {
+		Logger<Ping> log;
         public void ProcessRequest(HttpContext context)
         {
-            var activity = context.Request["activity"];
-            var engine = N2.Context.Current;
-            if (activity == "Edit")
-            {
-                NotifyEditing(engine, new HttpContextWrapper(context));
-            }
-            else if (activity == "View")
-            {
-                NotifyViewing(engine, new HttpContextWrapper(context));
-            }
+			try
+			{
+				var activity = context.Request["activity"];
+				var engine = N2.Context.Current;
+				if (activity == "Edit")
+				{
+					NotifyEditing(engine, new HttpContextWrapper(context));
+				}
+				else if (activity == "View")
+				{
+					NotifyViewing(engine, new HttpContextWrapper(context));
+				}
+			}
+			catch (Exception ex)
+			{
+				log.Error(ex);
+				context.Response.Status = "500 Server error";
+				context.Response.ContentType = "application/json";
+				context.Response.WriteJson(new { Runnnig = false });
+			}
         }
 
         private void NotifyViewing(IEngine engine, HttpContextWrapper context)

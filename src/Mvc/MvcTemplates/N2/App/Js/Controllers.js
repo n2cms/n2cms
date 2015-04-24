@@ -81,7 +81,7 @@ function Uri(uri) {
 	};
 };
 
-function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Context, Content, Profile, Security, FrameContext, Translate, Eventually, LocationKeeper) {
+function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Context, Content, Profile, Security, FrameContext, Translate, Eventually, LocationKeeper, Notify) {
 	$scope.Content = Content;
 	$scope.Security = Security;
 
@@ -188,6 +188,56 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 		angular.extend($scope.Context, args);
 		if (!$scope.$$phase)
 			$scope.$digest();
+	});
+
+	var communicationattempts = 0;
+	$scope.$on("communicationfailure", function (e, args) {
+		if (communicationattempts)
+			return;
+
+		function retryStatus(message, retryTimeout) {
+			var i = $scope.Context.Flags.indexOf("CommunicationFailure");
+			if (i < 0) $scope.Context.Flags.push("CommunicationFailure");
+
+			communicationattempts++;
+
+			retryTimeout = retryTimeout || 10000;
+
+			if (message) {
+				Notify.show({
+					message: message + " Waiting " + (retryTimeout / 1000) + " seconds before retrying.",
+					type: "error"
+				});
+			}
+			$timeout(function () {
+				Context.status({}, function success(result) {
+					if (!result || result.Running) {
+						var i = $scope.Context.Flags.indexOf("CommunicationFailure");
+						if (i >= 0) $scope.Context.Flags.splice(i, 1);
+
+						communicationattempts = 0;
+						Notify.show({
+							message: "Communications restored.",
+							type: "succes",
+							timeout: 5000
+						});
+					} else {
+						retryStatus(result.Message, retryTimeout + 10000)
+					}
+				}, function failure() {
+					retryStatus(message, retryTimeout + 10000)
+				});
+			}, retryTimeout);
+		}
+
+		Context.status({}, function success(result) {
+			if (result && !result.Running) {
+				retryStatus(result.Message);
+			} else
+				communicationattempts = 0;
+		}, function failure() {
+			retryStatus("Server communication error.");
+		});
 	});
 
 	function translateMenuRecursive(node) {
