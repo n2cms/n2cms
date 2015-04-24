@@ -169,6 +169,9 @@
     <Compile Include="Edit\Collaboration\ManagementMessageCollector.cs" />
     <Compile Include="Edit\Collaboration\CollaborationMessage.cs" />
     <Compile Include="Edit\Collaboration\CollaborationContext.cs" />
+    <Compile Include="Edit\Collaboration\MessageSource.cs" />
+    <Compile Include="Edit\Collaboration\MessageSourceBase.cs" />
+    <Compile Include="Edit\Collaboration\SourceInfo.cs" />
     <Compile Include="Edit\Versioning\InvalidVersionInfo.cs" />
     <Compile Include="Edit\Versioning\VersionInfo.cs" />
     <Compile Include="Persistence\LinqQueryFacade.cs" />

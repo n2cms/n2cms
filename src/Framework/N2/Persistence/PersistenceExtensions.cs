@@ -251,7 +251,8 @@ namespace N2.Persistence
         {
             List<object> items = new List<object>();
             foreach (var item in collection)
-                items.Add(item);
+				if (elementType.IsAssignableFrom(item.GetType()))
+					items.Add(item);
 
             var returnArray = Array.CreateInstance(elementType, items.Count);
             for (int i = 0; i < items.Count; i++)

@@ -106,6 +106,7 @@
 			'move': { method: 'POST', params: { target: 'move' } },
 			'sort': { method: 'POST', params: { target: 'sort' } },
 			'remove': { method: 'POST', params: { target: 'delete' } },
+			'removeMessage': { method: 'DELETE', params: { target: 'message' } },
 			'publish': { method: 'POST', params: { target: 'publish' } },
 			'unpublish': { method: 'POST', params: { target: 'unpublish' } },
 			'schedule': { method: 'POST', params: { target: 'schedule' } }

@@ -37,6 +37,9 @@ namespace N2.Management.Myself
             get { return FindPath(PathData.DefaultAction).GetRewrittenUrl(); }
         }
 
+		[EditableChildren(ContainerName = "RootSettings", ZoneName = "Collaboration")]
+		public virtual IEnumerable<IMessageSource> Messages { get; set; }
+
 		public IEnumerable<CollaborationMessage> GetMessages(CollaborationContext context)
 		{
 			return Children.FindParts("Collaboration")

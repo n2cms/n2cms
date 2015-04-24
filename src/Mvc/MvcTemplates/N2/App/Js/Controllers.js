@@ -681,7 +681,7 @@ function SearchCtrl($scope, $rootScope, Content, Eventually) {
     });
 }
 
-function MessagesCtrl($scope, $rootScope, Context, Content) {
+function MessagesCtrl($scope, $rootScope, Context, Content, Confirm) {
 	$scope.messages = {
 		show: false,
 		list: null,
@@ -700,6 +700,18 @@ function MessagesCtrl($scope, $rootScope, Context, Content) {
 			this.show = false;
 			this.list = null;
 		},
+		removePermanently: function (message) {
+			console.log("remove", message);
+
+			Confirm({
+				title: "Remove permanently for all users?",//Translate("confirm.unpublish.title"),
+				message: message,
+				template: "<b class='ico fa fa-envelope'></b> {{settings.message.Title}}",
+				confirmed: function () {
+					Content.removeMessage({ ID: message.ID, Source: message.Source.Name }, $scope.messages.loadAll);
+				}
+			});
+		},
 		clear: function () {
 			var max = null;
 			angular.forEach(this.list, function (message) {
@@ -715,6 +727,7 @@ function MessagesCtrl($scope, $rootScope, Context, Content) {
 			delete $scope.Context.User.Settings.LastDismissed;
 			Context.messages(Content.applySelection({}, $scope.Context.CurrentItem), function (result) {
 				$scope.messages.list = result.Messages;
+				$scope.Context.Messages = result.Messages;
 			});
 			$scope.saveUserSettings();
 		}

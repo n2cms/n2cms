@@ -10,6 +10,9 @@
 	</div>
 	<ul class="message-list dropdown-menu pull-right" ng-show="messages.show">
 		<li ng-repeat="message in messages.list" ng-class="{ selected: message.Expanded }">
+			<a href class="message-delete fade"
+			   ng-click="messages.removePermanently(message)"
+			   ng-show="message.Source.SupportsDelete"><b class="fa fa-trash-o"></b></a>
 			<a href ng-click="message.Expanded = !message.Expanded">
 				<b class="ico fa fa-envelope"></b>
 				{{message.Title}}

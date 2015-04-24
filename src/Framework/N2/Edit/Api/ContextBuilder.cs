@@ -193,7 +193,7 @@ namespace N2.Management.Api
 
 		public object GetMessages(HttpContextBase context, SelectionUtility selection)
 		{
-			var messageContext = new Edit.Collaboration.CollaborationContext { SelectedItem = selection.ParseSelectionFromRequest() }
+			var messageContext = new Edit.Collaboration.CollaborationContext { SelectedItem = selection.ParseSelectionFromRequest(), User = context.User }
 				.ParseLastDismissed(context.Request["lastDismissed"]);
 			return new
 			{
