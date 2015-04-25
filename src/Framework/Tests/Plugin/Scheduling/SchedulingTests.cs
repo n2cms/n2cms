@@ -171,7 +171,7 @@ namespace N2.Tests.Plugin.Scheduling
             config.Scheduler.Remove(new ScheduledActionElement { Name = "RepeatAction" });
             scheduler = new Scheduler(engine, heart, worker, ctx, errorHandler, actions, config);
 
-            scheduler.Actions.Single().ShouldBeTypeOf<OnceAction>();
+            scheduler.Actions.Single().ShouldBeOfType<OnceAction>();
         }
 
         [Test]

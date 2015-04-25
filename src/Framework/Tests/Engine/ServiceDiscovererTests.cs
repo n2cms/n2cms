@@ -362,7 +362,7 @@ namespace N2.Tests.Engine
             var registrator = new ServiceRegistrator(finder, container);
             registrator.RegisterServices(registrator.FindServices());
 
-            container.Resolve<IInternalService>().ShouldBeTypeOf<InternalService>();
+			container.Resolve<IInternalService>().ShouldBeOfType<InternalService>();
         }
 
         [Test]

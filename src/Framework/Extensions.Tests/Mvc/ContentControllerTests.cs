@@ -19,7 +19,7 @@ namespace N2.Extensions.Tests.Mvc
             var controller = Create<TestItemController>();
             controller.CurrentItem = new TestItem();
 
-            controller.Index().ShouldBeTypeOf<PartialViewResult>();
+            controller.Index().ShouldBeOfType<PartialViewResult>();
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace N2.Extensions.Tests.Mvc
             var controller = Create<RegularController>();
             controller.CurrentItem = new RegularPage();
 
-            controller.Index().ShouldBeTypeOf<ViewResult>();
+            controller.Index().ShouldBeOfType<ViewResult>();
         }
 
         [Test]

@@ -99,7 +99,7 @@ namespace N2.Management.Tests.Sources
 
             var children = source.GetChildren(rootQuery).ToList();
 
-            children.Single().ShouldBeTypeOf<ChildGroupContainer>();
+            children.Single().ShouldBeOfType<ChildGroupContainer>();
             children.Single().Name.ShouldBe("virtual-grouping/0");
         }
 
