@@ -109,7 +109,7 @@ a { text-decoration: none; color: #000; }
 			#menu > ul > li.open .dropdown-toggle { background-color:#3aaee3 }
 			#menu > ul > li .dropdown-menu { }
 				#menu li .dropdown-menu li { display:block; color:#000; }
-					#menu li .dropdown-menu li a { display:block; padding:5px 10px; height:auto; line-height:20px; max-width:400px; text-overflow: ellipsis; }
+					#menu li .dropdown-menu li > a { display:block; padding:5px 10px; height:auto; line-height:20px; max-width:400px; text-overflow: ellipsis; }
 					#menu li .dropdown-menu li a.page-action-description .ico { position:relative; top:0; left:0; }
 
 		#menu li.iconed img { float: left; padding-top: 5px; }

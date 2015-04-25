@@ -96,6 +96,9 @@ namespace N2.Resources
 		/// <summary> The path to angular-resources used by N2. </summary>
 		public static string AngularJsResourcePath { get { return AngularJsRoot + "angular-resource.js"; } }
 
+		/// <summary> The path to angular-resources used by N2. </summary>
+		public static string AngularJsSanitizePath { get { return AngularJsRoot + "angular-sanitize.js"; } }
+
 		/// <summary>The path to the CKeditor script</summary>
 		public static string CkEditorJsPath { get; set; }
 

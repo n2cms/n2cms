@@ -487,4 +487,15 @@ span.null {color:silver}\
 		}
 	});
 
+	module.directive("n2StopPropagation", function () {
+		return {
+			restrict: "A",
+			link: function (scope, element, attrs) {
+				element.click(function (e) {
+					e.stopPropagation();
+				});
+			}
+		}
+	});
+
 })(angular.module('n2.directives', ['n2.localization']));

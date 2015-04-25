@@ -84,7 +84,7 @@
 			},
 			context: function (context) {
 				if (context.Messages && context.Messages.length) {
-					$rootScope.$broadcast("changecontext", { Messages: context.Messages });
+					$rootScope.$broadcast("changecontext", context);
 				}
 			},
 			failure: function (response) {
