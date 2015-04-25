@@ -780,7 +780,6 @@ function MessagesCtrl($scope, $rootScope, $sce, Context, Content, Confirm) {
 			});
 		},
 		clear: function () {
-			this.close();
 			var max = null;
 			angular.forEach(this.list, function (message) {
 				if (!max || max < message.Updated)
@@ -789,6 +788,7 @@ function MessagesCtrl($scope, $rootScope, $sce, Context, Content, Confirm) {
 			$scope.Context.User.Settings.LastDismissed = max;
 			$scope.Context.Messages = [];
 			$scope.saveUserSettings();
+			this.close();
 		},
 		loadAll: function () {
 			delete $scope.Context.User.Settings.LastDismissed;
@@ -797,10 +797,6 @@ function MessagesCtrl($scope, $rootScope, $sce, Context, Content, Confirm) {
 				$scope.Context.Messages = result.Messages;
 			});
 			$scope.saveUserSettings();
-		},
-		sanitize: function (text) {
-			console.log($sce, text);
-			return $sce.parseAsHtml(text);
 		}
 	};
 
