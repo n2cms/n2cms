@@ -1,4 +1,4 @@
-<item id="5" name="admin" parent="4" title="admin" zoneName="" templateKey="" state="1" created="05/06/2014 19:53:59" updated="05/06/2014 19:53:59" published="05/06/2014 19:53:59" expires="" sortOrder="0" url="/N2/Myself/Root.aspx?n2page=1&amp;n2item=5" visible="True" savedBy="" typeName="" discriminator="User" versionIndex="0" ancestralTrail="" alteredPermissions="0" childState="0">
+<item id="5" name="admin" parent="4" title="admin" zoneName="" templateKey="" state="1" created="05/06/2014 19:53:59" updated="05/06/2014 19:53:59" published="05/06/2014 19:53:59" expires="" sortOrder="0" url="/N2/Myself/Root.aspx?n2page=1&amp;n2item=5" visible="True" savedBy="" typeName="N2.Security.Items.User, N2.Management" discriminator="User" versionIndex="0" ancestralTrail="" alteredPermissions="0" childState="0">
   <details>
     <detail name="Password" typeName="System.String, mscorlib" meta="" encoded="True"><![CDATA[60ea6a3a-c07a-430a-a7de-2ab907e27688]]></detail>
     <detail name="PasswordQuestion" typeName="System.String, mscorlib" meta="" encoded="True"><![CDATA[870d923d-f9b3-4ac6-b37b-bcf66c76c748]]></detail>
@@ -9,7 +9,7 @@
   <detailCollections>
     <collection name="Settings">
       <detail name="Settings" typeName="System.String, mscorlib" meta="ViewPreference" encoded="True"><![CDATA[draft]]></detail>
-      <detail name="Settings" typeName="System.String, mscorlib" meta="Selected" encoded="True"><![CDATA[/start/test2/]]></detail>
+      <detail name="Settings" typeName="System.String, mscorlib" meta="Selected" encoded="True"><![CDATA[/start/test/]]></detail>
     </collection>
   </detailCollections>
   <children />

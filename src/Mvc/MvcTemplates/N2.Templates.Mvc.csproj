@@ -73,13 +73,9 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite, Version=1.0.90.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+    <Reference Include="System.Data.SQLite, Version=1.0.96.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\System.Data.SQLite.1.0.90.0\lib\net40\System.Data.SQLite.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SQLite.Linq, Version=1.0.90.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\System.Data.SQLite.1.0.90.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
+      <HintPath>..\..\packages\System.Data.SQLite.Core.MSIL.1.0.96.0\lib\net451\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Web" />
@@ -469,6 +465,10 @@
     <ProjectReference Include="..\..\Framework\Extensions\N2.Extensions.csproj">
       <Project>{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}</Project>
       <Name>N2.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\IoC.Windsor\N2.IoC.Windsor3.csproj">
+      <Project>{7a9c0479-64af-4df1-818c-118866db8a3d}</Project>
+      <Name>N2.IoC.Windsor3</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Framework\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
