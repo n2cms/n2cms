@@ -74,5 +74,10 @@ namespace N2.Tests.Fakes
         {
             get { return HttpRuntime.Cache; }
         }
+
+		public override object GetService(System.Type serviceType)
+		{
+			return null;
+		}
     }
 }

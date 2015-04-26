@@ -172,7 +172,7 @@ namespace N2.Tests.Web
             var result = date.ToJson();
             var milisecondsSince1970 = date.Subtract(new DateTime(1970, 01, 01)).TotalMilliseconds;
 
-            result.ShouldBe("\"\\/Date(" + milisecondsSince1970 + ")\\/\"");
+			result.ShouldBe("\"2010-06-16T08:00:00.000Z\"");
         }
 
         [Test]
@@ -244,7 +244,7 @@ namespace N2.Tests.Web
             deserialized["VersionIndex"].ShouldBe(222);
             deserialized["Visible"].ShouldBe(false);
             deserialized["ZoneName"].ShouldBe("HelloZone");
-            deserialized["Updated"].ShouldBe(time);
+            deserialized["Updated"].ShouldBe("2013-03-27T09:00:00.000Z");
         }
 
         [Test]
