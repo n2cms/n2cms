@@ -23,7 +23,7 @@
         <dependency id="Microsoft.AspNet.Mvc" version="[4.0.30506]" />
       </group>
       <group targetFramework="net45">
-        <dependency id="Microsoft.AspNet.Mvc" version="5.2.2" />
+        <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
       </group>
 		</dependencies>
 	</metadata>
