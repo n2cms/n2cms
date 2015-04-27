@@ -234,7 +234,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 
 						communicationattempts = 0;
 						Notify.show({
-							message: "Communications restored.",
+							message: "Server connection restored.",
 							type: "succes",
 							timeout: 5000
 						});
