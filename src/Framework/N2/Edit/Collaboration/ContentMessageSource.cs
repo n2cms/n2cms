@@ -31,7 +31,7 @@ namespace N2.Edit.Collaboration
 			if (context.SelectedItem == null)
 				return CollaborationMessage.None;
 
-			return Content.Traverse.Ancestors(context.SelectedItem, lastAncestor: null)
+			return Find.EnumerateParents(context.SelectedItem, null, includeSelf: true)
 				.OfType<IMessageSource>()
 				.SelectMany(ms => ms.GetMessages(context));
 		}
