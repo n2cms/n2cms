@@ -253,7 +253,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 			} else
 				communicationattempts = 0;
 		}, function failure() {
-			retryStatus("Server communication error.");
+			retryStatus("Server connection lost.");
 		});
 	});
 
