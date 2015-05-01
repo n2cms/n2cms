@@ -84,8 +84,11 @@
 			},
 			context: function (context) {
 				if (context.Messages && context.Messages.length) {
-					$rootScope.$broadcast("changecontext", { Messages: context.Messages });
+					$rootScope.$broadcast("changecontext", context);
 				}
+			},
+			failure: function (response) {
+				$rootScope.$broadcast("communicationfailure", { status: response.status, statusText: response.statusText });
 			}
 		};
 		return window.top.n2ctx;
@@ -106,6 +109,7 @@
 			'move': { method: 'POST', params: { target: 'move' } },
 			'sort': { method: 'POST', params: { target: 'sort' } },
 			'remove': { method: 'POST', params: { target: 'delete' } },
+			'removeMessage': { method: 'DELETE', params: { target: 'message' } },
 			'publish': { method: 'POST', params: { target: 'publish' } },
 			'unpublish': { method: 'POST', params: { target: 'unpublish' } },
 			'schedule': { method: 'POST', params: { target: 'schedule' } }
@@ -188,7 +192,8 @@
 		var res = $resource('Api/Context.ashx/:target', { target: '' }, {
 			'interface': { method: 'GET', params: { target: 'interface' } },
 			'full': { method: 'GET', params: { target: 'full' } },
-			'messages': { method: 'GET', params: { target: 'messages' } }
+			'messages': { method: 'GET', params: { target: 'messages' } },
+			'status': { method: 'GET', params: { target: 'status' } }
 		});
 
 		return res;

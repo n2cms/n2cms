@@ -13,8 +13,8 @@ using N2.Edit.Versioning;
 
 namespace N2.Persistence.Xml
 {
-    [Service]
-    [Service(typeof(IItemXmlWriter))]
+	//[Service]
+	//[Service(typeof(IItemXmlWriter))]
     public class ItemHtmlWriter : IItemXmlWriter
     {
 
@@ -22,14 +22,12 @@ namespace N2.Persistence.Xml
         private static DetailCollectionXmlWriter dw = new DetailCollectionXmlWriter();
 
         private readonly IDefinitionManager _definitions;
-        private readonly IUrlParser _parser;
         private readonly IFileSystem _fs;
 
 
-        public ItemHtmlWriter(IDefinitionManager definitions, IUrlParser parser, IFileSystem fs)
+        public ItemHtmlWriter(IDefinitionManager definitions, IFileSystem fs)
         {
             _definitions = definitions;
-            _parser = parser;
             _fs = fs;
         }
 

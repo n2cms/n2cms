@@ -26,7 +26,8 @@ namespace N2.Management.Myself
 	[AvailableZone("Below", "Below")]
 	[AvailableZone("Collaboration", "Collaboration")]
     [RecursiveContainer("RootSettings", 120, RequiredPermission = Permission.Administer)]
-    [TabContainer("Search", "Search", 120, ContainerName = "RootSettings")]
+	[TabContainer("Search", "Search", 120, ContainerName = "RootSettings")]
+	[TabContainer("Collaboration", "Collaboration", 130, ContainerName = "RootSettings")]
     [WithManageableSearch(ContainerName = "Search")]
     [Versionable(AllowVersions.No)]
     [InterfaceFlags(RemovedFlags = new [] { "Management" })]
@@ -36,6 +37,9 @@ namespace N2.Management.Myself
         {
             get { return FindPath(PathData.DefaultAction).GetRewrittenUrl(); }
         }
+
+		[EditableChildren(ContainerName = "Collaboration", ZoneName = "Collaboration")]
+		public virtual IEnumerable<IMessageSource> Messages { get; set; }
 
 		public IEnumerable<CollaborationMessage> GetMessages(CollaborationContext context)
 		{

@@ -15,7 +15,7 @@ namespace N2.Management.Myself.Collaboration
 	[Versionable(AllowVersions.No)]
 	public class ManagementMessagePart : RootPartBase, IMessageSource
 	{
-		[EditableText]
+		[EditableText(TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine)]
 		public virtual string Text { get; set; }
 
 		[EditableCheckBox]
@@ -24,7 +24,7 @@ namespace N2.Management.Myself.Collaboration
 		public IEnumerable<CollaborationMessage> GetMessages(CollaborationContext context)
 		{
 			if (this.IsPublished())
-				yield return new CollaborationMessage { ID = ID.ToString(), Title = Title, Alert = Alert, Text = Text, Updated = Updated };
+				yield return new CollaborationMessage { ID = ID.ToString(), Title = Title, Alert = Alert, Text = (Text ?? "").Replace(Environment.NewLine, "<br/>"), Updated = Updated };
 		}
 	}
 }

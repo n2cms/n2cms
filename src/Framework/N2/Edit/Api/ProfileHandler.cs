@@ -88,7 +88,7 @@ namespace N2.Management.Api
 
         private void Save(System.Web.HttpContextBase context)
         {
-            var requestBody = context.GetOrDeserializeRequestStreamJson<object>();
+            var requestBody = context.GetOrDeserializeRequestStreamJsonDictionary<object>();
             var user = GetUser(context.User);
             if (requestBody.ContainsKey("Settings") && requestBody["Settings"] is IDictionary<string, object>)
                 user.Settings = (IDictionary<string, object>)requestBody["Settings"];
@@ -98,7 +98,7 @@ namespace N2.Management.Api
 
         private void Patch(HttpContextBase context)
         {
-            var requestBody = context.GetOrDeserializeRequestStreamJson<object>();
+            var requestBody = context.GetOrDeserializeRequestStreamJsonDictionary<object>();
             var user = GetUser(context.User);
             if (requestBody.ContainsKey("Settings") && requestBody["Settings"] is IDictionary<string, object>)
                 foreach (var kvp in (IDictionary<string, object>)requestBody["Settings"])

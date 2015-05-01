@@ -1,6 +1,6 @@
 ﻿@model Dinamico.Models.ContentPart
-		   
-@{ 
+
+@{
 	Content.Define(ie =>
 	{
 		ie.Title = "Parts Carousel";
@@ -8,33 +8,29 @@
 	});
 	string uniqueId = Html.UniqueID("s");
 }
-
 <div id="@uniqueId" class="part carousel slide">
 	<ol class="carousel-indicators">
-	@{ var index = 0; }
-	@foreach (var item in Content.Traverse.ChildParts("SliderArea"))
-	{
-		<li data-target="#@uniqueId" data-slide-to="@(index++)" class="@(index == 1 ? "active" : "")"></li>
-	}
+		@{ var index = 0; }
+		@foreach (var item in Content.Traverse.ChildParts("SliderArea"))
+		{
+			<li data-target="#@uniqueId" data-slide-to="@(index++)" class="@(index == 1 ? "active" : "")"></li>
+		}
 	</ol>
-
 	<!-- Wrapper for slides -->
 	<div class="carousel-inner">
-	@{ 
-		index = 0;
-		Html.DroppableZone("SliderArea").WrapIn((ci) => 
-			{ 
-				var tb = new TagBuilder("div"); 
-				tb.Id("carousel-item-" + ci.ID); 
-				tb.AddCssClass("item" + (index++ == 0 ? " active" : ""));
-				return tb; 
-			}).Render(); 
-	}
+		@{
+			index = 0;
+			Html.DroppableZone("SliderArea").WrapIn((ci) =>
+				{
+					var tb = new System.Web.Mvc.TagBuilder("div");
+					tb.MergeAttribute("id", "carousel-item-" + ci.ID);
+					tb.AddCssClass("item" + (index++ == 0 ? " active" : ""));
+					return tb;
+				}).Render();
+		}
 	</div>
-
 	<!-- Controls -->
 	<a class="left carousel-control" href="#@uniqueId" data-slide="prev"><span class="icon-prev"></span></a>
 	<a class="right carousel-control" href="#@uniqueId" data-slide="next"><span class="icon-next"></span></a>
 </div>
-
 @Html.Resources().JavaScript(@"$('.carousel').carousel().find('.carousel-inner .item:first').addClass('active');", N2.Resources.ScriptOptions.DocumentReady)

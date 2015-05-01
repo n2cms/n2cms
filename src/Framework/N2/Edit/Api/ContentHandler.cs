@@ -1,6 +1,7 @@
 using N2.Collections;
 using N2.Definitions;
 using N2.Edit;
+using N2.Edit.Collaboration;
 using N2.Edit.Trash;
 using N2.Edit.Versioning;
 using N2.Edit.Workflow;
@@ -145,8 +146,16 @@ namespace N2.Management.Api
                     }
                     break;
                 case "DELETE":
-                    EnsureValidSelection();
-                    Delete(context);
+					switch (context.Request.PathInfo)
+					{
+						case "/message":
+							DeleteMessage(context);
+							break;
+						default:
+							EnsureValidSelection();
+							Delete(context);
+							break;
+					}
                     break;
                 case "PUT":
                     EnsureValidSelection();
@@ -154,6 +163,11 @@ namespace N2.Management.Api
                     break;
             }
         }
+
+		private void DeleteMessage(HttpContextBase context)
+		{
+			engine.Resolve<ManagementMessageCollector>().Delete(context.Request["source"], context.Request["id"]);
+		}
 
         private void Authorize(IPrincipal user, ContentItem item)
         {
@@ -216,7 +230,7 @@ namespace N2.Management.Api
             if (item == null)
                 throw new HttpException((int)HttpStatusCode.NotFound, "Not Found");
 
-            var requestBody = context.GetOrDeserializeRequestStreamJson<object>();
+            var requestBody = context.GetOrDeserializeRequestStreamJsonDictionary<object>();
             foreach (var kvp in requestBody)
                 item[kvp.Key] = kvp.Value;
 
@@ -234,7 +248,7 @@ namespace N2.Management.Api
             
             var item = engine.Resolve<ContentActivator>().CreateInstance(definition.ItemType, parent);
 
-            var requestBody = context.GetOrDeserializeRequestStreamJson<object>();
+            var requestBody = context.GetOrDeserializeRequestStreamJsonDictionary<object>();
             foreach (var kvp in requestBody)
                 item[kvp.Key] = kvp.Value;
 

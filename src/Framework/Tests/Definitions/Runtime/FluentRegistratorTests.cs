@@ -54,7 +54,7 @@ namespace N2.Tests.Definitions.Runtime
             var definitions = registration.Register(map);
 
             var editable = definitions.Single().Editables.Single();
-            editable.ShouldBeTypeOf<WithEditableTitleAttribute>();
+			editable.ShouldBeOfType<WithEditableTitleAttribute>();
             editable.Name.ShouldBe("Title");
         }
 
@@ -66,7 +66,7 @@ namespace N2.Tests.Definitions.Runtime
             var definitions = registration.Register(map);
 
             var editable = definitions.Single().Editables.Single();
-            editable.ShouldBeTypeOf<WithEditableNameAttribute>();
+			editable.ShouldBeOfType<WithEditableNameAttribute>();
             editable.Name.ShouldBe("Name");
         }
 
@@ -78,7 +78,7 @@ namespace N2.Tests.Definitions.Runtime
             var definitions = registration.Register(map);
 
             var editable = definitions.Single().Editables.Single();
-            editable.ShouldBeTypeOf<EditableFreeTextAreaAttribute>();
+            editable.ShouldBeOfType<EditableFreeTextAreaAttribute>();
             editable.Name.ShouldBe("Text");
         }
 
@@ -93,7 +93,7 @@ namespace N2.Tests.Definitions.Runtime
             var definitions = registration.Register(map);
 
             var editable = definitions.Single().Editables.Single();
-            editable.ShouldBeTypeOf<EditableFreeTextAreaAttribute>();
+            editable.ShouldBeOfType<EditableFreeTextAreaAttribute>();
             editable.Name.ShouldBe("Text");
         }
 

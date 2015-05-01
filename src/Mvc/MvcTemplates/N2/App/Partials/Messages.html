@@ -10,11 +10,14 @@
 	</div>
 	<ul class="message-list dropdown-menu pull-right" ng-show="messages.show">
 		<li ng-repeat="message in messages.list" ng-class="{ selected: message.Expanded }">
+			<a href class="message-delete fade"
+			   ng-click="messages.removePermanently(message)"
+			   ng-show="message.Source.SupportsDelete"><b class="fa fa-trash-o"></b></a>
 			<a href ng-click="message.Expanded = !message.Expanded">
 				<b class="ico fa fa-envelope"></b>
 				{{message.Title}}
 				<time datetime="{{message.Updated}}">{{message.Updated | date: 'short'}}</time>
-				<p ng-show="message.Expanded">{{message.Text}}</p>
+				<p ng-show="message.Expanded" ng-bind-html="message.Text" n2-stop-propagation></p>
 			</a>
 		</li>
 		<li ng-show="messages.list.length"><a href ng-click="messages.clear()" translate="messages.dismiss"><b class="ico fa fa-times"></b> Dismiss</a></li>
