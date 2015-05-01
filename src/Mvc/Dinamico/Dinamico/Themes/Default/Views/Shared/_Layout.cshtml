@@ -18,7 +18,6 @@
 <body>
 	@{ Html.ControlPanel().Render(); }
 	<div id="wrapper" class="clearfix">
-		<h1>@DateTime.Now</h1>
 	@if (IsSectionDefined("page"))
 	{
 		@RenderSection("page")
