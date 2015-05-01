@@ -7,6 +7,7 @@ using N2.Web;
 using System.Text;
 using System.IO;
 using N2.Configuration;
+using System.Text.RegularExpressions;
 
 namespace N2.Edit.Install.Begin
 {
@@ -109,11 +110,13 @@ namespace N2.Edit.Install.Begin
                     }
 
                     try
-                    {
-                        
-                        if (!Roles.RoleExists("Administrators"))
-                            Roles.CreateRole("Administrators");
-                        Roles.AddUserToRole("admin", "Administrators");
+					{
+						if (Roles.Enabled)
+						{
+							if (!Roles.RoleExists("Administrators"))
+								Roles.CreateRole("Administrators");
+							Roles.AddUserToRole("admin", "Administrators");
+						}
                     }
                     catch (Exception)
                     {
@@ -125,6 +128,20 @@ namespace N2.Edit.Install.Begin
                         profile.DefaultProvider = "ContentProfileProvider";
 
                     cfg.Save();
+
+					try
+					{
+						if (chkLoginUrl.Checked)
+						{
+							var webConfigPath = Server.MapPath("~/web.config");
+							var webConfigContent = File.ReadAllText(webConfigPath);
+							webConfigContent = Regex.Replace(webConfigContent, "<remove\\s+name=\"FormsAuthentication\"\\s(/>)|(>\\s?</remove>)", "<!--<remove name=\"FormsAuthentication\" />-->");
+							File.WriteAllText(webConfigPath, webConfigContent);
+						}
+					}
+					catch (Exception)
+					{
+					}
 
                     FormsAuthentication.SetAuthCookie("admin", false);
                     Response.Redirect(continueUrl);
