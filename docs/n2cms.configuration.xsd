@@ -146,6 +146,17 @@
 									<xs:attribute name="duration" type="xs:integer" use="optional" />
 									<xs:attribute name="varyByParam" type="xs:string" use="optional" />
 									<xs:attribute name="cacheProfile" type="xs:boolean" use="optional" />
+									<xs:attribute name="invalidateOnChangesTo" use="optional" default="Page">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="All"/>
+												<xs:enumeration value="Site"/>
+												<xs:enumeration value="SiteSection"/>
+												<xs:enumeration value="Page"/>
+												<xs:enumeration value="IgnoreChanges"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="resources" minOccurs="0">

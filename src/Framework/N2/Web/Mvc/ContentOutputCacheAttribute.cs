@@ -52,7 +52,7 @@ namespace N2.Web.Mvc
 
             var page = new OutputCachedPage(cacheManager.GetOutputCacheParameters());
             page.ProcessRequest(HttpContext.Current);
-            cacheManager.AddCacheInvalidation(HttpContext.Current.Response);
+            cacheManager.AddCacheInvalidation(requestContext.CurrentPage(), HttpContext.Current.Response);
         }
 
         private sealed class OutputCachedPage : Page
