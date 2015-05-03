@@ -20,22 +20,19 @@ Win Server 2003 R2          4.0, 4.5                         Dinamico/N2CMS.Razo
 Win Server 2003 or earlier  Not supported 	                 Not supported 
 ========================== ================================ ====================================================
 
-+----------------------------+-------------------+-------------------------------+
-| Operating system           | Supported .NET    |  Additional information       |
-|                            | Framework Version |                               |
-+============================+===================+===============================+
-| Win Server 2012 R2         | 4.5               | Includes .NET Framework 4.5.1 |
-+----------------------------+-------------------+-------------------------------+
-| Win Server 2012 (64-bit)   | 4.5               | Includes .NET Framework 4.5   |
-+----------------------------+-------------------+-------------------------------+
-| Win Server 2008 R2 SP1     | 4.0, 4.5          | Supported in the Server Core  |
-|                            |                   | Role with SP1 or later.       |
-+----------------------------+-------------------+-------------------------------+
-
 Client operating systems
 ========================
 
 N2CMS supports Visual Studio 2010, 2012, and 2013 on the following operating systems:
+
+===================== ======================== ==================================
+Operating system      Supported editions       Additional information
+===================== ======================== ==================================
+Windows 8.1           32-bit and 64-bit        Includes the .NET Framework 4.5.1
+Windows 8             32-bit and 64-bit        Includes the .NET Framework 4.5
+Windows 7 SP1         32-bit and 64-bit
+Windows Vista SP2     32-bit and 64-bit
+===================== ======================== ==================================
  
 Web Servers
 ===========
