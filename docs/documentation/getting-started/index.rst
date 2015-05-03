@@ -23,4 +23,4 @@ See also: Editors via Attributes
 .. toctree::
    :maxdepth: 3
 
-    documentation/getting-started/server-requirements.rst
+   server-requirements.rst
