@@ -9,6 +9,17 @@ N2CMS runs on .NET Framework 4.5, which runs on the following operating systems.
 
 *Server operating systems*
 
+========================== ================================ ====================================================
+Operating system           Supported .NET Framework Version Additional information  
+========================== ================================ ====================================================
+Win Server 2012 R2          4.5                              Includes .NET Framework 4.5.1   
+Win Server 2012 (64-bit)    4.5                              Includes .NET Framework 4.5
+Win Server 2008 R2 SP1      4.0, 4.5                         Supported in the Server Core Role with SP1 or later. 
+Win Server 2008 SP2         4.0, 4.5                         Not supported in the Server Core Role.
+Win Server 2003 R2          4.0, 4.5                         Dinamico/N2CMS.Razor is not supported because .NET Framework 4.5 is not available.
+Win Server 2003 or earlier  Not supported 	                 Not supported 
+========================== ================================ ====================================================
+
 +----------------------------+-------------------+-------------------------------+
 | Operating system           | Supported .NET    |  Additional information       |
 |                            | Framework Version |                               |
@@ -17,7 +28,7 @@ N2CMS runs on .NET Framework 4.5, which runs on the following operating systems.
 +----------------------------+-------------------+-------------------------------+
 | Win Server 2012 (64-bit)   | 4.5               | Includes .NET Framework 4.5   |
 +----------------------------+-------------------+-------------------------------+
-| Windows Server 2008 R2 SP1 | 4.0, 4.5          | Supported in the Server Core  |
+| Win Server 2008 R2 SP1     | 4.0, 4.5          | Supported in the Server Core  |
 |                            |                   | Role with SP1 or later.       |
 +----------------------------+-------------------+-------------------------------+
 
