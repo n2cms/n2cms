@@ -48,19 +48,20 @@ Databases
 =========
 
 Supported databases include:
-SQL Server 2008 *
-SQL Server 2008 Express *
-SQL Server 2005 *
-SQL Server 2005 Express *
-SQL Server 2000
-SqlCe
-MySQL *
-SQLite *
-Firebird
-Jet
-DB2
-Oracle9i
-Oracle10g
+
+    * SQL Server 2008 *
+    * SQL Server 2008 Express *
+    * SQL Server 2005 *
+    * SQL Server 2005 Express *
+    * SQL Server 2000
+    * SqlCe
+    * MySQL *
+    * SQLite *
+    * Firebird
+    * Jet
+    * DB2
+    * Oracle9i
+    * Oracle10g
  
 * A connection string example for these database engines can be found in web.config. 
 
