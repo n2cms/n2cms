@@ -9,6 +9,15 @@ N2CMS runs on .NET Framework 4.5, which runs on the following operating systems.
 
 *Server operating systems*
 
+| Operating system       | Supported .NET Framework Version | Additional information            |
+|------------------------|----------------------------------|-----------------------------------|
+| Windows Server 2012 R2 | 4.5                              | Includes the .NET Framework 4.5.1 |
+|                        |                                  |                                   |
+|                        |                                  |                                   |
+|                        |                                  |                                   |
+|                        |                                  |                                   |
+|                        |                                  |                                   |
+
 Client operating systems
 ========================
 
