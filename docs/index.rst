@@ -8,7 +8,7 @@ interface is intuitive and empowering. The developer story is something exquisit
 you'll see.
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 4
 
    documentation/getting-started/index.rst
 
