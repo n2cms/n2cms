@@ -19,3 +19,7 @@ All you have to do is design your model class (inherit N2.ContentItem) and defin
     }
 
 See also: Editors via Attributes
+
+.. toctree::
+
+    server-requirements.rst
