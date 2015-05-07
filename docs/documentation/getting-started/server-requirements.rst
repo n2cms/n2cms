@@ -42,7 +42,7 @@ N2CMS has been tested successfully on the Visual Studio embedded web server, IIS
 .NET Framework
 ==============
 
-N2CMS 1.5 can run on .NET 2.0. We recommend that you run N2CMS on the latest version of the .NET framework possible. 
+N2CMS can run on .NET 2.0. We recommend that you run N2CMS on the latest version of the .NET framework possible. 
 
 Databases
 =========
@@ -82,3 +82,14 @@ Shared Hosting
 ==============
 
 Some users report no problems running in shared hosting under medium trust, others have had problems. N2CMS has been tested on unmodified medium trust. It’s recommended you ask the hosting provider before you buy a long-term plan. Note that N2CMS can be somewhat RAM intensive, and requires a minimum of 64 MB of RAM dedicated to your website. More RAM may be needed depending on the plugins you require or the amount of traffic your website receives. Plug-ins such as site search can also increase the memory requirement.
+
+N2CMS has been confirmed to be compatible with following shared hosting
+
+    * http://www.arvixe.com
+    * http://www.re-invent.com
+    * http://www.avalon.hr
+    * http://www.drundo.net
+    * http://www.godaddy.com
+    * http://www.lastationinternet.com
+    * http://www.erudeye.net/
+    * http://www.elixtech.com/
