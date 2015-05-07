@@ -11,4 +11,5 @@ you'll see.
    :maxdepth: 3
 
    documentation/getting-started/index.rst
+   documentation/setting-up-your-environment/index.rst
 
