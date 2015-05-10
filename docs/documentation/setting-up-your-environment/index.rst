@@ -20,7 +20,6 @@ Git-based environment    You always want to have the most recent code, or you wa
                          template packs, sample data, plus the N2 Core and all dependency binaries. This is a 
                          great way to get started with N2CMS, particularly if you don't already have a project 
                          started. You can use one of the existing projects as a basis for your new N2-based site:
-                         
                             * WebForms Templates Pack
                             * ASP.NET MVC Templates Pack
                             * ASP.NET MVC "Dinamico" Templates Pack (uses the Razor engine)
@@ -30,12 +29,18 @@ Getting the Bits
 ================
 
 Each of the supplied packages is supplied either as a Git repository or as a Nuget package.
-Start with Git: check out the N2 repository located at http://github.com/n2cms/n2cms. Note: We don't recommend using Github's archive formats (tgz, zip). Using the archive formats will make your installation more difficult to update as Git's patching infrastructure will not be available.
-Start with Nuget: install the requisite Nuget package from within your Visual Studio project:     
-n2cms_webforms
-n2cms_mvc
-n2cms_dinamico
+
+    * Start with Git: check out the N2 repository located at http://github.com/n2cms/n2cms. Note: We don't recommend using Github's 
+      archive formats (tgz, zip). Using the archive formats will make your installation more difficult to update as Git's patching 
+      infrastructure will not be available.
+    * Start with Nuget: install the requisite Nuget package from within your Visual Studio project:     
+            - n2cms_webforms
+            - n2cms_mvc
+            - n2cms_dinamico
+            
 Overview of Available Packages
+==============================
+
 Package
 Description 
 N2 CMS 2.x Source Code
