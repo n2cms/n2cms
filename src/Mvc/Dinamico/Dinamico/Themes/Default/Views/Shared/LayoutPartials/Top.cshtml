@@ -1,13 +1,18 @@
 ﻿<div class="navbar navbar-inverse navbar-static-top">
-	<ul class="nav navbar-nav">
-		<li>
-			@Content.At(Content.Traverse.StartPage).Render.Image("Logotype").Wrap(@<a href="@Content.Traverse.StartPage.Url" title="@Content.Traverse.StartPage.Title" class="logotype">@item.RenderContents()</a>)
-		</li>
-	</ul>
+
 	<ul class="nav navbar-nav pull-right">
 		<li class="dropdown">@{ Html.RenderPartial("LayoutPartials/LogOn"); }</li>
 		<li class="dropdown">@{ Html.RenderPartial("LayoutPartials/SiteMap"); }</li>
 		<li class="dropdown">@{ Html.RenderPartial("LayoutPartials/Translations"); }</li>
 		<li class="dropdown">@{ Html.RenderPartial("LayoutPartials/Search"); }</li>
 	</ul>
+
+	<ul class="nav navbar-nav">
+		<li>
+			@Content.At(Content.Traverse.StartPage).Render.Image("Logotype").Wrap(@<a href="@Content.Traverse.StartPage.Url" title="@Content.Traverse.StartPage.Title" class="logotype">@item.RenderContents()</a>)
+		</li>
+	</ul>
+
+	@{ Html.RenderPartial("LayoutPartials/TopNavigation"); }
+
 </div>
