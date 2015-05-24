@@ -69,7 +69,7 @@ namespace N2.Persistence.NH
             SetupMappings(config);
         }
 
-        private void SetupMappings(DatabaseSection config)
+        protected virtual void SetupMappings(DatabaseSection config)
         {
             foreach (MappingElement me in config.Mappings)
             {
@@ -80,12 +80,24 @@ namespace N2.Persistence.NH
         /// <summary>Sets properties configuration dictionary based on configuration in the database section.</summary>
         /// <param name="config">The database section configuration.</param>
         /// <param name="connectionStrings">Connection strings from configuration</param>
-        protected void SetupProperties(DatabaseSection config, ConnectionStringsSection connectionStrings)
+        protected virtual void SetupProperties(DatabaseSection config, ConnectionStringsSection connectionStrings)
         {
             NHibernate.Cfg.Environment.UseReflectionOptimizer = Utility.GetTrustLevel() > System.Web.AspNetHostingPermissionLevel.Medium;
 
             // connection
-
+			if (!string.IsNullOrEmpty(config.ConnectionString))
+			{
+				var connectionString = config.ConnectionString;
+				try
+				{
+					foreach(string key in System.Environment.GetEnvironmentVariables().Keys)
+						connectionString = connectionString.Replace("%" + key + "%", System.Environment.GetEnvironmentVariable(key));
+				}
+				catch (Exception)
+				{
+				}
+				Properties[NHibernate.Cfg.Environment.ConnectionString] = connectionString;
+			}
             Properties[NHibernate.Cfg.Environment.ConnectionStringName] = config.ConnectionStringName;
             Properties[NHibernate.Cfg.Environment.ConnectionProvider] = "NHibernate.Connection.DriverConnectionProvider";
             Properties[NHibernate.Cfg.Environment.Hbm2ddlKeyWords] = "none";
@@ -119,7 +131,7 @@ namespace N2.Persistence.NH
         /// <param name="config"></param>
         /// <param name="connectionStrings"></param>
         /// <returns></returns>
-        private DatabaseFlavour SetupFlavourProperties(DatabaseSection config, ConnectionStringsSection connectionStrings)
+        protected virtual DatabaseFlavour SetupFlavourProperties(DatabaseSection config, ConnectionStringsSection connectionStrings)
         {
             DatabaseFlavour flavour = config.Flavour;
             if (flavour == DatabaseFlavour.AutoDetect)
