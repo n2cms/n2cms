@@ -2,6 +2,18 @@
 	var isDragging = false;
 	var dialog = null;
 
+	if (window.location.search.indexOf("n2ScrollTop") >= 0) {
+		var top = parseInt(window.location.search.match(/n2ScrollTop=([^&]*)/)[1]);
+		if (top) {
+			$(function () {
+				console.log("top", top);
+				setTimeout(function () {
+					$(document).scrollTop(top, 0);
+				}, 100);
+			});
+		}
+	}
+
 	window.n2DragDrop = function(urls, messages, context) {
 		this.urls = $.extend({
 			copy: 'copy.n2.ashx',
@@ -233,6 +245,7 @@
 		},
 
 		process: function (command) {
+			console.log("process", command, $(document).scrollTop() | 0)
 			var self = this;
 			if (command.n2item)
 				command.action = command.ctrlKey ? "copy" : "move";
@@ -249,10 +262,12 @@
 				//if (data.redirect && command.action == "create" && data.dialog !== "no")
 				//	self.showDialog(data.redirect);
 				//else
-				if (data.redirect)
-					window.location = data.redirect;
-				else
-					window.location.reload();
+				var newLocation = (data.redirect
+					? data.redirect
+					: window.location);
+				newLocation += (newLocation.indexOf("?") >= 0 ? "&" : "?") + "n2ScrollTop=" + ($(document).scrollTop() | 0);
+				console.log("reloading...", newLocation);
+				window.location = newLocation;
 			}, "json");
 
 			// hack: why no success??
