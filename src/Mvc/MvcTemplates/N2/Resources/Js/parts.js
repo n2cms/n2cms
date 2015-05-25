@@ -2,18 +2,6 @@
 	var isDragging = false;
 	var dialog = null;
 
-	if (window.location.search.indexOf("n2ScrollTop") >= 0) {
-		var top = parseInt(window.location.search.match(/n2ScrollTop=([^&]*)/)[1]);
-		if (top) {
-			$(function () {
-				console.log("top", top);
-				setTimeout(function () {
-					$(document).scrollTop(top, 0);
-				}, 100);
-			});
-		}
-	}
-
 	window.n2DragDrop = function(urls, messages, context) {
 		this.urls = $.extend({
 			copy: 'copy.n2.ashx',
@@ -36,11 +24,6 @@
 			var self = this;
 			this.makeDraggable();
 			$(document.body).addClass("dragDrop");
-			//$(document).on('click', '.titleBar a.command', function (e) {
-			//	e.preventDefault();
-			//	e.stopPropagation();
-			//	self.showDialog($(this).attr('href'));
-			//});
 			var host = window.location.protocol + "//" + window.location.host + "/";
 			$("a").filter(function () { return this.href.indexOf(host) == 0; })
 				.filter(function () { return this.parentNode.className.indexOf('control') < 0; })
@@ -104,15 +87,16 @@
 			});
 		},
 		scroll: function () {
-			var q = window.location.search;
-			var index = q.indexOf("&scroll=") + 8;
-			if (index < 0)
-				return;
-			var ampIndex = q.indexOf("&", index);
-			var scroll = q.substr(index, (ampIndex < 0 ? q.length : ampIndex) - index);
-			setTimeout(function () {
-				window.scrollTo(0, scroll);
-			}, 10);
+			if (window.location.search.indexOf("n2scroll") >= 0) {
+				var top = parseInt(window.location.search.match(/n2scroll=([^&]*)/)[1]);
+				if (top) {
+					$(function () {
+						setTimeout(function () {
+							$(document).scrollTop(top, 0);
+						}, 100);
+					});
+				}
+			}
 		},
 		makeDragHelper: function (e) {
 			isDragging = true;
@@ -245,7 +229,6 @@
 		},
 
 		process: function (command) {
-			console.log("process", command, $(document).scrollTop() | 0)
 			var self = this;
 			if (command.n2item)
 				command.action = command.ctrlKey ? "copy" : "move";
@@ -259,14 +242,10 @@
 			var reloaded = false;
 			$.post(url, command, function (data) {
 				reloaded = true;
-				//if (data.redirect && command.action == "create" && data.dialog !== "no")
-				//	self.showDialog(data.redirect);
-				//else
 				var newLocation = (data.redirect
 					? data.redirect
 					: window.location);
-				newLocation += (newLocation.indexOf("?") >= 0 ? "&" : "?") + "n2ScrollTop=" + ($(document).scrollTop() | 0);
-				console.log("reloading...", newLocation);
+				newLocation += (newLocation.indexOf("?") >= 0 ? "&" : "?") + "n2scroll=" + ($(document).scrollTop() | 0);
 				window.location = newLocation;
 			}, "json");
 
