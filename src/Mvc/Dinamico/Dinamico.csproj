@@ -254,6 +254,10 @@
       <Project>{2f45b409-52cd-4fb9-963a-d20e0b113d26}</Project>
       <Name>N2.ReusableParts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Search.Lucene\N2.Search.Lucene.csproj">
+      <Project>{6e61bc93-4f13-40c8-a610-33e46f1e7c34}</Project>
+      <Name>N2.Search.Lucene</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MvcTemplates\N2.Management.csproj">
       <Project>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</Project>
       <Name>N2.Management</Name>
