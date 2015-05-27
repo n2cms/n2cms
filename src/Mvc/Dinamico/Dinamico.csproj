@@ -135,6 +135,16 @@
     <Content Include="Dinamico\Themes\Default\Content\Layout.css" />
     <Content Include="Dinamico\Themes\Default\Content\Mood.css" />
     <Content Include="Dinamico\Themes\Default\Content\Site.css" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\css\bootstrap-theme.css" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\css\bootstrap-theme.min.css" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\css\bootstrap.css" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\css\bootstrap.min.css" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\js\bootstrap.js" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\js\bootstrap.min.js" />
+    <Content Include="Dinamico\Themes\Default\lib\jquery\jquery-1.10.2.js" />
+    <Content Include="Dinamico\Themes\Default\lib\jquery\jquery-1.10.2.min.js" />
+    <Content Include="Dinamico\Themes\Default\lib\jquery\jquery.highlight-3.js" />
     <Content Include="Dinamico\Themes\Default\Scripts\Site.js" />
     <Content Include="Dinamico\Themes\Default\Thumbnail.JPG" />
     <Content Include="Dinamico\Themes\Default\Views\ContentParts\GDocViewer.cshtml" />
@@ -149,6 +159,10 @@
     <Content Include="Dinamico\Themes\Default\Views\ContentParts\DelimitedDataDisplay.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\ContentPages\Redirect.cshtml" />
     <Content Include="Dinamico.wpp.targets" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Dinamico\Themes\Default\lib\jquery\jquery-1.10.2.min.map" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Form.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Index.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Submitted.cshtml" />
