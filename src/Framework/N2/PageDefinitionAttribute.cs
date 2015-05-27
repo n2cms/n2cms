@@ -30,7 +30,8 @@ namespace N2
 
         public override void Refine(ItemDefinition currentDefinition)
         {
-            currentDefinition.Installer = InstallerVisibility;
+			if (InstallerVisibility != InstallerHint.Default)
+				currentDefinition.Installer = InstallerVisibility;
 
             base.Refine(currentDefinition);
         }
