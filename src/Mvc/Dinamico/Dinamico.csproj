@@ -129,11 +129,6 @@
   <ItemGroup>
     <Content Include="Dinamico\N2\readme.txt" />
     <Content Include="Dinamico\readme.txt" />
-    <Content Include="Dinamico\Themes\Default\Content\Elements.css" />
-    <Content Include="Dinamico\Themes\Default\Content\Features.css" />
-    <Content Include="Dinamico\Themes\Default\Content\IE.css" />
-    <Content Include="Dinamico\Themes\Default\Content\Layout.css" />
-    <Content Include="Dinamico\Themes\Default\Content\Mood.css" />
     <Content Include="Dinamico\Themes\Default\Content\Site.css" />
     <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\css\bootstrap-theme.css" />
     <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\css\bootstrap-theme.min.css" />
@@ -166,8 +161,11 @@
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Form.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Index.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Submitted.cshtml" />
+    <Content Include="Dinamico\Themes\MyTheme\Content\Site.css" />
+    <Content Include="Dinamico\Themes\MyTheme\readme.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Dinamico\Themes\MyTheme\Views\Web.config" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
