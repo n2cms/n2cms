@@ -464,6 +464,8 @@ namespace N2
             var toExplore = new List<string> { physicalBasePath };
             while (toExplore.Count > 0)
             {
+				if (!System.IO.Directory.Exists(toExplore[0]))
+					continue;
                 var files = System.IO.Directory.GetFiles(toExplore[0], filter);
 
                 for (var i = 0; i < files.Length; ++i)
