@@ -63,13 +63,42 @@ namespace N2.Management.Api
                         case "/versions":
                             var versions = GetVersions(context).ToList();
                             context.Response.WriteJson(new { Versions = versions });
-                            break;
-                        case "/definitions":
-                            var definitions = GetDefinitions(context)
-                                .Select(d => new { d.Title, d.Description, d.Discriminator, d.ToolTip, d.IconUrl, d.IconClass, TypeName = d.ItemType.Name })
-                                .ToList();
-                            context.Response.WriteJson(new { Definitions = definitions });
-                            break;
+							break;
+						case "/definitions":
+							var definitions = GetDefinitions(context)
+								.WhereAuthorized(engine.SecurityManager, context.User, Selection.SelectedItem)
+								.Select(d => new
+								{
+									d.Title,
+									d.Description,
+									d.Discriminator,
+									d.ToolTip,
+									d.IconUrl,
+									d.IconClass,
+									TypeName = d.ItemType.Name,
+									EditUrl = engine.ManagementPaths.GetEditNewPageUrl(Selection.SelectedItem, d)
+								})
+								.ToList();
+							context.Response.WriteJson(new { Definitions = definitions });
+							break;
+						case "/templates":
+							var templates = GetDefinitions(context)
+								.SelectMany(d => engine.Resolve<ITemplateAggregator>().GetTemplates(d.ItemType))
+								.WhereAllowed(Selection.SelectedItem, context.Request["zoneName"], context.User, engine.Definitions, engine.SecurityManager)
+								.Select(d => new { 
+									d.Title, 
+									d.Description, 
+									d.Definition.Discriminator, 
+									d.Definition.ToolTip, 
+									d.Definition.IconUrl, 
+									d.Definition.IconClass, 
+									TypeName = d.Definition.ItemType.Name, 
+									d.Definition.TemplateKey,
+									EditUrl = engine.ManagementPaths.GetEditNewPageUrl(Selection.SelectedItem, d.Definition)
+								})
+								.ToList();
+							context.Response.WriteJson(new { Templates = templates });
+							break;
                         case "/tokens":
                             var tokens = GetTokens(context);
                             context.Response.WriteJson(new { Tokens = tokens });
