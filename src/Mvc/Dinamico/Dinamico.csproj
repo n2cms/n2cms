@@ -116,7 +116,6 @@
     <Compile Include="Dinamico\Models\PageModelBase.cs" />
     <Compile Include="Dinamico\Models\PartModelBase.cs" />
     <Compile Include="Dinamico\Models\StartPage.cs" />
-    <Compile Include="Dinamico\Registrations\ContentPageRegistration.cs" />
     <Compile Include="Dinamico\Registrations\FreeFormRegistration.cs" />
     <Compile Include="Dinamico\Registrations\PermissionDeniedHandler.cs" />
     <Compile Include="Dinamico\Registrations\RecursiveZoneAdapter.cs" />
