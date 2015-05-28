@@ -181,6 +181,9 @@ namespace N2.Web.UI.WebControls
 
             var allowedChildren = Parts.GetAllowedDefinitions(ParentItem, ZoneName, Page.User)
                 .Where(d => MinimumType.IsAssignableFrom(d.ItemType))
+				.WhereAuthorized(Engine.SecurityManager, Engine.RequestContext.User, ParentItem)
+				.SelectMany(d => Parts.GetTemplates(ParentItem, d))
+				.WhereAllowed(ParentItem, ZoneName, Engine.RequestContext.User, Engine.Definitions, Engine.SecurityManager)
                 .ToList();
             if (allowedChildren.Count == 0)
             {
@@ -202,29 +205,29 @@ namespace N2.Web.UI.WebControls
 
                 var dropdownMenu = CreateControl(btnGroup, "ul", "dropdown-menu");
 
-                foreach (ItemDefinition definition in allowedChildren)
+				foreach (var template in allowedChildren)
                 {
-                    var li = CreateControl(dropdownMenu, "li", "");
-                    CreateButton(li, definition);
+					var li = CreateControl(dropdownMenu, "li", "");
+					CreateButton(li, template);
                 }
             }
 
             base.CreateChildControls();
         }
 
-        private LinkButton CreateButton(Control container, ItemDefinition definition)
+        private LinkButton CreateButton(Control container, TemplateDefinition template)
         {
             var button = new LinkButton
             {
-                ID = "iel" + ID + "_" + definition.GetDiscriminatorWithTemplateKey().Replace('/', '_'),
-                Text = string.IsNullOrEmpty(definition.IconUrl)
-                    ? string.Format("<b class='{0}'></b> {1}", definition.IconClass, definition.Title)
-                    : string.Format("<img src='{0}' alt='ico'/>{1}", definition.IconUrl, definition.Title),
-                ToolTip = definition.ToolTip,
+				ID = "iel" + ID + "_" + template.Definition.GetDiscriminatorWithTemplateKey().Replace('/', '_'),
+				Text = string.IsNullOrEmpty(template.Definition.IconUrl)
+                    ? string.Format("<b class='{0}'></b> {1}", template.Definition.IconClass, template.Definition.Title)
+                    : string.Format("<img src='{0}' alt='ico'/>{1}", template.Definition.IconUrl, template.Definition.Title),
+                ToolTip = template.Definition.ToolTip,
                 CausesValidation = false,
                 CssClass = "addButton"
             };
-            var closureDefinition = definition;
+            var closureDefinition = template.Definition;
             button.Command += (s, a) =>
             {
                 ContentItem item = CreateItem(closureDefinition);
@@ -250,7 +253,8 @@ namespace N2.Web.UI.WebControls
             
                 foreach (string discriminator in AddedDefinitions)
                 {
-                    ContentItem item = CreateItem(Definitions.GetDefinition(discriminator));
+					var template = Engine.Resolve<ITemplateAggregator>().GetTemplate(discriminator);
+                    ContentItem item = CreateItem(template.Definition);
                     items.Add(item);
                 }
                 return items;
