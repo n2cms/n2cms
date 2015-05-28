@@ -6,10 +6,11 @@ using N2.Edit;
 using N2.Web.Parts;
 using N2.Engine;
 using System;
+using System.Web;
 
 namespace N2.Web.Mvc.Html
 {
-    public class ZoneHelper
+    public class ZoneHelper : IHtmlString
     {
         private ContentItem currentItem;
         private PartsAdapter partsAdapter;
@@ -112,5 +113,10 @@ namespace N2.Web.Mvc.Html
             if (w != null)
                 writer.WriteLine(w.ToString(TagRenderMode.EndTag));
         }
-    }
+
+		string IHtmlString.ToHtmlString()
+		{
+			return ToString();
+		}
+	}
 }
