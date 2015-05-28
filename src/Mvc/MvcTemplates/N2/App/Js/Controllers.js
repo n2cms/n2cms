@@ -677,9 +677,9 @@ function AddCtrl($scope, Content) {
 	$scope.loadDefinitions = function (node) {
 		node.Selected = node.Current.Path;
 		node.Loading = true;
-		Content.definitions(Content.applySelection({}, $scope.Context.CurrentItem), function (data) {
+		Content.templates(Content.applySelection({}, $scope.Context.CurrentItem), function (data) {
 			node.Loading = false;
-			node.Children = data.Definitions;
+			node.Children = data.Templates;
 		});
 	};
 }

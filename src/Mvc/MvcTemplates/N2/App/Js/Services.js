@@ -106,6 +106,7 @@
 			'translations': { method: 'GET', params: { target: 'translations' } },
 			'versions': { method: 'GET', params: { target: 'versions' } },
 			'definitions': { method: 'GET', params: { target: 'definitions' } },
+			'templates': { method: 'GET', params: { target: 'templates' } },
 			'move': { method: 'POST', params: { target: 'move' } },
 			'sort': { method: 'POST', params: { target: 'sort' } },
 			'remove': { method: 'POST', params: { target: 'delete' } },
