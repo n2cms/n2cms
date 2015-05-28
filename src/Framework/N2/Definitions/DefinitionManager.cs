@@ -17,7 +17,6 @@ namespace N2.Definitions
     public class DefinitionManager : IDefinitionManager, IAutoStart
     {
         private readonly IDefinitionProvider[] definitionProviders;
-        private readonly ITemplateProvider[] providers;
         private readonly ContentActivator activator;
         private readonly StateChanger stateChanger;
         private readonly DefinitionMap map;
@@ -76,19 +75,13 @@ namespace N2.Definitions
 
             var definitionTemplatePair = discriminator.Split('/');
 
-            var e = new DefinitionEventArgs();
+			var e = new DefinitionEventArgs { Discriminator = discriminator };
             if (definitionTemplatePair.Length > 1)
-            {
-                foreach (ItemDefinition definition in GetDefinitions())
-                    if (definition.Discriminator == definitionTemplatePair[0] && definition.TemplateKey == definitionTemplatePair[1])
-                        e.Definition = definition;
-            }
-            else
-            {
-                foreach (ItemDefinition definition in GetDefinitions())
-                    if (definition.Discriminator == discriminator)
-                        e.Definition = definition;
-            }
+				discriminator = definitionTemplatePair[0];
+
+			foreach (ItemDefinition definition in GetDefinitions())
+                if (definition.Discriminator == discriminator)
+                    e.Definition = definition;
 
             if (DefinitionResolving != null)
                 DefinitionResolving(this, e);

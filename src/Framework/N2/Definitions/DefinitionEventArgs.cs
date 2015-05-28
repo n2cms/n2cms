@@ -12,5 +12,7 @@ namespace N2.Definitions
         public ItemDefinition Definition { get; set; }
 
         public Type ContentType { get; set; }
-    }
+
+		public string Discriminator { get; set; }
+	}
 }

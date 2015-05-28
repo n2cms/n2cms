@@ -33,6 +33,13 @@ namespace N2.Definitions
             }
         }
 
+		public static IEnumerable<TemplateDefinition> WhereAllowed(this IEnumerable<TemplateDefinition> allTemplates, ContentItem parentItem, string zoneName, IPrincipal user, IDefinitionManager definitions, ISecurityManager security)
+        {
+            return allTemplates.AllowedBelow(definitions.GetDefinition(parentItem), parentItem, definitions)
+                .Where(t => t.Definition.IsAllowedInZone(zoneName))
+                .Where(t => security.IsAuthorized(t.Definition, user, parentItem));
+        }
+
         private static bool IsAllowed(ContentItem childItem, ItemDefinition childDefinition, ContentItem parentItem, ItemDefinition parentDefinition, IDefinitionManager definitions)
         {
             var ctx = new AllowedDefinitionQuery { Parent = parentItem, ParentDefinition = parentDefinition, Child = childItem, ChildDefinition = childDefinition, Definitions = definitions };
