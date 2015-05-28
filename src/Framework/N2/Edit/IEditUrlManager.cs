@@ -23,7 +23,7 @@ namespace N2.Edit
         /// <param name="zoneName">The zone to add the item to.</param>
         /// <param name="position">The position relative to the selected item to add the item.</param>
         /// <returns>The url to the edit page.</returns>
-        string GetEditNewPageUrl(ContentItem selected, ItemDefinition definition, string zoneName, CreationPosition position);
+        string GetEditNewPageUrl(ContentItem selected, ItemDefinition definition, string zoneName = null, CreationPosition position = CreationPosition.Below);
 
         /// <summary>Gets the url to the edit page where to edit an existing item.</summary>
         /// <param name="item">The item to edit.</param>
