@@ -53,7 +53,7 @@ namespace N2.Definitions.Runtime
 					foreach (var file in vpp.GetDirectory(virtualDir).Files.OfType<VirtualFile>())
 					{
 						Debug.Assert(file.Name != null, "file.Name != null");
-						if (!file.Name.EndsWith(source.ViewFileExtension))
+						if (!file.Name.EndsWith(source.ViewFileExtension) || file.Name.StartsWith("_"))
 						{
 							logger.Info(String.Format("Skipping file {0}", file.VirtualPath));
 							continue;
