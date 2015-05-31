@@ -28,10 +28,10 @@ namespace N2.Web.Mvc
         {
             get 
 			{
-				if (RegistrationExtensions.GetRegistrationExpression(Html) == null)
-					return new HasValueHelper(HasValue);
-				else
+				if (Html.IsRegistering())
 					return new HasValueHelper(x => true);
+				else
+					return new HasValueHelper(HasValue);
 			}
         }
 
