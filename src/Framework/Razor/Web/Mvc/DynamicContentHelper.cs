@@ -28,10 +28,7 @@ namespace N2.Web.Mvc
         {
             get 
 			{
-				if (Html.IsRegistering())
-					return new HasValueHelper(x => true);
-				else
-					return new HasValueHelper(HasValue);
+				return new HasValueHelper(HasValue);
 			}
         }
 
