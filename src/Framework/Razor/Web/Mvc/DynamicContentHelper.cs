@@ -2,6 +2,7 @@ using System.Web;
 using System.Web.Mvc;
 using N2.Engine;
 using System;
+using N2.Web.Mvc.Html;
 
 namespace N2.Web.Mvc
 {
@@ -25,7 +26,13 @@ namespace N2.Web.Mvc
 
         public dynamic Has
         {
-            get { return new HasValueHelper(HasValue); }
+            get 
+			{
+				if (RegistrationExtensions.GetRegistrationExpression(Html) == null)
+					return new HasValueHelper(HasValue);
+				else
+					return new HasValueHelper(x => true);
+			}
         }
 
         public dynamic Data
