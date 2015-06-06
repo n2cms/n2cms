@@ -71,34 +71,38 @@ namespace N2.Definitions.Runtime
             
             const string cacheKey = "RazorDefinitions";
             var definitions = httpContext.Cache[cacheKey] as IEnumerable<ItemDefinition>;
-            lock (this)
-            {
-                if (definitions == null || rebuild)
-                {
-                    logger.DebugFormat("Dequeuing {0} registrations", registrator.QueuedRegistrations.Count);
-                    
-                    DequeueRegistrations();
 
-                    var vpp = vppProvider.Get();
-                    var descriptions = analyzer.AnalyzeViews(vpp, httpContext, sources).ToList();
-                    logger.DebugFormat("Got {0} descriptions", descriptions.Count);
-                    definitions = BuildDefinitions(descriptions).ToList();
-                    logger.Debug("Built definitions");
+			if (definitions == null || rebuild)
+			{
+				lock (this)
+				{
+					if (definitions == null || rebuild)
+					{
+						logger.DebugFormat("Dequeuing {0} registrations", registrator.QueuedRegistrations.Count);
 
-                    var files = descriptions.SelectMany(p => p.Context.TouchedPaths).Distinct().ToList();
-                    logger.DebugFormat("Setting up cache dependency on {0} files", files.Count);
-                    var cacheDependency = vpp.GetCacheDependency(files.FirstOrDefault(), files, DateTime.UtcNow);
+						DequeueRegistrations();
 
-                    httpContext.Cache.Remove(cacheKey);
-                    httpContext.Cache.Add(cacheKey, definitions, cacheDependency, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, new CacheItemRemovedCallback(delegate
-                    {
-                        logger.Debug("Razor template changed");
-                    }));
-                    rebuild = false;
-                }
-            }
+						var vpp = vppProvider.Get();
+						var descriptions = analyzer.AnalyzeViews(vpp, httpContext, sources).ToList();
+						logger.DebugFormat("Got {0} descriptions", descriptions.Count);
+						definitions = BuildDefinitions(descriptions).ToList();
+						logger.Debug("Built definitions");
 
-            var templates = definitions.Where(d => d.ItemType == contentType).Select(d =>
+						var files = descriptions.SelectMany(p => p.Context.TouchedPaths).Distinct().ToList();
+						logger.DebugFormat("Setting up cache dependency on {0} files", files.Count);
+						var cacheDependency = vpp.GetCacheDependency(files.FirstOrDefault(), files, DateTime.UtcNow);
+
+						httpContext.Cache.Remove(cacheKey);
+						httpContext.Cache.Add(cacheKey, definitions, cacheDependency, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, new CacheItemRemovedCallback(delegate
+						{
+							logger.Debug("Razor template changed");
+						}));
+						rebuild = false;
+					}
+				}
+			}
+
+			var templates = definitions.Where(d => d.ItemType == contentType).Select(d =>
                 {
                     var td = new TemplateDefinition();
                     td.Definition = d;
