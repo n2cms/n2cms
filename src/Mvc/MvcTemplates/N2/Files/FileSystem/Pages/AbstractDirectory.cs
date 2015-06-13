@@ -30,7 +30,7 @@ namespace N2.Edit.FileSystem.Items
                 List<File> files = new List<File>();
 
                 var fileMap = new Dictionary<string, File>(StringComparer.OrdinalIgnoreCase);
-                foreach (var fd in FileSystem.GetFiles(LocalUrl))
+                foreach (var fd in FileSystem.GetFiles(LocalUrl).OrderBy(fd => fd.Name))
                 {
                     var file = new File(fd, this);
                     file.Set(FileSystem);
