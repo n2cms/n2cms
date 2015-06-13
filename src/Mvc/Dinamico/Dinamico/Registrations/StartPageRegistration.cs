@@ -19,9 +19,8 @@ namespace Dinamico.Dinamico.Registrations
             register.ControlledBy<Controllers.StartPageController>();
 
             register.Page(title: "Start Page", description: "The topmost node of a site. This can be placed below a language intersection to also represent a language");
-            register.IconClass("fa fa-globe");
-            register.Definition.Installer = N2.Installation.InstallerHint.PreferredStartPage;
             register.RestrictParents(typeof(IRootPage), typeof(LanguageIntersection));
+			register.AvailableZone("Scripts");
 
             using (register.RecursiveContainer("SiteContainer", headingFormat: null).Allow(Permission.Administer).Begin())
             {

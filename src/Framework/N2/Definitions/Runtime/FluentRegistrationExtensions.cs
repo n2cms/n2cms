@@ -195,6 +195,13 @@ namespace N2.Definitions.Runtime
             return registration.RegisterEditable<WithEditablePublishedRangeAttribute>("Published", title);
         }
 
+		// zones
+
+		public static Builder<AvailableZoneAttribute> AvailableZone<TModel>(this IContentRegistration<TModel> registration, string zoneName, string title = null)
+		{
+			return registration.RegisterRefiner(new AvailableZoneAttribute(title ?? zoneName, zoneName));
+		}
+
         // restrictions
 
         /// <summary>

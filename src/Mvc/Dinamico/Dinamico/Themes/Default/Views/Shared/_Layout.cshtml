@@ -57,6 +57,6 @@
 	</div>
  }
 	 </div>
-	@{ Html.Zone("Scripts").Render(); }
+	@{ Html.Zone(Content.Traverse.StartPage, "Scripts").Render(); }
 </body>
 </html>
