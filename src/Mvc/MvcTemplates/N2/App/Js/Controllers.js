@@ -825,7 +825,8 @@ function PageInfoCtrl($scope, Content) {
 	$scope.definitions = {};
 	Content.definitions({}, function (data) {
 		for (var i in data.Definitions) {
-			$scope.definitions[data.Definitions[i].TypeName] = data.Definitions[i];
+			if (data.Definitions[i])
+				$scope.definitions[data.Definitions[i].TypeName] = data.Definitions[i];
 		}
 	});
 }
