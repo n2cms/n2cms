@@ -5,6 +5,7 @@ using N2.Resources;
 using System;
 using System.Collections;
 using System.Web;
+using System.Text;
 
 namespace N2.Web.Mvc.Html
 {
@@ -164,39 +165,54 @@ namespace N2.Web.Mvc.Html
 			return registrator.JavaScript(Register.SelectedQueryKeyRegistrationScript(), ScriptOptions.ScriptTags);
 		}
 
-		public class ResourcesHelper
+		public class ResourcesHelper : IHtmlString
 		{
+			private StringBuilder content = new StringBuilder();
 			internal TextWriter Writer { get; set; }
 			internal ICollection<string> StateCollection { get; set; }
 
 			public ResourcesHelper JavaScript(string resourceUrl)
 			{
-				Writer.Write(N2.Resources.Register.JavaScript(StateCollection, resourceUrl));
+				content.Append(N2.Resources.Register.JavaScript(StateCollection, resourceUrl));
 				return this;
 			}
 
 			public ResourcesHelper JavaScript(string script, ScriptOptions options)
 			{
-				Writer.Write(N2.Resources.Register.JavaScript(StateCollection, script, options));
+				content.Append(N2.Resources.Register.JavaScript(StateCollection, script, options));
 				return this;
 			}
 
 			public ResourcesHelper StyleSheet(string resourceUrl)
 			{
-				Writer.Write(N2.Resources.Register.StyleSheet(StateCollection, resourceUrl));
+				content.Append(N2.Resources.Register.StyleSheet(StateCollection, resourceUrl));
 				return this;
 			}
 
 			public ResourcesHelper HtmlLiteral(string html)
 			{
-				Writer.Write(html);
+				content.Append(html);
 				return this;
+			}
+
+			public void Render(TextWriter writer = null)
+			{
+				(writer ?? Writer).Write(content.ToString());
+				content.Clear();
 			}
 
 			public override string ToString()
 			{
-				return "";
+				var output = content.ToString();
+				content.Clear();
+				return output;
 			}
+
+			string IHtmlString.ToHtmlString()
+			{
+				return ToString();
+			}
+
 		}
 	}
 }

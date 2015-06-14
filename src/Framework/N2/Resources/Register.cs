@@ -50,15 +50,15 @@ namespace N2.Resources
 		}
 
 		/// <summary>The jQuery version used by N2.</summary>
-		public const string JQueryVersion = "2.1.1";
-		public const string JQueryUiVersion = "1.10.4";
+		public const string JQueryVersion = "1.11.3";
+		public const string JQueryUiVersion = "1.11.4";
 		public const string AngularJsVersion = "1.2.20";
 		public const string CkEditorVersion = "4.3.2";
 		public const string DefaultBootstrapVersion = "2.3.2";
 
 		public const string DefaultFlagsCssPath = "{ManagementUrl}/Resources/icons/flags.css";
-		public const string DefaultJQueryJsPath = "//cdnjs.cloudflare.com/ajax/libs/jquery/" + JQueryVersion + "/jquery.min.js";
-		public const string DefaultJQueryUiJsPath = "//cdnjs.cloudflare.com/ajax/libs/jqueryui/" + JQueryUiVersion + "/jquery-ui.min.js"; // "{ManagementUrl}/Resources/jquery-ui-" + Register.JQueryUiVersion + ".custom/js/jquery-ui-" + Register.JQueryUiVersion + ".custom.min.js";
+		public const string DefaultJQueryJsPath = "//code.jquery.com/jquery-" + JQueryVersion + ".min.js";
+		public const string DefaultJQueryUiJsPath = "//code.jquery.com/ui/" + JQueryUiVersion + "/jquery-ui.min.js";
 		public const string DefaultFancyboxJsPath = "//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js";
 		public const string DefaultFancyboxCssPath = "//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css";
 		public const string DefaultIconsCssPath = "//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css";

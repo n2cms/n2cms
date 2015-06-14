@@ -26,7 +26,7 @@
 		});
 	});
 }
-@{ Html.Resources().JavaScript("http://maps.google.com/maps/api/js?sensor=false"); }
+@Html.Resources().JavaScript("http://maps.google.com/maps/api/js?sensor=false")
 
 <div class="part gmap">
 @if (Content.Has.Latitude && Content.Has.Longitude)
