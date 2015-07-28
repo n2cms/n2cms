@@ -279,6 +279,8 @@
     <Content Include="N2\Resources\Js\plugins\jquery.n2expandableBox.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2autocomplete.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2contextmenu-0.3.js" />
+    <Content Include="N2\Tokens\TokenTemplates\CurrentTime.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\CurrentDate.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\Author.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\Breadcrumb.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\Changes.ascx" />
