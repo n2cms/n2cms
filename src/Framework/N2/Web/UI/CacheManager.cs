@@ -60,10 +60,12 @@ namespace N2.Web.UI
 					AddCacheDependency(response, null);
 					break;
 				case OutputCacheInvalidationMode.Page:
+					if (item == null) return;
 					AddCacheDependency(response, new PageContentCacheDependency(persister, item.ID));
 					break;
 				case OutputCacheInvalidationMode.Site:
 				case OutputCacheInvalidationMode.SiteSection:
+					if (item == null) return;
 					var ancestors = Find.EnumerateParents(item, null, includeSelf: true);
 					ContentItem invalidateBelow = null;
 					foreach (var ancestor in ancestors)
