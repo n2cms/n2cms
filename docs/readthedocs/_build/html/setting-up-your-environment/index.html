@@ -94,6 +94,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#updating-n2cms">Updating N2CMS</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#visual-studio-snippets-and-templates">Visual Studio Snippets and Templates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installing-visual-studio-item-templates">Installing Visual Studio Item Templates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-intellisense-documentation-for-visual-studio">Installing IntelliSense Documentation for Visual Studio</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -365,6 +370,48 @@ of the latest features, security patches, and other updates. If you opted to use
 Nuget packages will be updated periodically, and you can update using the built-in Nuget update mechanism to update
 your local instance of N2CMS. If you chose the Git deployment model, you can use git pull to get the latest updates
 in your own Git repository.</p>
+</div>
+</div>
+<div class="section" id="visual-studio-snippets-and-templates">
+<h2>Visual Studio Snippets and Templates<a class="headerlink" href="#visual-studio-snippets-and-templates" title="Permalink to this headline">¶</a></h2>
+<p>The downloadable packages on Codeplex contains a number of templates and snippets which are useful
+when developing N2 sites.</p>
+<blockquote>
+<div>You need to update the path with your own version of Visual Studio. For example, if you are using Visual Studio 2008
+you need to substitute in 2008 for 2010 in the paths below.</div></blockquote>
+<p>Snippets are copied to [Documents]Visual Studio 2010Code SnippetsVisual C#My Code Snippets. Once the
+snippets have been placed here they can be invoked from Visual Studio by their name and tapping tab twice
+(e.g. n2propfta [tab] [tab]). This will expand a property with an editable attribute. Available snippets include:</p>
+<blockquote>
+<div><ul class="simple">
+<li>n2prop.snippet</li>
+<li>n2propcb.snippet</li>
+<li>n2propenum.snippet</li>
+<li>n2propfta.snippet</li>
+<li>n2propimage.snippet</li>
+<li>n2proptb.snippet</li>
+<li>n2propuc.snippet</li>
+<li>n2propurl.snippet</li>
+</ul>
+</div></blockquote>
+<div class="section" id="installing-visual-studio-item-templates">
+<h3>Installing Visual Studio Item Templates<a class="headerlink" href="#installing-visual-studio-item-templates" title="Permalink to this headline">¶</a></h3>
+<p>The snippets folder also contains some Visual Studio Item Templates that appears when adding new items in Visual Studio.
+Copy them from the Snippets folder in the template package zip to
+[Documents]Visual Studio 2010TemplatesItemTemplatesVisual C#. The item templates creates a content class and a
+corresponding template or controller. Available templates:</p>
+<blockquote>
+<div><ul class="simple">
+<li>N2 Item Template.zip</li>
+<li>N2 Page Template.zip</li>
+<li>N2 Page Controller.zip</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="installing-intellisense-documentation-for-visual-studio">
+<h3>Installing IntelliSense Documentation for Visual Studio<a class="headerlink" href="#installing-intellisense-documentation-for-visual-studio" title="Permalink to this headline">¶</a></h3>
+<p>The IntelliSense documentation should be installed automatically. If it is not installed, check for ~/bin/N2.xml.
+This enables code documentation during IntelliSense operations and hovering in Visual Studio.</p>
 </div>
 </div>
 </div>
