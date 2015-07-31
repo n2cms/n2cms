@@ -24,6 +24,7 @@ src/Framework/Search.Remote.Server/App_Data/SearchIndex/
 # User-specific files
 *.suo
 *.user
+/src/.vs
 
 # Build results
 Debug/
