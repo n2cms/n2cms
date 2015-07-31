@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Configuration;
 using N2.Resources;
 
-// ReSharper disable RedundantNameQualifier
 namespace N2.Configuration
 {
 	public class ResourcesElement : ConfigurationElement
@@ -158,4 +157,3 @@ namespace N2.Configuration
 		}
 	}
 }
-// ReSharper restore RedundantNameQualifier
