@@ -146,3 +146,33 @@ Installing IntelliSense Documentation for Visual Studio
 
 The IntelliSense documentation should be installed automatically. If it is not installed, check for ~/bin/N2.xml. 
 This enables code documentation during IntelliSense operations and hovering in Visual Studio. 
+
+Installing N2CMS NuGet Packages
+===============================
+
+First, download the release and extract to a path such as C:\\N2Packages (this example path is used below)
+
+	* Compiled N2CMS Releases are available here https://github.com/n2cms/n2cms/releases
+
+Next, decide whether you want to use the ZIP or NOZIP management packs.
+
+	| *Before doing anything listed on this page* 
+	| Back up your project before installing or uninstalling any N2CMS nuget packages.
+	| Realize that N2CMS will not work on Web Site projects. You must install N2CMS in a Web Application project.
+
+Which management pack should I choose?
+--------------------------------------
+
+You can choose whichever management pack is right for you. Consider the following benefits and drawbacks.
+
+	* | The benefit of the ZIP management pack is that it is a single file for the N2 Management 
+	  | Interface. However, if you store your website in a source control depot (e.g. Git repo), 
+	  | you end up with a lot of bloat as the ~5 MB N2.zip file gets upgraded over time. You also 
+	  | need to upload the entire N2.zip when you update it.
+	  |
+
+	* | The benefit of the NOZIP management pack is that you can take advantage of Web 
+	  | Deploy incremental uploads, as well as more efficient source control storage as the 
+	  | files are installed separately (not extracted). Additionally, the Zip Virtual Path 
+	  | Provider is not installed, which means that less memory is used by N2CMS.
+
