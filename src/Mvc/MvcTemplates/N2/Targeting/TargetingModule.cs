@@ -26,13 +26,13 @@ namespace N2.Management.Targeting
 		{
 			e.Data.Partials.Preview = "{ManagementUrl}/Targeting/Partials/DevicePreview.html".ResolveUrlTokens();
 			e.Data.ActionMenu.Add("preview",
-				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "devicepreview", Title = "Device preview", IconClass = "n2-icon-mobile-phone", TemplateUrl = "{ManagementUrl}/Targeting/Partials/DeviceMenu.html".ResolveUrlTokens() })
+				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "devicepreview", Title = "Device preview", IconClass = "fa fa-mobile", TemplateUrl = "{ManagementUrl}/Targeting/Partials/DeviceMenu.html".ResolveUrlTokens(), Url = "#" })
 				{
 					Children = config.GetContentSection<Configuration.TargetingSection>("targeting", required: false).PreviewSizes.AllElements
 						.Select(te => new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = te.Title, Name = te.Name, IconClass = te.IconClass, ClientAction = string.Format("$emit('device-preview', {0})", new { te.Title, te.Name, te.IconClass, te.Width, te.Height }.ToJson()), SelectedBy = "Preview" + te.Name })).ToList()
 				}, insertBeforeSiblingWithName: "previewdivider1");
 			e.Data.ActionMenu.Add("preview",
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "targetspreview", Title = "Target preview", IconClass = "n2-icon-bullseye", TemplateUrl = "{ManagementUrl}/Targeting/Partials/TargetMenu.html".ResolveUrlTokens() })
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "targetspreview", Title = "Target preview", IconClass = "fa fa-bullseye", TemplateUrl = "{ManagementUrl}/Targeting/Partials/TargetMenu.html".ResolveUrlTokens(), Url = "#" })
 							{
 								Children = detectors
 									.Select(d => new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = d.Description.Title, Name = d.Name, IconClass = d.Description.IconClass, ClientAction = string.Format("$emit('target-preview', {0})", new { d.Name, d.Description.Title, d.Description.IconClass }.ToJson()), SelectedBy = "Target" + d.Name })).ToList()
