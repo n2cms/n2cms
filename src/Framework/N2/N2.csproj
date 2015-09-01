@@ -165,6 +165,8 @@
     <Compile Include="Configuration\ServerElement.cs" />
     <Compile Include="Definitions\DefinitionEventArgs.cs" />
     <Compile Include="Definitions\IPlaceholder.cs" />
+    <Compile Include="Edit\Api\ITemplateInfoProvider.cs" />
+    <Compile Include="Edit\Api\TemplateInfo.cs" />
     <Compile Include="Edit\Collaboration\ContentFlagSource.cs" />
     <Compile Include="Edit\Collaboration\ContentMessageSource.cs" />
     <Compile Include="Edit\Collaboration\IFlagSource.cs" />
