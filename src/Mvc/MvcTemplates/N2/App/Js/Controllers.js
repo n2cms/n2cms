@@ -680,6 +680,7 @@ function AddCtrl($scope, Content) {
 		Content.templates(Content.applySelection({}, $scope.Context.CurrentItem), function (data) {
 			node.Loading = false;
 			node.Children = data.Templates;
+			node.Wizards = data.Wizards;
 		});
 	};
 }

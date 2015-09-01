@@ -117,7 +117,6 @@ a { text-decoration: none; color: #000; }
 	
 		#menu a:hover { text-decoration: none; }
 
-#menu .add,
 #menu .versions { max-height:400px; overflow-y:auto; overflow-x:hidden; }
 #menu .versions li a { border-left:solid 5px #ccc; }
 	#menu .versions li a strong { display:inline-block; min-width: 20px; text-align:right; margin-right:10px; font-size:12px; }

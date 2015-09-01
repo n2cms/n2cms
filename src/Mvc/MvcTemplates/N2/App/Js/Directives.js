@@ -174,6 +174,12 @@
 							current.Target = "preview";
 						if (!current.Url && current.PreviewUrl)
 							current.Url = current.PreviewUrl;
+						if (current.Url == "#") {
+							element.click(function (e) {
+								e.stopPropagation();
+								e.preventDefault();
+							});
+						}
 
 						unwatchHref && unwatchHref();
 						unwatchHref = watch(current.Url, scope, function(value) { element.attr("href", value || "#"); });

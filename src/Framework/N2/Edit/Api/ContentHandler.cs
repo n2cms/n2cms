@@ -18,6 +18,7 @@ using System.Net;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Script.Serialization;
+using N2.Edit.Api;
 
 namespace N2.Management.Api
 {
@@ -65,61 +66,41 @@ namespace N2.Management.Api
                             context.Response.WriteJson(new { Versions = versions });
 							break;
 						case "/definitions":
-							var definitions = GetDefinitions(context)
-								.WhereAuthorized(engine.SecurityManager, context.User, Selection.SelectedItem)
-								.Select(d => new
-								{
-									d.Title,
-									d.Description,
-									d.Discriminator,
-									d.ToolTip,
-									d.IconUrl,
-									d.IconClass,
-									TypeName = d.ItemType.Name,
-									EditUrl = engine.ManagementPaths.GetEditNewPageUrl(Selection.SelectedItem, d)
-								})
-								.ToList();
+							var definitions = GetDefinitionTemplateInfos(context);
 							context.Response.WriteJson(new { Definitions = definitions });
 							break;
 						case "/templates":
-							var templates = GetDefinitions(context)
-								.SelectMany(d => engine.Resolve<ITemplateAggregator>().GetTemplates(d.ItemType))
-								.WhereAllowed(Selection.SelectedItem, context.Request["zoneName"], context.User, engine.Definitions, engine.SecurityManager)
-								.Select(d => new { 
-									d.Title, 
-									d.Description, 
-									d.Definition.Discriminator, 
-									d.Definition.ToolTip, 
-									d.Definition.IconUrl, 
-									d.Definition.IconClass, 
-									TypeName = d.Definition.ItemType.Name, 
-									d.Definition.TemplateKey,
-									EditUrl = engine.ManagementPaths.GetEditNewPageUrl(Selection.SelectedItem, d.Definition)
-								})
-								.ToList();
-							context.Response.WriteJson(new { Templates = templates });
+							var templates = GetTemplateInfos(context);
+							var wizards = GetwizardInfos(context);
+							context.Response.WriteJson(new { Templates = templates, Wizards = wizards });
 							break;
                         case "/tokens":
                             var tokens = GetTokens(context);
                             context.Response.WriteJson(new { Tokens = tokens });
                             break;
                         case "/children":
-                            context.Response.WriteJson(new { Children = GetChildren(context).ToList(), IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
+							var children = GetChildren(context).ToList();
+                            context.Response.WriteJson(new { Children = children, IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
                             break;
                         case "/branch":
-                            context.Response.WriteJson(new { Branch = GetBranch(context) });
+							var branch = GetBranch(context);
+                            context.Response.WriteJson(new { Branch = branch });
                             break;
                         case "/tree":
-                            context.Response.WriteJson(new { Tree = GetTree(context) });
+							var tree = GetTree(context);
+                            context.Response.WriteJson(new { Tree = tree });
                             break;
                         case "/ancestors":
-                            context.Response.WriteJson(new { Ancestors = GetAncestors(context) });
+							var ancestors = GetAncestors(context);
+                            context.Response.WriteJson(new { Ancestors = ancestors });
                             break;
                         case "/parent":
-                            context.Response.WriteJson(new { Parent = GetParent(context) });
+							var parent = GetParent(context);
+                            context.Response.WriteJson(new { Parent = parent });
                             break;
                         case "/node":
-                            context.Response.WriteJson(new { Node = GetNode(context) });
+							var node = GetNode(context);
+                            context.Response.WriteJson(new { Node = node });
                             break;
                         default:
                             if (string.IsNullOrEmpty(context.Request.PathInfo))
@@ -192,6 +173,39 @@ namespace N2.Management.Api
                     break;
             }
         }
+
+		private List<TemplateInfo> GetwizardInfos(HttpContextBase context)
+		{
+			return engine.Container.ResolveAll<ITemplateInfoProvider>()
+				.Where(tip => tip.Area == "Wizard")
+				.SelectMany(tip => tip.GetTemplates())
+				.ToList();
+		}
+
+		private List<TemplateInfo> GetTemplateInfos(HttpContextBase context)
+		{
+			var templates = GetDefinitions(context)
+									 .SelectMany(d => engine.Resolve<ITemplateAggregator>().GetTemplates(d.ItemType))
+									 .WhereAllowed(Selection.SelectedItem, context.Request["zoneName"], context.User, engine.Definitions, engine.SecurityManager)
+									 .Select(d => new TemplateInfo(d)
+									 {
+										 EditUrl = engine.ManagementPaths.GetEditNewPageUrl(Selection.SelectedItem, d.Definition)
+									 })
+									 .ToList();
+			return templates;
+		}
+
+		private List<TemplateInfo> GetDefinitionTemplateInfos(HttpContextBase context)
+		{
+			var definitions = GetDefinitions(context)
+				.WhereAuthorized(engine.SecurityManager, context.User, Selection.SelectedItem)
+				.Select(d => new TemplateInfo(d)
+				{
+					EditUrl = engine.ManagementPaths.GetEditNewPageUrl(Selection.SelectedItem, d)
+				})
+				.ToList();
+			return definitions;
+		}
 
 		private void DeleteMessage(HttpContextBase context)
 		{
