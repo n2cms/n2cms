@@ -22,9 +22,9 @@ a { text-decoration: none; color: #000; }
 
 #page-tree { position: absolute; left:0; right:1px; top: 0; bottom: 0; overflow: auto; background-color:#f8f8f8 }
 	#page-tree ul { list-style-type:none; padding:0; margin: 0; }
-		#page-tree li.node { margin-left: 16px; text-indent: 5px; line-height: 28px; }
+		#page-tree li.node { margin-left: 16px; text-indent: 5px; line-height: 22px; }
 			#page-tree li div.item { position:relative; white-space:nowrap; text-overflow: ellipsis; background-color:#fff }
-			#page-tree li div.item a.link { min-width: 60%; max-width:80%; overflow:hidden; padding-right:20px; }
+			#page-tree li div.item a.link { min-width: 60%; max-width:80%; overflow:hidden; padding:2px 20px 2px 2px; display:inline-block; }
 				#page-tree li div.item a.link .page-icon { display: inline-block; width: 16px; height: 16px; vertical-align: text-bottom; background: transparent none no-repeat 0 0; }
 				
 				#page-tree li div.item .tags { position:absolute; right:55px; top: 0; display:none; font-size:12px; }
@@ -54,10 +54,10 @@ a { text-decoration: none; color: #000; }
 
 				#page-tree li.root > ul > li { margin:0; }
 					#page-tree li			 div.item { border-bottom: 1px solid #d9f0f9; }
-						#page-tree li	     div.item		b.handle { background: #d9f0f9 none no-repeat 2px 50%; display:inline-block; height:28px; width:6px; cursor:move; float:left; }
+						#page-tree li	     div.item		b.handle { background: #d9f0f9 none no-repeat 2px 50%; display:inline-block; height:28px; width:6px; cursor:move; float:left; position:absolute; top:0; left:0; height:100%; }
 					#page-tree li	     div.item:hover { border-color: #cae7f3; }
 						#page-tree li	     div.item:hover b.handle { background-color: #cae7f3; }
-						#page-tree li	     div.item		b.handle:hover { transition: width ease-in-out 100ms; width:19px; background-image: url(../../Resources/Img/gripper.gif); }
+						#page-tree li	     div.item		b.handle:hover { transition: width ease-in-out 100ms; width:15px; background-image: url(../../Resources/Img/gripper.gif); }
 						#page-tree li.root > div.item		b.handle { display:none; }
 					#page-tree li.active   > div.item { background: #d9f0f9; border-color:#3aaee3; }
 						#page-tree li.active > div.item b.handle { background-color: #3aaee3; }
