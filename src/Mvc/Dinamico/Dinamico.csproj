@@ -231,7 +231,7 @@
     <Content Include="Dinamico\Themes\Default\Views\Shared\TokenTemplates\Detail.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Shared\TokenTemplates\FacebookLike.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Shared\TokenTemplates\FirstChild.cshtml" />
-    <Content Include="Dinamico\Themes\Default\Views\Shared\TokenTemplates\Google+1.cshtml" />
+    <Content Include="Dinamico\Themes\Default\Views\Shared\TokenTemplates\GooglePlus.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Shared\TokenTemplates\NextSibling.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Shared\TokenTemplates\Parent.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Shared\TokenTemplates\PrecedingSiblings.cshtml" />

@@ -296,7 +296,7 @@
     <Content Include="N2\Tokens\TokenTemplates\Detail.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\FacebookLike.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\FirstChild.ascx" />
-    <Content Include="N2\Tokens\TokenTemplates\Google+1.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\GooglePlus.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\Link.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\NextSibling.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\Parent.ascx" />
