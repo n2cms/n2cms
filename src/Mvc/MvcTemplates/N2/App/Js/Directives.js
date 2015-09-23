@@ -44,8 +44,12 @@
 			link: function compile(scope, element, attrs) {
 				element.bind("contextmenu", function (e) {
 					var clickedElements = $(e.target).closest(".item").find(".dropdown-toggle").trigger("click").length;
-					if (clickedElements)
+					if (clickedElements) {
 						e.preventDefault();
+						setTimeout(function () {
+							$(e.target).closest(".item").find(".dropdown-menu li:first-child a").focus();
+						});
+					}
 				});
 			}
 		}
@@ -591,8 +595,13 @@ span.null {color:silver}\
 				element.bind("keydown", function (e) {
 					if (!map) map = scope.$eval(attrs.n2KeyboardMap);
 					angular.forEach(Keys, function (code, key) {
-						if (e.keyCode == code)
-							element.find(map[key]).click();
+						if (e.keyCode == code) {
+							var $target = element.find(map[key]);
+							if ($target.length) {
+								$target.click();
+								e.stopPropagation();
+							}
+						}
 					});
 				});
 			}
@@ -605,10 +614,11 @@ span.null {color:silver}\
 			link: function (scope, element, attrs) {
 				var map = scope.$eval(attrs.n2EventFocus);
 				angular.forEach(map, function (selector, eventName) {
-					console.log(scope, eventName, selector);
 					$rootScope.$on(eventName, function () {
 						setTimeout(function () {
-							element.find(selector).each(function () { console.log("focusing", this); }).focus();
+							if (scope.Context.Flags.indexOf("ContentEdit") < 0)
+								if (element.find(selector).siblings(".dropdown.open").length == 0)
+									element.find(selector).focus();
 						});
 					});
 				})
