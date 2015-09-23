@@ -24,7 +24,7 @@ a { text-decoration: none; color: #000; }
 	#page-tree ul { list-style-type:none; padding:0; margin: 0; }
 		#page-tree li.node { margin-left: 16px; text-indent: 5px; line-height: 22px; }
 			#page-tree li div.item { position:relative; white-space:nowrap; text-overflow: ellipsis; background-color:#fff }
-			#page-tree li div.item a.link { min-width: 60%; max-width:80%; overflow:hidden; padding:2px 20px 2px 2px; display:inline-block; }
+			#page-tree li div.item a.link { min-width: 50%; max-width:75%; overflow:hidden; padding:2px 20px 2px 2px; display:block; }
 				#page-tree li div.item a.link .page-icon { display: inline-block; width: 16px; height: 16px; vertical-align: text-bottom; background: transparent none no-repeat 0 0; }
 				
 				#page-tree li div.item .tags { position:absolute; right:55px; top: 0; display:none; font-size:12px; }

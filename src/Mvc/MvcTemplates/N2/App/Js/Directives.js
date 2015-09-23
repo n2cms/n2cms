@@ -504,4 +504,117 @@ span.null {color:silver}\
 		}
 	});
 
+	module.factory("Keys", function () {
+		return {
+			esc: 27,
+			left: 37,
+			up: 38,
+			right: 39,
+			down: 40,
+			pageup: 33,
+			pagedown: 34
+		};
+	});
+
+	module.directive("n2KeyboardHome", function (Keys, $parse, $timeout) {
+		return {
+			restrict: "A",
+			link: function (scope, element, attrs) {
+				$timeout(function () {
+					element.focus();
+				}, 100);
+
+				var modelSet = $parse(attrs.ngModel).assign;
+
+				jQuery(document).keydown(function (e) {
+					if (e.keyCode == Keys.esc) {
+						element.focus();
+
+						$timeout(function () {
+							modelSet(scope, "");
+							scope.$eval(attrs.ngChange);
+							scope.$digest();
+						});
+					}
+				})
+			}
+		}
+	});
+
+	module.directive("n2KeyboardStop", function (Keys) {
+		return {
+			restrict: "A",
+			link: function (scope, element, attrs) {
+				var myStopClass = "n2-keyboard-stop-" + attrs.hKeyboardStop;
+				element.addClass("n2-keyboard-stop")
+					.addClass(myStopClass)
+				element.bind("keydown", function (e) {
+					if (e.keyCode == Keys.down || e.keyCode == Keys.up) {
+						var $siblings = jQuery("." + myStopClass + ":visible");
+						var myIndex = $siblings.index(this);
+						if (myIndex > 0 && e.keyCode == Keys.up) {
+							e.preventDefault();
+							$siblings[myIndex - 1].focus();
+						}
+						if (myIndex < $siblings.length - 1 && e.keyCode == Keys.down) {
+							e.preventDefault();
+							$siblings[myIndex + 1].focus();
+						}
+					}
+					if (e.keyCode == Keys.left || e.keyCode == Keys.right) {
+						var columnIndex = parseInt(attrs.hKeyboardStop);
+						var columnQuery = ".n2-keyboard-stop-"
+							+ (e.keyCode == Keys.left ? columnIndex - 1 : columnIndex + 1)
+							+ ":visible";
+
+						var $rows = jQuery(columnQuery);
+						if ($rows.length) {
+							var $actives = $rows.filter(function () { return jQuery(this).parent().is(".active"); });
+
+							if ($actives.length)
+								$actives[0].focus();
+							else
+								$rows[0].focus();
+						}
+					}
+				});
+			}
+		}
+	});
+	
+	module.directive("n2KeyboardMap", function (Keys) {
+		return {
+			restrict: "A",
+			link: function (scope, element, attrs) {
+				element.addClass("n2-keyboard-map");
+				var map = undefined;
+				element.bind("keydown", function (e) {
+					if (!map) map = scope.$eval(attrs.n2KeyboardMap);
+					angular.forEach(Keys, function (code, key) {
+						if (e.keyCode == code)
+							element.find(map[key]).click();
+					});
+				});
+			}
+		}
+	});
+
+	module.directive("n2EventFocus", function ($rootScope) {
+		return {
+			restrict: "A",
+			link: function (scope, element, attrs) {
+				var map = scope.$eval(attrs.n2EventFocus);
+				angular.forEach(map, function (selector, eventName) {
+					console.log(scope, eventName, selector);
+					$rootScope.$on(eventName, function () {
+						setTimeout(function () {
+							element.find(selector).each(function () { console.log("focusing", this); }).focus();
+						});
+					});
+				})
+			}
+		}
+	});
+
+
 })(angular.module('n2.directives', ['n2.localization']));
