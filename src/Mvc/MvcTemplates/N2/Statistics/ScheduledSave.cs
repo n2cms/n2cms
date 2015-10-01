@@ -1,4 +1,6 @@
 ﻿using N2.Engine;
+using N2.Persistence;
+using N2.Persistence.NH;
 using N2.Plugin.Scheduling;
 using System;
 using System.Collections.Generic;
@@ -7,45 +9,66 @@ using System.Web;
 
 namespace N2.Management.Statistics
 {
-	[Service]
-	public class BucketRepository
+	internal static class StatisticsExtension
 	{
-		private Persistence.IRepository<Bucket> repository;
-			
-		public BucketRepository(N2.Persistence.IRepository<Bucket> repository)
+		public static DateTime GetSlot(this DateTime date, TimeUnit interval)
 		{
-			this.repository = repository;
+			if (interval == TimeUnit.Seconds)
+				return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, date.Second);
+			else if (interval == TimeUnit.Minutes)
+				return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, 0);
+			else if (interval == TimeUnit.Hours)
+				return new DateTime(date.Year, date.Month, date.Day, date.Hour, 0, 0);
+			else
+				return new DateTime(date.Year, date.Month, date.Day, 0, 0, 0);
 		}
-		
-		public void Save(IEnumerable<Bucket> buckets)
+	}
+
+	[Service(typeof(BucketRepository), Replaces = typeof(BucketRepository), Configuration = "sql")]
+	public class SqlBucketRepository : BucketRepository
+	{
+		private ISessionProvider session;
+
+		public SqlBucketRepository(N2.Persistence.IRepository<Bucket> buckets, N2.Persistence.IRepository<Statistic> statistics, ISessionProvider session)
+			: base(buckets, statistics)
 		{
-			foreach (var bucket in buckets)
-			{
-				repository.SaveOrUpdate(bucket);
-			}
-			repository.Flush();
+			this.session = session;
 		}
 	}
 
 	[ScheduleExecution(1, TimeUnit.Minutes)]
 	public class ScheduledSave : ScheduledAction
 	{
-		private BucketFiller filler;
+		private Collector filler;
 		private BucketRepository repository;
+		public TimeUnit CheckoutInterval { get; set; }
+		public TimeUnit StatisticsGranularity { get; set; }
 
-		public ScheduledSave(BucketFiller filler, BucketRepository repository)
+		public ScheduledSave(Collector filler, BucketRepository repository)
 		{
+			CheckoutInterval = TimeUnit.Minutes;
+			StatisticsGranularity = TimeUnit.Hours;
 			this.filler = filler;
 			this.repository = repository;
 		}
 
 		public override void Execute()
 		{
-			if (!LastExecuted.HasValue || LastExecuted.Value.Minute == Utility.CurrentTime().Minute)
-				return;
+			var now = Utility.CurrentTime();
 
-			var buckets = filler.CheckoutBuckets();
-			repository.Save(buckets);
+			if (LastExecuted.HasValue)
+			{
+				if (LastExecuted.Value.GetSlot(CheckoutInterval) != now.GetSlot(CheckoutInterval))
+				{
+					var buckets = filler.CheckoutBuckets();
+					repository.Save(buckets);
+				}
+			}
+
+			if (!LastExecuted.HasValue || LastExecuted.Value.GetSlot(StatisticsGranularity) != now.GetSlot(StatisticsGranularity))
+			{
+				repository.Transfer(now, StatisticsGranularity);
+			}
 		}
 	}
 }

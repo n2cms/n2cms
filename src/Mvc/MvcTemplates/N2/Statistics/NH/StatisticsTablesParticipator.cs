@@ -22,11 +22,26 @@ namespace N2.Management.Statistics.NH
 		public override void AlterConfiguration(NHibernate.Cfg.Configuration cfg)
 		{
             ModelMapper mm = new ModelMapper();
-            mm.Class<Bucket>(BucketCustomization);
+			mm.Class<Bucket>(BucketCustomization);
+			mm.Class<Statistic>(StatisticCustomization);
 			
 
 			var compiledMapping = mm.CompileMappingForAllExplicitlyAddedEntities();
 			cfg.AddDeserializedMapping(compiledMapping, "N2");
+		}
+
+		private void StatisticCustomization(IClassMapper<Statistic> ca)
+		{
+			ca.Table(tablePrefix + "statistics");
+			ca.ComposedId(x =>
+			{
+				x.Property(y => y.TimeSlot);
+				x.Property(y => y.PageID);
+			});
+			//ca.Id(x => new { x.TimeSlot, x.PageID }, cm => { cm.Generator(Generators.Assigned); });
+			ca.Lazy(false);
+			ca.Property(x => x.TimeSlot, cm => { cm.NotNullable(true); });
+			ca.Property(x => x.Views, cm => { cm.NotNullable(true); });
 		}
 
 		private void BucketCustomization(IClassMapper<Bucket> ca)
@@ -36,7 +51,7 @@ namespace N2.Management.Statistics.NH
 			ca.Lazy(false);
 			ca.Property(x => x.PageID, cm => { cm.NotNullable(true); });
 			ca.Property(x => x.TimeSlot, cm => { cm.NotNullable(true); });
-			ca.Property(x => x.Count, cm => { cm.NotNullable(true); });
+			ca.Property(x => x.Views, cm => { cm.NotNullable(true); });
 		}
 	}
 }

@@ -12,7 +12,7 @@ namespace N2.Management.Statistics
 	{
 		public long ID;
 		public int PageID;
-		public int Count;
+		public int Views;
 		public DateTime TimeSlot;
 		
 		public Bucket()
@@ -27,34 +27,7 @@ namespace N2.Management.Statistics
 
 		public int Increment()
 		{
-			return Interlocked.Increment(ref Count);
-		}
-	}
-
-	[Service]
-	public class BucketFiller
-	{
-		ConcurrentDictionary<int, Bucket> buckets = new ConcurrentDictionary<int, Bucket>();
-
-		public void RegisterDrip(Web.PathData data)
-		{
-			if (data.IsEmpty())
-				return;
-
-			var bucket = buckets.GetOrAdd(data.ID, CreateBucket);
-			bucket.Increment();
-		}
-
-		public IEnumerable<Bucket> CheckoutBuckets()
-		{
-			var bs = buckets;
-			buckets = new ConcurrentDictionary<int, Bucket>();
-			return bs.Values;
-		}
-
-		private static Bucket CreateBucket(int id)
-		{
-			return new Bucket(id);
+			return Interlocked.Increment(ref Views);
 		}
 	}
 }

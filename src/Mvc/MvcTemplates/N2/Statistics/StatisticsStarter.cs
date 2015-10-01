@@ -13,15 +13,15 @@ namespace N2.Management.Statistics
 	{
 		private EventBroker broker;
 		private IWebContext context;
-		private BucketFiller filler;
+		private Collector filler;
 		private BucketRepository repository;
 		static Logger<StatisticsStarter> log;
 
-		public StatisticsStarter(EventBroker broker, IWebContext context, BucketFiller filler, BucketRepository repository)
+		public StatisticsStarter(EventBroker broker, IWebContext context, Collector collector, BucketRepository repository)
 		{
 			this.broker = broker;
 			this.context = context;
-			this.filler = filler;
+			this.filler = collector;
 			this.repository = repository;
 		}
 
@@ -40,7 +40,7 @@ namespace N2.Management.Statistics
 
 		private void OnEndRequest(object sender, EventArgs e)
 		{
-			filler.RegisterDrip(context.CurrentPath);
+			filler.RegisterView(context.CurrentPath);
 		}
 
 		public void Start()
