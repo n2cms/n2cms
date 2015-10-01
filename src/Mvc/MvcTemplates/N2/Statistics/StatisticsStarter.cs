@@ -14,10 +14,10 @@ namespace N2.Management.Statistics
 		private EventBroker broker;
 		private IWebContext context;
 		private Collector filler;
-		private BucketRepository repository;
+		private StatisticsRepository repository;
 		static Logger<StatisticsStarter> log;
 
-		public StatisticsStarter(EventBroker broker, IWebContext context, Collector collector, BucketRepository repository)
+		public StatisticsStarter(EventBroker broker, IWebContext context, Collector collector, StatisticsRepository repository)
 		{
 			this.broker = broker;
 			this.context = context;

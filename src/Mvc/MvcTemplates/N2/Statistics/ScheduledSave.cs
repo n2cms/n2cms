@@ -24,8 +24,8 @@ namespace N2.Management.Statistics
 		}
 	}
 
-	[Service(typeof(BucketRepository), Replaces = typeof(BucketRepository), Configuration = "sql")]
-	public class SqlBucketRepository : BucketRepository
+	[Service(typeof(StatisticsRepository), Replaces = typeof(StatisticsRepository), Configuration = "sql")]
+	public class SqlBucketRepository : StatisticsRepository
 	{
 		private ISessionProvider session;
 
@@ -40,11 +40,11 @@ namespace N2.Management.Statistics
 	public class ScheduledSave : ScheduledAction
 	{
 		private Collector filler;
-		private BucketRepository repository;
+		private StatisticsRepository repository;
 		public TimeUnit CheckoutInterval { get; set; }
 		public TimeUnit StatisticsGranularity { get; set; }
 
-		public ScheduledSave(Collector filler, BucketRepository repository)
+		public ScheduledSave(Collector filler, StatisticsRepository repository)
 		{
 			CheckoutInterval = TimeUnit.Minutes;
 			StatisticsGranularity = TimeUnit.Hours;

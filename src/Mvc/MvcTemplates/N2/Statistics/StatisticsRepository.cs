@@ -9,12 +9,12 @@ using System.Text;
 namespace N2.Management.Statistics
 {
 	[Service]
-	public class BucketRepository
+	public class StatisticsRepository
 	{
 		private Persistence.IRepository<Bucket> buckets;
 		private Persistence.IRepository<Statistic> statistics;
 
-		public BucketRepository(N2.Persistence.IRepository<Bucket> buckets, N2.Persistence.IRepository<Statistic> statistics)
+		public StatisticsRepository(N2.Persistence.IRepository<Bucket> buckets, N2.Persistence.IRepository<Statistic> statistics)
 		{
 			this.buckets = buckets;
 			this.statistics = statistics;
@@ -66,6 +66,16 @@ namespace N2.Management.Statistics
 			}
 			statistics.SaveOrUpdate(addedStatistics);
 			statistics.Flush();
+		}
+
+		public IEnumerable<Statistic> GetStatistics(DateTime from, DateTime to, int id = 0)
+		{
+			var p = Parameter.GreaterOrEqual("TimeSlot", from) & Parameter.LessThan("TimeSlot", to);
+			if (id != 0)
+				p = p & Parameter.Equal("PageID", id);
+			p = p.OrderBy("TimeSlot");
+			var data = this.statistics.Find(p).ToList();
+			return data;
 		}
 	}
 }
