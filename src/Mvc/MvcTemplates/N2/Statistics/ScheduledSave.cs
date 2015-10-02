@@ -47,7 +47,7 @@ namespace N2.Management.Statistics
 		public ScheduledSave(Collector filler, StatisticsRepository repository)
 		{
 			CheckoutInterval = TimeUnit.Minutes;
-			StatisticsGranularity = TimeUnit.Hours;
+			StatisticsGranularity = TimeUnit.Minutes;
 			this.filler = filler;
 			this.repository = repository;
 		}

@@ -9,10 +9,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Security.Principal;
+using System.Diagnostics;
 
 namespace N2.Management.Api
 {
-    public class Node<T>
+	[DebuggerDisplay("Node: {Current}")]
+	public class Node<T>
     {
         public Node()
         {
@@ -29,11 +31,17 @@ namespace N2.Management.Api
 
         public IEnumerable<Node<T>> Children { get; set; }
 
+		public int Count
+		{
+			get { return Children != null ? Children.Count() : 0; }
+		}
+
         public bool HasChildren { get; set; }
 
         public bool Expanded { get; set; }
     }
 
+	[DebuggerDisplay("InterfaceMenuItem: {Name}")]
     public class InterfaceMenuItem
     {
         public InterfaceMenuItem()
@@ -43,7 +51,9 @@ namespace N2.Management.Api
         }
 
         public string Title { get; set; }
+
         public string Url { get; set; }
+
         public string Target { get; set; }
 
         public string IconClass { get; set; }
@@ -73,6 +83,16 @@ namespace N2.Management.Api
         public string ClientAction { get; set; }
 
         public bool Divider { get; set; }
+
+		public static implicit operator Node<InterfaceMenuItem>(InterfaceMenuItem item)
+		{
+			return new Node<InterfaceMenuItem>(item);
+		}
+
+		public override string ToString()
+		{
+			return "InterfaceMenuItem " + Name;
+		}
     }
 
     public class InterfaceDefinition
@@ -440,7 +460,13 @@ namespace N2.Management.Api
 
 		protected virtual Node<InterfaceMenuItem> GetInfoMenu()
 		{
-			return new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "info", TemplateUrl = "App/Partials/ContentInfo.html", RequiredPermission = Permission.Read, Alignment = "Right" });
+			return new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "info", TemplateUrl = "App/Partials/ContentInfo.html", RequiredPermission = Permission.Read, Alignment = "Right" })
+			{
+				Children = new[]
+                {
+                    new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "infodetails", TemplateUrl = "App/Partials/ContentInfoDetails.html" })
+				}
+			};
 		}
 
         protected virtual ProfileUser GetUser(HttpContextBase context)

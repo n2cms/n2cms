@@ -654,13 +654,13 @@ function MenuNodeLastChildCtrl($scope, $timeout) {
 	});
 }
 
-function PageActionCtrl($scope, Content) {
-	$scope.dispose = function () {
-		Content.remove(Content.applySelection({}, node.Current), function () {
-			$scope.reloadChildren(getParentPath($scope.Context.CurrentItem.Path));
-		});
-	};
-}
+//function PageActionCtrl($scope, Content) {
+//	$scope.dispose = function () {
+//		Content.remove(Content.applySelection({}, node.Current), function () {
+//			$scope.reloadChildren(getParentPath($scope.Context.CurrentItem.Path));
+//		});
+//	};
+//}
 
 function PreviewCtrl($scope, $rootScope) {
 	$scope.frameLoaded = function (e) {
@@ -823,6 +823,9 @@ function PageInfoCtrl($scope, Content) {
 		$scope.$parent.showInfo = !$scope.$parent.showInfo;
 		$scope.Context.User.Settings.ShowInfo = $scope.$parent.showInfo;
 	};
+}
+
+function PageInfoDetailsCtrl($scope, Content) {
 	$scope.definitions = {};
 	Content.definitions({}, function (data) {
 		for (var i in data.Definitions) {

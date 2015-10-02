@@ -1,0 +1,4 @@
+﻿.n2-page-stats {margin-top:10px;}
+	.n2-page-stats table { height: 20px; list-style-type:none; border: solid 1px silver; margin: 0; width:100%; }
+		.n2-page-stats table td { margin:1px; }
+			.n2-page-stats table td span { width:2px; background-color: #3aaee3; margin:1px; display:block; }

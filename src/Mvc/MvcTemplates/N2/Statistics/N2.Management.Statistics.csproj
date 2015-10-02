@@ -97,6 +97,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Css\Statistics.css" />
+    <Content Include="Js\Statistics.js" />
+    <Content Include="Partials\PageStats.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -122,9 +125,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />
-    <Folder Include="Css\" />
-    <Folder Include="Js\" />
-    <Folder Include="Partials\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
