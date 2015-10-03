@@ -12,7 +12,6 @@
 				<li class="item secondary-action"
 					ng-repeat="child in Context.MainMenu.Children"
 					ng-class="{ divider: child.Current.Divider, selected: isFlagged(child.Current.SelectedBy) }"
-					ng-controller="PageActionCtrl"
 					ng-include src="child.Current.TemplateUrl || 'App/Partials/MenuSubNode.html'"
 					ng-show="isDisplayable(child)">
 				</li>
@@ -22,7 +21,6 @@
 		<li class="item primary-action"
 			ng-repeat="item in primaryNavigation"
 			ng-class="{ dropdown : item.Children.length, selected: isFlagged(item.Current.SelectedBy) }"
-			ng-controller="PageActionCtrl"
 			ng-include src="item.Current.TemplateUrl || 'App/Partials/MenuNode.html'"
 			ng-show="isDisplayable(item)">
 		</li>
@@ -30,10 +28,8 @@
 
 	<ul class="menu nav pull-right">
         <li class="item primary-action"
-            title="children:{{item.Children.length}}"
             ng-repeat="item in secondaryNavigation"
             ng-class="{ dropdown : item.Children.length, selected: isFlagged(item.Current.SelectedBy), open: item.Expanded }"
-            ng-controller="PageActionCtrl"
             ng-include src="item.Current.TemplateUrl || 'App/Partials/MenuNode.html'"
             ng-show="isDisplayable(item)">
         </li>

@@ -119,7 +119,8 @@ namespace N2.Management.Api
                                         return;
                                     }
                                 }
-                                throw new HttpException((int)HttpStatusCode.NotImplemented, "Not Implemented");
+								if (!TryExecuteExternalHandlers(context))
+									throw new HttpException((int)HttpStatusCode.NotImplemented, "Not Implemented");
                             }
                             break;
                     }
@@ -173,6 +174,16 @@ namespace N2.Management.Api
                     break;
             }
         }
+
+		private bool TryExecuteExternalHandlers(HttpContextBase context)
+		{
+			foreach(var handler in engine.Container.ResolveAll<ContentHandlerBase>())
+			{
+				if (handler.Handle(context))
+					return true;
+			}
+			return false;
+		}
 
 		private List<TemplateInfo> GetwizardInfos(HttpContextBase context)
 		{
