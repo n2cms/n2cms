@@ -1,6 +1,8 @@
-﻿<div class="n2-page-stats" ng-controller="PageStatsCtrl">
-	<table><tr>
-		<td><sup>{{max}}</sup><sub>0</sub></td>
-		<td ng-repeat="v in Statistics.Views" title="{{v}}"><span style="height:{{100*(v.Views/max)}}%"></span></td>
-	</tr></table>
+﻿<div class="n2-page-stats" ng-controller="PageStatsCtrl" ng-class="{ loading: loading }">
+	<table>
+		<tr>
+			<td ng-repeat="v in Statistics.Views" title="{{v}}"><div style="height:{{100*(v.Views/max)}}%"></div></td>
+			<td><sup>{{max}}</sup><sub>0</sub></td>
+		</tr>
+	</table>
 </div>
