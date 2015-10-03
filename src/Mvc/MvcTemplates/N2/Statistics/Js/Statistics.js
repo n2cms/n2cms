@@ -8,13 +8,23 @@
 		return globalMax;
 	}
 	$scope.max = 1;
-	$rootScope.$on("contextchanged", function (scope, args) {
-		$scope.loading = true;
-		res.statistics({ n2item: args.CurrentItem.ID }, function (result) {
+	function loadStatistics() {
+		res.statistics({ n2item: $scope.Context.CurrentItem.ID }, function (result) {
 			$rootScope.statisticsMaximum = getMaximum(result.Max, $rootScope.statisticsMaximum || 1)
 			$scope.max = $rootScope.statisticsMaximum;
 			$scope.Statistics = result;
-			$scope.loading = false;
+			$scope.stale = false;
 		});
+	};
+	$rootScope.$on("contextchanged", function (scope, args) {
+		$scope.stale = true;
+		if ($scope.showInfo) {
+			loadStatistics();
+		}
+	});
+	$scope.$watch("showInfo", function (show) {
+		if (show && $scope.stale) {
+			loadStatistics();
+		}
 	});
 };
