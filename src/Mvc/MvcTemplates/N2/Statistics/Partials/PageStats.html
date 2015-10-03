@@ -1,4 +1,5 @@
 ﻿<div class="n2-page-stats" ng-controller="PageStatsCtrl" ng-class="{ loading: loading }">
+	<div class="n2-page-stats-nodata" translate="statistics.nodata" ng-hide="Statistics.Max">No statistical data</div>
 	<table>
 		<tr>
 			<td ng-repeat="v in Statistics.Views"><span><b>{{v.Views}}</b> <time>{{v.Date | date: 'short'}}</time></span><div style="height:{{100*(v.Views/max)}}%"></div></td>
