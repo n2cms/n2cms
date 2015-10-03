@@ -22,6 +22,8 @@
 			<dependency id="N2CMS.Dinamico" version="{Version}" />
 			<dependency id="N2CMS.Dinamico.DemoContent" version="{Version}" />
 			<dependency id="N2CMS.Search.Lucene" version="{Version}" />
+			<dependency id="N2CMS.Management.Statistics" version="{Version}" />
+			<dependency id="N2CMS.Management.Targeting" version="{Version}" />
 		</dependencies>
 	</metadata>
 </package>

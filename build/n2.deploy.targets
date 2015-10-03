@@ -10,6 +10,7 @@
     <Management-NugetFolderZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_Zip</Management-NugetFolderZip>
 		<Management-NugetFolderNoZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_NoZip</Management-NugetFolderNoZip>
 		<Management-Targeting-NugetFolder>$(DeployFolder)\$(DeployPrefix)Management_Targeting_Nuget</Management-Targeting-NugetFolder>
+		<Management-Statistics-NugetFolder>$(DeployFolder)\$(DeployPrefix)Management_Statistics_Nuget</Management-Statistics-NugetFolder>
 		<Management-LocalizedResourcesFolder>$(DeployFolder)\$(DeployPrefix)Management_LocalizedResources_Nuget</Management-LocalizedResourcesFolder>
     <Library-NugetFolder>$(DeployFolder)\$(DeployPrefix)Library_Nuget</Library-NugetFolder>
 		<LuceneSearch-NugetFolder>$(DeployFolder)\$(DeployPrefix)LuceneSearch_Nuget</LuceneSearch-NugetFolder>
@@ -245,7 +246,24 @@
 		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-Targeting-NugetFolder)\" />
 	</Target>
 
-  <Target Name="Framework-NuGet" DependsOnTargets="Management-Zip-NuGet;Management-NoZip-NuGet">
+	<Target Name="Management-Statistics-NuGet">
+		<ItemGroup>
+			<managementStatisticsIncludes Include="$(BuildFolder)\Nuget\ManagementStatistics\**\*" />
+			<managementStatisticsBinFiles Include="$(ManagementFolder)\N2\Statistics\Bin\N2.Management.Statistics.dll;" />
+			<managementStatisticsDeployFiles Include="$(ManagementFolder)\N2\Statistics\**\*.css;
+																							 $(ManagementFolder)\N2\Statistics\**\*.js;
+																							 $(ManagementFolder)\N2\Statistics\**\*.html;
+																							 $(ManagementFolder)\N2\Statistics\**\*.as?x;" />
+		</ItemGroup>
+		<Copy SourceFiles="@(managementStatisticsIncludes)" DestinationFolder="$(Management-Statistics-NugetFolder)\%(RecursiveDir)" />
+		<Copy SourceFiles="@(managementStatisticsBinFiles)" DestinationFolder="$(Management-Statistics-NugetFolder)\lib" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(managementStatisticsDeployFiles)" DestinationFolder="$(Management-Statistics-NugetFolder)\content\N2\Statistics\%(RecursiveDir)" UseHardlinksIfPossible="true" SkipUnchangedFiles="true" />
+
+		<FileUpdate Files="$(Management-Statistics-NugetFolder)\N2.Management.Statistics.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-Statistics-NugetFolder)\" />
+	</Target>
+
+	<Target Name="Framework-NuGet" DependsOnTargets="Management-Zip-NuGet;Management-NoZip-NuGet">
     <Message Text="Framework-NuGet:" Importance="high" />
     <ItemGroup>
       <frameworkNugetIncludes Include="$(BuildFolder)\Nuget\Framework\**\*" />
@@ -323,7 +341,11 @@
                                                RemoteSearch-NuGet;
                                                Framework-LocalizedResources-Nuget;
                                                ReusableParts-NuGet;
-                                               LuceneSearch-NuGet">
+                                               LuceneSearch-NuGet;
+                                               LuceneSearch-NuGet;
+																							 Management-Targeting-NuGet;
+																							 Management-Statistics-NuGet;
+																							 ">
   </Target>
 
 	<Target Name="Publish-NuGet" DependsOnTargets="Push-NuGet">
