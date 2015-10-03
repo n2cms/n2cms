@@ -49,16 +49,45 @@ namespace N2.Management.Statistics
 
 		public virtual void Transfer(DateTime uptil, Granularity interval)
 		{
-			var slot = uptil.GetSlot(interval);
-			var collectedBuckets = buckets.Find().Where(b => b.TimeSlot < slot).ToArray();
-			if (collectedBuckets.Length == 0)
-				return;
+			using (var tx = buckets.BeginTransaction())
+			{
+				var slot = uptil.GetSlot(interval);
+				var collectedBuckets = buckets.Find().Where(b => b.TimeSlot < slot).OrderBy(b => b.TimeSlot).ToArray();
+				if (collectedBuckets.Length == 0)
+					return;
 
-			var start = collectedBuckets[0].TimeSlot;
-			var pageViews = collectedBuckets
-				.GroupBy(b => new KeyValuePair<DateTime, int>(b.TimeSlot.GetSlot(interval), b.PageID), b => b.Views)
-				.ToDictionary(b => b.Key, b => b.Sum());
+				ClearBuckets(collectedBuckets);
 
+				var start = collectedBuckets[0].TimeSlot;
+				var pageViews = collectedBuckets
+					.GroupBy(b => new KeyValuePair<DateTime, int>(b.TimeSlot.GetSlot(interval), b.PageID), b => b.Views)
+					.ToDictionary(b => b.Key, b => b.Sum());
+
+				var existingStatistics = IncrementExistingStatistics(uptil, interval, start, pageViews);
+
+				var addedStatistics = InsertNewStatistics(pageViews);
+				
+				tx.Commit();
+
+				logger.InfoFormat("Transferred {0} buckets into {1} new and {2} updated statistics", collectedBuckets.Length, addedStatistics.Count, existingStatistics.Count);
+			}
+		}
+
+		private List<Statistic> InsertNewStatistics(Dictionary<KeyValuePair<DateTime, int>, int> pageViews)
+		{
+			var addedStatistics = new List<Statistic>(pageViews.Count);
+			foreach (var pageView in pageViews)
+			{
+				var s = new Statistic { TimeSlot = pageView.Key.Key, PageID = pageView.Key.Value, Views = pageView.Value };
+				addedStatistics.Add(s);
+			}
+			statistics.SaveOrUpdate(addedStatistics);
+			statistics.Flush();
+			return addedStatistics;
+		}
+
+		private List<Statistic> IncrementExistingStatistics(DateTime uptil, Granularity interval, DateTime start, Dictionary<KeyValuePair<DateTime, int>, int> pageViews)
+		{
 			var existingStatistics = statistics.Find(Parameter.GreaterOrEqual("TimeSlot", start) & Parameter.LessThan("TimeSlot", uptil)).ToList();
 			foreach (var s in existingStatistics)
 			{
@@ -71,19 +100,13 @@ namespace N2.Management.Statistics
 
 			statistics.SaveOrUpdate(existingStatistics);
 			statistics.Flush();
+			return existingStatistics;
+		}
+
+		private void ClearBuckets(Bucket[] collectedBuckets)
+		{
 			buckets.Delete(collectedBuckets);
 			buckets.Flush();
-
-			var addedStatistics = new List<Statistic>(pageViews.Count);
-			foreach (var pageView in pageViews)
-			{
-				var s = new Statistic { TimeSlot = pageView.Key.Key, PageID = pageView.Key.Value, Views = pageView.Value };
-				addedStatistics.Add(s);
-			}
-			statistics.SaveOrUpdate(addedStatistics);
-			statistics.Flush();
-
-			logger.InfoFormat("Transferred {0} buckets into {1} new and {2} updated statistics", collectedBuckets.Length, addedStatistics.Count, existingStatistics.Count);
 		}
 
 		public IEnumerable<Statistic> GetStatistics(DateTime from, DateTime to, int id = 0)

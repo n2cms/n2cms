@@ -102,17 +102,16 @@ namespace N2.Management.Statistics
 			bool hasNext = valueEnumerator.MoveNext();
 			foreach(var slot in slots)
 			{
-				if (!hasNext)
-				{
-					yield return new Slot { Date = slot };
-					continue;
-				}
-
-				if (valueEnumerator.Current.TimeSlot < slot.Add(slotSize))
+				if (valueEnumerator.Current != null && valueEnumerator.Current.TimeSlot < slot.Add(slotSize))
 				{
 					int views = valueEnumerator.Current.Views;
-					while (hasNext = valueEnumerator.MoveNext() && valueEnumerator.Current.TimeSlot < slot.Add(slotSize))
-						views += valueEnumerator.Current.Views;
+					while (hasNext = valueEnumerator.MoveNext())
+					{
+						if (valueEnumerator.Current.TimeSlot < slot.Add(slotSize))
+							views += valueEnumerator.Current.Views;
+						else
+							break;
+					}
 					yield return new Slot { Date = slot, Views = views };
 				}
 				else
