@@ -1,4 +1,5 @@
-﻿using N2.Edit.Api;
+﻿using N2.Configuration;
+using N2.Edit.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,27 +11,38 @@ namespace N2.Management.Statistics
 	public class StatisticsContentHandler : ContentHandlerBase
 	{
 		private StatisticsRepository repository;
+		private int displayedDays;
+		private Granularity granularity;
+		private TimeSpan slotSize;
 
-		public StatisticsContentHandler(StatisticsRepository repository)
+		public StatisticsContentHandler(StatisticsRepository repository, ConfigurationManagerWrapper config)
 		{
 			this.repository = repository;
+			var section = config.GetContentSection<Configuration.StatisticsSection>("statistics", required: false);
+			this.displayedDays = section.DisplayedDays;
+			this.granularity = section.Granularity;
+			this.slotSize = granularity == Granularity.Day
+				? TimeSpan.FromDays(1)
+				: granularity == Granularity.Hour
+					? TimeSpan.FromHours(1)
+					: TimeSpan.FromMinutes(1);
 		}
 
 		protected override object HandleDataRequest(HttpContextBase context)
 		{
 			DateTime from, to;
-			if (!DateTime.TryParse(context.Request["from"], out from))
-				from = Utility.CurrentTime().AddMonths(-1).Date;
 			if (!DateTime.TryParse(context.Request["from"], out to))
-				to = Utility.CurrentTime().Date.AddDays(1);
-
+				to = Utility.CurrentTime().GetSlot(granularity).Add(slotSize);
+			if (!DateTime.TryParse(context.Request["from"], out from))
+				from = to.AddDays(-displayedDays);
+			
 			int id;
-			if (!int.TryParse(context.Request.QueryString["id"], out id))
+			if (!int.TryParse(context.Request.QueryString["n2item"], out id))
 				id = 0;
 
-			bool process;
-			if (!bool.TryParse(context.Request.QueryString["process"], out process))
-				process = true;
+			bool raw;
+			if (!bool.TryParse(context.Request.QueryString["raw"], out raw))
+				raw = false;
 
 			var statistics = repository.GetStatistics(from, to, id)
 				//.GroupBy(s => new { s.PageID, Day = s.TimeSlot.Date })
@@ -38,62 +50,73 @@ namespace N2.Management.Statistics
 				//.OrderBy(s => s.TimeSlot)
 				.ToList();
 
-			if (process)
+			if (raw)
+				return new { Views = statistics };
+
+			var views = Slottify(statistics, from, to).ToList();
+			if (id == 0)
 			{
-				if (id == 0)
+				var pages = statistics.GroupBy(s => s.PageID)
+					.OrderByDescending(g => g.Sum(x => x.Views))
+					.Select(g =>
+					{
+						var slots = Slottify(g, from, to).ToList();
+						return new { PageID = g.Key, TotalViews = g.Sum(x => x.Views), Max = slots.Max(v => v.Views), Views = slots };
+					}).ToList();
+				return new
 				{
-					var slots = Slottify(statistics, from, to).ToList();
-					return new
-					{
-						Max = slots.Max(s => s.Views),
-						Views = slots
-					};
-				}
-				else
-					return new
-					{
-						Pages = statistics.GroupBy(s => s.PageID)
-							.OrderByDescending(g => g.Sum(x => x.Views))
-							.Select(g =>
-							{
-								var slots = Slottify(g, from, to).ToList();
-								return new { PageID = g.Key, TotalViews = g.Sum(x => x.Views), Max = slots.Max(v => v.Views), Views = slots };
-							})
-					};
+					Max = views.Select(s => s.Views).DefaultIfEmpty().Max(),
+					Views = views,
+					Pages = pages
+				};
 			}
 			else
-				return new { Views = statistics };
+			{
+				return new
+				{
+					Max = views.Select(s => s.Views).DefaultIfEmpty().Max(),
+					Views = views
+				};
+			}
 		}
 
-		public class Stat
+		public class Slot
 		{
-			public DateTime Day { get; set; }
+			public DateTime Date { get; set; }
 			public int Views { get; set; }
 		}
 
-		private IEnumerable<Stat> Slottify(IEnumerable<Statistic> values, DateTime from, DateTime to)
+		private IEnumerable<Slot> Slottify(IEnumerable<Statistic> values, DateTime from, DateTime to)
 		{
-			var days = Enumerable.Range(0, (int)to.Subtract(from).TotalDays).Select(d => from.AddDays(d)).ToList();
+			int numberOfDays = (int)to.Subtract(from).TotalDays;
+			List<DateTime> slots;
+			if (granularity == Granularity.Day)
+				slots = Enumerable.Range(0, numberOfDays).Select(d => from.AddDays(d)).ToList();
+			else if (granularity == Granularity.Hour)
+				slots = Enumerable.Range(0, numberOfDays * 24).Select(h => from.AddHours(h)).ToList();
+			else
+				slots = Enumerable.Range(0, numberOfDays * 24 * 60).Select(h => from.AddMinutes(h)).ToList();
+			
 
 			var valueEnumerator = values.GetEnumerator();
 			bool hasNext = valueEnumerator.MoveNext();
-			foreach(var day in days)
+			foreach(var slot in slots)
 			{
 				if (!hasNext)
 				{
-					yield return new Stat { Day = day };
+					yield return new Slot { Date = slot };
 					continue;
 				}
 
-				if (valueEnumerator.Current.TimeSlot < day.AddDays(1))
+				if (valueEnumerator.Current.TimeSlot < slot.Add(slotSize))
 				{
 					int views = valueEnumerator.Current.Views;
-					while (hasNext = valueEnumerator.MoveNext() && valueEnumerator.Current.TimeSlot < day.AddDays(1))
+					while (hasNext = valueEnumerator.MoveNext() && valueEnumerator.Current.TimeSlot < slot.Add(slotSize))
 						views += valueEnumerator.Current.Views;
-					yield return new Stat { Day = day, Views = views };
+					yield return new Slot { Date = slot, Views = views };
 				}
 				else
-					yield return new Stat { Day = day };
+					yield return new Slot { Date = slot };
 			}
 		}
 	}

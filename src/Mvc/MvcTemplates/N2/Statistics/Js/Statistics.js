@@ -2,16 +2,16 @@
 	var res = $resource('Api/Content.ashx/:target', { target: 'statistics' }, {
 		'statistics': { method: 'GET', params: { target: 'statistics' } },
 	});
-	$rootScope.$on("contextchanged", function (scope, e) {
-		res.statistics({}, function (result) {
+	function getMaximum(localMax, globalMax) {
+		while (localMax > globalMax)
+			globalMax *= 10;
+		return globalMax;
+	}
+	$rootScope.$on("contextchanged", function (scope, args) {
+		res.statistics({ n2item: args.CurrentItem.ID }, function (result) {
+			$rootScope.statisticsMaximum = getMaximum(result.Max, $rootScope.statisticsMaximum || 1)
+			$scope.max = $rootScope.statisticsMaximum;
 			$scope.Statistics = result;
-			//$scope.Views = [];
-
-			//$scope.Max = 0;
-			//angular.forEach(result.Views, function (v, i) {
-			//	$scope.Max = Math.max($scope.Max, v);
-			//	$scope.Views.push({ Views: v });
-			//})
 		});
 	});
 };

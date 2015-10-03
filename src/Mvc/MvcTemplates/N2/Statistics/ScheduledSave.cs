@@ -1,4 +1,6 @@
-﻿using N2.Engine;
+﻿using N2.Configuration;
+using N2.Engine;
+using N2.Management.Statistics.Configuration;
 using N2.Persistence;
 using N2.Persistence.NH;
 using N2.Plugin.Scheduling;
@@ -11,28 +13,14 @@ namespace N2.Management.Statistics
 {
 	internal static class StatisticsExtension
 	{
-		public static DateTime GetSlot(this DateTime date, TimeUnit interval)
+		public static DateTime GetSlot(this DateTime date, Granularity interval)
 		{
-			if (interval == TimeUnit.Seconds)
-				return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, date.Second);
-			else if (interval == TimeUnit.Minutes)
+			if (interval == Granularity.Minute)
 				return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, 0);
-			else if (interval == TimeUnit.Hours)
+			else if (interval == Granularity.Hour)
 				return new DateTime(date.Year, date.Month, date.Day, date.Hour, 0, 0);
 			else
 				return new DateTime(date.Year, date.Month, date.Day, 0, 0, 0);
-		}
-	}
-
-	[Service(typeof(StatisticsRepository), Replaces = typeof(StatisticsRepository), Configuration = "sql")]
-	public class SqlBucketRepository : StatisticsRepository
-	{
-		private ISessionProvider session;
-
-		public SqlBucketRepository(N2.Persistence.IRepository<Bucket> buckets, N2.Persistence.IRepository<Statistic> statistics, ISessionProvider session)
-			: base(buckets, statistics)
-		{
-			this.session = session;
 		}
 	}
 
@@ -41,13 +29,14 @@ namespace N2.Management.Statistics
 	{
 		private Collector filler;
 		private StatisticsRepository repository;
-		public TimeUnit CheckoutInterval { get; set; }
-		public TimeUnit StatisticsGranularity { get; set; }
+		public Granularity MemoryFlushInterval { get; set; }
+		public Granularity StatisticsGranularity { get; set; }
 
-		public ScheduledSave(Collector filler, StatisticsRepository repository)
+		public ScheduledSave(Collector filler, StatisticsRepository repository, ConfigurationManagerWrapper config)
 		{
-			CheckoutInterval = TimeUnit.Minutes;
-			StatisticsGranularity = TimeUnit.Minutes;
+			var section = config.GetSection<StatisticsSection>("statistics", required: false);
+			MemoryFlushInterval = section.MemoryFlushInterval;
+			StatisticsGranularity = section.Granularity;
 			this.filler = filler;
 			this.repository = repository;
 		}
@@ -58,7 +47,7 @@ namespace N2.Management.Statistics
 
 			if (LastExecuted.HasValue)
 			{
-				if (LastExecuted.Value.GetSlot(CheckoutInterval) != now.GetSlot(CheckoutInterval))
+				if (LastExecuted.Value.GetSlot(MemoryFlushInterval) != now.GetSlot(MemoryFlushInterval))
 				{
 					var buckets = filler.CheckoutBuckets();
 					repository.Save(buckets);

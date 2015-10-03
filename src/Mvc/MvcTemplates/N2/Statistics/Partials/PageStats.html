@@ -1,3 +1,6 @@
 ﻿<div class="n2-page-stats" ng-controller="PageStatsCtrl">
-	<table><tr><td ng-repeat="v in Statistics.Views" title="{{v.Day | date: shortDate }}: {{v.Views}}"><span style="height:{{100*(v.Views/Statistics.Max)}}%"></span></td></tr></table>
+	<table><tr>
+		<td><sup>{{max}}</sup><sub>0</sub></td>
+		<td ng-repeat="v in Statistics.Views" title="{{v}}"><span style="height:{{100*(v.Views/max)}}%"></span></td>
+	</tr></table>
 </div>

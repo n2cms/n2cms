@@ -8,11 +8,24 @@ using System.Text;
 
 namespace N2.Management.Statistics
 {
+	//[Service(typeof(StatisticsRepository), Replaces = typeof(StatisticsRepository), Configuration = "sql")]
+	//public class SqlBucketRepository : StatisticsRepository
+	//{
+	//	private ISessionProvider session;
+
+	//	public SqlBucketRepository(N2.Persistence.IRepository<Bucket> buckets, N2.Persistence.IRepository<Statistic> statistics, ISessionProvider session)
+	//		: base(buckets, statistics)
+	//	{
+	//		this.session = session;
+	//	}
+	//}
+
 	[Service]
 	public class StatisticsRepository
 	{
 		private Persistence.IRepository<Bucket> buckets;
 		private Persistence.IRepository<Statistic> statistics;
+		Logger<StatisticsRepository> logger;
 
 		public StatisticsRepository(N2.Persistence.IRepository<Bucket> buckets, N2.Persistence.IRepository<Statistic> statistics)
 		{
@@ -22,17 +35,19 @@ namespace N2.Management.Statistics
 
 		public virtual void Save(IEnumerable<Bucket> buckets)
 		{
-			bool any = false;
+			int count = 0;
 			foreach (var bucket in buckets)
 			{
 				this.buckets.SaveOrUpdate(bucket);
-				any = true;
+				count++;
 			}
-			if (any)
+			if (count > 0)
 				this.buckets.Flush();
+
+			logger.InfoFormat("Saved {0} statistics buckets", count);
 		}
 
-		public virtual void Transfer(DateTime uptil, TimeUnit interval)
+		public virtual void Transfer(DateTime uptil, Granularity interval)
 		{
 			var slot = uptil.GetSlot(interval);
 			var collectedBuckets = buckets.Find().Where(b => b.TimeSlot < slot).ToArray();
@@ -53,6 +68,7 @@ namespace N2.Management.Statistics
 				s.Views += pageViews[key];
 				pageViews.Remove(key);
 			}
+
 			statistics.SaveOrUpdate(existingStatistics);
 			statistics.Flush();
 			buckets.Delete(collectedBuckets);
@@ -66,6 +82,8 @@ namespace N2.Management.Statistics
 			}
 			statistics.SaveOrUpdate(addedStatistics);
 			statistics.Flush();
+
+			logger.InfoFormat("Transferred {0} buckets into {1} new and {2} updated statistics", collectedBuckets.Length, addedStatistics.Count, existingStatistics.Count);
 		}
 
 		public IEnumerable<Statistic> GetStatistics(DateTime from, DateTime to, int id = 0)

@@ -132,7 +132,15 @@ namespace N2.Plugin.Scheduling
                         catch (Exception ex)
                         {
                             action.ErrorCount++;
-                            action.OnError(ex);     // wayne: call custom action error handler
+							try
+							{
+								logger.Error("Exception executing scheduled action: ", ex);
+								action.OnError(ex);     // wayne: call custom action error handler
+							}
+							catch (Exception ex2)
+							{
+								logger.Error("Exception handling error: ", ex2);
+							}
                         }
                         finally
                         {

@@ -103,6 +103,8 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\StatisticsSection.cs" />
+    <Compile Include="Granularity.cs" />
     <Compile Include="StatisticsRepository.cs" />
     <Compile Include="Collector.cs" />
     <Compile Include="NH\StatisticsTablesParticipator.cs" />
@@ -123,9 +125,7 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Configuration\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
