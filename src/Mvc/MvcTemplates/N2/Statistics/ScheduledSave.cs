@@ -34,7 +34,7 @@ namespace N2.Management.Statistics
 
 		public ScheduledSave(Collector filler, StatisticsRepository repository, ConfigurationManagerWrapper config)
 		{
-			var section = config.GetSection<StatisticsSection>("statistics", required: false);
+			var section = config.GetContentSection<StatisticsSection>("statistics", required: false);
 			MemoryFlushInterval = section.MemoryFlushInterval;
 			StatisticsGranularity = section.Granularity;
 			this.filler = filler;
