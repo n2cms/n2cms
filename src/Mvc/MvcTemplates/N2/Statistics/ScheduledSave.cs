@@ -31,11 +31,13 @@ namespace N2.Management.Statistics
 		private StatisticsRepository repository;
 		public Granularity MemoryFlushInterval { get; set; }
 		public Granularity StatisticsGranularity { get; set; }
+		public Granularity TransferInterval { get; set; }
 
 		public ScheduledSave(Collector filler, StatisticsRepository repository, ConfigurationManagerWrapper config)
 		{
 			var section = config.GetContentSection<StatisticsSection>("statistics", required: false);
 			MemoryFlushInterval = section.MemoryFlushInterval;
+			TransferInterval = section.TransferInterval;
 			StatisticsGranularity = section.Granularity;
 			this.filler = filler;
 			this.repository = repository;
@@ -54,10 +56,11 @@ namespace N2.Management.Statistics
 				}
 			}
 
-			if (!LastExecuted.HasValue || LastExecuted.Value.GetSlot(StatisticsGranularity) != now.GetSlot(StatisticsGranularity))
+			if (!LastExecuted.HasValue || LastExecuted.Value.GetSlot(TransferInterval) != now.GetSlot(TransferInterval))
 			{
 				repository.Transfer(now, StatisticsGranularity);
 			}
 		}
+
 	}
 }

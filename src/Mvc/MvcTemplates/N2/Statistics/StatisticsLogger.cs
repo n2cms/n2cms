@@ -9,15 +9,15 @@ using System.Web;
 namespace N2.Management.Statistics
 {
 	[Service]
-	public class StatisticsStarter : IAutoStart
+	public class StatisticsLogger : IAutoStart
 	{
 		private EventBroker broker;
 		private IWebContext context;
 		private Collector filler;
 		private StatisticsRepository repository;
-		static Logger<StatisticsStarter> log;
+		static Logger<StatisticsLogger> log;
 
-		public StatisticsStarter(EventBroker broker, IWebContext context, Collector collector, StatisticsRepository repository)
+		public StatisticsLogger(EventBroker broker, IWebContext context, Collector collector, StatisticsRepository repository)
 		{
 			this.broker = broker;
 			this.context = context;

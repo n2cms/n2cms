@@ -10,11 +10,11 @@ using System.Web;
 namespace N2.Management.Statistics
 {
 	[ManagementModule]
-	public class StatisticsModule : ManagementModuleBase
+	public class StatisticsInterfaceModule : ManagementModuleBase
 	{
 		private ConfigurationManagerWrapper config;
 
-		public StatisticsModule(InterfaceBuilder builder, ConfigurationManagerWrapper config)
+		public StatisticsInterfaceModule(InterfaceBuilder builder, ConfigurationManagerWrapper config)
 		{
 			this.config = config;
 			builder.InterfaceBuilt += builder_InterfaceBuilt;

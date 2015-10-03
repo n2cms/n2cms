@@ -9,6 +9,7 @@ namespace N2.Management.Statistics.Configuration
 {
 	public class StatisticsSection : ConfigurationSectionBase
 	{
+		/// <summary>The granularity of the stored statistics.</summary>
 		[ConfigurationProperty("granularity", DefaultValue = Granularity.Day)]
 		public Granularity Granularity
 		{
@@ -16,6 +17,7 @@ namespace N2.Management.Statistics.Configuration
 			set { base["granularity"] = value; }
 		}
 
+		/// <summary>How often in-memory buckets are saved to temporary storage.</summary>
 		[ConfigurationProperty("memoryFlushInterval", DefaultValue = Granularity.Minute)]
 		public Granularity MemoryFlushInterval
 		{
@@ -23,6 +25,15 @@ namespace N2.Management.Statistics.Configuration
 			set { base["memoryFlushInterval"] = value; }
 		}
 
+		/// <summary>How often temporary storage is tranferred into permanent storage.</summary>
+		[ConfigurationProperty("transferInterval", DefaultValue = Granularity.Hour)]
+		public Granularity TransferInterval
+		{
+			get { return (Granularity)base["transferInterval"]; }
+			set { base["transferInterval"] = value; }
+		}
+
+		/// <summary>How many days of data are displayed in the admin info panel.</summary>
 		[ConfigurationProperty("displayedDays", DefaultValue = 14)]
 		public int DisplayedDays
 		{

@@ -113,8 +113,8 @@
     <Compile Include="ScheduledSave.cs" />
     <Compile Include="Statistic.cs" />
     <Compile Include="StatisticsContentHandler.cs" />
-    <Compile Include="StatisticsModule.cs" />
-    <Compile Include="StatisticsStarter.cs" />
+    <Compile Include="StatisticsInterfaceModule.cs" />
+    <Compile Include="StatisticsLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Framework\N2\N2.csproj">
