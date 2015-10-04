@@ -112,8 +112,16 @@ namespace N2.Edit.Install
 	    {
 		    TabPanel1.Visible = true;
 		    tpProgress.Visible = false;
-			errorLabel.Text = FormatException((Exception)Session["InstallException"]);
-			errorLabel.Visible = true;
+			var error = (Exception)Session["InstallException"];
+			if (error != null)
+			{
+				errorLabel.Text = FormatException(error);
+				errorLabel.Visible = true;
+			}
+			else
+			{
+				errorLabel.Visible = false;
+			}
 
 			Checker.Status = null;
 			Installer.UpdateStatus(Checker.Status.Level);
@@ -134,7 +142,7 @@ namespace N2.Edit.Install
 			}
 
 			CurrentAction = action;
-			CurrentActionProgress = "Preparing to run the action: " + CurrentAction.ToString();
+			CurrentActionProgress = "Preparing...";
 			ShowProgress();
 			ThreadPool.QueueUserWorkItem((obj) =>
 			{
