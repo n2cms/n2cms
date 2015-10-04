@@ -1,6 +1,8 @@
 ﻿using N2.Engine;
 using N2.Persistence;
+using N2.Persistence.NH;
 using N2.Plugin.Scheduling;
+using NHibernate.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +10,67 @@ using System.Text;
 
 namespace N2.Management.Statistics
 {
-	//[Service(typeof(StatisticsRepository), Replaces = typeof(StatisticsRepository), Configuration = "sql")]
-	//public class SqlBucketRepository : StatisticsRepository
-	//{
-	//	private ISessionProvider session;
+	[Service(typeof(StatisticsRepository), Replaces = typeof(StatisticsRepository), Configuration = "sql")]
+	public class SqlBucketRepository : StatisticsRepository
+	{
+		private ISessionProvider session;
+		public static DateTime? AdoExceptionDetected { get; set; }
 
-	//	public SqlBucketRepository(N2.Persistence.IRepository<Bucket> buckets, N2.Persistence.IRepository<Statistic> statistics, ISessionProvider session)
-	//		: base(buckets, statistics)
-	//	{
-	//		this.session = session;
-	//	}
-	//}
+		public SqlBucketRepository(N2.Persistence.IRepository<Bucket> buckets, N2.Persistence.IRepository<Statistic> statistics, ISessionProvider session)
+			: base(buckets, statistics)
+		{
+			this.session = session;
+		}
+
+		public override IEnumerable<Statistic> GetStatistics(DateTime from, DateTime to, int id = 0)
+		{
+			try
+			{
+				var result = base.GetStatistics(from, to, id);
+				AdoExceptionDetected = null;
+				return result;
+			}
+			catch (GenericADOException)
+			{
+				MarkAdoException();
+				throw;
+			} 
+		}
+
+		public override void Save(IEnumerable<Bucket> buckets)
+		{
+			try
+			{
+				base.Save(buckets);
+				AdoExceptionDetected = null;
+			}
+			catch (GenericADOException)
+			{
+				MarkAdoException();
+				throw;
+			} 
+		}
+
+		public override void Transfer(DateTime uptil, Granularity interval)
+		{
+			try
+			{
+				base.Transfer(uptil, interval);
+				AdoExceptionDetected = null;
+			}
+			catch (GenericADOException)
+			{
+				MarkAdoException();
+				throw;
+			}
+		}
+
+		private void MarkAdoException()
+		{
+			if (!AdoExceptionDetected.HasValue)
+				AdoExceptionDetected = Utility.CurrentTime();
+		}
+	}
 
 	[Service]
 	public class StatisticsRepository
@@ -109,7 +161,7 @@ namespace N2.Management.Statistics
 			buckets.Flush();
 		}
 
-		public IEnumerable<Statistic> GetStatistics(DateTime from, DateTime to, int id = 0)
+		public virtual IEnumerable<Statistic> GetStatistics(DateTime from, DateTime to, int id = 0)
 		{
 			var p = Parameter.GreaterOrEqual("TimeSlot", from) & Parameter.LessThan("TimeSlot", to);
 			if (id != 0)

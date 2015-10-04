@@ -105,6 +105,7 @@
   <ItemGroup>
     <Compile Include="Configuration\StatisticsSection.cs" />
     <Compile Include="Granularity.cs" />
+    <Compile Include="StatisticsErrorMessageProvider.cs" />
     <Compile Include="StatisticsRepository.cs" />
     <Compile Include="Collector.cs" />
     <Compile Include="NH\StatisticsTablesParticipator.cs" />
