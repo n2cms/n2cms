@@ -45,18 +45,25 @@ namespace N2.Persistence.NH
         /// <summary>Commits the transaction.</summary>
         public void Commit()
         {
-            if (isOriginator && !transaction.WasCommitted && !transaction.WasRolledBack)
+            if (isOriginator)
             {
-                logger.InfoFormat("Committing {0}", transaction.GetHashCode());
-                transaction.Commit();
-                IsCommitted = true;
-                RemoveFromContext();
+				if (!transaction.WasCommitted && !transaction.WasRolledBack)
+				{
+					logger.InfoFormat("Committing {0}", transaction.GetHashCode());
+					transaction.Commit();
+					IsCommitted = true;
+					RemoveFromContext();
 
-                OnCommit();
+					OnCommit();
+				}
+				else
+				{
+					logger.WarnFormat("Not commiting {0}, isOriginator:{1}, wasCommitted:{2}, wasRolledBack:{3}", transaction.GetHashCode(), isOriginator, transaction.WasCommitted, transaction.WasRolledBack);
+				}
             }
             else
             {
-                logger.WarnFormat("Not commiting {0}, isOriginator:{1}, wasCommitted:{2}, wasRolledBack:{3}", transaction.GetHashCode(), isOriginator, transaction.WasCommitted, transaction.WasRolledBack);
+                logger.InfoFormat("Not commiting {0}, isOriginator:{1}, wasCommitted:{2}, wasRolledBack:{3}", transaction.GetHashCode(), isOriginator, transaction.WasCommitted, transaction.WasRolledBack);
             }
         }
 
@@ -99,7 +106,8 @@ namespace N2.Persistence.NH
             logger.Unindent();
             if (isOriginator)
             {
-                Rollback();
+				if (!transaction.WasCommitted)
+					Rollback();
                 transaction.Dispose();
                 RemoveFromContext();
             }
