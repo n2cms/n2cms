@@ -35,5 +35,12 @@ namespace N2.Configuration
 			get { return (string)base["pingPath"]; }
 			set { base["pingPath"] = value; }
 		}
+
+		[ConfigurationProperty("errorReportingLevel", DefaultValue = System.Diagnostics.TraceEventType.Error)]
+		public System.Diagnostics.TraceEventType ErrorReportingLevel
+		{
+			get { return (System.Diagnostics.TraceEventType)base["errorReportingLevel"]; }
+			set { base["errorReportingLevel"] = value; }
+		}
 	}
 }

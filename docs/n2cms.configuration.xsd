@@ -784,6 +784,24 @@
                   <xs:attribute name="ensureLocalhostPreviewUrls" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="collaboration" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="activityTrackingEnabled" type="xs:boolean" use="optional" />
+									<xs:attribute name="pingInterval" type="xs:int" use="optional" />
+									<xs:attribute name="pingPath" type="xs:string" use="optional" />
+									<xs:attribute name="errorReportingLevel" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Critical"/>
+												<xs:enumeration value="Error"/>
+												<xs:enumeration value="Warning"/>
+												<xs:enumeration value="Information"/>
+												<xs:enumeration value="Verbose"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
 						</xs:all>
 						<xs:attribute name="theme" type="xs:string" use="optional" />
 						<xs:attribute name="toolbarOnBottom" type="xs:boolean" use="optional" />
