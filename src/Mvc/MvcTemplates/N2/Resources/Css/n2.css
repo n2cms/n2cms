@@ -149,8 +149,9 @@ a { text-decoration: none; color: #000; }
 
 #messages {}
 	#messages .badge { color:#fff; background-color: #E32F48; position:absolute; margin: 15px 0 0 -15px; z-index:1111; }
-	#messages .message-list { width:400px; }
-	#messages .message-list li a p { margin: 5px 0; padding: 5px; background: #fff; border-radius: 4px; white-space:normal; }
+	#messages .message-list { width:500px; overflow:auto; }
+	#messages .message-list li a { max-width: unset !important; }
+	#messages .message-list li a p { margin: 5px 0; padding: 5px; background: #fff; border-radius: 4px; white-space:normal; font-size:.8em; }
 	#messages .message-list li a time { color:#666; text-transform: none; font-size: 11px; font-family: Arial; }
 		#messages .message-list li a.message-delete { position:absolute; right:0; opacity:0; }
 		#messages .message-list li:hover a.message-delete { position:absolute; right:0; opacity:1; }

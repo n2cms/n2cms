@@ -13,7 +13,7 @@
 			<a href class="message-delete fade"
 			   ng-click="messages.removePermanently(message)"
 			   ng-show="message.Source.SupportsDelete"><b class="fa fa-trash-o"></b></a>
-			<a href ng-click="message.Expanded = !message.Expanded">
+			<a href ng-click="message.Expanded = message.Text && !message.Expanded" title="{{message.Title}}">
 				<b class="ico fa fa-envelope"></b>
 				{{message.Title}}
 				<time datetime="{{message.Updated}}">{{message.Updated | date: 'short'}}</time>
