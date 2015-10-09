@@ -5,8 +5,8 @@
 				.n2-page-stats table td span b { min-width:20px; display:inline-block }
 				.n2-page-stats table td span time { min-width:120px; display:inline-block }
 			.n2-page-stats table td:hover span { display:block; position:absolute; right:0; top:100%; background-color:#fff; padding: 5px; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); }
-			.n2-page-stats table td div { background-color: #3aaee3; }
-			.n2-page-stats table td sup { position:absolute; top: 5px; right: 1px; opacity:.5; }
+			.n2-page-stats table td div { background-color: #3aaee3; position: absolute; bottom: 0; width: 100%;}
+			.n2-page-stats table td sup { position:absolute; bottom: 100%; right: 1px; opacity:.5; margin-top: -1px; display:block; cursor:pointer; }
 			.n2-page-stats table td sub { position:absolute; bottom: 5px; right: 1px; opacity:.5; display:none; }
 			.n2-page-stats:hover table td sub { display:block; }
 .n2-page-stats.loading { opacity:.1; }

@@ -27,4 +27,9 @@
 			loadStatistics();
 		}
 	});
+	$scope.resetMax = function () {
+		console.log("resetting");
+		$rootScope.statisticsMaximum = 1;
+		loadStatistics();
+	}
 };
