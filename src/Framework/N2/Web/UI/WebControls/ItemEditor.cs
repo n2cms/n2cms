@@ -194,7 +194,24 @@ namespace N2.Web.UI.WebControls
 ", ScriptOptions.DocumentReady);
 
             Register.StyleSheet(Page, Url.ResolveTokens("{ManagementUrl}/Resources/Css/edit.css"));
+
+			TryAddItemReference(this);
+			Attributes.Add("data-n2-item", CurrentItem.ID.ToString());
+			foreach (var placeholder in placeholders.Values)
+			{
+				if (!TryAddItemReference(placeholder as WebControl))
+					if (placeholder.Controls.Count > 0)
+						TryAddItemReference(placeholder.Controls[0] as WebControl);
+			}
         }
+
+		private bool TryAddItemReference(WebControl control)
+		{
+			if (control == null)
+				return false;
+			control.Attributes["data-n2-item"] = CurrentItem.ID.ToString();
+			return true;
+		}
 
         protected override void CreateChildControls()
         {

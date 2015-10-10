@@ -18,6 +18,7 @@ namespace N2.Tests.Fakes
         public FakeWebContextWrapper(string currentUrl)
         {
             Url = currentUrl;
+			httpContext = new FakeHttpContext(currentUrl);
         }
 
         public FakeHttpContext httpContext = new FakeHttpContext();

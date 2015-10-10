@@ -14,10 +14,17 @@ namespace N2.Tests.Fakes
 		public event EventHandler<UrlEventArgs> BuildingUrl;
 
 		public event EventHandler<UrlEventArgs> BuiltUrl;
+		
+		private ContentItem startPage;
+
+		public FakeUrlParser(ContentItem startPage = null)
+		{
+			this.startPage = startPage;
+		}
 
 		public ContentItem StartPage
 		{
-			get { throw new NotImplementedException(); }
+			get { return startPage; }
 		}
 
 		public ContentItem CurrentPage

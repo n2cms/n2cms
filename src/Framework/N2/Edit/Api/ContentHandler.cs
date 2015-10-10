@@ -153,7 +153,10 @@ namespace N2.Management.Api
                             break;
                         case "/schedule":
                             Schedule(context);
-                            break;
+							break;
+						case "/autosave":
+							Autosave(context);
+							break;
                     }
                     break;
                 case "DELETE":
@@ -174,6 +177,25 @@ namespace N2.Management.Api
                     break;
             }
         }
+
+		private void Autosave(HttpContextBase context)
+		{
+			var item = Selection.ParseSelectionFromRequest();
+			if (item == null)
+				throw new HttpException((int)HttpStatusCode.NotFound, "Not Found");
+
+			var versions = engine.Resolve<VersionManager>();
+			if (item.State != ContentState.Draft)
+				item = versions.GetOrCreateDraft(item);
+
+			var requestBody = context.GetOrDeserializeRequestStreamJsonDictionary<object>();
+			foreach (var kvp in requestBody)
+				item[kvp.Key] = kvp.Value;
+
+			versions.UpdateVersion(item);
+
+			context.Response.WriteJson(new { ID = item.ID, VersionIndex = item.VersionIndex, Changes = requestBody.Count });
+		}
 
 		private bool TryExecuteExternalHandlers(HttpContextBase context)
 		{

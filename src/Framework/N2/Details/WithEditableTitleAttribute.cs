@@ -34,6 +34,7 @@ namespace N2.Details
             : base(title, "Title", sortOrder)
         {
             Required = true;
+			ClientAdapter = "n2autosave.input";
         }
 
         public bool Focus

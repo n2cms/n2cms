@@ -36,7 +36,8 @@ namespace N2.Details
         public WithEditableNameAttribute(string title, int sortOrder)
             : base(title, "Name", sortOrder)
         {
-        }
+			ClientAdapter = "n2autosave.input";
+		}
 
         /// <summary>Gets or sets the character that replaces whitespace when updating the name (default is '-').</summary>
         public char? WhitespaceReplacement
