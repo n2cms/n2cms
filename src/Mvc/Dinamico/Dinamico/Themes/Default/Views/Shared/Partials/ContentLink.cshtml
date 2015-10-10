@@ -12,7 +12,7 @@
 	<a class="img @imgSize" href="@Content.Current.Item.Url">@Content.Render.Image("Image", imgSize, cssClass: "img-responsive")</a>		
 	}
 	<div class="@contentClass">
-		<h3><a class="heading" href="@Content.Current.Item.Url">@Content.Current.Item.Title</a></h3>
+		<h3><a class="heading" href="@Content.Current.Item.Url">@Content.Current.Item.Title@if (!Content.Has.Summary) { <b>&raquo;</b>}</a></h3>
 		<a class="summary" href="@Content.Current.Item.Url">@Content.Display.Summary</a>
 	</div>
 </div>
