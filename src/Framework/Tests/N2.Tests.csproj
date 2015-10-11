@@ -207,6 +207,7 @@
     <Compile Include="Edit\Api\InterfaceBuilderTests.cs" />
     <Compile Include="Edit\ContainerRepositoryTests.cs" />
     <Compile Include="Edit\ContentHandlerTests.cs" />
+    <Compile Include="Edit\ContentHandlerTests_AutoSave.cs" />
     <Compile Include="Edit\EditUrlManagerTests.cs" />
     <Compile Include="Edit\FileSystem\DefaultFolderFinderTest.cs" />
     <Compile Include="Edit\Items\ItemWithSecuredContainer.cs" />

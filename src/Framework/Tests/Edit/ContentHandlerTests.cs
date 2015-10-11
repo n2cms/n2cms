@@ -13,17 +13,16 @@ using System.Threading.Tasks;
 
 namespace N2.Tests.Edit
 {
-	[TestFixture]
-	public class ContentHandlerTests
+	public abstract class ContentHandlerTests
 	{
-		private Fakes.FakeEngine engine;
-		private ContentHandler handler;
-		private Fakes.FakeWebContextWrapper context;
-		private ContentHandlerTestsPage startPage;
-		private ContentHandlerTestsPage page;
-		private VersionManager versionManager;
+		protected Fakes.FakeEngine engine;
+		protected ContentHandler handler;
+		protected Fakes.FakeWebContextWrapper context;
+		protected ContentHandlerTestsPage startPage;
+		protected ContentHandlerTestsPage page;
+		protected VersionManager versionManager;
 
-		class ContentHandlerTestsPage : ContentItem
+		protected class ContentHandlerTestsPage : ContentItem
 		{
 		}
 
@@ -43,20 +42,10 @@ namespace N2.Tests.Edit
 			
 			engine.AddComponentInstance<IWebContext>(context);
 			engine.AddComponentInstance<IUrlParser>(new Fakes.FakeUrlParser(startPage: startPage));
-			engine.AddComponentInstance<VersionManager>(versionManager = TestSupport.SetupVersionManager(engine.Persister, TestSupport.CreateVersionRepository(new Type[] { typeof(ContentHandlerTestsPage) })));
+			var versionRepository = TestSupport.CreateVersionRepository(new Type[] { typeof(ContentHandlerTestsPage) });
+			engine.AddComponentInstance<ContentVersionRepository>(versionRepository);
+			engine.AddComponentInstance<VersionManager>(versionManager = TestSupport.SetupVersionManager(engine.Persister, versionRepository));
 		}
 
-		[Test]
-		public void AutoSave_CreatesDraft()
-		{
-			context.httpContext.request.CreatePost("/N2/Api/Content.ashx/autosave?n2item=" + page.ID, "application/json", "{ Title: 'New title' }", pathInfo: "/autosave");
-
-			handler.ProcessRequest(context.HttpContext);
-
-			var versions = versionManager.GetVersionsOf(page);
-			versions.Count().ShouldBe(2);
-			versions.Single(v => v.State != ContentState.Draft).Title.ShouldBe("Page in question");
-			versions.Single(v => v.State == ContentState.Draft).Title.ShouldBe("New title");
-		}
 	}
 }

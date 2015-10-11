@@ -23,12 +23,18 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Resources;
 using N2.Edit.Versioning;
+using System.Linq;
 
 namespace N2.Web.UI.WebControls
 {
     /// <summary>A form that generates an edit interface for content items.</summary>
     public class ItemEditor : WebControl, INamingContainer, IItemEditor, IContentForm<CommandContext>, IPlaceHolderAccessor
     {
+		protected override void LoadViewState(object savedState)
+		{
+			base.LoadViewState(savedState);
+		}
+
         #region Constructor
 
         public ItemEditor()
@@ -191,12 +197,14 @@ namespace N2.Web.UI.WebControls
 
     $('form').n2expandableBox({ opener: '.rightOpener', opened: '#outside' });
     $('#outside .box').n2expandableBox({ opener: 'h4', opened: '.box-inner' });
+
+	window.n2autosave && n2autosave.init();
 ", ScriptOptions.DocumentReady);
 
             Register.StyleSheet(Page, Url.ResolveTokens("{ManagementUrl}/Resources/Css/edit.css"));
 
+			Page.ClientScript.RegisterHiddenField(ClientID + "_autosaved_item_id", currentItem.ID.ToString());
 			TryAddItemReference(this);
-			Attributes.Add("data-n2-item", CurrentItem.ID.ToString());
 			foreach (var placeholder in placeholders.Values)
 			{
 				if (!TryAddItemReference(placeholder as WebControl))
@@ -209,7 +217,8 @@ namespace N2.Web.UI.WebControls
 		{
 			if (control == null)
 				return false;
-			control.Attributes["data-n2-item"] = CurrentItem.ID.ToString();
+			control.Attributes["data-item"] = CurrentItem.ID.ToString();
+			control.Attributes["data-item-reference"] = ClientID + "_autosaved_item_id";
 			return true;
 		}
 
@@ -348,8 +357,31 @@ namespace N2.Web.UI.WebControls
 
         public CommandContext CreateCommandContext()
         {
-            return new CommandContext(Definition ?? GetDefinition(), CurrentItem, Interfaces.Editing, Page.User, this, new PageValidator<CommandContext>(Page));
+            var cc = new CommandContext(Definition ?? GetDefinition(), CurrentItem, Interfaces.Editing, Page.User, this, new PageValidator<CommandContext>(Page));
+
+			TryReplaceContentWithAutosavedVersion(cc);
+			
+			return cc;
         }
+
+		private bool TryReplaceContentWithAutosavedVersion(CommandContext cc)
+		{
+			var autoSaveReference = Page.Request[ClientID + "_autosaved_item_id"];
+			if (Page.IsPostBack && !string.IsNullOrEmpty(autoSaveReference))
+			{
+				var idAndVersion = autoSaveReference.Split('.').Select(x => int.Parse(x)).ToList();
+				if (idAndVersion.Count > 1)
+				{
+					var item = CurrentItem;
+					if (item.ID == 0)
+						item = Engine.Persister.Get(idAndVersion[0]);
+					item = Engine.Resolve<IVersionManager>().GetVersion(item, idAndVersion[1]);
+					cc.Content = item ?? cc.Content;
+					return item != null;
+				}
+			}
+			return false;
+		}
 
         public void Initialize(string discriminator, string template, ContentItem parent)
         {

@@ -224,7 +224,11 @@ namespace N2.Web
         {
             var path = new PathData(Find.ClosestPage(masterVersion), masterVersion);
             if (TryParseVersion(versionRepository, versionIndexParameterValue, versionKey, path))
-                return path.CurrentItem;
+			{
+				if (path.CurrentItem != masterVersion)
+					path.CurrentItem.VersionOf = masterVersion;
+				return path.CurrentItem;
+			}
             return null;
         }
 

@@ -94,7 +94,7 @@ namespace N2.Edit.Versioning
         public void UpdateVersion(ContentItem item)
         {
             if (item.VersionOf.HasValue)
-                Repository.Save(item);
+                Repository.Save(item, asPreviousVersion: item.State != ContentState.Draft);
             else
                 itemRepository.SaveOrUpdate(item);
         }

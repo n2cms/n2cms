@@ -180,21 +180,51 @@ namespace N2.Management.Api
 
 		private void Autosave(HttpContextBase context)
 		{
-			var item = Selection.ParseSelectionFromRequest();
-			if (item == null)
+			var selected = Selection.ParseSelectionFromRequest();
+			if (selected == null)
 				throw new HttpException((int)HttpStatusCode.NotFound, "Not Found");
 
-			var versions = engine.Resolve<VersionManager>();
-			if (item.State != ContentState.Draft)
-				item = versions.GetOrCreateDraft(item);
-
 			var requestBody = context.GetOrDeserializeRequestStreamJsonDictionary<object>();
+			var discriminator = EditExtensions.GetDiscriminator(context.Request);
+
+			ContentItem item;
+			if (string.IsNullOrEmpty(discriminator))
+			{
+				item = selected;
+				var versions = engine.Resolve<VersionManager>();
+				if (item.State != ContentState.Draft)
+					item = versions.GetOrCreateDraft(item);
+
+				Update(requestBody, item);
+
+				versions.UpdateVersion(item);
+			}
+			else
+			{
+				int id;
+				if (requestBody.ContainsKey("ID") && (id = (int)requestBody["ID"]) != 0)
+				{
+					item = engine.Persister.Get(id);
+				}
+				else
+				{
+					item = engine.Resolve<IDefinitionManager>().GetDefinition(discriminator).CreateInstance(selected);
+					item.State = ContentState.Draft;
+				}
+
+				Update(requestBody, item);
+
+				engine.Persister.Repository.SaveOrUpdate(item);
+			}
+
+			context.Response.WriteJson(new { ID = item.VersionOf.ID ?? item.ID, VersionIndex = item.VersionIndex, Changes = requestBody.Count });
+		}
+
+		private void Update(IDictionary<string, object> requestBody, ContentItem item)
+		{
 			foreach (var kvp in requestBody)
-				item[kvp.Key] = kvp.Value;
-
-			versions.UpdateVersion(item);
-
-			context.Response.WriteJson(new { ID = item.ID, VersionIndex = item.VersionIndex, Changes = requestBody.Count });
+				if (kvp.Key != "ID" && kvp.Key != "VersionIndex")
+					item[kvp.Key] = kvp.Value;
 		}
 
 		private bool TryExecuteExternalHandlers(HttpContextBase context)

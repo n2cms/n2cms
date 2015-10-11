@@ -19,27 +19,31 @@
 				//self.dirty = false;
 				var items = {};
 				jQuery.each(dirtbags, function () {
-					var item = items[this.itemID] || (items[this.itemID] = {});
-					item[this.name] = this.checkout();
+					var idAndVersion = $("#" + this.newItemReference).val() || "";
+					var item = items[this.itemID] || (items[this.itemID] = { changes: { ID: parseInt(idAndVersion.split(".")[0]), VersionIndex: parseInt(idAndVersion.split(".")[1]) } });
+					item.changes[this.name] = this.checkout();
+					item.newItemReference = this.newItemReference;
 				});
 
 				console.log("saving", dirtbags, items);
 				var prev = null;
-				jQuery.each(items, function (id) {
-					//var deferred = jQuery.post("/N2/Api/Content.ashx/autosave?n2item=" + id, this, "application/json");
+				jQuery.each(items, function (id, item) {
 					var deferred = $.ajax({
-						url: "/N2/Api/Content.ashx/autosave?n2item=" + id,
+						url: "/N2/Api/Content.ashx/autosave" + window.location.search,
 						type: 'post',
 						contentType: "application/json",
 						success: function () { console.log("success", id); },
-						data: JSON.stringify(this)
+						data: JSON.stringify(this.changes)
+					});
+					deferred.then(function (result) {
+						$("#" + item.newItemReference).val(result.ID + "." + result.VersionIndex);
 					});
 					if (prev)
 						prev = prev.then(deferred);
 					else
 						prev = deferred;
 				})
-				prev.then(function () {
+				prev && prev.then(function () {
 					console.log("ALL DONE", arguments);
 					self.dirty = false;
 				})
@@ -58,9 +62,10 @@
 				return resolve(parent[key.substr(0, dotIndex)], key.substr(dotIndex + 1));
 			}
 		}
-		var itemID = parseInt($("#" + editorID).closest("[data-n2-item]").attr("data-n2-item"));
+		var editor = $("#" + editorID).closest("[data-item]");
+		var itemID = parseInt(editor.attr("data-n2-item"));
 		var fn = resolve(window, adapter);
-		fn.prototype = { editorID: editorID, itemID: itemID, name: name, dirty: function () { return undefined; }, checkout: function () { return undefined; } };
+		fn.prototype = { editorID: editorID, newItemReference: editor.attr("data-item-reference"), itemID: itemID, name: name, dirty: function () { return undefined; }, checkout: function () { return undefined; } };
 		this.adapters.push(new fn());
 	},
 	adapters: [],
@@ -89,7 +94,3 @@
 		}
 	}
 }
-
-jQuery(function () {
-	n2autosave.init();
-});
