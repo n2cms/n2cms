@@ -78,7 +78,9 @@ namespace N2.Management.Api
                             var tokens = GetTokens(context);
                             context.Response.WriteJson(new { Tokens = tokens });
                             break;
-                        case "/children":
+						case "":
+						case "/":
+						case "/children":
 							var children = GetChildren(context).ToList();
                             context.Response.WriteJson(new { Children = children, IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
                             break;
@@ -102,27 +104,18 @@ namespace N2.Management.Api
 							var node = GetNode(context);
                             context.Response.WriteJson(new { Node = node });
                             break;
-                        default:
-                            if (string.IsNullOrEmpty(context.Request.PathInfo))
-                            {
-                                context.Response.WriteJson(new { Children = GetChildren(context).ToList(), IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
-                            }
-                            else
-                            {
-                                if (context.Request.PathInfo.StartsWith("/"))
-                                {
-                                    int id;
-                                    if (int.TryParse(context.Request.PathInfo.Trim('/'), out id))
-                                    {
-                                        var item = engine.Persister.Get(id);
-                                        context.Response.WriteJson(item);
-                                        return;
-                                    }
-                                }
-								if (!TryExecuteExternalHandlers(context))
-									throw new HttpException((int)HttpStatusCode.NotImplemented, "Not Implemented");
-                            }
-                            break;
+						default:
+							if (context.Request.PathInfo.StartsWith("/"))
+							{
+								int id;
+								if (int.TryParse(context.Request.PathInfo.Trim('/'), out id))
+								{
+									var item = engine.Persister.Get(id);
+									context.Response.WriteJson(item);
+									return;
+								}
+							}
+							break;
                     }
                     break;
                 case "POST":
@@ -176,6 +169,9 @@ namespace N2.Management.Api
                     Update(context);
                     break;
             }
+
+			if (!TryExecuteExternalHandlers(context))
+				throw new HttpException((int)HttpStatusCode.NotImplemented, "Not Implemented");
         }
 
 		private void Autosave(HttpContextBase context)

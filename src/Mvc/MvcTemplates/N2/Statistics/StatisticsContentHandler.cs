@@ -28,39 +28,40 @@ namespace N2.Management.Statistics
 					: TimeSpan.FromMinutes(1);
 		}
 
-		protected override object HandleDataRequest(HttpContextBase context)
+		public object Index(DateTime? from, DateTime? to, int? n2item, bool? raw)
+		//protected override object HandleDataRequest(HttpContextBase context)
 		{
-			DateTime from, to;
-			if (!DateTime.TryParse(context.Request["from"], out to))
-				to = Utility.CurrentTime().GetSlot(granularity).Add(slotSize);
-			if (!DateTime.TryParse(context.Request["from"], out from))
-				from = to.AddDays(-displayedDays);
+			//DateTime from, to;
+			//if (!DateTime.TryParse(context.Request["from"], out to))
+			//	to = Utility.CurrentTime().GetSlot(granularity).Add(slotSize);
+			//if (!DateTime.TryParse(context.Request["from"], out from))
+			//	from = to.AddDays(-displayedDays);
 			
-			int id;
-			if (!int.TryParse(context.Request.QueryString["n2item"], out id))
-				id = 0;
+			//int id;
+			//if (!int.TryParse(context.Request.QueryString["n2item"], out id))
+			//	id = 0;
 
-			bool raw;
-			if (!bool.TryParse(context.Request.QueryString["raw"], out raw))
-				raw = false;
+			//bool raw;
+			//if (!bool.TryParse(context.Request.QueryString["raw"], out raw))
+			//	raw = false;
 
-			var statistics = repository.GetStatistics(from, to, id)
-				//.GroupBy(s => new { s.PageID, Day = s.TimeSlot.Date })
-				//.Select(g => new Statistic { PageID = g.Key.PageID, TimeSlot = g.Key.Day, Views = g.Sum(s => s.Views) })
-				//.OrderBy(s => s.TimeSlot)
+			to = to ?? Utility.CurrentTime().GetSlot(granularity).Add(slotSize);
+			from = from ?? to.Value.AddDays(-displayedDays);
+
+			var statistics = repository.GetStatistics(from.Value, to.Value, n2item ?? 0)
 				.ToList();
 
-			if (raw)
+			if (raw.HasValue && raw.Value)
 				return new { Views = statistics };
 
-			var views = Slottify(statistics, from, to).ToList();
-			if (id == 0)
+			var views = Slottify(statistics, from.Value, to.Value).ToList();
+			if (n2item == 0)
 			{
 				var pages = statistics.GroupBy(s => s.PageID)
 					.OrderByDescending(g => g.Sum(x => x.Views))
 					.Select(g =>
 					{
-						var slots = Slottify(g, from, to).ToList();
+						var slots = Slottify(g, from.Value, to.Value).ToList();
 						return new { PageID = g.Key, TotalViews = g.Sum(x => x.Views), Max = slots.Max(v => v.Views), Views = slots };
 					}).ToList();
 				return new

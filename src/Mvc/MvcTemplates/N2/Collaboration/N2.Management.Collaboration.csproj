@@ -102,6 +102,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollaborationContentHandler.cs" />
     <Compile Include="CollaborationInitializer.cs" />
     <Compile Include="CollaborationInterfaceModule.cs">
       <SubType>Code</SubType>

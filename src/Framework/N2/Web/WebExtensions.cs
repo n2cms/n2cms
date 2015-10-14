@@ -302,12 +302,20 @@ namespace N2.Web
         }
 
 		internal static T GetOrDeserializeRequestStreamJson<T>(this HttpContextBase context)
-			where T: class
+			where T : class
 		{
-			T json = context.Items["CachedRequestStream"] as T;
-			if (json == null)
-				context.Items["CachedRequestStream"] = json = DeserialiseJson<T>(context.Request.InputStream);
-			return json;
+			T deserializedObject = context.Items["CachedRequestStream"] as T;
+			if (deserializedObject == null)
+				context.Items["CachedRequestStream"] = deserializedObject = DeserialiseJson<T>(context.Request.InputStream);
+			return deserializedObject;
+		}
+
+		internal static object GetOrDeserializeRequestStreamJson(this HttpContextBase context, Type targetType)
+		{
+			object deserializedObject = context.Items["CachedRequestStream"];
+			if (deserializedObject == null)
+				context.Items["CachedRequestStream"] = deserializedObject = DeserialiseJson(context.Request.InputStream, targetType);
+			return deserializedObject;
 		}
 
         internal static IDictionary<string, T> GetOrDeserializeRequestStreamJsonDictionary<T>(this HttpContextBase context)
@@ -324,6 +332,15 @@ namespace N2.Web
 			{
 				var body = sr.ReadToEnd();
 				return new JavaScriptSerializer().Deserialize<T>(body);
+			}
+		}
+
+		internal static object DeserialiseJson(this Stream stream, Type targetType)
+		{
+			using (var sr = new StreamReader(stream))
+			{
+				var body = sr.ReadToEnd();
+				return new JavaScriptSerializer().Deserialize(body, targetType);
 			}
 		}
 

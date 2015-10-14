@@ -16,16 +16,26 @@ namespace N2.Edit.Collaboration
 
 		public CollaborationContext ParseLastDismissed(string lastDismissed)
 		{
+			LastDismissed = Parse(lastDismissed);
+			return this;
+		}
+
+		private static DateTime Parse(string lastDismissed)
+		{
 			DateTime date;
 			if (DateTime.TryParse(lastDismissed, CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out date))
-				LastDismissed = date;
-			return this;
+				return date;
+			return DateTime.MinValue;
 		}
 
 		public static CollaborationContext Create(IProfileRepository profiles, ContentItem item, System.Web.HttpContextBase context)
 		{
-			return new CollaborationContext { SelectedItem = item, User = context.User }
-				.ParseLastDismissed(context.Request["lastDismissed"] ?? profiles.GetProfileSetting(context.User, "LastDismissed") as string);
+			return Create(Parse(context.Request["lastDismissed"] ?? profiles.GetProfileSetting(context.User, "LastDismissed") as string), item, context.User);
+		}
+
+		public static CollaborationContext Create(DateTime lastDismissed, ContentItem item, IPrincipal user)
+		{
+			return new CollaborationContext { SelectedItem = item, User = user, LastDismissed = lastDismissed };
 		}
 	}
 }
