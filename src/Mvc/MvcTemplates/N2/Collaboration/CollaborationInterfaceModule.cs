@@ -38,7 +38,7 @@ namespace N2.Management.Collaboration
 		{
 			get
 			{
-				yield return "{ManagementUrl}/Collaboration/Css/Collaboration.css";
+				//yield return "{ManagementUrl}/Collaboration/Css/Collaboration.css";
 			}
 		}
 	}
