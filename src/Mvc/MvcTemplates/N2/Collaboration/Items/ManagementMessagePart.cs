@@ -2,18 +2,19 @@
 using N2.Details;
 using N2.Edit.Collaboration;
 using N2.Integrity;
+using N2.Management.Myself;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace N2.Management.Myself.Collaboration
+namespace N2.Management.Collaboration.Items
 {
 	[AllowedZones("Collaboration")]
 	[PartDefinition("Management message")]
 	[WithEditableTitle]
 	[Versionable(AllowVersions.No)]
-	public class ManagementMessagePart : RootPartBase, IMessageSource
+	public class ManagementMessagePart : RootPartBase, IMessageSource, ICollaborationPart
 	{
 		[EditableText(TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine)]
 		public virtual string Text { get; set; }

@@ -10,6 +10,7 @@
     <Management-NugetFolderZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_Zip</Management-NugetFolderZip>
 		<Management-NugetFolderNoZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_NoZip</Management-NugetFolderNoZip>
 		<Management-Targeting-NugetFolder>$(DeployFolder)\$(DeployPrefix)Management_Targeting_Nuget</Management-Targeting-NugetFolder>
+		<Management-Collaboration-NugetFolder>$(DeployFolder)\$(DeployPrefix)Management_Collaboration_Nuget</Management-Collaboration-NugetFolder>
 		<Management-Statistics-NugetFolder>$(DeployFolder)\$(DeployPrefix)Management_Statistics_Nuget</Management-Statistics-NugetFolder>
 		<Management-LocalizedResourcesFolder>$(DeployFolder)\$(DeployPrefix)Management_LocalizedResources_Nuget</Management-LocalizedResourcesFolder>
     <Library-NugetFolder>$(DeployFolder)\$(DeployPrefix)Library_Nuget</Library-NugetFolder>
@@ -246,6 +247,23 @@
 		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-Targeting-NugetFolder)\" />
 	</Target>
 
+	<Target Name="Management-Collaboration-NuGet">
+		<ItemGroup>
+			<managementCollaborationIncludes Include="$(BuildFolder)\Nuget\ManagementCollaboration\**\*" />
+			<managementCollaborationBinFiles Include="$(ManagementFolder)\N2\Collaboration\Bin\N2.Management.Collaboration.dll;" />
+			<managementCollaborationDeployFiles Include="$(ManagementFolder)\N2\Collaboration\**\*.css;
+																							 $(ManagementFolder)\N2\Collaboration\**\*.js;
+																							 $(ManagementFolder)\N2\Collaboration\**\*.html;
+																							 $(ManagementFolder)\N2\Collaboration\**\*.as?x;" />
+		</ItemGroup>
+		<Copy SourceFiles="@(managementCollaborationIncludes)" DestinationFolder="$(Management-Collaboration-NugetFolder)\%(RecursiveDir)" />
+		<Copy SourceFiles="@(managementCollaborationBinFiles)" DestinationFolder="$(Management-Collaboration-NugetFolder)\lib" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(managementCollaborationDeployFiles)" DestinationFolder="$(Management-Collaboration-NugetFolder)\content\N2\Collaboration\%(RecursiveDir)" UseHardlinksIfPossible="true" SkipUnchangedFiles="true" />
+
+		<FileUpdate Files="$(Management-Collaboration-NugetFolder)\N2.Management.Collaboration.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-Collaboration-NugetFolder)\" />
+	</Target>
+
 	<Target Name="Management-Statistics-NuGet">
 		<ItemGroup>
 			<managementStatisticsIncludes Include="$(BuildFolder)\Nuget\ManagementStatistics\**\*" />
@@ -344,6 +362,7 @@
                                                LuceneSearch-NuGet;
                                                LuceneSearch-NuGet;
 																							 Management-Targeting-NuGet;
+																							 Management-Collaboration-NuGet;
 																							 Management-Statistics-NuGet;
 																							 ">
   </Target>

@@ -2,13 +2,14 @@
 using N2.Details;
 using N2.Edit.Collaboration;
 using N2.Integrity;
+using N2.Management.Collaboration;
 using N2.Management.Myself;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace N2.Management.Myself
+namespace N2.Management.Collaboration.Items
 {
 	public enum ManagementControlFlag
 	{
@@ -19,7 +20,7 @@ namespace N2.Management.Myself
 	[AllowedZones("Collaboration")]
 	[PartDefinition("Management flag")]
 	[Versionable(AllowVersions.No)]
-	public class ManagementFlagPart : RootPartBase, IFlagSource
+	public class ManagementFlagPart : RootPartBase, IFlagSource, ICollaborationPart
 	{
 		[EditableEnum(typeof(ManagementControlFlag))]
 		public virtual ManagementControlFlag Flag

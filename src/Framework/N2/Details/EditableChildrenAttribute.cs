@@ -44,6 +44,8 @@ namespace N2.Details
             set { zoneName = value; }
         }
 
+		public string MinimumTypeName { get; set; }
+
         public override bool UpdateItem(ContentItem item, Control editor)
         {
             bool updated = false;
@@ -125,6 +127,8 @@ namespace N2.Details
         {
             ItemEditorList listEditor = new ItemEditorList();
             listEditor.ID = Name;
+			if (!string.IsNullOrEmpty(MinimumTypeName))
+				listEditor.MinimumType = Type.GetType(MinimumTypeName);
             listEditor.ParentItem = ItemUtility.FindInParents<IItemEditor>(container).CurrentItem;
             listEditor.Label = Title;
             container.Controls.Add(listEditor);

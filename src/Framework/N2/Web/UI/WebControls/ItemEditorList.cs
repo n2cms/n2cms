@@ -76,7 +76,7 @@ namespace N2.Web.UI.WebControls
         public Type MinimumType
         {
             get { return Type.GetType((string)ViewState["MinimumType"] ?? typeof(object).FullName); }
-            set { ViewState["MinimumType"] = value.AssemblyQualifiedName; }
+            set { ViewState["MinimumType"] = (value ?? typeof(object)).AssemblyQualifiedName; }
         }
 
         public IList<string> AddedDefinitions

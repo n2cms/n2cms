@@ -14,7 +14,7 @@ namespace N2.Edit.Collaboration
 			if (context.SelectedItem == null)
 				return new string[0];
 
-			return Content.Traverse.Ancestors(context.SelectedItem, lastAncestor: null)
+			return N2.Find.EnumerateParents(context.SelectedItem, lastAncestor: null, includeSelf: true)
 				.OfType<IFlagSource>()
 				.SelectMany(ms => ms.GetFlags(context));
 		}

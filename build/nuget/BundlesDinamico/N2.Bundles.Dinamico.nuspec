@@ -24,6 +24,7 @@
 			<dependency id="N2CMS.Search.Lucene" version="{Version}" />
 			<dependency id="N2CMS.Management.Statistics" version="{Version}" />
 			<dependency id="N2CMS.Management.Targeting" version="{Version}" />
+			<dependency id="N2CMS.Management.Collaboration" version="{Version}" />
 		</dependencies>
 	</metadata>
 </package>

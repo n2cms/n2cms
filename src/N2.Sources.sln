@@ -141,6 +141,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{4508EBF5
 		..\build\nuget\ManagementLocalizedResources\N2.Management.LocalizedResources.nuspec = ..\build\nuget\ManagementLocalizedResources\N2.Management.LocalizedResources.nuspec
 		..\build\nuget\ManagementNoZip\N2.Management.NoZip.nuspec = ..\build\nuget\ManagementNoZip\N2.Management.NoZip.nuspec
 		..\build\nuget\ManagementStatistics\N2.Management.Statistics.nuspec = ..\build\nuget\ManagementStatistics\N2.Management.Statistics.nuspec
+		..\build\nuget\ManagementCollaboration\N2.Management.Collaboration.nuspec = ..\build\nuget\ManagementCollaboration\N2.Management.Collaboration.nuspec
 		..\build\nuget\ManagementTargeting\N2.Management.Targeting.nuspec = ..\build\nuget\ManagementTargeting\N2.Management.Targeting.nuspec
 		..\build\nuget\ManagementZip\N2.Management.Zip.nuspec = ..\build\nuget\ManagementZip\N2.Management.Zip.nuspec
 		..\build\nuget\Mvc\N2.Mvc.nuspec = ..\build\nuget\Mvc\N2.Mvc.nuspec
@@ -183,6 +184,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{5600846F-82D5-4596-8F8E-A54C8DFD410A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Management.Statistics", "Mvc\MvcTemplates\N2\Statistics\N2.Management.Statistics.csproj", "{8EA782BC-3B7F-4CBD-A017-6BA6F2BAFF3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Management.Collaboration", "Mvc\MvcTemplates\N2\Collaboration\N2.Management.Collaboration.csproj", "{55BEE8EA-E565-4921-93CB-BF1A99FD4579}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1113,6 +1116,41 @@ Global
 		{8EA782BC-3B7F-4CBD-A017-6BA6F2BAFF3D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8EA782BC-3B7F-4CBD-A017-6BA6F2BAFF3D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8EA782BC-3B7F-4CBD-A017-6BA6F2BAFF3D}.Release|x86.ActiveCfg = Release|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugDinamico|Any CPU.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugDinamico|Any CPU.Build.0 = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugDinamico|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugDinamico|Mixed Platforms.Build.0 = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugDinamico|x86.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugFramework|Any CPU.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugFramework|Any CPU.Build.0 = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugFramework|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugFramework|Mixed Platforms.Build.0 = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugFramework|x86.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugMvc|Any CPU.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugMvc|Any CPU.Build.0 = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugMvc|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugMvc|Mixed Platforms.Build.0 = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugMvc|x86.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugWebForms|Any CPU.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugWebForms|Any CPU.Build.0 = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugWebForms|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugWebForms|Mixed Platforms.Build.0 = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.DebugWebForms|x86.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.Demo|Any CPU.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.Demo|Any CPU.Build.0 = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.Demo|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.Demo|Mixed Platforms.Build.0 = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.Demo|x86.ActiveCfg = Debug|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1153,5 +1191,6 @@ Global
 		{4B5FC4F4-9AA8-4A42-B52E-2F287E4A7B2F} = {5600846F-82D5-4596-8F8E-A54C8DFD410A}
 		{1F422E4F-8B5F-4B50-A521-AC5ED047AFEE} = {5600846F-82D5-4596-8F8E-A54C8DFD410A}
 		{8EA782BC-3B7F-4CBD-A017-6BA6F2BAFF3D} = {5600846F-82D5-4596-8F8E-A54C8DFD410A}
+		{55BEE8EA-E565-4921-93CB-BF1A99FD4579} = {5600846F-82D5-4596-8F8E-A54C8DFD410A}
 	EndGlobalSection
 EndGlobal

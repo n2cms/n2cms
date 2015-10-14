@@ -110,7 +110,6 @@
     <Content Include="N2\App\Js\Directives.js" />
     <Content Include="N2\App\Js\Services.js" />
     <Content Include="N2\App\Partials\ContentInfoDetails.html" />
-    <Content Include="N2\App\Partials\Messages.html" />
     <Content Include="N2\App\Partials\ManagementConfirm.html" />
     <Content Include="N2\App\Partials\Main.html" />
     <Content Include="N2\App\Partials\Loading.html" />
@@ -134,6 +133,7 @@
     <Content Include="N2\App\Partials\ContentBranch.html" />
     <Content Include="N2\App\Partials\Menu.html" />
     <Content Include="N2\App\Partials\ContentTree.html" />
+    <Content Include="N2\Collaboration\Ping.ashx" />
     <Content Include="N2\Content\Activity\RecentActivity.ascx" />
     <Content Include="N2\Content\AffectedItems.ascx" />
     <Content Include="N2\Content\EditSingle.aspx" />
@@ -314,7 +314,6 @@
     <Content Include="N2\Web.config" />
     <Content Include="N2\Content\LinkTracker\App_LocalResources\UpdateReferences.aspx.resx" />
     <Content Include="N2\Content\Versions\App_LocalResources\RecentVersions.ascx.resx" />
-    <Content Include="N2\Collaboration\Ping.ashx" />
     <Content Include="N2\Roles\App_LocalResources\Roles.aspx.resx" />
     <Content Include="N2\Roles\App_LocalResources\New.aspx.resx">
       <SubType>Designer</SubType>
@@ -347,12 +346,12 @@
     <Compile Include="..\..\Framework\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
     </Compile>
-    <Compile Include="N2\Content\Activity\ActivityNotificationAttribute.cs" />
-    <Compile Include="N2\Content\Activity\KeepAliveControlPanel.cs" />
-    <Compile Include="N2\Content\Activity\ManagementActivity.cs" />
     <Compile Include="N2\Collaboration\Ping.ashx.cs">
       <DependentUpon>Ping.ashx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Content\Activity\ActivityNotificationAttribute.cs" />
+    <Compile Include="N2\Content\Activity\KeepAliveControlPanel.cs" />
+    <Compile Include="N2\Content\Activity\ManagementActivity.cs" />
     <Compile Include="N2\Content\Activity\RecentActivity.ascx.cs">
       <DependentUpon>RecentActivity.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -685,8 +684,6 @@
     <Compile Include="N2\Myself\Analytics\Models\ManageAnalyticsPart.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="N2\Myself\Collaboration\ManagementFlagPart.cs" />
-    <Compile Include="N2\Myself\Collaboration\ManagementMessagePart.cs" />
     <Compile Include="N2\Roles\Roles.aspx.designer.cs">
       <DependentUpon>Roles.aspx</DependentUpon>
     </Compile>
@@ -1350,6 +1347,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="N2\Content\Wizard\Img\" />
+    <Folder Include="N2\Myself\Collaboration\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
