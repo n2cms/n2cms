@@ -167,6 +167,8 @@ namespace N2.Web.UI.WebControls
             set { ViewState["SaveVersion"] = value; }
         }
 
+		public bool EnableAutoSave { get; set; }
+
         #endregion
 
         #region Methods
@@ -197,19 +199,22 @@ namespace N2.Web.UI.WebControls
 
     $('form').n2expandableBox({ opener: '.rightOpener', opened: '#outside' });
     $('#outside .box').n2expandableBox({ opener: 'h4', opened: '.box-inner' });
-
-	window.n2autosave && n2autosave.init();
 ", ScriptOptions.DocumentReady);
 
             Register.StyleSheet(Page, Url.ResolveTokens("{ManagementUrl}/Resources/Css/edit.css"));
 
-			Page.ClientScript.RegisterHiddenField(ClientID + "_autosaved_item_id", currentItem.ID.ToString());
-			TryAddItemReference(this);
-			foreach (var placeholder in placeholders.Values)
+			if (EnableAutoSave)
 			{
-				if (!TryAddItemReference(placeholder as WebControl))
-					if (placeholder.Controls.Count > 0)
-						TryAddItemReference(placeholder.Controls[0] as WebControl);
+				Register.JavaScript(Page, @"	window.n2autosave && n2autosave.init();", ScriptOptions.DocumentReady);
+
+				Page.ClientScript.RegisterHiddenField(ClientID + "_autosaved_item_id", currentItem.ID.ToString());
+				TryAddItemReference(this);
+				foreach (var placeholder in placeholders.Values)
+				{
+					if (!TryAddItemReference(placeholder as WebControl))
+						if (placeholder.Controls.Count > 0)
+							TryAddItemReference(placeholder.Controls[0] as WebControl);
+				}
 			}
         }
 

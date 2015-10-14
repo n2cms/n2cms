@@ -227,7 +227,7 @@ namespace N2.Management.Api
 					engine.Persister.Repository.Flush();
 			}
 
-			context.Response.WriteJson(new { ID = item.VersionOf.ID ?? item.ID, VersionIndex = item.VersionIndex, Changes = requestBody.Count });
+			context.Response.WriteJson(new { ID = item.VersionOf.ID ?? item.ID, VersionIndex = item.VersionIndex });
 		}
 
 		private void Update(IDictionary<string, object> requestBody, ContentItem item)

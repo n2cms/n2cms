@@ -69,7 +69,7 @@
 		</div>
 		<div class="future-panel-backdrop modal-backdrop fade in" style="display:none"></div>
 
-		<n2:ItemEditor ID="ie" runat="server" />
+		<n2:ItemEditor ID="ie" runat="server" EnableAutoSave="true" />
 	</edit:PermissionPanel>
 
 		<script type="text/javascript">

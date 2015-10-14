@@ -1,56 +1,81 @@
 ﻿n2autosave = {
-	interval: 2000,
+	interval: 10000,
 	dirty: false,
 	destroy: function(){
 		clearTimeout(this.intervalHandle);
 	},
 	init: function () {
-		console.log("autosave init")
-
-		var self = this;
-		this.intervalHandle = setInterval(function () {
+		this.getChanges = function () {
 			var dirtbags = [];
-			jQuery.each(self.adapters, function () {
+			jQuery.each(this.adapters, function () {
 				if (this.dirty()) {
 					dirtbags.push(this);
 				}
 			});
-			if (self.dirty) {
-				//self.dirty = false;
-				var items = {};
-				jQuery.each(dirtbags, function () {
-					var idAndVersion = $("#" + this.newItemReference).val() || "";
-					var item = items[this.itemID] || (items[this.itemID] = { changes: { ID: parseInt(idAndVersion.split(".")[0]), VersionIndex: parseInt(idAndVersion.split(".")[1]) } });
-					item.changes[this.name] = this.checkout();
-					item.newItemReference = this.newItemReference;
-				});
+			return dirtbags;
+		}
 
-				console.log("saving", dirtbags, items);
-				var prev = null;
-				jQuery.each(items, function (id, item) {
-					var deferred = $.ajax({
-						url: "/N2/Api/Content.ashx/autosave" + window.location.search,
-						type: 'post',
-						contentType: "application/json",
-						success: function () { console.log("success", id); },
-						data: JSON.stringify(this.changes)
-					});
-					deferred.then(function (result) {
-						$("#" + item.newItemReference).val(result.ID + "." + result.VersionIndex);
-					});
-					if (prev)
-						prev = prev.then(deferred);
-					else
-						prev = deferred;
-				})
-				prev && prev.then(function () {
-					console.log("ALL DONE", arguments);
-					self.dirty = false;
-				})
-			} else if (dirtbags.length) {
-				console.log("wait", dirtbags);
-				self.dirty = true;
+		this.extractChangedItems = function (dirtbags) {
+			var items = {};
+			jQuery.each(dirtbags, function () {
+				var idAndVersion = $("#" + this.newItemReference).val() || "";
+				var item = items[this.itemID] || (items[this.itemID] = { changes: { ID: parseInt(idAndVersion.split(".")[0]), VersionIndex: parseInt(idAndVersion.split(".")[1]) } });
+				item.changes[this.name] = this.checkout();
+				item.newItemReference = this.newItemReference;
+			});
+			return items;
+		}
+
+		this.saveItem = function (item) {
+			return $.ajax({
+				url: "/N2/Api/Content.ashx/autosave" + window.location.search,
+				type: 'post',
+				contentType: "application/json",
+				data: JSON.stringify(item.changes)
+			});
+		}
+
+		this.saveChanges = function (deferred) {
+			var dirtbags = self.getChanges();
+			if (!dirtbags.length)
+			{
+				self.dirty = false;
+				return deferred;
 			}
+			var items = self.extractChangedItems(dirtbags);
+
+			jQuery.each(items, function (id, item) {
+				if (deferred)
+					deferred = deferred.then(function () { return self.saveItem(item); });
+				else
+					deferred = self.saveItem(item);
+
+				deferred = deferred.then(function (result) {
+					$("#" + item.newItemReference).val(result.ID + "." + result.VersionIndex);
+				}, function () {
+					console.warn("Error auto-saving", item, arguments);
+				});
+			})
+
+			return deferred.then(function () {
+				self.dirty = false;
+			});
+		}
+
+		var self = this;
+		this.intervalHandle = setInterval(function () {
+			var deferred = null;
+			if (self.dirty) {
+				if (deferred)
+					// defer until previous save operations copmletes
+					deferred = deferred.then(function () { self.saveChanges(deferred) });
+				else
+					deferred = self.saveChanges();
+			} else if (self.getChanges().length) {
+				// ensure minimum interval by waiting until next setInterval call
+				self.dirty = true;
+			} else
+				deferred = null;
 		}, this.interval);
 	},
 	register: function (editorID, name, adapter) {
@@ -63,10 +88,13 @@
 			}
 		}
 		var editor = $("#" + editorID).closest("[data-item]");
-		var itemID = parseInt(editor.attr("data-n2-item"));
+		var itemID = parseInt(editor.attr("data-item"));
 		var fn = resolve(window, adapter);
-		fn.prototype = { editorID: editorID, newItemReference: editor.attr("data-item-reference"), itemID: itemID, name: name, dirty: function () { return undefined; }, checkout: function () { return undefined; } };
-		this.adapters.push(new fn());
+		if (fn) {
+			fn.prototype = { editorID: editorID, newItemReference: editor.attr("data-item-reference"), itemID: itemID, name: name, dirty: function () { return undefined; }, checkout: function () { return undefined; } };
+			this.adapters.push(new fn());
+		} else
+			console.warn("Couldn't find client adapter: ", adapter);
 	},
 	adapters: [],
 	input: function () {
@@ -81,6 +109,20 @@
 		this.checkout = function () {
 			dirty = false;
 			return $("#" + this.editorID).val();
+		}
+	},
+	checkbox: function () {
+		var self = this;
+		var dirty = false;
+		$("#" + this.editorID).on("change", function () {
+			dirty = true;
+		})
+		this.dirty = function () {
+			return dirty;
+		}
+		this.checkout = function () {
+			dirty = false;
+			return $("#" + this.editorID).prop("checked");
 		}
 	},
 	ckeditor: function () {
