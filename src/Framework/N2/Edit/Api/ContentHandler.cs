@@ -56,54 +56,54 @@ namespace N2.Management.Api
                     {
                         case "/search":
                             WriteSearch(context);
-                            break;
+                            return;
                         case "/translations":
                             var translations = GetTranslations(context).ToList();
                             context.Response.WriteJson(new { Translations = translations });
-                            break;
+                            return;
                         case "/versions":
                             var versions = GetVersions(context).ToList();
                             context.Response.WriteJson(new { Versions = versions });
-							break;
+							return;
 						case "/definitions":
 							var definitions = GetDefinitionTemplateInfos(context);
 							context.Response.WriteJson(new { Definitions = definitions });
-							break;
+							return;
 						case "/templates":
 							var templates = GetTemplateInfos(context);
 							var wizards = GetwizardInfos(context);
 							context.Response.WriteJson(new { Templates = templates, Wizards = wizards });
-							break;
+							return;
                         case "/tokens":
                             var tokens = GetTokens(context);
                             context.Response.WriteJson(new { Tokens = tokens });
-                            break;
+                            return;
 						case "":
 						case "/":
 						case "/children":
 							var children = GetChildren(context).ToList();
                             context.Response.WriteJson(new { Children = children, IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
-                            break;
+                            return;
                         case "/branch":
 							var branch = GetBranch(context);
                             context.Response.WriteJson(new { Branch = branch });
-                            break;
+                            return;
                         case "/tree":
 							var tree = GetTree(context);
                             context.Response.WriteJson(new { Tree = tree });
-                            break;
+                            return;
                         case "/ancestors":
 							var ancestors = GetAncestors(context);
                             context.Response.WriteJson(new { Ancestors = ancestors });
-                            break;
+                            return;
                         case "/parent":
 							var parent = GetParent(context);
                             context.Response.WriteJson(new { Parent = parent });
-                            break;
+                            return;
                         case "/node":
 							var node = GetNode(context);
                             context.Response.WriteJson(new { Node = node });
-                            break;
+                            return;
 						default:
 							if (context.Request.PathInfo.StartsWith("/"))
 							{
@@ -124,32 +124,32 @@ namespace N2.Management.Api
                     {
                         case "":
                             Create(context);
-                            break;
+                            return;
                         case "/update":
                             Update(context);
-                            break;
+                            return;
                         case "/sort":
                         case "/move":
                             Move(context, Selection.RequestValueAccessor);
-                            break;
+                            return;
                         case "/copy":
                             Copy(context, Selection.RequestValueAccessor);
-                            break;
+                            return;
                         case "/delete":
                             Delete(context);
-                            break;
+                            return;
                         case "/publish":
                             Publish(context);
-                            break;
+                            return;
                         case "/unpublish":
                             Unpublish(context);
-                            break;
+                            return;
                         case "/schedule":
                             Schedule(context);
-							break;
+							return;
 						case "/autosave":
 							Autosave(context);
-							break;
+							return;
                     }
                     break;
                 case "DELETE":
@@ -157,17 +157,17 @@ namespace N2.Management.Api
 					{
 						case "/message":
 							DeleteMessage(context);
-							break;
+							return;
 						default:
 							EnsureValidSelection();
 							Delete(context);
-							break;
+							return;
 					}
                     break;
                 case "PUT":
                     EnsureValidSelection();
                     Update(context);
-                    break;
+                    return;
             }
 
 			if (!TryExecuteExternalHandlers(context))

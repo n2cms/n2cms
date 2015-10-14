@@ -1,4 +1,4 @@
-﻿function MessagesCtrl($scope, $rootScope, $sce, Context, Content, Confirm) {
+﻿function CollaborationMessagesCtrl($scope, $rootScope, $sce, Context, Content, Confirm) {
 	$scope.messages = {
 		show: false,
 		list: null,
@@ -18,8 +18,6 @@
 			this.list = null;
 		},
 		removePermanently: function (message) {
-			console.log("remove", message);
-
 			Confirm({
 				title: "Remove permanently for all users?",//Translate("confirm.unpublish.title"),
 				message: message,
@@ -63,3 +61,28 @@
 	})
 }
 
+function CollaborationNotesCtrl($scope, $rootScope, $resource, Translate, Eventually, EbbCallbacks) {
+	var res = $resource('Api/Content.ashx/:target/:action?n2item=:n2item', { target: 'collaboration' }, {
+		'notes': { method: 'GET', params: { action: 'notes' } },
+		'saveNote': { method: 'POST', params: { action: 'notes' } },
+	});
+
+	function loadNotes() {
+		$scope.note = null;
+		$scope.placeholder = null;
+		res.notes({ n2item: $scope.Context.CurrentItem.ID }, EbbCallbacks(function (result) {
+			$scope.note = result.Notes[0];
+			$scope.placeholder = Translate("collaboration.notes.placeholder", "No notes on ") + $scope.Context.CurrentItem.Title;
+		}, 100));
+	}
+
+	$scope.saveNote = function () {
+		var id = $scope.Context.CurrentItem.ID;
+		var note = $scope.note;
+		Eventually(function () {
+			res.saveNote({ n2item: id}, { note: note })
+		}, 1000);
+	}
+
+	$rootScope.$on("contextchanged", loadNotes);
+}

@@ -1,0 +1,9 @@
+﻿.n2-collaboration-notes {}
+	.n2-collaboration-notes textarea {
+		width:100%;
+		background-color:lightyellow;
+		box-shadow:inset 0 0 25px rgba(255, 216, 0, .2);
+		border-radius:0;
+		border:none;
+		margin-bottom:0;
+	}

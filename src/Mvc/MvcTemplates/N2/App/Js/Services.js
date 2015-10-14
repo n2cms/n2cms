@@ -7,12 +7,20 @@
 		return {};
 	});
 
+	module.factory("EbbCallbacks", function (Eventually) {
+		return function (callback, ms, onWorkCancelled, parallelWorkGroup) {
+			return function () {
+				Eventually(callback, ms, onWorkCancelled, parallelWorkGroup, arguments);
+			}
+		}
+	});
+
 	module.factory('Eventually', function ($timeout) {
 		return (function () {
 			// clears the previous action if a new event is triggered before the timeout
 			var timer = 0;
 			var timers = {};
-			return function(callback, ms, onWorkCancelled, parallelWorkGroup) {
+			return function(callback, ms, onWorkCancelled, parallelWorkGroup, callbackArguments) {
 				if (!!parallelWorkGroup) {
 					if (timers[parallelWorkGroup]) {
 						$timeout.cancel(timers[parallelWorkGroup]);
@@ -20,14 +28,14 @@
 					}
 					timers[parallelWorkGroup] = $timeout(function() {
 						timers[parallelWorkGroup] = null;
-						callback();
+						callback.apply(null, callbackArguments);
 					}, ms);
 				} else {
 					timer && onWorkCancelled && onWorkCancelled();
 					timer && $timeout.cancel(timer);
 					timer = $timeout(function() {
 						timer = 0;
-						callback();
+						callback.apply(null, callbackArguments);
 					}, ms);
 				}
 			};

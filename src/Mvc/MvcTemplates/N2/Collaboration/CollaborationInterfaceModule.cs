@@ -23,7 +23,9 @@ namespace N2.Management.Collaboration
 		void builder_InterfaceBuilt(object sender, InterfaceBuiltEventArgs e)
 		{
 			//e.Data.ActionMenu.Add("info", new InterfaceMenuItem { Name = "Collaboration", TemplateUrl = "{ManagementUrl}/Collaboration/Partials/PageStats.html".ResolveUrlTokens(), RequiredPermission = Permission.Read });
-			e.Data.ActionMenu.Add(null, new InterfaceMenuItem { Name = "messages", Alignment = "Right", TemplateUrl = "App/Partials/Messages.html" }, requireParent: false, insertBeforeSiblingWithName: "search");
+			e.Data.ActionMenu.Add(null, new InterfaceMenuItem { Name = "messages", Alignment = "Right", TemplateUrl = "{ManagementUrl}/Collaboration/Partials/Messages.html".ResolveUrlTokens() }, requireParent: false, insertBeforeSiblingWithName: "search");
+			e.Data.ActionMenu.Add("info", new InterfaceMenuItem { Name = "notes", TemplateUrl = "{ManagementUrl}/Collaboration/Partials/Notes.html".ResolveUrlTokens(), RequiredPermission = Permission.Read });
+
 		}
 
 		public override IEnumerable<string> ScriptIncludes
@@ -34,12 +36,12 @@ namespace N2.Management.Collaboration
 			}
 		}
 
-		//public override IEnumerable<string> StyleIncludes
-		//{
-		//	get
-		//	{
-		//		yield return "{ManagementUrl}/Collaboration/Css/Collaboration.css";
-		//	}
-		//}
+		public override IEnumerable<string> StyleIncludes
+		{
+			get
+			{
+				yield return "{ManagementUrl}/Collaboration/Css/Collaboration.css";
+			}
+		}
 	}
 }

@@ -55,10 +55,15 @@ namespace N2.Management.Collaboration
 			}
 		}
 
-		public object PostNotes(HttpContextBase context, string note)
+		public class PostNotesDto
+		{
+			public string note;
+		}
+
+		public object PostNotes(HttpContextBase context, Dictionary<string, object> body)
 		{
 			var item = new SelectionUtility(context, engine).SelectedItem;
-			item["CollaborationNote"] = note;
+			item["CollaborationNote"] = body["note"];
 			engine.Persister.Save(item);
 
 			return new { Success = true };
