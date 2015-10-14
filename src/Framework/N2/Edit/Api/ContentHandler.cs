@@ -197,7 +197,13 @@ namespace N2.Management.Api
 
 				Update(requestBody, item);
 
-				versions.UpdateVersion(item);
+				if (item.ID == 0 && item.VersionOf.HasValue)
+					versions.UpdateVersion(item);
+				else
+				{
+					engine.Persister.Repository.SaveOrUpdate(item);
+					engine.Persister.Repository.Flush();
+				}
 			}
 			else
 			{
@@ -214,7 +220,11 @@ namespace N2.Management.Api
 
 				Update(requestBody, item);
 
+				bool itemNeedsResaveWithIdGeneratedName = string.IsNullOrEmpty(item.Name);
 				engine.Persister.Repository.SaveOrUpdate(item);
+				engine.Persister.Repository.Flush();
+				if (itemNeedsResaveWithIdGeneratedName)
+					engine.Persister.Repository.Flush();
 			}
 
 			context.Response.WriteJson(new { ID = item.VersionOf.ID ?? item.ID, VersionIndex = item.VersionIndex, Changes = requestBody.Count });
