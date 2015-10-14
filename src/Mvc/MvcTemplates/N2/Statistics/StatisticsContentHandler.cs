@@ -29,22 +29,7 @@ namespace N2.Management.Statistics
 		}
 
 		public object Index(DateTime? from, DateTime? to, int? n2item, bool? raw)
-		//protected override object HandleDataRequest(HttpContextBase context)
 		{
-			//DateTime from, to;
-			//if (!DateTime.TryParse(context.Request["from"], out to))
-			//	to = Utility.CurrentTime().GetSlot(granularity).Add(slotSize);
-			//if (!DateTime.TryParse(context.Request["from"], out from))
-			//	from = to.AddDays(-displayedDays);
-			
-			//int id;
-			//if (!int.TryParse(context.Request.QueryString["n2item"], out id))
-			//	id = 0;
-
-			//bool raw;
-			//if (!bool.TryParse(context.Request.QueryString["raw"], out raw))
-			//	raw = false;
-
 			to = to ?? Utility.CurrentTime().GetSlot(granularity).Add(slotSize);
 			from = from ?? to.Value.AddDays(-displayedDays);
 
