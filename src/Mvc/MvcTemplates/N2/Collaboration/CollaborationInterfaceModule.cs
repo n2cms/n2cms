@@ -34,12 +34,12 @@ namespace N2.Management.Collaboration
 			}
 		}
 
-		public override IEnumerable<string> StyleIncludes
-		{
-			get
-			{
-				//yield return "{ManagementUrl}/Collaboration/Css/Collaboration.css";
-			}
-		}
+		//public override IEnumerable<string> StyleIncludes
+		//{
+		//	get
+		//	{
+		//		yield return "{ManagementUrl}/Collaboration/Css/Collaboration.css";
+		//	}
+		//}
 	}
 }
