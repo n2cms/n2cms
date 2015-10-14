@@ -3,6 +3,7 @@ using N2.Edit.Api;
 using N2.Edit.Collaboration;
 using N2.Engine;
 using N2.Management.Api;
+using N2.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,11 +27,42 @@ namespace N2.Management.Collaboration
 
 		public object Messages(HttpContextBase context)
 		{
-			var ctx = CollaborationContext.Create(DateTime.MinValue, new SelectionUtility(context, engine).SelectedItem ?? engine.UrlParser.StartPage, context.User);
+			var selectedItem = new SelectionUtility(context, engine).ParseSelectionFromRequest() ?? engine.Persister.Get(engine.Host.DefaultSite.RootItemID);
+			var ctx = CollaborationContext.Create(DateTime.MinValue, selectedItem, context.User);
 			return new
 			{
 				Messages = messages.GetMessages(ctx).ToList()
 			};
 		}
+
+		public object Notes(HttpContextBase context, int? skip, int? take)
+		{
+			var item = new SelectionUtility(context, engine).ParseSelectionFromRequest();
+			if (item != null)
+			{
+				return new
+				{
+					Notes = item["CollaborationNote"] != null ? new[] { item["CollaborationNote"] } : new object[0]
+				};
+			}
+			else
+			{
+				var items = engine.Persister.Repository.Find(Parameter.IsNotNull("CollaborationNote").Detail().Skip(skip ?? 0).Take(take ?? 1000));
+				return new
+				{
+					AnnotatedItems = items.Select(ci => new { ci.ID, ci.Title, ci.Url, ci.IconUrl, ci.IconClass, Notes = new [] { ci["CollaborationNote"] } }).ToList()
+				};
+			}
+		}
+
+		public object PostNotes(HttpContextBase context, string note)
+		{
+			var item = new SelectionUtility(context, engine).SelectedItem;
+			item["CollaborationNote"] = note;
+			engine.Persister.Save(item);
+
+			return new { Success = true };
+		}
+
 	}
 }
