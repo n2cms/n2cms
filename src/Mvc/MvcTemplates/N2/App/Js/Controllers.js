@@ -213,8 +213,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 			return;
 
 		function retryStatus(message, retryTimeout) {
-			var i = $scope.Context.Flags.indexOf("CommunicationFailure");
-			if (i < 0) $scope.Context.Flags.push("CommunicationFailure");
+			$scope.Context.Flags.CommunicationFailure = true;
 
 			communicationattempts++;
 
@@ -229,8 +228,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 			$timeout(function () {
 				Context.status({}, function success(result) {
 					if (!result || result.Running) {
-						var i = $scope.Context.Flags.indexOf("CommunicationFailure");
-						if (i >= 0) $scope.Context.Flags.splice(i, 1);
+						$scope.Context.Flags.CommunicationFailure = false;
 
 						communicationattempts = 0;
 						Notify.show({
@@ -403,7 +401,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 	};
 
 	$scope.isFlagged = function (flag) {
-		return jQuery.inArray(flag, $scope.Context.Flags) >= 0;
+		return $scope.Context.Flags[flag];
 	};
 
 	var viewExpression = /[?&]view=[^?&]*/;
@@ -614,13 +612,11 @@ function MenuCtrl($rootScope, $scope, Security) {
 	};
 	$scope.$watch("Context.User.Settings.ViewPreference", function (viewPreference, previousPreference) {
 		$scope.setPreviewQuery("view", viewPreference);
-		var existingIndex = jQuery.inArray("View" + previousPreference, $scope.Context.Flags);
-		if (existingIndex >= 0)
-			$scope.Context.Flags.splice(existingIndex, 1);
-		$scope.Context.Flags.push("View" + viewPreference);
+		$scope.Context.Flags["View" + previousPreference] = false;
+		$scope.Context.Flags["View" + viewPreference] = true;
 	});
 	$rootScope.$on("contextchanged", function (scope, ctx) {
-		ctx.Flags.push("View" + ctx.User.Settings.ViewPreference);
+		ctx.Flags["View" + ctx.User.Settings.ViewPreference] = true;
 	});
 }
 
@@ -828,9 +824,9 @@ function FrameActionCtrl($scope, $rootScope, $timeout, FrameManipulator) {
 		$scope.$parent.action = null;
 		$scope.$parent.item.Children = [];
 		var extraFlags = FrameManipulator.getFlags();
-		for (var i in extraFlags) {
-			$scope.Context.Flags.push(extraFlags[i]);
-		}
+		angular.forEach(extraFlags, function (flag) {
+			$scope.Context.Flags[flag] = true;
+		})
 
 		if ($scope.isFlagged("Management")) {
 			function loadActions() {

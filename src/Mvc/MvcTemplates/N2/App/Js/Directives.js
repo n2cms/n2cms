@@ -616,7 +616,7 @@ span.null {color:silver}\
 				angular.forEach(map, function (selector, eventName) {
 					$rootScope.$on(eventName, function () {
 						setTimeout(function () {
-							if (scope.Context.Flags.indexOf("ContentEdit") < 0)
+							if (!scope.Context.Flags.ContentEdit)
 								if (element.find(selector).siblings(".dropdown.open").length == 0)
 									element.find(selector).focus();
 						});

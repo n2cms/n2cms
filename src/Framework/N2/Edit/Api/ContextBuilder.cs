@@ -13,6 +13,35 @@ using System.Web;
 
 namespace N2.Management.Api
 {
+	public class FlagData : Dictionary<string, bool>
+	{
+		public FlagData Add(string flag)
+		{
+			this[flag] = true;
+			return this;
+		}
+
+		public FlagData AddRange(IEnumerable<string> flags)
+		{
+			foreach (var flag in flags)
+				this[flag] = true;
+			return this;
+		}
+
+		public static implicit operator FlagData(List<string> flags)
+		{
+			return new FlagData().AddRange(flags);
+		}
+
+		public bool Any(params string[] keys)
+		{
+			foreach(var key in keys)
+				if (ContainsKey(key))
+					return true;
+			return false;
+		}
+	}
+
     public class ContextData
     {
         public ContextLanguage Language { get; set; }
@@ -21,7 +50,7 @@ namespace N2.Management.Api
 
         public ExtendedContentInfo ExtendedInfo { get; set; }
 
-        public List<string> Flags { get; set; }
+        public FlagData Flags { get; set; }
 
         public string ReturnUrl { get; set; }
 
@@ -119,7 +148,7 @@ namespace N2.Management.Api
                 }
             }
 
-            if (new[] { "MyselfRoot", "ContentEditRecursive", "ContentTemplatesDefault", "ContentWizardDefault", "UsersUsers" }.Intersect(data.Flags).Any() == false)
+            if (data.Flags.Any("MyselfRoot", "ContentEditRecursive", "ContentTemplatesDefault", "ContentWizardDefault", "UsersUsers") == false)
                 data.Flags.Add("ContentPages");
 
             data.Actions = CreateActions(context);
