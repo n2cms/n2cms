@@ -162,12 +162,16 @@
 							<xs:element name="resources" minOccurs="0">
 								<xs:complexType>
 									<xs:attribute name="debug" type="xs:boolean" use="optional" default="false" />
-									<xs:attribute name="angularRoot" type="xs:string" use="optional" />
-									<xs:attribute name="twitterBootstrapRoot" type="xs:string" use="optional" />
-									<xs:attribute name="jQueryPath" type="xs:string" use="optional" />
+									<xs:attribute name="angularJsRoot" type="xs:string" use="optional" />
+									<xs:attribute name="bootstrapJsPath" type="xs:string" use="optional" />
+									<xs:attribute name="bootstrapCssPath" type="xs:string" use="optional" />
+									<xs:attribute name="jQueryJsPath" type="xs:string" use="optional" />
 									<xs:attribute name="jQueryUiPath" type="xs:string" use="optional" />
+									<xs:attribute name="angularUiJsPath" type="xs:string" use="optional" />
+									<xs:attribute name="angularStrapJsPath" type="xs:string" use="optional" />
+									<xs:attribute name="iconsCssPath" type="xs:string" use="optional" />
 									<xs:attribute name="jQueryPluginsPath" type="xs:string" use="optional" />
-									<xs:attribute name="ckEditorPath" type="xs:string" use="optional" />
+									<xs:attribute name="ckEditorJsPath" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="vpp" minOccurs="0">
