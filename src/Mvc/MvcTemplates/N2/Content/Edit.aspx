@@ -8,7 +8,7 @@
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
-	<edit:ButtonGroup CssClass="btn-primary" runat="server">
+	<edit:ButtonGroup CssClass="btn-primary" runat="server" OnClientClick="return !n2ctx.isFlagged('ShutdownEditing') || confirm('Editing is currently disabled. If you continue right now changes may be lost. Do you want to continue?')">
 		<asp:LinkButton ID="btnSavePublish" data-icon-class="fa fa-play-circle" 
 			OnCommand="OnPublishCommand" runat="server" 
 			CssClass="command iconed publish" 

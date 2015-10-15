@@ -31,13 +31,6 @@
 		$(document).keyup(function () {
 			isDirty = true;
 		});
-		if (window.tinymce){
-			tinymce.onAddEditor.add(function(mce, ed){
-				ed.onKeyUp.add(function() {
-					isDirty = true;
-				})
-			});
-		}
 		setInterval(function () {
 			if (!$(activityContainer).is(":visible"))
 				return;

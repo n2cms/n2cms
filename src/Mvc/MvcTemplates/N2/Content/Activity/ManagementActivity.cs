@@ -5,6 +5,7 @@ using System.Web;
 using N2.Edit.Activity;
 using N2.Engine;
 using N2.Web;
+using N2.Management.Api;
 
 namespace N2.Management.Activity
 {
@@ -32,7 +33,7 @@ namespace N2.Management.Activity
             return new
             {
 				Messages = messages,
-				Flags = flags,
+				Flags = new FlagData(flags),
                 Activities = activity
                     .Select(a => new { AddedDate = a.AddedDate.ToString(), a.Operation, a.PerformedBy })
                     .OfType<object>(),

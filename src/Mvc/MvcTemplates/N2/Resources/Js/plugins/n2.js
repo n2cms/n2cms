@@ -224,6 +224,12 @@ var initn2context = function (w) {
 
 			jQuery("#" + name).removeClass("selected");
 			jQuery(document.body).removeClass(name + "Selected");
+		},
+		context: function (ctx) {
+			this.flags = ctx.Flags;
+		},
+		isFlagged: function (flag) {
+			return this.flags && this.flags[flag];
 		}
 	};
 

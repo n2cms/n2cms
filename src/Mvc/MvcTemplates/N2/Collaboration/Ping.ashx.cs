@@ -54,7 +54,7 @@ namespace N2.Management.Collaboration
 				Messages = engine.Resolve<ManagementMessageCollector>()
 					.GetMessages(cctx)
 					.ToList(),
-				Flags = engine.Resolve<ManagementFlagCollector>().GetFlags(cctx).ToList()
+				Flags = new FlagData(engine.Resolve<ManagementFlagCollector>().GetFlags(cctx))
 			});
 		}
 

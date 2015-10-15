@@ -15,6 +15,15 @@ namespace N2.Management.Api
 {
 	public class FlagData : Dictionary<string, bool>
 	{
+		public FlagData()
+		{
+		}
+
+		public FlagData(IEnumerable<string> flags)
+		{
+			AddRange(flags);
+		}
+
 		public FlagData Add(string flag)
 		{
 			this[flag] = true;
@@ -23,14 +32,15 @@ namespace N2.Management.Api
 
 		public FlagData AddRange(IEnumerable<string> flags)
 		{
-			foreach (var flag in flags)
-				this[flag] = true;
+			if (flags != null)
+				foreach (var flag in flags)
+					this[flag] = true;
 			return this;
 		}
 
 		public static implicit operator FlagData(List<string> flags)
 		{
-			return new FlagData().AddRange(flags);
+			return new FlagData(flags);
 		}
 
 		public bool Any(params string[] keys)

@@ -76,6 +76,16 @@
 	});
 
 	module.factory('FrameContext', function ($rootScope) {
+		var context = { Flags: {} };
+		$rootScope.$on("contextchanged", function (scope, ctx) {
+			context = ctx;
+		});
+		var lastFlags = {};
+		function objSize(o) {
+			var i = 0;
+			angular.forEach(o, function () { i++ });
+			return i;
+		}
 		window.top.n2ctx = {
 			refresh: function (ctx) {
 			},
@@ -90,13 +100,37 @@
 			},
 			toolbarSelect: function () {
 			},
-			context: function (context) {
-				if (context.Messages && context.Messages.length) {
-					$rootScope.$broadcast("changecontext", context);
+			context: function (ctx) {
+				if (ctx.Messages && ctx.Messages.length) {
+					$rootScope.$broadcast("changecontext", { Messages: ctx.Messages });
+				}
+				if (ctx.Flags) {
+					if (objSize(lastFlags) || objSize(ctx.Flags)) {
+						var flagsChagned = false;
+						angular.forEach(lastFlags, function (value, flag) {
+							if (context.Flags[flag]) {
+								context.Flags[flag] = false;
+								flagsChagned = true;
+							}
+								
+						});
+						angular.forEach(ctx.Flags, function (value, flag) {
+							if (!context.Flags[flag]) {
+								context.Flags[flag] = true;
+								flagsChagned = true;
+							}
+						});
+						lastFlags = ctx.Flags;
+						if (flagsChagned && !$rootScope.$$phase)
+							$rootScope.$apply();
+					}
 				}
 			},
 			failure: function (response) {
 				$rootScope.$broadcast("communicationfailure", { status: response.status, statusText: response.statusText });
+			},
+			isFlagged: function (flag) {
+				return context.Flags[flag];
 			}
 		};
 		return window.top.n2ctx;
