@@ -183,7 +183,6 @@
     <Compile Include="Edit\Collaboration\TraceReaderMessageProvider.cs" />
     <Compile Include="Edit\Versioning\InvalidVersionInfo.cs" />
     <Compile Include="Edit\Versioning\VersionInfo.cs" />
-    <Compile Include="Edit\Workflow\ReplaceWithAutosavedDraft.cs" />
     <Compile Include="Persistence\LinqQueryFacade.cs" />
     <Compile Include="Persistence\NH\LinqNHQueryFacade.cs" />
     <Compile Include="Persistence\Xml\CacheBox.cs" />
