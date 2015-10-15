@@ -26,6 +26,8 @@ namespace N2.Definitions
 
         public static IEnumerable<TemplateDefinition> AllowedBelow(this IEnumerable<TemplateDefinition> allTemplates, ItemDefinition parentDefinition, ContentItem parentItem, IDefinitionManager definitions)
         {
+			if (allTemplates == null) yield break;
+
             foreach (var template in allTemplates)
             {
                 if (IsAllowed(null, template.Definition, parentItem, parentDefinition, definitions))

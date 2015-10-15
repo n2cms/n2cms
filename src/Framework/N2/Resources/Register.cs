@@ -164,6 +164,8 @@ namespace N2.Resources
 			if (page.Items[resourceUrl] == null)
 			{
 				var holder = GetPlaceHolder(page);
+				if (holder == null)
+					return;
 
 				var link = new HtmlLink {Href = Url.ResolveTokens(resourceUrl)};
 				link.Attributes["type"] = "text/css";
@@ -239,7 +241,7 @@ namespace N2.Resources
 
 		public static void JavaScript(this Page page, string script, ScriptOptions options)
 		{
-			if (page == null) throw new ArgumentNullException("page");
+			if (page == null) return;
 
 			if (page.Items[script] == null)
 			{
@@ -338,15 +340,17 @@ namespace N2.Resources
 
 		private static PlaceHolder GetPlaceHolder(Page page)
 		{
+			if (page == null) return null;
+
 			var holder = page.Items["N2.Resources.holder"] as PlaceHolder;
 			if (holder != null)
 				return holder;
 
-			if (page.Header == null)
-				throw new N2Exception("Couldn't find the page header. The register command needs the tag <header runat='server'> somewhere in the page template, master page or a user control.");
-
 			page.Items["N2.Resources.holder"] = holder = new PlaceHolder();
-			if (page.Header.Controls.Count > 0)
+
+			if (page.Header == null)
+				page.Controls.Add(holder);
+			else if (page.Header.Controls.Count > 0)
 				page.Header.Controls.AddAt(1, holder);
 			else
 				page.Header.Controls.Add(holder);
