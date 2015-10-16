@@ -431,6 +431,11 @@ namespace N2.Web
 			return ParseQueryString(query);
 		}
 
+		public NameValueCollection GetQueryNameValues()
+		{
+			return ParseQueryString(query).Aggregate(new NameValueCollection(), (seed, current) => { seed.Add(current.Key, current.Value); return seed; });
+		}
+
 		public Url AppendQuery(string key, string value)
 		{
 			return AppendQuery(key, value, true);

@@ -239,13 +239,14 @@ namespace N2.Web.Mvc.Html
                 if (includePartScripts) resources.PartsJs();
                 if (includePartStyles) { resources.PartsCss(); resources.IconsCss(); }
 
-                if (refreshNavigation)
-                    writer.Write(formatWithRefresh.Replace(settings));
+				if (refreshNavigation)
+					resources.HtmlLiteral(formatWithRefresh.Replace(settings));
                 else
-                    writer.Write(formatWithoutRefresh.Replace(settings));
+					resources.HtmlLiteral(formatWithoutRefresh.Replace(settings));
 
                 if (state.IsFlagSet(ControlPanelState.DragDrop))
-                    Html.Resources().JavaScript(UI.WebControls.ControlPanel.DragDropScriptInitialization(item), ScriptOptions.DocumentReady);
+                    resources.JavaScript(UI.WebControls.ControlPanel.DragDropScriptInitialization(item), ScriptOptions.DocumentReady);
+				resources.Render(writer);
             }
 
             private static string Plugins(HtmlHelper html, ContentItem item, ControlPanelState state)

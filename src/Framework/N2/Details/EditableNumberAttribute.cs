@@ -25,7 +25,6 @@ namespace N2.Details
             : base(title, sortOrder)
         {
             DefaultValue = 0;
-            Required = true;
             MaxLength = 11;
             ValidationType = ValidationDataType.Integer;
         }
@@ -75,29 +74,38 @@ namespace N2.Details
         public override bool UpdateItem(ContentItem item, Control editor)
         {
             TextBox tb = editor as TextBox;
-            switch (ValidationType)
-            {
-                case ValidationDataType.Currency:
-                    return Utility.SetPropertyOrDetail(item, Name, decimal.Parse(tb.Text));
-                case ValidationDataType.Date:
-                    return Utility.SetPropertyOrDetail(item, Name, DateTime.Parse(tb.Text));
-                case ValidationDataType.Double:
-                    return Utility.SetPropertyOrDetail(item, Name, double.Parse(tb.Text));
-                case ValidationDataType.Integer:
-                    return Utility.SetPropertyOrDetail(item, Name, int.Parse(tb.Text));
-                default:
-                    return Utility.SetPropertyOrDetail(item, Name, tb.Text);
-            }
+
+			object value = string.IsNullOrEmpty(tb.Text)
+				? null
+				: GetValue(tb.Text);
+
+			return Utility.SetPropertyOrDetail(item, Name, value);
         }
+
+		private object GetValue(string text)
+		{
+			switch (ValidationType)
+			{
+				case ValidationDataType.Currency:
+					return decimal.Parse(text);
+				case ValidationDataType.Date:
+					return DateTime.Parse(text);
+				case ValidationDataType.Double:
+					return double.Parse(text);
+				case ValidationDataType.Integer:
+					return int.Parse(text);
+				default:
+					return text;
+			}
+		}
 
         public override void UpdateEditor(ContentItem item, Control editor)
         {
             TextBox tb = editor as TextBox;
+			tb.TextMode = TextBoxMode.Number;
             object value = item[Name];
             if (value != null)
                 tb.Text = value.ToString();
-            else
-                tb.Text = ValidationTypeDefault();
         }
 
         private string ValidationTypeDefault()

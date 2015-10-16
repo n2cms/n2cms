@@ -14,6 +14,6 @@ namespace N2.Resources
         /// <summary>The script is located at the supplied url.</summary>
         Include = 8,
         /// <summary>Try to register this before any other scripts.</summary>
-        Prioritize = 18
+        Prioritize = 16
     }
 }

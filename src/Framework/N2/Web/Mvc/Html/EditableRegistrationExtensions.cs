@@ -39,9 +39,14 @@ namespace N2.Web.Mvc.Html
 				.Configure(e => e.CheckBoxText = checkBoxText);
 		}
 
+		public static EditableBuilder<EditableNumberAttribute> Number(this IContentRegistration registration, string name, string title = null)
+		{
+			return registration.RegisterEditable<EditableNumberAttribute>(name, title);
+		}
+
 		public static EditableBuilder<EditableChildrenAttribute> Children(this IContentRegistration registration, string zoneName)
 		{
-			return registration.RegisterEditable<EditableChildrenAttribute>(zoneName, zoneName);
+			return registration.RegisterEditable<EditableChildrenAttribute>(zoneName, zoneName).Configure(eca => eca.ZoneName = zoneName);
 		}
 
 		public static EditableBuilder<EditableDateAttribute> Date(this IContentRegistration registration, string name, string title = null)

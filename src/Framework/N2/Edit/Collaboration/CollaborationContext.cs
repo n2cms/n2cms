@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 
 namespace N2.Edit.Collaboration
@@ -11,19 +12,30 @@ namespace N2.Edit.Collaboration
 	{
 		public ContentItem SelectedItem { get; set; }
 		public DateTime LastDismissed { get; set; }
+		public IPrincipal User { get; set; }
 
 		public CollaborationContext ParseLastDismissed(string lastDismissed)
 		{
+			LastDismissed = Parse(lastDismissed);
+			return this;
+		}
+
+		private static DateTime Parse(string lastDismissed)
+		{
 			DateTime date;
 			if (DateTime.TryParse(lastDismissed, CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out date))
-				LastDismissed = date;
-			return this;
+				return date;
+			return DateTime.MinValue;
 		}
 
 		public static CollaborationContext Create(IProfileRepository profiles, ContentItem item, System.Web.HttpContextBase context)
 		{
-			return new CollaborationContext { SelectedItem = item }
-				.ParseLastDismissed(context.Request["lastDismissed"] ?? profiles.GetProfileSetting(context.User, "LastDismissed") as string);
+			return Create(Parse(context.Request["lastDismissed"] ?? profiles.GetProfileSetting(context.User, "LastDismissed") as string), item, context.User);
+		}
+
+		public static CollaborationContext Create(DateTime lastDismissed, ContentItem item, IPrincipal user)
+		{
+			return new CollaborationContext { SelectedItem = item, User = user, LastDismissed = lastDismissed };
 		}
 	}
 }

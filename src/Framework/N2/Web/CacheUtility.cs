@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web;
 
 namespace N2.Web
@@ -29,10 +30,10 @@ namespace N2.Web
             if (!string.IsNullOrEmpty(ifModifiedSince))
             {
                 DateTimeOffset since;
-                if (DateTimeOffset.TryParse(ifModifiedSince, out since))
-                    foreach (string file in filePaths)
-                        if (file != null && File.Exists(file) && File.GetLastWriteTimeUtc(file) < since)
-                            return true;
+				if (DateTimeOffset.TryParse(ifModifiedSince, out since))
+					return filePaths.Where(p => p != null)
+						.Where(p => File.Exists(p))
+						.All(p => File.GetLastWriteTimeUtc(p) < since);
             }
             return false;
         }

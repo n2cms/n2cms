@@ -444,12 +444,16 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void Part_PresentOnDraft_IsConsideredToHaveADraft()
 		{
+			var pastTime = new TimeCapsule(DateTime.Now.AddSeconds(-10));
+
 			var page = CreateOneItem<Items.NormalPage>(0, "page", null);
 			persister.Save(page);
 
 			var part = CreateOneItem<Items.NormalItem>(0, "part", page);
 			part.ZoneName = "TheZone";
 			persister.Save(part);
+
+			pastTime.Dispose();
 
 			var version = page.Clone(true);
 			version.State = ContentState.Draft;
@@ -464,12 +468,16 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void Part_PresentOnDraft_HaveInfo()
 		{
+			var pastTime = new TimeCapsule(DateTime.Now.AddSeconds(-10));
+
 			var page = CreateOneItem<Items.NormalPage>(0, "page", null);
 			persister.Save(page);
 
 			var part = CreateOneItem<Items.NormalItem>(0, "part", page);
 			part.ZoneName = "TheZone";
 			persister.Save(part);
+
+			pastTime.Dispose();
 
 			var version = page.Clone(true);
 			version.State = ContentState.Draft;

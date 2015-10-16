@@ -8,8 +8,8 @@ using N2.Persistence.Serialization;
 
 namespace N2.Persistence.Xml
 {
-    [Service]
-    [Service(typeof(IItemXmlReader))]
+	//[Service]
+	//[Service(typeof(IItemXmlReader))]
     public class ItemHtmlReader : IItemXmlReader
     {
         public bool IgnoreMissingTypes { get; set; }

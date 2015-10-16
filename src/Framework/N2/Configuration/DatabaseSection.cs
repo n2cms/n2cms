@@ -67,6 +67,14 @@ namespace N2.Configuration
             set { base["connectionStringName"] = value; }
         }
 
+		/// <summary>The connection string to use.</summary>
+		[ConfigurationProperty("connectionString")]
+		public string ConnectionString
+		{
+			get { return (string)base["connectionString"]; }
+			set { base["connectionString"] = value; }
+		}
+
         /// <summary>The prefix used for tables in this site. This can be used to install multiple installations in the same database.</summary>
         [ConfigurationProperty("tablePrefix", DefaultValue = "n2")]
         public string TablePrefix

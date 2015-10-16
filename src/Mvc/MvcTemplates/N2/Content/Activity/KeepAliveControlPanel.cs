@@ -26,8 +26,8 @@ namespace N2.Management.Content.Activity
                 return null;
 
             var script = new LiteralControl(string.Format(@"<script>
-setInterval(function() {{ $.get('{0}?activity=View&{1}={2}', function(result){{ try {{ n2 && n2.context && n2.context(result) }} catch (ex) {{ console.log(ex); }} }}); }}, {3});
-</script>", Url.ResolveTokens("{ManagementUrl}/Collaboration/Ping.ashx"), PathData.SelectedQueryKey, context.Selected.Path, collaboration.PingInterval * 1000));
+setInterval(function() {{ $.get('{0}?activity=View&{1}={2}', function(result){{ try {{ n2 && n2.context && n2.context(result) }} catch (ex) {{ console.log(ex); }} }}).fail(function(result){{ try {{ n2 && n2.failure && n2.failure(result) }} catch (ex) {{ console.log(ex); }} }}); }}, {3});
+</script>", Url.ResolveTokens(collaboration.PingPath), PathData.SelectedQueryKey, context.Selected.Path, collaboration.PingInterval * 1000));
             container.Controls.Add(script);
             return script;
         }

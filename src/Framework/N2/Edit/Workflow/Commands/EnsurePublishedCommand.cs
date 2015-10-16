@@ -14,6 +14,9 @@ namespace N2.Edit.Workflow.Commands
                     // no detail editor is defined -> make sure it's published
                     state.Content.Published = Utility.CurrentTime();
             }
+
+			if (state.Content.Expires.HasValue)
+				state.Content.Expires = null;
         }
     }
 }

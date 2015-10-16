@@ -13,6 +13,7 @@ namespace N2.Details
         public EditableDropDownAttribute(string title, int sortOrder)
             : base(title, sortOrder)
         {
+			ClientAdapter = "n2autosave.select";
         }
 
         protected sealed override ListControl CreateEditor()

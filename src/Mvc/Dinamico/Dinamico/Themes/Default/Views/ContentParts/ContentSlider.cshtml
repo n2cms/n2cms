@@ -9,7 +9,7 @@
 	string uniqueId = Html.UniqueID("cs");
 }
 
-@{ Html.Resources().JavaScript(Url.ThemedContent("~/Scripts/jquery.anythingslider.js")); }
+@Html.Resources().JavaScript(Url.ThemedContent("~/Scripts/jquery.anythingslider.js"))
 
 <div class="slider contentSlider">
 	<div id="@uniqueId">@Content.Register.FreeText("Text").Configure(a => a.Rows = 10).Configure(a => a.TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine)</div>

@@ -38,7 +38,7 @@ namespace N2.Definitions
                             ? PropertyPersistenceLocation.Detail
                             : PropertyPersistenceLocation.Ignore
                 };
-            DefaultValue = Attributes.OfType<IInterceptableProperty>().Select(ip => ip.DefaultValue).Where(v => v != null).FirstOrDefault();
+            DefaultValue = Attributes.OfType<IInterceptableProperty>().Select(ip => ip.DefaultValue).FirstOrDefault(v => v != null);
         }
 
         public PropertyDefinition(string name, Type propertyType)

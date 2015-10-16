@@ -37,7 +37,7 @@ namespace N2.Edit.Tests.Trash
 
             persister.Delete(item);
 
-            item.Parent.ShouldBeTypeOf<TrashContainerItem>();
+            item.Parent.ShouldBeOfType<TrashContainerItem>();
         }
 
         [Test]

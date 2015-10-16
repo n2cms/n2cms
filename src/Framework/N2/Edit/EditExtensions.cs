@@ -179,7 +179,22 @@ namespace N2.Edit
                 context.Items["CachedSelectionUtility"] = selection = new SelectionUtility(context, engine ?? Context.Current);
             return selection;
         }
-    }
+
+		public static string GetDataType(this HttpRequestBase request)
+		{
+			return request["dataType"];
+		}
+
+		public static string GetDiscriminator(this HttpRequestBase request)
+		{
+			return request["discriminator"];
+		}
+
+		public static string GetTemplate(this HttpRequestBase request)
+		{
+			return request["template"];
+		}
+	}
 
     internal class CreatorItem : ContentItem, ISystemNode, IStyleable
     {

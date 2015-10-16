@@ -1,0 +1,527 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Setting up your environment &mdash; n2cms 1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="n2cms 1 documentation" href="../index.html"/>
+        <link rel="prev" title="Server Requirements" href="../getting-started/server-requirements.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="../index.html" class="icon icon-home"> n2cms
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/server-requirements.html">Server Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/server-requirements.html#operating-system">Operating System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/server-requirements.html#client-operating-systems">Client operating systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/server-requirements.html#web-servers">Web Servers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/server-requirements.html#net-framework">.NET Framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/server-requirements.html#databases">Databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/server-requirements.html#wildcard-mapping-iis-5-6-1">Wildcard mapping (IIS 5-6.1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/server-requirements.html#visual-studio-development">Visual Studio Development</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/server-requirements.html#shared-hosting">Shared Hosting</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Setting up your environment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#development-environment">Development Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-the-bits">Getting the Bits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#overview-of-available-packages">Overview of Available Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-up-and-running">Getting up and Running</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#web-platform-installer-wpi">Web Platform Installer (WPI)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#updating-n2cms">Updating N2CMS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#visual-studio-snippets-and-templates">Visual Studio Snippets and Templates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installing-visual-studio-item-templates">Installing Visual Studio Item Templates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-intellisense-documentation-for-visual-studio">Installing IntelliSense Documentation for Visual Studio</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-n2cms-nuget-packages">Installing N2CMS NuGet Packages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#which-management-pack-should-i-choose">Which management pack should I choose?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">n2cms</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Setting up your environment</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/setting-up-your-environment/index.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="setting-up-your-environment">
+<h1>Setting up your environment<a class="headerlink" href="#setting-up-your-environment" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="development-environment">
+<h2>Development Environment<a class="headerlink" href="#development-environment" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>There are two supported environments that you can use for developing a site with N2:</dt>
+<dd><ol class="first last arabic simple">
+<li>Git-based environment</li>
+<li>Nuget-based environment</li>
+</ol>
+</dd>
+</dl>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><div class="first last line-block">
+<div class="line">Choose this</div>
+</div>
+</th>
+<th class="head"><div class="first last line-block">
+<div class="line">If you want this</div>
+</div>
+</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line">Nuget-based</div>
+<div class="line">environment</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line">You want the easiest integration of N2 in an existing project.The Nuget</div>
+<div class="line">framework will downloadand install all required dependenciesinto an existing</div>
+<div class="line">Visual Studio project.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line">Git-based</div>
+<div class="line">environment</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line">You always want to have the most recent code, or you want to use one of the</div>
+<div class="line">sample template projects. The Git-based environment contains both the</div>
+<div class="line">WebForms and MVC template packs, sample data, plus the N2 Core and all</div>
+<div class="line">dependency binaries.This is a great way to get started with N2CMS, particularly</div>
+<div class="line">if you don&#8217;t already have a project started. You can use one of the existing</div>
+<div class="line">projects as a basis for your new N2-based site:</div>
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line">* WebForms Templates Pack</div>
+<div class="line">* ASP.NET MVC Templates</div>
+<div class="line">* ASP.NET MVC &#8220;Dinamico&#8221; Templates Pack (uses the Razor engine)</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="getting-the-bits">
+<h2>Getting the Bits<a class="headerlink" href="#getting-the-bits" title="Permalink to this headline">¶</a></h2>
+<p>Each of the supplied packages is supplied either as a Git repository or as a Nuget package.</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Start with Git: check out the N2 repository located at <a class="reference external" href="http://github.com/n2cms/n2cms">http://github.com/n2cms/n2cms</a>. Note: We don&#8217;t recommend using Github&#8217;s
+archive formats (tgz, zip). Using the archive formats will make your installation more difficult to update as Git&#8217;s patching
+infrastructure will not be available.</p>
+</li>
+<li><dl class="first docutils">
+<dt>Start with Nuget: install the requisite Nuget package from within your Visual Studio project</dt>
+<dd><ul class="first last simple">
+<li>n2cms_webforms</li>
+<li>n2cms_mvc</li>
+<li>n2cms_dinamico</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="overview-of-available-packages">
+<h2>Overview of Available Packages<a class="headerlink" href="#overview-of-available-packages" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><div class="first last line-block">
+<div class="line">Package</div>
+</div>
+</th>
+<th class="head"><div class="first last line-block">
+<div class="line">Description</div>
+</div>
+</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line">N2 CMS 2.x</div>
+<div class="line">Source Code</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line">This package reflects the N2 CMS framework development environment and</div>
+<div class="line">contains both template packs and all examples along with the framework</div>
+<div class="line">source code. For site development it’s recommended to start from one of</div>
+<div class="line">the template packs, or examples.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line">N2 CMS 2.x</div>
+<div class="line">ASP.NET</div>
+<div class="line">MVC Templates Pack</div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line">This is the source code of the MVC template package along with a</div>
+<div class="line">compiled version of the framework. Use this package to develop your own</div>
+<div class="line">site with existing functionality using ASP.NET MVC.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line">N2 CMS 2.x ASP.NET</div>
+<div class="line">WebForms</div>
+<div class="line">Templates Pack</div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line">This is the source code of the WebForms template package along with</div>
+<div class="line">a compiled version of the framework. Use this package to develop</div>
+<div class="line">your own site with existing functionality using ASP.NET WebForms.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line">N2 CMS 2.x MVC</div>
+<div class="line">Minimal Example</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line">This package contains a simple example site along with a compiled version</div>
+<div class="line">of the framework. Use this package to understand the basics of</div>
+<div class="line">ASP.NET MVC + N2 CMS or if you don’t need existing templates.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line">N2 CMS 2.x C#</div>
+<div class="line">Minimal Example</div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line">This package contains a simple example site along with a compiled version</div>
+<div class="line">of the framework. Use this package to understand the basics of</div>
+<div class="line">WebForms/C# + N2 CMS or if you don’t need existing templates.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line">N2 CMS 2.x</div>
+<div class="line">Visual Basic</div>
+<div class="line">Minimal Example</div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line">This package contains a simple example site along with a compiled version</div>
+<div class="line">of the framework. Use this package to understand the basics of</div>
+<div class="line">WebForms/Visual Basic + N2 CMS or if you don’t need existing templates.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line">N2 CMS 2.x</div>
+<div class="line">Compiled Framework</div>
+<div class="line">and Management UI</div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line">This is the N2 CMS framework compiled and zipped for upgrade</div>
+<div class="line">of a previous version, or integration with an existing site.</div>
+<div class="line"><br /></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="getting-up-and-running">
+<h2>Getting up and Running<a class="headerlink" href="#getting-up-and-running" title="Permalink to this headline">¶</a></h2>
+<p>Each package contains one or more Visual Studio Solution (<a href="#id1"><span class="problematic" id="id2">*</span></a>.sln) files. Open the Solution file for what you
+want to run, and edit the web.config file to use the database engine of your choosing. Invoke the Run command
+in Visual Studio to launch a development web server with N2 running inside. You should see the setup wizard right away.</p>
+<p>The next step is to either start using N2 and begin building your content using the pre-defined templates, or
+start developing with N2 to customize the system to suit your needs. Most users will want to do at least some
+development and customization as every website has different needs and the templates don&#8217;t cover every possible
+scenario that can be achieved with N2 CMS.</p>
+<div class="section" id="web-platform-installer-wpi">
+<h3>Web Platform Installer (WPI)<a class="headerlink" href="#web-platform-installer-wpi" title="Permalink to this headline">¶</a></h3>
+<p>The same WPI package can be installed from the “Microsfot Web Platform Installer”, from “Internet Information
+Services (IIS) Manager” or from “Microsoft WebMatrix”.</p>
+</div>
+<div class="section" id="updating-n2cms">
+<h3>Updating N2CMS<a class="headerlink" href="#updating-n2cms" title="Permalink to this headline">¶</a></h3>
+<p>After you&#8217;ve installed N2CMS in one of these ways, you will want to update it from time to time to take advantage
+of the latest features, security patches, and other updates. If you opted to use the Nuget deployment model, the
+Nuget packages will be updated periodically, and you can update using the built-in Nuget update mechanism to update
+your local instance of N2CMS. If you chose the Git deployment model, you can use git pull to get the latest updates
+in your own Git repository.</p>
+</div>
+</div>
+<div class="section" id="visual-studio-snippets-and-templates">
+<h2>Visual Studio Snippets and Templates<a class="headerlink" href="#visual-studio-snippets-and-templates" title="Permalink to this headline">¶</a></h2>
+<p>The downloadable packages on Codeplex contains a number of templates and snippets which are useful
+when developing N2 sites.</p>
+<blockquote>
+<div>You need to update the path with your own version of Visual Studio. For example, if you are using Visual Studio 2008
+you need to substitute in 2008 for 2010 in the paths below.</div></blockquote>
+<p>Snippets are copied to [Documents]Visual Studio 2010Code SnippetsVisual C#My Code Snippets. Once the
+snippets have been placed here they can be invoked from Visual Studio by their name and tapping tab twice
+(e.g. n2propfta [tab] [tab]). This will expand a property with an editable attribute. Available snippets include:</p>
+<blockquote>
+<div><ul class="simple">
+<li>n2prop.snippet</li>
+<li>n2propcb.snippet</li>
+<li>n2propenum.snippet</li>
+<li>n2propfta.snippet</li>
+<li>n2propimage.snippet</li>
+<li>n2proptb.snippet</li>
+<li>n2propuc.snippet</li>
+<li>n2propurl.snippet</li>
+</ul>
+</div></blockquote>
+<div class="section" id="installing-visual-studio-item-templates">
+<h3>Installing Visual Studio Item Templates<a class="headerlink" href="#installing-visual-studio-item-templates" title="Permalink to this headline">¶</a></h3>
+<p>The snippets folder also contains some Visual Studio Item Templates that appears when adding new items in Visual Studio.
+Copy them from the Snippets folder in the template package zip to
+[Documents]Visual Studio 2010TemplatesItemTemplatesVisual C#. The item templates creates a content class and a
+corresponding template or controller. Available templates:</p>
+<blockquote>
+<div><ul class="simple">
+<li>N2 Item Template.zip</li>
+<li>N2 Page Template.zip</li>
+<li>N2 Page Controller.zip</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="installing-intellisense-documentation-for-visual-studio">
+<h3>Installing IntelliSense Documentation for Visual Studio<a class="headerlink" href="#installing-intellisense-documentation-for-visual-studio" title="Permalink to this headline">¶</a></h3>
+<p>The IntelliSense documentation should be installed automatically. If it is not installed, check for ~/bin/N2.xml.
+This enables code documentation during IntelliSense operations and hovering in Visual Studio.</p>
+</div>
+</div>
+<div class="section" id="installing-n2cms-nuget-packages">
+<h2>Installing N2CMS NuGet Packages<a class="headerlink" href="#installing-n2cms-nuget-packages" title="Permalink to this headline">¶</a></h2>
+<p>First, download the release and extract to a path such as C:\N2Packages (this example path is used below)</p>
+<blockquote>
+<div><ul class="simple">
+<li>Compiled N2CMS Releases are available here <a class="reference external" href="https://github.com/n2cms/n2cms/releases">https://github.com/n2cms/n2cms/releases</a></li>
+</ul>
+</div></blockquote>
+<p>Next, decide whether you want to use the ZIP or NOZIP management packs.</p>
+<blockquote>
+<div><div class="line-block">
+<div class="line"><em>Before doing anything listed on this page</em></div>
+<div class="line">Back up your project before installing or uninstalling any N2CMS nuget packages.</div>
+<div class="line">Realize that N2CMS will not work on Web Site projects. You must install N2CMS in a Web Application project.</div>
+</div>
+</div></blockquote>
+<div class="section" id="which-management-pack-should-i-choose">
+<h3>Which management pack should I choose?<a class="headerlink" href="#which-management-pack-should-i-choose" title="Permalink to this headline">¶</a></h3>
+<p>You can choose whichever management pack is right for you. Consider the following benefits and drawbacks.</p>
+<blockquote>
+<div><ul>
+<li><div class="first line-block">
+<div class="line">The benefit of the ZIP management pack is that it is a single file for the N2 Management</div>
+<div class="line">Interface. However, if you store your website in a source control depot (e.g. Git repo),</div>
+<div class="line">you end up with a lot of bloat as the ~5 MB N2.zip file gets upgraded over time. You also</div>
+<div class="line">need to upload the entire N2.zip when you update it.</div>
+<div class="line"><br /></div>
+</div>
+</li>
+<li><div class="first line-block">
+<div class="line">The benefit of the NOZIP management pack is that you can take advantage of Web</div>
+<div class="line">Deploy incremental uploads, as well as more efficient source control storage as the</div>
+<div class="line">files are installed separately (not extracted). Additionally, the Zip Virtual Path</div>
+<div class="line">Provider is not installed, which means that less memory is used by N2CMS.</div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../getting-started/server-requirements.html" class="btn btn-neutral" title="Server Requirements" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, n2cms.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

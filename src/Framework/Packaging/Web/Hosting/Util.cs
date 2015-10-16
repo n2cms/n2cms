@@ -53,7 +53,7 @@ namespace SharpZipLib.Web.VirtualPathProvider
 
         private static string ToAppRelative(String virtualPath)
         {
-            if(HttpContext.Current == null || !virtualPath.StartsWith(HttpContext.Current.Request.ApplicationPath))
+            if(HttpContext.Current == null || !virtualPath.StartsWith(HttpRuntime.AppDomainAppVirtualPath))
                 return "~" + virtualPath;
 
             return VirtualPathUtility.ToAppRelative(virtualPath);

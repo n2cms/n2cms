@@ -5,6 +5,7 @@ using System.Web;
 using N2.Edit.Activity;
 using N2.Engine;
 using N2.Web;
+using N2.Management.Api;
 
 namespace N2.Management.Activity
 {
@@ -27,11 +28,12 @@ namespace N2.Management.Activity
                 .ToList();
         }
 
-        public static string ToJson(IEnumerable<ManagementActivity> activity, List<N2.Edit.Collaboration.CollaborationMessage> messages = null)
+        public static string ToJson(IEnumerable<ManagementActivity> activity, List<N2.Edit.Collaboration.CollaborationMessage> messages = null, List<string> flags = null)
         {
             return new
             {
 				Messages = messages,
+				Flags = new FlagData(flags),
                 Activities = activity
                     .Select(a => new { AddedDate = a.AddedDate.ToString(), a.Operation, a.PerformedBy })
                     .OfType<object>(),

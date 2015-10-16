@@ -312,9 +312,11 @@ namespace N2.Edit
 		{
 			ie.AddPlaceHolder("Sidebar", phSidebar);
 
-			string dataType = Request["dataType"];
-			string discriminator = Request["discriminator"];
-			string template = Request["template"];
+			var request = new HttpRequestWrapper(Request);
+			
+			string dataType = EditExtensions.GetDataType(request);
+			string discriminator = EditExtensions.GetDiscriminator(request);
+			string template = EditExtensions.GetTemplate(request);
 
 			if (!string.IsNullOrEmpty(discriminator))
 			{

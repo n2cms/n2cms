@@ -16,7 +16,7 @@ namespace N2.Tests.Fakes
 
         public bool IsAdmin(System.Security.Principal.IPrincipal principal)
         {
-            return principal != null && principal.Identity.Name == "Admin" || principal.IsInRole("Administrators");
+            return principal != null && string.Equals(principal.Identity.Name, "Admin", System.StringComparison.InvariantCultureIgnoreCase) || principal.IsInRole("Administrators");
         }
 
         public bool IsAuthorized(ContentItem item, System.Security.Principal.IPrincipal user)
@@ -52,7 +52,7 @@ namespace N2.Tests.Fakes
         {
             if (principal == null)
                 return item["Unaccessible" + permission] == null;
-            return item.Name == principal.Identity.Name;
+            return IsAdmin(principal) || item.Name == principal.Identity.Name;
         }
 
         public void CopyPermissions(ContentItem source, ContentItem destination)

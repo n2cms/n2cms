@@ -39,7 +39,7 @@
 .sc { position:fixed; _position:absolute; top:-200px; left:-200px; z-index:1100; border:none 1px #ccb; border-style:none solid solid none; background:#fff none repeat-x scroll 0 0; box-shadow: #666 4px 4px 10px -2px;  font-family: 'Segoe UI', Helvetica, sans-serif; font-size:13px; }
 	.sc .scContent { }
 		.controlPanel { }
-		.controlPanel img { border:none; vertical-align:middle; margin-right:3px; }
+		.controlPanel img { border:none; vertical-align:middle; margin-right:3px; display:inline; }
 		.controlPanel a,.controlPanel a:visited { }
 	.controlPanel a { padding:1px; min-height:14px; min-width:18px; }
 		.controlPanel a b { font-size:18px; }

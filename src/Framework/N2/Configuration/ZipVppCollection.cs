@@ -1,6 +1,7 @@
 using System.Configuration;
 using System.Collections.Specialized;
 using System.ComponentModel;
+
 namespace N2.Configuration
 {
     public class ZipVppCollection : LazyRemovableCollection<ZipVppElement>

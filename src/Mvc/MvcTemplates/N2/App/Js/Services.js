@@ -7,12 +7,20 @@
 		return {};
 	});
 
+	module.factory("EbbCallbacks", function (Eventually) {
+		return function (callback, ms, onWorkCancelled, parallelWorkGroup) {
+			return function () {
+				Eventually(callback, ms, onWorkCancelled, parallelWorkGroup, arguments);
+			}
+		}
+	});
+
 	module.factory('Eventually', function ($timeout) {
 		return (function () {
 			// clears the previous action if a new event is triggered before the timeout
 			var timer = 0;
 			var timers = {};
-			return function(callback, ms, onWorkCancelled, parallelWorkGroup) {
+			return function(callback, ms, onWorkCancelled, parallelWorkGroup, callbackArguments) {
 				if (!!parallelWorkGroup) {
 					if (timers[parallelWorkGroup]) {
 						$timeout.cancel(timers[parallelWorkGroup]);
@@ -20,14 +28,14 @@
 					}
 					timers[parallelWorkGroup] = $timeout(function() {
 						timers[parallelWorkGroup] = null;
-						callback();
+						callback.apply(null, callbackArguments);
 					}, ms);
 				} else {
 					timer && onWorkCancelled && onWorkCancelled();
 					timer && $timeout.cancel(timer);
 					timer = $timeout(function() {
 						timer = 0;
-						callback();
+						callback.apply(null, callbackArguments);
 					}, ms);
 				}
 			};
@@ -68,6 +76,16 @@
 	});
 
 	module.factory('FrameContext', function ($rootScope) {
+		var context = { Flags: {} };
+		$rootScope.$on("contextchanged", function (scope, ctx) {
+			context = ctx;
+		});
+		var lastFlags = {};
+		function objSize(o) {
+			var i = 0;
+			angular.forEach(o, function () { i++ });
+			return i;
+		}
 		window.top.n2ctx = {
 			refresh: function (ctx) {
 			},
@@ -82,10 +100,37 @@
 			},
 			toolbarSelect: function () {
 			},
-			context: function (context) {
-				if (context.Messages && context.Messages.length) {
-					$rootScope.$broadcast("changecontext", { Messages: context.Messages });
+			context: function (ctx) {
+				if (ctx.Messages && ctx.Messages.length) {
+					$rootScope.$broadcast("changecontext", { Messages: ctx.Messages });
 				}
+				if (ctx.Flags) {
+					if (objSize(lastFlags) || objSize(ctx.Flags)) {
+						var flagsChagned = false;
+						angular.forEach(lastFlags, function (value, flag) {
+							if (context.Flags[flag]) {
+								context.Flags[flag] = false;
+								flagsChagned = true;
+							}
+								
+						});
+						angular.forEach(ctx.Flags, function (value, flag) {
+							if (!context.Flags[flag]) {
+								context.Flags[flag] = true;
+								flagsChagned = true;
+							}
+						});
+						lastFlags = ctx.Flags;
+						if (flagsChagned && !$rootScope.$$phase)
+							$rootScope.$apply();
+					}
+				}
+			},
+			failure: function (response) {
+				$rootScope.$broadcast("communicationfailure", { status: response.status, statusText: response.statusText });
+			},
+			isFlagged: function (flag) {
+				return context.Flags[flag];
 			}
 		};
 		return window.top.n2ctx;
@@ -103,9 +148,11 @@
 			'translations': { method: 'GET', params: { target: 'translations' } },
 			'versions': { method: 'GET', params: { target: 'versions' } },
 			'definitions': { method: 'GET', params: { target: 'definitions' } },
+			'templates': { method: 'GET', params: { target: 'templates' } },
 			'move': { method: 'POST', params: { target: 'move' } },
 			'sort': { method: 'POST', params: { target: 'sort' } },
 			'remove': { method: 'POST', params: { target: 'delete' } },
+			'removeMessage': { method: 'DELETE', params: { target: 'message' } },
 			'publish': { method: 'POST', params: { target: 'publish' } },
 			'unpublish': { method: 'POST', params: { target: 'unpublish' } },
 			'schedule': { method: 'POST', params: { target: 'schedule' } }
@@ -188,7 +235,8 @@
 		var res = $resource('Api/Context.ashx/:target', { target: '' }, {
 			'interface': { method: 'GET', params: { target: 'interface' } },
 			'full': { method: 'GET', params: { target: 'full' } },
-			'messages': { method: 'GET', params: { target: 'messages' } }
+			'messages': { method: 'GET', params: { target: 'messages' } },
+			'status': { method: 'GET', params: { target: 'status' } }
 		});
 
 		return res;

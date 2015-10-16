@@ -45,7 +45,7 @@ namespace N2.Edit.Globalization
             }
         }
 
-        private IEnumerable<ContentItem> GetChildren(bool getPages)
+        protected IEnumerable<ContentItem> GetChildren(bool getPages)
         {
             var items = new ItemList();
             foreach (var parent in gateway.FindTranslations(Selection.SelectedItem))

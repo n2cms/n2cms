@@ -154,7 +154,7 @@
     <value />
   </data>
   <data name="hlNewerVersionResource1.Text" xml:space="preserve">
-    <value>There is a draft that hasn't been published. Click to edit the newer version &amp;raquo;</value>
+    <value>There is an unpublished draft. Click to edit the more recent version &amp;raquo;</value>
   </data>
   <data name="hlNewerVersionResource1.ToolTip" xml:space="preserve">
     <value />

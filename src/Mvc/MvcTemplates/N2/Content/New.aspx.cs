@@ -217,12 +217,8 @@ namespace N2.Edit
 
         public IEnumerable<TemplateDefinition> GetTemplates(ItemDefinition definition)
         {
-            return Engine.Resolve<ITemplateAggregator>().GetTemplates(definition.ItemType)
-                .AllowedBelow(Definitions.GetDefinition(Selection.SelectedItem), Selection.SelectedItem, Engine.Definitions)
-                .Where(t => t.Definition.IsAllowedInZone(ZoneName))
-                .Where(t => Engine.SecurityManager.IsAuthorized(t.Definition, User, Selection.SelectedItem))
-                .OrderBy(t => (t.Definition.TemplateKey ?? "Index") == "Index" ? 0 : 1)
-                .ThenBy(t => t.Definition.SortOrder);
+			return Engine.Resolve<ITemplateAggregator>().GetTemplates(definition.ItemType)
+				.WhereAllowed(Selection.SelectedItem, ZoneName, User, Engine.Definitions, Engine.SecurityManager);
         }
 
         private void LoadZones()

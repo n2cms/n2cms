@@ -14,22 +14,22 @@ using N2.Web;
 
 namespace N2.Definitions.Runtime
 {
-    [Service]
-    public class ViewTemplateAnalyzer
-    {
+	[Service]
+	public class ViewTemplateAnalyzer
+	{
 		// ReSharper disable FieldCanBeMadeReadOnly.Local
 		private Logger<ViewTemplateAnalyzer> logger;
-        IProvider<ViewEngineCollection> viewEnginesProvider;
-        DefinitionMap map;
-        DefinitionBuilder builder;
+		IProvider<ViewEngineCollection> viewEnginesProvider;
+		DefinitionMap map;
+		DefinitionBuilder builder;
 		// ReSharper restore FieldCanBeMadeReadOnly.Local
 
-        public ViewTemplateAnalyzer(IProvider<ViewEngineCollection> viewEnginesProvider, DefinitionMap map, DefinitionBuilder builder)
-        {
-            this.viewEnginesProvider = viewEnginesProvider;
-            this.map = map;
-            this.builder = builder;
-        }
+		public ViewTemplateAnalyzer(IProvider<ViewEngineCollection> viewEnginesProvider, DefinitionMap map, DefinitionBuilder builder)
+		{
+			this.viewEnginesProvider = viewEnginesProvider;
+			this.map = map;
+			this.builder = builder;
+		}
 
 		public virtual IEnumerable<ContentRegistration> AnalyzeViews(VirtualPathProvider vpp, HttpContextBase httpContext, IEnumerable<ViewTemplateSource> sources)
 		{
@@ -53,7 +53,7 @@ namespace N2.Definitions.Runtime
 					foreach (var file in vpp.GetDirectory(virtualDir).Files.OfType<VirtualFile>())
 					{
 						Debug.Assert(file.Name != null, "file.Name != null");
-						if (!file.Name.EndsWith(source.ViewFileExtension))
+						if (!file.Name.EndsWith(source.ViewFileExtension) || file.Name.StartsWith("_"))
 						{
 							logger.Info(String.Format("Skipping file {0}", file.VirtualPath));
 							continue;
@@ -85,72 +85,72 @@ namespace N2.Definitions.Runtime
 			return registrations;
 		}
 
-        private ContentRegistration AnalyzeView(HttpContextBase httpContext, VirtualFile file, string controllerName, Type modelType)
-        {
-            if (modelType == null || !typeof(ContentItem).IsAssignableFrom(modelType) || modelType.IsAbstract)
-                return null;
+		private ContentRegistration AnalyzeView(HttpContextBase httpContext, VirtualFile file, string controllerName, Type modelType)
+		{
+			if (modelType == null || !typeof(ContentItem).IsAssignableFrom(modelType) || modelType.IsAbstract)
+				return null;
 
-            var model = Activator.CreateInstance(modelType) as ContentItem;
+			var model = Activator.CreateInstance(modelType) as ContentItem;
 
-            var rd = new RouteData();
-            var isPage = model != null && model.IsPage;
-            RouteExtensions.ApplyCurrentPath(rd, controllerName, Path.GetFileNameWithoutExtension(file.Name), new PathData(isPage ? model : new StubItem(), isPage ? null : model));
+			var rd = new RouteData();
+			var isPage = model != null && model.IsPage;
+			RouteExtensions.ApplyCurrentPath(rd, controllerName, Path.GetFileNameWithoutExtension(file.Name), new PathData(isPage ? model : new StubItem(), isPage ? null : model));
 
-            var cctx = new ControllerContext(httpContext, rd, new StubController());
+			var cctx = new ControllerContext(httpContext, rd, new StubController());
 
-            var result = isPage
-                ? viewEnginesProvider.Get().FindView(cctx, file.VirtualPath, null)
-                : viewEnginesProvider.Get().FindPartialView(cctx, file.VirtualPath);
+			var result = isPage
+				? viewEnginesProvider.Get().FindView(cctx, file.VirtualPath, null)
+				: viewEnginesProvider.Get().FindPartialView(cctx, file.VirtualPath);
 
 
-            return result.View == null ? null : RenderViewForRegistration(file, modelType, cctx, result);
-        }
+			return result.View == null ? null : RenderViewForRegistration(file, modelType, cctx, result);
+		}
 
 		// ReSharper disable RedundantNameQualifier
 		private ContentRegistration RenderViewForRegistration(VirtualFileBase file, Type modelType, ControllerContext cctx, ViewEngineResult result)
-        {
+		{
 			if (file == null)
 				throw new ArgumentNullException("file");
 
 			// ReSharper disable once UseObjectOrCollectionInitializer
 			var re = new ContentRegistration(map.CreateDefinition(modelType, N2.Web.Url.RemoveAnyExtension(file.Name)));
-            re.IsDefined = false;
-            re.Context.TouchedPaths.Add(file.VirtualPath);
+			re.IsDefined = false;
+			re.Context.TouchedPaths.Add(file.VirtualPath);
 
-            using (var sw = new StringWriter())
-            {
-                var vdd = new ViewDataDictionary();
-                cctx.Controller.ViewData = vdd;
-                N2.Web.Mvc.Html.RegistrationExtensions.SetRegistrationExpression(cctx.HttpContext, re);
+			using (var sw = new StringWriter())
+			{
+				var vdd = new ViewDataDictionary();
+				cctx.Controller.ViewData = vdd;
+				N2.Web.Mvc.Html.RegistrationExtensions.SetRegistrationExpression(cctx.HttpContext, re);
 
-                try
-                {
-                    logger.DebugFormat("Rendering view {0} for registrations", file.VirtualPath);
-                    result.View.Render(new ViewContext(cctx, result.View, vdd, new TempDataDictionary(), sw), sw);
-                    logger.DebugFormat("Rendered view {0}, editables = {1}, defined = {2}", file.VirtualPath, re.Definition.Editables.Count, re.IsDefined);
-                }
-                catch (Exception ex)
-                {
-                    logger.Error(file.VirtualPath, ex);
-                    if (re.IsDefined)
-                        throw new Exception(String.Format("Failed to render view {0} for registrations", file.VirtualPath), ex);
-                    return null;
-                }
-                finally
-                {
-                    N2.Web.Mvc.Html.RegistrationExtensions.SetRegistrationExpression(cctx.HttpContext, null);
-                }
+				try
+				{
+					logger.DebugFormat("Rendering view {0} for registrations", file.VirtualPath);
+					result.View.Render(new ViewContext(cctx, result.View, vdd, new TempDataDictionary(), sw), sw);
+					logger.DebugFormat("Rendered view {0}, editables = {1}, defined = {2}", file.VirtualPath, re.Definition.Editables.Count, re.IsDefined);
+				}
+				catch (Exception ex)
+				{
+					logger.Error(file.VirtualPath, ex);
+					if (re.IsDefined)
+						throw new Exception(String.Format("Failed to render view {0} for registrations", file.VirtualPath), ex);
+					return null;
+				}
+				finally
+				{
+					N2.Web.Mvc.Html.RegistrationExtensions.SetRegistrationExpression(cctx.HttpContext, null);
+				}
 
-                return re.IsDefined ? re : null;
-            }
-        }
+				return re.IsDefined ? re : null;
+			}
+		}
 		// ReSharper restore RedundantNameQualifier
 
-        class StubController : Controller
-        {
-        }
-        class StubItem : ContentItem
-        {
-        }
-    }
+		class StubController : Controller
+		{
+		}
+		class StubItem : ContentItem
+		{
+		}
+	}
 }

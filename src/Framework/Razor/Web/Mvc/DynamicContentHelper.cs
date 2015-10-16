@@ -2,6 +2,7 @@ using System.Web;
 using System.Web.Mvc;
 using N2.Engine;
 using System;
+using N2.Web.Mvc.Html;
 
 namespace N2.Web.Mvc
 {
@@ -25,7 +26,10 @@ namespace N2.Web.Mvc
 
         public dynamic Has
         {
-            get { return new HasValueHelper(HasValue); }
+            get 
+			{
+				return new HasValueHelper(HasValue);
+			}
         }
 
         public dynamic Data

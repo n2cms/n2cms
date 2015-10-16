@@ -18,6 +18,9 @@ namespace N2.Definitions
         /// <returns>A matching template or null if no template is available.</returns>
         TemplateDefinition GetTemplate(Type contentType, string templateKey);
 
+		/// <summary>Gets a tmeplate by discriminator/templateKey reference.</summary>
+		TemplateDefinition GetTemplate(string discriminatorWithTemplateKey);
+
         /// <summary>Gets the template of a content item.</summary>
         /// <param name="item">The item whose template to get.</param>
         /// <returns>The item's template.</returns>

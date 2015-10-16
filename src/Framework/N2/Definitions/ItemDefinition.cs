@@ -120,7 +120,7 @@ namespace N2.Definitions
         public bool Enabled { get; set; }
 
         /// <summary>Gets or sets wheter this definition has been defined. Weirdly enough a definition may exist without beeing defined. To define a definition the class must implement the <see cref="N2.PageDefinitionAttribute"/> or <see cref="PartDefinitionAttribute"/>.</summary>
-        public bool IsDefined { get; internal set; }
+        public bool IsDefined { get; set; }
 
         /// <summary>Gets the order of this item type when selecting new item in edit mode.</summary>
         public int SortOrder { get; set; }

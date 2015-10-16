@@ -12,7 +12,7 @@ using N2.Management;
 
 namespace N2.Security.Items
 {
-    [PageDefinition("User", IconClass = "fa fa-user")]
+    [PageDefinition("User", IconClass = "fa fa-user", InstallerVisibility = N2.Installation.InstallerHint.NeverRootOrStartPage)]
     [RestrictParents(typeof (UserList))]
     [Throwable(AllowInTrash.No)]
     [Versionable(AllowVersions.No)]

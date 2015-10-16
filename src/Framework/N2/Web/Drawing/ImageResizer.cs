@@ -44,6 +44,8 @@ namespace N2.Web.Drawing
     [Service]
     public class ImageResizer
     {
+		Logger<ImageResizer> log;
+
         [Obsolete("Use overload with parameters")]
         public virtual void Resize(Stream inputStream, string extension, double maxWidth, double maxHeight, Stream outputStream)
         {
@@ -68,8 +70,16 @@ namespace N2.Web.Drawing
 
             using (Bitmap original = new Bitmap(inputStream))
             {
-                Resize(original, parameters, outputStream);
-                return true;
+				try
+				{
+					Resize(original, parameters, outputStream);
+					return true;
+				}
+				catch (Exception ex)
+				{
+					log.Error(ex);
+					throw;
+				}
             }
         }
 

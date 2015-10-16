@@ -3,6 +3,7 @@ using N2.Details;
 using N2.Persistence;
 using N2.Definitions;
 using System.Web.UI.WebControls;
+using N2.Integrity;
 
 namespace Dinamico.Models
 {
@@ -11,8 +12,10 @@ namespace Dinamico.Models
     ///  * It serves as base class for start page
     ///  * It's the base for "template first" definitions located in /dinamico/default/views/contentpages/
     /// </summary>
-    [PageDefinition]
-    [WithEditableTemplateSelection(ContainerName = Defaults.Containers.Metadata)]
+	[PageDefinition]
+	[WithEditableTemplateSelection(ContainerName = Defaults.Containers.Metadata)]
+	[AvailableZone("Above content area", "PreContent")]
+	[AvailableZone("Below content area", "PostContent")]
     public class ContentPage : PageModelBase, IContentPage, IStructuralPage
     {
         /// <summary>

@@ -682,6 +682,48 @@ namespace N2.Extensions.Tests.Search
         }
 
         [Test]
+        public void Language_ByFullLanguageCode()
+        {
+            var sv = CreateOneItem<PersistableItem2>(2, "Svenska", root);
+            sv.LanguageCode = "sv-SE";
+            var en = CreateOneItem<PersistableItem2>(3, "Engelska", root);
+            en.LanguageCode = "en-GB";
+
+            var svitem = CreateOneItem<PersistableItem>(4, "Hello världen", sv);
+            indexer.Update(svitem);
+
+            var enitem = CreateOneItem<PersistableItem>(5, "Hello world", en);
+            indexer.Update(enitem);
+
+
+            var result = searcher.Search(Query.For("hello").Language(sv.LanguageCode));
+
+            Assert.That(result.Hits.Count(), Is.EqualTo(1));
+            Assert.That(result.Single(), Is.EqualTo(svitem));
+        }
+
+        [Test]
+        public void Language_ByPartialLanguageCode()
+        {
+            var sv = CreateOneItem<PersistableItem2>(2, "Svenska", root);
+            sv.LanguageCode = "sv-SE";
+            var en = CreateOneItem<PersistableItem2>(3, "Engelska", root);
+            en.LanguageCode = "en-GB";
+
+            var svitem = CreateOneItem<PersistableItem>(4, "Hello världen", sv);
+            indexer.Update(svitem);
+
+            var enitem = CreateOneItem<PersistableItem>(5, "Hello world", en);
+            indexer.Update(enitem);
+
+
+            var result = searcher.Search(Query.For("hello").Language("sv"));
+
+            Assert.That(result.Hits.Count(), Is.EqualTo(1));
+            Assert.That(result.Single(), Is.EqualTo(svitem));
+        }
+
+        [Test]
         public void Language_IncludesLanguageRoot()
         {
             var sv = CreateOneItem<PersistableItem2>(2, "Svenska", root);

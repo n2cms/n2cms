@@ -90,13 +90,13 @@ namespace N2.Management.Targeting.Parts
 			get
 			{
 				var d = base.Description;
-				d.IconClass = "n2-icon-exclamation-sign";
+				d.IconClass = "fa fa-exclamation-sign";
 				return d;
 			}
 		}
 	}
 
-	[PartDefinition(IconClass = "n2-icon-bullseye n2-magenta")]
+	[PartDefinition("Targeted Content Container", IconClass = "fa fa-bullseye n2-magenta")]
 	[AvailableZone("Targeted content", "Content")]
 	public class TargetContainer : ContentItem, IPart
 	{

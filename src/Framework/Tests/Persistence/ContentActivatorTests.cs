@@ -31,7 +31,7 @@ namespace N2.Tests.Persistence
         {
             var instance = activator.CreateInstance<Definitions.PersistableItem>(null);
 
-            instance.ShouldBeTypeOf<Definitions.PersistableItem>();
+			instance.ShouldBeOfType<Definitions.PersistableItem>();
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace N2.Tests.Persistence
         {
             var instance = activator.CreateInstance(typeof(Definitions.PersistableItem), null);
 
-            instance.ShouldBeTypeOf<Definitions.PersistableItem>();
+            instance.ShouldBeOfType<Definitions.PersistableItem>();
         }
 
         [Test]

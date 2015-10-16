@@ -36,7 +36,7 @@ namespace N2.Web.UI.WebControls
 
             Visible = Controls.Count > 0;
             if(Visible)
-                Register.TabPanel(Page, "." + CssClass.Replace(' ', '.'), RegisterTabCss);
+				Register.TabPanel(Page, ".tabPanel", RegisterTabCss);
         }
 
         protected override void AddAttributesToRender(System.Web.UI.HtmlTextWriter writer)

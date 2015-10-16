@@ -25,7 +25,7 @@ namespace N2.Persistence.Search
 			}
 
             var luceneQuery = query.ToLuceneQuery();
-			logger.Warn("Prepared lucene query " + luceneQuery);
+			logger.InfoFormat("Prepared lucene query {0}", luceneQuery);
 
             var q = accessor.GetQueryParser().Parse(luceneQuery);
             var s = accessor.GetSearcher();

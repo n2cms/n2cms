@@ -22,7 +22,7 @@
     </SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
@@ -39,6 +39,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,6 +49,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
@@ -60,10 +62,6 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data.SQLite, Version=1.0.90.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\System.Data.SQLite.1.0.90.0\lib\net40\System.Data.SQLite.dll</HintPath>
-    </Reference>
     <Reference Include="System.Data.SQLite.Linq, Version=1.0.90.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\System.Data.SQLite.1.0.90.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
@@ -76,31 +74,31 @@
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\packages\Microsoft.AspNet.Razor.2.0.20710.0\lib\net40\System.Web.Razor.dll</HintPath>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
@@ -111,7 +109,7 @@
     <Content Include="N2\App\Js\Controllers.js" />
     <Content Include="N2\App\Js\Directives.js" />
     <Content Include="N2\App\Js\Services.js" />
-    <Content Include="N2\App\Partials\Messages.html" />
+    <Content Include="N2\App\Partials\ContentInfoDetails.html" />
     <Content Include="N2\App\Partials\ManagementConfirm.html" />
     <Content Include="N2\App\Partials\Main.html" />
     <Content Include="N2\App\Partials\Loading.html" />
@@ -135,6 +133,7 @@
     <Content Include="N2\App\Partials\ContentBranch.html" />
     <Content Include="N2\App\Partials\Menu.html" />
     <Content Include="N2\App\Partials\ContentTree.html" />
+    <Content Include="N2\Collaboration\Ping.ashx" />
     <Content Include="N2\Content\Activity\RecentActivity.ascx" />
     <Content Include="N2\Content\AffectedItems.ascx" />
     <Content Include="N2\Content\EditSingle.aspx" />
@@ -200,6 +199,7 @@
     <Content Include="N2\Resources\jQuery-File-Upload-8.5.0\js\jquery.iframe-transport.js" />
     <Content Include="N2\Resources\jQuery-File-Upload-8.5.0\js\main.js" />
     <Content Include="N2\Resources\jQuery-File-Upload-8.5.0\js\vendor\jquery.ui.widget.js" />
+    <Content Include="N2\Resources\Js\plugins\n2.autosave.js" />
     <Content Include="N2\Resources\Js\frameInteraction.js" />
     <Content Include="N2\Resources\Js\jquery-1.11.0.js" />
     <Content Include="N2\Resources\Js\jquery-1.11.0.min.js" />
@@ -281,6 +281,8 @@
     <Content Include="N2\Resources\Js\plugins\jquery.n2expandableBox.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2autocomplete.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2contextmenu-0.3.js" />
+    <Content Include="N2\Tokens\TokenTemplates\CurrentTime.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\CurrentDate.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\Author.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\Breadcrumb.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\Changes.ascx" />
@@ -296,7 +298,7 @@
     <Content Include="N2\Tokens\TokenTemplates\Detail.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\FacebookLike.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\FirstChild.ascx" />
-    <Content Include="N2\Tokens\TokenTemplates\Google+1.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\GooglePlus.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\Link.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\NextSibling.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\Parent.ascx" />
@@ -312,7 +314,6 @@
     <Content Include="N2\Web.config" />
     <Content Include="N2\Content\LinkTracker\App_LocalResources\UpdateReferences.aspx.resx" />
     <Content Include="N2\Content\Versions\App_LocalResources\RecentVersions.ascx.resx" />
-    <Content Include="N2\Collaboration\Ping.ashx" />
     <Content Include="N2\Roles\App_LocalResources\Roles.aspx.resx" />
     <Content Include="N2\Roles\App_LocalResources\New.aspx.resx">
       <SubType>Designer</SubType>
@@ -345,12 +346,12 @@
     <Compile Include="..\..\Framework\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
     </Compile>
-    <Compile Include="N2\Content\Activity\ActivityNotificationAttribute.cs" />
-    <Compile Include="N2\Content\Activity\KeepAliveControlPanel.cs" />
-    <Compile Include="N2\Content\Activity\ManagementActivity.cs" />
     <Compile Include="N2\Collaboration\Ping.ashx.cs">
       <DependentUpon>Ping.ashx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Content\Activity\ActivityNotificationAttribute.cs" />
+    <Compile Include="N2\Content\Activity\KeepAliveControlPanel.cs" />
+    <Compile Include="N2\Content\Activity\ManagementActivity.cs" />
     <Compile Include="N2\Content\Activity\RecentActivity.ascx.cs">
       <DependentUpon>RecentActivity.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -683,8 +684,6 @@
     <Compile Include="N2\Myself\Analytics\Models\ManageAnalyticsPart.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="N2\Myself\Collaboration\ManagementFlagPart.cs" />
-    <Compile Include="N2\Myself\Collaboration\ManagementMessagePart.cs" />
     <Compile Include="N2\Roles\Roles.aspx.designer.cs">
       <DependentUpon>Roles.aspx</DependentUpon>
     </Compile>
@@ -1348,6 +1347,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="N2\Content\Wizard\Img\" />
+    <Folder Include="N2\Myself\Collaboration\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

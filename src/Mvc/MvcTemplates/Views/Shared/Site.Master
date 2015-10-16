@@ -7,8 +7,7 @@
 	<asp:PlaceHolder runat="server">
 		<%= Html.ThemedStyleSheet("~/Content/Style.css") %>
 		<link rel="canonical" href="<%= Html.CurrentPage() != null ? Html.CurrentPage().Url : Request.RawUrl %>" />
-		<%= Html.Resources().JQuery() %>
-		<%= Html.Resources().StyleSheet(N2.Resources.Register.DefaultFlagsCssPath) %>
+		<%= Html.Resources().JQuery().StyleSheet(N2.Resources.Register.DefaultFlagsCssPath) %>
 	</asp:PlaceHolder>
 	<asp:ContentPlaceHolder ID="Head" runat="server" />
 </head>

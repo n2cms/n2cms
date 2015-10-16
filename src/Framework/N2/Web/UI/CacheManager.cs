@@ -4,6 +4,7 @@ using System.Web.UI;
 using N2.Configuration;
 using N2.Engine;
 using N2.Persistence;
+using N2.Definitions;
 
 namespace N2.Web.UI
 {
@@ -18,6 +19,7 @@ namespace N2.Web.UI
         string varyByHeader = "";
         string cacheProfile = "";
         int duration = 60;
+		private OutputCacheInvalidationMode invalidationMode;
 
         public CacheManager(IWebContext context, IPersister persister)
         {
@@ -33,6 +35,7 @@ namespace N2.Web.UI
             varyByHeader = config.OutputCache.VaryByHeader;
             cacheProfile = config.OutputCache.CacheProfile;
             duration = config.OutputCache.Duration;
+			invalidationMode = config.OutputCache.InvalidateOnChangesTo;
         }
 
         public bool Enabled
@@ -46,11 +49,56 @@ namespace N2.Web.UI
                 validationStatus = HttpValidationStatus.IgnoreThisRequest;
         }
 
-        public virtual void AddCacheInvalidation(HttpResponse response)
+		public virtual void AddCacheInvalidation(ContentItem item, HttpResponse response)
+		{
+			switch(invalidationMode)
+			{
+				case OutputCacheInvalidationMode.All:
+					AddCacheDependency(response, new ContentCacheDependency(persister));
+					break;
+				case OutputCacheInvalidationMode.IgnoreChanges:
+					AddCacheDependency(response, null);
+					break;
+				case OutputCacheInvalidationMode.Page:
+					if (item == null) return;
+					AddCacheDependency(response, new PageContentCacheDependency(persister, item.ID));
+					break;
+				case OutputCacheInvalidationMode.Site:
+				case OutputCacheInvalidationMode.SiteSection:
+					if (item == null) return;
+					var ancestors = Find.EnumerateParents(item, null, includeSelf: true);
+					ContentItem invalidateBelow = null;
+					foreach (var ancestor in ancestors)
+					{
+						if (ancestor is IStartPage)
+						{
+							if (invalidationMode == OutputCacheInvalidationMode.Site)
+							{
+								invalidateBelow = ancestor;
+							}
+							break;
+						}
+						invalidateBelow = ancestor;
+					}
+					AddCacheDependency(response, new SectionContentCacheDependency(persister, invalidateBelow.GetTrail()));
+					break;
+				default:
+					throw new NotSupportedException("Unsupported cache invalidation mode " + invalidationMode);
+			}
+		}
+
+		[Obsolete]
+		public virtual void AddCacheInvalidation(HttpResponse response)
         {
-            response.AddCacheDependency(new ContentCacheDependency(persister));
-            response.Cache.AddValidationCallback(ValidateCacheRequest, null);
+			AddCacheDependency(response, new ContentCacheDependency(persister));
         }
+
+		protected virtual void AddCacheDependency(HttpResponse response, ContentCacheDependency dependency)
+		{
+			if (dependency != null)
+				response.AddCacheDependency(dependency);
+			response.Cache.AddValidationCallback(ValidateCacheRequest, null);
+		}
 
         public virtual OutputCacheParameters GetOutputCacheParameters()
         {
@@ -65,7 +113,7 @@ namespace N2.Web.UI
                     parameters.Duration = (int)expires.Subtract(N2.Utility.CurrentTime()).TotalSeconds;
                 }
             }
-            parameters.Enabled = enabled;
+            parameters.Enabled = Enabled;
             parameters.Location = OutputCacheLocation.Server;
             //parameters.NoStore = NoStore;
             //parameters.SqlDependency = SqlDependency;

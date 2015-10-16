@@ -1,6 +1,7 @@
-﻿<div class='item' ng-class="{ loading: node.Loading, draft: node.Current.State == Content.states.Draft || node.Current.State == Content.states.Waiting || node.Current.MetaInformation.draft, unpublished: node.Current.State == Content.states.Unpublished || node.Current.State == Content.states.Deleted, startpage: node.Current.MetaInformation.authority }">
+﻿<div class='item' ng-class="{ loading: node.Loading, draft: node.Current.State == Content.states.Draft || node.Current.State == Content.states.Waiting || node.Current.MetaInformation.draft, unpublished: node.Current.State == Content.states.Unpublished || node.Current.State == Content.states.Deleted, startpage: node.Current.MetaInformation.authority }"
+	 n2-keyboard-map="{ right: '.toggle', left: '.toggle', esc: '.tools .dropdown-toggle' }">
 	<b class="handle"></b>
-	
+
 	<a href="#" ng-click="toggle(node)" class="toggle"><b class="toggle-expand fa fa-chevron-right"></b><b class="toggle-collapse icon-chevron-up"></b><b class="toggle-loading icon-repeat"></b></a>
 
 	<div class="tags">
@@ -12,7 +13,8 @@
 		<ul ng-include src="ContextMenu.node == node && Context.Partials.ContextMenu" class="dropdown-menu pull-right"></ul>
 	</div>
 
-	<a href='{{appendPreviewOptions(node.Current.PreviewUrl)}}' ng-click="nodeClicked(node)" target='preview' class="link" title="{{node.Current.ToolTip}}">
+	<a href='{{appendPreviewOptions(node.Current.PreviewUrl)}}' ng-click="nodeClicked(node)" target='preview' class="link" title="{{node.Current.ToolTip}}"
+	   n2-keyboard-stop="1">
 		<b class='ico' ng-show='node.Current.IconClass && !node.Current.IconUrl' ng-class='node.Current.IconClass || "ico-custom"'></b>
 		<span class='page-icon' ng-show='node.Current.IconUrl' x-background-image='node.Current.IconUrl'></span>
 		{{node.Current.Title || ('(no name)' | translate:'branch.noname')}}

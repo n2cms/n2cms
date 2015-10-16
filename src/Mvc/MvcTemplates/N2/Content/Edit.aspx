@@ -8,7 +8,7 @@
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
-	<edit:ButtonGroup CssClass="btn-primary" runat="server">
+	<edit:ButtonGroup CssClass="btn-primary" runat="server" OnClientClick="return !n2ctx.isFlagged('ShutdownEditing') || confirm('Editing is currently disabled. If you continue right now changes may be lost. Do you want to continue?')">
 		<asp:LinkButton ID="btnSavePublish" data-icon-class="fa fa-play-circle" 
 			OnCommand="OnPublishCommand" runat="server" 
 			CssClass="command iconed publish" 
@@ -56,7 +56,7 @@
 
 		<div id="futurePanel" class="modal" tabindex="-1" role="dialog">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<button type="button" class="close cancel" data-dismiss="modal" aria-hidden="true">×</button>
 				<h3 meta:resourceKey="h3futureHeading">Schedule publishing</h3>
 			</div>
 			<div class="modal-body" style="min-height: 100px;">
@@ -64,12 +64,12 @@
 			</div>
 			<div class="modal-footer">
 				<asp:Button ID="btnSavePublishInFuture" Text="OK" OnCommand="OnSaveFuturePublishCommand" CssClass="btn btn-primary" runat="server" meta:resourceKey="btnSavePublishInFuture" />
-				<asp:HyperLink ID="hlCancelSavePublishInFuture" NavigateUrl="javascript:void(0);" runat="server" CssClass="btn" meta:resourceKey="hlCancelSavePublishInFuture">Close</asp:HyperLink>
+				<asp:HyperLink ID="hlCancelSavePublishInFuture" NavigateUrl="javascript:void(0);" runat="server" CssClass="btn cancel" meta:resourceKey="hlCancelSavePublishInFuture">Close</asp:HyperLink>
 			</div>
 		</div>
 		<div class="future-panel-backdrop modal-backdrop fade in" style="display:none"></div>
 
-		<n2:ItemEditor ID="ie" runat="server" />
+		<n2:ItemEditor ID="ie" runat="server" EnableAutoSave="true" />
 	</edit:PermissionPanel>
 
 		<script type="text/javascript">
@@ -89,6 +89,8 @@
 
 				$("#futurePanel .cancel").click(function () {
 					$("#futurePanel").hide();
+					$(".dropdown-backdrop").hide();
+					$("#future-panel-backdrop").hide();
 				});
 				$(document.body).click(function (e) {
 					if ($(e.target).closest(".datepicker,.day,.week,.month,.year").length == 0)

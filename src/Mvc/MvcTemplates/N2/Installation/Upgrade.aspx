@@ -47,23 +47,34 @@
 			<p class="alert alert-error">No database to be upgraded. Please <a href="Default.aspx">install using the installation wizard</a>.</p>
 			<hr />
 			<% } else {%>
-			<p class="alert alert-success">The database looks fine. Happy <a href="..">editing</a>.</p>
+			<p class="alert alert-success">All core tables are up to date. Happy <a href="..">editing</a>.</p>
 			<%} %>
 			
-			<p>Please review the following upgrade script carefully before continuing to update the database below.</p>
-			<textarea readonly="readonly"><%= Installer.ExportUpgradeSchema() %></textarea>
-			<p>In addition to updating the database schema, the following migrations will be executed on the <%= Checker.Status.Items %> items in your database: </p>
-			<ul>
-				<% foreach (N2.Edit.Installation.AbstractMigration migration in Migrator.GetMigrations(Checker.Status)) { %>
-				<li style="background-color:#FFC; margin-bottom:5px; padding: 5px"><strong><%= migration.Title %></strong> <%= migration.Description %></li>
-				<%} %>
-			</ul>
-			<% if (Checker.Status.Items > 1000) { %>
-			<p class="alert">The database contains a large number of items, the migration may take a while. It's recommended to increase the request execution timeout and the database connection timeout.</p>
-			<% } %>
-            <p>
-				This looks fine and <em>I have back up</em> of my data.<br />
-				<asp:Button ID="btnUpgrade" runat="server" OnClick="btnInstallAndMigrate_Click" Text="Update tables and run migrations" OnClientClick="return confirm('Updating the database makes changes to the information on the site. I confirm that everything is backed-up and want to continue.');" ToolTip="Click this button to update the database and execute the migrations" CausesValidation="false" CssClass="btn btn-primary"/>
+			<fieldset>
+				<legend>SQL Schema</legend>
+				<p>Please review this schema update script.</p>
+				<textarea readonly="readonly"><%= Installer.ExportUpgradeSchema() %></textarea>
+			</fieldset>
+			
+			<fieldset>
+				<legend>Migrations</legend>
+				<p>In addition to any schema changes, the following migrations will be executed on the <%= Checker.Status.Items %> items in your database: </p>
+				<table class="table table-striped">
+					<% foreach (N2.Edit.Installation.AbstractMigration migration in Migrator.GetMigrations(Checker.Status)) { %>
+					<tr>
+						<th style="text-align:left"><%= migration.Title %></th><td><%= migration.Description %></td>
+					</tr>
+					<%} %>
+				</table>
+				<% if (Checker.Status.Items > 1000) { %>
+				<p class="alert">The database contains a large number of items, the migration may take a while. It's recommended to increase the request execution timeout and the database connection timeout.</p>
+				<% } %>
+			</fieldset>
+            <div class="alert alert-info">
+				Make sure you have <strong>backed up</strong> your data (just in case).
+			</div>
+			<p>
+				<asp:Button ID="btnUpgrade" runat="server" OnClick="btnInstallAndMigrate_Click" Text="Update tables and run migrations" OnClientClick="return confirm('Updating the database makes changes to the information on the site. I confirm that everything is backed-up and want to continue.');" ToolTip="Click this button to update the database and execute the migrations" CausesValidation="false" CssClass="btn btn-primary btn-large"/>
 			</p>
 			<asp:Label ID="lblResult" runat="server" />
 		    <script type="text/javascript">

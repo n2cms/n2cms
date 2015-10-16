@@ -1,6 +1,7 @@
 using N2.Collections;
 using N2.Definitions;
 using N2.Edit;
+using N2.Edit.Collaboration;
 using N2.Edit.Trash;
 using N2.Edit.Versioning;
 using N2.Edit.Workflow;
@@ -17,6 +18,7 @@ using System.Net;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Script.Serialization;
+using N2.Edit.Api;
 
 namespace N2.Management.Api
 {
@@ -54,63 +56,66 @@ namespace N2.Management.Api
                     {
                         case "/search":
                             WriteSearch(context);
-                            break;
+                            return;
                         case "/translations":
                             var translations = GetTranslations(context).ToList();
                             context.Response.WriteJson(new { Translations = translations });
-                            break;
+                            return;
                         case "/versions":
                             var versions = GetVersions(context).ToList();
                             context.Response.WriteJson(new { Versions = versions });
-                            break;
-                        case "/definitions":
-                            var definitions = GetDefinitions(context)
-                                .Select(d => new { d.Title, d.Description, d.Discriminator, d.ToolTip, d.IconUrl, d.IconClass, TypeName = d.ItemType.Name })
-                                .ToList();
-                            context.Response.WriteJson(new { Definitions = definitions });
-                            break;
+							return;
+						case "/definitions":
+							var definitions = GetDefinitionTemplateInfos(context);
+							context.Response.WriteJson(new { Definitions = definitions });
+							return;
+						case "/templates":
+							var templates = GetTemplateInfos(context);
+							var wizards = GetwizardInfos(context);
+							context.Response.WriteJson(new { Templates = templates, Wizards = wizards });
+							return;
                         case "/tokens":
                             var tokens = GetTokens(context);
                             context.Response.WriteJson(new { Tokens = tokens });
-                            break;
-                        case "/children":
-                            context.Response.WriteJson(new { Children = GetChildren(context).ToList(), IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
-                            break;
+                            return;
+						case "":
+						case "/":
+						case "/children":
+							var children = GetChildren(context).ToList();
+                            context.Response.WriteJson(new { Children = children, IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
+                            return;
                         case "/branch":
-                            context.Response.WriteJson(new { Branch = GetBranch(context) });
-                            break;
+							var branch = GetBranch(context);
+                            context.Response.WriteJson(new { Branch = branch });
+                            return;
                         case "/tree":
-                            context.Response.WriteJson(new { Tree = GetTree(context) });
-                            break;
+							var tree = GetTree(context);
+                            context.Response.WriteJson(new { Tree = tree });
+                            return;
                         case "/ancestors":
-                            context.Response.WriteJson(new { Ancestors = GetAncestors(context) });
-                            break;
+							var ancestors = GetAncestors(context);
+                            context.Response.WriteJson(new { Ancestors = ancestors });
+                            return;
                         case "/parent":
-                            context.Response.WriteJson(new { Parent = GetParent(context) });
-                            break;
+							var parent = GetParent(context);
+                            context.Response.WriteJson(new { Parent = parent });
+                            return;
                         case "/node":
-                            context.Response.WriteJson(new { Node = GetNode(context) });
-                            break;
-                        default:
-                            if (string.IsNullOrEmpty(context.Request.PathInfo))
-                            {
-                                context.Response.WriteJson(new { Children = GetChildren(context).ToList(), IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
-                            }
-                            else
-                            {
-                                if (context.Request.PathInfo.StartsWith("/"))
-                                {
-                                    int id;
-                                    if (int.TryParse(context.Request.PathInfo.Trim('/'), out id))
-                                    {
-                                        var item = engine.Persister.Get(id);
-                                        context.Response.WriteJson(item);
-                                        return;
-                                    }
-                                }
-                                throw new HttpException((int)HttpStatusCode.NotImplemented, "Not Implemented");
-                            }
-                            break;
+							var node = GetNode(context);
+                            context.Response.WriteJson(new { Node = node });
+                            return;
+						default:
+							if (context.Request.PathInfo.StartsWith("/"))
+							{
+								int id;
+								if (int.TryParse(context.Request.PathInfo.Trim('/'), out id))
+								{
+									var item = engine.Persister.Get(id);
+									context.Response.WriteJson(item);
+									return;
+								}
+							}
+							break;
                     }
                     break;
                 case "POST":
@@ -119,41 +124,162 @@ namespace N2.Management.Api
                     {
                         case "":
                             Create(context);
-                            break;
+                            return;
                         case "/update":
                             Update(context);
-                            break;
+                            return;
                         case "/sort":
                         case "/move":
                             Move(context, Selection.RequestValueAccessor);
-                            break;
+                            return;
                         case "/copy":
                             Copy(context, Selection.RequestValueAccessor);
-                            break;
+                            return;
                         case "/delete":
                             Delete(context);
-                            break;
+                            return;
                         case "/publish":
                             Publish(context);
-                            break;
+                            return;
                         case "/unpublish":
                             Unpublish(context);
-                            break;
+                            return;
                         case "/schedule":
                             Schedule(context);
-                            break;
+							return;
+						case "/autosave":
+							Autosave(context);
+							return;
                     }
                     break;
                 case "DELETE":
-                    EnsureValidSelection();
-                    Delete(context);
+					switch (context.Request.PathInfo)
+					{
+						case "/message":
+							DeleteMessage(context);
+							return;
+						default:
+							EnsureValidSelection();
+							Delete(context);
+							return;
+					}
                     break;
                 case "PUT":
                     EnsureValidSelection();
                     Update(context);
-                    break;
+                    return;
             }
+
+			if (!TryExecuteExternalHandlers(context))
+				throw new HttpException((int)HttpStatusCode.NotImplemented, "Not Implemented");
         }
+
+		private void Autosave(HttpContextBase context)
+		{
+			var selected = Selection.ParseSelectionFromRequest();
+			if (selected == null)
+				throw new HttpException((int)HttpStatusCode.NotFound, "Not Found");
+
+			var requestBody = context.GetOrDeserializeRequestStreamJsonDictionary<object>();
+			var discriminator = EditExtensions.GetDiscriminator(context.Request);
+
+			ContentItem item;
+			if (string.IsNullOrEmpty(discriminator))
+			{
+				item = selected;
+				var versions = engine.Resolve<VersionManager>();
+				if (item.State != ContentState.Draft)
+					item = versions.GetOrCreateDraft(item);
+
+				Update(requestBody, item);
+
+				if (item.ID == 0 && item.VersionOf.HasValue)
+					versions.UpdateVersion(item);
+				else
+				{
+					engine.Persister.Repository.SaveOrUpdate(item);
+					engine.Persister.Repository.Flush();
+				}
+			}
+			else
+			{
+				int id;
+				if (requestBody.ContainsKey("ID") && (id = (int)requestBody["ID"]) != 0)
+				{
+					item = engine.Persister.Get(id);
+				}
+				else
+				{
+					item = engine.Resolve<IDefinitionManager>().GetDefinition(discriminator).CreateInstance(selected);
+					item.State = ContentState.Draft;
+				}
+
+				Update(requestBody, item);
+
+				bool itemNeedsResaveWithIdGeneratedName = string.IsNullOrEmpty(item.Name);
+				engine.Persister.Repository.SaveOrUpdate(item);
+				engine.Persister.Repository.Flush();
+				if (itemNeedsResaveWithIdGeneratedName)
+					engine.Persister.Repository.Flush();
+			}
+
+			context.Response.WriteJson(new { ID = item.VersionOf.ID ?? item.ID, VersionIndex = item.VersionIndex });
+		}
+
+		private void Update(IDictionary<string, object> requestBody, ContentItem item)
+		{
+			foreach (var kvp in requestBody)
+				if (kvp.Key != "ID" && kvp.Key != "VersionIndex")
+					item[kvp.Key] = kvp.Value;
+		}
+
+		private bool TryExecuteExternalHandlers(HttpContextBase context)
+		{
+			foreach(var handler in engine.Container.ResolveAll<ContentHandlerBase>())
+			{
+				if (handler.Handle(context))
+					return true;
+			}
+			return false;
+		}
+
+		private List<TemplateInfo> GetwizardInfos(HttpContextBase context)
+		{
+			return engine.Container.ResolveAll<ITemplateInfoProvider>()
+				.Where(tip => tip.Area == "Wizard")
+				.SelectMany(tip => tip.GetTemplates())
+				.ToList();
+		}
+
+		private List<TemplateInfo> GetTemplateInfos(HttpContextBase context)
+		{
+			var templates = GetDefinitions(context)
+									 .SelectMany(d => engine.Resolve<ITemplateAggregator>().GetTemplates(d.ItemType))
+									 .WhereAllowed(Selection.SelectedItem, context.Request["zoneName"], context.User, engine.Definitions, engine.SecurityManager)
+									 .Select(d => new TemplateInfo(d)
+									 {
+										 EditUrl = engine.ManagementPaths.GetEditNewPageUrl(Selection.SelectedItem, d.Definition)
+									 })
+									 .ToList();
+			return templates;
+		}
+
+		private List<TemplateInfo> GetDefinitionTemplateInfos(HttpContextBase context)
+		{
+			var definitions = GetDefinitions(context)
+				.WhereAuthorized(engine.SecurityManager, context.User, Selection.SelectedItem)
+				.Select(d => new TemplateInfo(d)
+				{
+					EditUrl = engine.ManagementPaths.GetEditNewPageUrl(Selection.SelectedItem, d)
+				})
+				.ToList();
+			return definitions;
+		}
+
+		private void DeleteMessage(HttpContextBase context)
+		{
+			engine.Resolve<ManagementMessageCollector>().Delete(context.Request["source"], context.Request["id"]);
+		}
 
         private void Authorize(IPrincipal user, ContentItem item)
         {
@@ -216,7 +342,7 @@ namespace N2.Management.Api
             if (item == null)
                 throw new HttpException((int)HttpStatusCode.NotFound, "Not Found");
 
-            var requestBody = context.GetOrDeserializeRequestStreamJson<object>();
+            var requestBody = context.GetOrDeserializeRequestStreamJsonDictionary<object>();
             foreach (var kvp in requestBody)
                 item[kvp.Key] = kvp.Value;
 
@@ -234,7 +360,7 @@ namespace N2.Management.Api
             
             var item = engine.Resolve<ContentActivator>().CreateInstance(definition.ItemType, parent);
 
-            var requestBody = context.GetOrDeserializeRequestStreamJson<object>();
+            var requestBody = context.GetOrDeserializeRequestStreamJsonDictionary<object>();
             foreach (var kvp in requestBody)
                 item[kvp.Key] = kvp.Value;
 

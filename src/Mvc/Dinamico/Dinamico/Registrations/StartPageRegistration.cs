@@ -19,9 +19,8 @@ namespace Dinamico.Dinamico.Registrations
             register.ControlledBy<Controllers.StartPageController>();
 
             register.Page(title: "Start Page", description: "The topmost node of a site. This can be placed below a language intersection to also represent a language");
-            register.IconClass("fa fa-globe");
-            register.Definition.Installer = N2.Installation.InstallerHint.PreferredStartPage;
             register.RestrictParents(typeof(IRootPage), typeof(LanguageIntersection));
+			register.AvailableZone("Scripts");
 
             using (register.RecursiveContainer("SiteContainer", headingFormat: null).Allow(Permission.Administer).Begin())
             {
@@ -35,6 +34,8 @@ namespace Dinamico.Dinamico.Registrations
                     register.On(sp => sp.HostName).Text("Site host name (DNS)")
                         .Help("Sets a host name for this site/language. The web server must be configured to accept this host name for this to work.");
 
+					register.On(sp => sp.LoginPage).Url("Login age")
+						.Help("Page to display when authorization to a page fails.");
                 }
             }
 

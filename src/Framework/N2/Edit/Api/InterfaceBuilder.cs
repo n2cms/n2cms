@@ -8,10 +8,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Security.Principal;
+using System.Diagnostics;
 
 namespace N2.Management.Api
 {
-    public class Node<T>
+	[DebuggerDisplay("Node: {Current}")]
+	public class Node<T>
     {
         public Node()
         {
@@ -28,11 +31,17 @@ namespace N2.Management.Api
 
         public IEnumerable<Node<T>> Children { get; set; }
 
+		public int Count
+		{
+			get { return Children != null ? Children.Count() : 0; }
+		}
+
         public bool HasChildren { get; set; }
 
         public bool Expanded { get; set; }
     }
 
+	[DebuggerDisplay("InterfaceMenuItem: {Name}")]
     public class InterfaceMenuItem
     {
         public InterfaceMenuItem()
@@ -42,7 +51,9 @@ namespace N2.Management.Api
         }
 
         public string Title { get; set; }
+
         public string Url { get; set; }
+
         public string Target { get; set; }
 
         public string IconClass { get; set; }
@@ -72,6 +83,16 @@ namespace N2.Management.Api
         public string ClientAction { get; set; }
 
         public bool Divider { get; set; }
+
+		public static implicit operator Node<InterfaceMenuItem>(InterfaceMenuItem item)
+		{
+			return new Node<InterfaceMenuItem>(item);
+		}
+
+		public override string ToString()
+		{
+			return "InterfaceMenuItem " + Name;
+		}
     }
 
     public class InterfaceDefinition
@@ -315,11 +336,35 @@ namespace N2.Management.Api
 
         protected virtual Node<InterfaceMenuItem> GetActionMenu(HttpContextBase context)
         {
-            var children = new List<Node<InterfaceMenuItem>>
+            var children = new []
             {
-                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "preview", ToolTip = "Fullscreen", Url = "{{Context.CurrentItem.PreviewUrl}}", Target = Targets.Top, IconClass = "fa fa-eye" })
-                {
-                    Children = new[]
+                GetPreviewMenu(),
+                GetCreateMenu(),
+                GetEditMenu(),
+                GetVersionsMenu(),
+                GeLanguageMenu(),
+                GetTransitionsMenu(),
+                GetActionMenu(),
+                GetSearchMenu(),
+                GetUserMenu(context.User),
+                GetInfoMenu()
+            }.Where(n => n != null).ToList();
+
+            children.AddRange(engine.EditManager.GetPlugins<ToolbarPluginAttribute>(context.User)
+                    .Where(np => !np.Legacy)
+                    .Select(np => GetNode(np)));
+
+            return new Node<InterfaceMenuItem>
+            {
+                Children = children
+            };
+        }
+
+		protected virtual Node<InterfaceMenuItem> GetPreviewMenu()
+		{
+			return new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "preview", ToolTip = "Fullscreen", Url = "{{Context.CurrentItem.PreviewUrl}}", Target = Targets.Top, IconClass = "fa fa-eye" })
+			{
+				Children = new[]
                     {
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "fullscreen", Title = "Fullscreen", IconClass = "fa fa-eye", Target = Targets.Top, Url = "{{Context.CurrentItem.PreviewUrl}}" }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "previewdivider1", Divider = true }),
@@ -332,11 +377,19 @@ namespace N2.Management.Api
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "previewdivider2", Divider = true }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "links", Title = "Show links", IconClass = "fa fa-link", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/LinkTracker/Default.aspx')}}".ResolveUrlTokens() })
                     }
-                },
-                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "add", TemplateUrl = "App/Partials/ContentAdd.html", RequiredPermission = Permission.Write }),
-                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "edit", Title = "Edit", TemplateUrl = "App/Partials/MenuNodeLastChild.html", RequiredPermission = Permission.Write })
-                {
-                    Children = new[]
+			};
+		}
+
+		protected virtual Node<InterfaceMenuItem> GetCreateMenu()
+		{
+			return new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "add", TemplateUrl = "App/Partials/ContentAdd.html", RequiredPermission = Permission.Write });
+		}
+
+		protected virtual Node<InterfaceMenuItem> GetEditMenu()
+		{
+			return new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "edit", Title = "Edit", TemplateUrl = "App/Partials/MenuNodeLastChild.html", RequiredPermission = Permission.Write })
+			{
+				Children = new[]
                     {
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "organize", Title = "Organize parts", IconClass = "fa fa-th-large", Target = Targets.Preview, Url = "{{appendQuery(Context.CurrentItem.PreviewUrl, 'edit=drag')}}", RequiredPermission = Permission.Write }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "editdetails", Title = "Properties", IconClass = "fa fa-pencil-square", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Edit.aspx', true)}}".ResolveUrlTokens(), RequiredPermission = Permission.Write }),
@@ -346,26 +399,48 @@ namespace N2.Management.Api
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "export", Title = "Export", IconClass = "fa fa-cloud-download", ToolTip = "Export content to file", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Export/Export.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Administer }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "import", Title = "Import", IconClass = "fa fa-cloud-upload", ToolTip = "Import content from file", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Export/Default.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Administer })
                     }
-                },
-                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "versions", TemplateUrl = "App/Partials/ContentVersions.html", Url = "{{appendSelection('{ManagementUrl}/Content/Versions/')}}".ResolveUrlTokens(), RequiredPermission = Permission.Publish }),
-                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "language", TemplateUrl = "App/Partials/ContentLanguage.html", Url = "{{appendSelection('{ManagementUrl}/Content/Globalization/')}}".ResolveUrlTokens(), RequiredPermission = Permission.Write }),
-                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "transitions", TemplateUrl = "App/Partials/ContentTransitions.html", RequiredPermission = Permission.Publish })
-                {
-                    Children = new[]
+			};
+		}
+
+		protected virtual Node<InterfaceMenuItem> GetVersionsMenu()
+		{
+			return new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "versions", TemplateUrl = "App/Partials/ContentVersions.html", Url = "{{appendSelection('{ManagementUrl}/Content/Versions/')}}".ResolveUrlTokens(), RequiredPermission = Permission.Publish });
+		}
+
+		protected virtual Node<InterfaceMenuItem> GeLanguageMenu()
+		{
+			return new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "language", TemplateUrl = "App/Partials/ContentLanguage.html", Url = "{{appendSelection('{ManagementUrl}/Content/Globalization/')}}".ResolveUrlTokens(), RequiredPermission = Permission.Write });
+		}
+
+		protected virtual Node<InterfaceMenuItem> GetTransitionsMenu()
+		{
+			return new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "transitions", TemplateUrl = "App/Partials/ContentTransitions.html", RequiredPermission = Permission.Publish })
+			{
+				Children = new[]
                     {
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "delete", Title = "Delete", IconClass = "fa fa-trash-o", Url = "{{appendSelection('{ManagementUrl}/Content/Delete.aspx')}}".ResolveUrlTokens(), ToolTip = "Move selected item to trash", RequiredPermission = Permission.Publish, HiddenBy = "Deleted" }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "publish", Title = "Publish", IconClass = "fa fa-play-sign", ClientAction = "publish()", RequiredPermission = Permission.Publish, HiddenBy = "Published" }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "schedule", TemplateUrl = "App/Partials/ContentPublishSchedule.html", RequiredPermission = Permission.Publish, DisplayedBy = "Draft" }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "unpublish", Title = "Unpublish", IconClass = "fa fa-stop", ClientAction = "unpublish()", RequiredPermission = Permission.Publish, DisplayedBy = "Published" }),
                     }
-                },
-                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "frameaction", TemplateUrl = "App/Partials/FrameAction.html", RequiredPermission = Permission.Write }),
-				//new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "close", Title = "Close", Url = "{{Context.ReturnUrl || Context.CurrentItem.PreviewUrl || Context.Paths.PreviewUrl}}", Target = Targets.Preview, DisplayedBy = "Management", HiddenBy = "Unclosable" }),
-                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "messages", Alignment = "Right", TemplateUrl = "App/Partials/Messages.html" }),
-                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "search", Alignment = "Right", TemplateUrl = "App/Partials/ContentSearch.html" }),
-                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "me", Url = engine.Content.Traverse.RootPage.Url, ToolTip = context.User.Identity.Name, Alignment = "Right", IconClass = "fa fa-user" })
-                {
-                    Children = new[]
+			};
+		}
+
+		protected virtual Node<InterfaceMenuItem> GetActionMenu()
+		{
+			return new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "frameaction", TemplateUrl = "App/Partials/FrameAction.html", RequiredPermission = Permission.Write });
+		}
+
+		protected virtual Node<InterfaceMenuItem> GetSearchMenu()
+		{
+			return new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "search", Alignment = "Right", TemplateUrl = "App/Partials/ContentSearch.html" });
+		}
+
+		protected virtual Node<InterfaceMenuItem> GetUserMenu(IPrincipal user)
+		{
+			return new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "me", Url = engine.Content.Traverse.RootPage.Url, ToolTip = user.Identity.Name, Alignment = "Right", IconClass = "fa fa-user" })
+			{
+				Children = new[]
                     {
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "password", Title = "Change password", IconClass = "fa fa-user", ToolTip = "Manage password", Target = Targets.Preview, Url = "{Account.EditPassword.PageUrl}".ResolveUrlTokens(), SelectedBy = "EditPassword" }),
   				        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "signout", Title = "Sign out", IconClass = "fa fa-signout", ToolTip = "Sign out {{Context.User.Name}}", Url = "{Account.Logout.PageUrl}".ResolveUrlTokens() }),
@@ -374,19 +449,19 @@ namespace N2.Management.Api
                         REMOVE: new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "signout", Title = "Sign out", IconClass = "fa fa-signout", ToolTip = "Sign out {{Context.User.Name}}", Url = "{ManagementUrl}/Login.aspx?logout=true".ResolveUrlTokens() }),
                          */
                     }
-                },
-                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "info", TemplateUrl = "App/Partials/ContentInfo.html", RequiredPermission = Permission.Read, Alignment = "Right" })
-            };
+			};
+		}
 
-            children.AddRange(engine.EditManager.GetPlugins<ToolbarPluginAttribute>(context.User)
-                    .Where(np => !np.Legacy)
-                    .Select(np => GetNode(np)));
-
-            return new Node<InterfaceMenuItem>
-            {
-                Children = children
-            };
-        }
+		protected virtual Node<InterfaceMenuItem> GetInfoMenu()
+		{
+			return new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "info", TemplateUrl = "App/Partials/ContentInfo.html", RequiredPermission = Permission.Read, Alignment = "Right" })
+			{
+				Children = new[]
+                {
+                    new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "infodetails", TemplateUrl = "App/Partials/ContentInfoDetails.html" })
+				}
+			};
+		}
 
         protected virtual ProfileUser GetUser(HttpContextBase context)
         {

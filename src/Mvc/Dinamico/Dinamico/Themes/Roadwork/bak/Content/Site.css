@@ -1,8 +1,0 @@
-﻿@import "../../Default/Content/bootstrap/bootstrap.min.css";
-@import "Layout.css";
-@import "Elements.css";
-@import "../../Default/Content/Features.css";
-@import "Mood.css";
-@import "TopNavigation.css";
-
-#content img.main { width:920px; }

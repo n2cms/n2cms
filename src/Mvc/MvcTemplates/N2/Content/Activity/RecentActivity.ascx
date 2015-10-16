@@ -31,19 +31,12 @@
 		$(document).keyup(function () {
 			isDirty = true;
 		});
-		if (window.tinymce){
-			tinymce.onAddEditor.add(function(mce, ed){
-				ed.onKeyUp.add(function() {
-					isDirty = true;
-				})
-			});
-		}
 		setInterval(function () {
 			if (!$(activityContainer).is(":visible"))
 				return;
 			$.ajax({
 				method: "POST",
-				url: "<%= N2.Web.Url.ResolveTokens("{ManagementUrl}/Content/Activity/Notify.ashx") %>",
+				url: "<%= N2.Web.Url.ResolveTokens("{ManagementUrl}/Collaboration/Ping.ashx") %>",
 			dataType: 'json',
 			data: { selected: n2ctx.selectedPath, activity: "Edit", dirty: isDirty },
 			success: function (data) {

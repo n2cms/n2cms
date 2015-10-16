@@ -13,7 +13,8 @@ namespace N2.Web.Mvc
     /// Base class for content controllers that provides easy access to the content item in scope.
     /// </summary>
     /// <typeparam name="T">The type of content item the controller handles.</typeparam>
-    public abstract class ContentController<T> : ContentController
+	[ContentOutputCache]
+	public abstract class ContentController<T> : ContentController
         where T : ContentItem
     {
         /// <summary>The content item associated with the requested path.</summary>

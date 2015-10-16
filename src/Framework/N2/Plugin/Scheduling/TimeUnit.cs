@@ -7,6 +7,7 @@ namespace N2.Plugin.Scheduling
     {
         Seconds,
         Minutes,
-        Hours
+		Hours,
+		Days
     }
 }

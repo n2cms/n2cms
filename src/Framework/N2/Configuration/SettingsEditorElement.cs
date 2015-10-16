@@ -14,7 +14,6 @@ namespace N2.Configuration
             Path = path;
         }
 
-
         [ConfigurationProperty("name", IsKey = true)]
         public string Name
         {
