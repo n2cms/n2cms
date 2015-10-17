@@ -520,7 +520,7 @@
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Mvc\MvcTemplates\N2.Management.csproj">
+    <ProjectReference Include="..\..\Mvc\MvcTemplates\N2\N2.Management.csproj">
       <Project>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</Project>
       <Name>N2.Management</Name>
     </ProjectReference>

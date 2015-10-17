@@ -158,7 +158,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Mvc\MvcTemplates\N2.Management.csproj">
+    <ProjectReference Include="..\..\Mvc\MvcTemplates\N2\N2.Management.csproj">
       <Project>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</Project>
       <Name>N2.Management</Name>
     </ProjectReference>

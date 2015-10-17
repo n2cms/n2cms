@@ -118,7 +118,7 @@
       <Project>{f3c813fe-c51b-4c10-85e2-fd2560e73e72}</Project>
       <Name>N2</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\N2.Management.csproj">
+    <ProjectReference Include="..\N2.Management.csproj">
       <Project>{10f7c179-b92d-4fca-b78c-011e428d0ca3}</Project>
       <Name>N2.Management</Name>
     </ProjectReference>

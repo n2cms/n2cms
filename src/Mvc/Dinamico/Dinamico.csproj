@@ -270,7 +270,7 @@
       <Project>{6e61bc93-4f13-40c8-a610-33e46f1e7c34}</Project>
       <Name>N2.Search.Lucene</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MvcTemplates\N2.Management.csproj">
+    <ProjectReference Include="..\MvcTemplates\N2\N2.Management.csproj">
       <Project>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</Project>
       <Name>N2.Management</Name>
     </ProjectReference>
@@ -305,7 +305,7 @@
       <Project>{D701D33B-3FBB-440C-9AAE-F0E99DFF04F9}</Project>
       <Name>N2.Razor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MvcTemplates\N2.Management.csproj">
+    <ProjectReference Include="..\MvcTemplates\N2\N2.Management.csproj">
       <Project>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</Project>
       <Name>N2.Management</Name>
     </ProjectReference>

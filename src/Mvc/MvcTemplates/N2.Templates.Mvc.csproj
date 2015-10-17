@@ -481,7 +481,7 @@
       <Project>{2f45b409-52cd-4fb9-963a-d20e0b113d26}</Project>
       <Name>N2.ReusableParts</Name>
     </ProjectReference>
-    <ProjectReference Include="N2.Management.csproj">
+    <ProjectReference Include="N2\N2.Management.csproj">
       <Project>{10f7c179-b92d-4fca-b78c-011e428d0ca3}</Project>
       <Name>N2.Management</Name>
     </ProjectReference>
