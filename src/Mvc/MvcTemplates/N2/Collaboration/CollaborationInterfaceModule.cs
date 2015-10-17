@@ -22,8 +22,6 @@ namespace N2.Management.Collaboration
 
 		void builder_InterfaceBuilt(object sender, InterfaceBuiltEventArgs e)
 		{
-			//e.Data.ActionMenu.Add("info", new InterfaceMenuItem { Name = "Collaboration", TemplateUrl = "{ManagementUrl}/Collaboration/Partials/PageStats.html".ResolveUrlTokens(), RequiredPermission = Permission.Read });
-			e.Data.ActionMenu.Add(null, new InterfaceMenuItem { Name = "messages", Alignment = "Right", TemplateUrl = "{ManagementUrl}/Collaboration/Partials/Messages.html".ResolveUrlTokens() }, requireParent: false, insertBeforeSiblingWithName: "search");
 			e.Data.ActionMenu.Add("info", new InterfaceMenuItem { Name = "notes", TemplateUrl = "{ManagementUrl}/Collaboration/Partials/Notes.html".ResolveUrlTokens(), RequiredPermission = Permission.Read });
 
 		}

@@ -133,6 +133,7 @@
     <Content Include="N2\App\Partials\ContentBranch.html" />
     <Content Include="N2\App\Partials\Menu.html" />
     <Content Include="N2\App\Partials\ContentTree.html" />
+    <Content Include="N2\App\Partials\Messages.html" />
     <Content Include="N2\Collaboration\Ping.ashx" />
     <Content Include="N2\Content\Activity\RecentActivity.ascx" />
     <Content Include="N2\Content\AffectedItems.ascx" />

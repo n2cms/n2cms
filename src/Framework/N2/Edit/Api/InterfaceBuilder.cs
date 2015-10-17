@@ -345,6 +345,7 @@ namespace N2.Management.Api
                 GeLanguageMenu(),
                 GetTransitionsMenu(),
                 GetActionMenu(),
+				GetMessagesMenu(),
                 GetSearchMenu(),
                 GetUserMenu(context.User),
                 GetInfoMenu()
@@ -429,6 +430,11 @@ namespace N2.Management.Api
 		protected virtual Node<InterfaceMenuItem> GetActionMenu()
 		{
 			return new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "frameaction", TemplateUrl = "App/Partials/FrameAction.html", RequiredPermission = Permission.Write });
+		}
+
+		protected virtual Node<InterfaceMenuItem> GetMessagesMenu()
+		{
+			return new InterfaceMenuItem { Name = "messages", Alignment = "Right", TemplateUrl = "App/Partials/Messages.html" };
 		}
 
 		protected virtual Node<InterfaceMenuItem> GetSearchMenu()
