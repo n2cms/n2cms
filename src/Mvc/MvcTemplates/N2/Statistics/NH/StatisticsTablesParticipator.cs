@@ -32,7 +32,7 @@ namespace N2.Management.Statistics.NH
 
 		private void StatisticCustomization(IClassMapper<Statistic> ca)
 		{
-			ca.Table(tablePrefix + "statistics");
+			ca.Table(tablePrefix + "Statistics");
 			ca.ComposedId(x =>
 			{
 				x.Property(y => y.TimeSlot);
@@ -46,7 +46,7 @@ namespace N2.Management.Statistics.NH
 
 		private void BucketCustomization(IClassMapper<Bucket> ca)
 		{
-			ca.Table(tablePrefix + "statisticsBucket");
+			ca.Table(tablePrefix + "StatisticsBucket");
 			ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
 			ca.Lazy(false);
 			ca.Property(x => x.PageID, cm => { cm.NotNullable(true); });
