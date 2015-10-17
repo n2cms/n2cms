@@ -15,9 +15,15 @@ namespace N2.Edit.Collaboration
 		private Queue<CollaborationMessage> messages = new Queue<CollaborationMessage>();
 		private TraceEventType reportingLevel;
 
-		public TraceReaderMessageProvider(N2.Configuration.ConfigurationManagerWrapper config)
+		public TraceReaderMessageProvider(N2.Configuration.ConfigurationManagerWrapper config, ConnectionMonitor monitor)
 		{
+			monitor.Online += monitor_Online;
 			reportingLevel = config.Sections.Management.Collaboration.ErrorReportingLevel;
+		}
+
+		void monitor_Online(object sender, EventArgs e)
+		{
+			Trace.Listeners.Add(new Listener(this));
 		}
 
 		public override IEnumerable<CollaborationMessage> GetMessages(N2.Edit.Collaboration.CollaborationContext context)
@@ -27,7 +33,6 @@ namespace N2.Edit.Collaboration
 
 		public void Start()
 		{
-			Trace.Listeners.Add(new Listener(this));
 		}
 
 		public void Stop()
