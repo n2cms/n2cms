@@ -18,13 +18,14 @@
 		<PackagesFolder>$(RootFolder)\src\Packages</PackagesFolder>
 		<WebFolder>$(SrcFolder)\WebForms\WebFormsTemplates</WebFolder>
 		<ManagementFolder>$(SrcFolder)\Mvc\MvcTemplates\</ManagementFolder>
-		<EditFolder>$(RootFolder)\src\Mvc\MvcTemplates\N2</EditFolder>
+		<!--<EditFolder>$(RootFolder)\src\Mvc\MvcTemplates\N2</EditFolder>-->
 
 		<Examples-Folder>$(RootFolder)\examples</Examples-Folder>
 
 		<Version Condition="'$(Version)' == ''">2.8</Version>
 		<DeployPrefix>n2cms_$(Version)_</DeployPrefix>
 		<DeployFolder>$(RootFolder)\output</DeployFolder>
+		<ArtifactsFolder>$(DeployFolder)\buildartifacts</ArtifactsFolder>
 		<TempFolder>$(RootFolder)\output\temp\</TempFolder>
 
 		<Configuration Condition="'$(Configuration)' == ''">Release</Configuration>

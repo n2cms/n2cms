@@ -25,7 +25,7 @@
 </PropertyGroup>
 
 	<ItemGroup>
-		<nugetFxTargets Include="net40;net45"/>
+		<nugetFxTargets Include="net45"/>
 	</ItemGroup>
 
   <Target Name="Config-NuGet">
@@ -67,9 +67,7 @@
 
 	<Target Name="Library-NuGet" DependsOnTargets="Config-NuGet;Framework-Deploy;LocalResources-NuGet">
     <ItemGroup>
-      <nugetLibraryBinFiles Include="$(ManagementFolder)\bin\N2.dll;
-                       $(ManagementFolder)\bin\N2.pdb;
-                       $(ManagementFolder)\bin\N2.xml;"/>
+      <nugetLibraryBinFiles Include="$(ArtifactsFolder)\N2.???;"/>
     </ItemGroup>
     <Copy SourceFiles="@(nugetLibraryBinFiles)" DestinationFolder="$(Library-NugetFolder)\lib\%(nugetFxTargets.Identity)\" />
 
@@ -179,7 +177,7 @@
       <nugetReusablePartsBinFiles Include="$(SrcFolder)\Framework\ReusableParts\bin\$(Configuration)\N2.ReusableParts.*;" />
     </ItemGroup>
     <Copy SourceFiles="@(reusablePartsNugetIncludes)" DestinationFolder="$(ReusableParts-NugetFolder)\%(RecursiveDir)" />
-    <Copy SourceFiles="@(nugetReusablePartsBinFiles)" DestinationFolder="$(ReusableParts-NugetFolder)\lib\NET40" />
+    <Copy SourceFiles="@(nugetReusablePartsBinFiles)" DestinationFolder="$(ReusableParts-NugetFolder)\lib\%(nugetFxTargets.Identity)\" />
     <FileUpdate Files="$(ReusableParts-NugetFolder)\N2.ReusableParts.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
     <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(ReusableParts-NugetFolder)\" />
@@ -191,7 +189,7 @@
     <ItemGroup>
       <nugetFrameworkBinFiles
         Include="$(ManagementFolder)\bin\N2.Extensions.*;
-                 $(ManagementFolder)\bin\N2.Management.*;
+                 $(ManagementFolder)\bin\N2.Management.???;
                  $(ManagementFolder)\bin\N2.Extensions.*;" />
       <NoZipFrameworkDeployFiles
         Include="$(Framework-DeployFolder)\N2\**\*"/>
@@ -233,11 +231,9 @@
 	<Target Name="Management-Targeting-NuGet">
 		<ItemGroup>
 			<managementTargetingIncludes Include="$(BuildFolder)\Nuget\ManagementTargeting\**\*" />
-			<managementTargetingBinFiles Include="$(ManagementFolder)\N2\Targeting\Bin\N2.Management.Targeting.dll;" />
-			<managementTargetingDeployFiles Include="$(ManagementFolder)\N2\Targeting\**\*.css;
-																							 $(ManagementFolder)\N2\Targeting\**\*.js;
-																							 $(ManagementFolder)\N2\Targeting\**\*.html;
-																							 $(ManagementFolder)\N2\Targeting\**\*.as?x;" />
+			<managementTargetingBinFiles Include="$(ArtifactsFolder)\N2.Management.Targeting.???;" />
+			<managementTargetingDeployFiles Include="$(ArtifactsFolder)\_PublishedWebsites\N2.Management.Targeting\**\*;"
+																			Exclude="$(ArtifactsFolder)\_PublishedWebsites\N2.Management.Targeting\**\bin\*;"/>
 		</ItemGroup>
 		<Copy SourceFiles="@(managementTargetingIncludes)" DestinationFolder="$(Management-Targeting-NugetFolder)\%(RecursiveDir)" />
 		<Copy SourceFiles="@(managementTargetingBinFiles)" DestinationFolder="$(Management-Targeting-NugetFolder)\lib" SkipUnchangedFiles="true" />
@@ -250,11 +246,9 @@
 	<Target Name="Management-Collaboration-NuGet">
 		<ItemGroup>
 			<managementCollaborationIncludes Include="$(BuildFolder)\Nuget\ManagementCollaboration\**\*" />
-			<managementCollaborationBinFiles Include="$(ManagementFolder)\N2\Collaboration\Bin\N2.Management.Collaboration.dll;" />
-			<managementCollaborationDeployFiles Include="$(ManagementFolder)\N2\Collaboration\**\*.css;
-																							 $(ManagementFolder)\N2\Collaboration\**\*.js;
-																							 $(ManagementFolder)\N2\Collaboration\**\*.html;
-																							 $(ManagementFolder)\N2\Collaboration\**\*.as?x;" />
+			<managementCollaborationBinFiles Include="$(ArtifactsFolder)\N2.Management.Collaboration.???;" />
+			<managementCollaborationDeployFiles Include="$(ArtifactsFolder)\_PublishedWebsites\N2.Management.Collaboration\**\*;"
+																					Exclude="$(ArtifactsFolder)\_PublishedWebsites\N2.Management.Collaboration\**\bin\*;"/>
 		</ItemGroup>
 		<Copy SourceFiles="@(managementCollaborationIncludes)" DestinationFolder="$(Management-Collaboration-NugetFolder)\%(RecursiveDir)" />
 		<Copy SourceFiles="@(managementCollaborationBinFiles)" DestinationFolder="$(Management-Collaboration-NugetFolder)\lib" SkipUnchangedFiles="true" />
@@ -267,11 +261,9 @@
 	<Target Name="Management-Statistics-NuGet">
 		<ItemGroup>
 			<managementStatisticsIncludes Include="$(BuildFolder)\Nuget\ManagementStatistics\**\*" />
-			<managementStatisticsBinFiles Include="$(ManagementFolder)\N2\Statistics\Bin\N2.Management.Statistics.dll;" />
-			<managementStatisticsDeployFiles Include="$(ManagementFolder)\N2\Statistics\**\*.css;
-																							 $(ManagementFolder)\N2\Statistics\**\*.js;
-																							 $(ManagementFolder)\N2\Statistics\**\*.html;
-																							 $(ManagementFolder)\N2\Statistics\**\*.as?x;" />
+			<managementStatisticsBinFiles Include="$(ArtifactsFolder)\N2.Management.Statistics.???;" />
+			<managementStatisticsDeployFiles Include="$(ArtifactsFolder)\_PublishedWebsites\N2.Management.Statistics\**\*;"
+																			 Exclude="$(ArtifactsFolder)\_PublishedWebsites\N2.Management.Statistics\**\bin\*;"/>
 		</ItemGroup>
 		<Copy SourceFiles="@(managementStatisticsIncludes)" DestinationFolder="$(Management-Statistics-NugetFolder)\%(RecursiveDir)" />
 		<Copy SourceFiles="@(managementStatisticsBinFiles)" DestinationFolder="$(Management-Statistics-NugetFolder)\lib" SkipUnchangedFiles="true" />
