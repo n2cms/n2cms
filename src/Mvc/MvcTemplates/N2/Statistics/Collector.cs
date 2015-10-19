@@ -16,7 +16,6 @@ namespace N2.Management.Statistics
 		{
 			if (data.IsEmpty())
 				return;
-
 			var bucket = buckets.GetOrAdd(data.ID, CreateBucket);
 			bucket.Increment();
 		}

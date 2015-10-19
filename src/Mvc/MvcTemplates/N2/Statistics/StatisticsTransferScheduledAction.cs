@@ -13,19 +13,32 @@ namespace N2.Management.Statistics
 {
 	internal static class StatisticsExtension
 	{
-		public static DateTime GetSlot(this DateTime date, Granularity interval)
+		public static DateTime GetSlot(this DateTime date, Granularity interval, bool endOfSlot = false)
 		{
+			DateTime slot;
 			if (interval == Granularity.Minute)
-				return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, 0);
+				slot = new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, 0);
 			else if (interval == Granularity.Hour)
-				return new DateTime(date.Year, date.Month, date.Day, date.Hour, 0, 0);
+				slot = new DateTime(date.Year, date.Month, date.Day, date.Hour, 0, 0);
 			else
-				return new DateTime(date.Year, date.Month, date.Day, 0, 0, 0);
+				slot = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0);
+
+			if (endOfSlot)
+			{
+				if (interval == Granularity.Minute)
+					slot = slot.AddMinutes(1);
+				else if (interval == Granularity.Hour)
+					slot = slot.AddHours(1);
+				else
+					slot = slot.AddDays(1);
+			}
+
+			return slot;
 		}
 	}
 
 	[ScheduleExecution(1, TimeUnit.Minutes)]
-	public class ScheduledSave : ScheduledAction
+	public class StatisticsTransferScheduledAction : ScheduledAction
 	{
 		private Collector filler;
 		private StatisticsRepository repository;
@@ -33,7 +46,7 @@ namespace N2.Management.Statistics
 		public Granularity StatisticsGranularity { get; set; }
 		public Granularity TransferInterval { get; set; }
 
-		public ScheduledSave(Collector filler, StatisticsRepository repository, ConfigurationManagerWrapper config)
+		public StatisticsTransferScheduledAction(Collector filler, StatisticsRepository repository, ConfigurationManagerWrapper config)
 		{
 			var section = config.GetContentSection<StatisticsSection>("statistics", required: false);
 			MemoryFlushInterval = section.MemoryFlushInterval;

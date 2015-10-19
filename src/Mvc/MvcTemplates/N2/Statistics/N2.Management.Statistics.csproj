@@ -105,13 +105,16 @@
   <ItemGroup>
     <Compile Include="Configuration\StatisticsSection.cs" />
     <Compile Include="Granularity.cs" />
+    <Compile Include="PopularityReordererScheduledAction.cs" />
+    <Compile Include="PopularityChildrenSorter.cs" />
+    <Compile Include="SortChildrenByPopularityAttribute.cs" />
     <Compile Include="StatisticsErrorMessageProvider.cs" />
     <Compile Include="StatisticsRepository.cs" />
     <Compile Include="Collector.cs" />
     <Compile Include="NH\StatisticsTablesParticipator.cs" />
     <Compile Include="Bucket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScheduledSave.cs" />
+    <Compile Include="StatisticsTransferScheduledAction.cs" />
     <Compile Include="Statistic.cs" />
     <Compile Include="StatisticsContentHandler.cs" />
     <Compile Include="StatisticsInterfaceModule.cs" />

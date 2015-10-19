@@ -40,7 +40,8 @@ namespace N2.Management.Statistics
 
 		private void OnEndRequest(object sender, EventArgs e)
 		{
-			filler.RegisterView(context.CurrentPath);
+			if (context.HttpContext.GetViewPreference(Edit.ViewPreference.None) == Edit.ViewPreference.None)
+				filler.RegisterView(context.CurrentPath);
 		}
 
 		public void Start()
