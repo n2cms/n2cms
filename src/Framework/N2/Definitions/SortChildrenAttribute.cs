@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using N2.Collections;
 using N2.Persistence.Behaviors;
+using N2.Engine;
 
 namespace N2.Definitions
 {
@@ -12,10 +13,24 @@ namespace N2.Definitions
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class SortChildrenAttribute : Attribute, ISavingBehavior
     {
-        public SortChildrenAttribute(SortBy orderBy)
-        {
-            this.OrderBy = orderBy;
-        }
+		public SortChildrenAttribute(SortBy orderBy)
+		{
+			this.OrderBy = orderBy;
+		}
+
+		public SortChildrenAttribute(Type customSorter)
+		{
+			if (customSorter != null)
+				OrderBy = SortBy.CustomSorter;
+			else
+				OrderBy = SortBy.CurrentOrder;
+			CustomSorterType = customSorter;
+		}
+
+		public SortChildrenAttribute(string customSorterType)
+			: this(Type.GetType(customSorterType))
+		{
+		}
 
         /// <summary>Reorders children according to OrderBy.</summary>
         /// <param name="item">The item whose children to re-order.</param>
@@ -41,10 +56,25 @@ namespace N2.Definitions
                 case SortBy.Unordered:
                 case SortBy.Append:
                     return Enumerable.Empty<ContentItem>();
+				case SortBy.CustomSorter:
+					if (CustomSorterType == null)
+					{
+						if (item is IChildrenSorter)
+							return (item as IChildrenSorter).ReorderChildren(item);
+						else
+							throw new ArgumentException("Cannot sort by CustomSorter with null CustomSorterType");
+					}
+					if (!typeof(IChildrenSorter).IsAssignableFrom(CustomSorterType))
+						throw new ArgumentException("CustomSorterType must implement IChildrenSorter");
+					var sorter = (IChildrenSorter)Services.Service.Resolve(CustomSorterType)
+						?? (IChildrenSorter)Activator.CreateInstance(CustomSorterType);
+					return sorter.ReorderChildren(item);
                 default:
                     throw new ArgumentException("Unknown sort order: " + OrderBy);
             }
         }
+
+		public Accessor<IServiceContainer> Services;
 
         private IEnumerable<ContentItem> ReorderBy(ContentItem item, string sortExpression)
         {
@@ -85,5 +115,7 @@ namespace N2.Definitions
                 context.UnsavedItems.Add(updatedItem);
             }
         }
-    }
+
+		public Type CustomSorterType { get; set; }
+	}
 }

@@ -32,6 +32,7 @@ using System;
 using N2.Definitions.Static;
 using System.Collections;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace N2.Persistence
 {
@@ -168,10 +169,10 @@ namespace N2.Persistence
                 | Parameter.Like("AncestralTrail", ancestorOrSelf.GetTrail() + "%");
         }
 
-        public static Parameter In(string name, params object[] anyOf)
-        {
-            return new Parameter(name, anyOf, Comparison.In);
-        }
+		public static Parameter In(string name, params object[] anyOf)
+		{
+			return new Parameter(name, anyOf, Comparison.In);
+		}
 
         public static Parameter NotIn(string name, params object[] anyOf)
         {

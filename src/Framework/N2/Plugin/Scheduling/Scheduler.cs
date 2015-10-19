@@ -132,6 +132,7 @@ namespace N2.Plugin.Scheduling
                         catch (Exception ex)
                         {
                             action.ErrorCount++;
+							action.LastError = ex;
 							try
 							{
 								logger.Error("Exception executing scheduled action: ", ex);

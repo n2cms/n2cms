@@ -164,6 +164,7 @@
     <Compile Include="Configuration\ExceptionResolutionMode.cs" />
     <Compile Include="Configuration\ServerElement.cs" />
     <Compile Include="Definitions\DefinitionEventArgs.cs" />
+    <Compile Include="Definitions\IChildrenSorter.cs" />
     <Compile Include="Definitions\IPlaceholder.cs" />
     <Compile Include="Edit\Api\ContentHandlerAttribute.cs" />
     <Compile Include="Edit\Api\ContentHandlerBase.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Edit\Collaboration\TraceReaderMessageProvider.cs" />
     <Compile Include="Edit\Versioning\InvalidVersionInfo.cs" />
     <Compile Include="Edit\Versioning\VersionInfo.cs" />
+    <Compile Include="Engine\Accessor.cs" />
     <Compile Include="Persistence\LinqQueryFacade.cs" />
     <Compile Include="Persistence\NH\LinqNHQueryFacade.cs" />
     <Compile Include="Persistence\Xml\CacheBox.cs" />
