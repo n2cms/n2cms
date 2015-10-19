@@ -3,7 +3,8 @@
 	<table>
 		<tr>
 			<td ng-repeat="v in Statistics.Views"><span><b>{{v.Views}}</b> <time>{{v.Date | date: 'short'}}</time></span><div style="height:{{100*(v.Views/max)}}%"></div></td>
-			<td><sup ng-click="resetMax()">{{max}}</sup><sub>0</sub></td>
 		</tr>
 	</table>
+	<sup ng-click="resetMax()">{{max}}</sup>
+	<sub>0</sub>
 </div>
