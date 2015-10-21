@@ -290,7 +290,6 @@
 			var contextMenu = this;
 
 			contextMenu.appendSelection = function (url, appendPreviewQueries) {
-				console.log("appending...", url, contextMenu);
 				url = scope.appendQuery(url, scope.Context.Paths.SelectedQueryKey + "=" + contextMenu.CurrentItem.Path + "&" + scope.Context.Paths.ItemQueryKey + "=" + contextMenu.CurrentItem.ID);
 				if (appendPreviewQueries) {
 					for (var key in scope.Context.PreviewQueries) {
