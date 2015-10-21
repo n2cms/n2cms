@@ -286,12 +286,25 @@
 	});
 
 	module.factory('ContextMenuFactory', function () {
-		return function(scope) {
+		return function (scope) {
 			var contextMenu = this;
-			contextMenu.show = function(node) {
-				scope.select(node);
+
+			contextMenu.appendSelection = function (url, appendPreviewQueries) {
+				console.log("appending...", url, contextMenu);
+				url = scope.appendQuery(url, scope.Context.Paths.SelectedQueryKey + "=" + contextMenu.CurrentItem.Path + "&" + scope.Context.Paths.ItemQueryKey + "=" + contextMenu.CurrentItem.ID);
+				if (appendPreviewQueries) {
+					for (var key in scope.Context.PreviewQueries) {
+						url += "&" + key + "=" + scope.Context.PreviewQueries[key];
+					}
+				}
+				return url;
+			}
+
+			contextMenu.show = function (node) {
+
 				scope.ContextMenu.node = node;
 				scope.ContextMenu.options = [];
+				scope.ContextMenu.CurrentItem = node.Current;
 
 				for (var i in scope.Context.ContextMenu.Children) {
 					var cm = scope.Context.ContextMenu.Children[i];
@@ -300,6 +313,7 @@
 			};
 			contextMenu.hide = function() {
 				delete scope.ContextMenu.node;
+				delete scope.ContextMenu.CurrentItem;
 				delete scope.ContextMenu.options;
 				delete scope.ContextMenu.memory;
 				delete scope.ContextMenu.action;
