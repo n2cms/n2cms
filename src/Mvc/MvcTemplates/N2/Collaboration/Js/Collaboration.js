@@ -6,6 +6,8 @@
 
 	var currentID;
 	function loadNotes() {
+		if (!$scope.Context.CurrentItem)
+			return;
 		if (currentID == $scope.Context.CurrentItem.ID)
 			return;
 		$scope.note = null;

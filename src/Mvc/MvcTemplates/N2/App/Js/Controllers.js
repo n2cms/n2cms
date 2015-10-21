@@ -658,15 +658,8 @@ function MenuNodeLastChildCtrl($scope, $timeout) {
 //	};
 //}
 
-function PreviewCtrl($scope, $rootScope) {
-	$scope.frameLoaded = function (e) {
-		try {
-			var loco = e.target.contentWindow.location;
-			$scope.$emit("preiewloaded", { path: loco.pathname, query: loco.search, url: loco.toString() });
-		} catch (ex) {
-			window.console && console.log("frame access exception", ex);
-		}
-	};
+function PreviewCtrl() {
+	console.warn("PreviewCtrl obsolete");
 }
 
 function AddCtrl($scope, Content) {
