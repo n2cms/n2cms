@@ -372,9 +372,9 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 				$scope.Context.AppliesTo = node.Current.PreviewUrl;
 			}
 
-			$timeout(function () {
+			Eventually(function () {
 				$scope.refreshContext(node, versionIndex, keepFlags)
-			}, 200);
+			}, 100);
 			return true;
 		}
 	};
@@ -413,13 +413,13 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 		//console.log("setting appliesTo (2)", e.path + e.query);
 		$scope.Context.AppliesTo = e.path + e.query;
 
-		$timeout(function () {
+		Eventually(function () {
 			Context.get({ selectedUrl: e.path + e.query }, function (ctx) {
 				//console.log("previewloaded -> contextchanged", e, ctx);
 				angular.extend($scope.Context, ctx);
 				$scope.$emit("contextchanged", $scope.Context);
 			});
-		}, 200);
+		}, 100);
 	});
 
 	$scope.evaluateExpression = function (expr) {
