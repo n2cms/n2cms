@@ -81,7 +81,7 @@ function Uri(uri) {
 	};
 };
 
-function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Context, Content, Profile, Security, FrameContext, Translate, Eventually, LocationKeeper, Notify) {
+function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $rootScope, Context, Content, Profile, Security, FrameContext, Translate, Eventually, LocationKeeper, Notify) {
 	$scope.Content = Content;
 	$scope.Security = Security;
 
@@ -372,9 +372,9 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 				$scope.Context.AppliesTo = node.Current.PreviewUrl;
 			}
 
-			Eventually(function () {
+			$timeout(function () {
 				$scope.refreshContext(node, versionIndex, keepFlags)
-			}, 100);
+			}, 10);
 			return true;
 		}
 	};
@@ -405,7 +405,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, Cont
 	};
 
 	var viewExpression = /[?&]view=[^?&]*/;
-	$scope.$on("preiewloaded", function (scope, e) {
+	$rootScope.$on("preiewloaded", function (scope, e) {
 		if ($scope.Context.AppliesTo == (e.path + e.query)) {
 			//console.log("bailing out", $scope.Context.AppliesTo, "==", (e.path + e.query));
 			return;
