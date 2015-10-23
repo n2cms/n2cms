@@ -9,6 +9,8 @@
 	}
 	$scope.max = 1;
 	function loadStatistics() {
+		if (!$scope.Context.CurrentItem)
+			return;
 		res.statistics({ n2item: $scope.Context.CurrentItem.ID }, function (result) {
 			$rootScope.statisticsMaximum = getMaximum(result.Max, $rootScope.statisticsMaximum || 1)
 			$scope.max = $rootScope.statisticsMaximum;

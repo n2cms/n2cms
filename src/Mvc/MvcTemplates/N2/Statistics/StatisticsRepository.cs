@@ -175,5 +175,13 @@ namespace N2.Management.Statistics
 			var data = this.statistics.Find(p).ToList();
 			return data;
 		}
+
+		public virtual int Delete(DateTime? from, DateTime? to, int? id)
+		{
+			var itemsToRemove = GetStatistics(from ?? new DateTime(2000, 1, 1), to ?? new DateTime(2100, 1, 1), id.HasValue ? new [] { id.Value } : new int[0]).ToArray();
+			this.statistics.Delete(itemsToRemove);
+			this.statistics.Flush();
+			return itemsToRemove.Length;
+		}
 	}
 }

@@ -158,7 +158,8 @@ namespace N2.Management.Api
 						case "/message":
 							DeleteMessage(context);
 							return;
-						default:
+						case "/":
+						case "":
 							EnsureValidSelection();
 							Delete(context);
 							return;

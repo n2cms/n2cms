@@ -28,6 +28,11 @@ namespace N2.Management.Statistics
 					: TimeSpan.FromMinutes(1);
 		}
 
+		public object DeleteIndex(DateTime? from, DateTime? to, int? n2item)
+		{
+			return new { RemovedCount = repository.Delete(from, to, n2item) };
+		}
+
 		public object Index(DateTime? from, DateTime? to, int? n2item, bool? raw)
 		{
 			to = to ?? Utility.CurrentTime().GetSlot(granularity).Add(slotSize);
