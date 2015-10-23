@@ -107,6 +107,22 @@
 			return dirty;
 		}
 		this.checkout = function () {
+			console.log(dirty);
+			dirty = false;
+			return $("#" + this.editorID).val();
+		}
+	},
+	select: function () {
+		var self = this;
+		var dirty = false;
+		$("#" + this.editorID).on("change", function () {
+			dirty = true;
+		})
+		this.dirty = function () {
+			return dirty;
+		}
+		this.checkout = function () {
+			console.log(dirty);
 			dirty = false;
 			return $("#" + this.editorID).val();
 		}
