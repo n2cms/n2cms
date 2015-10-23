@@ -51,6 +51,10 @@ function findNodeRecursive(node, selectedPath) {
 		var n = findNodeRecursive(node.Children[i], selectedPath);
 		if (n) return n;
 	}
+	for (var i in node.Parts) {
+		var n = findNodeRecursive(node.Parts[i], selectedPath);
+		if (n) return n;
+	}
 	return null;
 }
 
@@ -497,6 +501,13 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 	$scope.$watch("Context.Content", function (content) {
 		$scope.node = content;
 	});
+	$scope.$watch("Context.SelectedNode", function (node, prev) {
+		if (prev)
+			delete prev.Active;
+		if (node)
+			node.Active = true;
+		console.log("selected", node);
+	});
 	$rootScope.$on("contextchanged", function (scope, ctx) {
 		if (ctx.Actions.refresh) {
 			$scope.reloadChildren(ctx.Actions.refresh, function () {
@@ -506,13 +517,7 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 		}
 		else if (ctx.CurrentItem)
 			$scope.Context.SelectedNode = findNodeRecursive($scope.Context.Content, ctx.CurrentItem.Path);
-		else
-			$scope.Context.SelectedNode = null;
-
-		//if (ctx.Organize)
-		//	$scope.setPreviewQuery("edit", "drag");
-		//else
-		//	$scope.setPreviewQuery("edit", null);
+		console.log("oncontextchanged", $scope.Context.SelectedNode);
 	});
 	$scope.nodeClicked = function (node) {
 		$scope.Context.User.Settings.Selected = node.Current.Path;
@@ -554,7 +559,13 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 					if (!zone)
 						continue;
 					var child = {
-						Current: { Title: zone, IconClass: "fa fa-columns silver", MetaInformation: [], PreviewUrl: new Uri(node.Current.PreviewUrl).appendQuery("n2zone", zone).toString() },
+						Current: {
+							Title: zone,
+							IconClass: "fa fa-columns silver",
+							MetaInformation: { placeholder: { ToolTip: "", Text: "" } },
+							PreviewUrl: new Uri(node.Current.PreviewUrl).appendQuery("n2zone", zone).toString(),
+							Path: node.Current.Path
+						},
 						HasChildren: true,
 						Children: zones[zone]
 					};

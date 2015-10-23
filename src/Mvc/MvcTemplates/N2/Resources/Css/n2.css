@@ -59,8 +59,8 @@ a { text-decoration: none; color: #000; }
 						#page-tree li	     div.item:hover b.handle { background-color: #cae7f3; }
 						#page-tree li	     div.item		b.handle:hover { transition: width ease-in-out 100ms; width:15px; background-image: url(../../Resources/Img/gripper.gif); }
 						#page-tree li.root > div.item		b.handle { display:none; }
-					#page-tree li.active   > div.item { background: #d9f0f9; border-color:#3aaee3; }
-						#page-tree li.active > div.item b.handle { background-color: #3aaee3; }
+					#page-tree li div.item.active { background: #d9f0f9; border-color:#3aaee3; }
+						#page-tree li div.item.active b.handle { background-color: #3aaee3; }
 
 						#page-tree li.ui-sortable-helper > div.item b.handle { width:19px; }
 
