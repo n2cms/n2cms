@@ -85,7 +85,7 @@ function Uri(uri) {
 	};
 };
 
-function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $rootScope, Context, Content, Profile, Security, FrameContext, Translate, Eventually, LocationKeeper, Notify) {
+function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $rootScope, Context, Content, Profile, Security, FrameContext, Translate, Eventually, LocationKeeper, Notify, EbbCallbacks) {
 	$scope.Content = Content;
 	$scope.Security = Security;
 
@@ -99,6 +99,25 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 
 		return url;
 	};
+
+	function reloadTreePreviewOptionsRecursive(node) {
+		if (!node) return;
+		node.Url = $scope.appendPreviewOptions(node.Current.PreviewUrl);
+		angular.forEach(node.Children, function (child) {
+			reloadTreePreviewOptionsRecursive(child);
+		});
+	}
+	function reloadTreePreviewOptions() {
+		reloadTreePreviewOptionsRecursive($scope.Context.Content);
+	}
+
+	$scope.$watch("Context.PreviewQueries", EbbCallbacks(reloadTreePreviewOptions), true);
+
+	$scope.$watch("Context.Content", EbbCallbacks(reloadTreePreviewOptions))
+
+	$scope.$on("childrenloaded", function (e, args) {
+		reloadTreePreviewOptionsRecursive(args.node);
+	});
 
 	$scope.setPreviewQuery = function (key, value) {
 		if (value)
@@ -189,7 +208,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 	};
 
 	$scope.$on("changecontext", function (e, args) {
-		console.log("changeontext", e, args);
 		var current = $scope.Context.Messages;
 		var latest = args.Messages;
 		angular.forEach(args, function (value, key) {
@@ -388,8 +406,12 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 			? findNodeRecursive($scope.Context.Content, parentPathOrNode)
 			: parentPathOrNode;
 
-		if (node)
-			Content.loadChildren(node, callback);
+		if (node){
+			Content.loadChildren(node, function () {
+				callback && callback.apply(this, arguments);
+				$scope.$emit("childrenloaded", { node: node });
+			});
+		}
 		else if (pathNotFound)
 			pathNotFound(parentPathOrNode);
 	};
@@ -506,7 +528,6 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 			delete prev.Active;
 		if (node)
 			node.Active = true;
-		console.log("selected", node);
 	});
 	$rootScope.$on("contextchanged", function (scope, ctx) {
 		if (ctx.Actions.refresh) {
@@ -517,7 +538,6 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 		}
 		else if (ctx.CurrentItem)
 			$scope.Context.SelectedNode = findNodeRecursive($scope.Context.Content, ctx.CurrentItem.Path);
-		console.log("oncontextchanged", $scope.Context.SelectedNode);
 	});
 	$scope.nodeClicked = function (node) {
 		$scope.Context.User.Settings.Selected = node.Current.Path;
@@ -525,7 +545,11 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 	}
 	$scope.toggle = function (node) {
 		if (!node.Expanded && !node.Children.length) {
-			Content.loadChildren(node);
+			Content.loadChildren(node, function () {
+				$scope.$emit("childrenloaded", { node: node });
+			});
+		} else {
+			Content.unloadChildren(node);
 		}
 		node.Expanded = !node.Expanded;
 	};
@@ -660,14 +684,6 @@ function MenuNodeLastChildCtrl($scope, $timeout) {
 		$scope.saveUserSettings();
 	});
 }
-
-//function PageActionCtrl($scope, Content) {
-//	$scope.dispose = function () {
-//		Content.remove(Content.applySelection({}, node.Current), function () {
-//			$scope.reloadChildren(getParentPath($scope.Context.CurrentItem.Path));
-//		});
-//	};
-//}
 
 function PreviewCtrl() {
 	console.warn("PreviewCtrl obsolete");

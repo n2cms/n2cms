@@ -196,6 +196,11 @@
 		    });
 		};
 
+		res.unloadChildren = function (node, callback) {
+			if (node) node.Children = [];
+			callback && callback(node);
+		};
+
 		res.reload = function (node, callback) {
 		    if (!node)
 		        return;
