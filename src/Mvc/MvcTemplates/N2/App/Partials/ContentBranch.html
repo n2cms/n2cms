@@ -13,7 +13,7 @@
 		<ul ng-include src="ContextMenu.node == node && Context.Partials.ContextMenu" class="dropdown-menu pull-right"></ul>
 	</div>
 
-	<a href='{{node.Url}}' ng-click="nodeClicked(node)" target='preview' class="link" title="{{node.Current.ToolTip}}"
+	<a ng-init="node.Url = appendPreviewOptions(node.Current.PreviewUrl)" href='{{node.Url}}' ng-click="nodeClicked(node)" target='preview' class="link" title="{{node.Current.ToolTip}}"
 	   n2-keyboard-stop="1">
 		<b class='ico' ng-show='node.Current.IconClass && !node.Current.IconUrl' ng-class='node.Current.IconClass || "ico-custom"'></b>
 		<span class='page-icon' ng-show='node.Current.IconUrl' x-background-image='node.Current.IconUrl'></span>

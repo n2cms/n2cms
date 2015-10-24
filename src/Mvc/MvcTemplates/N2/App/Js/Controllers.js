@@ -103,21 +103,14 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 	function reloadTreePreviewOptionsRecursive(node) {
 		if (!node) return;
 		node.Url = $scope.appendPreviewOptions(node.Current.PreviewUrl);
-		angular.forEach(node.Children, function (child) {
-			reloadTreePreviewOptionsRecursive(child);
-		});
+		angular.forEach(node.Children, reloadTreePreviewOptionsRecursive);
+		node.Parts && angular.forEach(node.Parts, reloadTreePreviewOptionsRecursive);
 	}
-	function reloadTreePreviewOptions() {
+	
+	$scope.$watch("Context.PreviewQueries", function (q) {
+		if (!q) return;
 		reloadTreePreviewOptionsRecursive($scope.Context.Content);
-	}
-
-	$scope.$watch("Context.PreviewQueries", EbbCallbacks(reloadTreePreviewOptions), true);
-
-	$scope.$watch("Context.Content", EbbCallbacks(reloadTreePreviewOptions))
-
-	$scope.$on("childrenloaded", function (e, args) {
-		reloadTreePreviewOptionsRecursive(args.node);
-	});
+	}, true);
 
 	$scope.setPreviewQuery = function (key, value) {
 		if (value)
@@ -544,12 +537,15 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 		$scope.select(node);
 	}
 	$scope.toggle = function (node) {
-		if (!node.Expanded && !node.Children.length) {
-			Content.loadChildren(node, function () {
-				$scope.$emit("childrenloaded", { node: node });
-			});
+		if (node.Expanded) {
+			if (node.Children.length && !node.Current.MetaInformation.placeholder)
+				Content.unloadChildren(node);
 		} else {
-			Content.unloadChildren(node);
+			if (!node.Children.length) {
+				Content.loadChildren(node, function () {
+					$scope.$emit("childrenloaded", { node: node });
+				});
+			}
 		}
 		node.Expanded = !node.Expanded;
 	};
