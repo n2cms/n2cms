@@ -44,7 +44,7 @@ namespace N2.Management.Statistics
 		private void OnEndRequest(object sender, EventArgs e)
 		{
 			if (context.HttpContext.GetViewPreference(Edit.ViewPreference.None) == Edit.ViewPreference.None)
-				if (!crawlerExpression.IsMatch(context.HttpContext.Request.UserAgent))
+				if (context.HttpContext.Request.UserAgent != null && !crawlerExpression.IsMatch(context.HttpContext.Request.UserAgent))
 					filler.RegisterView(context.CurrentPath);
 		}
 
