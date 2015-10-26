@@ -59,7 +59,7 @@ namespace N2.Templates.Mvc.Models.Pages
         [FileAttachment, EditableImageUpload("Top Image", 88, ContainerName = Tabs.Content, CssClass = "top")]
         public virtual string TopImage { get; set; }
 
-        [FileAttachment, EditableImageUpload("Content Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
+        [EditableMedia("Content Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
         public virtual string Image { get; set; }
 
         [EditableText("Footer Text", 80, ContainerName = MiscArea, TextMode = TextBoxMode.MultiLine, Rows = 3)]
