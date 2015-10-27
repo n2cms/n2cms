@@ -117,10 +117,7 @@ namespace N2.Web.UI.WebControls
                 .AppendQuery("availableModes", "All")
                 .AppendQuery("selectableTypes", "");
 
-            overrides["filebrowserImageBrowseUrl"] = Url.Parse(Page.Engine().ManagementPaths.EditTreeUrl)
-                .AppendQuery("location", "filesselection")
-                .AppendQuery("availableModes", "Files")
-                .AppendQuery("selectableTypes", "IFileSystemFile");
+            overrides["filebrowserImageBrowseUrl"] = Url.Parse(Page.Engine().ManagementPaths.MediaBrowserUrl);
 
             overrides["filebrowserFlashBrowseUrl"] = overrides["filebrowserImageBrowseUrl"];
 

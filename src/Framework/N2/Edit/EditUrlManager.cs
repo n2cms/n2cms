@@ -12,6 +12,7 @@ namespace N2.Edit
     public class EditUrlManager : IEditUrlManager
     {
         private string editTreeUrl;
+        private string mediaBrowserUrl;
         private ViewPreference defaultViewPreference;
         private IUrlParser parser;
         private bool ensureLocalhostPreviewUrls;
@@ -29,6 +30,7 @@ namespace N2.Edit
             NewItemUrl = config.Paths.NewItemUrl;
             DeleteItemUrl = config.Paths.DeleteItemUrl;
             defaultViewPreference = config.Versions.DefaultViewMode;
+            MediaBrowserUrl = config.Paths.MediaBrowserUrl;
             ensureLocalhostPreviewUrls = config.Paths.EnsureLocalhostPreviewUrls;
         }
 
@@ -47,6 +49,14 @@ namespace N2.Edit
             get { return Url.ResolveTokens(editTreeUrl); }
             set { editTreeUrl = value; }
         }
+
+        public virtual string MediaBrowserUrl
+        {
+            get { return Url.ResolveTokens(mediaBrowserUrl); }
+            set { mediaBrowserUrl = value; }
+        }
+
+
 
         /// <summary>Gets the url for the navigation frame.</summary>
         /// <param name="selectedItem">The currently selected item.</param>
