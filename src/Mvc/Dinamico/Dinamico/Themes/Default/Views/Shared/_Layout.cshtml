@@ -34,20 +34,22 @@
 			}
 			else
 			{
-			<div id="main" class="row">
+			<div id="main">
 				@{ Html.RenderPartial("LayoutPartials/PreContent"); }
-				<div id="content" class="col-lg-9" role="main">
-					@RenderBody()
-				</div>
-				<div id="aside" class="col-lg-3" role="complementary">
+				<div class="row">
+					<div id="content" class="col-lg-9" role="main">
+						@RenderBody()
+					</div>
+					<div id="aside" class="col-lg-3" role="complementary">
 					@if (IsSectionDefined("Aside"))
 					{
-						@RenderSection("Aside")
+							@RenderSection("Aside")
 					}
 					else
 					{
 						Html.DroppableZone("Aside").Render();
 					}
+					</div>
 				</div>
 				@{ Html.RenderPartial("LayoutPartials/PostContent"); }
 			</div>
