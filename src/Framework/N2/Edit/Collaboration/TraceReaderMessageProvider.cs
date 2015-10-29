@@ -68,7 +68,12 @@ namespace N2.Edit.Collaboration
 			public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id, string format, params object[] args)
 			{
 				if (eventType <= messageProvider.reportingLevel)
-					messageProvider.Add(new CollaborationMessage { Title = Split(string.Format(format, args))[0], Text = Split(string.Format(format, args))[1], Alert = false, Updated = eventCache.DateTime, RequiredPermission = Permission.Administer });
+				{
+					var titleBody = Split(string.Format(format, args));
+					titleBody[0] = HttpUtility.HtmlEncode(titleBody[0]);
+					titleBody[1] = "<pre><code>" + HttpUtility.HtmlEncode(titleBody[1])+ "</code></pre>";
+                    messageProvider.Add(new CollaborationMessage { Title = titleBody[0], Text = titleBody[1], Alert = false, Updated = eventCache.DateTime, RequiredPermission = Permission.Administer });
+				}
 				base.TraceEvent(eventCache, source, eventType, id, format, args);
 			}
 
