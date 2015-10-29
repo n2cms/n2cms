@@ -368,6 +368,7 @@
       <nugetPackages Include="$(DeployFolder)\*.$(Version).nupkg" />
     </ItemGroup>
     <!--<Message Text="$(BuildFolder)\lib\NuGet.exe Push %(nugetPackages.Identity)" />-->
+		<Exec Command="$(BuildFolder)\lib\git.exe tag $(Version)" ContinueOnError="true" />
     <Exec Command="$(BuildFolder)\lib\NuGet.exe Push %(nugetPackages.Identity)" ContinueOnError="true" />
   </Target>
 
