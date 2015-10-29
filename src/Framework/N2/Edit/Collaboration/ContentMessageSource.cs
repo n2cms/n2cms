@@ -10,6 +10,7 @@ using System.Text;
 
 namespace N2.Edit.Collaboration
 {
+	[Service]
 	[MessageSource]
 	public class ContentMessageSource : MessageSourceBase
 	{
