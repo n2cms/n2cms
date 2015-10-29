@@ -184,11 +184,11 @@ namespace N2.Management.Api
 			var requestBody = context.GetOrDeserializeRequestStreamJsonDictionary<object>();
 			var discriminator = EditExtensions.GetDiscriminator(context.Request);
 
+			var versions = engine.Resolve<VersionManager>();
 			ContentItem item;
 			if (string.IsNullOrEmpty(discriminator))
 			{
 				item = selected;
-				var versions = engine.Resolve<VersionManager>();
 				if (item.State != ContentState.Draft)
 					item = versions.GetOrCreateDraft(item);
 
@@ -197,10 +197,7 @@ namespace N2.Management.Api
 				if (item.ID == 0 && item.VersionOf.HasValue)
 					versions.UpdateVersion(item);
 				else
-				{
-					engine.Persister.Repository.SaveOrUpdate(item);
-					engine.Persister.Repository.Flush();
-				}
+					engine.Persister.Save(item);
 			}
 			else
 			{
@@ -217,11 +214,10 @@ namespace N2.Management.Api
 
 				Update(requestBody, item);
 
-				bool itemNeedsResaveWithIdGeneratedName = string.IsNullOrEmpty(item.Name);
-				engine.Persister.Repository.SaveOrUpdate(item);
-				engine.Persister.Repository.Flush();
-				if (itemNeedsResaveWithIdGeneratedName)
-					engine.Persister.Repository.Flush();
+				if (item.ID == 0 && (item.VersionOf.HasValue || !item.IsPage))
+					versions.UpdateVersion(item);
+				else
+					engine.Persister.Save(item);
 			}
 
 			context.Response.WriteJson(new { ID = item.VersionOf.ID ?? item.ID, VersionIndex = item.VersionIndex });

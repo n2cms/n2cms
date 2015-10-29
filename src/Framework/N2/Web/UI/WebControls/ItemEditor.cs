@@ -378,7 +378,7 @@ namespace N2.Web.UI.WebControls
 				if (idAndVersion.Count > 1)
 				{
 					var item = CurrentItem;
-					if (item.ID == 0)
+					if (item.ID == 0 && idAndVersion[0] != 0)
 						item = Engine.Persister.Get(idAndVersion[0]);
 					item = Engine.Resolve<IVersionManager>().GetVersion(item, idAndVersion[1]);
 					cc.Content = item ?? cc.Content;

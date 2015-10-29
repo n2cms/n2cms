@@ -93,6 +93,9 @@ namespace N2.Edit.Versioning
         /// <param name="item">The item to update.</param>
         public void UpdateVersion(ContentItem item)
         {
+			if (!item.IsPage)
+				item = Find.ClosestPage(item) ?? item;
+
             if (item.VersionOf.HasValue)
                 Repository.Save(item, asPreviousVersion: item.State != ContentState.Draft);
             else
