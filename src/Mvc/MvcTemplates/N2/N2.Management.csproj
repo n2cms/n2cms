@@ -152,6 +152,8 @@
     <Content Include="Content\Export\Export.aspx" />
     <Content Include="Content\Export\ItemXmlImport.ascx" />
     <Content Include="Content\LinkTracker\UpdateReferences.aspx" />
+    <Content Include="Content\Navigation\MediaBrowser.aspx" />
+    <Content Include="Content\Navigation\MediaBrowser.js" />
     <Content Include="Content\Navigation\Tree.js" />
     <Content Include="Content\Versions\RecentVersions.ascx" />
     <Content Include="Externals\External.ascx" />
@@ -328,6 +330,7 @@
     <Content Include="Installation\system.diagnostics.trace.config" />
     <Content Include="Content\LinkTracker\UpdateReferencesTo.ashx" />
     <Content Include="Installation\InstallerPage.Master" />
+    <Content Include="Content\Navigation\MediaBrowserHandler.ashx" />
     <None Include="Installation\mysql.upgrade.2.sql" />
     <Content Include="Simple.master" />
     <Content Include="Resources\Js\plugins\jquery.n2expandable.js" />
@@ -380,6 +383,17 @@
     <Compile Include="Content\LinkTracker\UpdateImagesMigration.cs" />
     <Compile Include="Content\Navigation\ChildGroupContainer.cs" />
     <Compile Include="Content\Navigation\ChildGroupSource.cs" />
+    <Compile Include="Content\Navigation\MediaBrowser.aspx.cs">
+      <DependentUpon>MediaBrowser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\Navigation\MediaBrowser.aspx.designer.cs">
+      <DependentUpon>MediaBrowser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Content\Navigation\MediaBrowserHandler.ashx.cs">
+      <DependentUpon>MediaBrowserHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Content\Navigation\MediaBrowserUtils.cs" />
     <Compile Include="Content\Trash\AsyncTrashPurger.cs" />
     <Compile Include="Content\ViewOptionProvider.cs" />
     <Compile Include="Content\EditOptionProvider.cs" />

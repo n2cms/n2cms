@@ -121,5 +121,7 @@ namespace N2.Web.UI.WebControls
 
 
         public static string ImageExtensions = ".jpg,.png,.gif,.jpeg,.ico,.bmp";
-    }
+		public static string MovieExtensions = ".swf,.mpg,.mpeg,.mp4,.avi,.wmv,.mkv";
+		public static string AudioExtensions = ".aif,.m4a,.mid,.mp3,.wav,.wma";
+	}
 }
