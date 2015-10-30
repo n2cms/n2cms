@@ -14,12 +14,16 @@ namespace N2.Web.UI.WebControls
         public MediaSelector()
 			: base("div")
         {
-			Attributes["class"] = "fileSelector selector input-append";
             PopupOptions = "height=580,width=960,resizable=yes,status=no,scrollbars=yes";
-        }
 
-        /// <summary>File extensions that may be selected using this selector.</summary>
-        public string SelectableExtensions
+			Input = new TextBox();
+			Buttons = new HtmlGenericControl("span");
+			ClearButton = new HtmlButton();
+			PopupButton = new HtmlButton();
+		}
+
+		/// <summary>File extensions that may be selected using this selector.</summary>
+		public string SelectableExtensions
         {
             get { return ViewState["SelectableExtensions"] as string; }
             set { ViewState["SelectableExtensions"] = value; }
@@ -81,10 +85,12 @@ namespace N2.Web.UI.WebControls
 		{
 			base.CreateChildControls();
 
-			Controls.Add(Input = new TextBox());
-			Controls.Add(Buttons = new HtmlGenericControl("span"));
-			Buttons.Controls.Add(ClearButton = new HtmlButton());
-			Buttons.Controls.Add(PopupButton = new HtmlButton());
+			Attributes["class"] = "mediaSelector selector input-append";
+
+			Controls.Add(Input);
+			Controls.Add(Buttons);
+			Buttons.Controls.Add(ClearButton);
+			Buttons.Controls.Add(PopupButton);
 
 			Input.ID = "input";
 			Input.CssClass = "input-xxlarge";
