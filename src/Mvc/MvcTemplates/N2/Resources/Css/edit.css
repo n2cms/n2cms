@@ -76,11 +76,13 @@ body.rightExpanded #content { margin-right:265px; }
 .framed .textEditorReadOnly { width:426px; opacity:.5; }
 .framed .titleEditor { font-size:1.5em; }
 .framed .itemEditor .itemEditor .titleEditor { font-size:1.1em; }
+.urlSelector { white-space:nowrap; }
 .framed .selectorButtons { vertical-align:middle; height:30px; margin-bottom:10px; display:inline-block; }
-	.framed .selectorButtons input { width:30px; height:30px; text-align:center; text-indent:-50px; border:solid 1px #bbb; background:#f8f8f8 none no-repeat 50% 50%; margin-left:-1px; display:inline-block; }
+	.framed .selectorButtons .clearButton { border:none; margin:1px 0 0 -30px; width:28px; height:28px; background-color:transparent; z-index:999 }
+	/*.framed .selectorButtons input { width:30px; height:30px; text-align:center; text-indent:-50px; border:solid 1px #bbb; background:#f8f8f8 none no-repeat 50% 50%; margin-left:-1px; display:inline-block; }
 	.framed .selectorButtons input:hover { border-color:#999; background-color:#f0f0f0; }
 	.framed .selectorButtons .clearButton { background-image:url(../img/smallico/close_2.png); border:none; margin:1px 0 0 -30px; width:28px; height:28px; }
-	.framed .selectorButtons .selectorButton { background-image:url(../icons/link.png); }
+	.framed .selectorButtons .selectorButton { background-image:url(../icons/link.png); }*/
 	.framed .editDetail .revealer { opacity:.15; position:relative; }
 	.framed .editDetail:hover .selectorButtons,
 	.framed .editDetail:hover .revealer { opacity:1; transition: opacity .5s ease-in-out; -moz-transition: opacity .5s ease-in-out; -webkit-transition: opacity .5s ease-in-out; }

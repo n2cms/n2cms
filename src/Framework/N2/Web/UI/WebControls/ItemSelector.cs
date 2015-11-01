@@ -12,7 +12,6 @@ namespace N2.Web.UI.WebControls
     {
         public ItemSelector()
         {
-            CssClass = "itemSelector selector";
             DefaultMode = UrlSelectorMode.Items;
             AvailableModes = UrlSelectorMode.Items;
             BrowserUrl = N2.Web.Url.Parse(Engine.ManagementPaths.EditTreeUrl).AppendQuery("location=contentselection");
@@ -47,9 +46,15 @@ namespace N2.Web.UI.WebControls
             Page.Validators.Add(this);
         }
 
-        protected override void RegisterClientScripts()
+		protected override void CreateChildControls()
+		{
+			base.CreateChildControls();
+			Input.CssClass = "itemSelector selector";
+		}
+
+		protected override void RegisterClientScripts()
         {
-            Page.JavaScript("$('#" + ClientID + "').n2autocomplete({ filter: 'pages', selectableTypes:'" + SelectableTypes + "' });", ScriptPosition.Bottom, ScriptOptions.DocumentReady | ScriptOptions.ScriptTags);
+            Page.JavaScript("$('#" + Input.ClientID + "').n2autocomplete({ filter: 'pages', selectableTypes:'" + SelectableTypes + "' });", ScriptPosition.Bottom, ScriptOptions.DocumentReady | ScriptOptions.ScriptTags);
         }
 
         #region IValidator Members

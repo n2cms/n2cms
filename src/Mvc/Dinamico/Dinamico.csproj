@@ -29,6 +29,7 @@
     <RestorePackages>true</RestorePackages>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>bec8bb45</NuGetPackageImportStamp>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -115,6 +116,7 @@
     <Compile Include="Dinamico\Models\LanguageIntersection.cs" />
     <Compile Include="Dinamico\Models\PageModelBase.cs" />
     <Compile Include="Dinamico\Models\PartModelBase.cs" />
+    <Compile Include="Dinamico\Models\Redirect.cs" />
     <Compile Include="Dinamico\Models\StartPage.cs" />
     <Compile Include="Dinamico\Registrations\FreeFormRegistration.cs" />
     <Compile Include="Dinamico\Registrations\PermissionDeniedHandler.cs" />

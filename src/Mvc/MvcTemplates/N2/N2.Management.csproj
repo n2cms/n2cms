@@ -152,6 +152,8 @@
     <Content Include="Content\Export\Export.aspx" />
     <Content Include="Content\Export\ItemXmlImport.ascx" />
     <Content Include="Content\LinkTracker\UpdateReferences.aspx" />
+    <Content Include="Content\Navigation\MediaBrowser.aspx" />
+    <Content Include="Content\Navigation\MediaBrowser.js" />
     <Content Include="Content\Navigation\Tree.js" />
     <Content Include="Content\Versions\RecentVersions.ascx" />
     <Content Include="Externals\External.ascx" />
@@ -179,6 +181,9 @@
     <Content Include="Resources\chosen_v1.1.0\index.html" />
     <Content Include="Resources\chosen_v1.1.0\options.html" />
     <Content Include="Resources\Css\n2.css" />
+    <Content Include="Resources\icons\default.html" />
+    <Content Include="Resources\icons\glyphicons.css" />
+    <Content Include="Resources\icons\glyphicons.png" />
     <Content Include="Resources\img\arrow-down.png" />
     <Content Include="Resources\img\grabber.png" />
     <Content Include="Resources\img\logo.png" />
@@ -224,6 +229,26 @@
     <Content Include="Resources\icons\silk.css" />
     <Content Include="Resources\icons\silk.png" />
     <Content Include="Resources\Js\plugins\aaa.js" />
+    <Content Include="Resources\mediaelement-js\background.png" />
+    <Content Include="Resources\mediaelement-js\bigplay.png" />
+    <Content Include="Resources\mediaelement-js\bigplay.svg" />
+    <Content Include="Resources\mediaelement-js\controls-ted.png" />
+    <Content Include="Resources\mediaelement-js\controls-wmp-bg.png" />
+    <Content Include="Resources\mediaelement-js\controls-wmp.png" />
+    <Content Include="Resources\mediaelement-js\controls.png" />
+    <Content Include="Resources\mediaelement-js\controls.svg" />
+    <Content Include="Resources\mediaelement-js\flashmediaelement-cdn.swf" />
+    <Content Include="Resources\mediaelement-js\flashmediaelement.swf" />
+    <Content Include="Resources\mediaelement-js\loading.gif" />
+    <Content Include="Resources\mediaelement-js\mediaelement-and-player.min.js" />
+    <Content Include="Resources\mediaelement-js\mediaelement.min.js" />
+    <Content Include="Resources\mediaelement-js\mediaelementplayer.css" />
+    <Content Include="Resources\mediaelement-js\mediaelementplayer.js" />
+    <Content Include="Resources\mediaelement-js\mediaelementplayer.min.css" />
+    <Content Include="Resources\mediaelement-js\mediaelementplayer.min.js" />
+    <Content Include="Resources\mediaelement-js\mejs-skins.css" />
+    <Content Include="Resources\mediaelement-js\silverlightmediaelement.xap" />
+    <Content Include="Resources\mediaelement-js\sizzle.min.js" />
     <Content Include="Resources\syntaxhighlighter\index.html" />
     <Content Include="Resources\syntaxhighlighter\scripts\shAutoloader.js" />
     <Content Include="Resources\syntaxhighlighter\scripts\shBrushBash.js" />
@@ -328,6 +353,7 @@
     <Content Include="Installation\system.diagnostics.trace.config" />
     <Content Include="Content\LinkTracker\UpdateReferencesTo.ashx" />
     <Content Include="Installation\InstallerPage.Master" />
+    <Content Include="Content\Navigation\MediaBrowserHandler.ashx" />
     <None Include="Installation\mysql.upgrade.2.sql" />
     <Content Include="Simple.master" />
     <Content Include="Resources\Js\plugins\jquery.n2expandable.js" />
@@ -380,6 +406,17 @@
     <Compile Include="Content\LinkTracker\UpdateImagesMigration.cs" />
     <Compile Include="Content\Navigation\ChildGroupContainer.cs" />
     <Compile Include="Content\Navigation\ChildGroupSource.cs" />
+    <Compile Include="Content\Navigation\MediaBrowser.aspx.cs">
+      <DependentUpon>MediaBrowser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\Navigation\MediaBrowser.aspx.designer.cs">
+      <DependentUpon>MediaBrowser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Content\Navigation\MediaBrowserHandler.ashx.cs">
+      <DependentUpon>MediaBrowserHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Content\Navigation\MediaBrowserUtils.cs" />
     <Compile Include="Content\Trash\AsyncTrashPurger.cs" />
     <Compile Include="Content\ViewOptionProvider.cs" />
     <Compile Include="Content\EditOptionProvider.cs" />
@@ -399,7 +436,6 @@
     </Compile>
     <Compile Include="Content\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Content\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -799,14 +835,12 @@
     </Compile>
     <Compile Include="Myself\Activity.ascx.cs">
       <DependentUpon>Activity.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Myself\Activity.ascx.designer.cs">
       <DependentUpon>Activity.ascx</DependentUpon>
     </Compile>
     <Compile Include="Myself\Languages.ascx.cs">
       <DependentUpon>Languages.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Myself\Languages.ascx.designer.cs">
       <DependentUpon>Languages.ascx</DependentUpon>
@@ -823,14 +857,12 @@
     <Compile Include="Myself\RootPartBase.cs" />
     <Compile Include="Myself\Statistics.ascx.cs">
       <DependentUpon>Statistics.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Myself\Statistics.ascx.designer.cs">
       <DependentUpon>Statistics.ascx</DependentUpon>
     </Compile>
     <Compile Include="Myself\Wizards.ascx.cs">
       <DependentUpon>Wizards.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Myself\Wizards.ascx.designer.cs">
       <DependentUpon>Wizards.ascx</DependentUpon>
@@ -874,7 +906,6 @@
     </Compile>
     <Compile Include="Users\Activity.aspx.cs">
       <DependentUpon>Activity.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Users\Activity.aspx.designer.cs">
       <DependentUpon>Activity.aspx</DependentUpon>
