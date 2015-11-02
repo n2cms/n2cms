@@ -9,6 +9,7 @@
         <title>Media Browser - N2</title>
         <asp:PlaceHolder runat="server">
 		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="<%= MapCssUrl("framed.css")%>" />
 		<link rel="stylesheet" type="text/css" href="<%= MapCssUrl("mediaBrowser.css")%>" />
 		</asp:PlaceHolder>
     </head>
@@ -112,7 +113,6 @@
 
     </div>
     <div id="info-div" class="info-div">
-        <button type="button" id="btn-select" name="btn-select" class="btn btn-primary" disabled="disabled"><%= GetLocalResourceObject("Select") %></button>
         <div id="info-div-details" class="info-div-details"></div>
     </div>
 
@@ -127,6 +127,12 @@
         <button type="button" id="btn-continue-upload" name="btn-continue-upload" class="btn btn-primary"><%= GetLocalResourceObject("Continue") %></button>
     </div>
 
+    <div class="framed-navbar navbar navbar-fixed-bottom">
+        <div class="navbar-inner">
+            <button type="button" id="btn-select" name="btn-select" class="btn btn-primary" disabled="disabled"><%= GetLocalResourceObject("Select") %></button>
+
+        </div>
+    </div>
 
     <script type="text/javascript">
         var tbid = '<%= HttpUtility.JavaScriptStringEncode(Request["tbid"])%>';
