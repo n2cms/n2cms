@@ -11,41 +11,5 @@ namespace N2.Management.Content.Activity {
     
     
     public partial class RecentActivity {
-        
-        /// <summary>
-        /// boxActivity control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::N2.Web.UI.WebControls.Box boxActivity;
-        
-        /// <summary>
-        /// activityTemplatePlaceholder control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder activityTemplatePlaceholder;
-        
-        /// <summary>
-        /// errorDisplay control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl errorDisplay;
-        
-        /// <summary>
-        /// errorDisplayText control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal errorDisplayText;
     }
 }

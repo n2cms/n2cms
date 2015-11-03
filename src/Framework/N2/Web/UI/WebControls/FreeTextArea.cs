@@ -99,6 +99,7 @@ namespace N2.Web.UI.WebControls
                     GetOverridesJson());
                 Page.ClientScript.RegisterStartupScript(GetType(), "FreeTextArea_" + ClientID, freeTextAreaInitScript, true);
             }
+			Attributes["ng-non-bindable"] = "true";
         }
 
         private IEnumerable<TokenDefinition> GetTokens()

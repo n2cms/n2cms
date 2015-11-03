@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\i18n\en.js" />
+    <Content Include="App\Js\FramedControllers.js" />
     <Content Include="App\Js\Controllers.js" />
     <Content Include="App\Js\Directives.js" />
     <Content Include="App\Js\Services.js" />

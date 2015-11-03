@@ -3,6 +3,9 @@ a img,
 .command img{ margin-right:1px; vertical-align:middle; }
 .nav-tabs > li > a { border-radius:0 !important; }
 .framed .tab-content { overflow:visible; }
+/*body { background-color:#f0f0f0;}
+.nav-tabs { margin-bottom:0; }
+.tab-content{ background-color:#fff; padding:10px; }*/
 td,th { vertical-align:top; }
 h1 { font-size:1.6em; margin-top:0; font-family: Segoe UI, Georgia, sans-serif; }
 h2 { font-size:1.4em; font-family: Segoe UI, Georgia, sans-serif; }
