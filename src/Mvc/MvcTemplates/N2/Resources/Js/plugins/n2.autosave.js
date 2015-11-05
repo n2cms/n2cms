@@ -88,11 +88,14 @@
 			}
 		}
 		var editor = $("#" + editorID).closest("[data-item]");
+		if (editor.is("[data-disable-autosave]"))
+			return;
 		var itemID = parseInt(editor.attr("data-item"));
 		var fn = resolve(window, adapter);
 		if (fn) {
 			fn.prototype = { editorID: editorID, newItemReference: editor.attr("data-item-reference"), itemID: itemID, name: name, dirty: function () { return undefined; }, checkout: function () { return undefined; } };
-			this.adapters.push(new fn());
+			var adapter = new fn();
+			this.adapters.push(adapter);
 		} else
 			console.warn("Couldn't find client adapter: ", adapter);
 	},

@@ -203,11 +203,11 @@ namespace N2.Web.UI.WebControls
 
             Register.StyleSheet(Page, Url.ResolveTokens("{ManagementUrl}/Resources/Css/edit.css"));
 
+			Page.ClientScript.RegisterHiddenField(ClientID + "_autosaved_item_id", currentItem.ID.ToString());
 			if (EnableAutoSave)
 			{
 				Register.JavaScript(Page, @"	window.n2autosave && n2autosave.init();", ScriptOptions.DocumentReady);
 
-				Page.ClientScript.RegisterHiddenField(ClientID + "_autosaved_item_id", currentItem.ID.ToString());
 				TryAddItemReference(this);
 				foreach (var placeholder in placeholders.Values)
 				{
@@ -216,13 +216,39 @@ namespace N2.Web.UI.WebControls
 							TryAddItemReference(placeholder.Controls[0] as WebControl);
 				}
 			}
+			else
+			{
+				TryAddDisabledAutosave(this);
+				foreach (var placeholder in placeholders.Values)
+				{
+					if (!TryAddDisabledAutosave(placeholder as WebControl))
+						if (placeholder.Controls.Count > 0)
+							TryAddDisabledAutosave(placeholder.Controls[0] as WebControl);
+				}
+			}
         }
+
+		private bool TryAddDisabledAutosave(WebControl control)
+		{
+			if (control == null)
+				return false;
+			TryAddItemReference(control);
+			control.Attributes["data-disable-autosave"] = "true";
+			return true;
+		}
 
 		private bool TryAddItemReference(WebControl control)
 		{
 			if (control == null)
 				return false;
 			control.Attributes["data-item"] = CurrentItem.ID.ToString();
+			control.Attributes["data-item-version-key"] = CurrentItem.GetVersionKey();
+			control.Attributes["data-page"] = CurrentItem.IsPage
+				? currentItem.ID.ToString()
+				: Find.ClosestPage(CurrentItem) != null
+					? Find.ClosestPage(CurrentItem).ID.ToString()
+					: "";
+			control.Attributes["data-item-zone"] = CurrentItem.ZoneName;
 			control.Attributes["data-item-reference"] = ClientID + "_autosaved_item_id";
 			return true;
 		}
