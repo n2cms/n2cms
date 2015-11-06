@@ -208,6 +208,7 @@
     <Content Include="Resources\jQuery-File-Upload-8.5.0\js\jquery.iframe-transport.js" />
     <Content Include="Resources\jQuery-File-Upload-8.5.0\js\main.js" />
     <Content Include="Resources\jQuery-File-Upload-8.5.0\js\vendor\jquery.ui.widget.js" />
+    <Content Include="Resources\Js\MediaSelection.js" />
     <Content Include="Resources\Js\plugins\n2.autosave.js" />
     <Content Include="Resources\Js\frameInteraction.js" />
     <Content Include="Resources\Js\jquery-1.11.0.js" />
