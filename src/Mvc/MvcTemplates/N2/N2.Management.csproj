@@ -349,6 +349,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Roles\App_LocalResources\Edit.aspx.resx" />
+    <Content Include="Content\Navigation\App_LocalResources\MediaBrowser.aspx.resx" />
     <None Include="Content\Dependencies.aspx" />
     <Content Include="Files\FileSystem\UploadFile.ashx" />
     <Content Include="Installation\log4net.config" />
