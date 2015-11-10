@@ -118,7 +118,7 @@ namespace N2.Details
         /// <param name="editor">The editor control to validate.</param>
         protected override Control AddRequiredFieldValidator(Control container, Control editor)
         {
-            var composite = (SelectingUploadCompositeControl)editor;
+            var composite = (SelectingMediaControl)editor;
             if (composite == null) return null;
             var rfv = new RequireEitherFieldValidator();
             rfv.ID = Name + "_rfv";
