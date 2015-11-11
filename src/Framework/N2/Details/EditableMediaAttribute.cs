@@ -123,7 +123,7 @@ namespace N2.Details
             var rfv = new RequireEitherFieldValidator();
             rfv.ID = Name + "_rfv";
             rfv.ControlToValidate = composite.SelectorControl.ID;
-            rfv.OtherControlToValidate = composite.UploadControl.ID;
+            //rfv.OtherControlToValidate = composite.UploadControl.ID;
             rfv.Display = ValidatorDisplay.Dynamic;
             rfv.Text = GetLocalizedText("RequiredText") ?? RequiredText;
             rfv.ErrorMessage = GetLocalizedText("RequiredMessage") ?? RequiredMessage;
