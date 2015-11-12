@@ -74,11 +74,11 @@ namespace N2.Edit.Navigation
                     var files = dir.GetFiles().ToList();
                     mediaBrowserModel.Dirs = dir.GetDirectories();
                     mediaBrowserModel.Files = MediaBrowserHandler.GetFileReducedList(files, imageSizes, selectableExtensions);
-                    mediaBrowserModel.Path = dir.LocalUrl;
+                    mediaBrowserModel.Path = System.Web.VirtualPathUtility.ToAppRelative(dir.LocalUrl).Trim('~');
                 }
                 else
                 {
-                    mediaBrowserModel.Path = "/";
+                    mediaBrowserModel.Path = System.Web.VirtualPathUtility.ToAppRelative("/").Trim('~');
                     mediaBrowserModel.RootIsSelectable = true;
                     mediaBrowserModel.Dirs = new List<Directory>();
                     foreach (var updDir in uploadDirectories)

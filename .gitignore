@@ -82,3 +82,5 @@ packages/
 src/packages/
 src/Framework/Extensions/x86/
 .DS_Store
+*.jpg
+*.pdf

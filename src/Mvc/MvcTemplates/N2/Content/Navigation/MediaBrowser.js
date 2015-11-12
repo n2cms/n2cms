@@ -38,6 +38,7 @@
         tabsCtrlLis: null,
         curTab: 0,
         btn: null,
+        btnClose: null,
         btnSearch: null,
         qSearch: null,
         lastSearch: "",
@@ -61,6 +62,8 @@
         history: { breadcrumb: "", list: "" },
         ajaxUrl: "",
         selectedUrl: "",
+        lblMessage: null,
+        lblMessageUpload: null,
 
         init: function (force) {
             var me = this, fbMainDiv;
@@ -85,6 +88,9 @@
             me.progressBar = document.getElementById("file-upload-ajax-progres");
             me.divBreadcrumb = document.getElementById("dirs-breadcrumb");
             me.divUploadSection = document.getElementById("browser-upload-file");
+            me.lblMessage = document.getElementById("lblMessage");
+            me.lblMessageUpload = document.getElementById("lblMessageUpload");
+            me.btnClose = document.getElementById("btn-cancel");
 
             me.i18Labels = {
                 i18size: me.list.getAttribute("data-i18size"),
@@ -105,6 +111,15 @@
 
                 jQ(me.btnSearch).on(clickEvent, me.loadDataSearch);
                 jQ(me.btnSearchClean).on(clickEvent, me.loadDataSearchClean);
+                jQ(me.qSearch).keypress(function (e) {
+                    var key = e.which;
+                    if(key == 13)  
+                    {
+                        jQ(me.btnSearch).trigger(clickEvent);
+                        e.stopPropagation();
+                        e.preventDefault();
+                    }
+                }); 
 
                 jQ(me.divDetails).on(clickEvent, me.clicksInfoRespond);
                 jQ(me.btn).on(clickEvent, me.selectFileToParent);
@@ -120,6 +135,8 @@
                 me.tabsCtrlLis = (me.tabsCtrl).getElementsByTagName("li"); 
                 jQ(me.tabsCtrl).click(me.showTab);
             }
+
+            jQ(me.btnClose).click(me.closeWindow);
 
             me.initUpload();
             me.initialized = true;
@@ -249,12 +266,17 @@
             }//ckEditor
 
             //mediaControl
-            if (mediaCtrl !== "" && dp !== null && window.opener) {
-                window.opener.document.getElementById(mediaCtrl).value = dp.url;
+            if (mediaCtrl !== "" && dp !== null && window.opener && window.opener.n2MediaSelection && window.opener.n2MediaSelection.setMediaSelectorValue) {
+                window.opener.n2MediaSelection.setMediaSelectorValue(mediaCtrl, dp.url);
             }
 
             document.cookie = "lastMediaSelection=" + dp.url + "; path=/;";
         
+            window.close();
+        },
+        closeWindow: function (e) {
+            e.stopPropagation();
+            e.preventDefault();
             window.close();
         },
         clicksInfoRespond: function (e) {
@@ -313,11 +335,13 @@
             if ((fileBrowser.qSearch).value !== "") {
                 (fileBrowser.qSearch).value = "";
                 (fileBrowser.qSearch).focus();
+                fileBrowser.lastSearch = "";
                 //Repaint the latest dir
                 if (fileBrowser.history.breadcrumb !== "") {
                     fileBrowser.divBreadcrumb.innerHTML = fileBrowser.history.breadcrumb;
                     fileBrowser.list.innerHTML = fileBrowser.history.list;
                     fileBrowser.listLis = jQ(fileBrowser.list).children("li");
+                    fileBrowser.lblMessage.style.display = "none";
                 }
             }
         },
@@ -335,30 +359,11 @@
             fileBrowser.divBreadcrumb.innerHTML = "*";
         },
         loadData: function (newDir, searchText) {
-            var ajaxUrl = fileBrowser.ajaxUrl,
-                req, ajaxRequest = "";
-
-            if(newDir) {
-                ajaxRequest = ajaxUrl + "?selected=" + encodeURI(newDir) + (window.selectableExtensions ? "&exts=" + encodeURI(window.selectableExtensions) : "");
-            } else 
-                if(searchText){
-                    ajaxRequest = ajaxUrl + "/search?query=" + encodeURI(searchText) + (window.selectableExtensions ? "&exts=" + encodeURI(window.selectableExtensions) : "");
-                } else {
-                    return;
-                }
-
-            req = jQ.ajax({
-                    type: "GET",
-                    url: ajaxRequest
-                });
-
+            var me = fileBrowser,
+                ajaxUrl = me.ajaxUrl;
+                
             jQ(fileBrowser.list).addClass("loading");
-
-            req.done(function (data) {
-                fileBrowser.repaintList(data);
-            });
-
-            req.fail(ajaxError);
+            me.api.getData(ajaxUrl, newDir, searchText, window.selectableExtensions, me.repaintList);
         },
         repaintList: function (data) {
             var i, j, len, len2, dpt, dptImg, lis = [], lisHtml,
@@ -376,6 +381,14 @@
 
             fileBrowser.showInfo(-1);
             jQ(fileBrowser.list).removeClass("loading");
+
+            if (data.Status && data.Status === "Error") {
+                fileBrowser.lblMessage.innerHTML = data.Message;
+                fileBrowser.lblMessage.style.display = "block";
+                return;
+            }
+            fileBrowser.lblMessage.style.display = "none";
+
             //Breadcrumb
             if (data.Path) {
                 fileBrowser.lastPath = data.Path;
@@ -399,27 +412,30 @@
             }
 
             //Files
-            for (i = 0, len = data.Files.length; i < len; i += 1) {
-                dpt = data.Files[i];
-                dpt.ImageSizes = "";
-                if (dpt.IsImage && dpt.SCount > 0) {
-                    lisImgs = [];
-                    dptImg = { "SizeName": "default", "Size": dpt.Size, "Url": dpt.Url, "ClassName": (fileBrowser.preferredSize == "" ? "selected" : "") };
-                    lisImgs.push(parsePropertiesToPattern(patternImgSizes, dptImg));
-                    for (j = 0, len2 = dpt.SCount; j < len2; j += 1) {
-                        dptImg = dpt.Children[j];
-                        dptImg.ClassName = fileBrowser.preferredSize == dptImg.SizeName ? "selected" : "";
+            if (data.Files) {
+                for (i = 0, len = data.Files.length; i < len; i += 1) {
+                    dpt = data.Files[i];
+                    dpt.ImageSizes = "";
+                    if (dpt.IsImage && dpt.SCount > 0) {
+                        lisImgs = [];
+                        dptImg = { "SizeName": "default", "Size": dpt.Size, "Url": dpt.Url, "ClassName": (fileBrowser.preferredSize == "" ? "selected" : "") };
                         lisImgs.push(parsePropertiesToPattern(patternImgSizes, dptImg));
+                        for (j = 0, len2 = dpt.SCount; j < len2; j += 1) {
+                            dptImg = dpt.Children[j];
+                            dptImg.ClassName = fileBrowser.preferredSize == dptImg.SizeName ? "selected" : "";
+                            lisImgs.push(parsePropertiesToPattern(patternImgSizes, dptImg));
+                        }
+                        dpt.ImageSizes = lisImgs.join("");
                     }
-                    dpt.ImageSizes = lisImgs.join("");
+                    lis.push(parsePropertiesToPattern(dpt.IsImage ? patternImg : patternFile, dpt, startI + i));
                 }
-                lis.push(parsePropertiesToPattern(dpt.IsImage ? patternImg : patternFile, dpt, startI + i));
+
+                lisHtml = lis.join("");
+                fileBrowser.list.innerHTML = lisHtml;
+                fileBrowser.listLis = jQ(fileBrowser.list).children("li");
+                fileBrowser.cur = -1;
             }
 
-            lisHtml = lis.join("");
-            fileBrowser.list.innerHTML = lisHtml;
-            fileBrowser.listLis = jQ(fileBrowser.list).children("li");
-            fileBrowser.cur = -1;
             if (data.Path) {
                 fileBrowser.history = { breadcrumb: fileBrowser.divBreadcrumb.innerHTML, list: lisHtml };
             }
@@ -548,7 +564,9 @@
                         }, 1000);
 
                     } else {
-                        console.log(result);
+                        fileBrowser.lblMessageUpload.innerHTML = data.Message;
+                        fileBrowser.lblMessageUpload.style.display = "block";
+                        (fileBrowser.progressBar).parentNode.style.display = "none";
                     }
                     restoreContext();
                 });
@@ -586,7 +604,7 @@
                             break;
                         case "ignore":
                             for (k = 0, lenk = files.length; k < lenk; k += 1) {
-                                if (files[k].name === obj.o) files[k].ignore = true;
+                                if (files[k].name === obj.n) files[k].ignore = true;
                             }
                             break;
                     }
@@ -600,6 +618,8 @@
             }
 
             if (files.length > 0) {
+                fileBrowser.lblMessageUpload.style.display = "none";
+
                 if (window.FormData !== undefined) {
                     datas = new FormData();
                     for (x = 0, len = files.length; x < len; x += 1) {
@@ -712,11 +732,48 @@
 
             reqSave.fail(ajaxError);
 
-        }
+        },
+
+        //This is the public API
+        api: {
+
+            getData: function (ajaxUrl, newDir, searchText, selectableExtensions, callbackFunction) {
+
+                var req,
+                    ajaxRequest = "";
+
+                if (!ajaxUrl) { return; }
+
+                if (newDir) {
+                    ajaxRequest = ajaxUrl + "?selected=" + encodeURI(newDir) + (selectableExtensions ? "&exts=" + encodeURI(selectableExtensions) : "");
+                } else
+                    if (searchText) {
+                        ajaxRequest = ajaxUrl + "/search?query=" + encodeURI(searchText) + (selectableExtensions ? "&exts=" + encodeURI(selectableExtensions) : "");
+                    } else {
+                        return;
+                    }
+
+                req = jQ.ajax({
+                    type: "GET",
+                    url: ajaxRequest
+                });
+
+                req.done(function (data) {
+                    callbackFunction.call(null, data);
+                });
+
+                req.fail(ajaxError);
+            }//end of getData
+
+        }//end of API
     };
 
-
     fileBrowser.init();
+
+    return {
+        api: fileBrowser.api
+    }
+
 
 }(jQuery));
 
