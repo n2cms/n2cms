@@ -48,7 +48,7 @@ var n2MediaSelection = (function () {
                 editableMediaControls[inputId].isVisible = true;
                 editableMediaControls[inputId].btnShowId.style.display = "inline-block";
             }
-        } else {
+        } else if (editableMediaControls[inputId]) {
             if (editableMediaControls[inputId].isVisible) {
                 editableMediaControls[inputId].isVisible = false;
                 editableMediaControls[inputId].btnShowId.style.display = "none";
