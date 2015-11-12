@@ -66,7 +66,7 @@ namespace N2.Web.UI.WebControls
 		protected virtual void RegisterClientScripts()
         {
             Page.JavaScript("n2MediaSelection.initializeEditableMedia();", 
-                ScriptPosition.Bottom, ScriptOptions.DocumentReady | ScriptOptions.ScriptTags);
+                ScriptPosition.Bottom, ScriptOptions.DocumentReady);
         }
 
         /// <summary>Initializes the UrlSelector control.</summary>

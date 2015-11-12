@@ -18,8 +18,8 @@
     <div id="fileBrowser-main-div" class="thumbs-div">
 
         <ul class="nav nav-tabs no-active-outline" id="tabsCtrl">
-            <li role="presentation" class="active"><a href="#0"><%= GetLocalResourceObject("TabsGallery") %></a></li>
-            <li role="presentation"><a href="#1"><%= GetLocalResourceObject("TabsUpload") %></a></li>
+            <li role="presentation" class="active"><a href="#0"><%= GetLocalResourceObject("TabsGallery") ?? "Gallery" %></a></li>
+            <li role="presentation"><a href="#1"><%= GetLocalResourceObject("TabsUpload") ?? "Upload file" %></a></li>
         </ul>
 
         <div id="browser-files-list" class="browser-files-section first browser-files-list">
@@ -27,7 +27,7 @@
             <div class="row files-search-cont">
                 <div class="col-sm-8 col-md-6">
                     <div class="input-group input-group-sm">
-                        <input type="text" id="input-group-q" class="form-control" placeholder="<%= GetLocalResourceObject("Search") %>" />
+                        <input type="text" id="input-group-q" class="form-control" placeholder="<%= GetLocalResourceObject("Search") ?? "Search..." %>" />
                         <span class="input-group-btn">
                             <button id="btn-search" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
                             <button id="btn-search-clean" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span></button>
@@ -53,7 +53,7 @@
                 data-selurl="<%= Request["selectedUrl"]%>"
                 data-baseajax="<%= mediaBrowserModel.HandlerUrl %>" data-mediacontrol="<%= mediaBrowserModel.MediaControl %>"
                 data-ckeditor="<%= mediaBrowserModel.CkEditor %>" data-ckeditorfuncnum="<%= mediaBrowserModel.CkEditorFuncNum %>" data-preferredsize="<%= mediaBrowserModel.PreferredSize %>"
-                data-i18size="<%= GetLocalResourceObject("Size") %>" data-i18date="<%= GetLocalResourceObject("DateModified") %>" data-i18url="<%= GetLocalResourceObject("Url") %>">
+                data-i18size="<%= GetLocalResourceObject("Size") ?? "Size" %>" data-i18date="<%= GetLocalResourceObject("DateModified") ?? "Date" %>" data-i18url="<%= GetLocalResourceObject("Url") ?? "Url" %>">
                 <% if(mediaBrowserModel.Dirs!=null) foreach (var d in mediaBrowserModel.Dirs) { %>
                 <li data-i="<%= counter++ %>" class="dir" data-url="<%= d.Path %>">
                     <span class="file-ic glyphicon glyphicon-folder-open"></span>
@@ -92,7 +92,7 @@
         <div id="browser-upload-file" class="browser-files-section">
             <div class='file-selector-container'>
             
-                <button type="button" id="FileUploadItemId_Btn" class="btn btn-info" data-fire="FileUploadItem"><span class="glyphicon glyphicon-hdd"></span> <%= GetLocalResourceObject("SelectFiles") %></button>
+                <button type="button" id="FileUploadItemId_Btn" class="btn btn-info" data-fire="FileUploadItem"><span class="glyphicon glyphicon-hdd"></span> <%= GetLocalResourceObject("SelectFiles") ?? "Select files..." %></button>
 
                 <div class='file-selector-control'>
                     <input class="file-upload-ajax valid" data-valueid="FileUploadItemId" id="FileUploadItem" multiple="multiple" name="FileUploadItem" type="file" />
@@ -110,7 +110,7 @@
 
             </div>
             <div class="file-selector-disallowed">
-                <%= GetLocalResourceObject("UploadDisallowedBrowser") %>
+                <%= GetLocalResourceObject("UploadDisallowedBrowser") ?? "This browser is outdated and cannot upload files using this dialog. Please use a modern browser to get the most out of N2cms" %>
             </div>
         </div>
 
@@ -121,18 +121,18 @@
 
     <div id="browser-files-layover" class="browser-files-layover"></div>
     <div id="browser-files-layover-cont" class="browser-files-layover-cont">
-        <h1><%= GetLocalResourceObject("ExistingFiles") %></h1>
+        <h1><%= GetLocalResourceObject("ExistingFiles") ?? "Some files already exist in the server<br />What do you want to do with them?" %></h1>
         <ul id="browser-files-layover-ul"
-            data-i18keep="<%= GetLocalResourceObject("UploadKeepBoth")%>"
-            data-i18repl="<%= GetLocalResourceObject("UploadReplace")%>"
-            data-i18ignr="<%= GetLocalResourceObject("UploadIgnore")%>">
+            data-i18keep="<%= GetLocalResourceObject("UploadKeepBoth") ?? "Keep both" %>"
+            data-i18repl="<%= GetLocalResourceObject("UploadReplace") ?? "Replace" %>"
+            data-i18ignr="<%= GetLocalResourceObject("UploadIgnore") ?? "Ignore" %>">
         </ul>
-        <button type="button" id="btn-continue-upload" name="btn-continue-upload" class="btn btn-primary"><%= GetLocalResourceObject("Continue") %></button>
+        <button type="button" id="btn-continue-upload" name="btn-continue-upload" class="btn btn-primary"><%= GetLocalResourceObject("Continue") ?? "Continue" %></button>
     </div>
 
     <div class="framed-navbar navbar navbar-fixed-bottom">
         <div class="navbar-inner">
-            <button type="button" id="btn-select" name="btn-select" class="btn btn-primary" disabled="disabled"><%= GetLocalResourceObject("Select") %></button>
+            <button type="button" id="btn-select" name="btn-select" class="btn btn-primary" disabled="disabled"><%= GetLocalResourceObject("Select") ?? "Select" %></button>
             <button type="button" id="btn-cancel" name="btn-cancel command" class="btn btn-cancel"><%= GetLocalResourceObject("Cancel") ?? "Cancel" %></button>
         </div>
     </div>
