@@ -113,8 +113,12 @@ namespace N2.Web.UI.WebControls
             overrides["elements"] = ClientID;
             overrides["contentsCss"] = contentCssUrl ?? Register.BootstrapCssPath;
 
-            overrides["filebrowserBrowseUrl"] = Url.Parse(Page.Engine().ManagementPaths.MediaBrowserUrl);
-            overrides["filebrowserImageBrowseUrl"] = Url.Parse(Page.Engine().ManagementPaths.MediaBrowserUrl);
+            overrides["filebrowserBrowseUrl"] = Url.Parse(Page.Engine().ManagementPaths.EditTreeUrl)
+				.AppendQuery("location", "selection")
+				.AppendQuery("availableModes", "All")
+				.AppendQuery("selectableTypes", "");
+
+			overrides["filebrowserImageBrowseUrl"] = Url.Parse(Page.Engine().ManagementPaths.MediaBrowserUrl);
             overrides["filebrowserFlashBrowseUrl"] = overrides["filebrowserImageBrowseUrl"];
 
             string language = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
