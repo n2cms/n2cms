@@ -29,6 +29,12 @@ namespace N2.Edit.FileSystem
         /// <returns>A directory data object.</returns>
         DirectoryData GetDirectory(string virtualPath);
 
+        /// <summary>Searches for files in all Upload Directories.</summary>
+        /// <param name="query">The search term</param>
+        /// <param name="uploadDirectories">All Upload Directories</param>
+        /// <returns>An enumeration of files matching the query.</returns>
+        IEnumerable<FileData> SearchFiles(string query, List<Collections.HierarchyNode<ContentItem>> uploadDirectories);
+
         /// <summary>Checks if a file exists.</summary>
         /// <param name="virtualPath">The path of the file to check.</param>
         /// <returns>True if the file exists in the file system.</returns>

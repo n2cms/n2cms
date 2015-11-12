@@ -167,7 +167,7 @@ namespace N2.Edit.Navigation
                 return file.Children.Select(
                     cc => new FileReducedChildrenModel
                     {
-                        SizeName = imageSizes.GetSizeName(cc.Title),
+                        SizeName = imageSizes.GetSizeName(cc.Title) ?? GetUnreferencedImageSize(cc.Title),
                         Url = cc.Url,
                         Size = (cc as File) != null ? (cc as File).Size : -1
                     }
@@ -192,13 +192,22 @@ namespace N2.Edit.Navigation
         {
             public bool Equals(string a, string b)
             {
-                return string.Compare(a, System.IO.Path.GetExtension(b), true) == 0;
+                return string.Compare(a, VirtualPathUtility.GetExtension(b), true) == 0;
             }
 
             public int GetHashCode(string bx)
             {
                 return bx.GetHashCode();
             }
+        }
+
+        private static string GetUnreferencedImageSize(string title)
+        {
+            var ext = VirtualPathUtility.GetExtension(title);
+            var filenameWithoutExtension = title.Substring(0, title.LastIndexOf(ext));
+            var arr = filenameWithoutExtension.Split('_');
+            if (arr.Length == 1) return "?";
+            return arr[arr.Length - 1] + "?";
         }
 
         #endregion
@@ -209,12 +218,12 @@ namespace N2.Edit.Navigation
         {
             IList<Directory> dirs;
             IList<File> files;
+            var selected = Selection.SelectedItem;
 
             var host = Engine.Resolve<IHost>();
             var rootItem = Engine.Persister.Get(host.DefaultSite.RootItemID);
             var root = new HierarchyNode<ContentItem>(rootItem);
 
-            var selected = Selection.SelectedItem;
             var selectionTrail = Find.EnumerateParents(selected, null, true).ToList().Where(a => a is AbstractNode).Reverse().ToList();
             var selectedPath = selected.Path;
 
@@ -243,7 +252,7 @@ namespace N2.Edit.Navigation
                 Path = selectedPath,
                 Total = dirs.Count + files.Count,
                 Trail = selectionTrail.Select(d => new { d.Title, Url = d.Url }).ToList(),
-                Dirs = dirs.Select(d => new { d.Title, Url = d.LocalUrl }).ToList(),
+                Dirs = dirs.Select(d => new { d.Title, Url = VirtualPathUtility.ToAppRelative(d.LocalUrl).Trim('~') }).ToList(),
                 Files = GetFileReducedList(files.ToList(), ImageSizes, selectableExtensions)
             });
         }
@@ -253,7 +262,7 @@ namespace N2.Edit.Navigation
             var query = context.Request["query"];
             if (string.IsNullOrWhiteSpace(query))
             {
-                context.Response.WriteJson(new { Total = 0, Message = "Please provide a search term" });
+                context.Response.WriteJson(new { Status = "Error", Total = 0, Message = "Please provide a search term." });
                 return;
             }
             query = query.TrimStart().TrimEnd();
@@ -268,42 +277,26 @@ namespace N2.Edit.Navigation
 
             if (uploadDirectories.Count == 0)
             {
-                context.Response.WriteJson(new { Total = 0, Message = "No available directories" });
+                context.Response.WriteJson(new { Status = "Error", Total = 0, Message = "No available directories in this site." });
                 return;
             }
 
-            if (query.IndexOf('*') < 0)
-            {
-                query = "*" + query + "*";
-            }
+            //Do the search using the IFileSystem
+            var resultsFileData = FS.SearchFiles(query, uploadDirectories);
 
-            var resultFilenames = new List<string>();
-            foreach(var dir in uploadDirectories)
+            if (!resultsFileData.Any())
             {
-                //Search, returns Absolute Paths
-                resultFilenames.AddRange(
-                    System.IO.Directory.GetFiles(
-                        System.Web.Hosting.HostingEnvironment.MapPath("~" + dir.Current.Url), 
-                        query, 
-                        System.IO.SearchOption.AllDirectories
-                        )
-                    );
-            }
-
-            if (resultFilenames.Count == 0)
-            {
-                context.Response.WriteJson(new { Total = 0, Message = "0 files found" });
+                context.Response.WriteJson(new { Status = "Error", Total = 0, Message = "0 files found."});
                 return;
             }
 
-            List<File> files = new List<File>();
+            var files = new List<File>();
             var fileMap = new Dictionary<string, File>(StringComparer.OrdinalIgnoreCase);
-            string lastParent = null;
+            var lastParent = string.Empty;
             AbstractDirectory parent = null;
 
-            foreach (var nm in resultFilenames.OrderBy(s => s))
+            foreach (var fd in resultsFileData.OrderBy(s => s.VirtualPath))
             {
-                var fd = FS.GetFile(AbsolutePathToVirtual(nm));
                 var parentDirectory = fd.VirtualPath.Substring(0, fd.VirtualPath.LastIndexOf('/') );
                 if(lastParent != parentDirectory)
                 {
@@ -347,6 +340,7 @@ namespace N2.Edit.Navigation
 
         private void WriteCheckIfExists(HttpContext context)
         {
+            FS = Engine.Resolve<IFileSystem>();
             var parentDirectory = context.Request["selected"];
             var filenames = Selection.RequestValueAccessor("filenames");
             var selected = new Directory(DirectoryData.Virtual(parentDirectory), null);
@@ -370,8 +364,8 @@ namespace N2.Edit.Navigation
                 {
                     Status = "Checked",
                     Files = (from fileName in fns
-                             let newPath = System.IO.Path.Combine(context.Server.MapPath(selected.Url), fileName)
-                             where System.IO.File.Exists(newPath)
+                             let newPath = Url.Combine(context.Request.ApplicationPath + selected.Url, fileName)
+                             where FS.FileExists(newPath)
                              select fileName).ToArray()
                 });
         }
@@ -392,6 +386,7 @@ namespace N2.Edit.Navigation
 
             var overwriteStr = Selection.RequestValueAccessor("overwrite");
             var overwrite = overwriteStr.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+            var baseDir = context.Request.ApplicationPath + selected.Url;
 
             try
             {
@@ -407,27 +402,33 @@ namespace N2.Edit.Navigation
                     if (fileContent == null || fileContent.ContentLength <= 0) continue;
 
                     var stream = fileContent.InputStream;
-                    var fileName = System.IO.Path.GetFileName(fileContent.FileName);
+                    var fileName = fileContent.FileName;
                     if (string.IsNullOrEmpty(fileName)) continue;
 
-                    var newPath = System.IO.Path.Combine(context.Server.MapPath(parentDirectory), fileName);
+                    var newPath = Url.Combine(baseDir, fileName);
 
                     if (overwrite != null && overwrite.Any(p => p == fileName))
                     {
-                        var vPath = selected.Url + fileName;
-                        FS.WriteFile(vPath, stream);
+                        FS.WriteFile(newPath, stream);
                     } // Overwrite = yes
                     else
                     {
+                    
                         var incr = 1;
-                        while (System.IO.File.Exists(newPath))
+                        var extension = VirtualPathUtility.GetExtension(fileName);
+                        var extPos = fileName.LastIndexOf(extension);
+                        var origFilenameWithoutExtension = fileName.Substring(0, extPos);
+                        var restOfFilename = fileName.Substring(extPos);
+
+                        while (FS.FileExists(newPath))
                         {
-                            fileName = string.Format("{0}-{1}{2}", System.IO.Path.GetFileNameWithoutExtension(fileName), incr, System.IO.Path.GetExtension(fileName));
-                            newPath = System.IO.Path.Combine(context.Server.MapPath(parentDirectory), fileName);
+                            fileName = string.Format("{0}-{1}{2}", origFilenameWithoutExtension, incr, restOfFilename);
+                            newPath = Url.Combine(baseDir, fileName);
+                            incr++;
                         }
 
-                        var vPath = selected.Url + fileName;
-                        FS.WriteFile(vPath, stream);
+                        FS.WriteFile(newPath, stream);
+                        
                     } // Overwrite = no
                 }
                 context.Response.WriteJson(new { Status = "Ok", Message = "Files uploaded" });

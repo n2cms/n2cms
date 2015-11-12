@@ -75,7 +75,7 @@ namespace N2.Details
 
 		public override bool UpdateItem(ContentItem item, Control editor)
         {
-            SelectingMediaControl composite = (SelectingMediaControl)editor;
+            var composite = (SelectingMediaControl)editor;
             
             if (composite.SelectorControl.Url != item[Name] as string)
             {

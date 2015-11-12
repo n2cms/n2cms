@@ -45,6 +45,8 @@
                 </ul>
             </div>
 
+            <div id="lblMessage" class="bg-warning" style="display:none"></div>
+
             <% var regIsImage = new Regex(@"^.*\.(jpg|jpeg|gif|png)$", RegexOptions.IgnoreCase);
                var counter = 0;%>
             <ul id="browser-files-list-ul" class="files-list" data-path="<%= mediaBrowserModel.Path %>"
@@ -53,13 +55,13 @@
                 data-ckeditor="<%= mediaBrowserModel.CkEditor %>" data-ckeditorfuncnum="<%= mediaBrowserModel.CkEditorFuncNum %>" data-preferredsize="<%= mediaBrowserModel.PreferredSize %>"
                 data-i18size="<%= GetLocalResourceString("Size") %>" data-i18date="<%= GetLocalResourceString("DateModified") %>" data-i18url="<%= GetLocalResourceString("Url") %>">
                 <% if(mediaBrowserModel.Dirs!=null) foreach (var d in mediaBrowserModel.Dirs) { %>
-                <li data-i="<%= counter++ %>" class="dir" data-url="<%= d.Url %>">
+                <li data-i="<%= counter++ %>" class="dir" data-url="<%= d.Path %>">
                     <span class="file-ic glyphicon glyphicon-folder-open"></span>
                     <label><%= d.Name %></label>
                 </li>
                 <%} %>
                 <% if(mediaBrowserModel.Files!=null) foreach (var f in mediaBrowserModel.Files) {
-                            var img = f.IsImage ? N2.Web.Drawing.ImagesUtility.GetExistingImagePath(f.Url, "thumb") : string.Empty;
+                            var img = f.IsImage ? f.Thumb : string.Empty;
                             %>
                     <% if(f.IsImage) { %>
                     <li data-i="<%= counter++ %>" class="file image" data-size="<%= f.Size %>" data-date="<%= f.Date %>" 
@@ -104,6 +106,7 @@
                         0%
                     </div>
                 </div>
+                <div id="lblMessageUpload" class="bg-warning" style="display:none"></div>
 
             </div>
             <div class="file-selector-disallowed">
@@ -130,7 +133,7 @@
     <div class="framed-navbar navbar navbar-fixed-bottom">
         <div class="navbar-inner">
             <button type="button" id="btn-select" name="btn-select" class="btn btn-primary" disabled="disabled"><%= GetLocalResourceString("Select") %></button>
-
+            <button type="button" id="btn-cancel" name="btn-cancel command" class="btn btn-cancel"><%= GetLocalResourceString("Cancel") ?? "Cancel" %></button>
         </div>
     </div>
 

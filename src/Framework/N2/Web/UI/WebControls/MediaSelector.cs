@@ -20,14 +20,11 @@ namespace N2.Web.UI.WebControls
 			Buttons = new HtmlGenericControl("span");
 			ClearButton = new HtmlButton();
 			PopupButton = new HtmlButton();
-		}
+            ShowButton = new HtmlButton();
+        }
 
 		/// <summary>File extensions that may be selected using this selector.</summary>
-		public string SelectableExtensions
-        {
-            get { return ViewState["SelectableExtensions"] as string; }
-            set { ViewState["SelectableExtensions"] = value; }
-        }
+        public string SelectableExtensions { get; set; }
 
         public string BrowserUrl { get; set; }
         public string PopupOptions { get; set; }
@@ -43,7 +40,7 @@ namespace N2.Web.UI.WebControls
         /// <summary>Format for the javascript invoked when the open popup button is clicked.</summary>
         protected virtual string OpenPopupFormat
         {
-            get { return "openMediaSelectorPopup('{0}', '{1}', '{2}', '{3}', '{4}'); return false;"; }
+            get { return "n2MediaSelection.openMediaSelectorPopup('{0}', '{1}', '{2}', '{3}', '{4}'); return false;"; }
         }
 
 		private IEngine engine;
@@ -62,12 +59,13 @@ namespace N2.Web.UI.WebControls
 
 		public TextBox Input { get; private set; }
 		public HtmlButton ClearButton { get; private set; }
-		public HtmlButton PopupButton { get; private set; }
-		public HtmlGenericControl Buttons { get; private set; }
+        public HtmlButton PopupButton { get; private set; }
+        public HtmlButton ShowButton { get; private set; }
+        public HtmlGenericControl Buttons { get; private set; }
 
 		protected virtual void RegisterClientScripts()
         {
-            Page.JavaScript("$('#" + Input.ClientID + "').n2autocomplete({ selectableExtensions:'" + SelectableExtensions + "' });", 
+            Page.JavaScript("n2MediaSelection.initializeEditableMedia();", 
                 ScriptPosition.Bottom, ScriptOptions.DocumentReady | ScriptOptions.ScriptTags);
         }
 
@@ -87,12 +85,13 @@ namespace N2.Web.UI.WebControls
 
 			Attributes["class"] = "mediaSelector selector input-append";
 
-			Controls.Add(Input);
-			Controls.Add(Buttons);
+            Controls.Add(Input);
+            Controls.Add(Buttons);
 			Buttons.Controls.Add(ClearButton);
-			Buttons.Controls.Add(PopupButton);
+            Buttons.Controls.Add(PopupButton);
+            Buttons.Controls.Add(ShowButton);
 
-			Input.ID = "input";
+            Input.ID = "input";
 			Input.CssClass = "input-xxlarge";
 
 			Buttons.Attributes["class"] = "selectorButtons";
@@ -103,22 +102,28 @@ namespace N2.Web.UI.WebControls
 			ClearButton.InnerHtml = "<b class='fa fa-times'></b>";
 			ClearButton.Attributes["title"] = Utility.GetGlobalResourceString("UrlSelector", "Clear") ?? "Clear";
 			ClearButton.Attributes["class"] = "clearButton revealer";
-		}
+            ShowButton.InnerHtml = "<b class='fa fa-eye'></b>";
+            ShowButton.Attributes["title"] = Utility.GetGlobalResourceString("UrlSelector", "View") ?? "View";
+            ShowButton.Attributes["class"] = "btn showLayoverButton";
+            ShowButton.ID = "showButton";
+        }
 
 		protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
             RegisterClientScripts();
 
-			PopupButton.Attributes["onclick"] = string.Format(OpenPopupFormat,
+            PopupButton.Attributes["onclick"] = string.Format(OpenPopupFormat,
 													  N2.Web.Url.ResolveTokens(BrowserUrl ?? Engine.ManagementPaths.MediaBrowserUrl.ToUrl().AppendQuery("mc=true")),
 													  Input.ClientID,
 													  PopupOptions,
 													  PreferredSize,
-													  SelectableExtensions
-													  );
-			ClearButton.Attributes["onclick"] = "document.getElementById('" + Input.ClientID + "').value = ''; return false;";
-		}
+													  !string.IsNullOrWhiteSpace(SelectableExtensions) ? SelectableExtensions : ImageExtensions
+                                                      );
+			ClearButton.Attributes["onclick"] = "n2MediaSelection.clearMediaSelector('" + Input.ClientID + "'); return false;";
+
+            ShowButton.Attributes["onclick"] = "n2MediaSelection.showMediaSelectorOverlay('" + Input.ClientID + "'); return false;";
+        }
 
         /// <summary>Renders and tag and the open popup window button.</summary>
    //     public override void RenderEndTag(HtmlTextWriter writer)
