@@ -375,35 +375,6 @@
     <Content Include="Installation\UpgradeVersion.ashx" />
     <Content Include="Resources\Js\jquery-1.11.0.min.map" />
     <Content Include="packages.config" />
-    <Content Include="Resources\ckeditor\CHANGES.md" />
-    <Content Include="Resources\ckeditor\LICENSE.md" />
-    <Content Include="Resources\ckeditor\README.md" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\readme.md" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\browser-specific\gecko\editor_gecko.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\browser-specific\ie7\dialog_ie7.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\browser-specific\ie7\editor_ie7.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\browser-specific\ie8\dialog_ie8.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\browser-specific\ie8\editor_ie8.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\browser-specific\iequirks\dialog_iequirks.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\browser-specific\iequirks\editor_iequirks.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\browser-specific\ie\dialog_ie.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\browser-specific\ie\editor_ie.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\browser-specific\opera\dialog_opera.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\components\editor.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\components\_colorpanel.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\components\_elementspath.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\components\_mainui.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\components\_menu.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\components\_panel.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\components\_presets.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\components\_reset.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\components\_richcombo.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\components\_toolbar.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\config\_colors.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\config\_config.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\config\_defaults.scss" />
-    <Content Include="Resources\ckeditor\skins\bootstrapck\scss\dialog\dialog.scss" />
-    <Content Include="Resources\ckeditor\skins\flat\readme.md" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\Framework\AssemblyVersion.cs">
