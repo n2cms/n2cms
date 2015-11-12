@@ -11,21 +11,22 @@ namespace N2.Web.UI.WebControls
 
         public SelectingMediaControl()
         {
-            SelectorControl = new MediaSelector();
-            SelectorControl.ID = "Selector";
-        }
+			SelectorContainer = new HtmlGenericControl("span");
+			SelectorControl = new MediaSelector();
+            UploadContainer = new HtmlGenericControl("span");
+		}
 
-        protected override void CreateChildControls()
+		protected override void CreateChildControls()
         {
-            base.CreateChildControls();
+			SelectorControl.ID = ID + "_selector";
 
-            SelectorContainer = new HtmlGenericControl("span");
+			base.CreateChildControls();
+
             SelectorContainer.Attributes["class"] = "uploadableContainer selector";
             Controls.Add(SelectorContainer);
 
             SelectorContainer.Controls.Add(SelectorControl);
 
-            UploadContainer = new HtmlGenericControl("span");
             UploadContainer.Attributes["class"] = "uploadableContainer uploader";
             Controls.Add(UploadContainer);
         }

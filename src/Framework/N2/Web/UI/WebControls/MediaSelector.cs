@@ -81,6 +81,9 @@ namespace N2.Web.UI.WebControls
 
 		protected override void CreateChildControls()
 		{
+            Input.ID = ID + "_input";
+			ShowButton.ID = ID + "_showButton";
+
 			base.CreateChildControls();
 
 			Attributes["class"] = "mediaSelector selector input-append";
@@ -91,7 +94,6 @@ namespace N2.Web.UI.WebControls
             Buttons.Controls.Add(PopupButton);
             Buttons.Controls.Add(ShowButton);
 
-            Input.ID = "input";
 			Input.CssClass = "input-xxlarge";
 
 			Buttons.Attributes["class"] = "selectorButtons";
@@ -105,7 +107,6 @@ namespace N2.Web.UI.WebControls
             ShowButton.InnerHtml = "<b class='fa fa-eye'></b>";
             ShowButton.Attributes["title"] = Utility.GetGlobalResourceString("UrlSelector", "View") ?? "View";
             ShowButton.Attributes["class"] = "btn showLayoverButton";
-            ShowButton.ID = "showButton";
         }
 
 		protected override void OnPreRender(EventArgs e)

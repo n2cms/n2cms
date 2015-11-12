@@ -116,6 +116,8 @@ namespace N2.Web.UI.WebControls
 
 		protected override void CreateChildControls()
 		{
+			Input.ID = ID + "_input";
+
 			base.CreateChildControls();
 
 			Attributes["class"] = "selector input-append " + GetType().Name[0].ToString().ToLower() + GetType().Name.Substring(1);
@@ -125,7 +127,6 @@ namespace N2.Web.UI.WebControls
 			Buttons.Controls.Add(ClearButton);
 			Buttons.Controls.Add(PopupButton);
 
-			Input.ID = "input";
 			Input.CssClass = "input-xxlarge urlSelector selector";
 
 			Buttons.Attributes["class"] = "selectorButtons";
