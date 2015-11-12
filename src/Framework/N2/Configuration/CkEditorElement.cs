@@ -11,7 +11,7 @@ namespace N2.Configuration
     /// </summary>
     public class CkEditorElement : ConfigurationElement
     {
-        [ConfigurationProperty("ckConfigJsPath")]
+        [ConfigurationProperty("ckConfigJsPath", DefaultValue = "{ManagementUrl}/Resources/ckeditor/config.js")]
         public string ConfigJsPath
         {
             get { return (string)base["ckConfigJsPath"]; }

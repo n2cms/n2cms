@@ -29,12 +29,12 @@ namespace N2.Resources
 			BootstrapDatePickerCssPath = DefaultBootstrapDatePickerCssPath;
 			BootstrapTimePickerCssPath = DefaultBootstrapTimePickerCssPath;
 			BootstrapVersion = new Version(DefaultBootstrapVersion);
-			CkEditorJsPath = DefaultCkEditorPath;//"{ManagementUrl}/Resources/ckeditor/ckeditor.js?v=" + JQueryVersion;
+			CkEditorJsPath = DefaultCkEditorPath;
 			FancyboxCssPath = DefaultFancyboxCssPath;
 			FancyboxJsPath = DefaultFancyboxJsPath;
 			IconsCssPath = DefaultIconsCssPath;
-			JQueryJsPath = DefaultJQueryJsPath; //"{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".min.js";
-			JQueryUiPath = DefaultJQueryUiJsPath; // "{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + JQueryVersion;
+			JQueryJsPath = DefaultJQueryJsPath;
+			JQueryUiPath = DefaultJQueryUiJsPath;
 			JQueryPluginsPath = DefaultJQueryPluginsPath;
 			PartsJsPath = DefaultPartsJsPath;
 			PartsCssPath = DefaultPartsCssPath;
@@ -53,7 +53,7 @@ namespace N2.Resources
 		public const string JQueryVersion = "1.11.3";
 		public const string JQueryUiVersion = "1.11.4";
 		public const string AngularJsVersion = "1.2.20";
-		public const string CkEditorVersion = "4.3.2";
+		public const string CkEditorVersion = "4.5.4";
 		public const string DefaultBootstrapVersion = "2.3.2";
 
 		public const string DefaultFlagsCssPath = "{ManagementUrl}/Resources/icons/flags.css";
@@ -73,8 +73,9 @@ namespace N2.Resources
 		public const string DefaultBootstrapTimePickerJsPath = "{ManagementUrl}/Resources/bootstrap-components/bootstrap-timepicker.js";
 		public const string DefaultBootstrapTimePickerCssPath = "{ManagementUrl}/Resources/bootstrap-components/bootstrap-timepicker.css";
 
-		public const string DefaultCkEditorPath = "//cdnjs.cloudflare.com/ajax/libs/ckeditor/" + CkEditorVersion + "/ckeditor.js?v=" + JQueryVersion;
-		public const string DefaultJQueryPluginsPath = "{ManagementUrl}/Resources/Js/plugins.ashx?v=" + JQueryVersion;
+		//public const string DefaultCkEditorPath = "{ManagementUrl}/Resources/ckeditor/ckeditor.js?v=" + JQueryVersion;
+		public const string DefaultCkEditorPath = "//cdn.ckeditor.com/4.5.4/full/ckeditor.js";
+        public const string DefaultJQueryPluginsPath = "{ManagementUrl}/Resources/Js/plugins.ashx?v=" + JQueryVersion;
 		public const string DefaultPartsJsPath = "{ManagementUrl}/Resources/Js/parts.js?v=" + JQueryVersion;
 		public const string DefaultPartsCssPath = "{ManagementUrl}/Resources/Css/parts.css?v=" + JQueryVersion;
 
