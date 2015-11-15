@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MediaBrowser.aspx.cs" Inherits="N2.Edit.Navigation.MediaBrowser" Trace="false" Debug="true" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MediaBrowser.aspx.cs" Inherits="N2.Edit.Navigation.MediaBrowser" Trace="false" %>
 <%@ Import Namespace="N2.Resources" %>
 <%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="System.Web.Configuration" %>
