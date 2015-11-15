@@ -24,8 +24,14 @@ namespace N2.Web.UI.WebControls
             UploadButton = new HtmlButton();
 		}
 
+		public MediaSelector(string name)
+			: this()
+		{
+			Input.ID = name + "_input";
+		}
+
 		/// <summary>File extensions that may be selected using this selector.</summary>
-        public string SelectableExtensions { get; set; }
+		public string SelectableExtensions { get; set; }
 
         public string BrowserUrl { get; set; }
         public string PopupOptions { get; set; }
@@ -83,9 +89,6 @@ namespace N2.Web.UI.WebControls
 
 		protected override void CreateChildControls()
 		{
-            Input.ID = ID + "_input";
-			ShowButton.ID = ID + "_showButton";
-
 			base.CreateChildControls();
 
 			Attributes["class"] = "mediaSelector selector input-append";

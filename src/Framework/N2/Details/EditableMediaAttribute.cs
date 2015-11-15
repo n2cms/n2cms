@@ -97,8 +97,7 @@ namespace N2.Details
 
         protected override Control AddEditor(Control container)
         {
-            var composite = new SelectingMediaControl();
-            composite.ID = Name;
+            var composite = new SelectingMediaControl(Name);
             composite.SelectorControl.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
             composite.SelectorControl.SelectableExtensions = Extensions;
             composite.SelectorControl.PreferredSize = PreferredSize;
@@ -120,10 +119,9 @@ namespace N2.Details
         {
             var composite = (SelectingMediaControl)editor;
             if (composite == null) return null;
-            var rfv = new RequireEitherFieldValidator();
+            var rfv = new RequiredFieldValidator();
             rfv.ID = Name + "_rfv";
-            rfv.ControlToValidate = composite.SelectorControl.ID;
-            //rfv.OtherControlToValidate = composite.UploadControl.ID;
+            rfv.ControlToValidate = composite.SelectorControl.Input.ID;
             rfv.Display = ValidatorDisplay.Dynamic;
             rfv.Text = GetLocalizedText("RequiredText") ?? RequiredText;
             rfv.ErrorMessage = GetLocalizedText("RequiredMessage") ?? RequiredMessage;
