@@ -364,7 +364,7 @@ namespace N2.Edit.Navigation
                 {
                     Status = "Checked",
                     Files = (from fileName in fns
-                             let newPath = Url.Combine(context.Request.ApplicationPath + selected.Url, fileName)
+                             let newPath = Url.Combine(context.Request.ApplicationPath + selected.Url, HttpUtility.UrlDecode(fileName))
                              where FS.FileExists(newPath)
                              select fileName).ToArray()
                 });
@@ -434,9 +434,9 @@ namespace N2.Edit.Navigation
                 context.Response.WriteJson(new { Status = "Ok", Message = "Files uploaded" });
                 return;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                context.Response.WriteJson(new { Status = "Error", Message = "Upload failed" });
+                context.Response.WriteJson(new { Status = "Error", Message = "Upload failed", Detail = e.Message });
                 return;
             }
 

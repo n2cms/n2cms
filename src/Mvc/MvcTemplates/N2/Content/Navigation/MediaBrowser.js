@@ -486,7 +486,9 @@
                 qSel = document.querySelectorAll === undefined,
                 reqExists, arrNames = [], reqUpload, sNames, overwriteArr = [],
                 ajaxUrl = fileBrowser.ajaxUrl,
-                maxSizeMessage = "", maxSizeBytes = maxSize && maxSize > 0 ? maxSize * 1024 : 0;
+                maxSizeMessage = "",
+                maxSizeBytes = maxSize && maxSize > 0 ? maxSize * 1024 : 0,
+                bytesCombined = 0, notUploadingAllFiles = false;
 
             function saveContext() {
                 inputValueId = e.target.getAttribute("data-valueid");
@@ -515,7 +517,6 @@
                 datas = new FormData();
                 for (x = 0, len = files.length; x < len; x += 1) {
                     if (files[x].ignore) continue;
-                    if (maxSizeBytes > 0 && files[x].size > maxSizeBytes) continue;
                     datas.append("file" + kk, files[x]);
                     kk += 1;
                 }
@@ -566,7 +567,7 @@
                         }, 1000);
 
                     } else {
-                        fileBrowser.lblMessageUpload.innerHTML = data.Message;
+                        fileBrowser.lblMessageUpload.innerHTML = result.Message;
                         fileBrowser.lblMessageUpload.style.display = "block";
                         (fileBrowser.progressBar).parentNode.style.display = "none";
                     }
@@ -624,18 +625,32 @@
 
                 if (window.FormData !== undefined) {
                     datas = new FormData();
+                    bytesCombined = 0;
+                    notUploadingAllFiles = false;
+
                     for (x = 0, len = files.length; x < len; x += 1) {
                         if (maxSizeBytes > 0 && files[x].size > maxSizeBytes) {
                             maxSizeMessage += files[x].name + "\n";
+                            files[x].ignore = true;
                         } else {
-                            datas.append("file" + x, files[x]);
-                            arrNames.push(encodeURI(files[x].name));
+                            if ((bytesCombined + files[x].size) < maxSizeBytes) {
+                                datas.append("file" + x, files[x]);
+                                arrNames.push(encodeURI(files[x].name));
+                                bytesCombined += files[x].size;
+                            } else {
+                                notUploadingAllFiles = true;
+                                files[x].ignore = true;
+                            }
                         }
                     }
 
                     if (maxSizeMessage) {
                         alert("These files are bigger than the maximum allowed size for this site. Upload smaller files (" +
                             (Math.round(maxSize / 1024 * 10) / 10) + " MBs) or ask your webmaster to increase the limit:\n\n" + maxSizeMessage);
+                    }
+                    if (notUploadingAllFiles) {
+                        alert("The total bytes that can be uploaded each time cannot exceed " + (Math.round(maxSize / 1024 * 10) / 10) +
+                            " MBs. Upload files separately or ask your webmaster to increase the limit");
                     }
 
                     saveContext();
@@ -662,7 +677,7 @@
                                 (fileBrowser.divLayoverCont).style.display = "block";
                                 for (j = 0, lenj = d.Files.length; j < lenj; j += 1) {
                                     sNames = String(d.Files[j]).split("|");
-                                    btnsHtml = parsePropertiesToPattern(ptn, { name: sNames[0], oname: sNames[1] });
+                                    btnsHtml = parsePropertiesToPattern(ptn, { name: decodeURI(sNames[0]), oname: decodeURI(sNames[1]) });
                                     btnsHtml = parsePropertiesToPattern(btnsHtml, fileBrowser.i18Labels);
                                     lis.push(btnsHtml);
                                 }

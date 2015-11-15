@@ -96,7 +96,7 @@ var n2MediaSelection = (function () {
         img = new Image();
 
         ovly.setAttribute("style", "position:fixed; top:0; left:0; right:0; bottom:0; background:#eee; background:rgba(235,235,235,0.8); z-index:20000;");
-        img.setAttribute("style", "position:absolute; top:5%; left:50%; max-width:90%; max-height:90%; width:auto; height:auto; display:block;");
+        img.setAttribute("style", "position:absolute; top:5%; left:5%; max-width:90%; max-height:90%; width:auto; height:auto; display:block;");
         noImg.setAttribute("style", "position:absolute; top:50%; left:50%; width:100px; height:50px; font-size:20px; color:#ff0000; margin:-25px 0 0 -50px;");
         close.setAttribute("style", "position:absolute; top:20px; right:20px; line-height:35px; height:40px; width:40px; color:black; font-size:30px; text-align:center; background:#ccc;z-index:10; border-radius:20px; cursor:pointer;");
 
@@ -110,8 +110,6 @@ var n2MediaSelection = (function () {
         ovly.id = "image-overlay";
 
         img.onload = function () {
-            var w = Math.round(this.width / 2);
-            img.style.marginLeft = (-w) + "px";
             ovly.appendChild(img);
         }
         img.onerror = function () {
