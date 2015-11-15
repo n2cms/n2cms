@@ -51,13 +51,8 @@
 	</Target>
 
 	<Target Name="Templates-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-SourceFolder)\bin" />
-
-		<Copy SourceFiles="@(Framework-DependencyBinaries)" DestinationFolder="$(Templates-SourceFolder)\bin\" />
-		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFiles="$(Templates-SourceFolder)\%(RecursiveDir)\%(FileName)%(Extension)" ContinueOnError="true" />
-
 		<Message Text="Skipping mklink (folder exists): $(Templates-SourceFolder)\N2\" Condition="Exists('$(Templates-SourceFolder)\N2\')" Importance="high" />
-		<Exec Command="mklink /D $(Templates-SourceFolder)\N2\ $(EditFolder)\" Condition="!Exists('$(Templates-SourceFolder)\N2\')" ContinueOnError="true" />
+		<Exec Command="mklink /D $(Templates-SourceFolder)\N2\ $(EditDevFolder)\" Condition="!Exists('$(Templates-SourceFolder)\N2\')" ContinueOnError="true" />
 		<MSBuild Projects="n2.proj" Targets="CopyManagementFilesToManagementFilesDestination" Properties="ManagementFilesDestination=$(Templates-SourceFolder)\N2" Condition="!Exists('$(Templates-SourceFolder)\N2\')" />
 	</Target>
 

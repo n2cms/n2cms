@@ -13,15 +13,9 @@
 	</PropertyGroup>
 
 	<Target Name="Dinamico-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
-		<Copy SourceFiles="$(SrcFolder)\Framework\Extensions\bin\$(Configuration)\N2.Extensions.dll;"
-					DestinationFolder="$(Dinamico-SourceFolder)\bin" />
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Dinamico-SourceFolder)\bin" />
 
-		<Copy SourceFiles="@(Framework-DependencyBinaries)" DestinationFolder="$(Dinamico-SourceFolder)\bin\" />
-		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFiles="$(Dinamico-SourceFolder)\%(RecursiveDir)\%(FileName)%(Extension)" ContinueOnError="true" />
-		
 		<Message Text="Skipping mklink (folder exists): $(Dinamico-SourceFolder)\N2\" Condition="Exists('$(Dinamico-SourceFolder)\N2\')" />
-		<Exec Command="mklink /D $(Dinamico-SourceFolder)\N2\ $(EditFolder)\" Condition="!Exists('$(Dinamico-SourceFolder)\N2\')" ContinueOnError="true" />
+		<Exec Command="mklink /D $(Dinamico-SourceFolder)\N2\ $(EditDevFolder)\" Condition="!Exists('$(Dinamico-SourceFolder)\N2\')" ContinueOnError="true" />
 		<MSBuild Projects="n2.proj" Targets="CopyManagementFilesToManagementFilesDestination" Properties="ManagementFilesDestination=$(Dinamico-SourceFolder)\N2" Condition="!Exists('$(Dinamico-SourceFolder)\N2\')" />
 	</Target>
 

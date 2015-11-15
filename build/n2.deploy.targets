@@ -107,7 +107,7 @@
 
   <Target Name="Windsor3-NuGet">
     <ItemGroup>
-      <windsor3NugetBinaries Include="$(SrcFolder)\Framework\IoC.Windsor\bin\$(Configuration)\N2.IoC.Windsor3.dll;"/>
+      <windsor3NugetBinaries Include="$(ArtifactsFolder)\N2.IoC.Windsor3.dll;"/>
       <windsor3NugetIncludes Include="$(BuildFolder)\Nuget\IoC.Windsor3\**\*" />
     </ItemGroup>
     <Copy SourceFiles="@(windsor3NugetBinaries)" DestinationFolder="$(Windsor3-NugetFolder)\lib" />
@@ -119,7 +119,7 @@
 
   <Target Name="MongoDB-NuGet">
     <ItemGroup>
-      <mongoDBNugetBinaries Include="$(SrcFolder)\Framework\MongoDB\bin\$(Configuration)\N2.Persistence.MongoDB.dll;"/>
+      <mongoDBNugetBinaries Include="$(ArtifactsFolder)\N2.Persistence.MongoDB.dll;"/>
       <mongoDBNugetIncludes Include="$(BuildFolder)\Nuget\MongoDB\**\*" />
     </ItemGroup>
     <Copy SourceFiles="@(mongoDBNugetBinaries)" DestinationFolder="$(MongoDB-NugetFolder)\lib" />
@@ -130,8 +130,9 @@
   </Target>
 
   <Target Name="RemoteSearch-NuGet">
+		<MSBuild Projects="$(SrcFolder)\Framework\Search.Remote.Server\N2.Search.Remote.Server.csproj" Properties="Configuration=Release"></MSBuild>
     <ItemGroup>
-      <remoteSearchNugetBinaries Include="$(SrcFolder)\Framework\Search.Remote.Client\bin\$(Configuration)\N2.Search.Remote.Client.dll;"/>
+      <remoteSearchNugetBinaries Include="$(ArtifactsFolder)\N2.Search.Remote.Client.dll;"/>
       <remoteSearchNugetIncludes Include="$(BuildFolder)\Nuget\RemoteSearch\**\*" />
       <remoteSearchNugetServer Include="$(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.dll;
                                         $(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.exe;
@@ -199,7 +200,7 @@
 
   <Target Name="Management-Zip-NuGet" DependsOnTargets="Management-NuGet-ItemGroups">
     <Copy SourceFiles="@(nugetFrameworkBinFiles)" DestinationFolder="$(Management-NugetFolderZip)\lib" SkipUnchangedFiles="true" />
-		<Copy SourceFiles="$(SrcFolder)\Framework\Packaging\bin\$(Configuration)\N2.Packaging.dll" DestinationFolder="$(Management-NugetFolderZip)\lib" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="$(ArtifactsFolder)\N2.Packaging.dll" DestinationFolder="$(Management-NugetFolderZip)\lib" SkipUnchangedFiles="true" />
 
     <!-- Using DotNetZip since MSBuild Community Tasks Zip doesn't include directory entries -->
     <Delete Files="$(Management-NugetFolderZip)\content\N2\N2.zip" Condition="Exists('$(Management-NugetFolderZip)\content\N2\N2.zip')" />

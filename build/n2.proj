@@ -18,7 +18,7 @@
 		<PackagesFolder>$(RootFolder)\src\Packages</PackagesFolder>
 		<WebFolder>$(SrcFolder)\WebForms\WebFormsTemplates</WebFolder>
 		<ManagementFolder>$(SrcFolder)\Mvc\MvcTemplates\</ManagementFolder>
-		<!--<EditFolder>$(RootFolder)\src\Mvc\MvcTemplates\N2</EditFolder>-->
+		<EditDevFolder>$(RootFolder)\src\Mvc\MvcTemplates\N2</EditDevFolder>
 
 		<Examples-Folder>$(RootFolder)\examples</Examples-Folder>
 
