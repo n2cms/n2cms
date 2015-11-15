@@ -1,6 +1,7 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MediaBrowser.aspx.cs" Inherits="N2.Edit.Navigation.MediaBrowser" Trace="false" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MediaBrowser.aspx.cs" Inherits="N2.Edit.Navigation.MediaBrowser" Trace="false" Debug="true" %>
 <%@ Import Namespace="N2.Resources" %>
 <%@ Import Namespace="System.Linq" %>
+<%@ Import Namespace="System.Web.Configuration" %>
 
 <!DOCTYPE html>
 
@@ -18,8 +19,8 @@
     <div id="fileBrowser-main-div" class="thumbs-div">
 
         <ul class="nav nav-tabs no-active-outline" id="tabsCtrl">
-            <li role="presentation" class="active"><a href="#0"><%= GetLocalResourceObject("TabsGallery") ?? "Gallery" %></a></li>
-            <li role="presentation"><a href="#1"><%= GetLocalResourceObject("TabsUpload") ?? "Upload file" %></a></li>
+            <li role="presentation" class="active"><a href="#0"><asp:Literal runat="server" Text="Gallery" meta:resourceKey="TabsGallery" /></a></li>
+            <li role="presentation"><a href="#1"><asp:Literal runat="server" Text="Upload file" meta:resourceKey="TabsUpload" /></a></li>
         </ul>
 
         <div id="browser-files-list" class="browser-files-section first browser-files-list">
@@ -27,7 +28,7 @@
             <div class="row files-search-cont">
                 <div class="col-sm-8 col-md-6">
                     <div class="input-group input-group-sm">
-                        <input type="text" id="input-group-q" class="form-control" placeholder="<%= GetLocalResourceObject("Search") ?? "Search..." %>" />
+                        <input type="text" id="input-group-q" class="form-control" placeholder="<asp:Literal runat="server" Text="Search" meta:resourceKey="Search" />" />
                         <span class="input-group-btn">
                             <button id="btn-search" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
                             <button id="btn-search-clean" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span></button>
@@ -53,7 +54,7 @@
                 data-selurl="<%= Request["selectedUrl"]%>"
                 data-baseajax="<%= mediaBrowserModel.HandlerUrl %>" data-mediacontrol="<%= mediaBrowserModel.MediaControl %>"
                 data-ckeditor="<%= mediaBrowserModel.CkEditor %>" data-ckeditorfuncnum="<%= mediaBrowserModel.CkEditorFuncNum %>" data-preferredsize="<%= mediaBrowserModel.PreferredSize %>"
-                data-i18size="<%= GetLocalResourceObject("Size") ?? "Size" %>" data-i18date="<%= GetLocalResourceObject("DateModified") ?? "Date" %>" data-i18url="<%= GetLocalResourceObject("Url") ?? "Url" %>">
+                data-i18size="<asp:Literal runat="server" Text="Size" meta:resourceKey="Size" />" data-i18date="<asp:Literal runat="server" Text="Date" meta:resourceKey="DateModified" />" data-i18url="<asp:Literal runat="server" Text="Url" meta:resourceKey="Url" />">
                 <% if(mediaBrowserModel.Dirs!=null) foreach (var d in mediaBrowserModel.Dirs) { %>
                 <li data-i="<%= counter++ %>" class="dir" data-url="<%= d.Path %>">
                     <span class="file-ic glyphicon glyphicon-folder-open"></span>
@@ -92,7 +93,7 @@
         <div id="browser-upload-file" class="browser-files-section">
             <div class='file-selector-container'>
             
-                <button type="button" id="FileUploadItemId_Btn" class="btn btn-info" data-fire="FileUploadItem"><span class="glyphicon glyphicon-hdd"></span> <%= GetLocalResourceObject("SelectFiles") ?? "Select files..." %></button>
+                <button type="button" id="FileUploadItemId_Btn" class="btn btn-info" data-fire="FileUploadItem"><span class="glyphicon glyphicon-hdd"></span> <asp:Literal runat="server" Text="Select files..." meta:resourceKey="SelectFiles" /></button>
 
                 <div class='file-selector-control'>
                     <input class="file-upload-ajax valid" data-valueid="FileUploadItemId" id="FileUploadItem" multiple="multiple" name="FileUploadItem" type="file" />
@@ -110,7 +111,7 @@
 
             </div>
             <div class="file-selector-disallowed">
-                <%= GetLocalResourceObject("UploadDisallowedBrowser") ?? "This browser is outdated and cannot upload files using this dialog. Please use a modern browser to get the most out of N2cms" %>
+                <asp:Literal runat="server" Text="This browser is outdated and cannot upload files using this dialog. Please use a modern browser to get the most out of N2cms" meta:resourceKey="UploadDisallowedBrowser" />
             </div>
         </div>
 
@@ -121,19 +122,19 @@
 
     <div id="browser-files-layover" class="browser-files-layover"></div>
     <div id="browser-files-layover-cont" class="browser-files-layover-cont">
-        <h1><%= GetLocalResourceObject("ExistingFiles") ?? "Some files already exist in the server<br />What do you want to do with them?" %></h1>
+        <h1><asp:Literal runat="server" Text="Some files already exist in the server<br />What do you want to do with them?" meta:resourceKey="ExistingFiles" /></h1>
         <ul id="browser-files-layover-ul"
-            data-i18keep="<%= GetLocalResourceObject("UploadKeepBoth") ?? "Keep both" %>"
-            data-i18repl="<%= GetLocalResourceObject("UploadReplace") ?? "Replace" %>"
-            data-i18ignr="<%= GetLocalResourceObject("UploadIgnore") ?? "Ignore" %>">
+            data-i18keep="<asp:Literal runat="server" Text="Keep both" meta:resourceKey="UploadKeepBoth" />"
+            data-i18repl="<asp:Literal runat="server" Text="Replace" meta:resourceKey="UploadReplace" />"
+            data-i18ignr="<asp:Literal runat="server" Text="Ignore" meta:resourceKey="UploadIgnore" />">
         </ul>
-        <button type="button" id="btn-continue-upload" name="btn-continue-upload" class="btn btn-primary"><%= GetLocalResourceObject("Continue") ?? "Continue" %></button>
+        <button type="button" id="btn-continue-upload" name="btn-continue-upload" class="btn btn-primary"><asp:Literal runat="server" Text="Continue" meta:resourceKey="Continue" /></button>
     </div>
 
     <div class="framed-navbar navbar navbar-fixed-bottom">
         <div class="navbar-inner">
-            <button type="button" id="btn-select" name="btn-select" class="btn btn-primary" disabled="disabled"><%= GetLocalResourceObject("Select") ?? "Select" %></button>
-            <button type="button" id="btn-cancel" name="btn-cancel command" class="btn btn-cancel"><%= GetLocalResourceObject("Cancel") ?? "Cancel" %></button>
+            <button type="button" id="btn-select" name="btn-select" class="btn btn-primary" disabled="disabled"><asp:Literal runat="server" Text="Select" meta:resourceKey="Select" /></button>
+            <button type="button" id="btn-cancel" name="btn-cancel command" class="btn btn-cancel"><asp:Literal runat="server" Text="Cancel" meta:resourceKey="Cancel" /></button>
         </div>
     </div>
 
@@ -141,6 +142,7 @@
         var tbid = '<%= HttpUtility.JavaScriptStringEncode(Request["tbid"])%>';
         var selectableExtensions = '<%= HttpUtility.JavaScriptStringEncode(Request["selectableExtensions"])%>';
         var ticket = '<%= FormsAuthentication.Encrypt(new FormsAuthenticationTicket("SecureUpload-" + Guid.NewGuid(), false, 60)) %>';
+		var maxSize = <%= (ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection)!=null ? (ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection).MaxRequestLength : -1 %>;
     </script>
 
 	<script type="text/javascript" src="<%= N2.Web.Url.ResolveTokens(Register.JQueryJsPath)%>"></script>

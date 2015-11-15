@@ -485,7 +485,8 @@
                 btnsSubmit,
                 qSel = document.querySelectorAll === undefined,
                 reqExists, arrNames = [], reqUpload, sNames, overwriteArr = [],
-                ajaxUrl = fileBrowser.ajaxUrl;
+                ajaxUrl = fileBrowser.ajaxUrl,
+                maxSizeMessage = "", maxSizeBytes = maxSize && maxSize > 0 ? maxSize * 1024 : 0;
 
             function saveContext() {
                 inputValueId = e.target.getAttribute("data-valueid");
@@ -514,6 +515,7 @@
                 datas = new FormData();
                 for (x = 0, len = files.length; x < len; x += 1) {
                     if (files[x].ignore) continue;
+                    if (maxSizeBytes > 0 && files[x].size > maxSizeBytes) continue;
                     datas.append("file" + kk, files[x]);
                     kk += 1;
                 }
@@ -623,8 +625,17 @@
                 if (window.FormData !== undefined) {
                     datas = new FormData();
                     for (x = 0, len = files.length; x < len; x += 1) {
-                        datas.append("file" + x, files[x]);
-                        arrNames.push(encodeURI(files[x].name));
+                        if (maxSizeBytes > 0 && files[x].size > maxSizeBytes) {
+                            maxSizeMessage += files[x].name + "\n";
+                        } else {
+                            datas.append("file" + x, files[x]);
+                            arrNames.push(encodeURI(files[x].name));
+                        }
+                    }
+
+                    if (maxSizeMessage) {
+                        alert("These files are bigger than the maximum allowed size for this site. Upload smaller files (" +
+                            (Math.round(maxSize / 1024 * 10) / 10) + " MBs) or ask your webmaster to increase the limit:\n\n" + maxSizeMessage);
                     }
 
                     saveContext();
