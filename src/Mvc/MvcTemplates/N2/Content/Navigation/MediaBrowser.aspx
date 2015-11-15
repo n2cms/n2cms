@@ -1,6 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MediaBrowser.aspx.cs" Inherits="N2.Edit.Navigation.MediaBrowser" Trace="false" %>
 <%@ Import Namespace="N2.Resources" %>
 <%@ Import Namespace="System.Linq" %>
+<%@ Import Namespace="System.Web.Configuration" %>
 
 <!DOCTYPE html>
 
@@ -141,6 +142,7 @@
         var tbid = '<%= HttpUtility.JavaScriptStringEncode(Request["tbid"])%>';
         var selectableExtensions = '<%= HttpUtility.JavaScriptStringEncode(Request["selectableExtensions"])%>';
         var ticket = '<%= FormsAuthentication.Encrypt(new FormsAuthenticationTicket("SecureUpload-" + Guid.NewGuid(), false, 60)) %>';
+		var maxSize = <%= (ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection)!=null ? (ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection).MaxRequestLength : -1 %>;
     </script>
 
 	<script type="text/javascript" src="<%= N2.Web.Url.ResolveTokens(Register.JQueryJsPath)%>"></script>
