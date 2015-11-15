@@ -114,5 +114,10 @@ namespace N2.Edit.Navigation
 			}
         }
 
+		protected string GetInitialTab()
+		{
+			return Request["tab"] == "upload" ? "#uploadTab" : null;
+		}
+
     }
 }

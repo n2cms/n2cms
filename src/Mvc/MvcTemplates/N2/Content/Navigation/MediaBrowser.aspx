@@ -19,8 +19,8 @@
     <div id="fileBrowser-main-div" class="thumbs-div">
 
         <ul class="nav nav-tabs no-active-outline" id="tabsCtrl">
-            <li role="presentation" class="active"><a href="#0"><%= GetLocalResourceString("TabsGallery") %></a></li>
-            <li role="presentation"><a href="#1"><%= GetLocalResourceString("TabsUpload") %></a></li>
+            <li role="presentation" class="active"><a id="galleryTab" href="#0"><%= GetLocalResourceString("TabsGallery") %></a></li>
+            <li role="presentation"><a id="uploadTab" href="#1"><%= GetLocalResourceString("TabsUpload") %></a></li>
         </ul>
 
         <div id="browser-files-list" class="browser-files-section first browser-files-list">
@@ -142,11 +142,18 @@
         var tbid = '<%= HttpUtility.JavaScriptStringEncode(Request["tbid"])%>';
         var selectableExtensions = '<%= HttpUtility.JavaScriptStringEncode(Request["selectableExtensions"])%>';
         var ticket = '<%= GetEncryptedTicket() %>';
-		var maxSize = <%= GetMaxSize() %>;
+        var maxSize = <%= GetMaxSize() %>;
+        var initialTab = '<%= GetInitialTab() %>';
     </script>
 
 	<script type="text/javascript" src="<%= N2.Web.Url.ResolveTokens(Register.JQueryJsPath)%>"></script>
     <script src="MediaBrowser.js" type="text/javascript"></script>
-
+    <script>
+        $(function(){
+            if (window.initialTab){
+                $(window.initialTab).click();
+            }
+        })
+    </script>
 </body>
 </html>

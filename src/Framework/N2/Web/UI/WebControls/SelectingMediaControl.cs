@@ -11,7 +11,7 @@ namespace N2.Web.UI.WebControls
 
         public SelectingMediaControl()
         {
-			SelectorContainer = new HtmlGenericControl("span");
+			SelectorContainer = new HtmlGenericControl("div");
 			SelectorControl = new MediaSelector();
             UploadContainer = new HtmlGenericControl("span");
 		}

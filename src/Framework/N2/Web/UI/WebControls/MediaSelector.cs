@@ -21,7 +21,8 @@ namespace N2.Web.UI.WebControls
 			ClearButton = new HtmlButton();
 			PopupButton = new HtmlButton();
             ShowButton = new HtmlButton();
-        }
+            UploadButton = new HtmlButton();
+		}
 
 		/// <summary>File extensions that may be selected using this selector.</summary>
         public string SelectableExtensions { get; set; }
@@ -61,6 +62,7 @@ namespace N2.Web.UI.WebControls
 		public HtmlButton ClearButton { get; private set; }
         public HtmlButton PopupButton { get; private set; }
         public HtmlButton ShowButton { get; private set; }
+		public HtmlButton UploadButton { get; private set; }
         public HtmlGenericControl Buttons { get; private set; }
 
 		protected virtual void RegisterClientScripts()
@@ -88,26 +90,32 @@ namespace N2.Web.UI.WebControls
 
 			Attributes["class"] = "mediaSelector selector input-append";
 
+            Controls.Add(ShowButton);
             Controls.Add(Input);
-            Controls.Add(Buttons);
-			Buttons.Controls.Add(ClearButton);
-            Buttons.Controls.Add(PopupButton);
-            Buttons.Controls.Add(ShowButton);
+			Controls.Add(ClearButton);
+			Controls.Add(Buttons);
+			Buttons.Controls.Add(PopupButton);
+            Buttons.Controls.Add(UploadButton);
+
+			ShowButton.InnerHtml = "<b class='fa fa-eye'></b>";
+			ShowButton.Attributes["title"] = Utility.GetGlobalResourceString("UrlSelector", "View") ?? "View";
+			ShowButton.Attributes["class"] = "revealer showLayoverButton";
 
 			Input.CssClass = "input-xxlarge";
+
+			ClearButton.InnerHtml = "<b class='fa fa-times'></b>";
+			ClearButton.Attributes["title"] = Utility.GetGlobalResourceString("UrlSelector", "Clear") ?? "Clear";
+			ClearButton.Attributes["class"] = "clearButton revealer";
 
 			Buttons.Attributes["class"] = "selectorButtons";
 			
 			PopupButton.InnerHtml = ButtonText;
 			PopupButton.Attributes["title"] = Utility.GetGlobalResourceString("UrlSelector", "Select") ?? "Select";
 			PopupButton.Attributes["class"] = "btn popupButton selectorButton";
-			ClearButton.InnerHtml = "<b class='fa fa-times'></b>";
-			ClearButton.Attributes["title"] = Utility.GetGlobalResourceString("UrlSelector", "Clear") ?? "Clear";
-			ClearButton.Attributes["class"] = "clearButton revealer";
-            ShowButton.InnerHtml = "<b class='fa fa-eye'></b>";
-            ShowButton.Attributes["title"] = Utility.GetGlobalResourceString("UrlSelector", "View") ?? "View";
-            ShowButton.Attributes["class"] = "btn showLayoverButton";
-        }
+			UploadButton.InnerHtml = "<b class='fa fa-upload'></b>";
+			UploadButton.Attributes["title"] = Utility.GetGlobalResourceString("UrlSelector", "Upload") ?? "View";
+			UploadButton.Attributes["class"] = "btn uploadButton";
+		}
 
 		protected override void OnPreRender(EventArgs e)
         {
@@ -121,6 +129,15 @@ namespace N2.Web.UI.WebControls
 													  PreferredSize,
 													  !string.IsNullOrWhiteSpace(SelectableExtensions) ? SelectableExtensions : ImageExtensions
                                                       );
+
+			UploadButton.Attributes["onclick"] = string.Format(OpenPopupFormat,
+													  N2.Web.Url.ResolveTokens(BrowserUrl ?? Engine.ManagementPaths.MediaBrowserUrl.ToUrl().AppendQuery("mc=true").AppendQuery("tab=upload")),
+													  Input.ClientID,
+													  PopupOptions,
+													  PreferredSize,
+													  !string.IsNullOrWhiteSpace(SelectableExtensions) ? SelectableExtensions : ImageExtensions
+													  );
+
 			ClearButton.Attributes["onclick"] = "n2MediaSelection.clearMediaSelector('" + Input.ClientID + "'); return false;";
 
             ShowButton.Attributes["onclick"] = "n2MediaSelection.showMediaSelectorOverlay('" + Input.ClientID + "'); return false;";
