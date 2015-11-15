@@ -43,12 +43,14 @@ var n2MediaSelection = (function () {
     }
 
     function showHideViewerButton(inputId, doShow) {
+    	if (!editableMediaControls[inputId])
+    		return;
         if (doShow) {
             if (!editableMediaControls[inputId].isVisible) {
                 editableMediaControls[inputId].isVisible = true;
                 editableMediaControls[inputId].btnShowId.style.display = "inline-block";
             }
-        } else if (editableMediaControls[inputId]) {
+        } else {
             if (editableMediaControls[inputId].isVisible) {
                 editableMediaControls[inputId].isVisible = false;
                 editableMediaControls[inputId].btnShowId.style.display = "none";

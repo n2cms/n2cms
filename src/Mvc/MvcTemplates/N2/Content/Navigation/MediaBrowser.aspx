@@ -141,8 +141,8 @@
     <script type="text/javascript">
         var tbid = '<%= HttpUtility.JavaScriptStringEncode(Request["tbid"])%>';
         var selectableExtensions = '<%= HttpUtility.JavaScriptStringEncode(Request["selectableExtensions"])%>';
-        var ticket = '<%= FormsAuthentication.Encrypt(new FormsAuthenticationTicket("SecureUpload-" + Guid.NewGuid(), false, 60)) %>';
-		var maxSize = <%= (ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection)!=null ? (ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection).MaxRequestLength : -1 %>;
+        var ticket = '<%= GetEncryptedTicket() %>';
+		var maxSize = <%= GetMaxSize() %>;
     </script>
 
 	<script type="text/javascript" src="<%= N2.Web.Url.ResolveTokens(Register.JQueryJsPath)%>"></script>
