@@ -21,7 +21,7 @@ using N2.Resources;
 namespace N2.Web.UI.WebControls
 {
     /// <summary>An input box that can be updated with the url from the file selector popup in edit mode.</summary>
-    public class UrlSelector : HtmlGenericControl
+    public class UrlSelector : HtmlGenericControl, ITextControl
     {
         public UrlSelector()
 			: base("div")
@@ -32,8 +32,15 @@ namespace N2.Web.UI.WebControls
 			PopupButton = new HtmlButton();
 		}
 
-        /// <summary>Content item types that may be selected using this selector.</summary>
-        public string SelectableTypes
+		public UrlSelector(string name)
+			: this()
+		{
+			ID = name;
+			Input.ID = name + "_input";
+		}
+
+		/// <summary>Content item types that may be selected using this selector.</summary>
+		public string SelectableTypes
         {
             get { return ViewState["SelectableTypes"] as string; }
             set { ViewState["SelectableTypes"] = value; }
@@ -104,6 +111,12 @@ namespace N2.Web.UI.WebControls
 		public HtmlButton PopupButton { get; private set; }
 		public HtmlGenericControl Buttons { get; private set; }
 
+		public string Text
+		{
+			get { return Input.Text; }
+			set { Input.Text = value; }
+		}
+
 		/// <summary>Initializes the UrlSelector control.</summary>
 		protected override void OnInit(EventArgs e)
         {
@@ -123,8 +136,8 @@ namespace N2.Web.UI.WebControls
 			Attributes["class"] = "selector input-append " + GetType().Name[0].ToString().ToLower() + GetType().Name.Substring(1);
 
 			Controls.Add(Input);
+			Controls.Add(ClearButton);
 			Controls.Add(Buttons);
-			Buttons.Controls.Add(ClearButton);
 			Buttons.Controls.Add(PopupButton);
 
 			Input.CssClass = "input-xxlarge urlSelector selector";
