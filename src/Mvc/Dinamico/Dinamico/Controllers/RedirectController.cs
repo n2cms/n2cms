@@ -11,20 +11,18 @@ namespace Dinamico.Controllers
 		public override ActionResult Index()
 		{
 			if (CurrentItem == null)
-			{
-				//TODO: Maybe could search for an error page and display that instead?
-
-				// no item to render, 404 error
-				Response.StatusCode = 404;
-				return new EmptyResult();
-			}
+				return HttpNotFound();
 
 			if (ControllerContext.HttpContext.GetViewPreference(N2.Edit.ViewPreference.None) != N2.Edit.ViewPreference.None)
-				return View(CurrentItem.TemplateKey, CurrentItem);
+				return View(CurrentItem);
+
+			if (string.IsNullOrEmpty(CurrentItem.RedirectUrl))
+				return View(CurrentItem);
 
 			if (CurrentItem.RedirectPermanent)
-				return RedirectPermanent(CurrentItem.Url);
+				return RedirectPermanent(CurrentItem.RedirectUrl);
 
+			return Redirect(CurrentItem.RedirectUrl);
 		}
 	}
 }

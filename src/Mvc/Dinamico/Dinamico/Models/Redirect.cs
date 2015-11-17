@@ -8,7 +8,7 @@ using System.Web;
 
 namespace Dinamico.Models
 {
-	[PageDefinition]
+	[PageDefinition(IconClass = "fa fa-external-link-square")]
 	[WithEditableTitle]
 	[WithEditableName]
 	[WithEditableVisibility]
