@@ -57,10 +57,15 @@ namespace N2.Persistence
             if (item == null)
             {
                 if (contentBuilders.TryGetValue(itemType, out definition))
-                    item = definition.CreateInstance(parentItem, applyDefaultValues: !asProxy);
+				{
+					item = definition.CreateInstance(parentItem, applyDefaultValues: !asProxy);
+				}
                 else
-                    item = Activator.CreateInstance(itemType, true) as ContentItem;
-            }
+				{
+					item = Activator.CreateInstance(itemType, true) as ContentItem;
+					item.AddTo(parentItem);
+				}
+			}
             if (templateKey != null)
                 item.TemplateKey = templateKey;
             if (invokeBehaviors)

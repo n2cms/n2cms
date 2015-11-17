@@ -134,13 +134,13 @@ namespace N2.Edit
 
             #endregion
 
-
             #region IItemEditor Members
 
             public event EventHandler<ItemEventArgs> Saved = delegate {};
+			public event Action<object, CommandContext> CreatingContext;
 
-            #endregion
-        }
+			#endregion
+		}
 
         #endregion
 

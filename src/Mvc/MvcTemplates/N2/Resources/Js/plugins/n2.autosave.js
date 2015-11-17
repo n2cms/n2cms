@@ -110,7 +110,6 @@
 			return dirty;
 		}
 		this.checkout = function () {
-			console.log(dirty);
 			dirty = false;
 			return $("#" + this.editorID).val();
 		}
@@ -125,7 +124,6 @@
 			return dirty;
 		}
 		this.checkout = function () {
-			console.log(dirty);
 			dirty = false;
 			return $("#" + this.editorID).val();
 		}

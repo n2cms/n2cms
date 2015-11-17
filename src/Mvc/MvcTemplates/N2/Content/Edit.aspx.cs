@@ -411,6 +411,12 @@ namespace N2.Edit
 			remove { ie.Saved -= value; }
 		}
 
+		public event Action<object, CommandContext> CreatingContext
+		{
+			add { ie.CreatingContext += value; }
+			remove { ie.CreatingContext -= value; }
+		}
+
 		#endregion
 
 		#region IItemContainer Members

@@ -322,12 +322,13 @@ namespace N2.Web.UI.WebControls
         #region IItemEditor Members
 
         public event EventHandler<ItemEventArgs> Saved;
+		public event Action<object, CommandContext> CreatingContext;
 
-        #endregion
+		#endregion
 
-        #region IBinder<CommandContext> Members
+		#region IBinder<CommandContext> Members
 
-        public N2.Edit.Workflow.CommandContext BinderContext { get; internal set; }
+		public N2.Edit.Workflow.CommandContext BinderContext { get; internal set; }
 
         public bool UpdateObject(N2.Edit.Workflow.CommandContext value)
         {
@@ -391,8 +392,11 @@ namespace N2.Web.UI.WebControls
             var cc = new CommandContext(Definition ?? GetDefinition(), CurrentItem, Interfaces.Editing, Page.User, this, new PageValidator<CommandContext>(Page));
 
 			TryReplaceContentWithAutosavedVersion(cc);
-			
-			return cc;
+
+			if (CreatingContext != null)
+				CreatingContext(this, cc);
+
+            return cc;
         }
 
 		private bool TryReplaceContentWithAutosavedVersion(CommandContext cc)

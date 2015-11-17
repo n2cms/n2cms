@@ -17,6 +17,7 @@ using N2.Tests.Details.Models;
 using N2.Persistence.Proxying;
 using Shouldly;
 using N2.Definitions.Static;
+using N2.Edit.Workflow;
 
 namespace N2.Tests.Details
 {
@@ -205,12 +206,13 @@ namespace N2.Tests.Details
             }
 
             public event EventHandler<ItemEventArgs> Saved = delegate { };
+			public event Action<object, CommandContext> CreatingContext;
 
-            #endregion
+			#endregion
 
-            #region IItemContainer Members
+			#region IItemContainer Members
 
-            public ContentItem CurrentItem { get; set; }
+			public ContentItem CurrentItem { get; set; }
 
             #endregion
         }
