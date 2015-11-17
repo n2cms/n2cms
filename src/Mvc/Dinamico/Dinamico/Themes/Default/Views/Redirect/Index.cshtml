@@ -1,0 +1,21 @@
+﻿@model Dinamico.Models.Redirect
+@{  var url = Content.Data.RedirectUrl; }
+@if (string.IsNullOrEmpty(url))
+{
+<div class="alert alert-warning">
+	<p>Cannot redirect to empty url. </p>
+</div>
+}
+else if (url == Request.Url.AbsolutePath.ToString())
+{
+<div class="alert alert-warning">
+	<p>Cannot redirect to itself. </p>
+	<p><a href="@url">Continue to @url</a></p>
+</div>
+}
+else
+{
+<div class="alert alert-info">
+	<p><a href="@url">Continue to @url</a></p>
+</div>
+}
