@@ -339,5 +339,13 @@ namespace N2.Definitions.Runtime
 			builder.Registration.Add(displayable);
 			return new Builder<DisplayableTokensAttribute>(builder.PropertyName, builder.Registration);
 		}
+
+		/// <summary>Specifies the usage of a displayable tokens for rendering this property.</summary>
+		public static Builder<DisplayableTokensAttribute> WithTokens(this EditableBuilder<EditableTextAttribute> builder)
+		{
+			var displayable = new DisplayableTokensAttribute { Name = builder.PropertyName };
+			builder.Registration.Add(displayable);
+			return new Builder<DisplayableTokensAttribute>(builder.PropertyName, builder.Registration);
+		}
 	}
 }
