@@ -9,6 +9,8 @@ using N2.Engine;
 using N2.Edit;
 using System.IO;
 using N2.Web.UI.WebControls;
+using System.Web;
+using N2.Web.Parts;
 
 namespace N2.Web.Mvc.Html
 {
@@ -112,5 +114,10 @@ namespace N2.Web.Mvc.Html
         {
             return WebExtensions.GetEditableWrapper(item, true, displayableName, html.ContentEngine().Definitions.GetDefinition(item).Displayables[displayableName], html.ViewContext.Writer);
         }
-    }
+
+		public static PartHelper Part(this HtmlHelper html, ContentItem part)
+		{
+			return new PartHelper(html, part);
+		}
+	}
 }
