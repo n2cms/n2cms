@@ -191,6 +191,8 @@ jQuery('#{1}').n2datepicker({{ language:'{0}' }});";
 		{
 			get
 			{
+				if (string.IsNullOrEmpty(DatePickerBox.Text))
+					return "";
 				return string.Format("{0} {1}", DatePickerBox.Text, TimePickerBox.Text);
 			}
 			set
