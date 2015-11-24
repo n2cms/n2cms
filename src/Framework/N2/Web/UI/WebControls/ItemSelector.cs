@@ -19,8 +19,16 @@ namespace N2.Web.UI.WebControls
             ErrorMessage = "The selected item is not of the required type.";
         }
 
-        /// <summary>Gets the selected item or null if none is selected.</summary>
-        public ContentItem SelectedItem
+		public ItemSelector(string name) 
+			: this()
+		{
+			ID = name;
+			Input.ID = name + "_input";
+
+		}
+
+		/// <summary>Gets the selected item or null if none is selected.</summary>
+		public ContentItem SelectedItem
         {
             get { return string.IsNullOrEmpty(Url) ? null : N2.Context.UrlParser.Parse(Url); }
             set { Url = value != null ? value.Url : ""; }
