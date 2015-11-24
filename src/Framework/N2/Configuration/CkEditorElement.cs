@@ -46,7 +46,7 @@ namespace N2.Configuration
             set { base["advancedMenus"] = value; }
         }
 
-        [ConfigurationProperty("allowedContent")]
+        [ConfigurationProperty("allowedContent", DefaultValue = true)]
         public bool? AllowedContent
         {
             get { return (bool?)base["allowedContent"]; }
