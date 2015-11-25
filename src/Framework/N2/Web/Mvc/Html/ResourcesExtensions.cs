@@ -22,14 +22,25 @@ namespace N2.Web.Mvc.Html
 			return collection;
 		}
 
+		public static ICollection<string> GetResourceStateCollection(this ViewContext context)
+		{
+			if (context.ParentActionViewContext != null)
+				return GetResourceStateCollection(context.ParentActionViewContext);
+
+			var collection = context.ViewData["ResourceStateCollection"] as ICollection<string>;
+			if (collection == null)
+				context.ViewData["ResourceStateCollection"] = collection = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+			return collection;
+		}
+
 		public static ResourcesHelper Resources(this HtmlHelper html)
 		{
-			return new ResourcesHelper { Writer = html.ViewContext.Writer, StateCollection = html.ViewContext.HttpContext.GetResourceStateCollection() };
+			return new ResourcesHelper { Writer = html.ViewContext.Writer, StateCollection = html.ViewContext.GetResourceStateCollection() };
 		}
 
 		public static ResourcesHelper Resources(this HtmlHelper html, TextWriter writer)
 		{
-			return new ResourcesHelper { Writer = writer, StateCollection = html.ViewContext.HttpContext.GetResourceStateCollection() };
+			return new ResourcesHelper { Writer = writer, StateCollection = html.ViewContext.GetResourceStateCollection() };
 		}
 
 		/// <summary>
@@ -198,13 +209,11 @@ namespace N2.Web.Mvc.Html
 			public void Render(TextWriter writer = null)
 			{
 				(writer ?? Writer).Write(content.ToString());
-				content.Clear();
 			}
 
 			public override string ToString()
 			{
 				var output = content.ToString();
-				content.Clear();
 				return output;
 			}
 
