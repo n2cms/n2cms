@@ -60,32 +60,28 @@ namespace N2.Definitions.Runtime
 						}
 						logger.Debug(String.Format("Analyzing file {0}", file.VirtualPath));
 
-						ContentRegistration registration = null;
 						if (httpContext.IsDebuggingEnabled)
 						{
-							registration = AnalyzeView(httpContext, file, source.ControllerName, source.ModelType);
+							AnalyzeView(httpContext, file, source.ControllerName, source.ModelType, registrations);
 						}
 						else
 						{
 							try
 							{
-								registration = AnalyzeView(httpContext, file, source.ControllerName, source.ModelType);
+								AnalyzeView(httpContext, file, source.ControllerName, source.ModelType, registrations);
 							}
 							catch (Exception ex)
 							{
 								logger.Error(ex);
 							}
 						}
-
-						if (registration != null)
-							registrations.Add(registration);
 					}
 				}
 			}
 			return registrations;
 		}
 
-		private ContentRegistration AnalyzeView(HttpContextBase httpContext, VirtualFile file, string controllerName, Type modelType)
+		private ContentRegistration AnalyzeView(HttpContextBase httpContext, VirtualFile file, string controllerName, Type modelType, List<ContentRegistration> registrations)
 		{
 			if (modelType == null || !typeof(ContentItem).IsAssignableFrom(modelType) || modelType.IsAbstract)
 				return null;
@@ -103,18 +99,19 @@ namespace N2.Definitions.Runtime
 				: viewEnginesProvider.Get().FindPartialView(cctx, file.VirtualPath);
 
 
-			return result.View == null ? null : RenderViewForRegistration(file, modelType, cctx, result);
+			return result.View == null ? null : RenderViewForRegistration(file, modelType, cctx, result, registrations);
 		}
 
 		// ReSharper disable RedundantNameQualifier
-		private ContentRegistration RenderViewForRegistration(VirtualFileBase file, Type modelType, ControllerContext cctx, ViewEngineResult result)
+		private ContentRegistration RenderViewForRegistration(VirtualFileBase file, Type modelType, ControllerContext cctx, ViewEngineResult result, List<ContentRegistration> registrations)
 		{
 			if (file == null)
 				throw new ArgumentNullException("file");
 
 			// ReSharper disable once UseObjectOrCollectionInitializer
-			var re = new ContentRegistration(map.CreateDefinition(modelType, N2.Web.Url.RemoveAnyExtension(file.Name)));
-			re.IsDefined = false;
+			var fileName = N2.Web.Url.RemoveAnyExtension(file.Name);
+            var re = registrations.FirstOrDefault(cr => cr.Definition.ItemType == modelType && cr.Definition.TemplateKey == fileName)
+				?? new ContentRegistration(map.CreateDefinition(modelType, fileName)) { IsDefined = false };
 			re.Context.TouchedPaths.Add(file.VirtualPath);
 
 			using (var sw = new StringWriter())
@@ -128,6 +125,9 @@ namespace N2.Definitions.Runtime
 					logger.DebugFormat("Rendering view {0} for registrations", file.VirtualPath);
 					result.View.Render(new ViewContext(cctx, result.View, vdd, new TempDataDictionary(), sw), sw);
 					logger.DebugFormat("Rendered view {0}, editables = {1}, defined = {2}", file.VirtualPath, re.Definition.Editables.Count, re.IsDefined);
+
+					if (!registrations.Contains(re))
+						registrations.Add(re);
 				}
 				catch (Exception ex)
 				{
