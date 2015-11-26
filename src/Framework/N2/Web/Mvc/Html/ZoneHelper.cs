@@ -79,9 +79,10 @@ namespace N2.Web.Mvc.Html
             }
         }
 
-        public virtual void Render()
+        public virtual string Render()
         {
             Render(Html.ViewContext.Writer);
+			return "";
         }
 
         public virtual void Render(TextWriter writer)

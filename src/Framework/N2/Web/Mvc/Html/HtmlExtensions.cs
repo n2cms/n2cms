@@ -114,10 +114,5 @@ namespace N2.Web.Mvc.Html
         {
             return WebExtensions.GetEditableWrapper(item, true, displayableName, html.ContentEngine().Definitions.GetDefinition(item).Displayables[displayableName], html.ViewContext.Writer);
         }
-
-		public static PartHelper Part(this HtmlHelper html, ContentItem part)
-		{
-			return new PartHelper(html, part);
-		}
 	}
 }
