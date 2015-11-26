@@ -2,8 +2,8 @@
 
 @{ Content.Define(re =>
 	{
-		re.Title = "Google map";
-		re.IconUrl = "{IconsUrl}/map.png";
+		re.Definition.Title = "Google map";
+		re.Definition.IconUrl = "{IconsUrl}/map.png";
 		re.FieldSet("Coordinates", "Coordinates", r =>
 		{
 			re.Text("Latitude", "Latitude").DefaultValue("").Validation("[-]?\\d+([.]\\d+)?", "Decimal number required");

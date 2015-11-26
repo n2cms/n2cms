@@ -99,6 +99,7 @@ namespace N2.Definitions.Runtime
 
 		public ICollection<ISortableRefiner> Refiners { get; set; }
 		
+		[Obsolete("Use Definition.Title")]
 		/// <summary>Immediately maps to the definition title.</summary>
 		public string Title 
 		{
@@ -107,6 +108,7 @@ namespace N2.Definitions.Runtime
 		}
 
 		/// <summary>Immediately maps to the definition icon url.</summary>
+		[Obsolete("Use Definition.IconUrl")]
 		public string IconUrl
 		{
 			get { return Definition.IconUrl; }
@@ -114,6 +116,7 @@ namespace N2.Definitions.Runtime
 		}
 
 		/// <summary>Immediately maps to the definition icon class.</summary>
+		[Obsolete("Use Definition.IconClass")]
 		public string IconClass
 		{
 			get { return Definition.IconClass; }

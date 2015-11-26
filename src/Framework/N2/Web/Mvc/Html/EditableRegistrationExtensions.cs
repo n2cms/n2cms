@@ -12,6 +12,11 @@ namespace N2.Web.Mvc.Html
 {
 	public static class EditableRegistrationExtensions
 	{
+		public static EditableBuilder<WithEditableTitleAttribute> PageTitle(this IContentRegistration registration, string title = "Title")
+		{
+			return registration.RegisterEditable<WithEditableTitleAttribute>("Title", title);
+		}
+
 		public static EditableBuilder<WithEditableTitleAttribute> Title(this IContentRegistration registration, string title = "Title")
 		{
 			return registration.RegisterEditable<WithEditableTitleAttribute>("Title", title);
