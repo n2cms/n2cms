@@ -324,6 +324,18 @@ namespace N2.Definitions.Runtime
 			return builder;
 		}
 
+		public static EditableBuilder<T> Mode<T>(this EditableBuilder<T> builder, System.Web.UI.WebControls.TextBoxMode mode) where T : EditableTextAttribute
+		{
+			builder.Configure(e => e.TextMode = mode);
+			return builder;
+		}
+
+		public static EditableBuilder<T> MultiLine<T>(this EditableBuilder<T> builder) where T : EditableTextAttribute
+		{
+			builder.Configure(e => e.TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine);
+			return builder;
+		}
+
 		// displayable
 
 		/// <summary>Specifies the usage of a displayable tokens for rendering this property.</summary>
