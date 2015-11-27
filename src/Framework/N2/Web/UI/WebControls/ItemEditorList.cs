@@ -179,10 +179,10 @@ namespace N2.Web.UI.WebControls
                 CreateItemEditor(item);
             }
 
-            var allowedChildren = Parts.GetAllowedDefinitions(ParentItem, ZoneName, Page.User)
-                .Where(d => MinimumType.IsAssignableFrom(d.ItemType))
-				.WhereAuthorized(Engine.SecurityManager, Engine.RequestContext.User, ParentItem)
-				.SelectMany(d => Parts.GetTemplates(ParentItem, d))
+			var allowedDefinitions = Parts.GetAllowedDefinitions(ParentItem, ZoneName, Page.User);
+			allowedDefinitions = allowedDefinitions.Where(d => MinimumType.IsAssignableFrom(d.ItemType));
+			allowedDefinitions = allowedDefinitions.WhereAuthorized(Engine.SecurityManager, Engine.RequestContext.User, ParentItem);
+            var allowedChildren = allowedDefinitions.SelectMany(d => Parts.GetTemplates(ParentItem, d))
 				.WhereAllowed(ParentItem, ZoneName, Engine.RequestContext.User, Engine.Definitions, Engine.SecurityManager)
                 .ToList();
             if (allowedChildren.Count == 0)

@@ -100,7 +100,7 @@ namespace N2.Details
         {
             ItemEditorList listEditor = (ItemEditorList)editor;
             listEditor.ParentItem = item;
-            listEditor.ZoneName = ZoneName;
+            listEditor.ZoneName = ZoneName ?? Name;
 
             // filtering of children by property generic type
             PropertyInfo info = item.GetContentType().GetProperty(Name);
