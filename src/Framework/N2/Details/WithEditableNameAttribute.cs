@@ -16,7 +16,6 @@ namespace N2.Details
     {
         private char? whitespaceReplacement = '-';
         private bool? toLower;
-        private bool? ascii = false;
         private bool? showKeepUpdated;
         private string keepUpdatedText = "";
         private string keepUpdatedToolTip = "Keep the name up to date";
