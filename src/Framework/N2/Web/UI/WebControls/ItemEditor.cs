@@ -425,7 +425,8 @@ namespace N2.Web.UI.WebControls
 			var item = GetAutosaveVersion();
 			if (item == null)
 				return false;
-			cc.Content.AddTo(null);
+			if (cc.Content.ID == 0)
+				cc.Content.AddTo(null);
 			cc.Content = item;
 			return true;
 		}
