@@ -27,6 +27,9 @@ namespace N2.Tests.Details.Models
         [EditableChildren]
         public virtual IList<BaseItem> GenericChildren { get; set; }
 
+        [EditableChildren(AllowedTemplateKeys = new string[] { "Index", "Nonedex" })]
+        public virtual IList<BaseItem> TemplateChildren { get; set; }
+
         [EditableItem]
         public virtual OtherItem TheItem { get; set; }
 

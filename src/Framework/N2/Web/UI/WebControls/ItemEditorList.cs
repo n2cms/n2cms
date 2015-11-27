@@ -38,6 +38,7 @@ namespace N2.Web.UI.WebControls
         public ItemEditorList()
         {
             CssClass = "itemListEditor";
+			AllowedTemplateKeys = new string[0];
         }
 
         #endregion
@@ -140,7 +141,9 @@ namespace N2.Web.UI.WebControls
             }
         }
 
-        protected override void OnInit(EventArgs e)
+		public string[] AllowedTemplateKeys { get; set; }
+
+		protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
@@ -185,6 +188,8 @@ namespace N2.Web.UI.WebControls
             var allowedChildren = allowedDefinitions.SelectMany(d => Parts.GetTemplates(ParentItem, d))
 				.WhereAllowed(ParentItem, ZoneName, Engine.RequestContext.User, Engine.Definitions, Engine.SecurityManager)
                 .ToList();
+			if (AllowedTemplateKeys != null)
+				allowedChildren = allowedChildren.Where(td => AllowedTemplateKeys.Contains(td.Name)).ToList();
             if (allowedChildren.Count == 0)
             {
                 var alert = CreateControl(addPanel, "div", "alert");

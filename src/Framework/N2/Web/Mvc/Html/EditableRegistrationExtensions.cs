@@ -54,6 +54,12 @@ namespace N2.Web.Mvc.Html
 			return registration.RegisterEditable<EditableChildrenAttribute>(zoneName, zoneName).Configure(eca => eca.ZoneName = zoneName);
 		}
 
+		public static EditableBuilder<EditableChildrenAttribute> Children<T>(this IContentRegistration registration, string zoneName)
+			where T : ContentItem
+		{
+			return Children(registration, zoneName).Configure(eca => eca.MinimumTypeName = typeof(T).AssemblyQualifiedName);
+		}
+
 		public static EditableBuilder<EditableDateAttribute> Date(this IContentRegistration registration, string name, string title = null)
 		{
 			return registration.RegisterEditable<EditableDateAttribute>(name, title);

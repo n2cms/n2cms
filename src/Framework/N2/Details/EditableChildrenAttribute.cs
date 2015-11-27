@@ -46,7 +46,9 @@ namespace N2.Details
 
 		public string MinimumTypeName { get; set; }
 
-        public override bool UpdateItem(ContentItem item, Control editor)
+		public string[] AllowedTemplateKeys { get; set; }
+
+		public override bool UpdateItem(ContentItem item, Control editor)
         {
             bool updated = false;
             ItemEditorList listEditor = (ItemEditorList)editor;
@@ -129,6 +131,7 @@ namespace N2.Details
             listEditor.ID = Name;
 			if (!string.IsNullOrEmpty(MinimumTypeName))
 				listEditor.MinimumType = Type.GetType(MinimumTypeName);
+			listEditor.AllowedTemplateKeys = AllowedTemplateKeys;
             listEditor.ParentItem = ItemUtility.FindInParents<IItemEditor>(container).CurrentItem;
             listEditor.Label = Title;
             container.Controls.Add(listEditor);

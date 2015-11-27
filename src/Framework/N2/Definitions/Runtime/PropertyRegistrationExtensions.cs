@@ -336,6 +336,12 @@ namespace N2.Definitions.Runtime
 			return builder;
 		}
 
+		public static EditableBuilder<T> AllowedTemplates<T>(this EditableBuilder<T> builder, params string[] templateNames) where T : EditableChildrenAttribute
+		{
+			builder.Configure(eca => eca.AllowedTemplateKeys = templateNames);
+			return builder;
+		}
+
 		// displayable
 
 		/// <summary>Specifies the usage of a displayable tokens for rendering this property.</summary>
