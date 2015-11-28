@@ -168,6 +168,7 @@
     <Content Include="Global.asax" />
     <Content Include="Dinamico\Themes\MyTheme\Views\Web.config" />
     <Content Include="Dinamico\Themes\Default\Views\Redirect\Index.cshtml" />
+    <Content Include="Dinamico\Themes\Default\Views\Shared\LayoutPartials\FooterScripts.cshtml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />

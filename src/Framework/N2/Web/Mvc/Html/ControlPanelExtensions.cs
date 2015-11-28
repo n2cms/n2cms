@@ -199,9 +199,10 @@ namespace N2.Web.Mvc.Html
 
             #endregion
 
-            public void Render()
+            public string Render()
             {
                 WriteTo(Html.ViewContext.Writer);
+				return "";
             }
 
             public virtual void WriteTo(TextWriter writer)

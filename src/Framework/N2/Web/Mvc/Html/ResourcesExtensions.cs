@@ -24,12 +24,9 @@ namespace N2.Web.Mvc.Html
 
 		public static ICollection<string> GetResourceStateCollection(this ViewContext context)
 		{
-			if (context.ParentActionViewContext != null)
-				return GetResourceStateCollection(context.ParentActionViewContext);
-
-			var collection = context.ViewData["ResourceStateCollection"] as ICollection<string>;
+			var collection = context.RouteData.DataTokens["ResourceStateCollection"] as ICollection<string>;
 			if (collection == null)
-				context.ViewData["ResourceStateCollection"] = collection = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+				context.RouteData.DataTokens["ResourceStateCollection"] = collection = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
 			return collection;
 		}
 

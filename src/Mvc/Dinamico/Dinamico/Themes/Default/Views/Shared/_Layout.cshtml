@@ -16,7 +16,6 @@
 	@if (IsSectionDefined("head")) { @RenderSection("head") }
 </head>
 <body>
-	@{ Html.ControlPanel().Render(); }
 	<div id="wrapper" class="clearfix">
 	@if (IsSectionDefined("page"))
 	{
@@ -43,7 +42,7 @@
 					<div id="aside" class="col-md-4 col-lg-3" role="complementary">
 					@if (IsSectionDefined("Aside"))
 					{
-							@RenderSection("Aside")
+						@RenderSection("Aside")
 					}
 					else
 					{
@@ -59,6 +58,7 @@
 	</div>
  }
 	 </div>
+	@{ Html.RenderPartial("LayoutPartials/FooterScripts"); }
 	@{ Html.Zone(Content.Traverse.StartPage, "Scripts").Render(); }
 </body>
 </html>
