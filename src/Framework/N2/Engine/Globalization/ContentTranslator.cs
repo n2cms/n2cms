@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace N2.Engine.Globalization
 {
 	[Service]
-	public class MissingTranslationsCollection
+	public class MissingTranslationsCollector
 	{
 		ConcurrentDictionary<int, ConcurrentDictionary<string, string>> cache = new ConcurrentDictionary<int, ConcurrentDictionary<string, string>>();
 
@@ -34,9 +34,9 @@ namespace N2.Engine.Globalization
 	public class ContentTranslator : ITranslator
 	{
 		private IWebContext context;
-		private MissingTranslationsCollection missings;
+		private MissingTranslationsCollector missings;
 
-		public ContentTranslator(IWebContext context, MissingTranslationsCollection missings)
+		public ContentTranslator(IWebContext context, MissingTranslationsCollector missings)
 		{
 			this.context = context;
 			this.missings = missings;
@@ -48,7 +48,7 @@ namespace N2.Engine.Globalization
 			if (translator == null)
 				return null;
 
-			string translation = translator?.Translate(key, fallback);
+			string translation = translator?.Translate(key);
 			if (translation == null)
 				missings.Add((translator as ContentItem).ID, key, fallback);
 
