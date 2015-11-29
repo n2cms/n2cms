@@ -15,6 +15,7 @@ using N2.Resources;
 using N2.Web.Parts;
 using N2.Web.UI.WebControls;
 using N2.Edit.Versioning;
+using N2.Management.Api;
 
 namespace N2.Web.Mvc.Html
 {
@@ -247,10 +248,24 @@ namespace N2.Web.Mvc.Html
 
                 if (state.IsFlagSet(ControlPanelState.DragDrop))
                     resources.JavaScript(UI.WebControls.ControlPanel.DragDropScriptInitialization(item), ScriptOptions.DocumentReady);
+
+				AppendNewControlPanel(writer, engine, item);
+
 				resources.Render(writer);
             }
 
-            private static string Plugins(HtmlHelper html, ContentItem item, ControlPanelState state)
+			private void AppendNewControlPanel(TextWriter writer, IEngine engine, ContentItem item)
+			{
+				writer.Write("<script>");
+				writer.Write("n2 = window.n2 || {};");
+				writer.Write("n2.settings = ");
+				engine.Resolve<InterfaceBuilder>().GetControlPanelDefinition(Html.ViewContext.HttpContext, item).ToJson(writer);
+				writer.Write(";");
+				writer.Write("</script>");
+				writer.Write("<script src='{ManagementUrl}/App/Preview/PreviewBoostrapper.js'></script>".ResolveUrlTokens());
+			}
+
+			private static string Plugins(HtmlHelper html, ContentItem item, ControlPanelState state)
             {
                 ContentItem start = html.StartPage();
                 ContentItem root = html.RootPage();

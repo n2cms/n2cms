@@ -10,6 +10,8 @@ using System.Linq;
 using System.Web;
 using System.Security.Principal;
 using System.Diagnostics;
+using N2.Plugin;
+using System.IO;
 
 namespace N2.Management.Api
 {
@@ -116,7 +118,14 @@ namespace N2.Management.Api
         public InterfacePartials Partials { get; set; }
     }
 
-    public class InterfacePaths
+	public class ControlPanelDefinition
+	{
+		public TreeNode CurrentItem { get; internal set; }
+		public Node<InterfaceMenuItem> Menu { get; set; }
+        public InterfacePaths Paths { get; set; }
+	}
+
+	public class InterfacePaths
     {
         public string Management { get; set; }
 
@@ -146,21 +155,22 @@ namespace N2.Management.Api
         public string Main { get; set; }
 
         public string Tree { get; set; }
-
-        [Obsolete("Implemented through menu")]
-        public string Search { get; set; }
-
+		
         public string Footer { get; set; }
 
         public string ContextMenu { get; set; }
     }
 
-    public class InterfaceBuiltEventArgs : EventArgs
+    public class InterfaceBuiltEventArgs : InterfaceventArgs<InterfaceDefinition>
     {
-        public InterfaceDefinition Data { get; internal set; }
     }
 
-    [Service]
+	public class InterfaceventArgs<T> : EventArgs
+	{
+		public T Data { get; internal set; }
+	}
+
+	[Service]
     public class InterfaceBuilder
     {
         private readonly IEngine engine;
@@ -172,33 +182,67 @@ namespace N2.Management.Api
 
         public event EventHandler<InterfaceBuiltEventArgs> InterfaceBuilt;
 
-        public virtual InterfaceDefinition GetInterfaceDefinition(HttpContextBase context, SelectionUtility selection)
-        {
-            var profile = GetUser(context);
-            var selectedItem = GetSelectedItem(selection, profile);
+        public event EventHandler<InterfaceventArgs<ControlPanelDefinition>> ControlPanelBuilt;
 
-            var data = new InterfaceDefinition
-            {
-                MainMenu = GetMainMenu(),
-                ActionMenu = GetActionMenu(context),
-                ContextMenu = GetContextMenu(context),
-                Content = GetContent(context, selection, selectedItem),
-                Site = engine.Host.GetSite(selectedItem),
-                Authority = context.Request.Url.Authority,
-                User = profile,
-                Paths = GetUrls(context, selectedItem),
-                Partials = GetPartials(context)
-            };
+		public virtual InterfaceDefinition GetInterfaceDefinition(HttpContextBase context, SelectionUtility selection)
+		{
+			var profile = GetUser(context);
+			var selectedItem = GetSelectedItem(selection, profile);
 
-            PostProcess(data);
+			var data = new InterfaceDefinition
+			{
+				MainMenu = GetMainMenu(),
+				ActionMenu = GetActionMenu(context),
+				ContextMenu = GetContextMenu(context),
+				Content = GetContent(context, selection, selectedItem),
+				Site = engine.Host.GetSite(selectedItem),
+				Authority = context.Request.Url.Authority,
+				User = profile,
+				Paths = GetUrls(context, selectedItem),
+				Partials = GetPartials(context)
+			};
 
-            if (InterfaceBuilt != null)
-                InterfaceBuilt(this, new InterfaceBuiltEventArgs { Data = data });
+			PostProcess(data);
 
-            return data;
-        }
+			if (InterfaceBuilt != null)
+				InterfaceBuilt(this, new InterfaceBuiltEventArgs { Data = data });
 
-        protected virtual void PostProcess(InterfaceDefinition data)
+			return data;
+		}
+
+		public virtual ControlPanelDefinition GetControlPanelDefinition(HttpContextBase context, ContentItem item)
+		{
+			var data = new ControlPanelDefinition
+			{
+				Menu = GetControlPanelMenu(context, item),
+				Paths = GetUrls(context, item),
+				CurrentItem = engine.GetContentAdapter<NodeAdapter>(item).GetTreeNode(item)
+			};
+			
+			PostProcess(data);
+
+			if (ControlPanelBuilt != null)
+				ControlPanelBuilt(this, new InterfaceventArgs<ControlPanelDefinition> { Data = data });
+
+			return data;
+		}
+
+		private Node<InterfaceMenuItem> GetControlPanelMenu(HttpContextBase context, ContentItem item)
+		{
+			var state = N2.Web.UI.WebControls.ControlPanel.GetState(engine);
+			var children = new List<Node<InterfaceMenuItem>>();
+			children.AddRange(engine.EditManager.GetPlugins<ControlPanelLinkAttribute>(context.User)
+				.Where(np => !np.Legacy)
+				.Where(np => np.ShowDuring.HasFlag(state))
+				.Select(np => GetNode(context, np, item, state)));
+			return new Node<InterfaceMenuItem> { Children = children };
+		}
+
+		protected virtual void PostProcess(ControlPanelDefinition data)
+		{
+		}
+
+		protected virtual void PostProcess(InterfaceDefinition data)
         {
             var removedComponents = new HashSet<string>(engine.Config.Sections.Engine.InterfacePlugins.RemovedElements.Select(re => re.Name));
             if (removedComponents.Count == 0)
@@ -263,7 +307,23 @@ namespace N2.Management.Api
             };
         }
 
-        protected virtual Node<InterfaceMenuItem> GetNode(LinkPluginAttribute np)
+		private Node<InterfaceMenuItem> GetNode(HttpContextBase context, ControlPanelLinkAttribute np, ContentItem item, Web.UI.WebControls.ControlPanelState state)
+		{
+            var node = new Node<InterfaceMenuItem>(new InterfaceMenuItem
+			{
+				Title = np.Title,
+				Name = np.Name,
+				Target = np.Target,
+				ToolTip = np.ToolTip,
+				IconUrl = string.IsNullOrEmpty(np.IconClass) ? Retoken(np.IconUrl) : null,
+				Url = Retoken(np.NavigateUrl),
+				IsDivider = np is ControlPanelSeparatorAttribute,
+				IconClass = np.IconClass
+			});
+			return node;
+		}
+
+		protected virtual Node<InterfaceMenuItem> GetNode(LinkPluginAttribute np)
         {
             var node = new Node<InterfaceMenuItem>(new InterfaceMenuItem
             {
@@ -301,8 +361,11 @@ namespace N2.Management.Api
 
         static readonly Dictionary<string, string> replacements = new Dictionary<string, string>
         {
-             { "{selected}", "{{Context.CurrentItem.Path}}" },
-             { "{memory}", "{{Context.Memory.Path}}" },
+             { "{Selected.Url}", "{{Context.CurrentItem.Url}}" },
+             { "{Selected.Path}", "{{Context.CurrentItem.Path}}" },
+             { "{Selected.VersionIndex}", "{{Context.CurrentItem.VersionIndex}}" },
+			 { "{selected}", "{{Context.CurrentItem.Path}}" },
+			 { "{memory}", "{{Context.Memory.Path}}" },
              { "{action}", "{{Context.Memory.Action}}" },
              { "{ManagementUrl}", Url.ResolveTokens("{ManagementUrl}") },
              { "{Selection.SelectedQueryKey}", Url.ResolveTokens("{SelectedQueryKey}") }

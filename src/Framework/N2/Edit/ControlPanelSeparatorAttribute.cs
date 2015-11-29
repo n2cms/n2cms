@@ -9,11 +9,9 @@ namespace N2.Edit
     /// </summary>
     public class ControlPanelSeparatorAttribute : AdministrativePluginAttribute, IControlPanelPlugin
     {
-        readonly ControlPanelState showDuring;
-
         public ControlPanelSeparatorAttribute(int sortOrder, ControlPanelState showDuring)
         {
-            this.showDuring = showDuring;
+            this.ShowDuring = showDuring;
             SortOrder = sortOrder;
         }
 
@@ -34,7 +32,7 @@ namespace N2.Edit
 
         protected virtual bool ActiveFor(Control container, ControlPanelState state)
         {
-            return (showDuring & state) == state;
+            return (ShowDuring & state) == state;
         }
     }
 }

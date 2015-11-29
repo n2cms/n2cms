@@ -1,0 +1,14 @@
+﻿<div n2-preview-bar class="n2-preview-bar">
+	<ul class="n2-preview-actions">
+		<li>[{{mode}}]</li>
+		<li class="n2-preview-manage" ng-show="fullscreen">
+			<a href="/N2/?selected={{Context.CurrentItem.Path}}&n2item={{Context.CurrentItem.ID}}" target="_top"><img src="/N2/Resources/img/n2.png" /></a>
+		</li>
+		<li class="n2-preview-fullscreen" ng-hide="fullscreen">
+			<a href="{{Context.CurrentItem.Url}}" target="_top" title="Fullscreen"><b class="fa fa-arrows-alt"></b></a>
+		</li>
+		<li ng-repeat="node in Context.Menu.Children">
+			<a page-action-link="node"></a>
+		</li>
+	</ul>
+</div>

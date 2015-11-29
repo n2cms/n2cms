@@ -108,6 +108,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\i18n\en.js" />
+    <Content Include="App\Preview\Preview.css" />
+    <Content Include="App\Preview\PreviewBar.html" />
+    <Content Include="App\Preview\PreviewBoostrapper.js" />
+    <Content Include="App\Preview\Preview.js" />
     <Content Include="App\Js\FramedControllers.js" />
     <Content Include="App\Js\Controllers.js" />
     <Content Include="App\Js\Directives.js" />

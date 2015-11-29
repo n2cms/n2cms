@@ -230,16 +230,15 @@ var initn2context = function (w) {
 		},
 		isFlagged: function (flag) {
 			return this.flags && this.flags[flag];
+		},
+		layout: {
+			init: function () {
+				$("#splitter-container,.pane").layout({ useStateCookie: true, cookie: { expires: 365 }, defaults: { spacing_closed: 12 }, north: { resizable: false }, west: { minWidth: 250 }, center: { minWidth: 250} });
+				$("#permission").css({ position: "" }); // restore north pane style so drop-downs arn't hidden
+			}
 		}
 	};
 
 	return w.n2ctx;
 };
-window.n2 = initn2context(window);
-
-window.n2.layout = {
-	init: function () {
-		$("#splitter-container,.pane").layout({ useStateCookie: true, cookie: { expires: 365 }, defaults: { spacing_closed: 12 }, north: { resizable: false }, west: { minWidth: 250 }, center: { minWidth: 250} });
-		$("#permission").css({ position: "" }); // restore north pane style so drop-downs arn't hidden
-	}
-}
+window.n2 = $.extend(window.n2, initn2context(window));

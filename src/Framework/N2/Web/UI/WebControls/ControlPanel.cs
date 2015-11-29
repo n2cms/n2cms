@@ -302,7 +302,7 @@ jQuery(document).ready(function(){{
             writer.Write("<div class='controlPanel state" + CurrentItem.State.ToString() + "'>");
             base.Render(writer);
             writer.Write("</div>");
-        }
+		}
 
         #endregion
 
