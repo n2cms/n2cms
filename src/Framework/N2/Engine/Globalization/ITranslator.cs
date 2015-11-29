@@ -11,6 +11,7 @@ namespace N2.Engine.Globalization
 	/// </summary>
 	public interface ITranslator
 	{
-		string Translate(string key, string fallback);
+		string Translate(string key, string fallback = null);
+		IDictionary<string, string> GetTranslations();
 	}
 }
