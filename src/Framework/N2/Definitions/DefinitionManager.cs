@@ -104,7 +104,7 @@ namespace N2.Definitions
         /// <returns>A collection of item definitoins.</returns>
         public virtual IEnumerable<ItemDefinition> GetDefinitions()
         {
-            return definitionProviders.SelectMany(dp => dp.GetDefinitions());
+            return definitionProviders.SelectMany(dp => dp.GetDefinitions()).Distinct().OrderBy(d => d.SortOrder);
         }
 
         /// <summary>Gets child types allowed below a certain item and zone.</summary>
