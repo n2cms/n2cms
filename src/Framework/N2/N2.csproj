@@ -187,6 +187,7 @@
     <Compile Include="Edit\Versioning\InvalidVersionInfo.cs" />
     <Compile Include="Edit\Versioning\VersionInfo.cs" />
     <Compile Include="Engine\Accessor.cs" />
+    <Compile Include="Engine\Globalization\ITranslator.cs" />
     <Compile Include="Persistence\LinqQueryFacade.cs" />
     <Compile Include="Persistence\NH\LinqNHQueryFacade.cs" />
     <Compile Include="Persistence\Xml\CacheBox.cs" />
