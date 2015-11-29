@@ -48,7 +48,7 @@ namespace N2.Engine.Globalization
 			if (translator == null)
 				return null;
 
-			string translation = translator?.Translate(key);
+			string translation = translator.Translate(key);
 			if (translation == null)
 				missings.Add((translator as ContentItem).ID, key, fallback);
 
@@ -58,7 +58,9 @@ namespace N2.Engine.Globalization
 		public IDictionary<string, string> GetTranslations()
 		{
 			var translator = Find.Closest<ITranslator>(context.CurrentPage);
-			return translator?.GetTranslations() ?? new Dictionary<string, string>();
+			if (translator == null)
+				return new Dictionary<string, string>();
+            return translator.GetTranslations() ?? new Dictionary<string, string>();
 		}
 	}
 }
