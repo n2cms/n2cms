@@ -3,6 +3,9 @@ using System.Web.Mvc;
 using N2.Engine;
 using System;
 using N2.Web.Mvc.Html;
+using N2.Engine.Globalization;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace N2.Web.Mvc
 {
@@ -49,25 +52,36 @@ namespace N2.Web.Mvc
 
         public TranslateHelper Translate
         {
-            get { return new TranslateHelper(); }
+            get { return new TranslateHelper(Engine.Container.ResolveAll<N2.Engine.Globalization.ITranslator>()); }
         }
 
-        // Room for future improvement.
         public class TranslateHelper
         {
-            public IHtmlString this[string key]
+			private IEnumerable<ITranslator> translators;
+
+			public TranslateHelper(IEnumerable<ITranslator> translators)
+			{
+				this.translators = translators ?? new ITranslator[0];
+			}
+
+			public IHtmlString this[string key]
+			{
+				get { return Html(key, key); }
+			}
+
+			public IHtmlString this[string key, string fallback]
+			{
+				get { return Html(key, fallback); }
+			}
+
+			public IHtmlString Html(string key, string fallback = null)
             {
-                get { return Html(key); }
+                return new HtmlString(Text(key));
             }
 
-            public IHtmlString Html(string key)
+            public string Text(string key, string fallback = null)
             {
-                return new HtmlString(key);
-            }
-
-            public string Text(string key)
-            {
-                return key;
+                return translators.Select(t => t.Translate(key, fallback ?? key)).FirstOrDefault(t => t != null) ?? fallback ?? key;
             }
         }
 

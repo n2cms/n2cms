@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -21,7 +22,8 @@ namespace Dinamico.Models
 		Description = "The topmost node of a site. This can be placed below a language intersection to also represent a language",
 		IconClass = "fa fa-home",
 		InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
-    public class StartPage : ContentPage, IStartPage, IStructuralPage, IThemeable, ILanguage, ISitesSource
+	[WithEditableTranslations(ContainerName = "SiteContainer")]
+    public class StartPage : ContentPage, IStartPage, IStructuralPage, IThemeable, ILanguage, ISitesSource, ITranslator
     {
         #region IThemeable Members
 
@@ -69,6 +71,16 @@ namespace Dinamico.Models
                 yield return new Site(Find.EnumerateParents(this, null, true).Last().ID, ID, HostName) { Wildcards = true };
         }
 
-        #endregion
-    }
+		public string Translate(string key, string fallback = null)
+		{
+			return DetailCollections.GetTranslation(key) ?? fallback;
+		}
+
+		public IDictionary<string, string> GetTranslations()
+		{
+			return DetailCollections.GetTranslations();
+		}
+
+		#endregion
+	}
 }

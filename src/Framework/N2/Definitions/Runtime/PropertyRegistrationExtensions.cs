@@ -330,9 +330,10 @@ namespace N2.Definitions.Runtime
 			return builder;
 		}
 
-		public static EditableBuilder<T> MultiLine<T>(this EditableBuilder<T> builder) where T : EditableTextAttribute
+		public static EditableBuilder<T> MultiLine<T>(this EditableBuilder<T> builder, int? rows = null) where T : EditableTextAttribute
 		{
-			builder.Configure(e => e.TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine);
+			builder = builder.Configure(e => e.TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine);
+			builder = builder.Configure(e => e.Rows = rows ?? 0);
 			return builder;
 		}
 

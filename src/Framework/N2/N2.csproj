@@ -168,6 +168,7 @@
     <Compile Include="Definitions\IPlaceholder.cs" />
     <Compile Include="Details\EditableFileContentSelector.cs" />
     <Compile Include="Details\EditableMediaAttribute.cs" />
+    <Compile Include="Details\WithEditableTranslationsAttribute.cs" />
     <Compile Include="Edit\Api\ContentHandlerAttribute.cs" />
     <Compile Include="Edit\Api\ContentHandlerBase.cs" />
     <Compile Include="Edit\Api\ITemplateInfoProvider.cs" />
@@ -187,6 +188,9 @@
     <Compile Include="Edit\Versioning\InvalidVersionInfo.cs" />
     <Compile Include="Edit\Versioning\VersionInfo.cs" />
     <Compile Include="Engine\Accessor.cs" />
+    <Compile Include="Engine\Globalization\ContentTranslator.cs" />
+    <Compile Include="Engine\Globalization\ITranslator.cs" />
+    <Compile Include="Engine\Globalization\TranslationExtensions.cs" />
     <Compile Include="Persistence\LinqQueryFacade.cs" />
     <Compile Include="Persistence\NH\LinqNHQueryFacade.cs" />
     <Compile Include="Persistence\Xml\CacheBox.cs" />
@@ -578,7 +582,6 @@
     <Compile Include="Details\ControlAssociationAttribute.cs" />
     <Compile Include="Details\DisplayableHeadingAttribute.cs" />
     <Compile Include="Details\DisplayableLiteralAttribute.cs" />
-    <Compile Include="Details\EditableRolesAttribute.cs" />
     <Compile Include="Details\EditableUrlAttribute.cs" />
     <Compile Include="Details\WithEditableAttribute.cs" />
     <Compile Include="Details\DisplayableAttribute.cs" />
