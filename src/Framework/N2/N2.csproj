@@ -168,7 +168,7 @@
     <Compile Include="Definitions\IPlaceholder.cs" />
     <Compile Include="Details\EditableFileContentSelector.cs" />
     <Compile Include="Details\EditableMediaAttribute.cs" />
-    <Compile Include="Details\WithTranslationsAttribute.cs" />
+    <Compile Include="Details\WithEditableTranslationsAttribute.cs" />
     <Compile Include="Edit\Api\ContentHandlerAttribute.cs" />
     <Compile Include="Edit\Api\ContentHandlerBase.cs" />
     <Compile Include="Edit\Api\ITemplateInfoProvider.cs" />

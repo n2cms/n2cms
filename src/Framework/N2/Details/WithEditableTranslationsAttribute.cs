@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Engine.Globalization;
 using System.Web;
+using System.Web.Script.Serialization;
 
 namespace N2.Details
 {
@@ -13,23 +14,23 @@ namespace N2.Details
 	/// Used in combination with <see cref="ITranslator"/> to support editing of collected content translations.
 	/// </summary>
 	/// <example>
-	/// [WithTranslations(ContainerName = "SiteContainer")]
+	/// [WithEditableTranslations(ContainerName = "SiteContainer")]
 	/// public class StartPage : ContentPage, ITranslator
 	/// {
 	///		public string Translate(string key, string fallback = null)
 	///		{
 	///			return DetailCollections.GetTranslation(key) ?? fallback;
 	///		}
-	///		public IDictionary<string, string> GetTranslations()
+	///		public IDictionary&lt;string, string&gt; GetTranslations()
 	///		{
 	///			return DetailCollections.GetTranslations();
 	///		}
 	/// }
 	/// </example>
 	[AttributeUsage(AttributeTargets.Class, Inherited = true)]
-    public class WithTranslationsAttribute : EditableTextAttribute
+    public class WithEditableTranslationsAttribute : EditableTextAttribute
 	{
-        public WithTranslationsAttribute()
+        public WithEditableTranslationsAttribute()
 			: base("Translations", 2000)
         {
             Name = "ContentTranslations";
@@ -49,16 +50,18 @@ namespace N2.Details
 				if (!translations.ContainsKey(kvp.Key))
 					translations.Add(kvp.Key, kvp.Value);
 
-			tb.Text = string.Join(Environment.NewLine, translations.Select(kvp => HttpUtility.UrlEncode(kvp.Key) + "=" + HttpUtility.UrlEncode(kvp.Value)));
+			//tb.Text = string.Join(Environment.NewLine, translations.Select(kvp => Uri.EscapeUriString(kvp.Key) + "=" + Uri.EscapeUriString(kvp.Value)));
+			tb.Text = new JavaScriptSerializer().Serialize(translations);
 		}
 
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
 			bool changed = false;
 			var tb = (TextBox)editor;
-			var inputTranslations = tb.Text.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
-				.Select(row => row.Split('=')).ToDictionary(kvp => HttpUtility.UrlDecode(kvp[0]), kvp => HttpUtility.UrlDecode(kvp[1]));
-			var translations = item.DetailCollections.GetTranslations(CollectionKey);
+			//var inputTranslations = tb.Text.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+			//	.Select(row => row.Split('=')).ToDictionary(kvp => Uri.UnescapeDataString(kvp[0]), kvp => Uri.UnescapeDataString(kvp[1]));
+			var inputTranslations = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(tb.Text);
+            var translations = item.DetailCollections.GetTranslations(CollectionKey);
 			foreach (var removedKey in translations.Keys.Except(inputTranslations.Keys))
             {
 				item.DetailCollections.SetTranslation(removedKey, null, CollectionKey);
