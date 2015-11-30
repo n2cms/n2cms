@@ -20,7 +20,7 @@
  	<script src="<%= GetLocalizationPath()%>"></script>
     <script src='<%= N2.Web.Url.ResolveTokens("{ManagementUrl}/App/Js/Services.js") %>'></script>
 	<script src='<%= N2.Web.Url.ResolveTokens("{ManagementUrl}/App/Js/Directives.js") %>'></script>
-	<script src='<%= N2.Web.Url.ResolveTokens("{ManagementUrl}/App/Js/FramedControllers.js") %>'></script>
+	<script src='<%= N2.Web.Url.ResolveTokens("{ManagementUrl}/App/Framed/Framed.js") %>'></script>
 
 	</asp:PlaceHolder>
 	<asp:ContentPlaceHolder ID="Head" runat="server" />

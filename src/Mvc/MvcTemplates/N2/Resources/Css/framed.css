@@ -345,3 +345,11 @@ input.dp-applied {
 }
 
 /* jquery ui css fix */
+
+.custom-transltaions label {
+	display:inline;
+}
+.custom-transltaions label span {
+	display:inline-block;
+	width: 200px;
+}
