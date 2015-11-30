@@ -153,7 +153,7 @@
 	<Target Name="Razor-NuGet">
 		<ItemGroup>
 			<razorNugetIncludes Include="$(BuildFolder)\Nuget\Razor\**\*" />
-			<nugetRazorBinFiles Include="$(SrcFolder)\Framework\Razor\bin\$(Configuration)\N2.Razor.*;" />
+			<nugetRazorBinFiles Include="$(ArtifactsFolder)\N2.Razor.*;" />
 		</ItemGroup>
 		<Copy SourceFiles="@(razorNugetIncludes)" DestinationFolder="$(Razor-NugetFolder)\%(RecursiveDir)" />
 		<Copy SourceFiles="@(nugetRazorBinFiles)" DestinationFolder="$(Razor-NugetFolder)\lib\%(nugetFxTargets.Identity)\" />
