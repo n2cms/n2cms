@@ -34,7 +34,7 @@ namespace Dinamico.Dinamico.Registrations
                     register.On(sp => sp.HostName).Text("Site host name (DNS)")
                         .Help("Sets a host name for this site/language. The web server must be configured to accept this host name for this to work.");
 
-					register.On(sp => sp.LoginPage).Url("Login age")
+					register.On(sp => sp.LoginPage).Url("Login page")
 						.Help("Page to display when authorization to a page fails.");
                 }
             }
