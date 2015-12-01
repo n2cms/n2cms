@@ -430,7 +430,7 @@ namespace N2.Management.Api
 			{
 				Children = new[]
                     {
-                        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "fullscreen", Title = "Fullscreen", IconClass = "fa fa-eye", Target = Targets.Top, Url = "{{Context.CurrentItem.PreviewUrl}}" }),
+                        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "fullscreen", Title = "Fullscreen", IconClass = "fa fa-arrows-alt", Target = Targets.Top, Url = "{{Context.CurrentItem.PreviewUrl}}" }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "previewdivider1", Divider = true }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "viewdrafts", Title = "View latest drafts", IconClass = "fa fa-circle-o", 
                             ClientAction = "setViewPreference('draft')",

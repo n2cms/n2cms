@@ -24,7 +24,19 @@
 	display:inline-block;
 }
 .n2-preview-actions li { color:#fff; }
-.n2-preview-actions li a { display:inline-block; padding:10px; color:#fff; }
+.n2-preview-actions li a { display:inline-block; padding:12px; color:#fff; }
 .n2-preview-actions li a:hover { background-color:#EF9356 }
 
 .n2-preview-manage img { height:14px; }
+
+
+.zoneItem { outline: dotted 1px #74c6eb; position:relative; box-shadow: 0 0 5px rgba(255, 255, 255, .5); }
+.zoneItem:hover { outline: solid 2px #18a0de; }
+.zoneItem .titleBar { max-height: 0; overflow:hidden; opacity:0; outline: solid 2px #18a0de; position:absolute; top:0; width:100%; padding:0; margin-top:0; background-color: #18a0de; font-family: 'Segoe UI', Helvetica, sans-serif; font-size:14px; color:#333; text-align:left; transition: all .1s ease-in; }
+.zoneItem:hover > .titleBar { max-height:22px; margin-top:-22px; opacity:1; }
+	.zoneItem .titleBar .title { display:inline-block; padding-left:24px; background:none no-repeat 2px 2px ; color:#fff; cursor:move; }
+	.zoneItem .titleBar a { float:right; color:#fff; padding:4px; }
+	.zoneItem .titleBar a:hover { text-decoration:none; background-color: rgba(116, 198, 235, 0.5) }
+
+.dropPoint { padding:3px 10px; background: #eee; border: dotted 2px silver; border-radius: 2px; }
+.droppable-hover { background-color:greenyellow; border: solid 2px green; }

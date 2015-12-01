@@ -397,4 +397,19 @@
 		};
 	});
 
+	module.factory('Uri', function () {
+		return function Uri(uri) {
+			this.uri = uri;
+			this.appendQuery = function (key, value) {
+				if (uri.indexOf("?") >= 0)
+					this.uri += "&" + key + "=" + value;
+				else
+					this.uri += "?" + key + "=" + value;
+				return this;
+			};
+			this.toString = function () {
+				return this.uri;
+			};
+		};
+	});
 })(angular.module('n2.services', ['ngResource']));

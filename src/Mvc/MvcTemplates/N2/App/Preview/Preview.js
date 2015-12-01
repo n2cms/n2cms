@@ -15,7 +15,7 @@ n2.preview.factory("Fullscreen", ["$window", function ($window) {
 	return !window.top.n2ctx.hasTop();
 }]);
 
-n2.preview.directive("n2Preview", ["$http", "$templateCache", "$compile", function ($http, $templateCache, $compile) {
+n2.preview.directive("n2Preview", ["$http", "$templateCache", "$compile", "Uri", function ($http, $templateCache, $compile, Uri) {
 	return {
 		link: function(scope, element){
 			$http.get("/N2/App/Preview/PreviewBar.html", { cache: $templateCache }).success(function (response) {
@@ -26,8 +26,14 @@ n2.preview.directive("n2Preview", ["$http", "$templateCache", "$compile", functi
 		},
 		controller: function ($scope, Mode, Context, Fullscreen) {
 			$scope.mode = Mode;
+			$scope.dragging = $scope.mode == "drag";
 			$scope.fullscreen = Fullscreen;
 			$scope.Context = Context;
+			$scope.$watch("Context.CurrentItem", function (ci) {
+				if (!$scope.dragging)
+					$scope.dragUrl = new Uri(ci.PreviewUrl).appendQuery("edit", "drag").toString();
+				console.log("dragging", ci, $scope.dragging)
+			});
 		}
 	}
 }])
