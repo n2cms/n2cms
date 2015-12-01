@@ -40,7 +40,10 @@ namespace N2.Engine.Globalization
 
 		public static IDictionary<string, string> GetTranslations(this IContentList<DetailCollection> collections, string collectionKey = DefaultCollectionKey)
 		{
-			return collections[collectionKey].Details.ToDictionary(cd => cd.Meta, cd => cd.StringValue);
+			var collection = collections[collectionKey];
+			if (collection == null || collection.Details == null)
+				return new Dictionary<string, string>();
+			return collections[collectionKey].Details.Where(cd => cd.Meta != null).ToDictionary(cd => cd.Meta, cd => cd.StringValue);
 		}
 	}
 }
