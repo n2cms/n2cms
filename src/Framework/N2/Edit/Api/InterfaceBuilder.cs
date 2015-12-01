@@ -12,6 +12,8 @@ using System.Security.Principal;
 using System.Diagnostics;
 using N2.Plugin;
 using System.IO;
+using N2.Web.Parts;
+using N2.Edit.Api;
 
 namespace N2.Management.Api
 {
@@ -120,11 +122,17 @@ namespace N2.Management.Api
 
 	public class ControlPanelDefinition
 	{
-		public TreeNode CurrentItem { get; internal set; }
+		public TreeNode CurrentItem { get; set; }
 		public Node<InterfaceMenuItem> Menu { get; set; }
         public InterfacePaths Paths { get; set; }
+        public ActivityTrackingConfiguration ActivityTracking { get; set; }
+		public List<TemplateInfo> Templates { get; internal set; }
 	}
-
+	public class ActivityTrackingConfiguration
+	{
+		public int Interval { get; internal set; }
+		public string Path { get; internal set; }
+	}
 	public class InterfacePaths
     {
         public string Management { get; set; }
@@ -142,7 +150,7 @@ namespace N2.Management.Api
         public string PreviewUrl { get; set; }
 
         public string PageQueryKey { get; set; }
-    }
+	}
 
     public class InterfacePartials
     {
@@ -212,11 +220,31 @@ namespace N2.Management.Api
 
 		public virtual ControlPanelDefinition GetControlPanelDefinition(HttpContextBase context, ContentItem item)
 		{
+			var state = Web.UI.WebControls.ControlPanel.GetState(engine);
+			var templates = new List<TemplateInfo>();
+			if (state.IsFlagSet(Web.UI.WebControls.ControlPanelState.DragDrop))
+			{
+				var a = engine.ResolveAdapter<PartsAdapter>(item);
+				foreach (var d in Web.UI.WebControls.ControlPanel.GetPartDefinitions(a, item, null, context.User))
+				{
+					foreach (var t in a.GetTemplates(item, d))
+					{
+						templates.Add(new TemplateInfo(t) { EditUrl = engine.ManagementPaths.GetEditNewPageUrl(item, d) });
+					}
+				}
+			}
+
 			var data = new ControlPanelDefinition
 			{
 				Menu = GetControlPanelMenu(context, item),
 				Paths = GetUrls(context, item),
-				CurrentItem = engine.GetContentAdapter<NodeAdapter>(item).GetTreeNode(item)
+				CurrentItem = engine.GetContentAdapter<NodeAdapter>(item).GetTreeNode(item),
+				ActivityTracking = new ActivityTrackingConfiguration
+				{
+					Interval = engine.Config.Sections.Management.Collaboration.PingInterval,
+					Path = engine.Config.Sections.Management.Collaboration.ActivityTrackingEnabled ? engine.Config.Sections.Management.Collaboration.PingPath.ResolveUrlTokens() : null
+				},
+				Templates = templates
 			};
 			
 			PostProcess(data);
@@ -293,7 +321,7 @@ namespace N2.Management.Api
             {
                 new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "add", Title = "Add", IconClass = "fa fa-plus-circle", Target = Targets.Preview, Description = "Adds a new child items", Url = "{{ContextMenu.appendSelection('{ManagementUrl}/Content/New.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Write }),
                 new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "edit", Title = "Edit", IconClass = "fa fa-pencil-square", Target = Targets.Preview, Description = "Edit details", Url = "{{ContextMenu.appendSelection('{ManagementUrl}/Content/Edit.aspx', 'displayed')}}".ResolveUrlTokens(), RequiredPermission = Permission.Write }),
-				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "organize", Title = "Organize parts", IconClass = "fa fa-th-large", Target = Targets.Preview, Description = "Drag and drop edit mode", Url = "{{appendQuery(ContextMenu.CurrentItem.PreviewUrl, 'edit=drag')}}", RequiredPermission = Permission.Write }),
+				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "organize", Title = "Organize parts", IconClass = "fa fa-object-ungroup", Target = Targets.Preview, Description = "Drag and drop edit mode", Url = "{{appendQuery(ContextMenu.CurrentItem.PreviewUrl, 'edit=drag')}}", RequiredPermission = Permission.Write }),
                 new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "delete", Title = "Delete", IconClass = "fa fa-trash-o", Url = "{{ContextMenu.appendSelection('{ManagementUrl}/Content/Delete.aspx')}}".ResolveUrlTokens(), ToolTip = "Move selected item to trash", RequiredPermission = Permission.Publish, HiddenBy = "Deleted" }),
                 new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "security", Title = "Manage security", IconClass = "fa fa-lock", Target = Targets.Preview, Url = "{{ContextMenu.appendSelection('{ManagementUrl}/Content/Security/Default.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Administer }),
             };
@@ -455,7 +483,7 @@ namespace N2.Management.Api
 			{
 				Children = new[]
                     {
-                        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "organize", Title = "Organize parts", IconClass = "fa fa-th-large", Target = Targets.Preview, Url = "{{appendQuery(Context.CurrentItem.PreviewUrl, 'edit=drag')}}", RequiredPermission = Permission.Write }),
+                        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "organize", Title = "Organize parts", IconClass = "fa fa-object-ungroup", Target = Targets.Preview, Url = "{{appendQuery(Context.CurrentItem.PreviewUrl, 'edit=drag')}}", RequiredPermission = Permission.Write }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "editdetails", Title = "Properties", IconClass = "fa fa-pencil-square", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Edit.aspx', true)}}".ResolveUrlTokens(), RequiredPermission = Permission.Write }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "divider5", Divider = true }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "security", Title = "Manage security", IconClass = "fa fa-lock", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Security/Default.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Administer }),

@@ -207,54 +207,59 @@ namespace N2.Web.Mvc.Html
             }
 
             public virtual void WriteTo(TextWriter writer)
-            {
-                var engine = Html.ContentEngine();
+			{
+				var engine = Html.ContentEngine();
 
-                if (!Html.ViewContext.HttpContext.User.Identity.IsAuthenticated || !engine.SecurityManager.IsEditor(Html.ViewContext.HttpContext.User))
-                    return;
-                if (RegistrationExtensions.GetRegistrationExpression(Html) != null)
-                    return;
+				if (!Html.ViewContext.HttpContext.User.Identity.IsAuthenticated || !engine.SecurityManager.IsEditor(Html.ViewContext.HttpContext.User))
+					return;
+				if (RegistrationExtensions.GetRegistrationExpression(Html) != null)
+					return;
 
-                var item = currentItem ?? Html.CurrentItem() ?? Html.StartPage();
+				var item = currentItem ?? Html.CurrentItem() ?? Html.StartPage();
 
-                var state = ControlPanelExtensions.GetControlPanelState(Html);
-                var settings = new
-                {
-                    NavigationUrl = engine.ManagementPaths.GetNavigationUrl(item),
-                    ManagementUrl = engine.ManagementPaths.GetManagementInterfaceUrl(),
-                    Path = item.Path,
-                    Plugins = Plugins(Html, item, state),
-                    Definitions = Definitions(Html, engine, item, state),
-                    Version = typeof(ContentItem).Assembly.GetName().Version.ToString(),
-                    Permission = engine.GetContentAdapter<NodeAdapter>(item).GetMaximumPermission(item),
-                    VersionIndex = item.VersionIndex,
-                    VersionKey = item.GetVersionKey(),
-                    Force = ForceRefreshNavigationOnLoad ? "true" : "false",
-                    State = item != null ? item.State.ToString() : "NonContent",
-                    Mode = GetControlPanelState(Html).ToString()
-                };
+				if (engine.Config.Sections.Management.Organize.LegacyEnabled)
+					AppendLegacyControlPanel(writer, engine, item);
+				else
+					AppendControlPanel(writer, engine, item);
+			}
 
-                var resources = Html.Resources(writer).Constants();
-                if (includeJQuery) resources.JQuery();
-                if (includeJQueryPlugins) resources.JQueryPlugins(includeJQuery);
-                if (includeJQueryUi) resources.JQueryUi(includeJQuery);
-                if (includePartScripts) resources.PartsJs();
-                if (includePartStyles) { resources.PartsCss(); resources.IconsCss(); }
+			private void AppendLegacyControlPanel(TextWriter writer, IEngine engine, ContentItem item)
+			{
+				var state = ControlPanelExtensions.GetControlPanelState(Html);
+				var settings = new
+				{
+					NavigationUrl = engine.ManagementPaths.GetNavigationUrl(item),
+					ManagementUrl = engine.ManagementPaths.GetManagementInterfaceUrl(),
+					Path = item.Path,
+					Plugins = Plugins(Html, item, state),
+					Definitions = Definitions(Html, engine, item, state),
+					Version = typeof(ContentItem).Assembly.GetName().Version.ToString(),
+					Permission = engine.GetContentAdapter<NodeAdapter>(item).GetMaximumPermission(item),
+					VersionIndex = item.VersionIndex,
+					VersionKey = item.GetVersionKey(),
+					Force = ForceRefreshNavigationOnLoad ? "true" : "false",
+					State = item != null ? item.State.ToString() : "NonContent",
+					Mode = GetControlPanelState(Html).ToString()
+				};
+
+				var resources = Html.Resources(writer).Constants();
+				if (includeJQuery) resources.JQuery();
+				if (includeJQueryPlugins) resources.JQueryPlugins(includeJQuery);
+				if (includeJQueryUi) resources.JQueryUi(includeJQuery);
+				if (includePartScripts) resources.PartsJs();
+				if (includePartStyles) { resources.PartsCss(); resources.IconsCss(); }
 
 				if (refreshNavigation)
 					resources.HtmlLiteral(formatWithRefresh.Replace(settings));
-                else
+				else
 					resources.HtmlLiteral(formatWithoutRefresh.Replace(settings));
 
-                if (state.IsFlagSet(ControlPanelState.DragDrop))
-                    resources.JavaScript(UI.WebControls.ControlPanel.DragDropScriptInitialization(item), ScriptOptions.DocumentReady);
-
-				AppendNewControlPanel(writer, engine, item);
-
+				if (state.IsFlagSet(ControlPanelState.DragDrop))
+					resources.JavaScript(UI.WebControls.ControlPanel.DragDropScriptInitialization(item), ScriptOptions.DocumentReady);
 				resources.Render(writer);
-            }
+			}
 
-			private void AppendNewControlPanel(TextWriter writer, IEngine engine, ContentItem item)
+			private void AppendControlPanel(TextWriter writer, IEngine engine, ContentItem item)
 			{
 				writer.Write("<script>");
 				writer.Write("n2 = window.n2 || {};");
@@ -262,7 +267,12 @@ namespace N2.Web.Mvc.Html
 				engine.Resolve<InterfaceBuilder>().GetControlPanelDefinition(Html.ViewContext.HttpContext, item).ToJson(writer);
 				writer.Write(";");
 				writer.Write("</script>");
-				writer.Write("<script src='{ManagementUrl}/App/Preview/PreviewBoostrapper.js'></script>".ResolveUrlTokens());
+
+				var resources = Html.Resources(writer).Constants();
+				if (includeJQuery) resources.JQuery();
+				if (includePartScripts) resources.JavaScript("{ManagementUrl}/App/Preview/PreviewBoostrapper.js");
+                if (includePartStyles) resources.IconsCss();
+				resources.Render(writer);
 			}
 
 			private static string Plugins(HtmlHelper html, ContentItem item, ControlPanelState state)

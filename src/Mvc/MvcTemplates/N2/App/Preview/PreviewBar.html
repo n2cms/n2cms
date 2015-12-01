@@ -1,15 +1,45 @@
-﻿<div n2-preview-bar class="n2-preview-bar">
+﻿<div n2-preview-bar class="n2-preview-bar" ng-class="{ 'n2-preview-published': States.published }">
 	<ul class="n2-preview-actions">
-		<li>[{{mode}}]</li>
-		<li>[{{fullscreen}}]</li>
 		<li class="n2-preview-manage" ng-show="fullscreen">
-			<a href="/N2/?selected={{Context.CurrentItem.Path}}&n2item={{Context.CurrentItem.ID}}" target="_top"><img src="/N2/Resources/img/n2.png" /></a>
+			<a href="{{Paths.management}}" target="_top"><img src="{{Context.Paths.Management}}Resources/img/n2.png" /></a>
 		</li>
 		<li class="n2-preview-fullscreen" ng-hide="fullscreen">
-			<a href="{{Context.CurrentItem.Url}}" target="_top" title="Fullscreen"><b class="fa fa-arrows-alt"></b></a>
+			<a href="{{Paths.preview}}" target="_top" title="Fullscreen"><b class="fa fa-arrows-alt"></b></a>
 		</li>
-		<li class="n2-preview-organize" ng-show="dragUrl">
-			<a href="{{dragUrl}}" title="Drag"><b class="fa fa-object-ungroup"></b>Organize</a>
+		<li class="n2-preview-publish" ng-show="publishable">
+			<a href="{{Paths.publish}}" title="Publish changes on this draft"><b class="fa fa-play-circle"></b> Publish</a>
+		</li>
+		<li class="n2-preview-organize" ng-show="!dragging && Permissions.write">
+			<a href="{{Paths.organize}}" title="Organize parts"><b class="fa fa-object-ungroup"></b></a>
+		</li>
+		<li class="n2-preview-unorganize" ng-show="dragging">
+			<a href="{{Paths.preview}}" title="Stop organizing parts"><b class="fa fa-undo"></b></a>
+		</li>
+		<li class="n2-preview-create" ng-show="!dragging && Permissions.write">
+			<a href="{{Paths.create}}" title="Create child item"><b class="fa fa-plus-circle"></b></a>
+		</li>
+		<li class="n2-preview-edit" ng-show="Permissions.write">
+			<a href="{{Paths.edit}}" title="Edit {{Context.CurrentItem.Title}}"><b class="fa fa-pencil-square"></b></a>
+		</li>
+		<li class="n2-preview-delete" ng-show="!dragging && deletable">
+			<a href="{{Paths.remove}}" title="Delete {{Context.CurrentItem.Title}}"><b class="fa fa-trash-o"></b></a>
+		</li>
+		<li class="n2-preview-discard" ng-show="discardable">
+			<a href="{{Paths.discard}}" title="Discard changes on this draft"><b class="fa fa-times"></b></a>
+		</li>
+		<li class="n2-preview-publish" ng-show="publishableFuture">
+			<a href="{{Paths.publish}}" title="Publish changes on this draft"><b class="fa fa-clock-o"></b></a>
+		</li>
+		<li class="n2-preview-publish" ng-show="publishableFuture">
+			<a href="{{Paths.publish}}" title="Publish changes on this draft"><b class="fa fa-clock-o"></b></a>
+		</li>
+		<li class="n2-preview-add" ng-show="dragging" ng-class="{ active: templates }">
+			<a href ng-click="toggleParts()"><b class="fa fa-plus-square"></b> Add part</a>
+			<ul ng-show="templates">
+				<li ng-repeat="template in templates" title="{{template}}">
+					<a href ng-click="beginAdding(template)"><b class="{{template.IconClass}}"></b> {{template.Title}}</a>
+				</li>
+			</ul>
 		</li>
 		<li ng-repeat="node in Context.Menu.Children">
 			<a page-action-link="node"></a>

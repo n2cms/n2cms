@@ -71,7 +71,7 @@ function getParentPath(path) {
 	return parentPathExpr.exec(path) && parentPathExpr.exec(path)[1];;
 }
 
-function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $rootScope, Context, Content, Profile, Security, FrameContext, Translate, Eventually, LocationKeeper, Notify, EbbCallbacks) {
+function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $rootScope, Context, Content, Profile, Security, FrameContext, Translate, Eventually, LocationKeeper, Notify, EbbCallbacks, Paths) {
 	$scope.Content = Content;
 	$scope.Security = Security;
 
@@ -280,8 +280,8 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 
 	var query = $location.search();
 	Context.full(query, function (i) {
+		Paths.initialize(i.Interface.Paths)
 		$scope.Context.Partials.Management = "App/Partials/Management.html";
-		Content.paths = i.Interface.Paths;
 		translateMenuRecursive(i.Interface.MainMenu);
 		translateMenuRecursive(i.Interface.ActionMenu);
 		translateMenuRecursive(i.Interface.ContextMenu);

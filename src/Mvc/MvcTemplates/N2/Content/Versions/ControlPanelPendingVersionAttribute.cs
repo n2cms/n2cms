@@ -20,6 +20,7 @@ namespace N2.Edit.Versions
             : base("cpPendingVersion", "{IconsUrl}/book_next_orange.png", null, toolTip, sortOrder, ControlPanelState.Visible)
         {
 			IconClass = "fa fa-clock-o";
+			Legacy = true;
         }
 
         public override Control AddTo(Control container, PluginContext context)

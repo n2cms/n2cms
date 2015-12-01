@@ -43,7 +43,8 @@ namespace N2.Edit
     [ControlPanelLink("cpNew", "{ManagementUrl}/Resources/icons/add.png", "{ManagementUrl}/Content/New.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible,
         CssClass = "complementary",
         RequiredPermission = Permission.Write,
-        IconClass = "fa fa-plus-circle")]
+        IconClass = "fa fa-plus-circle",
+		Legacy = true)]
     public partial class New : Web.EditPage
     {
         ItemDefinition ParentItemDefinition = null;
