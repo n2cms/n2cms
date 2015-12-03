@@ -394,12 +394,12 @@ namespace N2.Details
         /// <param name="name">The name of the detail.</param>
         /// <param name="value">The value of the detail. This will determine what type of content detail will be returned.</param>
         /// <returns>A new content detail whose type depends on the type of value.</returns>
-        public static ContentDetail New(ContentItem item, string name, object value)
+        public static ContentDetail New(ContentItem item, string name, object value, string meta = null)
         {
             if (value == null)
                 throw new ArgumentNullException("value");
 
-            return new ContentDetail(item, name, value);
+            return new ContentDetail(item, name, value) { Meta = meta };
         }
 
         /// <summary>Creates a new content detail of the appropriated type based on the given value.</summary>
