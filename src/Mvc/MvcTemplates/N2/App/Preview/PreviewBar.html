@@ -15,17 +15,17 @@
 		<li class="n2-preview-unorganize" ng-show="dragging">
 			<a href="{{Paths.preview}}" title="Stop organizing parts"><b class="fa fa-undo"></b></a>
 		</li>
-		<li class="n2-preview-create" ng-show="!dragging && Permissions.write">
+		<li class="n2-preview-create" ng-show="!dragging && Permissions.write && !discardable">
 			<a href="{{Paths.create}}" title="Create child item"><b class="fa fa-plus-circle"></b></a>
 		</li>
 		<li class="n2-preview-edit" ng-show="Permissions.write">
 			<a href="{{Paths.edit}}" title="Edit {{Context.CurrentItem.Title}}"><b class="fa fa-pencil-square"></b></a>
 		</li>
-		<li class="n2-preview-delete" ng-show="!dragging && deletable">
+		<li class="n2-preview-delete" ng-show="!dragging && deletable && !discardable">
 			<a href="{{Paths.remove}}" title="Delete {{Context.CurrentItem.Title}}"><b class="fa fa-trash-o"></b></a>
 		</li>
 		<li class="n2-preview-discard" ng-show="discardable">
-			<a href="{{Paths.discard}}" title="Discard changes on this draft"><b class="fa fa-times"></b></a>
+			<a href="{{Paths.discard}}" title="Discard changes on this draft"><b class="fa fa-thumbs-down"></b></a>
 		</li>
 		<li class="n2-preview-publish" ng-show="publishableFuture">
 			<a href="{{Paths.publish}}" title="Publish changes on this draft"><b class="fa fa-clock-o"></b></a>
@@ -44,7 +44,7 @@
 				<div><strong>Click on a zone in which to add "{{adding.template.Title}}"</strong></div>
 				<div>
 					Scroll to 
-					<a href ng-repeat="zone in adding.zones" ng-click="scrollTo(zone)">{{zone.name}} </a>
+					<a href ng-repeat="zone in adding.zones" ng-click="scrollTo(zone)">{{zone.title}} </a>
 				</div>
 				<button ng-click="cancelAdding()">Cancel</button>
 			</div>

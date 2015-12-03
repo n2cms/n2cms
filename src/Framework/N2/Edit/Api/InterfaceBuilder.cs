@@ -229,7 +229,7 @@ namespace N2.Management.Api
 				{
 					foreach (var t in a.GetTemplates(item, d))
 					{
-						templates.Add(new TemplateInfo(t) { EditUrl = engine.ManagementPaths.GetEditNewPageUrl(item, d) });
+						templates.Add(new TemplateInfo(t) { EditUrl = engine.ManagementPaths.GetEditNewPageUrl(item, t.Definition) });
 					}
 				}
 			}

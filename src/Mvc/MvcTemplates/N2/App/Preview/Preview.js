@@ -3,7 +3,7 @@
 n2.preview = angular.module('n2preview', ['n2.directives', 'n2.services'], function () {
 });
 
-n2.preview.factory("Zone", ["$window", function ($window) {
+n2.preview.factory("Zone", ["$window", "Context", "Uri", function ($window, Context, Uri) {
 	
 	function Organizable() {
 		this.reveal = function () {
@@ -16,22 +16,42 @@ n2.preview.factory("Zone", ["$window", function ($window) {
 	function Zone(element) {
 		var zone = this;
 		this.name = $(element).attr("data-zone");
+		this.title = element.title || this.name;
 		this.allowed = $(element).attr("data-allowed").split(",");
+		this.path = $(element).attr("data-item");
+		this.versionKey = $(element).attr("data-versionKey");
 		this.$element = element;
 		this.parts = [];
+		if ($(element).closest(".dropZone").attr("data-versionIndex")) {
+			this.belowVersionIndex = $(element).closest(".dropZone").attr("data-versionIndex");
+			this.belowVersionKey = $(element).closest(".dropZone").attr("data-versionKey");
+		}
+		this.createUrl = function (template, beforePart) {
+			var qs = { zoneName: this.name, n2versionIndex: Context.CurrentItem.VersionIndex, n2scroll: document.body.scrollTop, belowVersionKey: this.belowVersionKey, returnUrl: encodeURIComponent(window.location.pathname + window.location.search) };
+			if (beforePart) {
+				angular.extend(qs, { before: !beforePart.versionKey && beforePart.path, beforeSortOrder: beforePart.sortOrder, beforeVersionKey: beforePart.versionKey });
+				qs[Context.Paths.SelectedQueryKey] = this.path;
+				console.log("insertBefore", qs.selected, qs, template, beforePart)
+			} else {
+				angular.extend(qs, { below: this.path, n2versionKey: this.versionKey });
+				//console.log("appendZone", qs)
+			}
+			var uri = new Uri(template.EditUrl).setQuery(qs);
+			return uri.toString();
+		}
 		this.addPlaceholders = function (template, callback) {
-			$("<div class='n2-drop-area n2-append'><a href>" + "Append to " + this.name + "</a></div>")
+			var createUrl = this.createUrl(template);
+			$("<div class='n2-drop-area n2-append'><a href='" + createUrl + "'>" + "Append to <b>" + this.title + "</b></a></div>")
 				.click(function (e) {
-					e.preventDefault();
-					callback(zone);
+					callback(e, zone);
 				})
 				.appendTo(this.$element);
 
 			angular.forEach(zone.parts, function (part) {
-				$("<div class='n2-drop-area n2-prepend'><a href>" + "Insert into " + zone.name + "</a></div>")
+				var createUrl = zone.createUrl(template, part);
+				$("<div class='n2-drop-area n2-prepend'><a href='" + createUrl + "'>" + "Insert into <b>" + zone.title + "</b></a></div>")
 					.click(function (e) {
-						e.preventDefault();
-						callback(zone, part);
+						callback(e, zone, part);
 					})
 					.prependTo(part.$element);
 			})
@@ -41,6 +61,8 @@ n2.preview.factory("Zone", ["$window", function ($window) {
 		}
 
 		$(".zoneItem", element).each(function () {
+			if ($(this).closest(".dropZone")[0] != element)
+				return; // sub-zone's items
 			var part = new Part(this);
 			zone.parts.push(part);
 		});
@@ -50,9 +72,10 @@ n2.preview.factory("Zone", ["$window", function ($window) {
 	Zone.prototype = new Organizable();
 
 	function Part(element) {
-		this.path = $(this).attr("data-item");
-		this.sortOrder = $(this).attr("data-sortorder");
-		this.type = $(this).attr("data-sortorder");
+		this.path = $(element).attr("data-item");
+		this.versionKey = $(element).attr("data-versionkey")
+		this.sortOrder = $(element).attr("data-sortorder");
+		this.type = $(element).attr("data-sortorder");
 		this.$element = element;
 		return this;
 	}
@@ -147,8 +170,6 @@ n2.preview.directive("n2Preview", ["$http", "$templateCache", "$compile", "Paths
 				$scope.publishableFuture = permissions.publish && Content.states.is(ci.State, Content.states.waiting);
 				$scope.deletable = permissions.publish;
 				$scope.discardable = permissions.write && Content.states.is(ci.State, Content.states.Draft);
-
-				console.log("dragging", ci, Context)
 			});
 
 			if (Context.ActivityTracking.Path) {
@@ -165,6 +186,7 @@ n2.preview.directive("n2Preview", ["$http", "$templateCache", "$compile", "Paths
 			}
 
 			$scope.toggleParts = function () {
+				$scope.adding = null;
 				if ($scope.templates)
 					$scope.templates = null;
 				else
@@ -172,18 +194,16 @@ n2.preview.directive("n2Preview", ["$http", "$templateCache", "$compile", "Paths
 			}
 
 			$scope.scrollTo = function (zone) {
-				console.log("scrollTo", zone);
 				zone.reveal();
 			}
 
 			$scope.beginAdding = function (template) {
-				console.log(template)
 				$scope.adding = {
 					zones: [],
 					template: template
 				};
 				angular.forEach(Zone.zones, function (zone) {
-					if (zone.allowed.indexOf(template.Discriminator)) {
+					if (zone.allowed.indexOf(template.Discriminator) >= 0) {
 						$scope.templates = null;
 						$scope.adding.zones.push(zone);
 						zone.addPlaceholders(template, function (e) {
@@ -191,7 +211,6 @@ n2.preview.directive("n2Preview", ["$http", "$templateCache", "$compile", "Paths
 						});
 					}
 				})
-				console.log("adding", $scope.adding);
 			}
 			
 			$scope.cancelAdding = function () {

@@ -412,17 +412,45 @@
 	});
 
 	module.factory('Uri', function () {
-		return function Uri(uri) {
-			this.uri = uri;
+		function Uri(uri) {
+			this.$uri = uri || "";
+			this.getSeparator = function() {
+				return this.$uri.indexOf("?") >= 0 ? "&" : "?";
+			};
 			this.appendQuery = function (key, value) {
-				if (this.uri.indexOf("?") >= 0)
-					return new Uri(this.uri + "&" + key + "=" + value);
-				else
-					return new Uri(this.uri + "?" + key + "=" + value);
+				return new Uri(this.$uri + this.getSeparator() + key + "=" + value);
+			};
+			this.setQuery = function (key, value) {
+				if (typeof key == "object") {
+					var uri = new Uri(this.$uri);
+					angular.forEach(key, function (value, key) {
+						uri = uri.setQuery(key, value);
+					});
+					return uri;
+				} else if (!value)
+					return this;
+
+				var queryIndex = this.$uri.indexOf("?");
+				if (queryIndex < 0)
+					return this.appendQuery(key, value);
+				var qs = this.$uri.substr(queryIndex + 1).split("&");
+				var modified = false;
+				for (var i = 0; i < qs.length; i++) {
+					if (qs[i] == key || qs[i].indexOf(key + "=") == 0) {
+						qs[i] = key + "=" + value;
+						modified = true;
+						break;
+					}
+				}
+				if (!modified)
+					return this.appendQuery(key, value);
+				
+				return new Uri(this.$uri.substr(0, queryIndex + 1) + qs.join("&"));
 			};
 			this.toString = function () {
-				return this.uri;
+				return this.$uri;
 			};
 		};
+		return Uri;
 	});
 })(angular.module('n2.services', ['ngResource']));
