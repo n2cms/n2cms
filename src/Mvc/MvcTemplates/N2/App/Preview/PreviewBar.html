@@ -35,11 +35,19 @@
 		</li>
 		<li class="n2-preview-add" ng-show="dragging" ng-class="{ active: templates }">
 			<a href ng-click="toggleParts()"><b class="fa fa-plus-square"></b> Add part</a>
-			<ul ng-show="templates">
+			<ul class="n2-preview-foldup" ng-show="templates">
 				<li ng-repeat="template in templates" title="{{template}}">
 					<a href ng-click="beginAdding(template)"><b class="{{template.IconClass}}"></b> {{template.Title}}</a>
 				</li>
 			</ul>
+			<div ng-show="adding" class="n2-preview-adding n2-preview-foldup">
+				<div><strong>Click on a zone in which to add "{{adding.template.Title}}"</strong></div>
+				<div>
+					Scroll to 
+					<a href ng-repeat="zone in adding.zones" ng-click="scrollTo(zone)">{{zone.name}} </a>
+				</div>
+				<button ng-click="cancelAdding()">Cancel</button>
+			</div>
 		</li>
 		<li ng-repeat="node in Context.Menu.Children">
 			<a page-action-link="node"></a>

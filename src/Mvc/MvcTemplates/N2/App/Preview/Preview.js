@@ -4,40 +4,78 @@ n2.preview = angular.module('n2preview', ['n2.directives', 'n2.services'], funct
 });
 
 n2.preview.factory("Zone", ["$window", function ($window) {
-	var result = {
-		zones: [],
-		names: []
-	};
-	$(".dropZone", $window.document).each(function () {
-		var zone = {
-			zone: $(this).attr("data-zone"),
-			allowed: $(this).attr("data-allowed").split(","),
-			$element: this,
-			parts: [],
-			appendPlaceholder: function (template, callback) {
-				$("<a href class='dropPoint append'></a>")
-					.text(this.zone + ": Click to append " + template.Title)
-					.click(callback)
-					.appendTo(this.$element);
-				$("<a href class='dropPoint prepend'></a>")
-					.text(this.zone + ": Click to prepend " + template.Title)
-					.click(callback)
-					.appendTo($(".zoneItem", this.$element));
-			}
+	
+	function Organizable() {
+		this.reveal = function () {
+			var $dropPoint = $(this.$element).find(".n2-drop-area.n2-append");
+			$("html,body").animate({ scrollTop: $dropPoint.offset().top - window.innerHeight / 3 }, function () {
+				$dropPoint[0].scrollIntoViewIfNeeded();
+			})
+		}
+	}
+	function Zone(element) {
+		var zone = this;
+		this.name = $(element).attr("data-zone");
+		this.allowed = $(element).attr("data-allowed").split(",");
+		this.$element = element;
+		this.parts = [];
+		this.addPlaceholders = function (template, callback) {
+			$("<div class='n2-drop-area n2-append'><a href>" + "Append to " + this.name + "</a></div>")
+				.click(function (e) {
+					e.preventDefault();
+					callback(zone);
+				})
+				.appendTo(this.$element);
+
+			angular.forEach(zone.parts, function (part) {
+				$("<div class='n2-drop-area n2-prepend'><a href>" + "Insert into " + zone.name + "</a></div>")
+					.click(function (e) {
+						e.preventDefault();
+						callback(zone, part);
+					})
+					.prependTo(part.$element);
+			})
 		};
-		$(".zoneItem", this).each(function () {
-			var part = {
-				path: $(this).attr("data-item"),
-				sortOrder: $(this).attr("data-sortorder"),
-				type: $(this).attr("data-sortorder"),
-				$element: this
-			};
+		this.removePlaceholders = function () {
+			$(".n2-drop-area", this.$element).remove();
+		}
+
+		$(".zoneItem", element).each(function () {
+			var part = new Part(this);
 			zone.parts.push(part);
 		});
-		result.zones.push(zone);
-		result.names.push(zone.name);
-	})
-	return result;
+
+		return this;
+	}
+	Zone.prototype = new Organizable();
+
+	function Part(element) {
+		this.path = $(this).attr("data-item");
+		this.sortOrder = $(this).attr("data-sortorder");
+		this.type = $(this).attr("data-sortorder");
+		this.$element = element;
+		return this;
+	}
+	Zone.prototype = new Organizable();
+
+	function ZoneOperator() {
+		var operator = this;
+		this.zones = [];
+		this.names = [];
+		this.removePlaceholders = function () {
+			angular.forEach(this.zones, function (zone) {
+				zone.removePlaceholders();
+			});
+		}
+
+		$(".dropZone", $window.document).each(function () {
+			var zone = new Zone(this);
+			operator.zones.push(zone);
+			operator.names.push(zone.name);
+		})
+	}
+
+	return new ZoneOperator();
 }]);
 
 n2.preview.factory("Mode", ["$window", function ($window) {
@@ -133,18 +171,33 @@ n2.preview.directive("n2Preview", ["$http", "$templateCache", "$compile", "Paths
 					$scope.templates = Context.Templates
 			}
 
+			$scope.scrollTo = function (zone) {
+				console.log("scrollTo", zone);
+				zone.reveal();
+			}
+
 			$scope.beginAdding = function (template) {
 				console.log(template)
+				$scope.adding = {
+					zones: [],
+					template: template
+				};
 				angular.forEach(Zone.zones, function (zone) {
 					if (zone.allowed.indexOf(template.Discriminator)) {
 						$scope.templates = null;
-						zone.appendPlaceholder(template, function () {
+						$scope.adding.zones.push(zone);
+						zone.addPlaceholders(template, function (e) {
 							console.log("clicked", arguments, this)
 						});
 					}
 				})
+				console.log("adding", $scope.adding);
 			}
 			
+			$scope.cancelAdding = function () {
+				$scope.adding = null;
+				Zone.removePlaceholders();
+			}
 		}
 	}
 }])
