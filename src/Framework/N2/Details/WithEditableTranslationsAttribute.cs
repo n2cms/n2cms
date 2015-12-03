@@ -50,7 +50,6 @@ namespace N2.Details
 				if (!translations.ContainsKey(kvp.Key))
 					translations.Add(kvp.Key, kvp.Value);
 
-			//tb.Text = string.Join(Environment.NewLine, translations.Select(kvp => Uri.EscapeUriString(kvp.Key) + "=" + Uri.EscapeUriString(kvp.Value)));
 			tb.Text = new JavaScriptSerializer().Serialize(translations);
 		}
 
@@ -58,8 +57,6 @@ namespace N2.Details
 		{
 			bool changed = false;
 			var tb = (TextBox)editor;
-			//var inputTranslations = tb.Text.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
-			//	.Select(row => row.Split('=')).ToDictionary(kvp => Uri.UnescapeDataString(kvp[0]), kvp => Uri.UnescapeDataString(kvp[1]));
 			var inputTranslations = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(tb.Text);
             var translations = item.DetailCollections.GetTranslations(CollectionKey);
 			foreach (var removedKey in translations.Keys.Except(inputTranslations.Keys))
