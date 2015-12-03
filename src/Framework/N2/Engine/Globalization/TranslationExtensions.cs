@@ -19,9 +19,6 @@ namespace N2.Engine.Globalization
 
 		public static void SetTranslation(this IContentList<DetailCollection> collections, string key, string value, string collectionKey = DefaultCollectionKey)
 		{
-			if (string.IsNullOrEmpty(key))
-				return;
-
 			var collection = collections[collectionKey];
 			var detail = collection.Details.Where(cd => cd.Meta == key).FirstOrDefault();
 			if (detail == null)
@@ -43,9 +40,7 @@ namespace N2.Engine.Globalization
 
 		public static IDictionary<string, string> GetTranslations(this IContentList<DetailCollection> collections, string collectionKey = DefaultCollectionKey)
 		{
-			return collections[collectionKey].Details
-				.Where(cd => !string.IsNullOrEmpty(cd.Meta))
-				.ToDictionary(cd => cd.Meta, cd => cd.StringValue);
+			return collections[collectionKey].Details.ToDictionary(cd => cd.Meta, cd => cd.StringValue);
 		}
 	}
 }
