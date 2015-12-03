@@ -784,7 +784,7 @@ function PageInfoDetailsCtrl($scope, Content) {
 
 function PagePublishCtrl($scope, $rootScope, $modal, Content, Confirm, Translate) {
 	$scope.publish = function () {
-		Content.publish({ selected: $scope.Context.CurrentItem.Path, n2versionIndex: $scope.Context.CurrentItem.VersionIndex }, function (result) {
+		Content.publish(Content.applySelection({ n2versionIndex: $scope.Context.CurrentItem.VersionIndex }, $scope.Context.CurrentItem), function (result) {
 			$scope.previewUrl(result.Current.PreviewUrl);
 
 			$scope.reloadNode(result.Current.Path, $scope.refreshContext);
