@@ -964,7 +964,18 @@ namespace N2.Tests.Edit.Versioning
             object.ReferenceEquals(clone.StringList, page.StringList).ShouldBe(false);
         }
 
-        [Test]
+		[Test]
+		public void CloneForVersioningRecursive_AlsoClones_MetaInformation()
+		{
+			var page = CreateOneItem<PersistableItem>(0, "root", null);
+
+			new N2.Details.ContentDetail(page, "Hello", "World") { Meta = "Super!" }.AddTo(page.DetailCollections["Hello"]);
+
+			var clone = (PersistableItem)page.CloneForVersioningRecursive();
+			clone.DetailCollections["Hello"].Details.Single().Meta.ShouldBe("Super!");
+		}
+
+		[Test]
         public void Links_AreMaintained_WhenCreatinVersions()
         {
             var root = CreateOneItem<PersistableItem>(0, "root", null);

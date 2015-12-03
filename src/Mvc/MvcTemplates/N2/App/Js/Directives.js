@@ -646,5 +646,22 @@ span.null {color:silver}\
 		}
 	});
 
+	module.directive("n2BindEscaped", function () {
+		return {
+			restrict: "A",
+			link: function (scope, element, attrs) {
+				var message = scope.$eval(attrs.n2BindEscaped) || "";
+				//message = message
+				//	.replace(/&/g, '&amp;')
+				//	.replace(/"/g, '&quot;')
+				//	.replace(/'/g, '&#39;')
+				//	.replace(/</g, '&lt;')
+				//	.replace(/>/g, '&gt;');
+				//console.log("msg", message, scope.message);
+				element.html(message);
+			}
+		}
+	});
+
 
 })(angular.module('n2.directives', ['n2.localization']));

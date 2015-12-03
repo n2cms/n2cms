@@ -70,9 +70,7 @@ namespace N2.Edit.Collaboration
 				if (eventType <= messageProvider.reportingLevel)
 				{
 					var titleBody = Split(string.Format(format, args));
-					titleBody[0] = HttpUtility.HtmlEncode(titleBody[0]);
-					titleBody[1] = "<pre><code>" + HttpUtility.HtmlEncode(titleBody[1])+ "</code></pre>";
-                    messageProvider.Add(new CollaborationMessage { Title = titleBody[0], Text = titleBody[1], Alert = false, Updated = eventCache.DateTime, RequiredPermission = Permission.Administer });
+					messageProvider.Add(new CollaborationMessage { Title = titleBody[0], Text = titleBody[1], Alert = false, Updated = eventCache.DateTime, RequiredPermission = Permission.Administer });
 				}
 				base.TraceEvent(eventCache, source, eventType, id, format, args);
 			}
@@ -80,7 +78,10 @@ namespace N2.Edit.Collaboration
 			public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id, string message)
 			{
 				if (eventType <= messageProvider.reportingLevel)
-					messageProvider.Add(new CollaborationMessage { Title = Split(message)[0], Text = Split(message)[1], Alert = false, Updated = eventCache.DateTime, RequiredPermission = Permission.Administer });
+				{
+					var titleBody = Split(message);
+					messageProvider.Add(new CollaborationMessage { Title = titleBody[0], Text = titleBody[1], Alert = false, Updated = eventCache.DateTime, RequiredPermission = Permission.Administer });
+				}
 				base.TraceEvent(eventCache, source, eventType, id, message);
 			}
 
@@ -88,9 +89,15 @@ namespace N2.Edit.Collaboration
 			{
 				var i = message.IndexOfAny(Environment.NewLine.ToCharArray());
 				if (i > 0)
-					return new string[] { message.Substring(0, i), message.Substring(i).Trim() };
+					return new string[] { HttpUtility.HtmlEncode(message.Substring(0, i)), FormatErrorBody(message.Substring(i).Trim()) };
 				else
-					return new string[] { message, null };
+					return new string[] { HttpUtility.HtmlEncode(message), "" };
+			}
+
+
+			private static string FormatErrorBody(string body)
+			{
+				return "<pre><code>" + HttpUtility.HtmlEncode(body) + "</code></pre>";
 			}
 		}
 	}

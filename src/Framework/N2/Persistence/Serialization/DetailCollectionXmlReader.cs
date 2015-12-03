@@ -33,6 +33,7 @@ namespace N2.Persistence.Serialization
             Dictionary<string, string> attributes = GetAttributes(navigator);
             Type type = Utility.TypeFromName(attributes["typeName"]);
 
+			string meta = attributes.ContainsKey("meta") ? attributes["meta"] : null;
             if (type == typeof(ContentItem))
             {
                 int referencedItemID = int.Parse(navigator.Value);
@@ -42,7 +43,8 @@ namespace N2.Persistence.Serialization
                     collection.Add(ContentDetail.New(
                         collection.EnclosingItem,
                         attributes["name"],
-                        referencedItem));
+                        referencedItem, 
+						meta));
                 }
                 else
                 {
@@ -51,23 +53,26 @@ namespace N2.Persistence.Serialization
                             collection.Add(ContentDetail.New(
                                 collection.EnclosingItem,
                                 attributes["name"],
-                                item));
+                                item,
+								meta));
                         }, relationType: "collectionlink");
                 }
             }
             else if (type == typeof(Enum))
             {
-                if (attributes.ContainsKey("meta"))
+                if (meta != null)
                 {
                     collection.Add(ContentDetail.New(
                         collection.EnclosingItem,
                         attributes["name"],
-                        Parse(navigator.Value, Type.GetType(attributes["meta"]))));
+                        Parse(navigator.Value, Type.GetType(meta))));
                 }
             }
             else if (type == typeof(IMultipleValue))
             {
-                detailReader.ReadMultipleValue(navigator, collection.EnclosingItem, journal, collection.Name).AddTo(collection);
+				var detail = detailReader.ReadMultipleValue(navigator, collection.EnclosingItem, journal, collection.Name);
+				detail.Meta = meta;
+				detail.AddTo(collection);
             }
             else
             {
@@ -75,7 +80,7 @@ namespace N2.Persistence.Serialization
                 if (value is string)
                     value = detailReader.PrepareStringDetail(collection.EnclosingItem, collection.Name, value as string, attributes.ContainsKey("encoded") && Convert.ToBoolean(attributes["encoded"]));
 
-                collection.Add(ContentDetail.New(collection.EnclosingItem, attributes["name"], value));
+                collection.Add(ContentDetail.New(collection.EnclosingItem, attributes["name"], value, meta));
             }
         }
 

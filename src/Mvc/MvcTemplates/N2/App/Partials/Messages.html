@@ -17,7 +17,7 @@
 				<b class="ico fa fa-envelope"></b>
 				{{message.Title}}
 				<time datetime="{{message.Updated}}">{{message.Updated | date: 'short'}}</time>
-				<p ng-show="message.Expanded" ng-bind-html="message.Text" n2-stop-propagation></p>
+				<p ng-show="message.Expanded" n2-bind-escaped="message.Text" n2-stop-propagation></p>
 			</a>
 		</li>
 		<li ng-show="messages.list.length"><a href ng-click="messages.clear()" translate="messages.dismiss"><b class="ico fa fa-times"></b> Dismiss</a></li>
