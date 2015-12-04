@@ -155,6 +155,7 @@
 				'definitions': { method: 'GET', params: { target: 'definitions' } },
 				'templates': { method: 'GET', params: { target: 'templates' } },
 				'move': { method: 'POST', params: { target: 'move' } },
+				'organize': { method: 'POST', params: { target: 'organize' } },
 				'sort': { method: 'POST', params: { target: 'sort' } },
 				'remove': { method: 'POST', params: { target: 'delete' } },
 				'removeMessage': { method: 'DELETE', params: { target: 'message' } },

@@ -130,6 +130,7 @@ namespace N2.Management.Api
 							return;
 						case "/sort":
 						case "/move":
+						case "/organize":
 							Move(context, Selection.RequestValueAccessor);
 							return;
 						case "/copy":

@@ -269,7 +269,7 @@ n2.preview.directive("n2PreviewParts", [function () {
 							request[Context.Paths.SelectedQueryKey] = part.path;
 							request[Context.Paths.ItemQueryKey] = part.id;
 
-							Content.move(request, function () {
+							Content.organize(request, function () {
 								//console.log("moved", arguments, part, destinationZone, beforePart);
 								window.location.reload();
 							})
