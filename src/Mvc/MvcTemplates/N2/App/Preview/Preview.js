@@ -3,7 +3,7 @@
 n2.preview = angular.module('n2preview', ['n2.directives', 'n2.services'], function () {
 });
 
-n2.preview.factory("Zone", ["$window", "Context", "Uri", function ($window, Context, Uri) {
+n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($window, Context, Uri) {
 	
 	function Organizable() {
 		this.reveal = function () {
@@ -79,7 +79,7 @@ n2.preview.factory("Zone", ["$window", "Context", "Uri", function ($window, Cont
 	}
 	Zone.prototype = new Organizable();
 
-	function ZoneOperator() {
+	function ZoneOperator($scope) {
 		var operator = this;
 		this.zones = [];
 		this.names = [];
@@ -94,9 +94,13 @@ n2.preview.factory("Zone", ["$window", "Context", "Uri", function ($window, Cont
 			operator.zones.push(zone);
 			operator.names.push(zone.name);
 		})
-	}
 
-	return new ZoneOperator();
+		$(".titleBar .move").click(function (e) {
+			e.preventDefault();
+			console.log("move it")
+		});
+	}
+	return ZoneOperator;
 }]);
 
 n2.preview.factory("Mode", ["$window", function ($window) {
@@ -127,7 +131,7 @@ n2.preview.directive("n2Preview", ["$http", "$templateCache", "$compile", "Paths
 				element.removeClass("n2-loading").addClass("n2-loaded");
 			});
 		},
-		controller: function ($scope, Mode, Fullscreen, ContentFactory, Security, Uri, Zone) {
+		controller: function ($scope, Mode, Fullscreen, ContentFactory, Security, Uri) {
 			var Content = ContentFactory(Context.Paths);
 
 			function appendSelection(url, ci, appendVersionIndex) {
@@ -183,6 +187,23 @@ n2.preview.directive("n2Preview", ["$http", "$templateCache", "$compile", "Paths
 				});
 			}
 
+		}
+	}
+}])
+
+n2.preview.directive("n2PreviewBar", [function () {
+	return {
+		controller: function ($scope) {
+			//console.log("PreviewBarCtrl", $scope);
+		}
+	}
+}])
+
+n2.preview.directive("n2PreviewParts", [function () {
+	return {
+		controller: function ($scope, Context, ZoneOperator) {
+			var operator = new ZoneOperator($scope);
+
 			$scope.toggleParts = function () {
 				$scope.adding = null;
 				if ($scope.templates)
@@ -200,27 +221,19 @@ n2.preview.directive("n2Preview", ["$http", "$templateCache", "$compile", "Paths
 					zones: [],
 					template: template
 				};
-				angular.forEach(Zone.zones, function (zone) {
+				angular.forEach(operator.zones, function (zone) {
 					if (zone.allowed.indexOf(template.Discriminator) >= 0) {
 						$scope.templates = null;
 						$scope.adding.zones.push(zone);
-						zone.addPlaceholders(template);
+						zone.addPlaceholders(template, "create");
 					}
 				})
 			}
-			
+
 			$scope.cancelAdding = function () {
 				$scope.adding = null;
-				Zone.removePlaceholders();
+				operator.removePlaceholders();
 			}
-		}
-	}
-}])
-
-n2.preview.directive("n2PreviewBar", [function () {
-	return {
-		controller: function ($scope) {
-			//console.log("PreviewBarCtrl", $scope);
 		}
 	}
 }])

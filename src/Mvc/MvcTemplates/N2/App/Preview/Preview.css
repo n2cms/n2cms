@@ -79,8 +79,8 @@
 .zoneItem .titleBar:hover { z-index:300; box-shadow: 0 -2px 10px #fff; background-color: rgba(24, 160, 222, 1); outline: solid 2px rgba(24, 160, 222, 1); }
 	.zoneItem .titleBar .title { display:inline-block; padding:5px; padding-left:24px; background:none no-repeat 5px 5px; color:#fff; }
 		.zoneItem .titleBar .title .fa { margin-left: -15px; margin-right:5px;  }
-	.zoneItem .titleBar a { float:right; color:#fff; padding:10px; margin:-2px -2px 0 0; position:relative; }
-	.zoneItem .titleBar a:hover { text-decoration:none; background-color: rgba(116, 198, 235, 0.5); }
+	.zoneItem .titleBar .commands a { float:right; color:#fff; padding:10px; margin:-2px -2px 0 0; position:relative; }
+	.zoneItem .titleBar .commands a:hover { text-decoration:none; background-color: rgba(116, 198, 235, 0.5); }
 .zoneItem:hover .zoneItem:hover > .titleBar { margin-top:0; }
 
 .n2-drop-area { height:1px; margin:7px; position:relative; }

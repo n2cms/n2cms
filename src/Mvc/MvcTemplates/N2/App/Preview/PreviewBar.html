@@ -27,7 +27,7 @@
 		<li class="n2-preview-publish" ng-show="publishableFuture">
 			<a href="{{Paths.publish}}" title="Publish changes on this draft"><b class="fa fa-clock-o"></b></a>
 		</li>
-		<li class="n2-preview-add" ng-show="dragging" ng-class="{ 'n2-active': templates }">
+		<li class="n2-preview-add" ng-show="dragging" ng-class="{ 'n2-active': templates }" n2-preview-parts>
 			<a href ng-click="toggleParts()"><b class="fa fa-plus-square"></b> Add part</a>
 			<ul class="n2-preview-foldup" ng-show="templates">
 				<li ng-repeat="template in templates" title="{{template}}">
