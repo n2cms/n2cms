@@ -28,13 +28,11 @@ n2.preview.factory("Zone", ["$window", "Context", "Uri", function ($window, Cont
 		}
 		this.createUrl = function (template, beforePart) {
 			var qs = { zoneName: this.name, n2versionIndex: Context.CurrentItem.VersionIndex, n2scroll: document.body.scrollTop, belowVersionKey: this.belowVersionKey, returnUrl: encodeURIComponent(window.location.pathname + window.location.search) };
+			qs[Context.Paths.SelectedQueryKey] = this.path;
 			if (beforePart) {
 				angular.extend(qs, { before: !beforePart.versionKey && beforePart.path, beforeSortOrder: beforePart.sortOrder, beforeVersionKey: beforePart.versionKey });
-				qs[Context.Paths.SelectedQueryKey] = this.path;
-				console.log("insertBefore", qs.selected, qs, template, beforePart)
 			} else {
 				angular.extend(qs, { below: this.path, n2versionKey: this.versionKey });
-				//console.log("appendZone", qs)
 			}
 			var uri = new Uri(template.EditUrl).setQuery(qs);
 			return uri.toString();
@@ -43,7 +41,7 @@ n2.preview.factory("Zone", ["$window", "Context", "Uri", function ($window, Cont
 			var createUrl = this.createUrl(template);
 			$("<div class='n2-drop-area n2-append'><a href='" + createUrl + "'>" + "Append to <b>" + this.title + "</b></a></div>")
 				.click(function (e) {
-					callback(e, zone);
+					callback && callback(e, zone);
 				})
 				.appendTo(this.$element);
 
@@ -51,7 +49,7 @@ n2.preview.factory("Zone", ["$window", "Context", "Uri", function ($window, Cont
 				var createUrl = zone.createUrl(template, part);
 				$("<div class='n2-drop-area n2-prepend'><a href='" + createUrl + "'>" + "Insert into <b>" + zone.title + "</b></a></div>")
 					.click(function (e) {
-						callback(e, zone, part);
+						callback && callback(e, zone, part);
 					})
 					.prependTo(part.$element);
 			})
@@ -206,9 +204,7 @@ n2.preview.directive("n2Preview", ["$http", "$templateCache", "$compile", "Paths
 					if (zone.allowed.indexOf(template.Discriminator) >= 0) {
 						$scope.templates = null;
 						$scope.adding.zones.push(zone);
-						zone.addPlaceholders(template, function (e) {
-							console.log("clicked", arguments, this)
-						});
+						zone.addPlaceholders(template);
 					}
 				})
 			}
