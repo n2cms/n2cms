@@ -35,12 +35,20 @@
 				</li>
 			</ul>
 			<div ng-show="adding" class="n2-preview-adding n2-preview-foldup">
-				<div><strong>Click on a zone in which to add "{{adding.template.Title}}"</strong></div>
+				<label>Click on a zone in which to add <strong>"{{adding.template.Title}}"</strong>.</label>
 				<div>
 					Scroll to 
 					<a href ng-repeat="zone in adding.zones" ng-click="scrollTo(zone)">{{zone.title}} </a>
 				</div>
 				<button ng-click="cancelAdding()">Cancel</button>
+			</div>
+			<div ng-show="moving" class="n2-preview-moving n2-preview-foldup">
+				<label>Click on a zone onto which to move <strong>"{{moving.part.type}}"</strong>.</label>
+				<div>
+					Scroll to
+					<a href ng-repeat="zone in moving.zones" ng-click="scrollTo(zone)">{{zone.title}} </a>
+				</div>
+				<button ng-click="cancelMoving()">Cancel</button>
 			</div>
 		</li>
 		<li ng-repeat="node in Context.Menu.Children">

@@ -13,7 +13,7 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 			})
 		}
 	}
-	function Zone(element) {
+	function Zone(element, $scope) {
 		var zone = this;
 		this.name = $(element).attr("data-zone");
 		this.title = element.title || this.name;
@@ -37,17 +37,27 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 			var uri = new Uri(template.EditUrl).setQuery(qs);
 			return uri.toString();
 		}
+		this.moveUrl = function (part, beforePart) {
+			return "#";
+			//var url = new Uri(Context.Paths.Management + "Content/Move.aspx");
+			//url.appendQuery(Context.Paths.SelectedQueryKey, part.path)
+			//url.appendQuery(Context.Paths.ItemQueryKey, part.id)
+		}
 		this.addPlaceholders = function (template, callback) {
-			var createUrl = this.createUrl(template);
-			$("<div class='n2-drop-area n2-append'><a href='" + createUrl + "'>" + "Append to <b>" + this.title + "</b></a></div>")
+			var url = template.Discriminator
+				? this.createUrl(template)
+				: this.moveUrl(template);
+			$("<div class='n2-drop-area n2-append'><a href='" + url + "'>" + "Append to <b>" + this.title + "</b></a></div>")
 				.click(function (e) {
 					callback && callback(e, zone);
 				})
 				.appendTo(this.$element);
 
 			angular.forEach(zone.parts, function (part) {
-				var createUrl = zone.createUrl(template, part);
-				$("<div class='n2-drop-area n2-prepend'><a href='" + createUrl + "'>" + "Insert into <b>" + zone.title + "</b></a></div>")
+				var url = template.Discriminator
+					? zone.createUrl(template, part)
+					: zone.moveUrl(template, part);
+				$("<div class='n2-drop-area n2-prepend'><a href='" + url + "'>" + "Insert into <b>" + zone.title + "</b></a></div>")
 					.click(function (e) {
 						callback && callback(e, zone, part);
 					})
@@ -61,7 +71,7 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 		$(".zoneItem", element).each(function () {
 			if ($(this).closest(".dropZone")[0] != element)
 				return; // sub-zone's items
-			var part = new Part(this);
+			var part = new Part(this, $scope);
 			zone.parts.push(part);
 		});
 
@@ -69,12 +79,22 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 	}
 	Zone.prototype = new Organizable();
 
-	function Part(element) {
+	function Part(element, $scope) {
+		var part = this;
+		this.id = $(element).attr("data-id");
 		this.path = $(element).attr("data-item");
 		this.versionKey = $(element).attr("data-versionkey")
 		this.sortOrder = $(element).attr("data-sortorder");
-		this.type = $(element).attr("data-sortorder");
+		this.type = $(element).attr("data-type");
 		this.$element = element;
+
+		$(this.$element).on("click", ".titleBar .move", function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			$scope.$apply(function () {
+				$scope.$emit("move-requested", part);
+			})
+		})
 		return this;
 	}
 	Zone.prototype = new Organizable();
@@ -90,14 +110,9 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 		}
 
 		$(".dropZone", $window.document).each(function () {
-			var zone = new Zone(this);
+			var zone = new Zone(this, $scope);
 			operator.zones.push(zone);
 			operator.names.push(zone.name);
-		})
-
-		$(".titleBar .move").click(function (e) {
-			e.preventDefault();
-			console.log("move it")
 		});
 	}
 	return ZoneOperator;
@@ -201,7 +216,7 @@ n2.preview.directive("n2PreviewBar", [function () {
 
 n2.preview.directive("n2PreviewParts", [function () {
 	return {
-		controller: function ($scope, Context, ZoneOperator) {
+		controller: function ($scope, $location, Context, Content, ZoneOperator) {
 			var operator = new ZoneOperator($scope);
 
 			$scope.toggleParts = function () {
@@ -221,11 +236,11 @@ n2.preview.directive("n2PreviewParts", [function () {
 					zones: [],
 					template: template
 				};
+				$scope.templates = null;
 				angular.forEach(operator.zones, function (zone) {
 					if (zone.allowed.indexOf(template.Discriminator) >= 0) {
-						$scope.templates = null;
 						$scope.adding.zones.push(zone);
-						zone.addPlaceholders(template, "create");
+						zone.addPlaceholders(template);
 					}
 				})
 			}
@@ -234,6 +249,40 @@ n2.preview.directive("n2PreviewParts", [function () {
 				$scope.adding = null;
 				operator.removePlaceholders();
 			}
+
+			$scope.$on("move-requested", function (e, part) {
+				$scope.moving = {
+					part: part,
+					zones: []
+				};
+				angular.forEach(operator.zones, function (zone) {
+					if (zone.allowed.indexOf(part.type) >= 0) {
+						$scope.moving.zones.push(zone);
+						zone.addPlaceholders(part, function (e, destinationZone, beforePart) {
+							e.preventDefault();
+							
+							var request = {
+								to: destinationZone.path,
+								zone: destinationZone.name,
+								before: beforePart && beforePart.path
+							}
+							request[Context.Paths.SelectedQueryKey] = part.path;
+							request[Context.Paths.ItemQueryKey] = part.id;
+
+							Content.move(request, function () {
+								//console.log("moved", arguments, part, destinationZone, beforePart);
+								window.location.reload();
+							})
+						});
+					}
+				})
+			});
+
+			$scope.cancelMoving = function () {
+				$scope.moving = null;
+				operator.removePlaceholders();
+			}
+
 		}
 	}
 }])
