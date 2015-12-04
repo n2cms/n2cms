@@ -10,10 +10,10 @@
 			<a href="{{Paths.edit}}" title="Edit {{Context.CurrentItem.Title}}"><b class="fa fa-pencil-square"></b></a>
 		</li>
 		<li class="n2-preview-organize" ng-show="!dragging && Permissions.write">
-			<a href="{{Paths.organize}}" title="Organize parts"><b class="fa fa-object-ungroup"></b></a>
+			<a href="{{Paths.organize}}" title="Organize parts"><b class="fa fa-object-group"></b></a>
 		</li>
 		<li class="n2-preview-unorganize n2-active" ng-show="dragging">
-			<a href="{{Paths.preview}}" title="Stop organizing parts"><b class="fa fa-object-ungroup"></b></a>
+			<a href="{{Paths.preview}}" title="Stop organizing parts"><b class="fa fa-object-group"></b></a>
 		</li>
 		<li class="n2-preview-publish" ng-show="publishable">
 			<a href="{{Paths.publish}}" title="Publish changes on this draft"><b class="fa fa-play-circle"></b> Publish</a>
