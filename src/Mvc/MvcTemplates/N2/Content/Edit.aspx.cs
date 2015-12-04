@@ -155,7 +155,7 @@ namespace N2.Edit
 
 			Engine.AddActivity(new ManagementActivity { Operation = "Preview", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
 
-			HandleResult(ctx, previewUrl);
+			HandleResult(ctx, Request["returnUrl"], previewUrl);
 		}
 
 		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
