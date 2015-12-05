@@ -27,7 +27,7 @@ namespace N2.Web.Mvc.Html
         static ControlPanelExtensions()
         {
             ControlPanelFactory = (html) =>
-				(legacyEnabled ?? (legacyEnabled = html.ContentEngine().Config.Sections.Management.Organize.LegacyEnabled) ?? false)
+				(legacyEnabled ?? (legacyEnabled = html.ContentEngine().Config.Sections.Management.Organize.UseLegacyControlPanel) ?? false)
 					? new LegacyControlPanelHelper(html)
 					: new ControlPanelHelper(html.ContentEngine(), html.CurrentItem(), html.ViewContext.Writer, html.ViewContext.GetResourceStateCollection());
         }

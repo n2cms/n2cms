@@ -7,20 +7,23 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 	
 	function Organizable() {
 		this.reveal = function () {
-			var $dropPoint = $(this.$element).children(".n2-drop-area.n2-append");
+			var $dropPoint = $(this.$element).children(".n2-drop-area.n2-append,.titleBar");
 			$("html,body").animate({ scrollTop: $dropPoint.offset().top - window.innerHeight / 3 }, function () {
 				$dropPoint[0].scrollIntoViewIfNeeded();
-				$(".n2-flashing").removeClass("n2-flashing");
-				$dropPoint.addClass("n2-flashing");
 			})
 		}
+		this.highlight = function () {
+			var $dropPoint = $(this.$element).children(".n2-drop-area.n2-append,.titleBar");
+			$(".n2-flashing").removeClass("n2-flashing");
+			$dropPoint.addClass("n2-flashing");
+		}
 		this.createUrl = function (template, beforePart) {
-			var qs = { zoneName: this.zone || this.name, n2versionIndex: Context.CurrentItem.VersionIndex, n2scroll: document.body.scrollTop, belowVersionKey: this.belowVersionKey, returnUrl: encodeURIComponent(window.location.pathname + window.location.search) };
+			var qs = { zoneName: this.zone || this.name, n2versionIndex: Context.CurrentItem.VersionIndex, n2scroll: document.body.scrollTop, belowVersionKey: this.versionKey, returnUrl: encodeURIComponent(window.location.pathname + window.location.search) };
 			qs[Context.Paths.SelectedQueryKey] = this.path;
 			if (beforePart) {
 				angular.extend(qs, { before: !beforePart.versionKey && beforePart.path, beforeSortOrder: beforePart.sortOrder, beforeVersionKey: beforePart.versionKey });
 			} else {
-				angular.extend(qs, { below: this.path, n2versionKey: this.versionKey });
+				angular.extend(qs, { below: this.path, n2versionKey: this.versionKey, belowVersionKey: this.versionKey });
 			}
 			var uri = new Uri(template.EditUrl).setQuery(qs);
 			return uri.toString();
@@ -34,6 +37,7 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 	}
 	function Zone(element, $scope) {
 		var zone = this;
+		this.isZone = true;
 		this.name = $(element).attr("data-zone");
 		this.title = element.title || this.name;
 		this.allowed = $(element).attr("data-allowed").split(",");
@@ -42,8 +46,8 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 		this.$element = element;
 		this.parts = [];
 		if ($(element).closest(".dropZone").attr("data-versionIndex")) {
-			this.belowVersionIndex = $(element).closest(".dropZone").attr("data-versionIndex");
-			this.belowVersionKey = $(element).closest(".dropZone").attr("data-versionKey");
+			this.versionIndex = $(element).closest(".dropZone").attr("data-versionIndex");
+			this.versionKey = $(element).closest(".dropZone").attr("data-versionKey");
 		}
 		this.addPlaceholders = function (template, callback) {
 			var url = template.Discriminator
@@ -76,6 +80,7 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 
 	function Part(element, zone, $scope) {
 		var part = this;
+		this.isPart = true;
 		this.zone = zone.name;
 		this.id = $(element).attr("data-id");
 		this.path = $(element).attr("data-item");
@@ -236,6 +241,7 @@ n2.preview.directive("n2PreviewParts", [function () {
 
 			$scope.scrollTo = function (zone) {
 				zone.reveal();
+				zone.highlight();
 			}
 
 			$scope.beginAdding = function (template) {
@@ -271,13 +277,19 @@ n2.preview.directive("n2PreviewParts", [function () {
 							var request = {
 								to: destinationZone.path,
 								zone: destinationZone.name,
-								before: beforePart && beforePart.path
+								below: destinationZone.path,
+								belowVersionKey: destinationZone.versionKey,
+								before: beforePart && beforePart.path,
+								beforeVersionKey: beforePart && beforePart.versionKey,
+								n2versionIndex: destinationZone.versionIndex
 							}
 							request[Context.Paths.SelectedQueryKey] = part.path;
 							request[Context.Paths.ItemQueryKey] = part.id;
+							request["n2versionKey"] = part.versionKey;
 
+							console.log("moving", request, destinationZone, beforePart);
 							Content.organize(request, function () {
-								//console.log("moved", arguments, part, destinationZone, beforePart);
+								console.log("moved", arguments);
 								window.location.reload();
 							})
 						});

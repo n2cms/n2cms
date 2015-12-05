@@ -19,6 +19,7 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Script.Serialization;
 using N2.Edit.Api;
+using N2.Web.Parts;
 
 namespace N2.Management.Api
 {
@@ -130,8 +131,10 @@ namespace N2.Management.Api
 							return;
 						case "/sort":
 						case "/move":
-						case "/organize":
 							Move(context, Selection.RequestValueAccessor);
+							return;
+						case "/organize":
+							Organize(context, Selection);
 							return;
 						case "/copy":
 							Copy(context, Selection.RequestValueAccessor);
@@ -174,6 +177,48 @@ namespace N2.Management.Api
 
 			if (!TryExecuteExternalHandlers(context))
 				throw new HttpException((int)HttpStatusCode.NotImplemented, "Not Implemented");
+		}
+
+		private void Organize(HttpContextBase context, SelectionUtility selection)
+		{
+			var navigator = engine.Resolve<Navigator>();
+			var persister = engine.Persister;
+			var integrity = engine.IntegrityManager;
+			var versions = engine.Resolve<IVersionManager>();
+			var versionRepository = engine.Resolve<ContentVersionRepository>();
+
+			string versionIndex = selection.RequestValueAccessor(PathData.VersionIndexQueryKey);
+			string versionKey = selection.RequestValueAccessor(PathData.VersionKeyQueryKey);
+            var path = PartsExtensions.EnsureDraft(versions, versionRepository, versionIndex, versionKey, selection.SelectedItem);
+			ContentItem item = path.CurrentItem;
+			ContentItem page = path.CurrentPage;
+
+			item.ZoneName = selection.RequestValueAccessor("zone");
+
+			var beforeItem = PartsExtensions.GetBeforeItem(navigator, selection.RequestValueAccessor, page);
+			ContentItem parent;
+			if (beforeItem != null)
+			{
+				parent = beforeItem.Parent;
+				int newIndex = parent.Children.IndexOf(beforeItem);
+				ThrowUnlessNull(integrity.GetMoveException(item, parent));
+				Utility.Insert(item, parent, newIndex);
+			}
+			else
+			{
+				parent = PartsExtensions.GetBelowItem(navigator, selection.RequestValueAccessor, page);
+				ThrowUnlessNull(integrity.GetMoveException(item, parent));
+				Utility.Insert(item, parent, parent.Children.Count);
+			}
+
+			Utility.UpdateSortOrder(parent.Children);
+			versionRepository.Save(page);
+		}
+
+		private void ThrowUnlessNull(Exception exception)
+		{
+			if (exception != null)
+				throw exception;
 		}
 
 		private void Autosave(HttpContextBase context)

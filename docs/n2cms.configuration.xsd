@@ -614,32 +614,6 @@
                   <xs:attribute name="overwriteLanguage" type="xs:string" use="optional" default="en" />
 								</xs:complexType>
 							</xs:element>
-							<!--<xs:element name="tinyMCE" minOccurs="0">
-								<xs:complexType>
-									<xs:all>
-										<xs:element name="settings">
-											<xs:complexType>
-												<xs:sequence>
-													<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
-													<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
-														<xs:complexType>
-															<xs:attribute name="key" type="xs:string" use="required"/>
-														</xs:complexType>
-													</xs:element>
-													<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
-														<xs:complexType>
-															<xs:attribute name="key" type="xs:string" use="required" />
-															<xs:attribute name="value" type="xs:string" use="required" />
-														</xs:complexType>
-													</xs:element>
-												</xs:sequence>
-											</xs:complexType>
-										</xs:element>
-									</xs:all>
-									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
-									<xs:attribute name="cssUrl" type="xs:string" use="optional" />
-								</xs:complexType>
-							</xs:element>-->
 							<xs:element name="nameEditor" minOccurs="0">
 								<xs:complexType>
 									<xs:all>
@@ -804,6 +778,11 @@
 											</xs:restriction>
 										</xs:simpleType>
 									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="organize" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="useLegacyControlPanel" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
 						</xs:all>
