@@ -44,7 +44,7 @@
 					Scroll to 
 					<a href ng-repeat="zone in adding.zones" ng-click="scrollTo(zone)">{{zone.title}} </a>
 				</div>
-				<button ng-click="cancelAdding()">Cancel</button>
+				<a href class="n2-button" ng-click="cancelAdding()">Cancel</a>
 			</div>
 			<div ng-show="moving" class="n2-preview-moving n2-preview-foldup">
 				<label>Click on a zone onto which to move <strong>"{{moving.part.type}}"</strong>.</label>
@@ -52,7 +52,7 @@
 					Scroll to
 					<a href ng-repeat="zone in moving.zones" ng-click="scrollTo(zone)">{{zone.title}} </a>
 				</div>
-				<button ng-click="cancelMoving()">Cancel</button>
+				<a href class="n2-button" ng-click="cancelMoving()">Cancel</a>
 			</div>
 		</li>
 		<li ng-repeat="node in Context.Menu.Children">

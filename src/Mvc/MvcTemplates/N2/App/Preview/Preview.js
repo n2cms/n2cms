@@ -7,24 +7,12 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 	
 	function Organizable() {
 		this.reveal = function () {
-			var $dropPoint = $(this.$element).find(".n2-drop-area.n2-append");
+			var $dropPoint = $(this.$element).children(".n2-drop-area.n2-append");
 			$("html,body").animate({ scrollTop: $dropPoint.offset().top - window.innerHeight / 3 }, function () {
 				$dropPoint[0].scrollIntoViewIfNeeded();
+				$(".n2-flashing").removeClass("n2-flashing");
+				$dropPoint.addClass("n2-flashing");
 			})
-		}
-	}
-	function Zone(element, $scope) {
-		var zone = this;
-		this.name = $(element).attr("data-zone");
-		this.title = element.title || this.name;
-		this.allowed = $(element).attr("data-allowed").split(",");
-		this.path = $(element).attr("data-item");
-		this.versionKey = $(element).attr("data-versionKey");
-		this.$element = element;
-		this.parts = [];
-		if ($(element).closest(".dropZone").attr("data-versionIndex")) {
-			this.belowVersionIndex = $(element).closest(".dropZone").attr("data-versionIndex");
-			this.belowVersionKey = $(element).closest(".dropZone").attr("data-versionKey");
 		}
 		this.createUrl = function (template, beforePart) {
 			var qs = { zoneName: this.name, n2versionIndex: Context.CurrentItem.VersionIndex, n2scroll: document.body.scrollTop, belowVersionKey: this.belowVersionKey, returnUrl: encodeURIComponent(window.location.pathname + window.location.search) };
@@ -43,25 +31,32 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 			//url.appendQuery(Context.Paths.SelectedQueryKey, part.path)
 			//url.appendQuery(Context.Paths.ItemQueryKey, part.id)
 		}
+	}
+	function Zone(element, $scope) {
+		var zone = this;
+		this.name = $(element).attr("data-zone");
+		this.title = element.title || this.name;
+		this.allowed = $(element).attr("data-allowed").split(",");
+		this.path = $(element).attr("data-item");
+		this.versionKey = $(element).attr("data-versionKey");
+		this.$element = element;
+		this.parts = [];
+		if ($(element).closest(".dropZone").attr("data-versionIndex")) {
+			this.belowVersionIndex = $(element).closest(".dropZone").attr("data-versionIndex");
+			this.belowVersionKey = $(element).closest(".dropZone").attr("data-versionKey");
+		}
 		this.addPlaceholders = function (template, callback) {
 			var url = template.Discriminator
 				? this.createUrl(template)
 				: this.moveUrl(template);
-			$("<div class='n2-drop-area n2-append'><a href='" + url + "'>" + "Append to <b>" + this.title + "</b></a></div>")
+			$("<div class='n2-drop-area n2-append'><a href='" + url + "'><span>" + "Append to <b>" + this.title + "</b></span></a></div>")
 				.click(function (e) {
 					callback && callback(e, zone);
 				})
 				.appendTo(this.$element);
 
 			angular.forEach(zone.parts, function (part) {
-				var url = template.Discriminator
-					? zone.createUrl(template, part)
-					: zone.moveUrl(template, part);
-				$("<div class='n2-drop-area n2-prepend'><a href='" + url + "'>" + "Insert into <b>" + zone.title + "</b></a></div>")
-					.click(function (e) {
-						callback && callback(e, zone, part);
-					})
-					.prependTo(part.$element);
+				part.addPlaceholders(template, callback);
 			})
 		};
 		this.removePlaceholders = function () {
@@ -71,7 +66,7 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 		$(".zoneItem", element).each(function () {
 			if ($(this).closest(".dropZone")[0] != element)
 				return; // sub-zone's items
-			var part = new Part(this, $scope);
+			var part = new Part(this, zone, $scope);
 			zone.parts.push(part);
 		});
 
@@ -79,7 +74,7 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 	}
 	Zone.prototype = new Organizable();
 
-	function Part(element, $scope) {
+	function Part(element, zone, $scope) {
 		var part = this;
 		this.id = $(element).attr("data-id");
 		this.path = $(element).attr("data-item");
@@ -87,6 +82,17 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 		this.sortOrder = $(element).attr("data-sortorder");
 		this.type = $(element).attr("data-type");
 		this.$element = element;
+
+		this.addPlaceholders = function (template, callback) {
+			var url = template.Discriminator
+				? this.createUrl(template, part)
+				: this.moveUrl(template, part);
+			$("<div class='n2-drop-area n2-prepend'><a href='" + url + "'><span>" + "Insert into <b>" + zone.title + "</b></span></a></div>")
+				.click(function (e) {
+					callback && callback(e, zone, part);
+				})
+				.prependTo(part.$element);
+		}
 
 		$(this.$element).on("click", ".titleBar .move", function (e) {
 			e.preventDefault();
@@ -97,7 +103,7 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 		})
 		return this;
 	}
-	Zone.prototype = new Organizable();
+	Part.prototype = new Organizable();
 
 	function ZoneOperator($scope) {
 		var operator = this;
