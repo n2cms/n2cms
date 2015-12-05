@@ -15,7 +15,7 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 			})
 		}
 		this.createUrl = function (template, beforePart) {
-			var qs = { zoneName: this.name, n2versionIndex: Context.CurrentItem.VersionIndex, n2scroll: document.body.scrollTop, belowVersionKey: this.belowVersionKey, returnUrl: encodeURIComponent(window.location.pathname + window.location.search) };
+			var qs = { zoneName: this.zone || this.name, n2versionIndex: Context.CurrentItem.VersionIndex, n2scroll: document.body.scrollTop, belowVersionKey: this.belowVersionKey, returnUrl: encodeURIComponent(window.location.pathname + window.location.search) };
 			qs[Context.Paths.SelectedQueryKey] = this.path;
 			if (beforePart) {
 				angular.extend(qs, { before: !beforePart.versionKey && beforePart.path, beforeSortOrder: beforePart.sortOrder, beforeVersionKey: beforePart.versionKey });
@@ -76,6 +76,7 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 
 	function Part(element, zone, $scope) {
 		var part = this;
+		this.zone = zone.name;
 		this.id = $(element).attr("data-id");
 		this.path = $(element).attr("data-item");
 		this.versionKey = $(element).attr("data-versionkey")
