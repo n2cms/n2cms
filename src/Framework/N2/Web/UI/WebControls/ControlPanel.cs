@@ -261,6 +261,12 @@ jQuery(document).ready(function(){{
 
         protected override void Render(HtmlTextWriter writer)
         {
+			if (!Engine.Config.Sections.Management.Organize.LegacyEnabled)
+			{
+				var cph = new Mvc.Html.ControlPanelExtensions.ControlPanelHelper(Engine, CurrentItem, writer, Page.Items["StateCollection"] as HashSet<string> ?? (Page.Items["StateCollection"] = new HashSet<string>()) as HashSet<string>);
+				cph.Render();
+                return;
+            }
             IDictionary<string, IList<string>> arrays = GetArrays(Page);
             writer.WriteLineNoTabs(@"<script type='text/javascript'>//<!--");
             if (arrays.Count > 0)

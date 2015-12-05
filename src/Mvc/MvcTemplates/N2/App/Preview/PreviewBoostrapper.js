@@ -23,7 +23,6 @@ $(function () {
 			var result = angular.bootstrap(div, ["n2preview"]);		
 		}
 	};
-	n2.boostrapper.append("link", { type: "text/css", rel: "stylesheet", href: "/N2/App/Preview/Preview.css" })
 	var div = n2.boostrapper.append("div", null, { "class": "n2-preview n2-loading", "n2-preview": "" })
 	n2.boostrapper.appendScripts(['//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.js', '//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-resource.js', '/N2/App/i18n/en.js.ashx', '/N2/App/Js/Directives.js', '/N2/App/Js/Services.js', '/N2/App/Preview/Preview.js'], function () { n2.boostrapper.init(div) });
 });

@@ -31,7 +31,11 @@
 			<a href ng-click="toggleParts()"><b class="fa fa-plus-square"></b> Add part</a>
 			<ul class="n2-preview-foldup" ng-show="templates">
 				<li ng-repeat="template in templates" title="{{template}}">
-					<a href ng-click="beginAdding(template)"><b class="{{template.IconClass}}"></b> {{template.Title}}</a>
+					<a href ng-click="beginAdding(template)">
+						<b ng-show="template.IconUrl" class="n2-iconed" style="background-image:url({{template.IconUrl}})"></b> 
+						<b ng-hide="template.IconUrl" class="{{template.IconClass}}"></b> 
+						{{template.Title}}
+					</a>
 				</li>
 			</ul>
 			<div ng-show="adding" class="n2-preview-adding n2-preview-foldup">

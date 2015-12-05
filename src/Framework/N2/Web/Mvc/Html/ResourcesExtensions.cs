@@ -54,13 +54,12 @@ namespace N2.Web.Mvc.Html
 				.StyleSheet(Register.FancyboxCssPath.ResolveUrlTokens());
 		}
 
-		public static IEnumerable<ResourcesHelper> IconsCss(this ResourcesHelper registrator)
+		public static ResourcesHelper IconsCss(this ResourcesHelper registrator)
 		{
 			var p = Register.IconsCssPath.Split(';');
-			var r = new ResourcesHelper[p.Length];
 			for (int i = 0; i < p.Length; ++i)
-				r[i] = registrator.StyleSheet(p[i].ResolveUrlTokens());
-			return r;
+				registrator = registrator.StyleSheet(p[i].ResolveUrlTokens());
+			return registrator;
 		}
 
 		public static ResourcesHelper JQuery(this ResourcesHelper registrator)
@@ -150,12 +149,11 @@ namespace N2.Web.Mvc.Html
 			}
 		}
 
-		public static IEnumerable<ResourcesHelper> PartsJs(this ResourcesHelper registrator)
+		public static ResourcesHelper PartsJs(this ResourcesHelper registrator)
 		{
-			List<ResourcesHelper> result = new List<ResourcesHelper>();
-			result.AddRange(registrator.IconsCss());
-			result.Add(registrator.JavaScript(Register.PartsJsPath.ResolveUrlTokens()));
-			return result;
+			registrator = registrator.IconsCss();
+			registrator = registrator.JavaScript(Register.PartsJsPath.ResolveUrlTokens());
+			return registrator;
 		}
 
 		public static ResourcesHelper PartsCss(this ResourcesHelper registrator)
