@@ -53,8 +53,8 @@
 		<li class="n2-preview-publish" ng-show="publishable">
 			<a href="{{Paths.publish}}" title="Publish changes on this draft"><b class="fa fa-play-circle"></b> Publish</a>
 		</li>
-		<li class="n2-preview-publish" ng-show="publishableFuture">
-			<a href="{{Paths.publish}}" title="Publish changes on this draft"><b class="fa fa-clock-o"></b></a>
+		<li class="n2-preview-publish" ng-show="Context.Draft" n2-preview-draft>
+			<a href="{{href}}" title="{{tooltip}}"><b class="fa fa-circle-o"></b> Show draft</a>
 		</li>
 
 		<li class="n2-preview-more" n2-preview-more>

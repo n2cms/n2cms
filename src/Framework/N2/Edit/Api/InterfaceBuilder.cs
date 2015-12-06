@@ -14,6 +14,7 @@ using N2.Plugin;
 using System.IO;
 using N2.Web.Parts;
 using N2.Edit.Api;
+using N2.Edit.Versioning;
 
 namespace N2.Management.Api
 {
@@ -127,6 +128,7 @@ namespace N2.Management.Api
         public InterfacePaths Paths { get; set; }
         public ActivityTrackingConfiguration ActivityTracking { get; set; }
 		public List<TemplateInfo> Templates { get; internal set; }
+		public DraftInfo Draft { get; internal set; }
 	}
 	public class ActivityTrackingConfiguration
 	{
@@ -244,7 +246,8 @@ namespace N2.Management.Api
 					Interval = engine.Config.Sections.Management.Collaboration.PingInterval,
 					Path = engine.Config.Sections.Management.Collaboration.ActivityTrackingEnabled ? engine.Config.Sections.Management.Collaboration.PingPath.ResolveUrlTokens() : null
 				},
-				Templates = templates
+				Templates = templates,
+				Draft = engine.Resolve<Edit.Versioning.DraftRepository>().GetDraftInfo(item)
 			};
 			
 			PostProcess(data);

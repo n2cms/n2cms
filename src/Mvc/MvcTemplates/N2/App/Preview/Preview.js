@@ -281,7 +281,7 @@ n2.preview.directive("n2Preview", ["$http", "$templateCache", "$compile", "Paths
 					deleted: Content.states.is(ci.State, Content.states.Deleted)
 				}
 				$scope.publishable = permissions.publish && Content.states.is(ci.State, Content.states.Draft);
-				$scope.publishableFuture = permissions.publish && Content.states.is(ci.State, Content.states.waiting);
+				//$scope.publishableFuture = permissions.publish && Content.states.is(ci.State, Content.states.waiting);
 				$scope.deletable = permissions.publish;
 				$scope.discardable = permissions.write && Content.states.is(ci.State, Content.states.Draft);
 			});
@@ -394,6 +394,18 @@ n2.preview.directive("n2PreviewParts", [function () {
 			// init
 
 			operator.enableEditables();
+		}
+	}
+}])
+
+n2.preview.directive("n2PreviewDraft", [function () {
+	return {
+		controller: function ($scope, $filter, Context, Uri) {
+			if (Context.Draft) {
+				$scope.tooltip = $filter('date')("medium", Context.Draft.Saved)
+					+ " - " + Context.Draft.SavedBy;
+				$scope.href = new Uri(Context.CurrentItem.Url).setQuery("n2versionIndex", Context.Draft.VersionIndex).toString();
+			}
 		}
 	}
 }])
