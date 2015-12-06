@@ -1,8 +1,8 @@
 ﻿@import url("smoothness/jquery-ui-1.8.22.dialog.css");
 
-.sc, .sc a, .titleBar, .dragShadow { font-family: 'Segoe UI', Helvetica, sans-serif; font-size:13px; color:#333; text-align:left; }
+.sc, .sc a, .dragShadow { font-family: 'Segoe UI', Helvetica, sans-serif; font-size:13px; color:#333; text-align:left; }
 
-.zoneItem   { position:relative;}
+/*.zoneItem   { position:relative;}
 .dropZone .zoneItem:hover { outline:dotted 1px #44ff88; }
 .titleBar   { background:#fff none no-repeat 1px 50%; color:#333; padding:0 1px; position:relative; border:solid 1px #e3e5e4; height:20px; box-shadow: #666 4px 4px 10px -2px; overflow:hidden; white-space:nowrap; font-family: 'Segoe UI', Helvetica, sans-serif; font-size:11px; }
 .zoneItem .titleBar	{ background-image:url(../../Resources/Img/gripper.gif); cursor:move;}
@@ -19,10 +19,10 @@
 	
 .dragShadow { opacity: .4; background-color:lightslategray; filter: alpha(opacity=60); min-height:50px; }
 .dragging { cursor:move; }
-.dragging .titleBar { display:none; }
+.dragging .titleBar { display:none; }*/
 
 /* hide/show droppables */
-.dropPoint { position:relative; background-color:#cec; border:solid 1px #efe; margin:-1px 0; clear: both; }
+/*.dropPoint { position:relative; background-color:#cec; border:solid 1px #efe; margin:-1px 0; clear: both; }
 	.dropPoint .description { font-size:9px; padding:0 3px;  }
 .dragging .dragShadow { cursor:move; }
 .dragged { outline:dotted 1px #c33; }
@@ -34,7 +34,7 @@
 	.dropPoint .dropping { position:absolute; z-index:980; top:8px; right:8px; height:16px; width:16px; background:transparent url(../../Resources/Img/ajax-loader.gif) no-repeat 50% 50%; }
 :hover.dropPoint { border-color:#d1d4d3; background-position:3px 0; }
 .droppable-active { background:url(../../Resources/Img/shading_green.png); padding:0; }
-.droppable-hover { background-color:#8e8; outline:solid 2px #393; }
+.droppable-hover { background-color:#8e8; outline:solid 2px #393; }*/
 
 .sc { position:fixed; _position:absolute; top:-200px; left:-200px; z-index:1100; border:none 1px #ccb; border-style:none solid solid none; background:#fff none repeat-x scroll 0 0; box-shadow: #666 4px 4px 10px -2px;  font-family: 'Segoe UI', Helvetica, sans-serif; font-size:13px; }
 	.sc .scContent { }

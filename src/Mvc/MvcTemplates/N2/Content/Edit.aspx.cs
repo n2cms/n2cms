@@ -31,7 +31,8 @@ namespace N2.Edit
 	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}&n2versionIndex={Selected.VersionIndex}", "Edit page", 50, ControlPanelState.Visible | ControlPanelState.DragDrop,
 		CssClass = "complementary",
 		RequiredPermission = Permission.Write,
-		IconClass = "fa fa-pencil-square")]
+		IconClass = "fa fa-pencil-square",
+		Legacy = true)]
 	[ControlPanelPreviewPublish("Publish draft", 70,
 		RequiredPermission = Permission.Publish)]
 	[ControlPanelEditingSave("Save changes", 10,
@@ -154,7 +155,7 @@ namespace N2.Edit
 
 			Engine.AddActivity(new ManagementActivity { Operation = "Preview", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
 
-			HandleResult(ctx, previewUrl);
+			HandleResult(ctx, Request["returnUrl"], previewUrl);
 		}
 
 		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)

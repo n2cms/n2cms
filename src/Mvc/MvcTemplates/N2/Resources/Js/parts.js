@@ -1,4 +1,4 @@
-﻿(function ($) {
+﻿f(function ($) {
 	var isDragging = false;
 	var dialog = null;
 

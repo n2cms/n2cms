@@ -71,21 +71,7 @@ function getParentPath(path) {
 	return parentPathExpr.exec(path) && parentPathExpr.exec(path)[1];;
 }
 
-function Uri(uri) {
-	this.uri = uri;
-	this.appendQuery = function (key, value) {
-		if (uri.indexOf("?") >= 0)
-			this.uri += "&" + key + "=" + value;
-		else
-			this.uri += "?" + key + "=" + value;
-		return this;
-	};
-	this.toString = function () {
-		return this.uri;
-	};
-};
-
-function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $rootScope, Context, Content, Profile, Security, FrameContext, Translate, Eventually, LocationKeeper, Notify, EbbCallbacks) {
+function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $rootScope, Context, Content, Profile, Security, FrameContext, Translate, Eventually, LocationKeeper, Notify, EbbCallbacks, Paths) {
 	$scope.Content = Content;
 	$scope.Security = Security;
 
@@ -294,8 +280,8 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 
 	var query = $location.search();
 	Context.full(query, function (i) {
+		Paths.initialize(i.Interface.Paths)
 		$scope.Context.Partials.Management = "App/Partials/Management.html";
-		Content.paths = i.Interface.Paths;
 		translateMenuRecursive(i.Interface.MainMenu);
 		translateMenuRecursive(i.Interface.ActionMenu);
 		translateMenuRecursive(i.Interface.ContextMenu);
@@ -512,7 +498,7 @@ function ScopeHandler($scope, Content) {
 	return this;
 }
 
-function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
+function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory, Uri) {
 	$scope.$watch("Context.Content", function (content) {
 		$scope.node = content;
 	});

@@ -22,17 +22,9 @@ namespace N2.Edit.Install
         protected MigrationEngine Migrator { get { return Engine.Resolve<MigrationEngine>(); } }
         protected InstallationChecker Checker { get { return Engine.Resolve<InstallationChecker>(); } }
 
-	    protected Action CurrentAction
-	    {
-		    get { return (Action) Session["CurrentAction"]; }
-		    set { Session["CurrentAction"] = value; }
-	    }
+		protected static Action CurrentAction { get; set; }
 
-	    protected String CurrentActionProgress
-	    {
-			get { return (String)Session["UpgradeEngineProgress"]; }
-			set { Session["UpgradeEngineProgress"] = value; }
-	    }
+		protected static String CurrentActionProgress { get; set; }
 
 	    protected override void OnInit(EventArgs e)
         {
@@ -108,11 +100,13 @@ namespace N2.Edit.Install
 			    lblProgress.Text = "(null upgrade action)";
 	    }
 
-	    protected void HideProgress()
+		protected static Exception InstallException;
+
+        protected void HideProgress()
 	    {
 		    TabPanel1.Visible = true;
 		    tpProgress.Visible = false;
-			var error = (Exception)Session["InstallException"];
+			var error = InstallException;
 			if (error != null)
 			{
 				errorLabel.Text = FormatException(error);

@@ -104,27 +104,40 @@ namespace N2.Web.Parts
             }
         }
 
-        public static ContentItem GetBeforeItem(Edit.Navigator navigator, System.Collections.Specialized.NameValueCollection request, ContentItem page)
+        public static ContentItem GetBeforeItem(Edit.Navigator navigator, NameValueCollection request, ContentItem page)
+		{
+			return GetBeforeItem(navigator, key => request[key], page);
+		}
+
+        public static ContentItem GetBeforeItem(Edit.Navigator navigator, Func<string, string> requestValueAccessor, ContentItem page)
         {
-            string before = request["before"];
-            string beforeVersionKey = request["beforeVersionKey"];
-            
-            if (!string.IsNullOrEmpty(before))
+            string before = requestValueAccessor("before");
+            string beforeVersionKey = requestValueAccessor("beforeVersionKey");
+
+			
+			if (!string.IsNullOrEmpty(beforeVersionKey))
+			{
+				ContentItem beforeItem = page.FindDescendantByVersionKey(beforeVersionKey);
+				if (beforeItem != null)
+					return beforeItem;
+			}
+			if (!string.IsNullOrEmpty(before))
             {
                 ContentItem beforeItem = navigator.Navigate(before);
                 return page.FindPartVersion(beforeItem);
             }
-            else if (!string.IsNullOrEmpty(beforeVersionKey))
-            {
-                return page.FindDescendantByVersionKey(beforeVersionKey);
-            }
             return null;
         }
 
-        public static ContentItem GetBelowItem(Edit.Navigator navigator, System.Collections.Specialized.NameValueCollection request, ContentItem page)
+        public static ContentItem GetBelowItem(Edit.Navigator navigator, NameValueCollection request, ContentItem page)
+		{
+			return GetBelowItem(navigator, key => request[key], page);
+		}
+
+        public static ContentItem GetBelowItem(Edit.Navigator navigator, Func<string, string> requestValueAccessor, ContentItem page)
         {
-            string below = request["below"];
-            string belowVersionKey = request["belowVersionKey"];
+            string below = requestValueAccessor("below");
+            string belowVersionKey = requestValueAccessor("belowVersionKey");
 
             if (!string.IsNullOrEmpty(belowVersionKey))
             {
@@ -137,21 +150,30 @@ namespace N2.Web.Parts
             }
         }
 
+		public static PathData EnsureDraft(IVersionManager versions, ContentVersionRepository versionRepository, Edit.Navigator navigator, NameValueCollection request)
+		{
+			return EnsureDraft(versions, versionRepository, navigator, key => request[key]);
+		}
 
-        public static PathData EnsureDraft(IVersionManager versions, ContentVersionRepository versionRepository, Edit.Navigator navigator, NameValueCollection request)
-        {
-            var item = navigator.Navigate(request[PathData.ItemQueryKey]);
-            item = versionRepository.ParseVersion(request[PathData.VersionIndexQueryKey], request[PathData.VersionKeyQueryKey], item)
-                ?? item;
+		public static PathData EnsureDraft(IVersionManager versions, ContentVersionRepository versionRepository, Edit.Navigator navigator, Func<string, string> requestValueAccessor)
+		{
+			var item = navigator.Navigate(requestValueAccessor(PathData.ItemQueryKey));
+            return EnsureDraft(versions, versionRepository, requestValueAccessor(PathData.VersionIndexQueryKey), requestValueAccessor(PathData.VersionKeyQueryKey), item);
+		}
 
-            var page = Find.ClosestPage(item);
-            if (!page.VersionOf.HasValue)
-            {
-                page = versions.AddVersion(page, asPreviousVersion: false);
-                item = page.FindPartVersion(item);
-            }
+		public static PathData EnsureDraft(IVersionManager versions, ContentVersionRepository versionRepository, string versionIndex, string versionKey, ContentItem item)
+		{
+			item = versionRepository.ParseVersion(versionIndex, versionKey, item)
+				?? item;
 
-            return new PathData(page, item);
-        }
-    }
+			var page = Find.ClosestPage(item);
+			if (!page.VersionOf.HasValue)
+			{
+				page = versions.GetOrCreateDraft(page);
+				item = page.FindPartVersion(item);
+			}
+
+			return new PathData(page, item);
+		}
+	}
 }

@@ -5,6 +5,7 @@ using System.Web.UI.WebControls;
 using N2.Engine;
 using N2.Plugin;
 using N2.Security;
+using N2.Web.UI.WebControls;
 
 namespace N2.Edit
 {
@@ -57,13 +58,16 @@ namespace N2.Edit
             set { engine = value; }
         }
 
-        #endregion
+		/// <summary>The control panel state that displays this plugin.</summary>
+		public ControlPanelState ShowDuring { get; set; }
 
-        /// <summary>Find out whether a user has permission to view this plugin in the toolbar.</summary>
-        /// <param name="user">The user to check.</param>
-        /// <param name="security">The security manager used to check authorization.</param>
-        /// <returns>True if the user is null or no permissions are required or the user has permissions.</returns>
-        public bool IsAuthorized(IPrincipal user, ISecurityManager security)
+		#endregion
+
+		/// <summary>Find out whether a user has permission to view this plugin in the toolbar.</summary>
+		/// <param name="user">The user to check.</param>
+		/// <param name="security">The security manager used to check authorization.</param>
+		/// <returns>True if the user is null or no permissions are required or the user has permissions.</returns>
+		public bool IsAuthorized(IPrincipal user, ISecurityManager security)
         {
             if (user == null) return true;
 

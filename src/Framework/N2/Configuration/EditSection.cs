@@ -171,5 +171,13 @@ namespace N2.Configuration
             get { return (DocViewerElementCollection)base["docviewer"]; }
             set { base["docviewer"] = value; }
         }
-    }
+
+		/// <summary>Configuration about editor collaboration features.</summary>
+		[ConfigurationProperty("organize")]
+		public OrganizeElement Organize
+		{
+			get { return (OrganizeElement)base["organize"]; }
+			set { base["organize"] = value; }
+		}
+	}
 }

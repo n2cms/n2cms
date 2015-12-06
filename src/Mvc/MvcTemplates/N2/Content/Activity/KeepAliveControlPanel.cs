@@ -14,6 +14,7 @@ namespace N2.Management.Content.Activity
         public KeepAliveControlPanelAttribute()
             : base("KeepAlive", null, null, null, 10000, ControlPanelState.Visible)
         {
+			Legacy = true;
         }
 
         public override System.Web.UI.Control AddTo(System.Web.UI.Control container, PluginContext context)

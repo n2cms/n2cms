@@ -136,104 +136,108 @@
 		return window.top.n2ctx;
 	});
 
-	module.factory('Content', function ($resource) {
-		var res = $resource('Api/Content.ashx/:target', { target: '' }, {
-			'children': { method: 'GET', params: { target: 'children' } },
-			'branch': { method: 'GET', params: { target: 'branch' } },
-			'tree': { method: 'GET', params: { target: 'tree' } },
-			'ancestors': { method: 'GET', params: { target: 'ancestors' } },
-			'node': { method: 'GET', params: { target: 'node' } },
-			'parent': { method: 'GET', params: { target: 'parent' } },
-			'search': { method: 'GET', params: { target: 'search' } },
-			'translations': { method: 'GET', params: { target: 'translations' } },
-			'versions': { method: 'GET', params: { target: 'versions' } },
-			'definitions': { method: 'GET', params: { target: 'definitions' } },
-			'templates': { method: 'GET', params: { target: 'templates' } },
-			'move': { method: 'POST', params: { target: 'move' } },
-			'sort': { method: 'POST', params: { target: 'sort' } },
-			'remove': { method: 'POST', params: { target: 'delete' } },
-			'removeMessage': { method: 'DELETE', params: { target: 'message' } },
-			'publish': { method: 'POST', params: { target: 'publish' } },
-			'unpublish': { method: 'POST', params: { target: 'unpublish' } },
-			'schedule': { method: 'POST', params: { target: 'schedule' } }
-		});
+	module.factory('Content', function (ContentFactory, Paths) {
+		return ContentFactory(Paths);
+	});
 
-		res.paths = {
-			SelectedQueryKey: "selected",
-			ItemQueryKey: "item"
-		};
+	module.factory('ContentFactory', function ($resource) {
+		return function (paths) {
+			var res = $resource(paths.Management + 'Api/Content.ashx/:target', { target: '' }, {
+				'children': { method: 'GET', params: { target: 'children' } },
+				'branch': { method: 'GET', params: { target: 'branch' } },
+				'tree': { method: 'GET', params: { target: 'tree' } },
+				'ancestors': { method: 'GET', params: { target: 'ancestors' } },
+				'node': { method: 'GET', params: { target: 'node' } },
+				'parent': { method: 'GET', params: { target: 'parent' } },
+				'search': { method: 'GET', params: { target: 'search' } },
+				'translations': { method: 'GET', params: { target: 'translations' } },
+				'versions': { method: 'GET', params: { target: 'versions' } },
+				'definitions': { method: 'GET', params: { target: 'definitions' } },
+				'templates': { method: 'GET', params: { target: 'templates' } },
+				'move': { method: 'POST', params: { target: 'move' } },
+				'organize': { method: 'POST', params: { target: 'organize' } },
+				'sort': { method: 'POST', params: { target: 'sort' } },
+				'remove': { method: 'POST', params: { target: 'delete' } },
+				'removeMessage': { method: 'DELETE', params: { target: 'message' } },
+				'publish': { method: 'POST', params: { target: 'publish' } },
+				'unpublish': { method: 'POST', params: { target: 'unpublish' } },
+				'schedule': { method: 'POST', params: { target: 'schedule' } }
+			});
 
-		res.applySelection = function(settings, currentItem) {
-			var path = currentItem && currentItem.Path;
-			var id = currentItem && currentItem.ID;
+			res.paths = paths;
 
-			if (typeof currentItem == "string") {
-				path = currentItem;
-			} else if (typeof currentItem == "number") {
-				id = currentItem;
-			}
+			res.applySelection = function(settings, currentItem) {
+				var path = currentItem && currentItem.Path;
+				var id = currentItem && currentItem.ID;
 
-			if (path || id) {
-				var selection = {};
-				selection[res.paths.SelectedQueryKey] = path;
-				selection[res.paths.ItemQueryKey] = id;
-				return angular.extend(selection, settings);
-			}
-			return settings;
-		};
+				if (typeof currentItem == "string") {
+					path = currentItem;
+				} else if (typeof currentItem == "number") {
+					id = currentItem;
+				}
 
-		res.loadChildren = function (node, callback) {
-		    if (!node)
-		        return;
+				if (path || id) {
+					var selection = {};
+					selection[paths.SelectedQueryKey] = path;
+					selection[paths.ItemQueryKey] = id;
+					return angular.extend(selection, settings);
+				}
+				return settings;
+			};
 
-		    node.Loading = true;
-		    return res.children(res.applySelection({}, node.Current), function (data) {
-		        node.Children = data.Children;
-		        delete node.Loading;
-		        node.IsPaged = data.IsPaged;
-		        node.HasChildren = data.Children.length > 0;
-		        callback && callback(node);
-		    });
-		};
+			res.loadChildren = function (node, callback) {
+				if (!node)
+					return;
 
-		res.unloadChildren = function (node, callback) {
-			if (node) node.Children = [];
-			callback && callback(node);
-		};
+				node.Loading = true;
+				return res.children(res.applySelection({}, node.Current), function (data) {
+					node.Children = data.Children;
+					delete node.Loading;
+					node.IsPaged = data.IsPaged;
+					node.HasChildren = data.Children.length > 0;
+					callback && callback(node);
+				});
+			};
 
-		res.reload = function (node, callback) {
-		    if (!node)
-		        return;
+			res.unloadChildren = function (node, callback) {
+				if (node) node.Children = [];
+				callback && callback(node);
+			};
 
-		    node.Loading = true;
-		    res.node(res.applySelection({ }, node.Current), function (data) {
-		        node.Current = data.Node.Current;
-		        delete node.Loading;
-		        callback && callback(node);
-		    });
-		};
+			res.reload = function (node, callback) {
+				if (!node)
+					return;
 
-		res.states = {
-			None: 0,
-			New: 1,
-			Draft: 2,
-			Waiting: 4,
-			Published: 16,
-			Unpublished: 32,
-			Deleted: 64,
-			All: 2 + 4 + 8 + 16 + 32 + 64,
-			is: function (actual, expected) {
-				return (actual & expected) == expected;
-			},
-			toString: function (state) {
-				for (var key in res.states)
-					if (res.states[key] == state)
-						return key;
-				return null;
-			}
-		};
+				node.Loading = true;
+				res.node(res.applySelection({ }, node.Current), function (data) {
+					node.Current = data.Node.Current;
+					delete node.Loading;
+					callback && callback(node);
+				});
+			};
+
+			res.states = {
+				None: 0,
+				New: 1,
+				Draft: 2,
+				Waiting: 4,
+				Published: 16,
+				Unpublished: 32,
+				Deleted: 64,
+				All: 2 + 4 + 8 + 16 + 32 + 64,
+				is: function (actual, expected) {
+					return (actual & expected) == expected;
+				},
+				toString: function (state) {
+					for (var key in res.states)
+						if (res.states[key] == state)
+							return key;
+					return null;
+				}
+			};
 		
-		return res;
+			return res;
+		}
 	});
 
 	module.factory('Context', function ($resource) {
@@ -288,6 +292,17 @@
 			}
 		};
 		return notify;
+	});
+
+	module.factory("Paths", function () {
+		return {
+			Management: "",
+			SelectedQueryKey: "selected",
+			ItemQueryKey: "n2item",
+			initialize: function (paths) {
+				angular.extend(this, paths);
+			}
+		};
 	});
 
 	module.factory('ContextMenuFactory', function () {
@@ -397,4 +412,46 @@
 		};
 	});
 
+	module.factory('Uri', function () {
+		function Uri(uri) {
+			this.$uri = uri || "";
+			this.getSeparator = function() {
+				return this.$uri.indexOf("?") >= 0 ? "&" : "?";
+			};
+			this.appendQuery = function (key, value) {
+				return new Uri(this.$uri + this.getSeparator() + key + "=" + value);
+			};
+			this.setQuery = function (key, value) {
+				if (typeof key == "object") {
+					var uri = new Uri(this.$uri);
+					angular.forEach(key, function (value, key) {
+						uri = uri.setQuery(key, value);
+					});
+					return uri;
+				} else if (!value)
+					return this;
+
+				var queryIndex = this.$uri.indexOf("?");
+				if (queryIndex < 0)
+					return this.appendQuery(key, value);
+				var qs = this.$uri.substr(queryIndex + 1).split("&");
+				var modified = false;
+				for (var i = 0; i < qs.length; i++) {
+					if (qs[i] == key || qs[i].indexOf(key + "=") == 0) {
+						qs[i] = key + "=" + value;
+						modified = true;
+						break;
+					}
+				}
+				if (!modified)
+					return this.appendQuery(key, value);
+				
+				return new Uri(this.$uri.substr(0, queryIndex + 1) + qs.join("&"));
+			};
+			this.toString = function () {
+				return this.$uri;
+			};
+		};
+		return Uri;
+	});
 })(angular.module('n2.services', ['ngResource']));
