@@ -28,18 +28,20 @@
 	display:inline-block;
 	line-height:14px;
 }
-	.n2-preview-actions li {
+	.n2-preview-actions > li {
 		list-style-type:none;
 		padding:0;
 		margin:0;
 		display:inline-block;
+		position:relative;
 	}
-	.n2-preview-actions li > a { display:inline-block; padding:12px; color:#fff; }
+	.n2-preview-actions > li > a { display:inline-block; padding:12px; color:#fff; }
 
 	.n2-preview-actions li > a:hover, 
 	.n2-preview-actions li.n2-active > a { background-color:rgba(255, 255, 255, .15) }
 
-	.n2-preview-actions .fa { height:15px; width:15px; }
+	.n2-preview-actions .fa { height:15px; width:15px; text-align: center; }
+	.n2-preview-actions .n2-iconed { display:inline-block; width:16px; height:16px; background: transparent none no-repeat 50% 50%; vertical-align: bottom; }
 
 	.n2-preview-actions .n2-button { display:inline-block; background-color: #18a0de; padding:10px; border:none; color:#fff; }
 	.n2-preview-actions .n2-button:hover { background-color: rgba(24, 160, 222, 0.85); }
@@ -50,7 +52,7 @@
 		position:absolute; 
 		bottom:100%; 
 		left:0; 
-		min-width:200px; 
+		min-width:250px; 
 		max-width:500px; 
 		max-height:400px;
 		overflow:auto;
@@ -59,12 +61,9 @@
 		background-color:#fff;
 		border: solid 1px #18a0de;
 	}
+		.n2-preview-actions .n2-preview-foldup li a { color:#000; padding: 5px 10px; display:block; }
 
 	.n2-preview-add { position:relative; }
-		.n2-preview-add ul { margin:0; padding:0; }
-			.n2-preview-add ul li { color:#000; padding: 5px 10px; margin:0; padding:0; display:block; }
-			.n2-preview-add ul li a { color:#000; padding: 5px 10px; display:block; }
-			.n2-preview-add .n2-iconed { display:inline-block; width:16px; height:16px; background: transparent none no-repeat 50% 50%; }
 
 	.n2-preview-adding { padding: 10px; }
 		.n2-preview-adding label { display:block; margin-bottom: 10px; }

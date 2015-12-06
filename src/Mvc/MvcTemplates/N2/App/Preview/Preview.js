@@ -397,3 +397,14 @@ n2.preview.directive("n2PreviewParts", [function () {
 		}
 	}
 }])
+
+n2.preview.directive("n2PreviewMore", [function () {
+	return {
+		controller: function ($scope) {
+
+			$scope.toggleMore = function () {
+				$scope.showMore = !$scope.showMore;
+			}
+		}
+	}
+}])
