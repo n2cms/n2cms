@@ -3,8 +3,7 @@
 n2.preview = angular.module('n2preview', ['n2.directives', 'n2.services'], function () {
 });
 
-n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($window, Context, Uri) {
-	
+n2.preview.factory("Organizable", ["$window", "Context", "Uri", function ($window, Context, Uri) {
 	function Organizable() {
 		this.reveal = function () {
 			var $dropPoint = $(this.$element).children(".n2-drop-area.n2-append,.titleBar");
@@ -32,6 +31,11 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 			return "#";
 		}
 	}
+
+	return new Organizable();
+}]);
+
+n2.preview.factory("ZoneFactory", ["$window", "Context", "Uri", "PartFactory", "Organizable", function ($window, Context, Uri, PartFactory, Organizable) {
 
 	function Zone(element, $scope) {
 		var zone = this;
@@ -75,13 +79,18 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 		$(".zoneItem", element).each(function () {
 			if ($(this).closest(".dropZone")[0] != element)
 				return; // sub-zone's items
-			var part = new Part(this, zone, $scope);
+			var part = new PartFactory(this, zone, $scope);
 			zone.parts.push(part);
 		});
 
 		return this;
 	}
-	Zone.prototype = new Organizable();
+	Zone.prototype = Organizable;
+
+	return Zone;
+}]);
+
+n2.preview.factory("PartFactory", ["$window", "Context", "Uri", "Organizable", function ($window, Context, Uri, Organizable) {
 
 	function Part(element, zone, $scope) {
 		var part = this;
@@ -122,8 +131,13 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 		})
 		return this;
 	}
-	Part.prototype = new Organizable();
+	Part.prototype = Organizable;
 
+	return Part;
+}]);
+
+n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", "ZoneFactory", function ($window, Context, Uri, ZoneFactory) {
+	
 	function ZoneOperator($scope) {
 		var operator = this;
 		this.zones = [];
@@ -135,7 +149,7 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 		}
 
 		$(".dropZone", $window.document).each(function () {
-			var zone = new Zone(this, $scope);
+			var zone = new ZoneFactory(this, $scope);
 			operator.zones.push(zone);
 			operator.names.push(zone.name);
 		});
