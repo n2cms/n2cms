@@ -7,6 +7,7 @@ using N2.Security;
 using N2.Web;
 using N2.Persistence;
 using N2.Edit.Versioning;
+using N2.Resources;
 
 namespace N2.Edit.Versions
 {
@@ -34,6 +35,8 @@ namespace N2.Edit.Versions
             cvVersionable.IsValid = isVersionable;
 
             publishedItem = Selection.SelectedItem.VersionOf.Value ?? Selection.SelectedItem;
+
+			Page.JavaScript(Register.IconsCssPath);
 
             base.OnInit(e);
         }
@@ -130,5 +133,26 @@ namespace N2.Edit.Versions
 
             return false;
         }
+
+		protected string GetStateIconClass(ContentState state)
+		{
+			switch (state)
+			{
+				case ContentState.Deleted:
+					return "fa fa-trash-o red";
+				case ContentState.Draft:
+				case ContentState.New:
+					return "fa fa-circle-o orange";
+				case ContentState.Published:
+					return "fa fa-play-circle green";
+				case ContentState.Unpublished:
+					return "fa fa-stop red";
+				case ContentState.Waiting:
+					return "fa fa-clock orange";
+				case ContentState.None:
+				default:
+					return "";
+			}
+		}
     }
 }

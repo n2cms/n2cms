@@ -353,3 +353,9 @@ input.dp-applied {
 	display:inline-block;
 	width: 200px;
 }
+
+.red { color:red; }
+.green { color:green; }
+.dodgerblue { color:dodgerblue; }
+.orange { color:orange; }
+.yellow { color:yellow; }

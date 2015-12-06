@@ -11,19 +11,14 @@
 		<Columns>
 			<asp:TemplateField HeaderText="Version" meta:resourceKey="v" ItemStyle-CssClass="Version">
 				<ItemTemplate>
-					<%# IsPublished(Eval("Content")) ? "<img src='../../Resources/icons/bullet_green.png' alt='published' />" : string.Empty%>
-					<%# IsFuturePublished(Eval("Content")) ? "<img src='../../Resources/icons/clock.png' title='" + ((N2.ContentItem)Eval("Content"))["FuturePublishDate"] + "'/>" : ""%>
-					<span title='<%# Eval("State") %>'><%# ((N2.ContentItem)Eval("Content")).VersionIndex + 1%></span>
+					<span title='<%# Eval("State") %>'><%# ((N2.ContentItem)Eval("Content")).VersionIndex + 1%>. </span>
+					<b class='<%# GetStateIconClass((N2.ContentState)Eval("State")) %>' title="<%# IsFuturePublished(Eval("Content")) ? ((N2.ContentItem)Eval("Content"))["FuturePublishDate"] : ""%>"></b>
+					<asp:Literal runat="server" Text='<%# GetLocalResourceString("ContentState." + Eval("State"), Eval("State").ToString()) %>' />
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField HeaderText="Title" meta:resourceKey="title" >
 				<ItemTemplate>
 					<edit:ItemLink DataSource='<%# Eval("Content") %>' InterfaceUrl="../Edit.aspx" runat="server" />
-				</ItemTemplate>
-			</asp:TemplateField>
-			<asp:TemplateField HeaderText="State" meta:resourceKey="state">
-				<ItemTemplate>
-					<asp:Literal runat="server" Text='<%# GetLocalResourceString("ContentState." + Eval("State"), Eval("State").ToString()) %>' />
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:BoundField HeaderText="Published" DataField="Published" meta:resourceKey="published" />
