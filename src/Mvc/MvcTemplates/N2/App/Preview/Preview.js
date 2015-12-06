@@ -30,11 +30,9 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 		}
 		this.moveUrl = function (part, beforePart) {
 			return "#";
-			//var url = new Uri(Context.Paths.Management + "Content/Move.aspx");
-			//url.appendQuery(Context.Paths.SelectedQueryKey, part.path)
-			//url.appendQuery(Context.Paths.ItemQueryKey, part.id)
 		}
 	}
+
 	function Zone(element, $scope) {
 		var zone = this;
 		this.isZone = true;
@@ -53,18 +51,25 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 			var url = template.Discriminator
 				? this.createUrl(template)
 				: this.moveUrl(template);
-			$("<div class='n2-drop-area n2-append'><a href='" + url + "'><span>" + "Append to <b>" + this.title + "</b></span></a></div>")
+			$("<div class='n2-drop-area-marker n2-append'><a href='" + url + "'><span>" + "Append to <b>" + this.title + "</b></span></a></div>")
 				.click(function (e) {
 					callback && callback(e, zone);
 				})
 				.appendTo(this.$element);
 
-			angular.forEach(zone.parts, function (part) {
-				part.addPlaceholders(template, callback);
+			angular.forEach(zone.parts, function (part, index) {
+				part.addPlaceholders(template, callback, index == 0);
 			})
+
+			setTimeout(function () {
+				$(".n2-drop-area-marker").addClass("n2-drop-area");
+			});
 		};
 		this.removePlaceholders = function () {
-			$(".n2-drop-area", this.$element).remove();
+			$(".n2-drop-area-marker", this.$element).removeClass("n2-drop-area");
+			setTimeout(function () {
+				$(".n2-drop-area-marker").remove();
+			}, 500);
 		}
 
 		$(".zoneItem", element).each(function () {
@@ -89,11 +94,11 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 		this.type = $(element).attr("data-type");
 		this.$element = element;
 
-		this.addPlaceholders = function (template, callback) {
+		this.addPlaceholders = function (template, callback, first) {
 			var url = template.Discriminator
 				? this.createUrl(template, part)
 				: this.moveUrl(template, part);
-			$("<div class='n2-drop-area n2-prepend'><a href='" + url + "'><span>" + "Insert into <b>" + zone.title + "</b></span></a></div>")
+			$("<div class='n2-drop-area-marker n2-prepend'><a href='" + url + "'><span>" + (first ? "Prepend to " : "Insert into ") + "<b>" + zone.title + "</b></span></a></div>")
 				.click(function (e) {
 					callback && callback(e, zone, part);
 				})
@@ -106,6 +111,14 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", function ($wind
 			$scope.$apply(function () {
 				$scope.$emit("move-requested", part);
 			})
+		})
+
+		$(this.$element).hover(function (e) {
+			e.stopPropagation();
+			$(this).addClass("n2-part-hover").parents(".n2-part-hover").removeClass("n2-part-hover");
+		}, function (e) {
+			e.stopPropagation();
+			$(this).removeClass("n2-part-hover");
 		})
 		return this;
 	}
@@ -244,6 +257,8 @@ n2.preview.directive("n2PreviewParts", [function () {
 				zone.highlight();
 			}
 
+			// add
+
 			$scope.beginAdding = function (template) {
 				$scope.adding = {
 					zones: [],
@@ -262,6 +277,8 @@ n2.preview.directive("n2PreviewParts", [function () {
 				$scope.adding = null;
 				operator.removePlaceholders();
 			}
+
+			// move
 
 			$scope.$on("move-requested", function (e, part) {
 				$scope.moving = {
@@ -301,7 +318,6 @@ n2.preview.directive("n2PreviewParts", [function () {
 				$scope.moving = null;
 				operator.removePlaceholders();
 			}
-
 		}
 	}
 }])
