@@ -44,6 +44,7 @@
 			}
 			var items = self.extractChangedItems(dirtbags);
 
+			$(".publish.command").attr("disabled", "disabled");
 			jQuery.each(items, function (id, item) {
 				if (deferred)
 					deferred = deferred.then(function () { return self.saveItem(item); });
@@ -52,7 +53,12 @@
 
 				deferred = deferred.then(function (result) {
 					$("#" + item.newItemReference).val(result.ID + "." + result.VersionIndex);
+					$(".publish.command").attr("disabled", null);
+					$(".discard.command").attr("href", "DiscardPreview.aspx?n2item=" + result.ID + "&n2versionIndex=" + result.VersionIndex).show();
+					$(".cancel.command").hide();
+					n2ctx && n2ctx.refresh && n2ctx.refresh({  })
 				}, function () {
+					$(".publish.command").attr("disabled", null);
 					console.warn("Error auto-saving", item, arguments);
 				});
 			})

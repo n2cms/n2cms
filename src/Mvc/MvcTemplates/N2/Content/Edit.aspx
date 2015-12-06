@@ -21,6 +21,7 @@
 		<asp:HyperLink ID="hlFuturePublish" data-icon-class="fa fa-clock-o" NavigateUrl="#futurePanel" CssClass="command plain iconed future hidden-action" runat="server" meta:resourceKey="hlSavePublishInFuture">Save and publish version in future</asp:HyperLink>
 		<asp:LinkButton ID="btnUnpublish" data-icon-class="fa fa-stop" OnCommand="OnUnpublishCommand" runat="server" CssClass="command plain iconed unpublish hidden-action" meta:resourceKey="btnUnpublish">Unpublish</asp:LinkButton>
 	</edit:buttongroup>
+	<asp:HyperLink ID="hlDiscard" NavigateUrl="DiscardPreview.aspx" CssClass="btn command discard" runat="server" style="display:none" meta:resourceKey="btnDiscard">Close and discard draft</asp:HyperLink>
     <edit:cancellink id="hlCancel" runat="server" cssclass="btn" meta:resourcekey="hlCancel">Close</edit:cancellink>
     <ul class="nav pull-right">
         <li>
