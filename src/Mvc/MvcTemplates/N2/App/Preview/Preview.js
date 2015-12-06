@@ -136,15 +136,69 @@ n2.preview.factory("PartFactory", ["$window", "Context", "Uri", "Organizable", f
 	return Part;
 }]);
 
-n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", "ZoneFactory", function ($window, Context, Uri, ZoneFactory) {
+n2.preview.factory("EditableFactory", ["Context", "Uri", function (Context, Uri) {
+
+	function Editable(element, $scope) {
+		var editable = this;
+
+		this.isEditable = true;
+		this.$element = element;
+		this.displayable = $(element).attr("data-displayable");
+		this.id = $(element).attr("data-id");
+		this.path = $(element).attr("data-path");
+		this.property = $(element).attr("data-property");
+		this.title = $(element).attr("title") || this.property;
+		this.versionIndex = $(element).attr("data-versionindex");
+		this.versionKey = $(element).attr("data-versionkey");
+		
+		this.enableEditing = function () {
+			var url = new Uri(Context.Paths.Management + "Content/EditSingle.aspx")
+				.setQuery(Context.Paths.SelectedQueryKey, this.path)
+				.setQuery(Context.Paths.ItemQueryKey, this.id)
+				.setQuery({
+					below: this.path,
+					property: this.property,
+					n2versionKey: this.versionKey,
+					n2versionIndex: this.versionIndex,
+					returnUrl: encodeURIComponent(window.location.pathname + window.location.search)
+				});
+			$("<a class='n2-editable-link' href='" + url + "'><b class='fa fa-pencil'></b> <span>" + "Edit " + this.property + "</span></a>")
+				.prependTo(this.$element);
+			$(this.$element).addClass("n2-editable").on("dblclick", function (e) {
+				e.stopPropagation();
+				window.location = url.toString();
+			});
+		}
+		//$(this.$element).hover(function (e) {
+		//	e.stopPropagation();
+		//	$(this).addClass("n2-part-hover").parents(".n2-part-hover").removeClass("n2-part-hover");
+		//}, function (e) {
+		//	e.stopPropagation();
+		//	$(this).removeClass("n2-part-hover");
+		//})
+		return this;
+	}
+
+	return Editable;
+}]);
+
+n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", "ZoneFactory", "EditableFactory", function ($window, Context, Uri, ZoneFactory, EditableFactory) {
 	
 	function ZoneOperator($scope) {
 		var operator = this;
 		this.zones = [];
 		this.names = [];
+		this.editables = [];
+
 		this.removePlaceholders = function () {
 			angular.forEach(this.zones, function (zone) {
 				zone.removePlaceholders();
+			});
+		}
+
+		this.enableEditables = function () {
+			angular.forEach(this.editables, function (editable) {
+				editable.enableEditing();
 			});
 		}
 
@@ -152,6 +206,10 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", "ZoneFactory", 
 			var zone = new ZoneFactory(this, $scope);
 			operator.zones.push(zone);
 			operator.names.push(zone.name);
+		});
+		$(".editable", $window.document).each(function () {
+			var editable = new EditableFactory(this, $scope);
+			operator.editables.push(editable);
 		});
 	}
 	return ZoneOperator;
@@ -332,6 +390,10 @@ n2.preview.directive("n2PreviewParts", [function () {
 				$scope.moving = null;
 				operator.removePlaceholders();
 			}
+
+			// init
+
+			operator.enableEditables();
 		}
 	}
 }])

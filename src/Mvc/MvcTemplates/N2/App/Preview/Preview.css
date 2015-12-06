@@ -86,7 +86,7 @@
 .zoneItem .titleBar:hover { z-index:300; box-shadow: 0 -2px 10px #fff; background-color: rgba(24, 160, 222, 1); outline: solid 2px rgba(24, 160, 222, 1); }
 	.zoneItem .titleBar .title { display:inline-block; padding:5px; padding-left:24px; background:none no-repeat 5px 5px; color:#fff; }
 		.zoneItem .titleBar .title .fa { margin-left: -15px; margin-right:5px;  }
-	.zoneItem .titleBar .commands a { float:right; color:#fff; padding:10px; margin:-2px -2px 0 0; position:relative; }
+	.zoneItem .titleBar .commands a { float:right; color:#fff; padding:8px; margin:-2px -2px 0 0; position:relative; }
 	.zoneItem .titleBar .commands a:hover { text-decoration:none; background-color: rgba(116, 198, 235, 0.5); }
 
 .n2-drop-area-marker { height:0; transition: all .5s ease-in }
@@ -101,6 +101,63 @@
 .zoneItem > .n2-drop-area.n2-prepend a { opacity:0; max-height:0; top: 0; margin-top:10px; transition: ease-out .2s all; }
 .zoneItem.n2-part-hover > .n2-drop-area.n2-prepend a { opacity:1; max-height: 100px; }
 
+.n2-editable {
+	box-shadow: 0 0 10px rgba(255, 127, 80, .25) inset;
+	position:relative;
+	transition: all .3s ease-out;
+}
+.n2-editable:hover {
+	box-shadow: 0 0 20px rgba(255, 127, 80, .75) inset;
+	outline: solid 2px rgba(255, 127, 80, .75);
+}
+	.n2-editable .n2-editable-link {
+		position:absolute;
+		top:0;
+		right: 0;
+		color:#fff;
+		display:inline-block;
+		padding:2px;
+
+		max-height:0;
+		margin-top:0;
+		opacity:0;
+		transition: all .2s ease-out;
+		overflow:hidden;
+	}
+	.n2-editable:hover .n2-editable-link {
+		max-height:22px;
+		margin-top:-11px;
+		opacity:.75;
+		overflow:visible;
+	}
+	.n2-editable .n2-editable-link:hover {
+		opacity:1;
+	}
+		.n2-editable .n2-editable-link * {
+			background: rgba(255, 127, 80, 1);
+			opacity:.5;
+			transition: all .1s ease-out;
+		}
+		.n2-editable .n2-editable-link:hover * {
+			opacity:1;
+		}
+		.n2-editable .n2-editable-link b {
+			float:left;
+			padding:4px;
+		}
+		.n2-editable .n2-editable-link span {
+			position:absolute;
+			display:inline-block;
+			padding:1px 5px;
+			white-space:nowrap;
+			opacity:0;
+			max-width:0;
+			overflow:hidden;
+		}
+		.n2-editable .n2-editable-link:hover span {
+			max-width:200px;
+			overflow:hidden;
+		}
 .n2-drop-area a{
 	background:repeating-linear-gradient(
     45deg,
