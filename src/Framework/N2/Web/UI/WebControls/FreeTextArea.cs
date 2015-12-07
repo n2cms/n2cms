@@ -111,9 +111,12 @@ namespace N2.Web.UI.WebControls
         {
             IDictionary<string, string> overrides = new Dictionary<string, string>();
             overrides["elements"] = ClientID;
-            overrides["contentsCss"] = contentCssUrl ?? Register.BootstrapCssPath;
+			if (string.IsNullOrEmpty(contentCssUrl))
+				overrides["contentsCss"] = "{ManagementUrl}/Resources/Css/editor.css".ResolveUrlTokens();
+            else
+				overrides["contentsCss"] = contentCssUrl;
 
-            overrides["filebrowserBrowseUrl"] = Url.Parse(Page.Engine().ManagementPaths.EditTreeUrl)
+			overrides["filebrowserBrowseUrl"] = Url.Parse(Page.Engine().ManagementPaths.EditTreeUrl)
 				.AppendQuery("location", "selection")
 				.AppendQuery("availableModes", "All")
 				.AppendQuery("selectableTypes", "");

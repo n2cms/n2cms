@@ -186,6 +186,7 @@
     <Content Include="Resources\chosen_v1.1.0\chosen.min.css" />
     <Content Include="Resources\chosen_v1.1.0\index.html" />
     <Content Include="Resources\chosen_v1.1.0\options.html" />
+    <Content Include="Resources\Css\editor.css" />
     <Content Include="Resources\Css\mediaBrowser.css" />
     <Content Include="Resources\Css\n2.css" />
     <Content Include="Resources\Css\smoothness\images\animated-overlay.gif" />

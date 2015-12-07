@@ -1,4 +1,5 @@
 ﻿/* FRAMED */
+body,label,input,textarea { font-size:15px; }
 a img,
 .command img{ margin-right:1px; vertical-align:middle; }
 .nav-tabs > li > a { border-radius:0 !important; }
