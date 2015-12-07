@@ -116,6 +116,9 @@ jQuery(document).ready(function(){{
 
         protected override void CreateChildControls()
         {
+			if (!Engine.Config.Sections.Management.Organize.UseLegacyControlPanel)
+				return;
+
             ControlPanelState state = GetState(Page.GetEngine());
 
             if (state.IsFlagSet(ControlPanelState.Hidden))
@@ -267,6 +270,7 @@ jQuery(document).ready(function(){{
 				cph.Render();
                 return;
             }
+
             IDictionary<string, IList<string>> arrays = GetArrays(Page);
             writer.WriteLineNoTabs(@"<script type='text/javascript'>//<!--");
             if (arrays.Count > 0)
