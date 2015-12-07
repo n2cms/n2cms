@@ -15,7 +15,7 @@
 }
 .n2-preview-bar {
 	background:#E28B51;
-	box-shadow: 0 0 10px #fff;
+	box-shadow: 0 0 10px rgba(0, 0, 0, .25);
 }
 .n2-preview-bar.n2-preview-published {
 	background:#18a0de;
@@ -56,7 +56,7 @@
 		max-width:500px; 
 		max-height:400px;
 		overflow:auto;
-		box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.20); 
+		box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.25); 
 		color: #000;
 		background-color:#fff;
 		border: solid 1px #18a0de;
