@@ -236,3 +236,17 @@ div.tagsinput div { display:block; float: left; }
 
 .framed .outside .activityBox .inner { padding:0; }
 	.activityBox table { margin:0 }
+
+.ui-autocomplete {
+    list-style-type: none;
+    background: #fff;
+    box-shadow: 2px 2px 20px rgba(0, 0, 0, .25);
+    max-width: 90%;
+}
+	.ui-autocomplete li {
+		padding: 5px;
+		cursor:pointer;
+	}
+	.ui-autocomplete li:hover {
+		background-color:#eee;
+	}
