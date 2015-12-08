@@ -227,11 +227,17 @@ namespace N2.Web.UI.WebControls
             var closureDefinition = template.Definition;
             button.Command += (s, a) =>
             {
-                ContentItem item = CreateItem(closureDefinition);
-                item.ZoneName = ZoneName;
-                AddedDefinitions.Add(closureDefinition.GetDiscriminatorWithTemplateKey());
-                CreateItemEditor(item);
-            };
+				var path = EnsureDraft(ParentItem);
+
+				ContentItem item = CreateItem(closureDefinition);
+				item.AddTo(path.CurrentItem, ZoneName);
+				Utility.UpdateSortOrder(path.CurrentItem.Children).ToList();
+
+				var cvr = Engine.Resolve<ContentVersionRepository>();
+				cvr.Save(path.CurrentPage);
+
+				RedirectToVersionOfSelf(path.CurrentPage);
+			};
             container.Controls.Add(button);
             return button;
         }
@@ -338,7 +344,7 @@ namespace N2.Web.UI.WebControls
         private void DeleteItemClick(object sender, CommandEventArgs e)
 		{
 			ContentItem item = GetAssociatedItem(sender);
-			var path = ResolveVersion(item);
+			var path = EnsureDraft(item);
 
 			if (path.CurrentItem != null && path.CurrentItem != path.CurrentPage)
 			{
@@ -360,7 +366,7 @@ namespace N2.Web.UI.WebControls
 			return item;
 		}
 
-		private PathData ResolveVersion(ContentItem item)
+		private PathData EnsureDraft(ContentItem item)
 		{
 			var page = Find.ClosestPage(item);
 
@@ -369,7 +375,7 @@ namespace N2.Web.UI.WebControls
 			
 			var cvr = Engine.Resolve<ContentVersionRepository>();
 			var vm = Engine.Resolve<IVersionManager>();
-			var path = PartsExtensions.EnsureDraft(vm, cvr, item.VersionIndex.ToString(), item.GetVersionKey(), item);
+			var path = PartsExtensions.EnsureDraft(vm, cvr, "", item.GetVersionKey(), item);
 
 			return path;
 		}
@@ -387,13 +393,13 @@ namespace N2.Web.UI.WebControls
 		private void Sort(object sender, int offset)
 		{
 			ContentItem item = GetAssociatedItem(sender);
-			var path = ResolveVersion(item);
+			var path = EnsureDraft(item);
 
 			if (path.CurrentItem != null && path.CurrentItem != path.CurrentPage)
 			{
 				var parent = path.CurrentItem.Parent;
 				var siblings = parent.Children;
-                var newIndex = siblings.IndexOf(path.CurrentItem) + offset;
+				var newIndex = siblings.IndexOf(path.CurrentItem) + offset;
 				if (newIndex >= 0 && newIndex < path.CurrentItem.Parent.Children.Count - 1)
 				{
 					Utility.Insert(path.CurrentItem, parent, newIndex);
@@ -403,7 +409,12 @@ namespace N2.Web.UI.WebControls
 				}
 			}
 
-			var url = Engine.ManagementPaths.GetEditExistingItemUrl(path.CurrentPage.FindPartVersion(parentItem), Page.Request["returnUrl"]);
+			RedirectToVersionOfSelf(path.CurrentPage);
+		}
+
+		private void RedirectToVersionOfSelf(ContentItem versionOfPage)
+		{
+			var url = Engine.ManagementPaths.GetEditExistingItemUrl(versionOfPage.FindPartVersion(ParentItem), Page.Request["returnUrl"]);
 			Page.Response.Redirect(url);
 		}
 
