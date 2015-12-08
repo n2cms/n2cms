@@ -32,8 +32,8 @@
 
 	Content.Define(ie =>
 	{
-		ie.Title = "Image";
-		ie.IconUrl = "{IconsUrl}/photo.png";
+		ie.Definition.Title = "Image";
+		ie.Definition.IconUrl = "{IconsUrl}/photo.png";
 		ie.Image("Image");
 		ie.Enum("Float", typeof(N2.Web.BlockAlignment)).DefaultValue(N2.Web.BlockAlignment.Middle);
 		ie.FreeText("Caption");

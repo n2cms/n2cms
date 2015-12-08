@@ -35,8 +35,8 @@
 
 	Content.Define(ie =>
 	{
-		ie.Title = "File Downloads List";
-		ie.IconUrl = "{IconsUrl}/disk.png";
+		ie.Definition.Title = "File Downloads List";
+		ie.Definition.IconUrl = "{IconsUrl}/disk.png";
 		ie.FolderSelection("Directory").Required();
 		ie.Text("FileFilter", "File Filter").DefaultValue("?*.*");
 		ie.CheckBox("Recursive");

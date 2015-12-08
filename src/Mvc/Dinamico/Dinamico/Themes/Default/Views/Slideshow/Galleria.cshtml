@@ -4,7 +4,7 @@
 	template in your own theme to supply Galleria-like functionality. 
 *@
 @{
-	Content.Define(ie => { ie.Title = "Galleria"; });
+	Content.Define(ie => { ie.Definition.Title = "Galleria"; });
 	string uniqueId = Html.UniqueID("cs");
 }
 <div class="gallery @Model.CssClass" id="@uniqueId">

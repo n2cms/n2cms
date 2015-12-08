@@ -31,8 +31,8 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @{ 
  
     Content.Define(ie => {
-        ie.Title = "Image and Text";
-        ie.IconUrl = "{IconsUrl}/text_padding_left.png";
+        ie.Definition.Title = "Image and Text";
+        ie.Definition.IconUrl = "{IconsUrl}/text_padding_left.png";
         ie.Text("Title", "Heading text").SortOrder(100);
         ie.ImageUpload("Image").SortOrder(200);
         ie.FreeText("Description").SortOrder(300);
