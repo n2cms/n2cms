@@ -250,3 +250,4 @@ div.tagsinput div { display:block; float: left; }
 	.ui-autocomplete li:hover {
 		background-color:#eee;
 	}
+	.ui-helper-hidden-accessible { display:none; }

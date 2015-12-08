@@ -201,7 +201,7 @@ namespace N2.Edit
         /// <summary>Gets the url to the edit page where to edit an existing item.</summary>
         /// <param name="item">The item to edit.</param>
         /// <returns>The url to the edit page</returns>
-        public virtual string GetEditExistingItemUrl(ContentItem item)
+        public virtual string GetEditExistingItemUrl(ContentItem item, string returnUrl = null)
         {
             if (item == null)
                 return null;
@@ -230,6 +230,10 @@ namespace N2.Edit
                         .SetQueryParameter(PathData.VersionIndexQueryKey, page.VersionIndex)
                         .SetQueryParameter(PathData.VersionKeyQueryKey, item.GetVersionKey());
             }
+
+			if (returnUrl != null)
+				editUrl = editUrl.SetQueryParameter("returnUrl", returnUrl);
+
             return editUrl;
         }
 

@@ -12,6 +12,7 @@ using N2.Persistence;
 using N2.Web.Parts;
 using N2.Collections;
 using System.Web.UI.HtmlControls;
+using N2.Edit.Versioning;
 
 namespace N2.Web.UI.WebControls
 {
@@ -20,11 +21,8 @@ namespace N2.Web.UI.WebControls
         #region Fields
 
         private readonly Engine.Logger<ItemEditorList> logger;
-        private readonly List<ItemEditor> itemEditors = new List<ItemEditor>();
         private readonly Panel addPanel = new Panel { CssClass = "addArea form-actions" };
-        private List<string> addedDefinitions = new List<string>();
         private IDefinitionManager definitions;
-        private List<int> deletedIndexes = new List<int>();
         private int itemEditorIndex;
         private PlaceHolder itemEditorsContainer = new PlaceHolder();
         private Type minimumType = typeof (ContentItem);
@@ -39,7 +37,10 @@ namespace N2.Web.UI.WebControls
         {
             CssClass = "itemListEditor";
 			AllowedTemplateKeys = new string[0];
-        }
+			ItemEditors = new List<ItemEditor>();
+			AddedDefinitions = new List<string>();
+			DeletedIndexes = new List<int>();
+		}
 
         #endregion
 
@@ -47,13 +48,10 @@ namespace N2.Web.UI.WebControls
 
         public string Label { get; set; }
 
-        public List<ItemEditor> ItemEditors
-        {
-            get { return itemEditors; }
-        }
+        public List<ItemEditor> ItemEditors { get; set; }
 
-        /// <summary>Gets the parent item where to look for items.</summary>
-        public int ParentItemID
+		/// <summary>Gets the parent item where to look for items.</summary>
+		public int ParentItemID
         {
             get { return (int) (ViewState["CurrentItemID"] ?? 0); }
             set { ViewState["CurrentItemID"] = value; }
@@ -80,15 +78,9 @@ namespace N2.Web.UI.WebControls
             set { ViewState["MinimumType"] = (value ?? typeof(object)).AssemblyQualifiedName; }
         }
 
-        public IList<string> AddedDefinitions
-        {
-            get { return addedDefinitions; }
-        }
+        public IList<string> AddedDefinitions { get; set; }
 
-        public IList<int> DeletedIndexes
-        {
-            get { return deletedIndexes; }
-        }
+		public IList<int> DeletedIndexes { get; set; }
 
         protected virtual IEngine Engine
         {
@@ -156,10 +148,10 @@ namespace N2.Web.UI.WebControls
         {
             var p = (Triplet) savedState;
             base.LoadViewState(p.First);
-            addedDefinitions = (List<string>) p.Second;
-            deletedIndexes = (List<int>) p.Third;
+            AddedDefinitions = (List<string>) p.Second;
+            DeletedIndexes = (List<int>) p.Third;
             EnsureChildControls();
-            logger.Debug("addedTypes: " + addedDefinitions.Count + ", deletedIndexes: " + deletedIndexes.Count);
+            logger.Debug("addedTypes: " + AddedDefinitions.Count + ", deletedIndexes: " + DeletedIndexes.Count);
         }
 
         private HtmlGenericControl CreateControl(Control parent, string tagName, string className)
@@ -246,7 +238,7 @@ namespace N2.Web.UI.WebControls
 
         protected override object SaveViewState()
         {
-            return new Triplet(base.SaveViewState(), addedDefinitions, deletedIndexes);
+            return new Triplet(base.SaveViewState(), AddedDefinitions, DeletedIndexes);
         }
 
         public virtual IList<ContentItem> GetItems()
@@ -293,8 +285,8 @@ namespace N2.Web.UI.WebControls
             
             var container = new Panel { CssClass = "delete" };
 
-            container.Controls.Add(CreateMoveUpButton());
-            container.Controls.Add(CreateMoveDownButton());
+            container.Controls.Add(CreateMoveButton("up", "Move item up", MoveItemUpClick));
+            container.Controls.Add(CreateMoveButton("down", "Move item down", MoveItemDownClick));
             container.Controls.Add(CreateDeleteButton());
 
             itemPanel.Controls.Add(container);
@@ -304,28 +296,28 @@ namespace N2.Web.UI.WebControls
             return itemEditor;
         }
 
-        private ImageButton CreateDeleteButton()
+        private LinkButton CreateDeleteButton()
         {
-            var b = new ImageButton();
+            var b = new LinkButton();
             b.ID = ID + "_d_" + itemEditorIndex;
-            b.ImageUrl = Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/icons/delete.png");
+			b.Text = "<b class='fa fa-trash-o'></b>";
             b.ToolTip = "Delete item";
             b.CommandArgument = itemEditorIndex.ToString();
             b.CausesValidation = false;
-            b.Click += DeleteItemClick;
+			b.Command += DeleteItemClick;
 
             return b;
         }
 
-        private ImageButton CreateMoveUpButton()
+        private LinkButton CreateMoveButton(string direction, string tooltip, CommandEventHandler handler)
         {
-            var b = new ImageButton();
-            b.ID = ID + "_up_" + itemEditorIndex;
-            b.ImageUrl = Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/icons/bullet_arrow_up.png");
-            b.ToolTip = "Move item up";
+            var b = new LinkButton();
+            b.ID = ID + "_" + direction + "_" + itemEditorIndex;
+			b.Text = "<b class='fa fa-arrow-" + direction + "'></b>";
+            b.ToolTip = tooltip;
             b.CommandArgument = itemEditorIndex.ToString();
             b.CausesValidation = false;
-            b.Click += MoveItemUpClick;
+            b.Command += handler;
 
             return b;
         }
@@ -338,71 +330,90 @@ namespace N2.Web.UI.WebControls
             b.ToolTip = "Move item down";
             b.CommandArgument = itemEditorIndex.ToString();
             b.CausesValidation = false;
-            b.Click += MoveItemDownClick;
+            b.Command += MoveItemDownClick;
 
             return b;
         }
 
-        private void DeleteItemClick(object sender, ImageClickEventArgs e)
-        {
-            var b = (ImageButton) sender;
-            b.Enabled = false;
-            b.CssClass += " disabled";
+        private void DeleteItemClick(object sender, CommandEventArgs e)
+		{
+			ContentItem item = GetAssociatedItem(sender);
+			var path = ResolveVersion(item);
 
-            int index = int.Parse(b.CommandArgument);
-            DeletedIndexes.Add(index);
-            ItemEditors[index].Enabled = false;
-            ItemEditors[index].CssClass += " disabled";
-            foreach (IValidator validator in ItemUtility.FindInChildren<IValidator>(ItemEditors[index]))
-            {
-                if (validator is BaseValidator)
-                    (validator as BaseValidator).Enabled = false;
-                if (Page.Validators.Contains(validator))
-                    Page.Validators.Remove(validator);
-            }
+			if (path.CurrentItem != null && path.CurrentItem != path.CurrentPage)
+			{
+				path.CurrentItem.AddTo(null);
+				var cvr = Engine.Resolve<ContentVersionRepository>();
+				cvr.Save(path.CurrentPage);
+			}
+
+			var url = Engine.ManagementPaths.GetEditExistingItemUrl(path.CurrentPage.FindPartVersion(parentItem), Page.Request["returnUrl"]);
+			Page.Response.Redirect(url);
+		}
+
+		private ContentItem GetAssociatedItem(object sender)
+		{
+			var b = (LinkButton)sender;
+
+			int index = int.Parse(b.CommandArgument);
+			var item = ItemEditors[index].CurrentItem;
+			return item;
+		}
+
+		private PathData ResolveVersion(ContentItem item)
+		{
+			var page = Find.ClosestPage(item);
+
+			if (page.ID == 0)
+				return new PathData(page, item);
+			
+			var cvr = Engine.Resolve<ContentVersionRepository>();
+			var vm = Engine.Resolve<IVersionManager>();
+			var path = PartsExtensions.EnsureDraft(vm, cvr, item.VersionIndex.ToString(), item.GetVersionKey(), item);
+
+			return path;
+		}
+
+		private void MoveItemUpClick(object sender, CommandEventArgs e)
+		{
+			Sort(sender, -1);
+		}
+
+		private void MoveItemDownClick(object sender, CommandEventArgs e)
+        {
+			Sort(sender, 1);
         }
 
-        private void MoveItemUpClick(object sender, ImageClickEventArgs e)
-        {
-            var b = (ImageButton) sender;
+		private void Sort(object sender, int offset)
+		{
+			ContentItem item = GetAssociatedItem(sender);
+			var path = ResolveVersion(item);
 
-            int index = int.Parse(b.CommandArgument);
-            ContentItem item = ItemEditors[index].CurrentItem;
+			if (path.CurrentItem != null && path.CurrentItem != path.CurrentPage)
+			{
+				var parent = path.CurrentItem.Parent;
+				var siblings = parent.Children;
+                var newIndex = siblings.IndexOf(path.CurrentItem) + offset;
+				if (newIndex >= 0 && newIndex < path.CurrentItem.Parent.Children.Count - 1)
+				{
+					Utility.Insert(path.CurrentItem, parent, newIndex);
+					Utility.UpdateSortOrder(siblings).ToList();
+					var cvr = Engine.Resolve<ContentVersionRepository>();
+					cvr.Save(path.CurrentPage);
+				}
+			}
 
-            int itemIndex = item.Parent.Children.IndexOf(item) - 1;
+			var url = Engine.ManagementPaths.GetEditExistingItemUrl(path.CurrentPage.FindPartVersion(parentItem), Page.Request["returnUrl"]);
+			Page.Response.Redirect(url);
+		}
 
-            if (itemIndex < 0)
-                return;
-
-            Engine.Resolve<ITreeSorter>().MoveTo(item, NodePosition.Before, item.Parent.Children[itemIndex]);
-
-            Context.Response.Redirect(Context.Request.Url.PathAndQuery);
-        }
-
-        private void MoveItemDownClick(object sender, ImageClickEventArgs e)
-        {
-            var b = (ImageButton) sender;
-
-            int index = int.Parse(b.CommandArgument);
-            ContentItem item = ItemEditors[index].CurrentItem;
-
-            int itemIndex = item.Parent.Children.IndexOf(item) + 1;
-
-            if (itemIndex == item.Parent.Children.Count)
-                return;
-
-            Engine.Resolve<ITreeSorter>().MoveTo(item, NodePosition.After, item.Parent.Children[itemIndex]);
-
-            Context.Response.Redirect(Context.Request.Url.PathAndQuery);
-        }
-
-        private ItemEditor AddItemEditor(ContentItem item, Control container)
+		private ItemEditor AddItemEditor(ContentItem item, Control container)
         {
             var itemEditor = new ItemEditor();
             itemEditor.ID = ID + "_ie_" + itemEditorIndex;
             container.Controls.Add(itemEditor);
             itemEditor.ZoneName = ZoneName;
-            itemEditors.Add(itemEditor);
+            ItemEditors.Add(itemEditor);
             itemEditor.CurrentItem = item;
             return itemEditor;
         }
