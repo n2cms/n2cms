@@ -25,9 +25,10 @@ namespace N2.Web.Rendering
         public IDisplayable Displayable { get; set; }
         public bool IsEditable { get; set; }
 
-        public static RenderingContext Create(HtmlHelper html, string propertyName)
+        public static RenderingContext Create(HtmlHelper html, string propertyName, bool isEditable = true)
         {
             var context = new RenderingContext();
+			context.IsEditable = isEditable;
             context.Content = html.CurrentItem();
             var template = html.ResolveService<ITemplateAggregator>().GetTemplate(context.Content);
             if (template != null)
