@@ -55,6 +55,7 @@
 		min-width:250px; 
 		max-width:500px; 
 		max-height:400px;
+		padding: 5px 0;
 		overflow:auto;
 		box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.25); 
 		color: #000;

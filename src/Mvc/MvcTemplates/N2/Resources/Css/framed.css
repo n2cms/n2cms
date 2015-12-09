@@ -322,10 +322,19 @@ input.dp-applied {
 		}
 
 .itemListEditor { margin:20px 0 0 0; clear:both; }
-	.itemListEditor .item { position:relative; border: dotted 1px #DDC; margin-top: 10px;}
-		.itemListEditor .item h3 { font-weight:normal; color:#999; margin:0; padding:10px; }
-		.itemListEditor .item .delete { position:absolute; top:2px; right:5px; padding:1px 1px 1px 5px; }
+	.itemListEditor .item-editor-list-items { margin-top:5px; padding: 20px; background: #f5f5f5 }
+	.itemListEditor .item-editor-list-items.items-count-0 { display:none; }
+	.itemListEditor * { transition: all .1s ease-in; }
+	.itemListEditor .item { position:relative; margin-top: 20px; background: #fff; }
+		.itemListEditor .item .editDetail:last-of-type { margin-bottom:0; }
+	.itemListEditor .item:first-of-type { margin-top: 0; }
+		.itemListEditor .item h3 { font-weight:normal; margin:0; padding:0 10px; background: rgba(24, 160, 222, 0.5); color:#fff; text-shadow: 0 0 5px rgba(0, 0, 0, .25) }
+		.itemListEditor .item:hover h3 { background: rgba(24, 160, 222, 1);  }
+		.itemListEditor .item .controls { position:absolute; top:0; right:0; }
+			.itemListEditor .item .controls a { color:#fff; display:inline-block; padding:10px; }
+			.itemListEditor .item .controls a:hover { background: rgba(255, 255, 255, .1) }
 		.itemListEditor .itemEditor { padding:10px; }
+	.itemListEditor .addArea { margin-top: 1px; }
         
 .focused
 {

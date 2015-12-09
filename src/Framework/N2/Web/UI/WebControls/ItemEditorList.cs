@@ -24,7 +24,7 @@ namespace N2.Web.UI.WebControls
         private readonly Panel addPanel = new Panel { CssClass = "addArea form-actions" };
         private IDefinitionManager definitions;
         private int itemEditorIndex;
-        private PlaceHolder itemEditorsContainer = new PlaceHolder();
+        private HtmlGenericControl itemEditorsContainer = new HtmlGenericControl("div");
         private Type minimumType = typeof (ContentItem);
         private ContentItem parentItem;
         private PartsAdapter partsAdapter;
@@ -173,6 +173,7 @@ namespace N2.Web.UI.WebControls
             {
                 CreateItemEditor(item);
             }
+			itemEditorsContainer.Attributes["class"] = "item-editor-list-items items-count-" + itemEditorsContainer.Controls.Count;
 
 			var allowedDefinitions = Parts.GetAllowedDefinitions(ParentItem, ZoneName, Page.User);
 			allowedDefinitions = allowedDefinitions.Where(d => MinimumType.IsAssignableFrom(d.ItemType));
@@ -291,7 +292,7 @@ namespace N2.Web.UI.WebControls
             itemPanel.Controls.Add(new Hn { Level = 3, Text = "<span>" + Engine.Definitions.GetDefinition(item).Title + "</span>", HtmlEncode = false });
             itemEditorsContainer.Controls.Add(itemPanel);
             
-            var container = new Panel { CssClass = "delete" };
+            var container = new Panel { CssClass = "controls" };
 
             container.Controls.Add(CreateMoveButton("up", "Move item up", MoveItemUpClick));
             container.Controls.Add(CreateMoveButton("down", "Move item down", MoveItemDownClick));
