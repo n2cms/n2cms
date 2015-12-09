@@ -204,12 +204,15 @@ namespace N2.Definitions
         /// <summary>Removed interface flags used control displayed UI elements.</summary>
         public ICollection<string> RemovedFlags { get; set; }
 
-        #endregion
+		/// <summary>A helpful text available when editing the page.</summary>
+		public string HelpText { get; set; }
 
-        #region Methods
+		#endregion
 
-        /// <summary>Gets or sets additional child types allowed below this item.</summary>
-        public IEnumerable<ItemDefinition> GetAllowedChildren(IDefinitionManager definitions, ContentItem parentItem)
+		#region Methods
+
+		/// <summary>Gets or sets additional child types allowed below this item.</summary>
+		public IEnumerable<ItemDefinition> GetAllowedChildren(IDefinitionManager definitions, ContentItem parentItem)
         {
             return definitions.GetDefinitions().AllowedBelow(this, parentItem, null, definitions);
         }
@@ -525,6 +528,7 @@ namespace N2.Definitions
             id.TemplateKey = TemplateKey;
             id.Title = Title;
             id.ToolTip = ToolTip;
+			id.HelpText = HelpText;
             return id;
         }
 

@@ -33,7 +33,15 @@
 			</div>
 		</div>
 		<div id="content" class="content">
-			<h1 id="h1" runat="server" />
+			<% if (!string.IsNullOrEmpty(Page.Title)) { %>
+			<h1>
+				<%= Page.Title %>
+				<% if (Page.Items["HelpText"] != null) { %>
+				<b data-placement="right" title="<%= Page.Items["HelpText"] %>" class="help help-tooltip fa fa-question-circle" data-toggle="tooltip"></b>
+				<% } %>
+			</h1>
+			<% } %>
+
 			<asp:ContentPlaceHolder ID="Content" runat="server" />
 		</div>
 	</form>

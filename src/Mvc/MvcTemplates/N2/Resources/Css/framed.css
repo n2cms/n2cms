@@ -230,7 +230,7 @@ body.framed #nav a span.zone { display:none }
 body.framed #nav a:hover span.zone { display:inline; background-color:#ddd; color:#fff; padding:0 1px; }
 body.framed #nav span.draft { vertical-align:middle; height:16px; width:16px; background:transparent url(../../Resources/icons/bullet_orange.png) no-repeat 50% 0; display:inline-block; }
 
-#futurePanel { top:50px; right:50%; margin-right:-200px; }
+#futurePanel { top:50px; right:50%; margin-right:-200px; display:none; }
 	.dropdown-backdrop { background-color: rgba(0, 0, 0, 0.25) }
 
 /* located in demo.css and creates a little calendar icon
@@ -369,3 +369,12 @@ input.dp-applied {
 .dodgerblue { color:dodgerblue; }
 .orange { color:orange; }
 .yellow { color:yellow; }
+
+
+.framed .help { color:#0088cc; opacity:.2; transition: all linear 1s; }
+.framed .editDetail .help { opacity:0; }
+.framed .editDetail:hover .help,
+.framed h1:hover .help { opacity:.5; }
+.framed .help:hover { opacity:1 !important; }
+.framed .tooltip p:last-of-type { margin-bottom:0; }
+.framed .popover { width: 400px; }

@@ -45,6 +45,8 @@
 		    <asp:ValidationSummary ID="vsEdit" runat="server" CssClass="alert alert-block alert-margin" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
 		    <asp:CustomValidator ID="cvException" runat="server" Display="None" />
 
+		    <n2:ItemEditor ID="ie" runat="server" EnableAutoSave="true" />
+
 		    <div id="futurePanel" class="modal" tabindex="-1" role="dialog">
 			    <div class="modal-header">
 				    <button type="button" class="close cancel" data-dismiss="modal" aria-hidden="true">×</button>
@@ -59,8 +61,6 @@
 			    </div>
 		    </div>
 		    <div class="future-panel-backdrop modal-backdrop fade in" style="display:none"></div>
-
-		    <n2:ItemEditor ID="ie" runat="server" EnableAutoSave="true" />
 
         </div>
          <!-- right panel --> 
@@ -130,7 +130,7 @@
             var title = $(this).attr("title");
             var content = $(this).attr("data-content");
             $(this).attr("title", "");
-            $(this).tooltip({ html: true, title: "<h6>" + title + "</h6><p>" + content + "</p>" });
+            $(this).tooltip({ html: true, title: (title ? "<h6>" + title + "</h6>" : "") + (content ? "<p>" + content + "</p>"  : "")});
         });
     });
 

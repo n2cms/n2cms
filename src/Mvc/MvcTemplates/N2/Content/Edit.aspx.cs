@@ -300,13 +300,13 @@ namespace N2.Edit
 				}
 
 				Title = string.Format(format, definitionTitle);
-
 			}
 			else
 			{
 				string format = GetLocalResourceString("EditPage.TitleFormat.Update", "Edit \"{0}\"");
 				Title = string.Format(format, string.IsNullOrEmpty(ie.CurrentItem.Title) ? definitionTitle : ie.CurrentItem.Title);
 			}
+			Items["HelpText"] = definition.HelpText;
 		}
 
 		private void InitItemEditor()

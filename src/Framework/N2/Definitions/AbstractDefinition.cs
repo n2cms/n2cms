@@ -42,7 +42,10 @@ namespace N2.Definitions
         /// <summary>Permission required to create/edit/delete items of this type.</summary>
         public Permission RequiredPermission { get; set; }
 
-        protected AbstractDefinition()
+		/// <summary>A helpful text available when editing the page.</summary>
+		public string HelpText { get; set; }
+
+		protected AbstractDefinition()
         {
             SortOrder = int.MinValue;
         }
@@ -85,6 +88,7 @@ namespace N2.Definitions
             currentDefinition.IconUrl = IconUrl ?? currentDefinition.IconUrl;
             currentDefinition.IconClass = IconClass ?? currentDefinition.IconClass ?? DefaultIconClass;
             currentDefinition.IsPage = IsPage;
+			currentDefinition.HelpText = HelpText ?? currentDefinition.HelpText;
 
             currentDefinition.IsDefined = true;
 

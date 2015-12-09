@@ -117,11 +117,6 @@ table.editDetail { border-collapse:collapse; }
 .framed .tabPanel fieldset fieldset { margin-top:20px; }
 .framed .itemEditor hr { margin:15px 0 }
 
-.framed .editDetail .help { color:#0088cc; opacity:0; transition: linear 2s; }
-.framed .editDetail:hover .help { opacity:.5; }
-.framed .editDetail .tooltip { width: 200px; }
-.framed .editDetail .popover { width: 400px; }
-
 .framed .helpPanel { cursor:pointer; padding:5px; }
 	.framed .helpText { display:none; }
 		.framed .helpText b { margin-right:10px; }

@@ -23,16 +23,16 @@ namespace N2.Definitions.Runtime
 
 		// definition
 
-		public static PageDefinitionAttribute Page<TModel>(this IContentRegistration<TModel> registration, string templateUrl = null, string title = null, string description = null)
+		public static PageDefinitionAttribute Page<TModel>(this IContentRegistration<TModel> registration, string templateUrl = null, string title = null, string description = null, string helpText = null)
 		{
-			var pda = new PageDefinitionAttribute(title ?? registration.Definition.ItemType.Name) { Description = description, TemplateUrl = templateUrl ?? CalculateUrl(registration.Definition.ItemType, ".aspx") };
+			var pda = new PageDefinitionAttribute(title ?? registration.Definition.ItemType.Name) { Description = description, TemplateUrl = templateUrl ?? CalculateUrl(registration.Definition.ItemType, ".aspx"), HelpText = helpText };
 			registration.RegisterRefiner(new DelayRefinement(pda));
 			return pda;
 		}
 
-		public static PartDefinitionAttribute Part<TModel>(this IContentRegistration<TModel> registration, string templateUrl = null, string title = null, string description = null)
+		public static PartDefinitionAttribute Part<TModel>(this IContentRegistration<TModel> registration, string templateUrl = null, string title = null, string description = null, string helpText = null)
 		{
-			var pda = new PartDefinitionAttribute(title ?? registration.Definition.ItemType.Name) { Description = description, TemplateUrl = templateUrl ?? CalculateUrl(registration.Definition.ItemType, ".ascx") };
+			var pda = new PartDefinitionAttribute(title ?? registration.Definition.ItemType.Name) { Description = description, TemplateUrl = templateUrl ?? CalculateUrl(registration.Definition.ItemType, ".ascx"), HelpText = helpText };
 			registration.RegisterRefiner(new DelayRefinement(pda));
 			return pda;
 		}
