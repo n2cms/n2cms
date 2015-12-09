@@ -229,6 +229,8 @@ namespace N2.Web.UI.WebControls
             {
 				var path = EnsureDraft(ParentItem);
 
+				UpdateItemFromTopEditor(path);
+
 				ContentItem item = CreateItem(closureDefinition);
 				item.AddTo(path.CurrentItem, ZoneName);
 				Utility.UpdateSortOrder(path.CurrentItem.Children).ToList();
@@ -328,19 +330,6 @@ namespace N2.Web.UI.WebControls
             return b;
         }
 
-        private ImageButton CreateMoveDownButton()
-        {
-            var b = new ImageButton();
-            b.ID = ID + "_down_" + itemEditorIndex;
-            b.ImageUrl = Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/icons/bullet_arrow_down.png");
-            b.ToolTip = "Move item down";
-            b.CommandArgument = itemEditorIndex.ToString();
-            b.CausesValidation = false;
-            b.Command += MoveItemDownClick;
-
-            return b;
-        }
-
         private void DeleteItemClick(object sender, CommandEventArgs e)
 		{
 			ContentItem item = GetAssociatedItem(sender);
@@ -348,6 +337,8 @@ namespace N2.Web.UI.WebControls
 
 			if (path.CurrentItem != null && path.CurrentItem != path.CurrentPage)
 			{
+				UpdateItemFromTopEditor(path);
+
 				path.CurrentItem.AddTo(null);
 				var cvr = Engine.Resolve<ContentVersionRepository>();
 				cvr.Save(path.CurrentPage);
@@ -355,6 +346,56 @@ namespace N2.Web.UI.WebControls
 
 			var url = Engine.ManagementPaths.GetEditExistingItemUrl(path.CurrentPage.FindPartVersion(parentItem), Page.Request["returnUrl"]);
 			Page.Response.Redirect(url);
+		}
+
+		private void MoveItemUpClick(object sender, CommandEventArgs e)
+		{
+			Sort(sender, -1);
+		}
+
+		private void MoveItemDownClick(object sender, CommandEventArgs e)
+        {
+			Sort(sender, 1);
+        }
+
+		private void Sort(object sender, int offset)
+		{
+			ContentItem item = GetAssociatedItem(sender);
+			var path = EnsureDraft(item);
+			
+            if (path.CurrentItem != null && path.CurrentItem != path.CurrentPage)
+			{
+				var parent = path.CurrentItem.Parent;
+				var siblings = parent.Children;
+				var newIndex = siblings.IndexOf(path.CurrentItem) + offset;
+				if (newIndex >= 0 && newIndex < path.CurrentItem.Parent.Children.Count - 1)
+				{
+					Utility.Insert(path.CurrentItem, parent, newIndex);
+					Utility.UpdateSortOrder(siblings).ToList();
+
+					UpdateItemFromTopEditor(path);
+
+					var cvr = Engine.Resolve<ContentVersionRepository>();
+					cvr.Save(path.CurrentPage);
+				}
+			}
+
+			RedirectToVersionOfSelf(path.CurrentPage);
+		}
+
+		private void UpdateItemFromTopEditor(PathData path)
+		{
+			var editor = FindTopEditor(Parent);
+			var draftOfTopEditor = path.CurrentPage.FindPartVersion(editor.CurrentItem);
+			editor.UpdateObject(new Edit.Workflow.CommandContext(editor.Definition, draftOfTopEditor, Interfaces.Editing, Context.User));
+		}
+
+		private ItemEditor FindTopEditor(Control parent)
+		{
+			var editor = ItemUtility.FindInParents<ItemEditor>(parent);
+			if (editor == null)
+				return null;
+			return FindTopEditor(editor.Parent) ?? editor;
 		}
 
 		private ContentItem GetAssociatedItem(object sender)
@@ -372,44 +413,12 @@ namespace N2.Web.UI.WebControls
 
 			if (page.ID == 0)
 				return new PathData(page, item);
-			
+
 			var cvr = Engine.Resolve<ContentVersionRepository>();
 			var vm = Engine.Resolve<IVersionManager>();
 			var path = PartsExtensions.EnsureDraft(vm, cvr, "", item.GetVersionKey(), item);
 
 			return path;
-		}
-
-		private void MoveItemUpClick(object sender, CommandEventArgs e)
-		{
-			Sort(sender, -1);
-		}
-
-		private void MoveItemDownClick(object sender, CommandEventArgs e)
-        {
-			Sort(sender, 1);
-        }
-
-		private void Sort(object sender, int offset)
-		{
-			ContentItem item = GetAssociatedItem(sender);
-			var path = EnsureDraft(item);
-
-			if (path.CurrentItem != null && path.CurrentItem != path.CurrentPage)
-			{
-				var parent = path.CurrentItem.Parent;
-				var siblings = parent.Children;
-				var newIndex = siblings.IndexOf(path.CurrentItem) + offset;
-				if (newIndex >= 0 && newIndex < path.CurrentItem.Parent.Children.Count - 1)
-				{
-					Utility.Insert(path.CurrentItem, parent, newIndex);
-					Utility.UpdateSortOrder(siblings).ToList();
-					var cvr = Engine.Resolve<ContentVersionRepository>();
-					cvr.Save(path.CurrentPage);
-				}
-			}
-
-			RedirectToVersionOfSelf(path.CurrentPage);
 		}
 
 		private void RedirectToVersionOfSelf(ContentItem versionOfPage)
