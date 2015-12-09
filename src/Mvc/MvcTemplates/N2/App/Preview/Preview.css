@@ -108,13 +108,14 @@
 }
 .n2-editable:hover {
 	box-shadow: 0 0 20px rgba(255, 127, 80, .75) inset;
-	outline: solid 2px rgba(255, 127, 80, .75);
+	outline: solid 1px rgba(255, 127, 80, .75);
 }
 	.n2-editable .n2-editable-link {
 		position:absolute;
-		top:0;
-		right: 0;
+		top:-2px;
+		right: -2px;
 		color:#fff;
+		font-size:14px;
 		display:inline-block;
 		padding:2px;
 
@@ -125,13 +126,13 @@
 		overflow:hidden;
 	}
 	.n2-editable:hover .n2-editable-link {
-		max-height:22px;
-		margin-top:-11px;
+		max-height:24px;
 		opacity:.75;
 		overflow:visible;
 	}
 	.n2-editable .n2-editable-link:hover {
 		opacity:1;
+		z-index:500;
 	}
 		.n2-editable .n2-editable-link * {
 			background: rgba(255, 127, 80, 1);
@@ -140,13 +141,15 @@
 		}
 		.n2-editable .n2-editable-link:hover * {
 			opacity:1;
+			height:24px;
 		}
 		.n2-editable .n2-editable-link b {
 			float:left;
-			padding:4px;
+			padding:5px;
 		}
 		.n2-editable .n2-editable-link span {
 			position:absolute;
+			margin-top: -1px;
 			display:inline-block;
 			padding:1px 5px;
 			white-space:nowrap;
@@ -157,6 +160,9 @@
 		.n2-editable .n2-editable-link:hover span {
 			max-width:200px;
 			overflow:hidden;
+		}
+		.n2-editable .n2-editable-link span:hover {
+			text-decoration:underline;
 		}
 .n2-drop-area a{
 	background:repeating-linear-gradient(
