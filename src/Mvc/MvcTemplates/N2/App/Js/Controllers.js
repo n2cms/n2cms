@@ -5,7 +5,7 @@
 			format: 'M d, yyyy'
 		}
 	});
-})(angular.module('n2', ['n2.directives', 'n2.services', 'n2.localization', 'ui', '$strap.directives', "ngRoute", "ngSanitize"], function ($routeProvider, $locationProvider) {
+})(angular.module('n2', ['n2.directives', 'n2.services', 'n2.localization', 'ui', '$strap.directives', "ngRoute", "ngSanitize"], function ($routeProvider, $locationProvider, $httpProvider, $provide) {
 	if (history.pushState) {
 		$locationProvider.html5Mode(true);
 		$locationProvider.hashPrefix("!");
@@ -15,6 +15,20 @@
 		controller: "ManagementCtrl",
 		reloadOnSearch: false
 	});
+
+	$provide.factory('EmittingInterceptor', function ($q, $rootScope) {
+		return {
+			'request': function (config) {
+				$rootScope.$emit("request", config);
+				return config;
+			},
+			'responseError': function (rejection) {
+				$rootScope.$emit("responseError", rejection);
+				return $q.reject(rejection);
+			}
+		}
+	});
+	$httpProvider.interceptors.push('EmittingInterceptor');
 }))
 
 function findBranch(node, selectedPath) {
@@ -74,6 +88,21 @@ function getParentPath(path) {
 function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $rootScope, Context, Content, Profile, Security, FrameContext, Translate, Eventually, LocationKeeper, Notify, EbbCallbacks, Paths) {
 	$scope.Content = Content;
 	$scope.Security = Security;
+
+	$scope.Initialization = {
+		requests: [],
+		errors: [],
+		deregeristrators: [
+			$rootScope.$on("request", function (e, args) { console.log("request", arguments); $scope.Initialization.requests.push(args.url); }),
+			$rootScope.$on("responseError", function (e, rejection) { console.log("responseError", arguments); $scope.Initialization.errors.push(rejection); })
+		],
+		dispose: function () {
+			angular.forEach(this.deregeristrators, function (d) { d(); });
+			setTimeout(function () {
+				delete $scope.Initialization;
+			});
+		}
+	};
 
 	$scope.appendPreviewOptions = function (url) {
 		if (url == "Empty.aspx")
@@ -281,6 +310,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 	var query = $location.search();
 	Context.full(query, function (i) {
 		Paths.initialize(i.Interface.Paths)
+		$scope.Initialization.dispose();
 		$scope.Context.Partials.Management = "App/Partials/Management.html";
 		translateMenuRecursive(i.Interface.MainMenu);
 		translateMenuRecursive(i.Interface.ActionMenu);
