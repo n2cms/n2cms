@@ -93,8 +93,8 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 		requests: [],
 		errors: [],
 		deregeristrators: [
-			$rootScope.$on("request", function (e, args) { console.log("request", arguments); $scope.Initialization.requests.push(args.url); }),
-			$rootScope.$on("responseError", function (e, rejection) { console.log("responseError", arguments); $scope.Initialization.errors.push(rejection); })
+			$rootScope.$on("request", function (e, args) { $scope.Initialization.requests.push(args.url); }),
+			$rootScope.$on("responseError", function (e, rejection) { $scope.Initialization.errors.push(rejection); })
 		],
 		dispose: function () {
 			angular.forEach(this.deregeristrators, function (d) { d(); });
