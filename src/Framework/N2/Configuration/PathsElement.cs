@@ -67,5 +67,12 @@ namespace N2.Configuration
 			set { base["ensureLocalhostPreviewUrls"] = value; }
 		}
 
+		[ConfigurationProperty("setSecurityUrl", DefaultValue = "{ManagementUrl}/Content/Security/Default.aspx")]
+		public string SetSecurityUrl
+		{
+			get { return (string)base["setSecurityUrl"]; }
+			set { base["setSecurityUrl"] = value; }
+		}
+
 	}
 }

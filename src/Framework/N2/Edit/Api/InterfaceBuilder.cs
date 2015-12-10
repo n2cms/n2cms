@@ -320,13 +320,18 @@ namespace N2.Management.Api
 
         protected virtual Node<InterfaceMenuItem> GetContextMenu(HttpContextBase context)
         {
-            var children = new List<Node<InterfaceMenuItem>> 
+			string deleteItemUrl = engine.Config.Sections.Management.Paths.DeleteItemUrl.ResolveUrlTokens();
+	        string editItemUrl = engine.Config.Sections.Management.Paths.EditItemUrl.ResolveUrlTokens();
+	        string newItemUrl = engine.Config.Sections.Management.Paths.NewItemUrl.ResolveUrlTokens();
+	        string setSecurityUrl = engine.Config.Sections.Management.Paths.SetSecurityUrl.ResolveUrlTokens();
+
+			var children = new List<Node<InterfaceMenuItem>> 
             {
-                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "add", Title = "Add", IconClass = "fa fa-plus-circle", Target = Targets.Preview, Description = "Adds a new child items", Url = "{{ContextMenu.appendSelection('{ManagementUrl}/Content/New.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Write }),
-                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "edit", Title = "Edit", IconClass = "fa fa-pencil-square", Target = Targets.Preview, Description = "Edit details", Url = "{{ContextMenu.appendSelection('{ManagementUrl}/Content/Edit.aspx', 'displayed')}}".ResolveUrlTokens(), RequiredPermission = Permission.Write }),
+                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "add", Title = "Add", IconClass = "fa fa-plus-circle", Target = Targets.Preview, Description = "Adds a new child items", Url = "{{ContextMenu.appendSelection('" + newItemUrl + "')}}", RequiredPermission = Permission.Write }),
+                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "edit", Title = "Edit", IconClass = "fa fa-pencil-square", Target = Targets.Preview, Description = "Edit details", Url = "{{ContextMenu.appendSelection('" + editItemUrl + "', 'displayed')}}", RequiredPermission = Permission.Write }),
 				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "organize", Title = "Organize parts", IconClass = "fa fa-object-group", Target = Targets.Preview, Description = "Drag and drop edit mode", Url = "{{appendQuery(ContextMenu.CurrentItem.PreviewUrl, 'edit=drag')}}", RequiredPermission = Permission.Write }),
-                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "delete", Title = "Delete", IconClass = "fa fa-trash-o", Url = "{{ContextMenu.appendSelection('{ManagementUrl}/Content/Delete.aspx')}}".ResolveUrlTokens(), ToolTip = "Move selected item to trash", RequiredPermission = Permission.Publish, HiddenBy = "Deleted" }),
-                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "security", Title = "Manage security", IconClass = "fa fa-lock", Target = Targets.Preview, Url = "{{ContextMenu.appendSelection('{ManagementUrl}/Content/Security/Default.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Administer }),
+                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "delete", Title = "Delete", IconClass = "fa fa-trash-o", Url = "{{ContextMenu.appendSelection('" + deleteItemUrl + "')}}", ToolTip = "Move selected item to trash", RequiredPermission = Permission.Publish, HiddenBy = "Deleted" }),
+                new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "security", Title = "Manage security", IconClass = "fa fa-lock", Target = Targets.Preview, Url = "{{ContextMenu.appendSelection('" + setSecurityUrl + "')}}", RequiredPermission = Permission.Administer }),
             };
             children.AddRange(engine.EditManager.GetPlugins<NavigationPluginAttribute>(context.User)
                 .Where(np => !np.Legacy)
@@ -482,14 +487,17 @@ namespace N2.Management.Api
 
 		protected virtual Node<InterfaceMenuItem> GetEditMenu()
 		{
+			string editItemUrl = engine.Config.Sections.Management.Paths.EditItemUrl.ResolveUrlTokens();
+			string setSecurityUrl = engine.Config.Sections.Management.Paths.SetSecurityUrl.ResolveUrlTokens();
+
 			return new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "edit", Title = "Edit", TemplateUrl = "App/Partials/MenuNodeLastChild.html", RequiredPermission = Permission.Write })
 			{
 				Children = new[]
                     {
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "organize", Title = "Organize parts", IconClass = "fa fa-object-group", Target = Targets.Preview, Url = "{{appendQuery(Context.CurrentItem.PreviewUrl, 'edit=drag')}}", RequiredPermission = Permission.Write }),
-                        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "editdetails", Title = "Properties", IconClass = "fa fa-pencil-square", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Edit.aspx', true)}}".ResolveUrlTokens(), RequiredPermission = Permission.Write }),
+                        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "editdetails", Title = "Properties", IconClass = "fa fa-pencil-square", Target = Targets.Preview, Url = "{{appendSelection('" + editItemUrl + "', true)}}", RequiredPermission = Permission.Write }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "divider5", Divider = true }),
-                        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "security", Title = "Manage security", IconClass = "fa fa-lock", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Security/Default.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Administer }),
+                        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "security", Title = "Manage security", IconClass = "fa fa-lock", Target = Targets.Preview, Url = "{{appendSelection('" + setSecurityUrl + "')}}", RequiredPermission = Permission.Administer }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "bulk", Title = "Bulk editing", IconClass = "fa fa-edit", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Export/BulkEditing.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Publish }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "export", Title = "Export", IconClass = "fa fa-cloud-download", ToolTip = "Export content to file", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Export/Export.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Administer }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "import", Title = "Import", IconClass = "fa fa-cloud-upload", ToolTip = "Import content from file", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Export/Default.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Administer })
@@ -509,11 +517,13 @@ namespace N2.Management.Api
 
 		protected virtual Node<InterfaceMenuItem> GetTransitionsMenu()
 		{
+			string deleteItemUrl = engine.Config.Sections.Management.Paths.DeleteItemUrl.ResolveUrlTokens();
+
 			return new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "transitions", TemplateUrl = "App/Partials/ContentTransitions.html", RequiredPermission = Permission.Publish })
 			{
 				Children = new[]
                     {
-                        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "delete", Title = "Delete", IconClass = "fa fa-trash-o", Url = "{{appendSelection('{ManagementUrl}/Content/Delete.aspx')}}".ResolveUrlTokens(), ToolTip = "Move selected item to trash", RequiredPermission = Permission.Publish, HiddenBy = "Deleted" }),
+                        new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "delete", Title = "Delete", IconClass = "fa fa-trash-o", Url = "{{appendSelection('" + deleteItemUrl + "')}}", ToolTip = "Move selected item to trash", RequiredPermission = Permission.Publish, HiddenBy = "Deleted" }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "publish", Title = "Publish", IconClass = "fa fa-play-sign", ClientAction = "publish()", RequiredPermission = Permission.Publish, HiddenBy = "Published" }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "schedule", TemplateUrl = "App/Partials/ContentPublishSchedule.html", RequiredPermission = Permission.Publish, DisplayedBy = "Draft" }),
                         new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "unpublish", Title = "Unpublish", IconClass = "fa fa-stop", ClientAction = "unpublish()", RequiredPermission = Permission.Publish, DisplayedBy = "Published" }),
