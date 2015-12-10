@@ -236,7 +236,7 @@ namespace N2.Security
         /// <param name="user">The user whose permissoins to get.</param>
         /// <param name="item">The item for which permissions should be retrieved.</param>
         /// <returns>A permission flag.</returns>
-        public Permission GetPermissions(IPrincipal user, ContentItem item)
+        public virtual Permission GetPermissions(IPrincipal user, ContentItem item)
         {
             return GetPermiossions(user, item, Administrators)
                 | GetPermiossions(user, item, Editors)
@@ -244,7 +244,7 @@ namespace N2.Security
                 | (item.IsAuthorized(user) ? Permission.Read : Permission.None);
         }
 
-        private Permission GetPermiossions(IPrincipal user, ContentItem item, PermissionMap map)
+        protected Permission GetPermiossions(IPrincipal user, ContentItem item, PermissionMap map)
         {
             return map.Authorizes(user, item, map.Permissions) ? map.Permissions : Permission.None;
         }
