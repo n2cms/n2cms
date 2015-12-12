@@ -131,6 +131,9 @@
 			},
 			isFlagged: function (flag) {
 				return context.Flags[flag];
+			},
+			notifyDraft: function (draft) {
+				console.log(draft, window);
 			}
 		};
 		return window.top.n2ctx;

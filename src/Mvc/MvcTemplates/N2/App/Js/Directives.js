@@ -663,5 +663,17 @@ span.null {color:silver}\
 		}
 	});
 
+	angular.forEach(["Active", "Loading"], function (key) {
+		var attributeNam = "n2" + key;
+		var cssClass = key.toLowerCase();
+		module.directive(attributeNam, function () {
+			return {
+				restrict: "A",
+				link: function (scope, element, attrs) {
+					scope.$watch(attrs[attributeNam], function (value) { element.toggleClass(cssClass, !!value); })
+				}
+			}
+		});
+	})
 
 })(angular.module('n2.directives', ['n2.localization']));

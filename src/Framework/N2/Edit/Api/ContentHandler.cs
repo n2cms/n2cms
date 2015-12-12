@@ -266,7 +266,17 @@ namespace N2.Management.Api
 					engine.Persister.Save(item);
 			}
 
-			context.Response.WriteJson(new { ID = item.VersionOf.ID ?? item.ID, VersionIndex = item.VersionIndex });
+			context.Response.WriteJson(new
+			{
+				ID = item.VersionOf.ID ?? item.ID,
+				VersionIndex = item.VersionIndex,
+				Path = item.Path,
+				PreviewUrl = item.Url,
+				Permission = engine.ResolveAdapter<NodeAdapter>(item).GetMaximumPermission(item),
+				Permissions = engine.SecurityManager.GetPermissions(context.User, item),
+				Draft = new DraftInfo { ItemID = item.VersionOf.ID ?? item.ID, Saved = item.Updated, SavedBy = item.SavedBy, VersionIndex = item.VersionIndex },
+				Node = engine.ResolveAdapter<NodeAdapter>(item.VersionOf).GetTreeNode(item.VersionOf)
+			});
 		}
 
 		private void Update(IDictionary<string, object> requestBody, ContentItem item)

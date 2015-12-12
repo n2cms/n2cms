@@ -121,7 +121,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 		angular.forEach(node.Children, reloadTreePreviewOptionsRecursive);
 		node.Parts && angular.forEach(node.Parts, reloadTreePreviewOptionsRecursive);
 	}
-	
+
 	$scope.$watch("Context.PreviewQueries", function (q) {
 		if (!q) return;
 		reloadTreePreviewOptionsRecursive($scope.Context.Content);
@@ -169,6 +169,16 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 		if (window.frames.preview)
 			window.frames.preview.window.location = $scope.appendPreviewOptions(url) || "Empty.aspx";
 	};
+
+	decorate(FrameContext, "update", function (updaterequest) {
+		$scope.$apply(function () {
+			var ci = $scope.Context.CurrentItem;
+			if (updaterequest.node && ci.ID == updaterequest.node.ID) {
+				$scope.$broadcast("refreshnode", updaterequest);
+			}
+		})
+
+	});
 
 	decorate(FrameContext, "refresh", function (ctx) {
 		// legacy refresh call from frame
@@ -226,7 +236,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 					$scope.Context[key] = changed;
 				else if (current.length != changed.length)
 					$scope.Context[key] = changed;
-				else 
+				else
 					for (var i = 0; i < current.length; i++) {
 						if (current[i].Id != latest[i].Id)
 							$scope.Context[key] = changed;
@@ -415,7 +425,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 			? findNodeRecursive($scope.Context.Content, parentPathOrNode)
 			: parentPathOrNode;
 
-		if (node){
+		if (node) {
 			Content.loadChildren(node, function () {
 				callback && callback.apply(this, arguments);
 				$scope.$emit("childrenloaded", { node: node });
@@ -623,20 +633,35 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory, Uri) {
 function BranchCtrl($scope, Content, Translate, SortHelperFactory) {
 	$scope.node = $scope.child;
 	$scope.sort = new SortHelperFactory($scope, Content);
-	$scope.tags = [];
-	if ($scope.node.Current) {
-		var mi = $scope.node.Current.MetaInformation;
-		if (mi) {
-			if (mi.authority) $scope.tags.push({ ToolTip: Translate("branch.tags.authority", "Site: ") + (mi.authority.ToolTip || " (*)"), IconClass: "fa fa-home", Url: "#" });
-			if (mi.hidden) $scope.tags.push({ ToolTip: Translate("branch.tags.hidden", "Hidden"), IconClass: "fa fa-eraser", Url: "#" });
-			if (mi.language) $scope.tags.push({ ToolTip: Translate("branch.tags.language", "Language: ") + mi.language.Text, IconClass: "fa fa-globe", Url: "#" });
-			if (mi.locked) $scope.tags.push({ ToolTip: Translate("branch.tags.locked", "Access restrictions"), IconClass: "fa fa-lock", Url: "#" });
-			if (mi.zone) $scope.tags.push({ ToolTip: Translate("branch.tags.zone", "In zone: ") + mi.zone.Text, IconClass: "fa fa-columns", Url: "#" });
-			if (mi.draft) $scope.tags.push({ ToolTip: Translate("branch.tags.draft", "Has draft: ") + mi.draft.ToolTip, IconClass: "fa fa-circle-o", Url: "#" });
-			if (mi.system) $scope.tags.push({ ToolTip: mi.system.ToolTip, IconClass: "fa fa-qrcode", Url: "#" });
-			if ($scope.node.Current.State == Content.states.Unpublished) $scope.tags.push({ ToolTip: Translate("branch.tags.unpublished", "Unpublished"), IconClass: "fa fa-stop", Url: "#" });
+	function refresheMetaInformation(node) {
+		$scope.tags = [];
+		if (node.Current) {
+			var mi = node.Current.MetaInformation;
+			if (mi) {
+				if (mi.authority) $scope.tags.push({ ToolTip: Translate("branch.tags.authority", "Site: ") + (mi.authority.ToolTip || " (*)"), IconClass: "fa fa-home", Url: "#" });
+				if (mi.hidden) $scope.tags.push({ ToolTip: Translate("branch.tags.hidden", "Hidden"), IconClass: "fa fa-eraser", Url: "#" });
+				if (mi.language) $scope.tags.push({ ToolTip: Translate("branch.tags.language", "Language: ") + mi.language.Text, IconClass: "fa fa-globe", Url: "#" });
+				if (mi.locked) $scope.tags.push({ ToolTip: Translate("branch.tags.locked", "Access restrictions"), IconClass: "fa fa-lock", Url: "#" });
+				if (mi.zone) $scope.tags.push({ ToolTip: Translate("branch.tags.zone", "In zone: ") + mi.zone.Text, IconClass: "fa fa-columns", Url: "#" });
+				if (mi.draft) $scope.tags.push({ ToolTip: Translate("branch.tags.draft", "Has draft: ") + mi.draft.ToolTip, IconClass: "fa fa-circle-o", Url: "#" });
+				if (mi.system) $scope.tags.push({ ToolTip: mi.system.ToolTip, IconClass: "fa fa-qrcode", Url: "#" });
+				if (node.Current.State == Content.states.Unpublished) $scope.tags.push({ ToolTip: Translate("branch.tags.unpublished", "Unpublished"), IconClass: "fa fa-stop", Url: "#" });
+			}
 		}
+		$scope.status = {
+			draft: node.Current.State == Content.states.Draft || node.Current.State == Content.states.Waiting || node.Current.MetaInformation.draft,
+			unpublished: node.Current.State == Content.states.Unpublished || node.Current.State == Content.states.Deleted,
+			startpage: node.Current.MetaInformation.authority
+		};
 	}
+	refresheMetaInformation($scope.node);
+	$scope.$on("refreshnode", function (e, args) {
+		if (args.node.ID == $scope.node.Current.ID) {
+			$scope.node.Current.MetaInformation = args.node.MetaInformation;
+			refresheMetaInformation($scope.node);
+			//console.log("refresh", args)
+		}
+	});
 }
 
 function MenuCtrl($rootScope, $scope, Security) {
