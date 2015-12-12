@@ -190,8 +190,8 @@ namespace N2.Management.Api
 				engine.Resolve<IVersionManager>().DeleteVersion(Selection.SelectedItem);
 				context.Response.WriteJson(new
 				{
-					removed = engine.ResolveAdapter<NodeAdapter>(Selection.SelectedItem).GetTreeNode(Selection.SelectedItem),
-					node = engine.ResolveAdapter<NodeAdapter>(published).GetTreeNode(published)
+					Discarded = engine.ResolveAdapter<NodeAdapter>(Selection.SelectedItem).GetTreeNode(Selection.SelectedItem),
+					Node = engine.ResolveAdapter<NodeAdapter>(published).GetTreeNode(published)
 				});
             }
 			else if (Selection.SelectedItem.State <= ContentState.Draft)
@@ -200,8 +200,8 @@ namespace N2.Management.Api
 				engine.Persister.Delete(Selection.SelectedItem);
 				context.Response.WriteJson(new
 				{
-					removed = engine.ResolveAdapter<NodeAdapter>(Selection.SelectedItem).GetTreeNode(Selection.SelectedItem),
-                    node = engine.ResolveAdapter<NodeAdapter>(parent).GetTreeNode(parent)
+					Removed = engine.ResolveAdapter<NodeAdapter>(Selection.SelectedItem).GetTreeNode(Selection.SelectedItem),
+                    Node = engine.ResolveAdapter<NodeAdapter>(parent).GetTreeNode(parent)
 				});
 			}
 			else
@@ -306,7 +306,7 @@ namespace N2.Management.Api
 				Permission = engine.ResolveAdapter<NodeAdapter>(item).GetMaximumPermission(item),
 				Permissions = engine.SecurityManager.GetPermissions(context.User, item),
 				Draft = new DraftInfo { ItemID = item.VersionOf.ID ?? item.ID, Saved = item.Updated, SavedBy = item.SavedBy, VersionIndex = item.VersionIndex },
-				Node = engine.ResolveAdapter<NodeAdapter>(item.VersionOf).GetTreeNode(item.VersionOf)
+				Node = engine.ResolveAdapter<NodeAdapter>(item.VersionOf.Value ?? item).GetTreeNode(item.VersionOf.Value ?? item)
 			});
 		}
 

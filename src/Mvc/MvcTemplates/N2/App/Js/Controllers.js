@@ -170,15 +170,30 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 			window.frames.preview.window.location = $scope.appendPreviewOptions(url) || "Empty.aspx";
 	};
 
-	decorate(FrameContext, "update", function (updaterequest) {
-		$scope.$apply(function () {
-			if (updaterequest.node)
+	function broadcastUpdaterequest(updaterequest) {
+		setTimeout(function () {
+			$scope.$apply(function () {
+				console.log("broadcasting", updaterequest);
 				$scope.$broadcast("refreshnode", updaterequest);
-			//var ci = $scope.Context.CurrentItem;
-			//if (updaterequest.node && ci.ID == updaterequest.node.ID) {
-			//}
-		})
+			});
+		});
+	}
+	decorate(FrameContext, "update", function (updaterequest) {
+		if (updaterequest.node && updaterequest.autosaved)
+		{
+			var node = findNodeRecursive($scope.Context.Content, updaterequest.path);
+			if (node)
+				return broadcastUpdaterequest(updaterequest);
 
+			var parentPath = getParentPath(updaterequest.path);
+			var parentNode = findNodeRecursive($scope.Context.Content, parentPath);
+			if (parentNode) {
+				$scope.reloadChildren(parentPath, /*callback*/function () {
+					$scope.expandTo(updaterequest.path, /*select*/true);
+					broadcastUpdaterequest(updaterequest);
+				});
+			}
+		}
 	});
 
 	decorate(FrameContext, "refresh", function (ctx) {
@@ -661,7 +676,8 @@ function BranchCtrl($scope, Content, Translate, SortHelperFactory, Notify) {
 		if (args.node.ID == node.Current.ID) {
 			node.Current.MetaInformation = args.node.MetaInformation;
 			refresheMetaInformation(node);
-			if (args.autosaved && node.Current.MetaInformation.draft && node.Current.MetaInformation.draft.VersionIndex) {
+			var mi = node.Current.MetaInformation;
+			if (args.autosaved && !isNaN(mi.draft && mi.draft.VersionIndex)) {
 				$scope.autoSaveWatch = $scope.$watch("node.Active", function (value, oldValue) {
 					if (!value) {
 						$scope.autoSaveWatch();
@@ -669,15 +685,23 @@ function BranchCtrl($scope, Content, Translate, SortHelperFactory, Notify) {
 							message: Translate("branch.autosave.discardDraft", "An autosaved draft is left behind. Discard it?"),
 							type: "info",
 							onClick: function () {
-								Content.discard(Content.applySelection({ n2versionIndex: node.Current.MetaInformation.draft.VersionIndex }, node.Current), function (discardResult) {
-									node.Current.MetaInformation = discardResult.node.MetaInformation;
-									refresheMetaInformation(node);
+								Content.discard(Content.applySelection({ n2versionIndex: mi.draft.VersionIndex }, node.Current), function (result) {
+									if (result.Discarded) {
+										node.Current.MetaInformation = result.Node.MetaInformation;
+										refresheMetaInformation(node);
+									} else if (result.Removed) {
+										$scope.reloadChildren(result.Node.Path, /*callback*/function () {
+											$scope.expandTo(result.Node.Path, /*select*/true);
+										});
+									} else {
+										console.warn("Unexpected result", result);
+									}
 
 									Notify.show({
 										message: Translate("branch.autosave.draftDiscarded", "The autosaved draft was removed."),
 										type: "info",
 										timeout: 2500
-									})
+									});
 								});
 							},
 							timeout: 20000

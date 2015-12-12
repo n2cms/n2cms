@@ -8,6 +8,16 @@ namespace N2.Edit
 {
 	public class DraftMetaInfo : MetaInfo
 	{
+		public DraftMetaInfo(ContentItem item)
+		{
+			Text = "&nbsp;";
+			ItemID = item.ID;
+			ToolTip = item.SavedBy + ": " + item.Updated;
+			Saved = item.Updated;
+			SavedBy = item.SavedBy;
+			VersionIndex = item.VersionIndex;
+		}
+
 		public DraftMetaInfo(DraftInfo draftInfo)
 		{
 			Text = "&nbsp;";
