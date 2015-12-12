@@ -154,6 +154,9 @@ namespace N2.Management.Api
 						case "/autosave":
 							Autosave(context);
 							return;
+						case "/discard":
+							Discard(context);
+							return;
 					}
 					break;
 				case "DELETE":
@@ -177,6 +180,34 @@ namespace N2.Management.Api
 
 			if (!TryExecuteExternalHandlers(context))
 				throw new HttpException((int)HttpStatusCode.NotImplemented, "Not Implemented");
+		}
+
+		private void Discard(HttpContextBase context)
+		{
+			var published = Selection.SelectedItem.VersionOf.Value;
+			if (published != null)
+			{
+				engine.Resolve<IVersionManager>().DeleteVersion(Selection.SelectedItem);
+				context.Response.WriteJson(new
+				{
+					removed = engine.ResolveAdapter<NodeAdapter>(Selection.SelectedItem).GetTreeNode(Selection.SelectedItem),
+					node = engine.ResolveAdapter<NodeAdapter>(published).GetTreeNode(published)
+				});
+            }
+			else if (Selection.SelectedItem.State <= ContentState.Draft)
+			{
+				var parent = Selection.SelectedItem.Parent ?? engine.UrlParser.StartPage;
+				engine.Persister.Delete(Selection.SelectedItem);
+				context.Response.WriteJson(new
+				{
+					removed = engine.ResolveAdapter<NodeAdapter>(Selection.SelectedItem).GetTreeNode(Selection.SelectedItem),
+                    node = engine.ResolveAdapter<NodeAdapter>(parent).GetTreeNode(parent)
+				});
+			}
+			else
+			{
+				throw new InvalidOperationException("Can only discard versions");
+			}
 		}
 
 		private void Organize(HttpContextBase context, SelectionUtility selection)

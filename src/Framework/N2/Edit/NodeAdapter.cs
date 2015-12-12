@@ -155,7 +155,7 @@ namespace N2.Edit
 
 			var draftInfo = Drafts.GetDraftInfo(item);
 			if (draftInfo != null && draftInfo.Saved > item.Updated)
-				mi["draft"] = new MetaInfo { Text = "&nbsp;", ToolTip = draftInfo.SavedBy + ": " + draftInfo.Saved };
+				mi["draft"] = new DraftMetaInfo(draftInfo);
 
 			if (item is ISystemNode)
 				mi["system"] = new MetaInfo { ToolTip = Definitions.GetDefinition(item).Title };

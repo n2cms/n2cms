@@ -172,10 +172,11 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 
 	decorate(FrameContext, "update", function (updaterequest) {
 		$scope.$apply(function () {
-			var ci = $scope.Context.CurrentItem;
-			if (updaterequest.node && ci.ID == updaterequest.node.ID) {
+			if (updaterequest.node)
 				$scope.$broadcast("refreshnode", updaterequest);
-			}
+			//var ci = $scope.Context.CurrentItem;
+			//if (updaterequest.node && ci.ID == updaterequest.node.ID) {
+			//}
 		})
 
 	});
@@ -630,7 +631,7 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory, Uri) {
 	$scope.scope = new ScopeHandler($scope, Content);
 }
 
-function BranchCtrl($scope, Content, Translate, SortHelperFactory) {
+function BranchCtrl($scope, Content, Translate, SortHelperFactory, Notify) {
 	$scope.node = $scope.child;
 	$scope.sort = new SortHelperFactory($scope, Content);
 	function refresheMetaInformation(node) {
@@ -656,10 +657,34 @@ function BranchCtrl($scope, Content, Translate, SortHelperFactory) {
 	}
 	refresheMetaInformation($scope.node);
 	$scope.$on("refreshnode", function (e, args) {
-		if (args.node.ID == $scope.node.Current.ID) {
-			$scope.node.Current.MetaInformation = args.node.MetaInformation;
-			refresheMetaInformation($scope.node);
-			//console.log("refresh", args)
+		var node = $scope.node;
+		if (args.node.ID == node.Current.ID) {
+			node.Current.MetaInformation = args.node.MetaInformation;
+			refresheMetaInformation(node);
+			if (args.autosaved && node.Current.MetaInformation.draft && node.Current.MetaInformation.draft.VersionIndex) {
+				$scope.autoSaveWatch = $scope.$watch("node.Active", function (value, oldValue) {
+					if (!value) {
+						$scope.autoSaveWatch();
+						Notify.show({
+							message: Translate("branch.autosave.discardDraft", "An autosaved draft is left behind. Discard it?"),
+							type: "info",
+							onClick: function () {
+								Content.discard(Content.applySelection({ n2versionIndex: node.Current.MetaInformation.draft.VersionIndex }, node.Current), function (discardResult) {
+									node.Current.MetaInformation = discardResult.node.MetaInformation;
+									refresheMetaInformation(node);
+
+									Notify.show({
+										message: Translate("branch.autosave.draftDiscarded", "The autosaved draft was removed."),
+										type: "info",
+										timeout: 2500
+									})
+								});
+							},
+							timeout: 20000
+						});
+					}
+				});
+			}
 		}
 	});
 }

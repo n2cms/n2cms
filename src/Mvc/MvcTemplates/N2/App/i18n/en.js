@@ -1,5 +1,5 @@
 ﻿{
-	"i18n": { language: "en" },
+	"i18n": { "language": "en" },
 	"loading": { "text": "Loading..." },
 	"branch": {
 		"noname": "(no name)",
@@ -11,6 +11,10 @@
 			"zone": "In zone: ",
 			"draft": "Has draft: ",
 			"unpublished": "Unpublished"
+		},
+		"autosave": {
+			"discardDraft": "An autosaved draft is left behind. Discard it?",
+			"draftDiscarded": "The autosaved draft was removed."
 		}
 	},
 	"footer": {

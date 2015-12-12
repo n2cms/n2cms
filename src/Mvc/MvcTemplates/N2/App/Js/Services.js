@@ -164,7 +164,8 @@
 				'removeMessage': { method: 'DELETE', params: { target: 'message' } },
 				'publish': { method: 'POST', params: { target: 'publish' } },
 				'unpublish': { method: 'POST', params: { target: 'unpublish' } },
-				'schedule': { method: 'POST', params: { target: 'schedule' } }
+				'schedule': { method: 'POST', params: { target: 'schedule' } },
+				'discard': { method: 'POST', params: { target: 'discard' } }
 			});
 
 			res.paths = paths;
