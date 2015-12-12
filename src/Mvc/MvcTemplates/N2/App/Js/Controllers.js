@@ -259,6 +259,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 					}
 			}
 		});
+
 		if (!$scope.$$phase)
 			$scope.$digest();
 	});
@@ -704,7 +705,7 @@ function BranchCtrl($scope, Content, Translate, SortHelperFactory, Notify) {
 									});
 								});
 							},
-							timeout: 20000
+							timeout: 30000
 						});
 					}
 				});
@@ -970,17 +971,18 @@ function FrameActionCtrl($scope, $rootScope, $timeout, FrameManipulator) {
 function NotifyCtrl($scope, $timeout, Notify) {
 	var defaults = { visible: true, type: "warning" };
 
-	function clear() {
+	$scope.clear = function() {
 		$scope.Notify = {};
 	};
 
 	Notify.subscribe(function (options) {
 		setTimeout(function () {
 			$scope.Notify = angular.extend({}, defaults, options);
-			options.timeout && $timeout(clear, options.timeout);
+			options.timeout && $timeout($scope.clear, options.timeout);
 			$scope.$digest();
 		}, 10);
 	});
+
 }
 
 function MessagesCtrl($scope, $rootScope, $sce, Context, Content, Confirm) {

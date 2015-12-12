@@ -176,11 +176,52 @@ a { text-decoration: none; color: #000; }
 #footer {
 	position:absolute;
 	bottom:0;	
-	width:100%;
+	right:0;
+	width:50%;
+	text-align:right;
 }
 	#footer .alert {
-		margin: 10px;
+		display:inline-block;
+		margin: 10px 0;
+		padding: 18px 30px 18px 20px;
+		border-radius:0;
+		text-align:left;
+		border: solid 1px #c7c7c7;
+		border-left-width: 5px;
+
+		transition: all .5s ease-in;
+		opacity:0;
 	}
+	#footer .alert-success {
+		border-color: #468847;
+	}
+	#footer .alert-warning {
+		border: solid 1px #c09853;
+	}
+	#footer .alert-info {
+		border-color: #18a0de;
+	}
+	#footer .alert-danger,
+	#footer .alert-error {
+		border-color: #b94a48;
+	}
+	#footer .alert.active {
+		opacity:1;
+	}
+	#footer .alert.active.ng-hide {
+		display:inline-block !important;
+		opacity:0;
+		transition: all .2s ease-out;
+	}
+		#footer .alert > div {
+			display:inline-block;
+			min-width:100px;
+		}
+		#footer .close {
+			font-size:48px;
+			top:0;
+		}
+
 
 #confirm .in {
     display:block;

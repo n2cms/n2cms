@@ -676,4 +676,17 @@ span.null {color:silver}\
 		});
 	})
 
+	module.directive("n2DelayedActivation", function () {
+		return {
+			restrict: "A",
+			link: function (scope, element, attrs) {
+				scope.$watch(attrs.n2DelayedActivation, function (active) {
+					if (active)
+						setTimeout(function () { element.addClass("active"); })
+					else
+						setTimeout(function () { element.removeClass("active"); }, 200)
+				});
+			}
+		}
+	});
 })(angular.module('n2.directives', ['n2.localization']));
