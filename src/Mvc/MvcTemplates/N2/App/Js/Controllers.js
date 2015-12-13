@@ -173,7 +173,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 	function broadcastUpdaterequest(updaterequest) {
 		setTimeout(function () {
 			$scope.$apply(function () {
-				console.log("broadcasting", updaterequest);
 				$scope.$broadcast("refreshnode", updaterequest);
 			});
 		});
@@ -568,8 +567,6 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory, Uri, Notify) 
 			node.Active = true;
 	});
 	$rootScope.$on("contextchanged", function (scope, ctx) {
-		console.log("ctxcng");
-
 		if (ctx.Actions.refresh) {
 			$scope.reloadChildren(ctx.Actions.refresh, function () {
 				$scope.select(ctx.CurrentItem.Path, ctx.CurrentItem.VersionIndex, /*keepFlags*/true);

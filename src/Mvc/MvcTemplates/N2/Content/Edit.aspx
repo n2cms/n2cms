@@ -40,9 +40,9 @@
                 <span class="rightOpener-open" ng-hide="sidebarOpen">&laquo;</span>
                 <span class="rightOpener-close" ng-show="sidebarOpen">&raquo;</span>
             </a>
-	        <asp:HyperLink ID="hlNewerVersion" runat="server" Text="There is a newer unpublished version of this page." CssClass="alert alert-margin" Visible="False" meta:resourcekey="hlNewerVersionResource1"/>
+	        <asp:HyperLink ID="hlNewerVersion" runat="server" Text="There is a newer unpublished version of this page." CssClass="alert alert-warning alert-margin" Visible="False" meta:resourcekey="hlNewerVersionResource1"/>
 	        <asp:HyperLink ID="hlOlderVersion" runat="server" Text="This is a version of another item." CssClass="alert alert-info alert-margin" Visible="False" meta:resourcekey="hlOlderVersionResource1"/>
-		    <asp:ValidationSummary ID="vsEdit" runat="server" CssClass="alert alert-block alert-margin" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
+		    <asp:ValidationSummary ID="vsEdit" runat="server" CssClass="alert alert-warning alert-block alert-margin" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
 		    <asp:CustomValidator ID="cvException" runat="server" Display="None" />
 
 		    <n2:ItemEditor ID="ie" runat="server" EnableAutoSave="true" />

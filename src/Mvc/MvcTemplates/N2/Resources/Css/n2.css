@@ -186,8 +186,6 @@ a { text-decoration: none; color: #000; }
 		padding: 20px 40px 20px 20px;
 		border-radius:0;
 		text-align:left;
-		border: solid 1px #c7c7c7;
-		border-left-width: 5px;
 		white-space:nowrap;
 		position:relative;
 
@@ -203,21 +201,8 @@ a { text-decoration: none; color: #000; }
 		opacity:0;
 		transition: all .2s ease-out;
 	}
-	#footer .alert-success {
-		border-color: #468847;
-	}
-	#footer .alert-warning {
-		border: solid 1px #c09853;
-	}
-	#footer .alert-info {
-		border-color: #18a0de;
-	}
-	#footer .alert-error {
-		border-color: #b94a48;
-	}
 	#footer .alert-danger.active {
 		margin-bottom: 50%;
-		border-color: #b94a48;
 	}
 		#footer .alert > b {
 			font-size:24px;

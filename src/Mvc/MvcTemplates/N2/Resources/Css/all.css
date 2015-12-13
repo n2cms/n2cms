@@ -72,3 +72,24 @@ body.framed .toolbar .rightAligned{
 .Write		.Publish,
 .Write		.Administer,
 .Publish	.Administer { opacity:.33; filter: alpha(opacity=33); cursor:default; }
+
+.alert {
+	border-radius:0;
+	border: solid 1px #c7c7c7;
+	border-left-width: 5px;
+}
+.alert-success {
+	border-color: #468847;
+}
+.alert-warning {
+	border-color: #c09853;
+}
+.alert-info {
+	border-color: #18a0de;
+}
+.alert-error {
+	border-color: #b94a48;
+}
+.alert-danger {
+	border-color: #b94a48;
+}
