@@ -278,6 +278,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 
 			if (message) {
 				Notify.show({
+					iconClass: "fa fa-wifi",
 					message: message + " Waiting " + (retryTimeout / 1000) + " seconds before retrying.",
 					type: "error"
 				});
@@ -289,6 +290,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 
 						communicationattempts = 0;
 						Notify.show({
+							iconClass: "fa fa-wifi",
 							message: "Server connection restored.",
 							type: "succes",
 							timeout: 5000
@@ -555,7 +557,7 @@ function ScopeHandler($scope, Content) {
 	return this;
 }
 
-function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory, Uri) {
+function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory, Uri, Notify) {
 	$scope.$watch("Context.Content", function (content) {
 		$scope.node = content;
 	});
@@ -566,6 +568,8 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory, Uri) {
 			node.Active = true;
 	});
 	$rootScope.$on("contextchanged", function (scope, ctx) {
+		console.log("ctxcng");
+
 		if (ctx.Actions.refresh) {
 			$scope.reloadChildren(ctx.Actions.refresh, function () {
 				$scope.select(ctx.CurrentItem.Path, ctx.CurrentItem.VersionIndex, /*keepFlags*/true);
@@ -683,6 +687,7 @@ function BranchCtrl($scope, Content, Translate, SortHelperFactory, Notify) {
 					if (!value) {
 						$scope.autoSaveWatch();
 						Notify.show({
+							iconClass: "fa fa-thumbs-down",
 							message: Translate("branch.autosave.discardDraft", "An autosaved draft is left behind. Discard it?"),
 							type: "info",
 							onClick: function () {
@@ -699,6 +704,7 @@ function BranchCtrl($scope, Content, Translate, SortHelperFactory, Notify) {
 									}
 
 									Notify.show({
+										iconClass: "fa fa-trash",
 										message: Translate("branch.autosave.draftDiscarded", "The autosaved draft was removed."),
 										type: "info",
 										timeout: 2500

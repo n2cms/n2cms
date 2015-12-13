@@ -182,15 +182,26 @@ a { text-decoration: none; color: #000; }
 }
 	#footer .alert {
 		display:inline-block;
-		margin: 10px 0;
-		padding: 18px 30px 18px 20px;
+		margin: 0;
+		padding: 20px 40px 20px 20px;
 		border-radius:0;
 		text-align:left;
 		border: solid 1px #c7c7c7;
 		border-left-width: 5px;
+		white-space:nowrap;
+		position:relative;
 
 		transition: all .5s ease-in;
 		opacity:0;
+	}
+	#footer .alert.active {
+		opacity:1;
+		margin: 10px;
+	}
+	#footer .alert.active.ng-hide {
+		display:inline-block !important;
+		opacity:0;
+		transition: all .2s ease-out;
 	}
 	#footer .alert-success {
 		border-color: #468847;
@@ -201,25 +212,31 @@ a { text-decoration: none; color: #000; }
 	#footer .alert-info {
 		border-color: #18a0de;
 	}
-	#footer .alert-danger,
 	#footer .alert-error {
 		border-color: #b94a48;
 	}
-	#footer .alert.active {
-		opacity:1;
+	#footer .alert-danger.active {
+		margin-bottom: 50%;
+		border-color: #b94a48;
 	}
-	#footer .alert.active.ng-hide {
-		display:inline-block !important;
-		opacity:0;
-		transition: all .2s ease-out;
-	}
+		#footer .alert > b {
+			font-size:24px;
+			vertical-align:top;
+		}
 		#footer .alert > div {
 			display:inline-block;
+			padding: 3px 10px;
 			min-width:100px;
+			white-space:normal;
 		}
 		#footer .close {
 			font-size:48px;
+			position:absolute;
 			top:0;
+			right:0;
+			margin:0;
+			line-height:48px;
+			padding:10px;
 		}
 
 
