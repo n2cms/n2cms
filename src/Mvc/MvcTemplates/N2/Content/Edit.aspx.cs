@@ -307,7 +307,8 @@ namespace N2.Edit
 				Title = string.Format(format, string.IsNullOrEmpty(ie.CurrentItem.Title) ? definitionTitle : ie.CurrentItem.Title);
 			}
 			Items["HelpText"] = definition.HelpText;
-		}
+			Items["EditingInstructions"] = definition.EditingInstructions;
+        }
 
 		private void InitItemEditor()
 		{

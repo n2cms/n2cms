@@ -41,6 +41,9 @@
 				<% } %>
 			</h1>
 			<% } %>
+			<% if (Page.Items["EditingInstructions"] != null) { %>
+			<p><%= Page.Items["EditingInstructions"] %></p>
+			<% } %>
 
 			<asp:ContentPlaceHolder ID="Content" runat="server" />
 		</div>

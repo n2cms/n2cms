@@ -18,7 +18,7 @@ namespace Dinamico.Dinamico.Registrations
         {
             register.ControlledBy<Controllers.StartPageController>();
 
-            register.Page(title: "Start Page", description: "The topmost node of a site. This can be placed below a language intersection to also represent a language");
+            register.Page(title: "Start Page", description: "The topmost node of a site. This can be placed below a language intersection to also represent a language", editingInstructions: "Hello world lorem ipsum");
             register.RestrictParents(typeof(IRootPage), typeof(LanguageIntersection));
 			register.AvailableZone("Scripts");
 

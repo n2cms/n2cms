@@ -45,6 +45,9 @@ namespace N2.Definitions
 		/// <summary>A helpful text available when editing the page.</summary>
 		public string HelpText { get; set; }
 
+		/// <summary>A text available displayed editing the page.</summary>
+		public string EditingInstructions { get; set; }
+
 		protected AbstractDefinition()
         {
             SortOrder = int.MinValue;
@@ -89,6 +92,7 @@ namespace N2.Definitions
             currentDefinition.IconClass = IconClass ?? currentDefinition.IconClass ?? DefaultIconClass;
             currentDefinition.IsPage = IsPage;
 			currentDefinition.HelpText = HelpText ?? currentDefinition.HelpText;
+			currentDefinition.EditingInstructions = EditingInstructions ?? currentDefinition.EditingInstructions;
 
             currentDefinition.IsDefined = true;
 

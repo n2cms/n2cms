@@ -207,6 +207,9 @@ namespace N2.Definitions
 		/// <summary>A helpful text available when editing the page.</summary>
 		public string HelpText { get; set; }
 
+		/// <summary>A text always displayed when editing the page.</summary>
+		public string EditingInstructions { get; set; }
+
 		#endregion
 
 		#region Methods
@@ -529,6 +532,7 @@ namespace N2.Definitions
             id.Title = Title;
             id.ToolTip = ToolTip;
 			id.HelpText = HelpText;
+			id.EditingInstructions = EditingInstructions;
             return id;
         }
 
