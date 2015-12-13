@@ -680,6 +680,7 @@ function BranchCtrl($scope, Content, Translate, SortHelperFactory, Notify) {
 		var node = $scope.node;
 		if (args.node.ID == node.Current.ID) {
 			node.Current.MetaInformation = args.node.MetaInformation;
+			node.Current.Title = args.node.Title;
 			refresheMetaInformation(node);
 			var mi = node.Current.MetaInformation;
 			if (args.autosaved && !isNaN(mi.draft && mi.draft.VersionIndex)) {
