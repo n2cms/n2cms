@@ -203,7 +203,7 @@ namespace N2.Web.UI.WebControls
 
             Register.StyleSheet(Page, Url.ResolveTokens("{ManagementUrl}/Resources/Css/edit.css"));
 
-			Page.ClientScript.RegisterHiddenField(ClientID + "_autosaved_item_id", currentItem.ID.ToString());
+			Page.ClientScript.RegisterHiddenField(ClientID + "_autosaved_item_id", Page.Request[ClientID + "_autosaved_item_id"] ?? currentItem.ID.ToString());
 			if (EnableAutoSave)
 			{
 				Register.JavaScript(Page, @"	window.n2autosave && n2autosave.init();", ScriptOptions.DocumentReady);
