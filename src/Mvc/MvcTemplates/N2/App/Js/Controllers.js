@@ -648,7 +648,7 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory, Uri, Notify) 
 	$scope.scope = new ScopeHandler($scope, Content);
 }
 
-function BranchCtrl($scope, Content, Translate, SortHelperFactory, Notify) {
+function BranchCtrl($scope, $timeout, Content, Translate, SortHelperFactory, Notify) {
 	$scope.node = $scope.child;
 	$scope.sort = new SortHelperFactory($scope, Content);
 	function refresheMetaInformation(node) {
@@ -685,33 +685,38 @@ function BranchCtrl($scope, Content, Translate, SortHelperFactory, Notify) {
 				$scope.autoSaveWatch = $scope.$watch("node.Active", function (value, oldValue) {
 					if (!value) {
 						$scope.autoSaveWatch();
-						Notify.show({
-							iconClass: "fa fa-thumbs-down",
-							message: Translate("branch.autosave.discardDraft", "An autosaved draft is left behind. Discard it?"),
-							type: "info",
-							onClick: function () {
-								Content.discard(Content.applySelection({ n2versionIndex: mi.draft.VersionIndex }, node.Current), function (result) {
-									if (result.Discarded) {
-										node.Current.MetaInformation = result.Node.MetaInformation;
-										refresheMetaInformation(node);
-									} else if (result.Removed) {
-										$scope.reloadChildren(result.Node.Path, /*callback*/function () {
-											$scope.expandTo(result.Node.Path, /*select*/true);
-										});
-									} else {
-										console.warn("Unexpected result", result);
-									}
+						$timeout(function () {
+							if (!args.autosaved || isNaN(mi.draft && mi.draft.VersionIndex))
+								return;
 
-									Notify.show({
-										iconClass: "fa fa-trash",
-										message: Translate("branch.autosave.draftDiscarded", "The autosaved draft was removed."),
-										type: "info",
-										timeout: 2500
+							Notify.show({
+								iconClass: "fa fa-thumbs-down",
+								message: Translate("branch.autosave.discardDraft", "An autosaved draft is left behind. Discard it?"),
+								type: "info",
+								onClick: function () {
+									Content.discard(Content.applySelection({ n2versionIndex: mi.draft.VersionIndex }, node.Current), function (result) {
+										if (result.Discarded) {
+											node.Current.MetaInformation = result.Node.MetaInformation;
+											refresheMetaInformation(node);
+										} else if (result.Removed) {
+											$scope.reloadChildren(result.Node.Path, /*callback*/function () {
+												$scope.expandTo(result.Node.Path, /*select*/true);
+											});
+										} else {
+											console.warn("Unexpected result", result);
+										}
+
+										Notify.show({
+											iconClass: "fa fa-trash",
+											message: Translate("branch.autosave.draftDiscarded", "The autosaved draft was removed."),
+											type: "info",
+											timeout: 2500
+										});
 									});
-								});
-							},
-							timeout: 30000
-						});
+								},
+								timeout: 30000
+							});
+						}, 5000);
 					}
 				});
 			}
