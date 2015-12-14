@@ -261,9 +261,10 @@ namespace N2.Edit.Versioning
                     if (!clone.Published.HasValue)
                         clone.Published = Utility.CurrentTime();
                     clone.AddTo(currentItem);
+					replacingChild.VersionOf = clone;
                     RelinkMasterVersion(clone);
                     yield return clone;
-                    masterChild = clone;
+					masterChild = clone;
                 }
                 foreach (var addedPart in AddAddedPartsRecursive(masterChild, replacingChild))
                     yield return addedPart;
