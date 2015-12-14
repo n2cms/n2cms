@@ -655,7 +655,6 @@ function BranchCtrl($scope, $timeout, Content, Translate, SortHelperFactory, Not
 		$scope.tags = [];
 		if (node.Current) {
 			var mi = node.Current.MetaInformation;
-			console.log(mi.draft, node.Current)
 			if (mi) {
 				if (mi.authority) $scope.tags.push({ ToolTip: Translate("branch.tags.authority", "Site: ") + (mi.authority.ToolTip || " (*)"), IconClass: "fa fa-home", Url: "#" });
 				if (mi.hidden) $scope.tags.push({ ToolTip: Translate("branch.tags.hidden", "Hidden"), IconClass: "fa fa-eraser", Url: "#" });
