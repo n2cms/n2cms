@@ -109,7 +109,7 @@ namespace N2.Web.Mvc.Html
                 writer.Write(w.ToString(TagRenderMode.StartTag));
                 writer.Write(w.InnerHtml);
             }
-            Adapters.ResolveAdapter<PartsAdapter>(model).RenderPart(Html, model);
+            Adapters.ResolveAdapter<PartsAdapter>(model).RenderPart(Html, model, writer);
 
             if (w != null)
                 writer.WriteLine(w.ToString(TagRenderMode.EndTag));
