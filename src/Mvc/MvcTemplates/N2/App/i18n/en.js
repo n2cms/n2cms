@@ -9,6 +9,7 @@
 			"language": "Language: ",
 			"locked": "Access restrictions",
 			"zone": "In zone: ",
+			"isDraft": "Is draft: ",
 			"draft": "Has draft: ",
 			"unpublished": "Unpublished"
 		},

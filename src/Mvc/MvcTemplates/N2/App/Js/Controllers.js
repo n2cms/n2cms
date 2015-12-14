@@ -655,19 +655,20 @@ function BranchCtrl($scope, Content, Translate, SortHelperFactory, Notify) {
 		$scope.tags = [];
 		if (node.Current) {
 			var mi = node.Current.MetaInformation;
+			console.log(mi.draft, node.Current)
 			if (mi) {
 				if (mi.authority) $scope.tags.push({ ToolTip: Translate("branch.tags.authority", "Site: ") + (mi.authority.ToolTip || " (*)"), IconClass: "fa fa-home", Url: "#" });
 				if (mi.hidden) $scope.tags.push({ ToolTip: Translate("branch.tags.hidden", "Hidden"), IconClass: "fa fa-eraser", Url: "#" });
 				if (mi.language) $scope.tags.push({ ToolTip: Translate("branch.tags.language", "Language: ") + mi.language.Text, IconClass: "fa fa-globe", Url: "#" });
 				if (mi.locked) $scope.tags.push({ ToolTip: Translate("branch.tags.locked", "Access restrictions"), IconClass: "fa fa-lock", Url: "#" });
 				if (mi.zone) $scope.tags.push({ ToolTip: Translate("branch.tags.zone", "In zone: ") + mi.zone.Text, IconClass: "fa fa-columns", Url: "#" });
-				if (mi.draft) $scope.tags.push({ ToolTip: Translate("branch.tags.draft", "Has draft: ") + mi.draft.ToolTip, IconClass: "fa fa-circle-o", Url: "#" });
 				if (mi.system) $scope.tags.push({ ToolTip: mi.system.ToolTip, IconClass: "fa fa-qrcode", Url: "#" });
+				if (mi.draft) $scope.tags.push({ ToolTip: Translate(mi.draft.VersionIndex == node.Current.VersionIndex ? "branch.tags.isDraft" : "branch.tags.draft", "Has draft: ") + mi.draft.ToolTip, IconClass: "fa fa-circle-o", Url: "#" });
 				if (node.Current.State == Content.states.Unpublished) $scope.tags.push({ ToolTip: Translate("branch.tags.unpublished", "Unpublished"), IconClass: "fa fa-stop", Url: "#" });
 			}
 		}
 		$scope.status = {
-			draft: node.Current.State == Content.states.Draft || node.Current.State == Content.states.Waiting || node.Current.MetaInformation.draft,
+			draft: !mi.system && (node.Current.State == Content.states.Draft || node.Current.State == Content.states.Waiting || node.Current.MetaInformation.draft),
 			unpublished: node.Current.State == Content.states.Unpublished || node.Current.State == Content.states.Deleted,
 			startpage: node.Current.MetaInformation.authority
 		};
