@@ -55,7 +55,7 @@
 		min-width:250px; 
 		max-width:500px; 
 		max-height:400px;
-		padding: 5px 0;
+		padding: 5px;
 		overflow:auto;
 		box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.25); 
 		color: #000;
@@ -102,13 +102,13 @@
 .zoneItem.n2-part-hover > .n2-drop-area.n2-prepend a { opacity:1; max-height: 100px; }
 
 .n2-editable {
-	box-shadow: 0 0 10px rgba(255, 127, 80, .25) inset;
+	box-shadow: 0 0 10px rgba(255, 127, 80, .2) inset;
 	position:relative;
 	transition: all .3s ease-out;
 }
 .n2-editable:hover {
-	box-shadow: 0 0 20px rgba(255, 127, 80, .75) inset;
-	outline: solid 1px rgba(255, 127, 80, .75);
+	box-shadow: 0 0 20px rgba(255, 127, 80, .8) inset;
+	outline: solid 1px rgba(255, 127, 80, .8);
 }
 	.n2-editable .n2-editable-link {
 		position:absolute;
@@ -149,7 +149,6 @@
 		}
 		.n2-editable .n2-editable-link span {
 			position:absolute;
-			margin-top: -1px;
 			display:inline-block;
 			padding:1px 5px;
 			white-space:nowrap;
