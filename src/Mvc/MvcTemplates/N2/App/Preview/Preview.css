@@ -105,6 +105,7 @@
 	box-shadow: 0 0 10px rgba(255, 127, 80, .2) inset;
 	position:relative;
 	transition: all .3s ease-out;
+	min-height: 22px;
 }
 .n2-editable:hover {
 	box-shadow: 0 0 20px rgba(255, 127, 80, .8) inset;
