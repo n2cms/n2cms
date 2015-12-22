@@ -18,10 +18,11 @@ namespace N2.Web.UI
         string varyByParam = "*";
         string varyByHeader = "";
         string cacheProfile = "";
-        int duration = 60;
+		string varyByCustom = "";
+		int duration = 60;
 		private OutputCacheInvalidationMode invalidationMode;
 
-        public CacheManager(IWebContext context, IPersister persister)
+		public CacheManager(IWebContext context, IPersister persister)
         {
             this.context = context;
             this.persister = persister;
@@ -33,6 +34,7 @@ namespace N2.Web.UI
             enabled = config.OutputCache.Enabled;
             varyByParam = config.OutputCache.VaryByParam;
             varyByHeader = config.OutputCache.VaryByHeader;
+			varyByCustom = config.OutputCache.VaryByCustom;
             cacheProfile = config.OutputCache.CacheProfile;
             duration = config.OutputCache.Duration;
 			invalidationMode = config.OutputCache.InvalidateOnChangesTo;
@@ -115,15 +117,11 @@ namespace N2.Web.UI
             }
             parameters.Enabled = Enabled;
             parameters.Location = OutputCacheLocation.Server;
-            //parameters.NoStore = NoStore;
-            //parameters.SqlDependency = SqlDependency;
-            //parameters.VaryByContentEncoding = VaryByContentEncoding;
-            //parameters.VaryByControl = VaryByControl;
-            //parameters.VaryByCustom = VaryByCustom;
-            //parameters.VaryByHeader = VaryByHeader;
-            if (!string.IsNullOrEmpty(varyByHeader))
-                parameters.VaryByHeader = varyByHeader;
-            parameters.VaryByParam = varyByParam;
+			if (!string.IsNullOrEmpty(varyByHeader))
+				parameters.VaryByHeader = varyByHeader;
+			if (!string.IsNullOrEmpty(varyByCustom))
+				parameters.VaryByCustom = varyByCustom;
+			parameters.VaryByParam = varyByParam;
             return parameters;
         }
     }
