@@ -228,6 +228,15 @@ namespace N2.Definitions.Runtime
 		}
 
 		/// <summary>
+		/// Specifices usage of an <see cref="System.Web.UI.WebControls.TextBox"/> web control as editor for the contents within a html element.</summary>
+		/// <example>
+		public static EditableBuilder<EditableHtmlElementAttribute> HtmlElement(this IPropertyRegistration<string> registration, string tagName, string title = null)
+		{
+			return registration.Registration.RegisterEditable<EditableHtmlElementAttribute>(registration.PropertyName, title)
+				.Configure(ehea => ehea.TagName = tagName);
+		}
+
+		/// <summary>
 		/// Specifies a text box which renders as a html meta tag element when rendered on a web page.
 		/// </summary>
 		public static EditableBuilder<EditableMetaTagAttribute> Meta(this IPropertyRegistration<string> registration, string title = null)

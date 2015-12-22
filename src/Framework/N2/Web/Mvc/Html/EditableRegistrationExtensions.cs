@@ -172,6 +172,12 @@ namespace N2.Web.Mvc.Html
 			return registration.RegisterEditable<EditableTextAttribute>(name, title);
 		}
 
+		public static EditableBuilder<EditableHtmlElementAttribute> HtmlElement(this IContentRegistration registration, string name, string tagName, string title = null)
+		{
+			return registration.RegisterEditable<EditableHtmlElementAttribute>(name, title)
+				.Configure(ehea => ehea.TagName = tagName);
+		}
+
 		public static EditableBuilder<EditableMetaTagAttribute> Meta(this IContentRegistration registration, string name, string title = null)
 		{
 			return registration.RegisterEditable<EditableMetaTagAttribute>(name, title);
