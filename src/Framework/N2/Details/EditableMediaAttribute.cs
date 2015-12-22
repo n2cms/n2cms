@@ -72,6 +72,8 @@ namespace N2.Details
 		/// <summary>The background color of a media element.</summary>
 		public string BackgroundColor { get; set; }
 
+		/// <summary>One of <see cref="ImagesUtility.ExtensionGroups"/></summary>
+		public string ExtensionGroup { get; set; }
 
 		public override bool UpdateItem(ContentItem item, Control editor)
         {
@@ -165,13 +167,8 @@ namespace N2.Details
             if (string.IsNullOrEmpty(url))
                 return;
 
-            string extension = VirtualPathUtility.GetExtension(url);
-            switch (ImagesUtility.GetExtensionGroup(extension))
+            switch (ExtensionGroup ?? ImagesUtility.GetExtensionGroup(VirtualPathUtility.GetExtension(url)))
             {
-                case ImagesUtility.ExtensionGroups.Images:
-                    var sizes = DisplayableImageAttribute.GetSizes(PreferredSize);
-                    DisplayableImageAttribute.WriteImage(item, propertyName, sizes, alt, CssClass, writer);
-                    return;
 				case ImagesUtility.ExtensionGroups.Flash:
 					WriteFlash(url, writer);
 					return;
@@ -181,10 +178,11 @@ namespace N2.Details
 				case ImagesUtility.ExtensionGroups.Audio:
 					WriteAudio(url, writer);
 					return;
-
+				case ImagesUtility.ExtensionGroups.Images:
 				default:
-                    WriteUrl(item, propertyName, cssClass, writer, url);
-                    return;
+					var sizes = DisplayableImageAttribute.GetSizes(PreferredSize);
+					DisplayableImageAttribute.WriteImage(item, propertyName, sizes, alt, CssClass, writer);
+					return;
             }
         }
 
@@ -227,10 +225,20 @@ namespace N2.Details
 		private static void WriteUrl(ContentItem item, string propertyName, string cssClass, TextWriter writer, string url)
         {
             cssClass = item[propertyName + "_CssClass"] as string ?? cssClass;
+			string fileName = "";
+			try
+			{
+				if (!url.Contains("//"))
+					fileName = VirtualPathUtility.GetFileName(url);
+            }
+			catch (Exception)
+			{
+			}
+
             if (string.IsNullOrEmpty(cssClass))
-                writer.Write(string.Format("<a href=\"{0}\">{1}</a>", url, VirtualPathUtility.GetFileName(url)));
+                writer.Write(string.Format("<a href=\"{0}\">{1}</a>", url, fileName));
             else
-                writer.Write(string.Format("<a href=\"{0}\" class=\"{1}\">{2}</a>", url, cssClass, VirtualPathUtility.GetFileName(url)));
+                writer.Write(string.Format("<a href=\"{0}\" class=\"{1}\">{2}</a>", url, cssClass, fileName));
         }
 
         #endregion
