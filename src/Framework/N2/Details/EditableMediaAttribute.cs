@@ -178,6 +178,15 @@ namespace N2.Details
 				case ImagesUtility.ExtensionGroups.Audio:
 					WriteAudio(url, writer);
 					return;
+				case ImagesUtility.ExtensionGroups.ClientCode:
+				case ImagesUtility.ExtensionGroups.Compressed:
+				case ImagesUtility.ExtensionGroups.Excel:
+				case ImagesUtility.ExtensionGroups.Pdf:
+				case ImagesUtility.ExtensionGroups.ServerCode:
+				case ImagesUtility.ExtensionGroups.Text:
+				case ImagesUtility.ExtensionGroups.Word:
+					WriteUrl(item, propertyName, CssClass, writer, url);
+					return;
 				case ImagesUtility.ExtensionGroups.Images:
 				default:
 					var sizes = DisplayableImageAttribute.GetSizes(PreferredSize);
