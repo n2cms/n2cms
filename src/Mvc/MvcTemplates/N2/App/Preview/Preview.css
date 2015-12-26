@@ -122,13 +122,13 @@
 		display:inline-block;
 		padding:2px;
 
-		max-height:0;
-		margin-top:0;
-		opacity:0;
+		margin-top: 0;
+		color:rgba(255, 127, 80, .25);
 		transition: all .2s ease-out;
 		overflow:hidden;
 	}
 	.n2-editable:hover .n2-editable-link {
+		color:#fff;
 		max-height:24px;
 		min-width:24px;
 		opacity:.75;
@@ -142,7 +142,7 @@
 		text-decoration:none;
 	}
 		.n2-editable .n2-editable-link * {
-			opacity:.5;
+			opacity:.75;
 			transition: all .1s ease-out;
 			vertical-align: middle;
 		}
