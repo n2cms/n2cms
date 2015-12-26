@@ -79,15 +79,17 @@
 
 
 .zoneItem { outline: solid 2px rgba(24, 160, 222, 0.25); position:relative; box-shadow: 0 0 5px rgba(255, 255, 255, .5); }
-.zoneItem.n2-part-hover { outline: solid 2px #18a0de; }
+.zoneItem:hover { outline: solid 2px #18a0de; }
 .zoneItem .titleBar { max-height: 0; overflow:hidden; opacity:0; outline: solid 2px rgba(24, 160, 222, 0.75); background-color: rgba(24, 160, 222, 0.75); position:absolute; top:0; width:100%; padding:0; margin-top:0; 
 					  font-family: 'Segoe UI', Helvetica, sans-serif; font-size:14px; color:#333; text-align:left; transition: all .1s ease-in; line-height:18px }
-.zoneItem.n2-part-hover > .titleBar { max-height:30px; margin-top:-15px; opacity:1; z-index:100; }
+.zoneItem:hover > .titleBar { max-height:30px; margin-top:-15px; opacity:1; z-index:100; }
+.zoneItem.n2-part-hover > .titleBar { z-index:200; box-shadow: 0 -2px 10px rgba(255, 255, 255, .5); }
 .zoneItem .titleBar:hover { z-index:300; box-shadow: 0 -2px 10px #fff; background-color: rgba(24, 160, 222, 1); outline: solid 2px rgba(24, 160, 222, 1); }
 	.zoneItem .titleBar .title { display:inline-block; padding:5px; padding-left:24px; background:none no-repeat 5px 5px; color:#fff; }
 		.zoneItem .titleBar .title .fa { margin-left: -15px; margin-right:5px;  }
 	.zoneItem .titleBar .commands a { float:right; color:#fff; padding:8px; margin:-2px -2px 0 0; position:relative; }
 	.zoneItem .titleBar .commands a:hover { text-decoration:none; background-color: rgba(116, 198, 235, 0.5); }
+.zoneItem.n2-part-hover > .titleBar{ opacity:1; max-height: 100px; }
 
 .n2-drop-area-marker { height:0; transition: all .5s ease-in }
 	.n2-drop-area-marker * { transition: all 1s ease-in; max-height: 0; overflow:hidden; opacity:0; }
@@ -99,7 +101,7 @@
 .n2-drop-area a { display:block; padding:10px; background: #eee; border: solid 2px rgba(24, 160, 222, .25); border-radius: 5px; text-align:center; position:absolute; width:100%; z-index:200; box-sizing: border-box; }
 .n2-drop-area:hover a { background-color:greenyellow; border-color: greenyellow; text-decoration:none; z-index:400; }
 .zoneItem > .n2-drop-area.n2-prepend a { opacity:0; max-height:0; top: 0; margin-top:10px; transition: ease-out .2s all; }
-.zoneItem.n2-part-hover > .n2-drop-area.n2-prepend a { opacity:1; max-height: 100px; }
+.zoneItem:hover > .n2-drop-area.n2-prepend a { opacity:1; max-height: 100px; }
 
 .n2-editable {
 	box-shadow: 0 0 10px rgba(255, 127, 80, .2) inset;
@@ -113,8 +115,8 @@
 }
 	.n2-editable .n2-editable-link {
 		position:absolute;
-		top:-2px;
-		right: -2px;
+		top:0;
+		right:0;
 		color:#fff;
 		font-size:14px;
 		display:inline-block;
@@ -128,30 +130,31 @@
 	}
 	.n2-editable:hover .n2-editable-link {
 		max-height:24px;
+		min-width:24px;
 		opacity:.75;
 		overflow:visible;
+		background: rgba(255, 127, 80, 1);
+		padding:1px;
 	}
 	.n2-editable .n2-editable-link:hover {
 		opacity:1;
 		z-index:500;
+		text-decoration:none;
 	}
 		.n2-editable .n2-editable-link * {
-			background: rgba(255, 127, 80, 1);
 			opacity:.5;
 			transition: all .1s ease-out;
+			vertical-align: middle;
 		}
 		.n2-editable .n2-editable-link:hover * {
 			opacity:1;
-			height:24px;
 		}
 		.n2-editable .n2-editable-link b {
-			float:left;
-			padding:5px;
+			display:inline-block;
+			padding:2px 2px 2px 5px;
 		}
 		.n2-editable .n2-editable-link span {
-			position:absolute;
 			display:inline-block;
-			padding:1px 5px;
 			white-space:nowrap;
 			opacity:0;
 			max-width:0;
@@ -160,6 +163,7 @@
 		.n2-editable .n2-editable-link:hover span {
 			max-width:200px;
 			overflow:hidden;
+			padding:0 2px;
 		}
 		.n2-editable .n2-editable-link span:hover {
 			text-decoration:underline;
