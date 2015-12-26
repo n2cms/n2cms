@@ -129,6 +129,7 @@ namespace N2.Management.Api
         public ActivityTrackingConfiguration ActivityTracking { get; set; }
 		public List<TemplateInfo> Templates { get; internal set; }
 		public DraftInfo Draft { get; internal set; }
+		public string[] Dependencies { get; internal set; }
 	}
 	public class ActivityTrackingConfiguration
 	{
@@ -236,7 +237,8 @@ namespace N2.Management.Api
 				}
 			}
 
-			var data = new ControlPanelDefinition
+			var angularRoot = engine.Config.Sections.Web.Resources.AngularJsRoot;
+            var data = new ControlPanelDefinition
 			{
 				Menu = GetControlPanelMenu(context, item),
 				Paths = GetUrls(context, item),
@@ -247,7 +249,16 @@ namespace N2.Management.Api
 					Path = engine.Config.Sections.Management.Collaboration.ActivityTrackingEnabled ? engine.Config.Sections.Management.Collaboration.PingPath.ResolveUrlTokens() : null
 				},
 				Templates = templates,
-				Draft = engine.Resolve<Edit.Versioning.DraftRepository>().GetDraftInfo(item)
+				Draft = engine.Resolve<DraftRepository>().GetDraftInfo(item),
+				Dependencies = new[]
+				{
+					angularRoot + "angular.js",
+					angularRoot + "angular-resource.js",
+					"{ManagementUrl}/App/i18n/en.js.ashx",
+					"{ManagementUrl}/App/Js/Directives.js",
+					"{ManagementUrl}/App/Js/Services.js",
+					"{ManagementUrl}/App/Preview/Preview.js"
+				}.Select(p => p.ResolveUrlTokens()).ToArray()
 			};
 			
 			PostProcess(data);

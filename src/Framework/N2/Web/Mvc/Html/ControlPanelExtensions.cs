@@ -353,10 +353,9 @@ namespace N2.Web.Mvc.Html
 
 			protected virtual void AppendControlPanel(TextWriter writer, IEngine engine, ContentItem item)
 			{
-				var settings = engine.Resolve<InterfaceBuilder>().GetControlPanelDefinition(engine.RequestContext.HttpContext, item);
-
                 writer.Write("<script>n2 = window.n2 || {};");
 				writer.Write("n2.settings = ");
+				var settings = engine.Resolve<InterfaceBuilder>().GetControlPanelDefinition(engine.RequestContext.HttpContext, item);
 				settings.ToJson(writer);
 				writer.Write(";</script>");
 

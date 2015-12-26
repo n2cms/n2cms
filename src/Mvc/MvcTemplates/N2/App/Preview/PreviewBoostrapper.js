@@ -24,12 +24,5 @@ $(function () {
 		}
 	};
 	var div = n2.boostrapper.append("div", null, { "class": "n2-preview n2-loading", "n2-preview": "" })
-	var n2path = n2.settings.Paths.Management;
-	n2.boostrapper.appendScripts([
-		'//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.js',
-		'//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-resource.js',
-		n2path + 'App/i18n/en.js.ashx',
-		n2path + 'App/Js/Directives.js',
-		n2path + 'App/Js/Services.js',
-		n2path + 'App/Preview/Preview.js'], function () { n2.boostrapper.init(div) });
+	n2.boostrapper.appendScripts(n2.settings.Dependencies, function () { n2.boostrapper.init(div) });
 });
