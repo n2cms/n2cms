@@ -5,19 +5,32 @@ n2.preview = angular.module('n2preview', ['n2.directives', 'n2.services'], funct
 
 n2.preview.factory("Organizable", ["$window", "Context", "Uri", function ($window, Context, Uri) {
 	function Organizable() {
+		this.$getDropPoint = function(){
+			var $dropPoint = $(this.$element).is(".n2-editable")
+				? $(this.$element)
+				: $(this.$element).children(".n2-drop-area.n2-append,.titleBar");
+			return $dropPoint;
+		}
 		this.reveal = function () {
-			var $dropPoint = $(this.$element).children(".n2-drop-area.n2-append,.titleBar");
+			var $dropPoint = this.$getDropPoint();
 			$("html,body").animate({ scrollTop: $dropPoint.offset().top - window.innerHeight / 3 }, function () {
 				$dropPoint[0].scrollIntoViewIfNeeded();
 			})
 		}
 		this.highlight = function () {
-			var $dropPoint = $(this.$element).children(".n2-drop-area.n2-append,.titleBar");
-			$(".n2-flashing").removeClass("n2-flashing");
-			$dropPoint.addClass("n2-flashing");
+			var $dropPoint = this.$getDropPoint();
+			$(".n2-highlighted").removeClass("n2-highlighted");
+			$dropPoint.addClass("n2-highlighted");
 		}
 		this.createUrl = function (template, beforePart) {
-			var qs = { zoneName: this.zone || this.name, n2versionIndex: Context.CurrentItem.VersionIndex, n2scroll: document.body.scrollTop, belowVersionKey: this.versionKey, returnUrl: encodeURIComponent(window.location.pathname + window.location.search) };
+			var qs = {
+				zoneName: this.zone || this.name,
+				n2versionIndex: Context.CurrentItem.VersionIndex,
+				n2scroll: document.body.scrollTop,
+				belowVersionKey: this.versionKey,
+				n2reveal: this.leash,
+				returnUrl: encodeURIComponent(window.location.pathname + window.location.search)
+			};
 			qs[Context.Paths.SelectedQueryKey] = this.path;
 			if (beforePart) {
 				angular.extend(qs, { before: !beforePart.versionKey && beforePart.path, beforeSortOrder: beforePart.sortOrder, beforeVersionKey: beforePart.versionKey });
@@ -101,6 +114,7 @@ n2.preview.factory("PartFactory", ["$window", "Context", "Uri", "Organizable", f
 		this.versionKey = $(element).attr("data-versionkey")
 		this.sortOrder = $(element).attr("data-sortorder");
 		this.type = $(element).attr("data-type");
+		this.leash = "part" + (this.versionKey || this.id || "").replace(/\//g, "-");
 		this.$element = element;
 
 		this.addPlaceholders = function (template, callback, first) {
@@ -129,6 +143,9 @@ n2.preview.factory("PartFactory", ["$window", "Context", "Uri", "Organizable", f
 			e.stopPropagation();
 			$(this).removeClass("n2-part-hover");
 		})
+
+		$(this.$element).attr("data-leash", this.leash);
+
 		return this;
 	}
 	Part.prototype = Organizable;
@@ -136,7 +153,7 @@ n2.preview.factory("PartFactory", ["$window", "Context", "Uri", "Organizable", f
 	return Part;
 }]);
 
-n2.preview.factory("EditableFactory", ["Context", "Uri", function (Context, Uri) {
+n2.preview.factory("EditableFactory", ["Context", "Uri", "Organizable", function (Context, Uri, Organizable) {
 
 	function Editable(element, $scope) {
 		var editable = this;
@@ -151,6 +168,9 @@ n2.preview.factory("EditableFactory", ["Context", "Uri", function (Context, Uri)
 		this.versionIndex = $(element).attr("data-versionindex");
 		this.versionKey = $(element).attr("data-versionkey");
 		
+		this.leash = "editable" + (this.id || this.path || this.versionKey || "").replace(/\//g, "-") + "-" + this.property;
+		$(this.$element).attr("data-leash", this.leash);
+
 		this.enableEditing = function () {
 			var url = new Uri(Context.Paths.Management + "Content/EditSingle.aspx")
 				.setQuery(Context.Paths.SelectedQueryKey, this.path)
@@ -160,6 +180,7 @@ n2.preview.factory("EditableFactory", ["Context", "Uri", function (Context, Uri)
 					property: this.property,
 					n2versionKey: this.versionKey,
 					n2versionIndex: this.versionIndex,
+					n2reveal: this.leash,
 					returnUrl: encodeURIComponent(window.location.pathname + window.location.search)
 				});
 			$("<a class='n2-editable-link' href='" + url + "'><b class='fa fa-pencil'></b> <span>" + "Edit " + this.property + "</span></a>")
@@ -169,16 +190,9 @@ n2.preview.factory("EditableFactory", ["Context", "Uri", function (Context, Uri)
 				window.location = url.toString();
 			});
 		}
-		//$(this.$element).hover(function (e) {
-		//	e.stopPropagation();
-		//	$(this).addClass("n2-part-hover").parents(".n2-part-hover").removeClass("n2-part-hover");
-		//}, function (e) {
-		//	e.stopPropagation();
-		//	$(this).removeClass("n2-part-hover");
-		//})
 		return this;
 	}
-
+	Editable.prototype = Organizable;
 	return Editable;
 }]);
 
@@ -202,6 +216,21 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", "ZoneFactory", 
 			});
 		}
 
+		this.reveal = function (leash) {
+			angular.forEach(this.zones, function (z) {
+				angular.forEach(z.parts, function (p) {
+					if (p.leash == leash) {
+						p.reveal();
+					}
+				});
+			});
+			angular.forEach(this.editables, function (e) {
+				if (e.leash == leash) {
+					e.reveal();
+				}
+			});
+		}
+
 		$(".dropZone", $window.document).each(function () {
 			var zone = new ZoneFactory(this, $scope);
 			operator.zones.push(zone);
@@ -217,6 +246,10 @@ n2.preview.factory("ZoneOperator", ["$window", "Context", "Uri", "ZoneFactory", 
 
 n2.preview.factory("Mode", ["$window", function ($window) {
 	return (/edit=([^&]*)/.exec($window.location.search) || [])[1] || "view";
+}]);
+
+n2.preview.factory("Reveal", ["$window", function ($window) {
+	return (/n2reveal=([^&]*)/.exec($window.location.search) || [])[1] || "";
 }]);
 
 n2.preview.factory("Context", ["$window", function ($window) {
@@ -313,7 +346,7 @@ n2.preview.directive("n2PreviewBar", [function () {
 
 n2.preview.directive("n2PreviewParts", [function () {
 	return {
-		controller: function ($scope, $location, Context, Content, ZoneOperator) {
+		controller: function ($scope, $location, Context, Content, ZoneOperator, Reveal) {
 			var operator = new ZoneOperator($scope);
 
 			$scope.toggleParts = function () {
@@ -376,9 +409,7 @@ n2.preview.directive("n2PreviewParts", [function () {
 							request[Context.Paths.ItemQueryKey] = part.id;
 							request["n2versionKey"] = part.versionKey;
 
-							console.log("moving", request, destinationZone, beforePart);
 							Content.organize(request, function () {
-								console.log("moved", arguments);
 								window.location.reload();
 							})
 						});
@@ -394,6 +425,8 @@ n2.preview.directive("n2PreviewParts", [function () {
 			// init
 
 			operator.enableEditables();
+			if (Reveal)
+				operator.reveal(Reveal);
 		}
 	}
 }])

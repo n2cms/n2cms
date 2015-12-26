@@ -215,7 +215,15 @@ namespace N2.Edit
 					Response.Redirect(ctx.RedirectUrl.ToUrl().AppendQuery("returnUrl", redirectUrl, unlessNull: true));
 
 				Refresh(ctx.Content, ToolbarArea.Navigation);
-				Refresh(ctx.Content, redirectUrl ?? Engine.GetContentAdapter<NodeAdapter>(ctx.Content).GetPreviewUrl(ctx.Content));
+				var previewUrl = (redirectUrl ?? Engine.GetContentAdapter<NodeAdapter>(ctx.Content).GetPreviewUrl(ctx.Content)).ToUrl();
+				previewUrl = previewUrl.SetQueryParameter("refresh", "true");
+				previewUrl = previewUrl.SetQueryParameter("n2scroll", Request["n2scroll"]);
+				if (!string.IsNullOrEmpty(Request["n2reveal"]))
+					previewUrl = previewUrl.SetQueryParameter("n2reveal", Request["n2reveal"]);
+				else if (!ctx.Content.IsPage)
+					previewUrl = previewUrl.SetQueryParameter("n2reveal", "part" + (string.IsNullOrEmpty(ctx.Content.GetVersionKey()) ? ctx.Content.ID.ToString() : ctx.Content.GetVersionKey()));
+
+				Refresh(ctx.Content, previewUrl);
 			}
 		}
 

@@ -178,10 +178,12 @@
 		box-shadow: 0 0 15px rgba(255, 255, 255, .75);
 	}
 
-.n2-flashing > a {
-	animation: n2-zone-blink 2s ease-in-out infinite;
+.n2-highlighted.n2-editable,
+.n2-highlighted.n2-drop-area > a {
+	animation: n2-zone-blink 2s ease-in-out infinite !important;
 }
-.n2-flashing:hover > a {
+.n2-highlighted:hover,
+.n2-highlighted:hover > a {
 	animation:none;
 }
 @keyframes n2-zone-blink {
