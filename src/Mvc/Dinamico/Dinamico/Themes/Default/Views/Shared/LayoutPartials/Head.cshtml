@@ -5,9 +5,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-@Content.Register.Meta("Author").Container("Metadata").Display()
-@Content.Register.Meta("Keywords").Container("Metadata").Display()
-@Content.Register.Meta("Description").Container("Metadata").Display()
+@Content.Register.Meta("Author").Container("Metadata").Display().Editable(false)
+@Content.Register.Meta("Keywords").Container("Metadata").Display().Editable(false)
+@Content.Register.Meta("Description").Container("Metadata").Display().Editable(false)
 
 <link href="@Url.ThemedContent("~/Content/Site.css")" rel="stylesheet" type="text/css" />
 <link rel="shortcut icon" href="@Url.ThemedContent("~/favicon.ico")" />
