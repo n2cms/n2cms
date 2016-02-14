@@ -64,12 +64,13 @@ namespace N2.Details
             Value = null;
         }
 
-        public ContentDetail(ContentItem enclosingItem, string name, object value)
+        public ContentDetail(ContentItem enclosingItem, string name, object value, string meta = null)
         {
             ID = 0;
             EnclosingItem = enclosingItem;
             Name = name;
             Value = value;
+			Meta = meta ?? Meta;
         }
         #endregion
 
@@ -399,7 +400,7 @@ namespace N2.Details
             if (value == null)
                 throw new ArgumentNullException("value");
 
-            return new ContentDetail(item, name, value) { Meta = meta };
+            return new ContentDetail(item, name, value, meta);
         }
 
         /// <summary>Creates a new content detail of the appropriated type based on the given value.</summary>
