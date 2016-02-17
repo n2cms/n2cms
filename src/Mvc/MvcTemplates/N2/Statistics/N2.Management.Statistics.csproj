@@ -161,9 +161,9 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y $(TargetPath) $(ProjectDir)..\..\bin
-xcopy /Y $(TargetPath) $(ProjectDir)..\..\..\Dinamico\bin
-xcopy /Y $(TargetPath) $(ProjectDir)..\..\..\..\WebForms\WebFormsTemplates\Bin</PostBuildEvent>
+    <PostBuildEvent>xcopy /Y "$(TargetPath)" "$(ProjectDir)..\..\bin"
+xcopy /Y "$(TargetPath)" "$(ProjectDir)..\..\..\Dinamico\bin"
+xcopy /Y "$(TargetPath)" "$(ProjectDir)..\..\..\..\WebForms\WebFormsTemplates\Bin"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
