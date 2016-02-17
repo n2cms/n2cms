@@ -228,7 +228,11 @@ namespace N2.Web.UI.WebControls
             var closureDefinition = template.Definition;
             button.Command += (s, a) =>
             {
-				var path = EnsureDraft(ParentItem);
+				var parentEditor = ItemUtility.FindInParents<ItemEditor>(Parent);
+				var parentVersion = parentEditor.GetAutosaveVersion()
+					?? ParentItem;
+
+				var path = EnsureDraft(parentVersion);
 
 				UpdateItemFromTopEditor(path);
 
@@ -236,10 +240,18 @@ namespace N2.Web.UI.WebControls
 				item.AddTo(path.CurrentItem, ZoneName);
 				Utility.UpdateSortOrder(path.CurrentItem.Children).ToList();
 
-				var cvr = Engine.Resolve<ContentVersionRepository>();
-				cvr.Save(path.CurrentPage);
+				if (path.CurrentPage.ID != 0 || path.CurrentPage.VersionOf.HasValue)
+				{
+					var cvr = Engine.Resolve<ContentVersionRepository>();
+					cvr.Save(path.CurrentPage);
 
-				RedirectToVersionOfSelf(path.CurrentPage);
+					RedirectToVersionOfSelf(path.CurrentPage);
+				}
+				else
+				{
+					Engine.Persister.SaveRecursive(path.CurrentPage);
+					RedirectToVersionOfSelf(path.CurrentPage);
+				}
 			};
             container.Controls.Add(button);
             return button;
