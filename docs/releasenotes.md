@@ -250,7 +250,7 @@ db9468fa037e595e99c36069e7188b564532fd8b Moved messages back to management
 
 # 2.8
 
-Auto-save during page editing. Editor collaboration using page notes. Built-in page statistics. Improved keyboard support. Management messages.
+Auto-save during page editing. Editor collaboration using page notes. Built-in page statistics. Improved keyboard support. Management messages. Output cache invalidatio modes (site, sitesection, page, ignorechanges, all)
 
 ```
 5d82c1b440f49f2ef3cc176ed0e35a7be7a16428 Improvements to editable number: support nulls, template first registration, not required by default (fixes #673)
