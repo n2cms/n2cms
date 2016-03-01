@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{E74B5507-F3B1-439D-BA8E-F5E923B327CA}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{E74B5507-F
 		..\docs\n2_readme.txt = ..\docs\n2_readme.txt
 		..\docs\n2cms.configuration.xsd = ..\docs\n2cms.configuration.xsd
 		..\docs\nodo.txt = ..\docs\nodo.txt
+		..\docs\releasenotes.md = ..\docs\releasenotes.md
 		..\docs\runtime_readme.txt = ..\docs\runtime_readme.txt
 		..\docs\solution_overview.txt = ..\docs\solution_overview.txt
 		..\docs\templates_readme.txt = ..\docs\templates_readme.txt
