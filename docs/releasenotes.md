@@ -1,6 +1,6 @@
 # HEAD
 
-On-page editing rebuilt from scratch. Auto-save improvements and stability.
+On-page editing rebuilt from scratch with new control panel (bottom left). Auto-save improvements and stability. Editable children restyled and cause save to draft during operations. UI texts editing.
 
 ```
 26b45a6fdf139117357c8164559b395b099fa077 Merge pull request #715 from ToniMontana/MongoLinqQueryFacade
@@ -189,7 +189,7 @@ b006477963aa50122ae458e7d096b65fc87a45b5 Include media browser resource file in 
 
 # 2.9
 
-File selection using new media browser. Popularity page sorting. Dinamico templates improvements.
+File selection using a new media browser. Popularity page sorting. Dinamico templates improvements.
 
 ```
 a8aa89ee1e7e788988e4a4b300ea42c77e0d9a50 Assembly version 2.9
