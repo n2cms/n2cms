@@ -61,7 +61,10 @@ namespace N2.Management.Content.Navigation
                 text.AppendFormat("<b class='{0}'></b> ", node.IconClass);
             else if (!string.IsNullOrEmpty(node.IconUrl))
                 text.AppendFormat("<img src='{0}' alt='icon'/>", node.IconUrl);
-            text.Append(node.Title);
+			if (string.IsNullOrEmpty(node.Title))
+				text.Append(Utility.GetLocalResourceString("NoName") ?? "(no name)");
+			else
+				text.Append(node.Title);
 
             foreach (var mi in node.MetaInformation)
             {
