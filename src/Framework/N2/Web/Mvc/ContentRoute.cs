@@ -40,7 +40,9 @@ namespace N2.Web.Mvc
         public const string AreaKey = "area";
         /// <summary>Convenience reference to the MVC action.</summary>
         public const string ActionKey = "action";
-        
+        /// <summary>Convenience reference to the id.</summary>
+        public const string IdKey = "id";
+
         readonly IEngine engine;
         readonly IRouteHandler routeHandler;
         readonly IControllerMapper controllerMapper;
@@ -75,6 +77,10 @@ namespace N2.Web.Mvc
             if (routeValues.ContainsKey(ActionKey))
                 actionName = (string)routeValues[ActionKey];
 
+            string id = null;
+            if (routeValues.ContainsKey(IdKey))
+                id = (string)routeValues[IdKey];
+
             string controllerName = controllerMapper.GetControllerName(item.GetContentType());
             if (controllerName == null || !controllerMapper.ControllerHasAction(controllerName, actionName))
                 return null;
@@ -89,6 +95,11 @@ namespace N2.Web.Mvc
             values[ActionKey] = actionName;
             values[ContentItemKey] = item.ID;
             values[AreaKey] = innerRoute.DataTokens["area"];
+
+            if (!string.IsNullOrEmpty(id))
+            {
+                values[IdKey] = id;
+            }
 
             return values;
         }
