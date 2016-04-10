@@ -343,7 +343,7 @@
 			};
 			contextMenu.cut = function(node) {
 				contextMenu.memory = node.Current;
-				contextMenu.action = "cut";
+				contextMenu.action = "move";
 
 			};
 			contextMenu.copy = function(node) {
