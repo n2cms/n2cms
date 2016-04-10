@@ -39,7 +39,9 @@ namespace N2.Management.Content.Export
                     if (c == '\n')
                     {
                         AppendCell(cell, row, trim: false);
-                        continue;
+						yield return new CsvRow(row, separator);
+						row = new List<string>();
+						continue;
                     }
 
                     if (c == quote)
