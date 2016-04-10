@@ -607,7 +607,7 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory, Uri, Notify) 
 	$scope.parts = {
 		show: function (node) {
 			node.Loading = true;
-			Content.children(Content.applySelection({ pages: false }, node.Current), function (data) {
+			Content.children(Content.applySelection({ pages: false, expand: true }, node.Current), function (data) {
 				var zones = {};
 				for (var i in data.Children) {
 					var part = data.Children[i];

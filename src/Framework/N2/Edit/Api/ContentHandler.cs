@@ -664,9 +664,6 @@ namespace N2.Management.Api
 
 		private IEnumerable<Node<TreeNode>> GetChildren(HttpContextBase context)
 		{
-			var adapter = engine.GetContentAdapter<NodeAdapter>(Selection.SelectedItem);
-			var filter = engine.EditManager.GetEditorFilter(context.User);
-
 			var query = Query.From(Selection.SelectedItem);
 			query.Interface = Interfaces.Managing;
 			if (context.Request["pages"] != null)
@@ -678,21 +675,36 @@ namespace N2.Management.Api
 			if (context.Request["take"] != null)
 				query.Take(int.Parse(context.Request["take"]));
 
-			return adapter.GetChildren(query)
-				.Where(filter)
-				.Select(c => GetNode(c, query));
+			var filter = engine.EditManager.GetEditorFilter(context.User);
+			return GetChildren(query, filter, Convert.ToBoolean(context.Request["expand"]));
 		}
 
-		private Node<TreeNode> GetNode(ContentItem item, Query query)
+		private IEnumerable<Node<TreeNode>> GetChildren(Query query, ItemFilter filter, bool expandRecursive = false)
+		{
+			var adapter = engine.GetContentAdapter<NodeAdapter>(Selection.SelectedItem);
+
+			return adapter.GetChildren(query)
+				.Where(filter)
+				.Select(c => GetNode(c, query, filter, expandRecursive));
+		}
+
+		private Node<TreeNode> GetNode(ContentItem item, Query query, ItemFilter filter, bool expandRecursive = false)
 		{
 			var adapter = engine.GetContentAdapter<NodeAdapter>(item);
-			return new Node<TreeNode>
+			var node = new Node<TreeNode>
 			{
 				Current = adapter.GetTreeNode(item),
 				Children = new Node<TreeNode>[0],
 				HasChildren = adapter.HasChildren(new Query { Parent = item, Filter = query.Filter, Interface = query.Interface, OnlyPages = query.OnlyPages }),
 				Expanded = false
 			};
+			if (expandRecursive)
+			{
+				query = query.Clone();
+				query.Parent = item;
+				node.Children = GetChildren(query, filter, expandRecursive).ToList();
+			}
+			return node;
 		}
 
 		public bool IsReusable
