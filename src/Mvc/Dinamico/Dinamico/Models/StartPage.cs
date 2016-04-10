@@ -22,8 +22,8 @@ namespace Dinamico.Models
 		Description = "The topmost node of a site. This can be placed below a language intersection to also represent a language",
 		IconClass = "fa fa-home",
 		InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
-	[WithEditableTranslations(ContainerName = "SiteContainer")]
-    public class StartPage : ContentPage, IStartPage, IStructuralPage, IThemeable, ILanguage, ISitesSource, ITranslator
+	[WithEditableTranslations(ContainerName = Defaults.Containers.Site)]
+	public class StartPage : ContentPage, IStartPage, IStructuralPage, IThemeable, ILanguage, ISitesSource, ITranslator
     {
         #region IThemeable Members
 
