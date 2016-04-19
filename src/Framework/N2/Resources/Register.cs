@@ -81,6 +81,7 @@ namespace N2.Resources
 
 		/// <summary>Path to jQuery.</summary>
 		public static string JQueryJsPath { get; set; }
+		public static string PreviewJQueryJsPath { get; set; }
 
 		/// <summary>The path to jQuery UI javascript bundle.</summary>
 		public static string JQueryUiPath { get; set; }
@@ -90,6 +91,7 @@ namespace N2.Resources
 
 		/// <summary> The path to angularjs folder used by N2. </summary>
 		public static string AngularJsRoot { get; set; }
+		public static string PreviewAngularJsRoot { get; set; }
 
 		/// <summary> The path to angularjs used by N2. </summary>
 		public static string AngularJsPath { get { return AngularJsRoot + "angular.js"; } }

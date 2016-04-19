@@ -22,7 +22,7 @@ namespace N2.Configuration
 			get { return (string)base["jQueryJsPath"]; }
 			set { base["jQueryJsPath"] = value; }
 		}
-
+		
 		/// <summary>The path to the included jQuery UI javascript resource.</summary>
 		[ConfigurationProperty("jQueryUiPath", DefaultValue = Register.DefaultJQueryUiJsPath)]
 		public string JQueryUiPath
@@ -45,14 +45,6 @@ namespace N2.Configuration
 		{
 			get { return (string)base["angularJsRoot"]; }
 			set { base["angularJsRoot"] = value; }
-		}
-
-		/// <summary>The path to the included angular javascript resource.</summary>
-		[ConfigurationProperty("angularPreviewJsRoot", DefaultValue = Register.DefaultAngularJsRoot)]
-		public string AngularPreviewJsRoot
-		{
-			get { return (string)base["angularPreviewJsRoot"]; }
-			set { base["angularPreviewJsRoot"] = value; }
 		}
 
 		/// <summary>The path to the included angular-strap javascript resource.</summary>

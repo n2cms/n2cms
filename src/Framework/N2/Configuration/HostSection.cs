@@ -83,6 +83,14 @@ namespace N2.Configuration
 			set { base["resources"] = value; }
 		}
 
+		/// <summary>Web resource related config options for the preview frame.</summary>
+		[ConfigurationProperty("previewResources")]
+		public ResourcesElement PreviewResources
+		{
+			get { return (ResourcesElement)base["previewResources"]; }
+			set { base["previewResources"] = value; }
+		}
+
 		/// <summary>Virtual path provider related config options.</summary>
 		[ConfigurationProperty("vpp")]
 		public VppElement Vpp

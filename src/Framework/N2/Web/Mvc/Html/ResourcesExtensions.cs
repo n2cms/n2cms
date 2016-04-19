@@ -62,9 +62,9 @@ namespace N2.Web.Mvc.Html
 			return registrator;
 		}
 
-		public static ResourcesHelper JQuery(this ResourcesHelper registrator)
+		public static ResourcesHelper JQuery(this ResourcesHelper registrator, bool preview = true)
 		{
-			return registrator.JavaScript(N2.Resources.Register.JQueryJsPath.ResolveUrlTokens());
+			return registrator.JavaScript((preview ? Register.PreviewJQueryJsPath : Register.JQueryJsPath).ResolveUrlTokens());
 		}
 
 		public static ResourcesHelper JQueryPlugins(this ResourcesHelper registrator, bool includeJQuery = true)
