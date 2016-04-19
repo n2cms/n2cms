@@ -85,6 +85,7 @@ function getParentPath(path) {
 	return parentPathExpr.exec(path) && parentPathExpr.exec(path)[1];;
 }
 
+angular.module('n2').controller("ManagementCtrl", ManagementCtrl);
 function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $rootScope, Context, Content, Profile, Security, FrameContext, Translate, Eventually, LocationKeeper, Notify, EbbCallbacks, Paths) {
 	$scope.Content = Content;
 	$scope.Security = Security;
@@ -510,6 +511,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 	};
 }
 
+angular.module('n2').controller("ManagementConfirmCtrl", ManagementConfirmCtrl);
 function ManagementConfirmCtrl($rootScope, $scope) {
 	$scope.confirm = function () {
 		$scope.settings.confirmed && $scope.settings.confirmed();
@@ -526,8 +528,10 @@ function ManagementConfirmCtrl($rootScope, $scope) {
 			$scope.$digest();
 		}
 	});
+angular.module('n2').controller("ManagementCtrl", ManagementCtrl);
 }
 
+angular.module('n2').controller("NavigationCtrl", NavigationCtrl);
 function NavigationCtrl($scope, ContextMenuFactory) {
 	$scope.ContextMenu = new ContextMenuFactory($scope);
 }
@@ -556,6 +560,7 @@ function ScopeHandler($scope, Content) {
 	return this;
 }
 
+angular.module('n2').controller("TrunkCtrl", TrunkCtrl);
 function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory, Uri, Notify) {
 	$scope.$watch("Context.Content", function (content) {
 		$scope.node = content;
@@ -648,6 +653,7 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory, Uri, Notify) 
 	$scope.scope = new ScopeHandler($scope, Content);
 }
 
+angular.module('n2').controller("BranchCtrl", BranchCtrl);
 function BranchCtrl($scope, $timeout, Content, Translate, SortHelperFactory, Notify) {
 	$scope.node = $scope.child;
 	$scope.sort = new SortHelperFactory($scope, Content);
@@ -723,6 +729,7 @@ function BranchCtrl($scope, $timeout, Content, Translate, SortHelperFactory, Not
 	});
 }
 
+angular.module('n2').controller("MenuCtrl", MenuCtrl);
 function MenuCtrl($rootScope, $scope, Security) {
 	$scope.$watch("Context.ActionMenu.Children", function (children) {
 		var lefties = [];
@@ -751,6 +758,7 @@ function MenuCtrl($rootScope, $scope, Security) {
 	});
 }
 
+angular.module('n2').controller("MenuNodeLastChildCtrl", MenuNodeLastChildCtrl);
 function MenuNodeLastChildCtrl($scope, $timeout) {
 	function replace(item, replacement) {
 		var r = replacement.Current;
@@ -781,10 +789,12 @@ function MenuNodeLastChildCtrl($scope, $timeout) {
 	});
 }
 
+angular.module('n2').controller("PreviewCtrl", PreviewCtrl);
 function PreviewCtrl() {
 	console.warn("PreviewCtrl obsolete");
 }
 
+angular.module('n2').controller("AddCtrl", AddCtrl);
 function AddCtrl($scope, Content) {
 	$scope.loadDefinitions = function (node) {
 		node.Selected = node.Current.Path;
@@ -797,6 +807,7 @@ function AddCtrl($scope, Content) {
 	};
 }
 
+angular.module('n2').controller("LanguageCtrl", LanguageCtrl);
 function LanguageCtrl($scope, Content) {
 	$scope.loadLanguages = function (node) {
 		node.Selected = node.Current.Path;
@@ -808,6 +819,7 @@ function LanguageCtrl($scope, Content) {
 	};
 }
 
+angular.module('n2').controller("VersionsCtrl", VersionsCtrl);
 function VersionsCtrl($scope, Content) {
 	$scope.loadVersions = function (node) {
 		$scope.Selected = node.Current.Path;
@@ -819,6 +831,7 @@ function VersionsCtrl($scope, Content) {
 	};
 }
 
+angular.module('n2').controller("SearchCtrl", SearchCtrl);
 function SearchCtrl($scope, $rootScope, Content, Eventually) {
 	$scope.item.Children = [{}];
 
@@ -861,6 +874,7 @@ function SearchCtrl($scope, $rootScope, Content, Eventually) {
 	});
 }
 
+angular.module('n2').controller("PageInfoCtrl", PageInfoCtrl);
 function PageInfoCtrl($scope, Content) {
 	$scope.exctractLanguage = function (language) {
 		return language && language.replace(/[(].*?[)]/, "");
@@ -872,6 +886,7 @@ function PageInfoCtrl($scope, Content) {
 	};
 }
 
+angular.module('n2').controller("PageInfoDetailsCtrl", PageInfoDetailsCtrl);
 function PageInfoDetailsCtrl($scope, Content) {
 	$scope.definitions = {};
 	Content.definitions({}, function (data) {
@@ -882,6 +897,7 @@ function PageInfoDetailsCtrl($scope, Content) {
 	});
 }
 
+angular.module('n2').controller("PagePublishCtrl", PagePublishCtrl);
 function PagePublishCtrl($scope, $rootScope, $modal, Content, Confirm, Translate) {
 	$scope.publish = function () {
 		Content.publish(Content.applySelection({ n2versionIndex: $scope.Context.CurrentItem.VersionIndex }, $scope.Context.CurrentItem), function (result) {
@@ -911,6 +927,7 @@ function PagePublishCtrl($scope, $rootScope, $modal, Content, Confirm, Translate
 	};
 }
 
+angular.module('n2').controller("PageScheduleCtrl", PageScheduleCtrl);
 function PageScheduleCtrl($scope, Content) {
 	$scope.schedule = {
 		"date": new Date(),
@@ -931,6 +948,7 @@ function PageScheduleCtrl($scope, Content) {
 	};
 }
 
+angular.module('n2').controller("FrameActionCtrl", FrameActionCtrl);
 function FrameActionCtrl($scope, $rootScope, $timeout, FrameManipulator) {
 	$scope.execute = function (action) {
 		//FrameManipulator.click(action.Current.Selector);
@@ -977,6 +995,7 @@ function FrameActionCtrl($scope, $rootScope, $timeout, FrameManipulator) {
 	});
 };
 
+angular.module('n2').controller("NotifyCtrl", NotifyCtrl);
 function NotifyCtrl($scope, $timeout, Notify) {
 	var defaults = { visible: true, type: "warning" };
 
@@ -994,6 +1013,7 @@ function NotifyCtrl($scope, $timeout, Notify) {
 
 }
 
+angular.module('n2').controller("MessagesCtrl", MessagesCtrl);
 function MessagesCtrl($scope, $rootScope, $sce, Context, Content, Confirm) {
 	$scope.messages = {
 		show: false,

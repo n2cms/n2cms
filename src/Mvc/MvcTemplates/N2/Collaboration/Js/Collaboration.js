@@ -1,4 +1,5 @@
-﻿function CollaborationNotesCtrl($scope, $rootScope, $resource, Translate, Eventually) {
+﻿angular.module('n2').controller("CollaborationNotesCtrl", CollaborationNotesCtrl);
+function CollaborationNotesCtrl($scope, $rootScope, $resource, Translate, Eventually) {
 	var res = $resource('Api/Content.ashx/:target/:action?n2item=:n2item', { target: 'collaboration' }, {
 		'notes': { method: 'GET', params: { action: 'notes' } },
 		'saveNote': { method: 'POST', params: { action: 'notes' } },

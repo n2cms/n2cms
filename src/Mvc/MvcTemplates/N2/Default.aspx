@@ -59,6 +59,7 @@
 	<% } %>
 	<% } %>
 	</asp:PlaceHolder>
+	<base href="/N2/" />
 </head>
 <body ng-app="n2" ng-view>
 </body>

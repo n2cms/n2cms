@@ -166,6 +166,7 @@
 								<xs:complexType>
 									<xs:attribute name="debug" type="xs:boolean" use="optional" default="false" />
 									<xs:attribute name="angularJsRoot" type="xs:string" use="optional" />
+									<xs:attribute name="angularPreviewJsRoot" type="xs:string" use="optional" />
 									<xs:attribute name="bootstrapJsPath" type="xs:string" use="optional" />
 									<xs:attribute name="bootstrapCssPath" type="xs:string" use="optional" />
 									<xs:attribute name="jQueryJsPath" type="xs:string" use="optional" />

@@ -237,7 +237,7 @@ namespace N2.Management.Api
 				}
 			}
 
-			var angularRoot = engine.Config.Sections.Web.Resources.AngularJsRoot;
+			var angularRoot = engine.Config.Sections.Web.Resources.AngularPreviewJsRoot;
             var data = new ControlPanelDefinition
 			{
 				Menu = GetControlPanelMenu(context, item),

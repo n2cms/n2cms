@@ -47,6 +47,14 @@ namespace N2.Configuration
 			set { base["angularJsRoot"] = value; }
 		}
 
+		/// <summary>The path to the included angular javascript resource.</summary>
+		[ConfigurationProperty("angularPreviewJsRoot", DefaultValue = Register.DefaultAngularJsRoot)]
+		public string AngularPreviewJsRoot
+		{
+			get { return (string)base["angularPreviewJsRoot"]; }
+			set { base["angularPreviewJsRoot"] = value; }
+		}
+
 		/// <summary>The path to the included angular-strap javascript resource.</summary>
 		[ConfigurationProperty("angularStrapJsPath", DefaultValue = Register.DefaultAngularStrapJsRoot)]
 		public string AngularStrapJsPath

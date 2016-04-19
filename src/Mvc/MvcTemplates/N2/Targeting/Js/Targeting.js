@@ -1,4 +1,5 @@
-﻿function TargetingCtrl($rootScope, $scope, Translate, n2translations) {
+﻿angular.module('n2').controller("TargetingCtrl", TargetingCtrl);
+function TargetingCtrl($rootScope, $scope, Translate, n2translations) {
 	angular.extend(n2translations, {
 		targeting: {
 			menu: {

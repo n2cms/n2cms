@@ -1,4 +1,5 @@
-﻿function PageStatsCtrl($rootScope, $scope, $resource) {
+﻿angular.module('n2').controller("PageStatsCtrl", PageStatsCtrl);
+function PageStatsCtrl($rootScope, $scope, $resource) {
 	var res = $resource('Api/Content.ashx/:target', { target: 'statistics' }, {
 		'statistics': { method: 'GET', params: { target: 'statistics' } },
 	});
