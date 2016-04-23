@@ -330,7 +330,7 @@ namespace N2.Edit
 
 			if (!string.IsNullOrEmpty(discriminator))
 			{
-				ie.Initialize(discriminator, template, Selection.SelectedItem);
+				ie.Initialize(discriminator, template, Selection.GetSelectionParent());
 			}
 			else if (!string.IsNullOrEmpty(dataType))
 			{
@@ -341,7 +341,7 @@ namespace N2.Edit
 				if (d == null)
 					throw new N2Exception("Couldn't find any definition for type '" + t + "'");
 				ie.Discriminator = d.Discriminator;
-				ie.ParentPath = Selection.SelectedItem.Path;
+				ie.ParentPath = Selection.GetSelectionParent().Path;
 			}
 			else
 			{
