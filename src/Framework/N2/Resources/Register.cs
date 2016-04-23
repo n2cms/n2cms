@@ -52,8 +52,8 @@ namespace N2.Resources
 		/// <summary>The jQuery version used by N2.</summary>
 		public const string JQueryVersion = "1.12.3";
 		public const string JQueryUiVersion = "1.11.4";
-		public const string AngularJsVersion = "1.3.15";
-		public const string CkEditorVersion = "4.5.4";
+		public const string AngularJsVersion = "1.5.5";
+		public const string CkEditorVersion = "4.5.8";
 		public const string DefaultBootstrapVersion = "2.3.2";
 
 		public const string DefaultFlagsCssPath = "{ManagementUrl}/Resources/icons/flags.css";
