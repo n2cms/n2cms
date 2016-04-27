@@ -4,7 +4,7 @@
 
 <ul class="dropdown-menu sub-menu" ng-show="child.Children.length">
 	<li ng-class="{ selected: isFlagged('PreviewFullscreen') }">
-		<a href="#" ng-click="$emit('device-close', {})" translate="targeting.menu.fullsize"><b class="fa fa-arrows-alt"></b> Full size</a>
+		<a href ng-click="$emit('device-close', {})" translate="targeting.menu.fullsize"><b class="fa fa-arrows-alt"></b> Full size</a>
 	</li>
 	<li class="divider"></li>
 	<li ng-repeat="grandchild in child.Children"
@@ -13,6 +13,6 @@
 	</li>
 	<li class="divider" ng-show="!isFlagged('PreviewFullscreen')"></li>
 	<li ng-show="!isFlagged('PreviewFullscreen')" ng-class="{ selected: isFlagged('PreviewTilted') }">
-		<a href="#" ng-click="$emit('device-rotate', {})" translate="targeting.menu.rotate"><b class="fa fa-repeat"></b> Rotate</a>
+		<a href ng-click="$emit('device-rotate', {})" translate="targeting.menu.rotate"><b class="fa fa-repeat"></b> Rotate</a>
 	</li>
 </ul>

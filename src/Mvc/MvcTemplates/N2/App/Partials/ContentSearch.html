@@ -8,13 +8,13 @@
 			   n2-key-esc="toggleSearch()"
 			   n2-focus="search.show"
 			   translate="search.query" />
-        <a href="#" ng-click="toggleSearch()">
+        <a href ng-click="toggleSearch()">
             <b ng-hide="search.show" class="ico fa fa-search"></b>
             <b ng-show="search.show" class="ico fa fa-remove"></b>
         </a>
     </div>
     <ul id="search" class="dropdown-menu" ng-show="!!search.hits">
-        <li ng-show="search.query && !search.searching && search.hits != null && !search.hits.length"><a href="#"><em translate="search.nohits">No hits</em></a></li>
+        <li ng-show="search.query && !search.searching && search.hits != null && !search.hits.length"><a href><em translate="search.nohits">No hits</em></a></li>
         <li ng-repeat="hit in search.hits">
             <a n2-focus="search.focused == $index" href="{{hit.PreviewUrl}}" target="preview">
                 <b class='ico' ng-show='hit.IconClass || hit.IconUrl' ng-class='hit.IconClass || "ico-custom"' x-background-image='hit.IconUrl'></b>

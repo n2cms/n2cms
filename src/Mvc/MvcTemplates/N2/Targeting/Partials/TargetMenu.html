@@ -9,5 +9,5 @@
 		<a page-action-link="grandchild"></a>
 	</li>
 	<li class="divider"></li>
-	<li ng-class="{ selected: isFlagged('TargetsBlank') }"><a href="#" ng-click="$emit('targets-clear', {})" translate="targeting.targets.clear"><b class="fa fa-times"></b> Clear targets</a></li>
+	<li ng-class="{ selected: isFlagged('TargetsBlank') }"><a href ng-click="$emit('targets-clear', {})" translate="targeting.targets.clear"><b class="fa fa-times"></b> Clear targets</a></li>
 </ul>

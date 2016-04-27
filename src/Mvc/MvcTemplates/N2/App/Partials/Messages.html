@@ -2,7 +2,7 @@
 	 ng-controller="MessagesCtrl"
 	 ng-class="{ open: messages.show, closed: !messages.show }">
 	<div class="page-action">
-		<a href="#" ng-click="messages.toggle()">
+		<a href ng-click="messages.toggle()">
 			<b class="ico fa fa-envelope"></b>
 			<span class="badge"
 				  ng-show="Context.Messages.length">{{Context.Messages.length}}</span>
