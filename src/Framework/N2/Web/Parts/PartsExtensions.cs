@@ -173,6 +173,9 @@ namespace N2.Web.Parts
 				item = page.FindPartVersion(item);
 			}
 
+			if (item.Parent != null && !item.Parent.Children.Contains(item))
+				item.AddTo(item.Parent);
+
 			return new PathData(page, item);
 		}
 	}

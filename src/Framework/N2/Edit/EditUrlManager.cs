@@ -224,9 +224,9 @@ namespace N2.Edit
             else if (item.ID == 0)
             {
                 var page = Find.ClosestPage(item);
-                if (page != null && page.VersionOf.HasValue)
+                if (page != null)
                     editUrl = editUrl
-                        .SetQueryParameter(SelectionUtility.SelectedQueryKey, page.VersionOf.Path)
+                        .SetQueryParameter(SelectionUtility.SelectedQueryKey, (page.VersionOf.Value ?? page).Path)
                         .SetQueryParameter(PathData.VersionIndexQueryKey, page.VersionIndex)
                         .SetQueryParameter(PathData.VersionKeyQueryKey, item.GetVersionKey());
             }

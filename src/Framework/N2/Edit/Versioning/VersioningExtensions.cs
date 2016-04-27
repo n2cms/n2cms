@@ -82,6 +82,12 @@ namespace N2.Edit.Versioning
 
         public static ContentItem FindPartVersion(this ContentItem parent, ContentItem part)
 		{
+			if (!part.VersionOf.HasValue && part.ID == 0)
+			{
+				if (part.Parent != null && part.Parent.ID != 0)
+					part.Parent = parent.FindPartVersion(part.Parent);
+				return part;
+			}
 			if (parent.ID != 0 && part.ID == parent.ID)
 				return parent;
 			if (part.ID == parent.VersionOf.ID)

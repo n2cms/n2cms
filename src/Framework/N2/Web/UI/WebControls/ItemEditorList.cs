@@ -225,7 +225,6 @@ namespace N2.Web.UI.WebControls
                 CausesValidation = false,
                 CssClass = "addButton"
             };
-            var closureDefinition = template.Definition;
             button.Command += (s, a) =>
             {
 				var parentEditor = ItemUtility.FindInParents<ItemEditor>(Parent);
@@ -236,7 +235,7 @@ namespace N2.Web.UI.WebControls
 
 				UpdateItemFromTopEditor(path);
 
-				ContentItem item = CreateItem(closureDefinition);
+				ContentItem item = CreateItem(template.Definition);
 				item.AddTo(path.CurrentItem, ZoneName);
 				Utility.UpdateSortOrder(path.CurrentItem.Children).ToList();
 

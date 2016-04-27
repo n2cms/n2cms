@@ -78,7 +78,7 @@
 
 
 
-.zoneItem { outline: solid 2px rgba(24, 160, 222, 0.25); position:relative; box-shadow: 0 0 5px rgba(255, 255, 255, .5); }
+.zoneItem { outline: solid 2px rgba(24, 160, 222, 0.25); position:relative; box-shadow: 0 0 5px rgba(255, 255, 255, .5); min-height: 10px; }
 .zoneItem:hover { outline: solid 2px #18a0de; }
 .zoneItem .titleBar { max-height: 0; overflow:hidden; opacity:0; outline: solid 2px rgba(24, 160, 222, 0.75); background-color: rgba(24, 160, 222, 0.75); position:absolute; top:0; width:100%; padding:0; margin-top:0; 
 					  font-family: 'Segoe UI', Helvetica, sans-serif; font-size:14px; color:#333; text-align:left; transition: all .1s ease-in; line-height:18px }
