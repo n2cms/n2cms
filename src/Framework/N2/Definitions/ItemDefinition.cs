@@ -120,7 +120,7 @@ namespace N2.Definitions
         public bool Enabled { get; set; }
 
         /// <summary>Gets or sets wheter this definition has been defined. Weirdly enough a definition may exist without beeing defined. To define a definition the class must implement the <see cref="N2.PageDefinitionAttribute"/> or <see cref="PartDefinitionAttribute"/>.</summary>
-        public bool IsDefined { get; internal set; }
+        public bool IsDefined { get; set; }
 
         /// <summary>Gets the order of this item type when selecting new item in edit mode.</summary>
         public int SortOrder { get; set; }
@@ -204,19 +204,38 @@ namespace N2.Definitions
         /// <summary>Removed interface flags used control displayed UI elements.</summary>
         public ICollection<string> RemovedFlags { get; set; }
 
-        #endregion
+		/// <summary>A helpful text available when editing the page.</summary>
+		public string HelpText { get; set; }
 
-        #region Methods
+		/// <summary>A text always displayed when editing the page.</summary>
+		public string EditingInstructions { get; set; }
 
-        /// <summary>Gets or sets additional child types allowed below this item.</summary>
-        public IEnumerable<ItemDefinition> GetAllowedChildren(IDefinitionManager definitions, ContentItem parentItem)
+		#endregion
+
+		#region Methods
+
+		/// <summary>Gets or sets additional child types allowed below this item.</summary>
+		public IEnumerable<ItemDefinition> GetAllowedChildren(IDefinitionManager definitions, ContentItem parentItem)
         {
-            return definitions.GetDefinitions().AllowedBelow(this, parentItem, definitions);
+            return definitions.GetDefinitions().AllowedBelow(this, parentItem, null, definitions);
+        }
+
+        // Fixes #614 pages marked with RestrictCardinality cannot be sorted
+        /// <summary>Gets or sets additional child types allowed below this item.</summary>
+        public IEnumerable<ItemDefinition> GetAllowedChildren(IDefinitionManager definitions, ContentItem parentItem, ContentItem childItem)
+        {
+            return definitions.GetDefinitions().AllowedBelow(this, parentItem, childItem, definitions);
         }
 
         public bool IsChildAllowed(IDefinitionManager definitions, ContentItem parentItem, ItemDefinition childDefinition)
         {
             return GetAllowedChildren(definitions, parentItem).Any(d => d.ItemType == childDefinition.ItemType);
+        }
+
+        // Fixes #614 pages marked with RestrictCardinality cannot be sorted
+        public bool IsChildAllowed(IDefinitionManager definitions, ContentItem parentItem, ItemDefinition childDefinition, ContentItem childItem)
+        {
+            return GetAllowedChildren(definitions, parentItem, childItem).Any(d => d.ItemType == childDefinition.ItemType);
         }
 
         /// <summary>Find out if this item is allowed in a zone.</summary>
@@ -512,6 +531,8 @@ namespace N2.Definitions
             id.TemplateKey = TemplateKey;
             id.Title = Title;
             id.ToolTip = ToolTip;
+			id.HelpText = HelpText;
+			id.EditingInstructions = EditingInstructions;
             return id;
         }
 

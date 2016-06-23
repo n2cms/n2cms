@@ -657,6 +657,16 @@ namespace N2
 			}
 		}
 
+		/// <summary>Adds an item to the children of this item updating its parent refernce.</summary>
+		/// <param name="newParent">The new parent of the item. If this parameter is null the item is detached from the hierarchical structure.</param>
+		/// <param name="zoneName">Move the item to this zone on the new parent.</param>
+		[NonInterceptable]
+		public virtual void AddTo(ContentItem newParent, string zoneName)
+		{
+			AddTo(newParent);
+			ZoneName = zoneName;
+		}
+
 		/// <summary>Finds children based on the given url segments. The method supports convering the last segments into action and parameter.</summary>
 		/// <param name="remainingUrl">The remaining url segments.</param>
 		/// <returns>A path data object which can be empty (check using data.IsEmpty()).</returns>

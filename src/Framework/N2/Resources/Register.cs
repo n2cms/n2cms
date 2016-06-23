@@ -29,12 +29,12 @@ namespace N2.Resources
 			BootstrapDatePickerCssPath = DefaultBootstrapDatePickerCssPath;
 			BootstrapTimePickerCssPath = DefaultBootstrapTimePickerCssPath;
 			BootstrapVersion = new Version(DefaultBootstrapVersion);
-			CkEditorJsPath = DefaultCkEditorPath;//"{ManagementUrl}/Resources/ckeditor/ckeditor.js?v=" + JQueryVersion;
+			CkEditorJsPath = DefaultCkEditorPath;
 			FancyboxCssPath = DefaultFancyboxCssPath;
 			FancyboxJsPath = DefaultFancyboxJsPath;
 			IconsCssPath = DefaultIconsCssPath;
-			JQueryJsPath = DefaultJQueryJsPath; //"{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".min.js";
-			JQueryUiPath = DefaultJQueryUiJsPath; // "{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + JQueryVersion;
+			JQueryJsPath = DefaultJQueryJsPath;
+			JQueryUiPath = DefaultJQueryUiJsPath;
 			JQueryPluginsPath = DefaultJQueryPluginsPath;
 			PartsJsPath = DefaultPartsJsPath;
 			PartsCssPath = DefaultPartsCssPath;
@@ -50,18 +50,18 @@ namespace N2.Resources
 		}
 
 		/// <summary>The jQuery version used by N2.</summary>
-		public const string JQueryVersion = "2.1.1";
-		public const string JQueryUiVersion = "1.10.4";
-		public const string AngularJsVersion = "1.2.20";
-		public const string CkEditorVersion = "4.3.2";
+		public const string JQueryVersion = "1.12.3";
+		public const string JQueryUiVersion = "1.11.4";
+		public const string AngularJsVersion = "1.5.5";
+		public const string CkEditorVersion = "4.5.8";
 		public const string DefaultBootstrapVersion = "2.3.2";
 
 		public const string DefaultFlagsCssPath = "{ManagementUrl}/Resources/icons/flags.css";
-		public const string DefaultJQueryJsPath = "//cdnjs.cloudflare.com/ajax/libs/jquery/" + JQueryVersion + "/jquery.min.js";
-		public const string DefaultJQueryUiJsPath = "//cdnjs.cloudflare.com/ajax/libs/jqueryui/" + JQueryUiVersion + "/jquery-ui.min.js"; // "{ManagementUrl}/Resources/jquery-ui-" + Register.JQueryUiVersion + ".custom/js/jquery-ui-" + Register.JQueryUiVersion + ".custom.min.js";
+		public const string DefaultJQueryJsPath = "//code.jquery.com/jquery-" + JQueryVersion + ".min.js";
+		public const string DefaultJQueryUiJsPath = "//code.jquery.com/ui/" + JQueryUiVersion + "/jquery-ui.min.js";
 		public const string DefaultFancyboxJsPath = "//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js";
 		public const string DefaultFancyboxCssPath = "//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css";
-		public const string DefaultIconsCssPath = "//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css";
+		public const string DefaultIconsCssPath = "//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css";
 		public const string DefaultAngularJsRoot = "//cdnjs.cloudflare.com/ajax/libs/angular.js/" + AngularJsVersion + "/";
 		public const string DefaultAngularStrapJsRoot = "//cdnjs.cloudflare.com/ajax/libs/angular-strap/0.7.4/angular-strap.min.js";
 		public const string DefaultAngularUiJsPath = "//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js";
@@ -73,13 +73,15 @@ namespace N2.Resources
 		public const string DefaultBootstrapTimePickerJsPath = "{ManagementUrl}/Resources/bootstrap-components/bootstrap-timepicker.js";
 		public const string DefaultBootstrapTimePickerCssPath = "{ManagementUrl}/Resources/bootstrap-components/bootstrap-timepicker.css";
 
-		public const string DefaultCkEditorPath = "//cdnjs.cloudflare.com/ajax/libs/ckeditor/" + CkEditorVersion + "/ckeditor.js?v=" + JQueryVersion;
-		public const string DefaultJQueryPluginsPath = "{ManagementUrl}/Resources/Js/plugins.ashx?v=" + JQueryVersion;
+		//public const string DefaultCkEditorPath = "{ManagementUrl}/Resources/ckeditor/ckeditor.js?v=" + JQueryVersion;
+		public const string DefaultCkEditorPath = "//cdn.ckeditor.com/4.5.4/full/ckeditor.js";
+        public const string DefaultJQueryPluginsPath = "{ManagementUrl}/Resources/Js/plugins.ashx?v=" + JQueryVersion;
 		public const string DefaultPartsJsPath = "{ManagementUrl}/Resources/Js/parts.js?v=" + JQueryVersion;
 		public const string DefaultPartsCssPath = "{ManagementUrl}/Resources/Css/parts.css?v=" + JQueryVersion;
 
 		/// <summary>Path to jQuery.</summary>
 		public static string JQueryJsPath { get; set; }
+		public static string PreviewJQueryJsPath { get; set; }
 
 		/// <summary>The path to jQuery UI javascript bundle.</summary>
 		public static string JQueryUiPath { get; set; }
@@ -89,12 +91,16 @@ namespace N2.Resources
 
 		/// <summary> The path to angularjs folder used by N2. </summary>
 		public static string AngularJsRoot { get; set; }
+		public static string PreviewAngularJsRoot { get; set; }
 
 		/// <summary> The path to angularjs used by N2. </summary>
 		public static string AngularJsPath { get { return AngularJsRoot + "angular.js"; } }
 
 		/// <summary> The path to angular-resources used by N2. </summary>
 		public static string AngularJsResourcePath { get { return AngularJsRoot + "angular-resource.js"; } }
+
+		/// <summary> The path to angular-resources used by N2. </summary>
+		public static string AngularJsSanitizePath { get { return AngularJsRoot + "angular-sanitize.js"; } }
 
 		/// <summary>The path to the CKeditor script</summary>
 		public static string CkEditorJsPath { get; set; }
@@ -161,6 +167,8 @@ namespace N2.Resources
 			if (page.Items[resourceUrl] == null)
 			{
 				var holder = GetPlaceHolder(page);
+				if (holder == null)
+					return;
 
 				var link = new HtmlLink {Href = Url.ResolveTokens(resourceUrl)};
 				link.Attributes["type"] = "text/css";
@@ -236,7 +244,7 @@ namespace N2.Resources
 
 		public static void JavaScript(this Page page, string script, ScriptOptions options)
 		{
-			if (page == null) throw new ArgumentNullException("page");
+			if (page == null) return;
 
 			if (page.Items[script] == null)
 			{
@@ -335,15 +343,17 @@ namespace N2.Resources
 
 		private static PlaceHolder GetPlaceHolder(Page page)
 		{
+			if (page == null) return null;
+
 			var holder = page.Items["N2.Resources.holder"] as PlaceHolder;
 			if (holder != null)
 				return holder;
 
-			if (page.Header == null)
-				throw new N2Exception("Couldn't find the page header. The register command needs the tag <header runat='server'> somewhere in the page template, master page or a user control.");
-
 			page.Items["N2.Resources.holder"] = holder = new PlaceHolder();
-			if (page.Header.Controls.Count > 0)
+
+			if (page.Header == null)
+				page.Controls.Add(holder);
+			else if (page.Header.Controls.Count > 0)
 				page.Header.Controls.AddAt(1, holder);
 			else
 				page.Header.Controls.Add(holder);

@@ -3,6 +3,8 @@
 <fieldset><legend>Status</legend>
     <table>
         <tr>
+            <th><asp:Label runat="server" Text="Indexer type" /></th><td id="IndexerType"><%= IndexerType %></td>
+        </tr><tr>
             <th><asp:Label runat="server" Text="Total documents" /></th><td id="TotalDocuments"><%= Statistics.TotalDocuments %></td>
         </tr><tr>
             <th><asp:Label runat="server" Text="Worker count" /></th><td id="WorkerCount"><%= Status.WorkerCount %></td>
@@ -40,14 +42,20 @@
 </fieldset>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        setInterval(function () {
-            $.getJSON('<%= N2.Web.Url.ResolveTokens("{ManagementUrl}/Search/IndexInfo.ashx") %>', function (data) {
-                $("#TotalDocuments").text(data.Statistics.TotalDocuments);
-                $("#WorkerCount").text(data.Status.WorkerCount);
-                $("#CurrentWork").text(data.Status.CurrentWork);
-                $("#ErrorQueueCount").text(data.Status.QueueSize);
-            });
-        }, <%= IsPostBack ? 1000 : 10000 %>);
+	$(document).ready(function () {
+		var checkInterval = <%= Status.WorkerCount > 0 ? 2000 : 10000 %>;
+		function recheckIndex() {
+			setTimeout(function(){
+				$.getJSON('<%= N2.Web.Url.ResolveTokens("{ManagementUrl}/Search/IndexInfo.ashx") %>', function (data) {
+					$("#IndexerType").text(data.IndexerType);
+					$("#TotalDocuments").text(data.Statistics.TotalDocuments);
+					$("#WorkerCount").text(data.Status.WorkerCount);
+					$("#CurrentWork").text(data.Status.CurrentWork);
+					$("#ErrorQueueCount").text(data.Status.QueueSize);
+					recheckIndex();
+				});
+			}, checkInterval);
+		}
+		recheckIndex();
     });
 </script>

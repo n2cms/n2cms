@@ -1,6 +1,8 @@
+using N2.Web;
 using System;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Web;
 
 namespace N2.Tests.Fakes
@@ -31,10 +33,11 @@ namespace N2.Tests.Fakes
         {
             get { return "/"; }
         }
-        public override string PathInfo
-        {
-            get { return ""; }
-        }
+		public string pathInfo = "";
+		public override string PathInfo
+		{
+			get { return pathInfo; }
+		}
         public override NameValueCollection QueryString
         {
             get { return query; }
@@ -100,10 +103,12 @@ namespace N2.Tests.Fakes
 			set { contentType = value; }
 		}
 
-		public void CreatePost(string url, string contentType, string input)
+		public void CreatePost(Url url, string contentType, string input, NameValueCollection queries = null, string pathInfo = null)
 		{
 			httpMethod = "POST";
 			rawUrl = url;
+			this.pathInfo = pathInfo;
+			query = queries ?? url.GetQueryNameValues();
 			ContentType = contentType;
 			this.input = input;
 			contentLength = input.Length;

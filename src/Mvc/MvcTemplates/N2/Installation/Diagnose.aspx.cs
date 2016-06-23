@@ -108,6 +108,8 @@ namespace N2.Edit.Install
             {
                 lblAssemblies.Text = formatException(ex);
             }
+
+			ScheduledActions = Engine.Resolve<N2.Plugin.Scheduling.Scheduler>().Actions;
         }
 
         private void ShowLastError()
@@ -179,5 +181,7 @@ namespace N2.Edit.Install
         }
 
         protected DatabaseStatus Status { get; set; }
-    }
+
+		public IList<Plugin.Scheduling.ScheduledAction> ScheduledActions { get; set; }
+	}
 }

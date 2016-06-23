@@ -71,7 +71,7 @@ There are more API usage examples here: http://n2cms.com/Documentation/Manipulat
 ##Where do I get more advanced documentation?
 
 ###Reference Documentation
-**On our Confluence wiki:** https://n2cmsdocs.atlassian.net/wiki/display/N2CMS/Getting+Started
+**On our Confluence wiki:** https://n2cmsdocs.atlassian.net/wiki/display/N2CMS/Getting+Started+using+N2CMS
 
 >We know... we need to move this to github wiki or our public site.  We are the cobblers kids.  Would love help if you are interested.  Contact us.
 

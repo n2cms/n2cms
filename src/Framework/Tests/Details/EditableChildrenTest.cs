@@ -16,6 +16,8 @@ using NUnit.Framework;
 using N2.Tests.Details.Models;
 using N2.Persistence.Proxying;
 using Shouldly;
+using N2.Definitions.Static;
+using N2.Edit.Workflow;
 
 namespace N2.Tests.Details
 {
@@ -23,11 +25,13 @@ namespace N2.Tests.Details
     public class EditableChildrenTest
     {
         private Fakes.FakeEngine engine;
+		private DefinitionMap map;
 
         [SetUp]
         public void SetUp()
         {
             Context.Replace(engine = new Fakes.FakeEngine(new[] { typeof(DecoratedItem), typeof(DecoratedItem2) }));
+			engine.AddComponentInstance<ITemplateAggregator>(new TemplateAggregator(engine.Definitions, new ITemplateProvider[] { new TemplateProvider(TestSupport.SetupContentActivator(), map = new DefinitionMap()) }));
         }
 
         [Test]
@@ -66,7 +70,7 @@ namespace N2.Tests.Details
             p.CurrentItem = new DecoratedItem();
 
             var editor = attribute.AddTo(p) as ItemEditorList;
-            editor.Parts = new FakePartsAdapter();
+            editor.Parts = new FakePartsAdapter(map);
 
             editor.GetType()
                 .GetMethod("CreateChildControls", BindingFlags.NonPublic | BindingFlags.Instance)
@@ -85,7 +89,7 @@ namespace N2.Tests.Details
             p.CurrentItem = new DecoratedItem();
 
             var editor = attribute.AddTo(p) as ItemEditorList;
-            editor.Parts = new FakePartsAdapter();
+            editor.Parts = new FakePartsAdapter(map);
             attribute.UpdateEditor(p.CurrentItem, editor);
 
             editor.GetType()
@@ -135,14 +139,21 @@ namespace N2.Tests.Details
             item.Children.Count.ShouldBe(2);
             item.Children.All(c => c.ZoneName == "GenericChildren").ShouldBe(true);
         }
-         
+        
         private class FakePartsAdapter : PartsAdapter
         {
+			private DefinitionMap map;
+			
+			public FakePartsAdapter(DefinitionMap map)
+			{
+				this.map = map;
+			}
+
             public override IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem parentItem, string zoneName, System.Security.Principal.IPrincipal user)
             {
-                yield return new ItemDefinition(typeof(OtherItem));
-                yield return new ItemDefinition(typeof(BaseItem));
-                yield return new ItemDefinition(typeof(SuperficialItem));
+				yield return map.GetOrCreateDefinition(typeof(OtherItem)).Define();
+				yield return map.GetOrCreateDefinition(typeof(BaseItem)).Define();
+				yield return map.GetOrCreateDefinition(typeof(SuperficialItem)).Define();
           }
         }
 
@@ -195,15 +206,24 @@ namespace N2.Tests.Details
             }
 
             public event EventHandler<ItemEventArgs> Saved = delegate { };
+			public event Action<object, CommandContext> CreatingContext;
 
-            #endregion
+			#endregion
 
-            #region IItemContainer Members
+			#region IItemContainer Members
 
-            public ContentItem CurrentItem { get; set; }
+			public ContentItem CurrentItem { get; set; }
 
             #endregion
         }
-
     }
+
+	public static class FakePartsAdapterExtensions
+	{
+		public static ItemDefinition Define(this ItemDefinition definition)
+		{
+			definition.IsDefined = true;
+			return definition;
+		}
+	}
 }

@@ -7,12 +7,20 @@
 		return {};
 	});
 
+	module.factory("EbbCallbacks", function (Eventually) {
+		return function (callback, ms, onWorkCancelled, parallelWorkGroup) {
+			return function () {
+				Eventually(callback, ms, onWorkCancelled, parallelWorkGroup, arguments);
+			}
+		}
+	});
+
 	module.factory('Eventually', function ($timeout) {
 		return (function () {
 			// clears the previous action if a new event is triggered before the timeout
 			var timer = 0;
 			var timers = {};
-			return function(callback, ms, onWorkCancelled, parallelWorkGroup) {
+			return function(callback, ms, onWorkCancelled, parallelWorkGroup, callbackArguments) {
 				if (!!parallelWorkGroup) {
 					if (timers[parallelWorkGroup]) {
 						$timeout.cancel(timers[parallelWorkGroup]);
@@ -20,14 +28,14 @@
 					}
 					timers[parallelWorkGroup] = $timeout(function() {
 						timers[parallelWorkGroup] = null;
-						callback();
+						callback.apply(null, callbackArguments);
 					}, ms);
 				} else {
 					timer && onWorkCancelled && onWorkCancelled();
 					timer && $timeout.cancel(timer);
 					timer = $timeout(function() {
 						timer = 0;
-						callback();
+						callback.apply(null, callbackArguments);
 					}, ms);
 				}
 			};
@@ -67,7 +75,17 @@
 		return frameManipulator;
 	});
 
-	module.factory('FrameContext', function () {
+	module.factory('FrameContext', function ($rootScope) {
+		var context = { Flags: {} };
+		$rootScope.$on("contextchanged", function (scope, ctx) {
+			context = ctx;
+		});
+		var lastFlags = {};
+		function objSize(o) {
+			var i = 0;
+			angular.forEach(o, function () { i++ });
+			return i;
+		}
 		window.top.n2ctx = {
 			refresh: function (ctx) {
 			},
@@ -81,108 +99,157 @@
 				return "metro";
 			},
 			toolbarSelect: function () {
+			},
+			context: function (ctx) {
+				if (ctx.Messages && ctx.Messages.length) {
+					$rootScope.$broadcast("changecontext", { Messages: ctx.Messages });
+				}
+				if (ctx.Flags) {
+					if (objSize(lastFlags) || objSize(ctx.Flags)) {
+						var flagsChagned = false;
+						angular.forEach(lastFlags, function (value, flag) {
+							if (context.Flags[flag]) {
+								context.Flags[flag] = false;
+								flagsChagned = true;
+							}
+								
+						});
+						angular.forEach(ctx.Flags, function (value, flag) {
+							if (!context.Flags[flag]) {
+								context.Flags[flag] = true;
+								flagsChagned = true;
+							}
+						});
+						lastFlags = ctx.Flags;
+						if (flagsChagned && !$rootScope.$$phase)
+							$rootScope.$apply();
+					}
+				}
+			},
+			failure: function (response) {
+				$rootScope.$broadcast("communicationfailure", { status: response.status, statusText: response.statusText });
+			},
+			isFlagged: function (flag) {
+				return context.Flags[flag];
+			},
+			notifyDraft: function (draft) {
+				console.log(draft, window);
 			}
 		};
 		return window.top.n2ctx;
 	});
 
-	module.factory('Content', function ($resource) {
-		var res = $resource('Api/Content.ashx/:target', { target: '' }, {
-			'children': { method: 'GET', params: { target: 'children' } },
-			'branch': { method: 'GET', params: { target: 'branch' } },
-			'tree': { method: 'GET', params: { target: 'tree' } },
-			'ancestors': { method: 'GET', params: { target: 'ancestors' } },
-			'node': { method: 'GET', params: { target: 'node' } },
-			'parent': { method: 'GET', params: { target: 'parent' } },
-			'search': { method: 'GET', params: { target: 'search' } },
-			'translations': { method: 'GET', params: { target: 'translations' } },
-			'versions': { method: 'GET', params: { target: 'versions' } },
-			'definitions': { method: 'GET', params: { target: 'definitions' } },
-			'move': { method: 'POST', params: { target: 'move' } },
-			'sort': { method: 'POST', params: { target: 'sort' } },
-			'remove': { method: 'POST', params: { target: 'delete' } },
-			'publish': { method: 'POST', params: { target: 'publish' } },
-			'unpublish': { method: 'POST', params: { target: 'unpublish' } },
-			'schedule': { method: 'POST', params: { target: 'schedule' } }
-		});
+	module.factory('Content', function (ContentFactory, Paths) {
+		return ContentFactory(Paths);
+	});
 
-		res.paths = {
-			SelectedQueryKey: "selected",
-			ItemQueryKey: "item"
-		};
+	module.factory('ContentFactory', function ($resource) {
+		return function (paths) {
+			var res = $resource(paths.Management + 'Api/Content.ashx/:target', { target: '' }, {
+				'children': { method: 'GET', params: { target: 'children' } },
+				'branch': { method: 'GET', params: { target: 'branch' } },
+				'tree': { method: 'GET', params: { target: 'tree' } },
+				'ancestors': { method: 'GET', params: { target: 'ancestors' } },
+				'node': { method: 'GET', params: { target: 'node' } },
+				'parent': { method: 'GET', params: { target: 'parent' } },
+				'search': { method: 'GET', params: { target: 'search' } },
+				'translations': { method: 'GET', params: { target: 'translations' } },
+				'versions': { method: 'GET', params: { target: 'versions' } },
+				'definitions': { method: 'GET', params: { target: 'definitions' } },
+				'templates': { method: 'GET', params: { target: 'templates' } },
+				'move': { method: 'POST', params: { target: 'move' } },
+				'organize': { method: 'POST', params: { target: 'organize' } },
+				'sort': { method: 'POST', params: { target: 'sort' } },
+				'remove': { method: 'POST', params: { target: 'delete' } },
+				'removeMessage': { method: 'DELETE', params: { target: 'message' } },
+				'publish': { method: 'POST', params: { target: 'publish' } },
+				'unpublish': { method: 'POST', params: { target: 'unpublish' } },
+				'schedule': { method: 'POST', params: { target: 'schedule' } },
+				'discard': { method: 'POST', params: { target: 'discard' } }
+			});
 
-		res.applySelection = function(settings, currentItem) {
-			var path = currentItem && currentItem.Path;
-			var id = currentItem && currentItem.ID;
+			res.paths = paths;
 
-			if (typeof currentItem == "string") {
-				path = currentItem;
-			} else if (typeof currentItem == "number") {
-				id = currentItem;
-			}
+			res.applySelection = function(settings, currentItem) {
+				var path = currentItem && currentItem.Path;
+				var id = currentItem && currentItem.ID;
 
-			if (path || id) {
-				var selection = {};
-				selection[res.paths.SelectedQueryKey] = path;
-				selection[res.paths.ItemQueryKey] = id;
-				return angular.extend(selection, settings);
-			}
-			return settings;
-		};
+				if (typeof currentItem == "string") {
+					path = currentItem;
+				} else if (typeof currentItem == "number") {
+					id = currentItem;
+				}
 
-		res.loadChildren = function (node, callback) {
-		    if (!node)
-		        return;
+				if (path || id) {
+					var selection = {};
+					selection[paths.SelectedQueryKey] = path;
+					selection[paths.ItemQueryKey] = id;
+					return angular.extend(selection, settings);
+				}
+				return settings;
+			};
 
-		    node.Loading = true;
-		    return res.children(res.applySelection({}, node.Current), function (data) {
-		        node.Children = data.Children;
-		        delete node.Loading;
-		        node.IsPaged = data.IsPaged;
-		        node.HasChildren = data.Children.length > 0;
-		        callback && callback(node);
-		    });
-		};
+			res.loadChildren = function (node, callback) {
+				if (!node)
+					return;
 
-		res.reload = function (node, callback) {
-		    if (!node)
-		        return;
+				node.Loading = true;
+				return res.children(res.applySelection({}, node.Current), function (data) {
+					node.Children = data.Children;
+					delete node.Loading;
+					node.IsPaged = data.IsPaged;
+					node.HasChildren = data.Children.length > 0;
+					callback && callback(node);
+				});
+			};
 
-		    node.Loading = true;
-		    res.node(res.applySelection({ }, node.Current), function (data) {
-		        node.Current = data.Node.Current;
-		        delete node.Loading;
-		        callback && callback(node);
-		    });
-		};
+			res.unloadChildren = function (node, callback) {
+				if (node) node.Children = [];
+				callback && callback(node);
+			};
 
-		res.states = {
-			None: 0,
-			New: 1,
-			Draft: 2,
-			Waiting: 4,
-			Published: 16,
-			Unpublished: 32,
-			Deleted: 64,
-			All: 2 + 4 + 8 + 16 + 32 + 64,
-			is: function (actual, expected) {
-				return (actual & expected) == expected;
-			},
-			toString: function (state) {
-				for (var key in res.states)
-					if (res.states[key] == state)
-						return key;
-				return null;
-			}
-		};
+			res.reload = function (node, callback) {
+				if (!node)
+					return;
+
+				node.Loading = true;
+				res.node(res.applySelection({ }, node.Current), function (data) {
+					node.Current = data.Node.Current;
+					delete node.Loading;
+					callback && callback(node);
+				});
+			};
+
+			res.states = {
+				None: 0,
+				New: 1,
+				Draft: 2,
+				Waiting: 4,
+				Published: 16,
+				Unpublished: 32,
+				Deleted: 64,
+				All: 2 + 4 + 8 + 16 + 32 + 64,
+				is: function (actual, expected) {
+					return (actual & expected) == expected;
+				},
+				toString: function (state) {
+					for (var key in res.states)
+						if (res.states[key] == state)
+							return key;
+					return null;
+				}
+			};
 		
-		return res;
+			return res;
+		}
 	});
 
 	module.factory('Context', function ($resource) {
 		var res = $resource('Api/Context.ashx/:target', { target: '' }, {
 			'interface': { method: 'GET', params: { target: 'interface' } },
-			'full': { method: 'GET', params: { target: 'full' } }
+			'full': { method: 'GET', params: { target: 'full' } },
+			'messages': { method: 'GET', params: { target: 'messages' } },
+			'status': { method: 'GET', params: { target: 'status' } }
 		});
 
 		return res;
@@ -231,13 +298,36 @@
 		return notify;
 	});
 
+	module.factory("Paths", function () {
+		return {
+			Management: "",
+			SelectedQueryKey: "selected",
+			ItemQueryKey: "n2item",
+			initialize: function (paths) {
+				angular.extend(this, paths);
+			}
+		};
+	});
+
 	module.factory('ContextMenuFactory', function () {
-		return function(scope) {
+		return function (scope) {
 			var contextMenu = this;
-			contextMenu.show = function(node) {
-				scope.select(node);
+
+			contextMenu.appendSelection = function (url, appendPreviewQueries) {
+				url = scope.appendQuery(url, scope.Context.Paths.SelectedQueryKey + "=" + contextMenu.CurrentItem.Path + "&" + scope.Context.Paths.ItemQueryKey + "=" + contextMenu.CurrentItem.ID);
+				if (appendPreviewQueries) {
+					for (var key in scope.Context.PreviewQueries) {
+						url += "&" + key + "=" + scope.Context.PreviewQueries[key];
+					}
+				}
+				return url;
+			}
+
+			contextMenu.show = function (node) {
+
 				scope.ContextMenu.node = node;
 				scope.ContextMenu.options = [];
+				scope.ContextMenu.CurrentItem = node.Current;
 
 				for (var i in scope.Context.ContextMenu.Children) {
 					var cm = scope.Context.ContextMenu.Children[i];
@@ -246,13 +336,14 @@
 			};
 			contextMenu.hide = function() {
 				delete scope.ContextMenu.node;
+				delete scope.ContextMenu.CurrentItem;
 				delete scope.ContextMenu.options;
 				delete scope.ContextMenu.memory;
 				delete scope.ContextMenu.action;
 			};
 			contextMenu.cut = function(node) {
 				contextMenu.memory = node.Current;
-				contextMenu.action = "cut";
+				contextMenu.action = "move";
 
 			};
 			contextMenu.copy = function(node) {
@@ -325,4 +416,46 @@
 		};
 	});
 
+	module.factory('Uri', function () {
+		function Uri(uri) {
+			this.$uri = uri || "";
+			this.getSeparator = function() {
+				return this.$uri.indexOf("?") >= 0 ? "&" : "?";
+			};
+			this.appendQuery = function (key, value) {
+				return new Uri(this.$uri + this.getSeparator() + key + "=" + value);
+			};
+			this.setQuery = function (key, value) {
+				if (typeof key == "object") {
+					var uri = new Uri(this.$uri);
+					angular.forEach(key, function (value, key) {
+						uri = uri.setQuery(key, value);
+					});
+					return uri;
+				} else if (!value)
+					return this;
+
+				var queryIndex = this.$uri.indexOf("?");
+				if (queryIndex < 0)
+					return this.appendQuery(key, value);
+				var qs = this.$uri.substr(queryIndex + 1).split("&");
+				var modified = false;
+				for (var i = 0; i < qs.length; i++) {
+					if (qs[i] == key || qs[i].indexOf(key + "=") == 0) {
+						qs[i] = key + "=" + value;
+						modified = true;
+						break;
+					}
+				}
+				if (!modified)
+					return this.appendQuery(key, value);
+				
+				return new Uri(this.$uri.substr(0, queryIndex + 1) + qs.join("&"));
+			};
+			this.toString = function () {
+				return this.$uri;
+			};
+		};
+		return Uri;
+	});
 })(angular.module('n2.services', ['ngResource']));

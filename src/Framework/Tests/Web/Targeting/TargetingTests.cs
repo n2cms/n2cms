@@ -54,7 +54,7 @@ namespace N2.Tests.Web.Targeting
         public void IsTargetedBy_PositiveDetectors()
         {
             var ctx = radar.BuildTargetingContext(new Fakes.FakeHttpContext());
-            ctx.TargetedBy.Single().ShouldBeTypeOf<Always>();
+			ctx.TargetedBy.Single().ShouldBeOfType<Always>();
         }
 
         [TestCase("/world.aspx", "/world_Always.aspx")]

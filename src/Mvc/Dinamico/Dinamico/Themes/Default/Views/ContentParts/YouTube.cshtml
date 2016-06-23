@@ -2,8 +2,8 @@
 
 @{ Content.Define(re =>
 	   {
-		   re.Title = "YouTube video";
-		   re.IconUrl = "{IconsUrl}/film.png";
+		   re.Definition.Title = "YouTube video";
+		   re.Definition.IconUrl = "{IconsUrl}/film.png";
 		   re.Text("WatchUrl", "YouTube address").DefaultValue("");
 		   re.CheckBox("HD", "High Definition");
 	   });

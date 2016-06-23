@@ -101,5 +101,7 @@ namespace N2.Plugin.Scheduling
             if(Engine != null)
                 Engine.Resolve<IErrorNotifier>().Notify(ex);
         }
-    }
+
+		public Exception LastError { get; set; }
+	}
 }

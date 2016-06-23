@@ -12,6 +12,11 @@ namespace N2.Web.Mvc.Html
 {
 	public static class EditableRegistrationExtensions
 	{
+		public static EditableBuilder<WithEditableTitleAttribute> PageTitle(this IContentRegistration registration, string title = "Title")
+		{
+			return registration.RegisterEditable<WithEditableTitleAttribute>("Title", title);
+		}
+
 		public static EditableBuilder<WithEditableTitleAttribute> Title(this IContentRegistration registration, string title = "Title")
 		{
 			return registration.RegisterEditable<WithEditableTitleAttribute>("Title", title);
@@ -39,9 +44,20 @@ namespace N2.Web.Mvc.Html
 				.Configure(e => e.CheckBoxText = checkBoxText);
 		}
 
+		public static EditableBuilder<EditableNumberAttribute> Number(this IContentRegistration registration, string name, string title = null)
+		{
+			return registration.RegisterEditable<EditableNumberAttribute>(name, title);
+		}
+
 		public static EditableBuilder<EditableChildrenAttribute> Children(this IContentRegistration registration, string zoneName)
 		{
-			return registration.RegisterEditable<EditableChildrenAttribute>(zoneName, zoneName);
+			return registration.RegisterEditable<EditableChildrenAttribute>(zoneName, zoneName).Configure(eca => eca.ZoneName = zoneName);
+		}
+
+		public static EditableBuilder<EditableChildrenAttribute> Children<T>(this IContentRegistration registration, string zoneName)
+			where T : ContentItem
+		{
+			return Children(registration, zoneName).Configure(eca => eca.MinimumTypeName = typeof(T).AssemblyQualifiedName);
 		}
 
 		public static EditableBuilder<EditableDateAttribute> Date(this IContentRegistration registration, string name, string title = null)
@@ -154,6 +170,12 @@ namespace N2.Web.Mvc.Html
 		public static EditableBuilder<EditableTextAttribute> Text(this IContentRegistration registration, string name, string title = null)
 		{
 			return registration.RegisterEditable<EditableTextAttribute>(name, title);
+		}
+
+		public static EditableBuilder<EditableHtmlElementAttribute> HtmlElement(this IContentRegistration registration, string name, string tagName, string title = null)
+		{
+			return registration.RegisterEditable<EditableHtmlElementAttribute>(name, title)
+				.Configure(ehea => ehea.TagName = tagName);
 		}
 
 		public static EditableBuilder<EditableMetaTagAttribute> Meta(this IContentRegistration registration, string name, string title = null)

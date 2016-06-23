@@ -15,11 +15,15 @@ namespace N2.Edit.FileSystem
     {
         protected IEnumerable<ContentItem> Ancestors;
 
+		private IFileSystem Fs;
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
             Page.StyleSheet("{ManagementUrl}/Files/Css/Files.css");
+
+			Fs = Engine.Resolve<IFileSystem>();
 
             if (Selection == null || Selection.SelectedItem == null)
             {
@@ -55,29 +59,66 @@ namespace N2.Edit.FileSystem
 
         private void LoadSizes()
         {
-            var imageConfig = Engine.Resolve<EditSection>().Images;
-            string baseImagePath, imageSize;
-            ImagesUtility.SplitImageAndSize(Selection.SelectedItem.Url, imageConfig.Sizes.GetSizeNames(), out baseImagePath, out imageSize);
-            foreach (var size in imageConfig.Sizes.AllElements.Where(s => s.Announced))
-            {
-                var hl = new HyperLink {ID = size.Name + "Size"};
-                bool exists;
-                var path = Engine.Resolve<IFileSystem>().GetExistingImagePath(baseImagePath, size.Name, out exists);
-                if (exists)
-                {
-                    var file = (SelectedFile.Parent as File) ?? SelectedFile;
+			if (Selection.SelectedItem == null)
+				throw new ArgumentNullException("Selection.SelectedItem");
 
-                    hl.NavigateUrl = "File.aspx?selected=" + file.GetChild(VirtualPathUtility.GetFileName(path)).Path;
-                    hl.Text = Utility.GetResourceString("ImageSizes", size.Name + ".Text") ?? (string.IsNullOrEmpty(size.Description) ? size.Name : size.Description);
-                    hl.Text += GetSizeText(size.Width, size.Height);
-                    hl.CssClass = "command";
-                    if (path == Selection.SelectedItem.Url)
-						bgSizes.Controls.AddAt(0, hl);
-                    else
-						bgSizes.Controls.Add(hl);
-                }
-            }
+			var imageConfig = Engine.Config.Sections.Management.Images;
+			if (imageConfig == null)
+				throw new ArgumentNullException("imageConfig");
+			else if (imageConfig.Sizes == null)
+				throw new ArgumentNullException("imageConfig.Sizes");
+
+			string baseImagePath, imageSize;
+            ImagesUtility.SplitImageAndSize(Selection.SelectedItem.Url, imageConfig.Sizes.GetSizeNames(), out baseImagePath, out imageSize);
+
+			if (string.IsNullOrEmpty(baseImagePath))
+				throw new ArgumentException("baseImagePath");
+
+			foreach (var size in imageConfig.Sizes.AllElements.Where(s => s.Announced))
+				AddSize(baseImagePath, size);
         }
+
+		private void AddSize(string baseImagePath, ImageSizeElement size)
+		{
+			if (size == null)
+				throw new ArgumentNullException("size");
+
+			bool exists;
+			var path = Fs.GetExistingImagePath(baseImagePath, size.Name, out exists);
+			if (exists)
+			{
+				if (SelectedFile == null)
+					throw new ArgumentNullException("SelectedFile");
+
+				var file = (SelectedFile.Parent as File) ?? SelectedFile;
+				var child = file.GetChild(VirtualPathUtility.GetFileName(path));
+
+				AddSizeControl(size, path, file, child);
+			}
+		}
+
+		private void AddSizeControl(ImageSizeElement size, string path, File file, ContentItem child)
+		{
+			if (path == null)
+				throw new ArgumentNullException("path");
+			if (file == null)
+				throw new ArgumentNullException("file");
+			if (child == null)
+				throw new ArgumentNullException("child");
+
+			var hl = new HyperLink { ID = size.Name + "Size" };
+			hl.NavigateUrl = "File.aspx?selected=" + child.Path;
+			hl.Text = Utility.GetResourceString("ImageSizes", size.Name + ".Text") ?? (string.IsNullOrEmpty(size.Description) ? size.Name : size.Description);
+			hl.Text += GetSizeText(size.Width, size.Height);
+			hl.CssClass = "command";
+			if (bgSizes == null)
+				throw new ArgumentNullException("bgSizes");
+
+			if (path == Selection.SelectedItem.Url)
+				bgSizes.Controls.AddAt(0, hl);
+			else
+				bgSizes.Controls.Add(hl);
+		}
 
         private static string GetSizeText(int w, int h)
         {

@@ -462,19 +462,18 @@ namespace N2
         public static IEnumerable<string> ListFiles(string physicalBasePath, string filter, bool recursive = true)
         {
             var toExplore = new List<string> { physicalBasePath };
+			var files = new List<string>();
             while (toExplore.Count > 0)
             {
-                var files = System.IO.Directory.GetFiles(toExplore[0], filter);
-
-                for (var i = 0; i < files.Length; ++i)
-                {
-                    yield return files[i];
-                }
-
-                if (recursive)
-                    toExplore.AddRange(System.IO.Directory.GetDirectories(toExplore[0]));
+				if (System.IO.Directory.Exists(toExplore[0]))
+				{
+					files.AddRange(System.IO.Directory.GetFiles(toExplore[0], filter));
+					if (recursive)
+						toExplore.AddRange(System.IO.Directory.GetDirectories(toExplore[0]));
+				}
                 toExplore.RemoveAt(0);
             }
+			return files;
         }
 
         /// <summary>
@@ -552,7 +551,9 @@ namespace N2
                 return GetLocalResourceString(resourceKey);
         }
 
-        public static Func<DateTime> CurrentTime = () => DateTime.Now;
+		public static bool UseUniversalTime { get; set; }
+		public static Func<DateTime> CurrentTime = () => UseUniversalTime ? DateTime.UtcNow : DateTime.Now;
+		public static Func<DateTime, DateTime> ToUtc = (contentTime) => UseUniversalTime ? contentTime : contentTime.ToUniversalTime();
 
         public static IDisposable TimeCapsule(DateTime frozenTime)
         {

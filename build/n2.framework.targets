@@ -29,55 +29,27 @@
 		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFiles="$(ManagementFolder)\%(RecursiveDir)\%(FileName)%(Extension)" ContinueOnError="true" />
 	</Target>
 
-	<Target Name="Framework-CreateItemGroups-EditFiles">
+	<Target Name="BuildSolutionToArtifactsFolder">
+		<MSBuild Projects="$(SrcFolder)\N2.Sources.sln" Properties="OutDir=$(ArtifactsFolder);Configuration=Deploy"></MSBuild>
+	</Target>
+	
+	<Target Name="Framework-CreateItemGroups-EditFiles" DependsOnTargets="BuildSolutionToArtifactsFolder">
+		<PropertyGroup>
+			<EditFolder>$(ArtifactsFolder)\_PublishedWebsites\N2.Management</EditFolder>
+		</PropertyGroup>
 		<ItemGroup>
-			<Framework-LocalizedResources Include="$(EditFolder)\**\i18n\*.js;
-																						 $(EditFolder)\**\App_LocalResources\da\*.resx;$(EditFolder)\**\App_LocalResources\*.da.resx;
-																						 $(EditFolder)\**\App_LocalResources\it\*.resx;$(EditFolder)\**\App_LocalResources\*.it.resx;
-																						 $(EditFolder)\**\App_LocalResources\mk-MK\*.resx;$(EditFolder)\**\App_LocalResources\*.mk-MK.resx;
-																						 $(EditFolder)\**\App_LocalResources\nl\*.resx;$(EditFolder)\**\App_LocalResources\*.nl.resx;
-																						 $(EditFolder)\**\App_LocalResources\ru\*.resx;$(EditFolder)\**\App_LocalResources\*.ru.resx;
-																						 $(EditFolder)\**\App_LocalResources\sl\*.resx;$(EditFolder)\**\App_LocalResources\*.sl.resx;"
-																		Exclude="$(EditFolder)\**\i18n\*en.js;
-																						 $(EditFolder)\**\lang\*en.js;"/>
-			<Framework-EditFiles Include="$(EditFolder)\**\*.resx;
-											 $(EditFolder)\**\*.as?x;
-											 $(EditFolder)\**\*.master;
-											 $(EditFolder)\**\*.config;
-											 $(EditFolder)\**\*.css;
-											 $(EditFolder)\**\*.js;
-											 $(EditFolder)\**\*.gif;$(EditFolder)\**\*.png;$(EditFolder)\**\*.jpg;$(EditFolder)\**\*.png;
-											 $(EditFolder)\**\*.htm;$(EditFolder)\**\*.html;
-											 $(EditFolder)\**\*.swf;
-											 $(EditFolder)\**\*.eot;$(EditFolder)\**\*.svg;$(EditFolder)\**\*.ttf;$(EditFolder)\**\*.woff;$(EditFolder)\**\*.otf;
-											 $(EditFolder)\**\*.txt;$(EditFolder)\**\*.sql;"
-									Exclude="$(EditFolder)\**\*_src.js;
-													 $(EditFolder)\**\development-bundle\**\*.*;
-													 $(EditFolder)\**\docs\**\*.*;
-													 $(EditFolder)\**\obj\**\*.*;
-													 $(EditFolder)\**\Debug\**\*.*;
-													 $(EditFolder)\**\Release\**\*.*;
-													 $(EditFolder)\**\test\**\*.*;
-													 $(EditFolder)\**\samples\**\*.*;
-													 $(EditFolder)\**\angular.js;
-													 $(EditFolder)\Resources\angular-*\angular-cookies*.js;
-													 $(EditFolder)\Resources\angular-*\angular-loader*.js;
-													 $(EditFolder)\Resources\angular-*\angular-mobile*.js;
-													 $(EditFolder)\Resources\angular-*\angular-mocks*.js;
-													 $(EditFolder)\Resources\angular-*\angular-resource.js;
-													 $(EditFolder)\Resources\angular-*\angular-sanitize*.js;
-													 $(EditFolder)\Resources\angular-*\angular-scenario.js;
-													 $(EditFolder)\Resources\angular-ui-*\build\angular-ui-ieshiv.css;
-													 $(EditFolder)\Resources\angular-ui-*\build\angular-ui.css;
-													 $(EditFolder)\Resources\angular-ui-*\build\angular-ui.js;
-													 $(EditFolder)\Resources\bootstrap\css\bootstrap.css;
-													 $(EditFolder)\Resources\bootstrap\js\bootstrap.js;
-													 $(EditFolder)\Resources\bootstrap-components\angular-strap.js;
-													 $(EditFolder)\Resources\font-awesome\css\font-awesome-ie7.css;
-													 $(EditFolder)\Resources\font-awesome\css\font-awesome.css;
-													 $(EditFolder)\Resources\jquery-ui*\css\smoothness\jquery-ui-1.10.4.custom.css;
-													 $(EditFolder)\Resources\jquery-ui*\js\jquery-ui-1.10.4.custom.js;
-													 @(Framework-LocalizedResources)" />
+			<Framework-LocalizedResources Include="$(ManagementFolder)\N2\**\i18n\*.js;
+																						 $(ManagementFolder)\N2\**\App_LocalResources\da\*.resx;$(ManagementFolder)\N2\**\App_LocalResources\*.da.resx;
+																						 $(ManagementFolder)\N2\**\App_LocalResources\it\*.resx;$(ManagementFolder)\N2\**\App_LocalResources\*.it.resx;
+																						 $(ManagementFolder)\N2\**\App_LocalResources\mk-MK\*.resx;$(ManagementFolder)\N2\**\App_LocalResources\*.mk-MK.resx;
+																						 $(ManagementFolder)\N2\**\App_LocalResources\nl\*.resx;$(ManagementFolder)\N2\**\App_LocalResources\*.nl.resx;
+																						 $(ManagementFolder)\N2\**\App_LocalResources\ru\*.resx;$(ManagementFolder)\N2\**\App_LocalResources\*.ru.resx;
+																						 $(ManagementFolder)\N2\**\App_LocalResources\sl\*.resx;$(ManagementFolder)\N2\**\App_LocalResources\*.sl.resx;"
+																		Exclude="$(ManagementFolder)\N2\**\i18n\*en.js;
+																						 $(ManagementFolder)\N2\**\lang\*en.js;"/>
+
+			<Framework-EditFiles Include="$(EditFolder)\**\*;"
+													 Exclude="$(EditFolder)\**\bin\**\*;"></Framework-EditFiles>
 		</ItemGroup>
 	</Target>
 
@@ -94,24 +66,12 @@
 		<Copy SourceFiles="@(Framework-Resources)" DestinationFolder="$(DeployFolder)\$(DeployPrefix)Resources\N2\%(RecursiveDir)\" />
 	</Target>
 
-	<Target Name="Framework-CreateItemGroups-BinFiles" DependsOnTargets="Framework-Build">
+	<Target Name="Framework-CreateItemGroups-BinFiles" DependsOnTargets="BuildSolutionToArtifactsFolder">
 		<ItemGroup>
-			<Framework-BinFiles	Include="$(ManagementFolder)\bin\*.dll;
-										 $(ManagementFolder)\bin\N2.xml*;
-										 $(SrcFolder)\Framework\Security\bin\$(Configuration)\**\*.dll;"
-								Exclude="$(ManagementFolder)\bin\N2.Templates*;
-										 $(ManagementFolder)\bin\AddonCatalog*;
-										 $(ManagementFolder)\bin\Demo*;
-										 $(ManagementFolder)\bin\MyAddon*;
-										 $(ManagementFolder)\bin\n2markdown*;
-										 $(ManagementFolder)\bin\Scrum*;
-										 $(ManagementFolder)\bin\TabPanel*;
-										 $(ManagementFolder)\bin\Tagging*;
-										 $(ManagementFolder)\bin\Wiki*;
-										 $(ManagementFolder)\bin\Microsoft.Web.Mvc*;
-										 $(ManagementFolder)\bin\MvcContrib*;
-										 $(ManagementFolder)\bin\N2.Templates.Mvc*;
-										 $(ManagementFolder)\bin\System*;"/>
+			<Framework-BinFiles	Include="$(ArtifactsFolder)\N2*.dll;
+																	 $(ArtifactsFolder)\N2*.pdb;
+																	 $(ArtifactsFolder)\N2*.xml;"
+													Exclude="$(ArtifactsFolder)\N2.Templates*;"/>
 		</ItemGroup>
 	</Target>
 

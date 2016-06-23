@@ -44,9 +44,6 @@ namespace N2.Edit
         /// <summary>The anchor's url query.</summary>
         public string NavigateQuery { get; set; }
 
-        /// <summary>The control panel state that displays this link.</summary>
-        public ControlPanelState ShowDuring { get; set; }
-
         /// <summary>Used for translating the plugin's texts from a global resource.</summary>
         public string GlobalResourceClassName { get; set; }
 

@@ -1,20 +1,27 @@
 ﻿@model N2.ContentItem
 
-@if(Model != null && Model.ID != 0)
+@if (Model != null && Model.ID != 0)
 {
 	string imgSize = (string)ViewBag.preferredSize ?? "thumb";
 	string contentClass = (string)ViewBag.contentClass ?? "content";
 	using (Content.BeginScope(Model))
 	{
-<div class="contentlink clearfix @(imgSize)Size">
-	@if (Content.Has.Image)
-	{
-	<a class="img @imgSize" href="@Content.Current.Item.Url">@Content.Render.Image("Image", imgSize, cssClass: "img-responsive")</a>		
-	}
-	<div class="@contentClass">
-		<h3><a class="heading" href="@Content.Current.Item.Url">@Content.Current.Item.Title</a></h3>
-		<a class="summary" href="@Content.Current.Item.Url">@Content.Display.Summary</a>
-	</div>
-</div>
+		<div class="contentlink clearfix @(imgSize)Size">
+			@if (Content.Has.Image)
+			{
+				<a class="img @imgSize" href="@Content.Current.Item.Url">@Content.Render.Image("Image", imgSize, cssClass: "img-responsive")</a>
+			}
+			<div class="@contentClass">
+				@if (Content.Has.Summary)
+				{
+					<h3><a class="heading" href="@Content.Current.Item.Url">@Content.Current.Item.Title</a></h3>
+					<a class="summary" href="@Content.Current.Item.Url">@Content.Display.Summary</a>
+				}
+				else
+				{
+					<a class="heading" href="@Content.Current.Item.Url">@Content.Current.Item.Title <b>&raquo;</b></a>
+				}
+			</div>
+		</div>
 	}
 }

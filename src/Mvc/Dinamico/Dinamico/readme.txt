@@ -1,6 +1,4 @@
-﻿ATTENTION MVC3 USERS: You can replace the config file in /dinamico/themes/ to enable support for MVC3. 
-
-== Controllers ==
+﻿== Controllers ==
 
 Controllers controlling content items that are routed through via the content route.
 
@@ -19,3 +17,11 @@ This is the themes root folder. When no theme is selected or if a theme doesn't
 define a certain view or css the resource is retrieved from /Dinamico/Themes/Default/...
 When a theme is used and a resource exists in /Dinamico/Themes/[SelectedThemeName/... 
 this is chosen before the default resource.
+
+== Simple Parts & Pages ==
+
+You can quickly add simple "template first" parts or pages by adding a single 
+cshtml file to a directory:
+* Parts: /Views/ContentParts/*.cshtml
+* Pages: /View/ContentPages/*.cshtml
+Look at /Dinamico/Themes/Default/Views/Content[Parts|Pages] for inspiration

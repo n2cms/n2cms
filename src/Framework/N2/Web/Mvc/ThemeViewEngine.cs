@@ -106,11 +106,13 @@ namespace N2.Web.Mvc
                 string defaultThemePath = themeFolderPath + "Default/";
                 string rootViewsPath = "~/";
 
-                var paths = new List<string> { themePath };
-                if (FallbackToDefaultTheme && defaultThemePath != themePath)
+				var paths = new List<string>();
+				if (defaultThemePath != themePath)
+					paths.Add(themePath);
+				if (FallbackToRootViews)
+					paths.Add(rootViewsPath);
+				if (FallbackToDefaultTheme)
                     paths.Add(defaultThemePath);
-                if (FallbackToRootViews)
-                    paths.Add(rootViewsPath);
 
                 logger.InfoFormat("Creating themed view engine for theme {0} below paths {1}", theme, string.Join(", ", paths));
 

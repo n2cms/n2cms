@@ -67,10 +67,10 @@ namespace N2.Web
 
         internal static IDisposable GetEditableWrapper(ContentItem item, bool isEditable, string propertyName, IDisplayable displayable, TextWriter writer)
         {
-            
+			var page = Find.ClosestPage(item) ?? item;
             var viewEditable = displayable as IViewEditable;
             if (isEditable && (viewEditable == null || viewEditable.IsViewEditable) && item != null && displayable != null)
-                return TagWrapper.Begin("div", writer, htmlAttributes: new RouteValueDictionary { { "data-id", item.ID }, { "data-path", item.Path }, { "data-property", propertyName }, { "data-displayable", displayable.GetType().Name }, { "data-versionIndex", item.VersionIndex }, { "data-versionKey", item.GetVersionKey() }, { "class", "editable " + displayable.GetType().Name + " Editable" + propertyName }, { "title", (displayable is IEditable) ? (displayable as IEditable).Title : displayable.Name } });
+                return TagWrapper.Begin("div", writer, htmlAttributes: new RouteValueDictionary { { "data-id", item.ID }, { "data-path", item.Path }, { "data-property", propertyName }, { "data-displayable", displayable.GetType().Name }, { "data-versionIndex", page.VersionIndex }, { "data-versionKey", item.GetVersionKey() }, { "class", "editable " + displayable.GetType().Name + " Editable" + propertyName }, { "title", (displayable is IEditable) ? (displayable as IEditable).Title : displayable.Name } });
             else
                 return new EmptyDisposable();
         }
@@ -95,31 +95,31 @@ namespace N2.Web
                 container.Controls.Add(c);
             return c;
         }
-        
-        public static string ToJson(this object value)
+
+		public static string ToJson(this object value, bool dateCompatibility = false)
         {
             using (var sw = new StringWriter())
             {
-                value.ToJson(sw);
+                value.ToJson(sw, dateCompatibility);
                 return sw.ToString();
             }
         }
         
-        public static void ToJson(this object value, TextWriter sw)
+        public static void ToJson(this object value, TextWriter sw, bool dateCompatibility = false)
         {
-            new JsonWriter(sw).Write(value);
+			new JsonWriter(sw, dateCompatibility).Write(value);
         }
 
-        public static void WriteJson(this HttpResponse response, object value)
+		public static void WriteJson(this HttpResponse response, object value, bool dateCompatibility = false)
         {
             response.ContentType = "application/json";
-            value.ToJson(response.Output);
+            value.ToJson(response.Output, dateCompatibility);
         }
 
-        public static void WriteJson(this HttpResponseBase response, object value)
+		public static void WriteJson(this HttpResponseBase response, object value, bool dateCompatibility = false)
         {
             response.ContentType = "application/json";
-            value.ToJson(response.Output);
+            value.ToJson(response.Output, dateCompatibility);
         }
 
         public static string ResolveUrlTokens(this string url)
@@ -224,7 +224,9 @@ namespace N2.Web
         {
             var path = new PathData(Find.ClosestPage(masterVersion), masterVersion);
             if (TryParseVersion(versionRepository, versionIndexParameterValue, versionKey, path))
-                return path.CurrentItem;
+			{
+				return path.CurrentItem;
+			}
             return null;
         }
 
@@ -281,7 +283,7 @@ namespace N2.Web
         {
             if (context.Request.HttpMethod == "POST" && context.Request.ContentType.StartsWith("application/json") && context.Request.ContentLength > 0)
             {
-                var json = GetOrDeserializeRequestStreamJson<object>(context);
+                var json = GetOrDeserializeRequestStreamJsonDictionary<object>(context);
                 if (json == null)
                     return (key) => context.Request[key];
 
@@ -297,15 +299,50 @@ namespace N2.Web
                 return (key) => context.Request[key];
         }
 
-        internal static IDictionary<string, T> GetOrDeserializeRequestStreamJson<T>(this HttpContextBase context)
+		internal static T GetOrDeserializeRequestStreamJson<T>(this HttpContextBase context)
+			where T : class
+		{
+			T deserializedObject = context.Items["CachedRequestStream"] as T;
+			if (deserializedObject == null)
+				context.Items["CachedRequestStream"] = deserializedObject = DeserialiseJson<T>(context.Request.InputStream);
+			return deserializedObject;
+		}
+
+		internal static object GetOrDeserializeRequestStreamJson(this HttpContextBase context, Type targetType)
+		{
+			object deserializedObject = context.Items["CachedRequestStream"];
+			if (deserializedObject == null)
+				context.Items["CachedRequestStream"] = deserializedObject = DeserialiseJson(context.Request.InputStream, targetType);
+			return deserializedObject;
+		}
+
+        internal static IDictionary<string, T> GetOrDeserializeRequestStreamJsonDictionary<T>(this HttpContextBase context)
         {
             var json = context.Items["CachedRequestStream"] as IDictionary<string, T>;
             if (json == null)
-                context.Items["CachedRequestStream"] = json = DeserialiseJson<T>(context.Request.InputStream);
+                context.Items["CachedRequestStream"] = json = DeserialiseJsonDictionary<T>(context.Request.InputStream);
             return json;
         }
 
-        public static IDictionary<string, T> DeserialiseJson<T>(this Stream stream)
+		public static T DeserialiseJson<T>(this Stream stream)
+		{
+			using (var sr = new StreamReader(stream))
+			{
+				var body = sr.ReadToEnd();
+				return new JavaScriptSerializer().Deserialize<T>(body);
+			}
+		}
+
+		internal static object DeserialiseJson(this Stream stream, Type targetType)
+		{
+			using (var sr = new StreamReader(stream))
+			{
+				var body = sr.ReadToEnd();
+				return new JavaScriptSerializer().Deserialize(body, targetType);
+			}
+		}
+
+        public static IDictionary<string, T> DeserialiseJsonDictionary<T>(this Stream stream)
         {
             using (var sr = new StreamReader(stream))
             {

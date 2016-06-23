@@ -30,8 +30,8 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @{ 
 	Content.Define(re =>
 	{
-		re.Title = "Google Docs Viewer";
-		re.IconUrl = "{IconsUrl}/page_white_acrobat.png";
+		re.Definition.Title = "Google Docs Viewer";
+		re.Definition.IconUrl = "{IconsUrl}/page_white_acrobat.png";
 		re.FileUpload("File");
 		re.Text("Width").DefaultValue("100%").Required();
 		re.Text("Height").DefaultValue("450px").Required();

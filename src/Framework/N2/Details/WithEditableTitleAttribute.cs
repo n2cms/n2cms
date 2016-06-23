@@ -34,6 +34,7 @@ namespace N2.Details
             : base(title, "Title", sortOrder)
         {
             Required = true;
+			ClientAdapter = "n2autosave.input";
         }
 
         public bool Focus
@@ -43,6 +44,8 @@ namespace N2.Details
         }
 
         public string CssClass { get; set; }
+
+		public int HeadingLevel { get; set; }
 
         public override bool UpdateItem(ContentItem item, Control editor)
         {
@@ -79,17 +82,17 @@ namespace N2.Details
             object value = item[propertyName];
             if (value != null)
             {
-                int headingLevel = item.IsPage ? 1 : 2;
-            writer.Write("<h");
-            writer.Write(headingLevel);
-            if(CssClass != null)
-                writer.Write(" class='" + CssClass + "'");
-            writer.Write(">");
-                writer.Write(value);
-            writer.Write("</h");
-            writer.Write(headingLevel);
-            writer.Write(">");
-        }
+                int headingLevel = HeadingLevel > 0 ? HeadingLevel : item.IsPage ? 1 : 2;
+				writer.Write("<h");
+				writer.Write(headingLevel);
+				if(CssClass != null)
+					writer.Write(" class='" + CssClass + "'");
+				writer.Write(">");
+					writer.Write(value);
+				writer.Write("</h");
+				writer.Write(headingLevel);
+				writer.Write(">");
+			}
         }
 
         #endregion
@@ -103,7 +106,7 @@ namespace N2.Details
             {
                 var heading = new Hn
                 {
-                    Level = item.IsPage ? 1 : 2,
+                    Level = HeadingLevel > 0 ? HeadingLevel : item.IsPage ? 1 : 2,
                     Text = value.ToString(),
                     CssClass = CssClass
                 };

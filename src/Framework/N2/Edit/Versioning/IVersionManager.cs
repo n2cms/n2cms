@@ -35,7 +35,7 @@ namespace N2.Edit.Versioning
         /// <param name="publishedItem">The item whose versions to get.</param>
         /// <param name="count">The number of versions to get.</param>
         /// <returns>A list of versions of the item.</returns>
-        IEnumerable<VersionInfo> GetVersionsOf(ContentItem publishedItem, int skip = 0, int take = 1000);
+		IEnumerable<VersionInfo> GetVersionsOf(ContentItem publishedItem, int skip = 0, int take = 1000, ContentState? stateFilter = null);
 
         /// <summary>Removes exessive versions.</summary>
         /// <param name="publishedItem">The item whose versions to trim.</param>
@@ -50,5 +50,7 @@ namespace N2.Edit.Versioning
         /// <summary>Deletes a version from the version history.</summary>
         /// <param name="version">The version to delete.</param>
         void DeleteVersion(ContentItem version);
+
+		ContentItem GetOrCreateDraft(ContentItem item);
     }
 }

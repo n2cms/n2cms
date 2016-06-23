@@ -12,7 +12,6 @@ namespace N2.Web.UI.WebControls
     {
         public ItemSelector()
         {
-            CssClass = "itemSelector selector";
             DefaultMode = UrlSelectorMode.Items;
             AvailableModes = UrlSelectorMode.Items;
             BrowserUrl = N2.Web.Url.Parse(Engine.ManagementPaths.EditTreeUrl).AppendQuery("location=contentselection");
@@ -20,8 +19,16 @@ namespace N2.Web.UI.WebControls
             ErrorMessage = "The selected item is not of the required type.";
         }
 
-        /// <summary>Gets the selected item or null if none is selected.</summary>
-        public ContentItem SelectedItem
+		public ItemSelector(string name) 
+			: this()
+		{
+			ID = name;
+			Input.ID = name + "_input";
+
+		}
+
+		/// <summary>Gets the selected item or null if none is selected.</summary>
+		public ContentItem SelectedItem
         {
             get { return string.IsNullOrEmpty(Url) ? null : N2.Context.UrlParser.Parse(Url); }
             set { Url = value != null ? value.Url : ""; }
@@ -47,9 +54,15 @@ namespace N2.Web.UI.WebControls
             Page.Validators.Add(this);
         }
 
-        protected override void RegisterClientScripts()
+		protected override void CreateChildControls()
+		{
+			base.CreateChildControls();
+			Input.CssClass = "itemSelector selector";
+		}
+
+		protected override void RegisterClientScripts()
         {
-            Page.JavaScript("$('#" + ClientID + "').n2autocomplete({ filter: 'pages', selectableTypes:'" + SelectableTypes + "' });", ScriptPosition.Bottom, ScriptOptions.DocumentReady | ScriptOptions.ScriptTags);
+            Page.JavaScript("$('#" + Input.ClientID + "').n2autocomplete({ filter: 'pages', selectableTypes:'" + SelectableTypes + "' });", ScriptPosition.Bottom, ScriptOptions.DocumentReady | ScriptOptions.ScriptTags);
         }
 
         #region IValidator Members

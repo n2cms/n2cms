@@ -24,11 +24,6 @@
 			var self = this;
 			this.makeDraggable();
 			$(document.body).addClass("dragDrop");
-			//$(document).on('click', '.titleBar a.command', function (e) {
-			//	e.preventDefault();
-			//	e.stopPropagation();
-			//	self.showDialog($(this).attr('href'));
-			//});
 			var host = window.location.protocol + "//" + window.location.host + "/";
 			$("a").filter(function () { return this.href.indexOf(host) == 0; })
 				.filter(function () { return this.parentNode.className.indexOf('control') < 0; })
@@ -92,15 +87,16 @@
 			});
 		},
 		scroll: function () {
-			var q = window.location.search;
-			var index = q.indexOf("&scroll=") + 8;
-			if (index < 0)
-				return;
-			var ampIndex = q.indexOf("&", index);
-			var scroll = q.substr(index, (ampIndex < 0 ? q.length : ampIndex) - index);
-			setTimeout(function () {
-				window.scrollTo(0, scroll);
-			}, 10);
+			if (window.location.search.indexOf("n2scroll") >= 0) {
+				var top = parseInt(window.location.search.match(/n2scroll=([^&]*)/)[1]);
+				if (top) {
+					$(function () {
+						setTimeout(function () {
+							$(document).scrollTop(top, 0);
+						}, 100);
+					});
+				}
+			}
 		},
 		makeDragHelper: function (e) {
 			isDragging = true;
@@ -246,13 +242,11 @@
 			var reloaded = false;
 			$.post(url, command, function (data) {
 				reloaded = true;
-				//if (data.redirect && command.action == "create" && data.dialog !== "no")
-				//	self.showDialog(data.redirect);
-				//else
-				if (data.redirect)
-					window.location = data.redirect;
-				else
-					window.location.reload();
+				var newLocation = (data.redirect
+					? data.redirect
+					: window.location);
+				newLocation += (newLocation.indexOf("?") >= 0 ? "&" : "?") + "n2scroll=" + ($(document).scrollTop() | 0);
+				window.location = newLocation;
 			}, "json");
 
 			// hack: why no success??
@@ -281,8 +275,9 @@
 
 		recalculate: function () {
 			var $sc = $(this.selector)
-			this.closedPos = { top: (33 - $sc.height()) + "px", left: (17 - $sc.width()) + "px" };
-			if (!this.isOpen()) $sc.css(this.closedPos);
+			this.closedPos = { top: (33 - $sc.height()) + "px", left: (15 - $sc.width()) + "px" };
+			if (!this.isOpen())
+				$sc.css(this.closedPos);
 		},
 
 		isOpen: function () {
@@ -296,7 +291,7 @@
 
 			$(function () {
 				self.recalculate();
-				setTimeout(function () { self.recalculate(); }, 100);
+				setTimeout(function () { self.recalculate(); }, 500);
 			});
 
 			self.open = function (e) {

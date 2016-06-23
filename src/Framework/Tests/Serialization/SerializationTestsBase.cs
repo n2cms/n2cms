@@ -139,7 +139,7 @@ namespace N2.Tests.Serialization
     {
         protected override IItemXmlWriter CreateWriter()
         {
-            return (new ItemHtmlWriter(definitions, parser, new FakeMemoryFileSystem()));
+            return (new ItemHtmlWriter(definitions, new FakeMemoryFileSystem()));
         }
 
         protected override Exporter CreateExporter()
@@ -148,7 +148,7 @@ namespace N2.Tests.Serialization
         }
         protected override Exporter CreateExporter(IFileSystem fs)
         {
-            return new Exporter(new ItemHtmlWriter(definitions, parser, fs));
+            return new Exporter(new ItemHtmlWriter(definitions,fs));
         }
 
         protected override IItemXmlReader CreateReader()

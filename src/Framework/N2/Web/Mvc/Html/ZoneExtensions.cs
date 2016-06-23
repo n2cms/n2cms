@@ -49,5 +49,10 @@ namespace N2.Web.Mvc.Html
         {
             new ZoneHelper(helper, zoneName, item).Render(helper.ViewContext.Writer);
         }
+
+		public static PartHelper Part(this HtmlHelper helper, ContentItem item)
+		{
+			return new PartHelper(helper, item);
+		}
     }
 }

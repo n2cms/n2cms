@@ -1,0 +1,19 @@
+﻿<configuration>
+  <configSections>
+    <sectionGroup name="n2" type="N2.Configuration.SectionGroup, N2">
+      <section name="targeting" type="N2.Management.Targeting.Configuration.TargetingSection, N2.Management.Targeting" requirePermission="false" restartOnExternalChanges="true"/>
+
+    </sectionGroup>
+  </configSections>
+  <n2 xmlns="http://n2cms.com/schemas/configuration/v3">
+    <targeting>
+      <previewSizes>
+        <!--
+        <clear/>
+        <remove name="iphone5" />
+        <add name="galaxyS4" title="Samsung Galaxy S4" height="640" width="360" />
+        -->
+      </previewSizes>
+    </targeting>
+  </n2>
+</configuration>

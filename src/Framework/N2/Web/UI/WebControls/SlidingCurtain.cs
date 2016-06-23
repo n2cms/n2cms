@@ -87,7 +87,8 @@ namespace N2.Web.UI.WebControls
 		    base.Render(writer);
 		    writer.Write(
 			    @"<a href=""javascript:void(0);"" class=""close sc-toggler"" title=""Close"">&laquo;</a><a href=""javascript:void(0);"" class=""open sc-toggler"" title=""Open"">&raquo;</a>");
-	        writer.Write("</div>");
+			writer.Write("</div>");
+			writer.Write("</div>");
         }
 
         private void WriteBgStyle(string url, HtmlTextWriter writer)

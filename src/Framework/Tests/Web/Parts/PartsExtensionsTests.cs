@@ -19,7 +19,7 @@ namespace N2.Tests.Web.Parts
             var part = item.LoadEmbeddedPart<DataItem>("Hello");
 
             part.ShouldNotBe(null);
-            part.ShouldBeTypeOf<DataItem>();
+			part.ShouldBeOfType<DataItem>();
         }
 
         [Test]

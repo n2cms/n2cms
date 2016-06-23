@@ -1,5 +1,3 @@
-using N2.Web.Mvc;
-
 namespace N2.Definitions.Runtime
 {
     public interface IRegistration

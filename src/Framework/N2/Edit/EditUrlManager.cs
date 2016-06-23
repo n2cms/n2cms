@@ -12,6 +12,7 @@ namespace N2.Edit
     public class EditUrlManager : IEditUrlManager
     {
         private string editTreeUrl;
+        private string mediaBrowserUrl;
         private ViewPreference defaultViewPreference;
         private IUrlParser parser;
         private bool ensureLocalhostPreviewUrls;
@@ -29,6 +30,7 @@ namespace N2.Edit
             NewItemUrl = config.Paths.NewItemUrl;
             DeleteItemUrl = config.Paths.DeleteItemUrl;
             defaultViewPreference = config.Versions.DefaultViewMode;
+            MediaBrowserUrl = config.Paths.MediaBrowserUrl;
             ensureLocalhostPreviewUrls = config.Paths.EnsureLocalhostPreviewUrls;
         }
 
@@ -47,6 +49,14 @@ namespace N2.Edit
             get { return Url.ResolveTokens(editTreeUrl); }
             set { editTreeUrl = value; }
         }
+
+        public virtual string MediaBrowserUrl
+        {
+            get { return Url.ResolveTokens(mediaBrowserUrl); }
+            set { mediaBrowserUrl = value; }
+        }
+
+
 
         /// <summary>Gets the url for the navigation frame.</summary>
         /// <param name="selectedItem">The currently selected item.</param>
@@ -191,7 +201,7 @@ namespace N2.Edit
         /// <summary>Gets the url to the edit page where to edit an existing item.</summary>
         /// <param name="item">The item to edit.</param>
         /// <returns>The url to the edit page</returns>
-        public virtual string GetEditExistingItemUrl(ContentItem item)
+        public virtual string GetEditExistingItemUrl(ContentItem item, string returnUrl = null)
         {
             if (item == null)
                 return null;
@@ -214,12 +224,16 @@ namespace N2.Edit
             else if (item.ID == 0)
             {
                 var page = Find.ClosestPage(item);
-                if (page != null && page.VersionOf.HasValue)
+                if (page != null)
                     editUrl = editUrl
-                        .SetQueryParameter(SelectionUtility.SelectedQueryKey, page.VersionOf.Path)
+                        .SetQueryParameter(SelectionUtility.SelectedQueryKey, (page.VersionOf.Value ?? page).Path)
                         .SetQueryParameter(PathData.VersionIndexQueryKey, page.VersionIndex)
                         .SetQueryParameter(PathData.VersionKeyQueryKey, item.GetVersionKey());
             }
+
+			if (returnUrl != null)
+				editUrl = editUrl.SetQueryParameter("returnUrl", returnUrl);
+
             return editUrl;
         }
 

@@ -5,20 +5,18 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-@Content.Register.Meta("Author").Container("Metadata").Display()
-@Content.Register.Meta("Keywords").Container("Metadata").Display()
-@Content.Register.Meta("Description").Container("Metadata").Display()
+@Content.Register.Meta("Author").Container("Metadata").Display().Editable(false)
+@Content.Register.Meta("Keywords").Container("Metadata").Display().Editable(false)
+@Content.Register.Meta("Description").Container("Metadata").Display().Editable(false)
 
 <link href="@Url.ThemedContent("~/Content/Site.css")" rel="stylesheet" type="text/css" />
 <link rel="shortcut icon" href="@Url.ThemedContent("~/favicon.ico")" />
 <link rel="apple-touch-icon" href="@Url.ThemedContent("~/apple-touch-icon.png")" />
 <link rel="canonical" href="@(Content.Data.Url ?? Request.RawUrl)" />
 
-@{ Html.Resources().JQuery(); }
-@{ Html.Resources().JavaScript(Url.ThemedContent("~/lib/bootstrap-3.0.3/js/bootstrap.min.js")); }
-@{ Html.Resources().JavaScript(Url.ThemedContent("~/Scripts/site.js")); }
-
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
+
+@Html.Resources().JQuery()

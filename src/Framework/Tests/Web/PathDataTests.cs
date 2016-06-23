@@ -58,8 +58,8 @@ namespace N2.Tests.Web
             path.CurrentItem = item;
             path.CurrentPage = page;
 
-            path.CurrentPage.ShouldNotBe(item);
-            path.CurrentItem.ShouldNotBe(page);
+			path.CurrentPage.ShouldNotBeSameAs(item);
+			path.CurrentItem.ShouldNotBeSameAs(page);
         }
 
         [Test]
@@ -154,13 +154,13 @@ namespace N2.Tests.Web
             detached.QueryParameters["Hello"] = "world";
 
             path.Action.ShouldNotBe("hejdå");
-            path.CurrentItem.ShouldNotBe(page);
+            path.CurrentItem.ShouldNotBeSameAs(page);
             path.Ignore.ShouldNotBe(false);
             path.IsCacheable.ShouldNotBe(false);
             path.IsPubliclyAvailable.ShouldNotBe(false);
             path.IsRewritable.ShouldNotBe(false);
             path.Path.ShouldNotBe("/y");
-            path.StopItem.ShouldNotBe(item);
+            path.StopItem.ShouldNotBeSameAs(item);
             path.TemplateUrl.ShouldNotBe("/world.aspx");
             path.QueryParameters.ContainsKey("Hello").ShouldBe(false);
         }
@@ -185,13 +185,13 @@ namespace N2.Tests.Web
             detached.QueryParameters["Hello"] = "world";
 
             reattached.Action.ShouldNotBe("hejdå");
-            reattached.CurrentItem.ShouldNotBe(page);
+            reattached.CurrentItem.ShouldNotBeSameAs(page);
             reattached.Ignore.ShouldNotBe(false);
             reattached.IsCacheable.ShouldNotBe(false);
             reattached.IsPubliclyAvailable.ShouldNotBe(false);
             reattached.IsRewritable.ShouldNotBe(false);
             reattached.Path.ShouldNotBe("/y");
-            reattached.StopItem.ShouldNotBe(item);
+            reattached.StopItem.ShouldNotBeSameAs(item);
             reattached.TemplateUrl.ShouldNotBe("/world.aspx");
             reattached.QueryParameters.ContainsKey("Hello").ShouldBe(false);
         }

@@ -32,8 +32,8 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @{
 	Content.Define(ie =>
 		{
-			ie.Title = "Sign-in Form";
-			ie.IconUrl = "{IconsUrl}/key.png";
+			ie.Definition.Title = "Sign-in Form";
+			ie.Definition.IconUrl = "{IconsUrl}/key.png";
 			ie.Text("Title");
 			ie.Url("Redirect", "Redirect URL");
 			ie.CheckBox("ForceRedirect", "Force redirect even if a returnUrl is available.");

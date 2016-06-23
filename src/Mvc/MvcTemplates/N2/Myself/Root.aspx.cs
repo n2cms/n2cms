@@ -33,7 +33,7 @@ namespace N2.Management.Myself
         {
             base.OnInit(e);
 
-            sc.Visible = Engine.SecurityManager.IsAdmin(User);
+            cp.Visible = Engine.SecurityManager.IsAdmin(User);
 
             Title = CurrentItem["AlternativeTitle"] as string;
         }

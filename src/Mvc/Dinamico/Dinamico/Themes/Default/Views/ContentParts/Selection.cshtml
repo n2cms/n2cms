@@ -5,8 +5,8 @@
 		   
 @{ Content.Define(re =>
    {
-	   re.Title = "Selection";
-	   re.IconUrl = "{IconsUrl}/application_side_list.png";
+	   re.Definition.Title = "Selection";
+	   re.Definition.IconUrl = "{IconsUrl}/application_side_list.png";
 	   re.MultipleItemSelection("SelectFrom", typeof(Dinamico.Models.ContentPage));
 	   re.CheckBox("Tease", "Tease first item");
 	   re.ImageSize("ImageSize", "Teaser image size").Configure(e => e.DefaultValue = "");

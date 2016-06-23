@@ -36,7 +36,6 @@ namespace N2.Security.AspNet.Identity
           where TUser : ContentUser
     {
         private readonly N2.Engine.Logger<IdentityUserStore<TUser>> logger;
-        private UserManager<TUser, int> userManager;
 
         public IdentityUserStore(ItemBridge bridge)
         {

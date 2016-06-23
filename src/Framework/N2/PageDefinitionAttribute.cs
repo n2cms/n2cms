@@ -16,7 +16,7 @@ namespace N2
         /// <summary>Instructs the installation screen how to treat this definition during installation.</summary>
         public InstallerHint InstallerVisibility { get; set; }
 
-        public PageDefinitionAttribute(string title)
+		public PageDefinitionAttribute(string title)
             :this()
         {
             Title = title;
@@ -30,7 +30,8 @@ namespace N2
 
         public override void Refine(ItemDefinition currentDefinition)
         {
-            currentDefinition.Installer = InstallerVisibility;
+			if (InstallerVisibility != InstallerHint.Default)
+				currentDefinition.Installer = InstallerVisibility;
 
             base.Refine(currentDefinition);
         }

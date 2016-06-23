@@ -16,7 +16,6 @@ namespace N2.Details
     {
         private char? whitespaceReplacement = '-';
         private bool? toLower;
-        private bool? ascii = false;
         private bool? showKeepUpdated;
         private string keepUpdatedText = "";
         private string keepUpdatedToolTip = "Keep the name up to date";
@@ -36,7 +35,7 @@ namespace N2.Details
         public WithEditableNameAttribute(string title, int sortOrder)
             : base(title, "Name", sortOrder)
         {
-        }
+		}
 
         /// <summary>Gets or sets the character that replaces whitespace when updating the name (default is '-').</summary>
         public char? WhitespaceReplacement

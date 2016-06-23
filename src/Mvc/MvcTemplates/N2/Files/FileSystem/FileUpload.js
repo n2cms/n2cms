@@ -1,38 +1,11 @@
-﻿(window.n2 || (window.n2 = {})).FileUpload = function (maxFileSize, ticket, selected, refreshFrames) {
+﻿(window.n2 || (window.n2 = {})).FileUpload = function (maxFileSize, ticket, selected, refreshFrames, container) {
 	"use strict";
-
-	function onFileUploaded(e) {
-		var fileupload = this;
-		setTimeout(function () {
-			$(".complete", fileupload).parent().fadeOut();
-			if ($(".error", fileupload).length > 0)
-				if (!confirm("Failed to upload some files, confirm to refresh"))
-					return;
-
-			if ($(".cancel", fileupload).length == 0)
-				onUploadComplete();
-		}, 10);
-	}
-	function onUploadComplete() {
-		$("#fileupload").removeClass("uploading");
-		$("#uploadcontrols").slideDown();
-		refreshFrames();
-		window.location = window.location;
-	}
-	function onUploadFailed() {
-		$("#fileupload").removeClass("uploading");
-		$("#uploadcontrols").slideDown();
-		$("#uploadcontrols").prepend("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button>Failed uploading</div>");
-	}
-	function onUploadStart() {
-		$("#uploadcontrols").slideUp();
-		$("#fileupload").addClass("uploading");
-	}
-
+	
 	if (typeof FileReader == "undefined") {
 		$("#fileupload em").hide();
 	}
 
+	var uploading = 0;
 	// Initialize the jQuery File Upload widget:
 	$('#fileupload').fileupload({
 		url: "UploadFile.ashx",
@@ -41,31 +14,33 @@
 		previewMaxHeight: 48,
 		autoUpload: true,
 		sequentialUploads: true,
-		formData: { ticket: ticket, selected: selected }
-	})
-    .bind('fileuploadstart', onUploadStart)
-    .bind('fileuploaddone', onFileUploaded)
-    .bind('fileuploadfail', onUploadFailed);
+		formData: { ticket: ticket, selected: selected },
+		add: function (e, data) {
+			$("#uploadcontrols").hide();
+			$("#fileupload").addClass("uploading");
 
+			uploading++;
+			data.filename = data.files && data.files[0] && data.files[0].name;
+			data.context = $('<p/>').html("<b class='fa fa-upload'></b> " + data.filename).appendTo(container);
+			data.submit();
+		},
+		always: function (e, data) {
+			uploading--;
 
-	//        // Load existing files:
-	//        $.getJSON($('form').attr("enctype", "multipart/form-data").prop('action'), function (files) {
-	//            var fu = $('#fileupload').data('fileupload');
-	//            fu._adjustMaxNumberOfFiles(-files.length);
-	//            fu._renderDownload(files)
-	//            .appendTo($('#fileupload .files'))
-	//            .fadeIn(function () {
-	//                // Fix for IE7 and lower:
-	//                $(this).show();
-	//            });
-	//        });
+			data.context.slideUp("fast", function () {
+				data.context.remove();
+			})
 
-	//        // Open download dialogs via iframes,
-	//        // to prevent aborting current uploads:
-	//        $('#fileupload .files').delegate('a:not([target^=_blank])', 'click', function (e) {
-	//            e.preventDefault();
-	//            $('<iframe style="display:none;"></iframe>')
-	//                .prop('src', this.href)
-	//                .appendTo('body');
-	//        });
+			if (!uploading) {
+				$("#fileupload").removeClass("uploading");
+				$("#uploadcontrols").slideDown("fast");
+				refreshFrames();
+			}
+		},
+		fail: function (e, data) {
+			$("#fileupload").removeClass("uploading");
+			$("#uploadcontrols").slideDown("fast");
+			$("#uploadcontrols").prepend("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button>Failed uploading " + data.filename + "</div>");
+		}
+	});
 };

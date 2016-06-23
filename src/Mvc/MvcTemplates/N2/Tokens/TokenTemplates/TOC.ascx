@@ -4,7 +4,7 @@
 <div id="<%= id %>" class="toc">
 </div>
 
-<% Html.Resources().JQuery(); %>
+<%= Html.Resources().JQuery() %>
 
 <script type="text/javascript">
 	$(document).ready(function () {

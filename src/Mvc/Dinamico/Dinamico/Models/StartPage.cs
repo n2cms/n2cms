@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -17,7 +18,12 @@ namespace Dinamico.Models
     /// a domain name and/or form the root of translation. The registration of
     /// this model is performed by <see cref="Registrations.StartPageRegistration"/>.
     /// </summary>
-    public class StartPage : ContentPage, IStartPage, IStructuralPage, IThemeable, ILanguage, ISitesSource
+	[PageDefinition("Start Page",
+		Description = "The topmost node of a site. This can be placed below a language intersection to also represent a language",
+		IconClass = "fa fa-home",
+		InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
+	[WithEditableTranslations(ContainerName = Defaults.Containers.Site)]
+	public class StartPage : ContentPage, IStartPage, IStructuralPage, IThemeable, ILanguage, ISitesSource, ITranslator
     {
         #region IThemeable Members
 
@@ -48,16 +54,12 @@ namespace Dinamico.Models
         public virtual string Logotype { get; set; }
 
 		public virtual string Author { get; set; }
+
 		public virtual string Keywords { get; set; }
+
 		public virtual string Description { get; set; }
 
-        [EditableUrl("Login Page", 79, HelpText = "Page to display when authorization to a page fails.")]
-        public virtual string LoginPage
-        {
-            get { return (string)GetDetail("LoginPage"); }
-            set { SetDetail("LoginPage", value); }
-        }
-
+		public virtual string LoginPage { get; set; }
 
         #region ISitesSource Members
 
@@ -69,6 +71,16 @@ namespace Dinamico.Models
                 yield return new Site(Find.EnumerateParents(this, null, true).Last().ID, ID, HostName) { Wildcards = true };
         }
 
-        #endregion
-    }
+		public string Translate(string key, string fallback = null)
+		{
+			return DetailCollections.GetTranslation(key) ?? fallback;
+		}
+
+		public IDictionary<string, string> GetTranslations()
+		{
+			return DetailCollections.GetTranslations();
+		}
+
+		#endregion
+	}
 }

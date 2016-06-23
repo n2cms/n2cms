@@ -5,9 +5,10 @@ using System.Text;
 
 namespace N2.Edit
 {
-    public enum ViewPreference
-    {
-        Draft,
-        Published
-    }
+	public enum ViewPreference
+	{
+		None,
+		Draft,
+		Published
+	}
 }

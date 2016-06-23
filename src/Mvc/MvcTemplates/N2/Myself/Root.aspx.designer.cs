@@ -13,22 +13,22 @@ namespace N2.Management.Myself {
     public partial class Root {
         
         /// <summary>
-        /// sc control.
+        /// cp control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Web.UI.WebControls.SlidingCurtain sc;
+        protected global::N2.Web.UI.WebControls.ControlPanel cp;
         
         /// <summary>
-        /// Zone1 control.
+        /// ZoneAbove control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Web.UI.WebControls.Zone Zone1;
+        protected global::N2.Web.UI.WebControls.Zone ZoneAbove;
         
         /// <summary>
         /// c1 control.

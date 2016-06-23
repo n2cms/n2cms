@@ -1,0 +1,361 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Server Requirements &mdash; n2cms 1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="n2cms 1 documentation" href="../index.html"/>
+        <link rel="up" title="Getting Started" href="index.html"/>
+        <link rel="next" title="Setting up your environment" href="../setting-up-your-environment/index.html"/>
+        <link rel="prev" title="Getting Started" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="../index.html" class="icon icon-home"> n2cms
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting Started</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="">Server Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#operating-system">Operating System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#client-operating-systems">Client operating systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#web-servers">Web Servers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#net-framework">.NET Framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#databases">Databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wildcard-mapping-iis-5-6-1">Wildcard mapping (IIS 5-6.1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#visual-studio-development">Visual Studio Development</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#shared-hosting">Shared Hosting</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../setting-up-your-environment/index.html">Setting up your environment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../setting-up-your-environment/index.html#development-environment">Development Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setting-up-your-environment/index.html#getting-the-bits">Getting the Bits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setting-up-your-environment/index.html#overview-of-available-packages">Overview of Available Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setting-up-your-environment/index.html#getting-up-and-running">Getting up and Running</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../setting-up-your-environment/index.html#web-platform-installer-wpi">Web Platform Installer (WPI)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../setting-up-your-environment/index.html#updating-n2cms">Updating N2CMS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../setting-up-your-environment/index.html#visual-studio-snippets-and-templates">Visual Studio Snippets and Templates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../setting-up-your-environment/index.html#installing-visual-studio-item-templates">Installing Visual Studio Item Templates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../setting-up-your-environment/index.html#installing-intellisense-documentation-for-visual-studio">Installing IntelliSense Documentation for Visual Studio</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../setting-up-your-environment/index.html#installing-n2cms-nuget-packages">Installing N2CMS NuGet Packages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../setting-up-your-environment/index.html#which-management-pack-should-i-choose">Which management pack should I choose?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">n2cms</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Getting Started</a> &raquo;</li>
+      
+    <li>Server Requirements</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/getting-started/server-requirements.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="server-requirements">
+<h1>Server Requirements<a class="headerlink" href="#server-requirements" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="operating-system">
+<h2>Operating System<a class="headerlink" href="#operating-system" title="Permalink to this headline">¶</a></h2>
+<p>N2CMS runs on .NET Framework 4.5, which runs on the following operating systems.</p>
+<p><em>Server operating systems</em></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="23%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Operating system</th>
+<th class="head">Supported .NET Framework Version</th>
+<th class="head">Additional information</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Win Server 2012 R2</td>
+<td>4.5</td>
+<td>Includes .NET Framework 4.5.1</td>
+</tr>
+<tr class="row-odd"><td>Win Server 2012 (64-bit)</td>
+<td>4.5</td>
+<td>Includes .NET Framework 4.5</td>
+</tr>
+<tr class="row-even"><td>Win Server 2008 R2 SP1</td>
+<td>4.0, 4.5</td>
+<td>Supported in the Server Core Role with SP1 or later.</td>
+</tr>
+<tr class="row-odd"><td>Win Server 2008 SP2</td>
+<td>4.0, 4.5</td>
+<td>Not supported in the Server Core Role.</td>
+</tr>
+<tr class="row-even"><td>Win Server 2003 R2</td>
+<td>4.0, 4.5</td>
+<td>Dinamico/N2CMS.Razor is not supported because .NET Framework 4.5 is not available.</td>
+</tr>
+<tr class="row-odd"><td>Win Server 2003 or earlier</td>
+<td>Not supported</td>
+<td>Not supported</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="client-operating-systems">
+<h2>Client operating systems<a class="headerlink" href="#client-operating-systems" title="Permalink to this headline">¶</a></h2>
+<p>N2CMS supports Visual Studio 2010, 2012, and 2013 on the following operating systems:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="30%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Operating system</th>
+<th class="head">Supported editions</th>
+<th class="head">Additional information</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Windows 8.1</td>
+<td>32-bit and 64-bit</td>
+<td>Includes the .NET Framework 4.5.1</td>
+</tr>
+<tr class="row-odd"><td>Windows 8</td>
+<td>32-bit and 64-bit</td>
+<td>Includes the .NET Framework 4.5</td>
+</tr>
+<tr class="row-even"><td>Windows 7 SP1</td>
+<td>32-bit and 64-bit</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>Windows Vista SP2</td>
+<td>32-bit and 64-bit</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="web-servers">
+<h2>Web Servers<a class="headerlink" href="#web-servers" title="Permalink to this headline">¶</a></h2>
+<p>N2CMS has been tested successfully on the Visual Studio embedded web server, IIS, and IIS Express.</p>
+</div>
+<div class="section" id="net-framework">
+<h2>.NET Framework<a class="headerlink" href="#net-framework" title="Permalink to this headline">¶</a></h2>
+<p>N2CMS can run on .NET 2.0. We recommend that you run N2CMS on the latest version of the .NET framework possible.</p>
+</div>
+<div class="section" id="databases">
+<h2>Databases<a class="headerlink" href="#databases" title="Permalink to this headline">¶</a></h2>
+<p>Supported databases include:</p>
+<blockquote>
+<div><ul class="simple">
+<li>SQL Server 2008 *</li>
+<li>SQL Server 2008 Express *</li>
+<li>SQL Server 2005 *</li>
+<li>SQL Server 2005 Express *</li>
+<li>SQL Server 2000</li>
+<li>SqlCe</li>
+<li>MySQL *</li>
+<li>SQLite *</li>
+<li>Firebird</li>
+<li>Jet</li>
+<li>DB2</li>
+<li>Oracle9i</li>
+<li>Oracle10g</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>A connection string example for these database engines can be found in web.config.</li>
+</ul>
+</div>
+<div class="section" id="wildcard-mapping-iis-5-6-1">
+<h2>Wildcard mapping (IIS 5-6.1)<a class="headerlink" href="#wildcard-mapping-iis-5-6-1" title="Permalink to this headline">¶</a></h2>
+<p>On IIS 5 to IIS 6.1 wildcard mapping can be enabled to support “extensionless urls” (no ending .aspx on each page address). Wilcard mapping is an IIS feature that enables requests to all types of resources to pass through managed ASP.NET code. This allows N2 CMS to serve pages for pages not ending with .aspx. This is configured slightly differently depending on IIS version. Try searching and pick the version you&#8217;re using: <a class="reference external" href="http://www.google.com/search?q=iis+wildcard+mapping">http://www.google.com/search?q=iis+wildcard+mapping</a></p>
+</div>
+<div class="section" id="visual-studio-development">
+<h2>Visual Studio Development<a class="headerlink" href="#visual-studio-development" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li>Visual Studio 2012 is recommended for site development with N2CMS.</li>
+<li>Visual Studio Express can also be used.</li>
+</ul>
+</div></blockquote>
+<p>Visual Studio 2012 project files are included in the N2CMS source tree.</p>
+</div>
+<div class="section" id="shared-hosting">
+<h2>Shared Hosting<a class="headerlink" href="#shared-hosting" title="Permalink to this headline">¶</a></h2>
+<p>Some users report no problems running in shared hosting under medium trust, others have had problems. N2CMS has been tested on unmodified medium trust. It’s recommended you ask the hosting provider before you buy a long-term plan. Note that N2CMS can be somewhat RAM intensive, and requires a minimum of 64 MB of RAM dedicated to your website. More RAM may be needed depending on the plugins you require or the amount of traffic your website receives. Plug-ins such as site search can also increase the memory requirement.</p>
+<p>N2CMS has been confirmed to be compatible with following shared hosting</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://www.arvixe.com">http://www.arvixe.com</a></li>
+<li><a class="reference external" href="http://www.re-invent.com">http://www.re-invent.com</a></li>
+<li><a class="reference external" href="http://www.avalon.hr">http://www.avalon.hr</a></li>
+<li><a class="reference external" href="http://www.drundo.net">http://www.drundo.net</a></li>
+<li><a class="reference external" href="http://www.godaddy.com">http://www.godaddy.com</a></li>
+<li><a class="reference external" href="http://www.lastationinternet.com">http://www.lastationinternet.com</a></li>
+<li><a class="reference external" href="http://www.erudeye.net/">http://www.erudeye.net/</a></li>
+<li><a class="reference external" href="http://www.elixtech.com/">http://www.elixtech.com/</a></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../setting-up-your-environment/index.html" class="btn btn-neutral float-right" title="Setting up your environment" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Getting Started" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, n2cms.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

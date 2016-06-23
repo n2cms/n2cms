@@ -1,5 +1,6 @@
 using N2.Collections;
 using N2.Edit;
+using N2.Edit.Installation;
 using N2.Edit.Trash;
 using N2.Edit.Versioning;
 using N2.Engine;
@@ -49,7 +50,18 @@ namespace N2.Management.Api
                         Interface = engine.Resolve<InterfaceBuilder>().GetInterfaceDefinition(context, Selection),
                         Context = engine.Resolve<ContextBuilder>().GetInterfaceContextData(context, Selection)
                     });
-                    return;
+					return;
+				case "/messages":
+					context.Response.WriteJson(engine.Resolve<ContextBuilder>().GetMessages(context, Selection));
+					return;
+				case "/status":
+					var status = engine.Resolve<InstallationManager>().GetStatus();
+					context.Response.WriteJson(new {
+						Running = status.Level == SystemStatusLevel.UpAndRunning,
+						Level = status.Level,
+						Message = status.Level == SystemStatusLevel.UpAndRunning ? "All systems nominal" : status.ToStatusString()
+					});
+					return;
                 default:
                     context.Response.WriteJson(engine.Resolve<ContextBuilder>().GetInterfaceContextData(context, Selection));
                     return;

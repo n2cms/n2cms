@@ -66,7 +66,7 @@ namespace N2.Web.Mvc
                 re.Add(editable, name, title);
             }
 
-            return RendererFactory.Create<T>(Rendering.RenderingContext.Create(Html, name), re);
+            return RendererFactory.Create<T>(Rendering.RenderingContext.Create(Html, name, isEditable: Html.GetControlPanelState().IsFlagSet(UI.WebControls.ControlPanelState.DragDrop)), re);
         }
 
         public EditableBuilder<T> RegisterEditable<T>(T editable) where T : IEditable

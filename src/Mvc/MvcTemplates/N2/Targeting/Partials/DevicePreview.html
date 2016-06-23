@@ -1,0 +1,22 @@
+﻿<div id="page-preview" ng-controller="TargetingCtrl">
+
+	<div id="page-preview-frame-cover"></div>
+
+	<div class="device-background" ng-class="{ fullscreen: preview.size == null, device: preview.size != null, horizontal: preview.size.Width > preview.size.Height, tablet: preview.size.IconClass.indexOf('tablet') >= 0, desktop: preview.size.IconClass.indexOf('desktop') >= 0 }">
+		<div id="device-preview">
+			<div class="device-preview-frame-cover"></div>
+			<div class="device-preview-info">
+				<label>{{preview.size.Title}}</label>
+				<p><em translate="targeting.preview.viewportsize">Viewport size</em> {{preview.size.Height}}x{{preview.size.Width}}</p>
+				<button class="btn btn-close" ng-click="$emit('device-close', {})" translate="targeting.preview.close">Close</button>
+			</div>
+
+			<iframe n2-preview-frame id="page-preview-frame" name="preview"
+					style="width:{{preview.size.Width}}px; height:{{preview.size.Height}}px"></iframe>
+
+			<div id="device-preview-gripper-h" n2-resize-x="preview.size.Width"></div>
+			<div id="device-preview-gripper-v" n2-resize-y="preview.size.Height"></div>
+			<div class="device-footer"></div>
+		</div>
+	</div>
+</div>

@@ -1,11 +1,11 @@
 ﻿@model Dinamico.Models.ContentPart
 @{ Content.Define(re =>
-    {
-        re.Title = "Hyperlink";
-        re.Url("Destination");
-        re.Text("Text");
-        re.CheckBox("IsButton", "Is Button");
-    });
+	{
+		re.Definition.Title = "Hyperlink";
+		re.Url("Destination");
+		re.Text("Text");
+		re.CheckBox("IsButton", "Is Button");
+	});
 }
 <p>
 @if (Content.Has.IsButton && Content.Data.IsButton)

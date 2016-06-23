@@ -9,6 +9,8 @@ using N2.Engine;
 using N2.Edit;
 using System.IO;
 using N2.Web.UI.WebControls;
+using System.Web;
+using N2.Web.Parts;
 
 namespace N2.Web.Mvc.Html
 {
@@ -110,7 +112,14 @@ namespace N2.Web.Mvc.Html
         /// <returns>A disposable object that must be called to close the editable wrapper element.</returns>
         public static IDisposable BeginEditableWrapper(this HtmlHelper html, ContentItem item, string displayableName)
         {
-            return WebExtensions.GetEditableWrapper(item, true, displayableName, html.ContentEngine().Definitions.GetDefinition(item).Displayables[displayableName], html.ViewContext.Writer);
-        }
-    }
+			if (ControlPanel.GetState(html.ContentEngine()) == ControlPanelState.DragDrop)
+			{
+				return WebExtensions.GetEditableWrapper(item, true, displayableName, html.ContentEngine().Definitions.GetDefinition(item).Displayables[displayableName], html.ViewContext.Writer);
+			}
+			else
+			{
+				return new EmptyDisposable();
+			}
+		}
+	}
 }

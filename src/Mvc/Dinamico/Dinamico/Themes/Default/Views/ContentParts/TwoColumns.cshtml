@@ -2,8 +2,8 @@
 
 @{ Content.Define(re =>
 	   {
-		   re.Title = "2 Columns";
-		   re.IconUrl = "{IconsUrl}/text_columns.png";
+		   re.Definition.Title = "2 Columns";
+		   re.Definition.IconUrl = "{IconsUrl}/text_columns.png";
 		   re.CheckBox("Separator", "Show separator");
 	   });
 }
@@ -12,10 +12,10 @@
 	<hr />
 }
 <div class="columns twocolumns row">
-	<div class="column span  @ResourcesExtensions.BootstrapColumnClass(6, ResourcesExtensions.BootstrapScreenSize.lg)">
+	<div class="column span col-sm-6">
 		@{ Html.DroppableZone("Left").Render(); }
 	</div>
-	<div class="column column2  @ResourcesExtensions.BootstrapColumnClass(6, ResourcesExtensions.BootstrapScreenSize.lg)">
+	<div class="column column2 col-sm-6">
 		@{ Html.DroppableZone("Right").Render(); }
 	</div>
 </div>

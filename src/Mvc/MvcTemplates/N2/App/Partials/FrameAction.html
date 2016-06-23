@@ -7,7 +7,7 @@
 	{{action.Current.Title}}
 </a>
 <a class='page-action'
-   href="#"
+   href
    ng-controller="FrameActionCtrl"
    ng-show="action && !action.Current.Url"
    ng-click="manipulator.click(action.Current.Selector)">
@@ -15,7 +15,7 @@
 	{{action.Current.Title}}
 </a>
 
-<a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-show="item.Children.length">
+<a href class="dropdown-toggle" data-toggle="dropdown" ng-show="item.Children.length">
 	<b class="caret"></b>
 </a>
 
@@ -27,7 +27,7 @@
 			<b class='ico' ng-show='child.Current.IconClass || child.Current.IconUrl' ng-class='child.Current.IconClass' x-background-image='child.Current.IconUrl'></b>
 			{{child.Current.Title}}
 		</a>
-		<a href="#"
+		<a href
 		   ng-hide="child.Current.Url"
 		   ng-click="manipulator.click(child.Current.Selector)">
 			<b class='ico' ng-show='child.Current.IconClass || child.Current.IconUrl' ng-class='child.Current.IconClass' x-background-image='child.Current.IconUrl'></b>

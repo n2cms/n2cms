@@ -13,7 +13,7 @@ Due to a bug in Bootstrap, some extra CSS is required.  See: https://github.com/
 
 *@
 @{
-	Content.Define(ie => { ie.Title = "Bootstrap Grid"; });
+	Content.Define(ie => { ie.Definition.Title = "Bootstrap Grid"; });
 	int columns = 4;
 	string spanclass = "span" + (12 / columns);
 	string uniqueId = Html.UniqueID("cs");

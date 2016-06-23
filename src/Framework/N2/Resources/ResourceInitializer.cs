@@ -25,6 +25,9 @@ namespace N2.Resources
 			if (configFactory.Sections.Web.Resources.Debug.HasValue)
 				Register.Debug = configFactory.Sections.Web.Resources.Debug.Value;
 
+			Register.PreviewJQueryJsPath = configFactory.Sections.Web.PreviewResources.JQueryJsPath;
+			Register.PreviewAngularJsRoot = configFactory.Sections.Web.PreviewResources.AngularJsRoot;
+
 			Register.JQueryJsPath = configFactory.Sections.Web.Resources.JQueryJsPath;
 			Register.JQueryUiPath = configFactory.Sections.Web.Resources.JQueryUiPath;
 			Register.JQueryPluginsPath = configFactory.Sections.Web.Resources.JQueryPluginsPath;

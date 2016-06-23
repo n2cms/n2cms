@@ -102,7 +102,7 @@ namespace N2.Extensions.Tests.Mvc.Controllers
             Assert.That(r.Values[ContentRoute.ActionKey], Is.EqualTo("Index"));
         }
 
-        [Test, Ignore("TODO")]
+        [Test]
         public void CanGet_IdParameter_FromUrl()
         {
             RequestingUrl("/about/submit/123");

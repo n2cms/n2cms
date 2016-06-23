@@ -22,11 +22,6 @@ namespace N2.Edit
 
         protected override void OnPreRender(EventArgs e)
         {
-            if (h1 != null)
-            {
-                h1.InnerHtml = HtmlSanitizer.Current.Encode(Page.Title);
-                h1.Visible = !string.IsNullOrEmpty(Page.Title);
-            }
             base.OnPreRender(e);
         }
 

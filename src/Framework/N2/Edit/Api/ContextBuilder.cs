@@ -1,4 +1,5 @@
 using N2.Edit;
+using N2.Edit.Collaboration;
 using N2.Edit.Versioning;
 using N2.Engine;
 using N2.Engine.Globalization;
@@ -12,6 +13,45 @@ using System.Web;
 
 namespace N2.Management.Api
 {
+	public class FlagData : Dictionary<string, bool>
+	{
+		public FlagData()
+		{
+		}
+
+		public FlagData(IEnumerable<string> flags)
+		{
+			AddRange(flags);
+		}
+
+		public FlagData Add(string flag)
+		{
+			this[flag] = true;
+			return this;
+		}
+
+		public FlagData AddRange(IEnumerable<string> flags)
+		{
+			if (flags != null)
+				foreach (var flag in flags)
+					this[flag] = true;
+			return this;
+		}
+
+		public static implicit operator FlagData(List<string> flags)
+		{
+			return new FlagData(flags);
+		}
+
+		public bool Any(params string[] keys)
+		{
+			foreach(var key in keys)
+				if (ContainsKey(key))
+					return true;
+			return false;
+		}
+	}
+
     public class ContextData
     {
         public ContextLanguage Language { get; set; }
@@ -20,12 +60,14 @@ namespace N2.Management.Api
 
         public ExtendedContentInfo ExtendedInfo { get; set; }
 
-        public List<string> Flags { get; set; }
+        public FlagData Flags { get; set; }
 
         public string ReturnUrl { get; set; }
 
         public Dictionary<string, object> Actions { get; set; }
-    }
+
+		public List<Edit.Collaboration.CollaborationMessage> Messages { get; set; }
+	}
 
     public class ContextLanguage
     {
@@ -116,10 +158,14 @@ namespace N2.Management.Api
                 }
             }
 
-            if (new[] { "MyselfRoot", "ContentEditRecursive", "ContentTemplatesDefault", "ContentWizardDefault", "UsersUsers" }.Intersect(data.Flags).Any() == false)
+            if (data.Flags.Any("MyselfRoot", "ContentEditRecursive", "ContentTemplatesDefault", "ContentWizardDefault", "UsersUsers") == false)
                 data.Flags.Add("ContentPages");
 
             data.Actions = CreateActions(context);
+
+			var collaborationContext = CollaborationContext.Create(engine.Resolve<IProfileRepository>(), item, context);
+			data.Messages = engine.Resolve<N2.Edit.Collaboration.ManagementMessageCollector>().GetMessages(collaborationContext).ToList();
+			data.Flags.AddRange(engine.Resolve<N2.Edit.Collaboration.ManagementFlagCollector>().GetFlags(collaborationContext));
 
             if (ContextBuilt != null)
                 ContextBuilt(this, new ContextBuiltEventArgs { Data = data });
@@ -183,5 +229,15 @@ namespace N2.Management.Api
             }
             return data;
         }
-    }
+
+		public object GetMessages(HttpContextBase context, SelectionUtility selection)
+		{
+			var messageContext = new Edit.Collaboration.CollaborationContext { SelectedItem = selection.ParseSelectionFromRequest(), User = context.User }
+				.ParseLastDismissed(context.Request["lastDismissed"]);
+			return new
+			{
+				Messages = engine.Resolve<N2.Edit.Collaboration.ManagementMessageCollector>().GetMessages(messageContext).ToList()
+			};
+		}
+	}
 }

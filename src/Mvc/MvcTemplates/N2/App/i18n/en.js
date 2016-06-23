@@ -1,5 +1,5 @@
 ﻿{
-	"i18n": { language: "en" },
+	"i18n": { "language": "en" },
 	"loading": { "text": "Loading..." },
 	"branch": {
 		"noname": "(no name)",
@@ -9,8 +9,13 @@
 			"language": "Language: ",
 			"locked": "Access restrictions",
 			"zone": "In zone: ",
+			"isDraft": "Is draft: ",
 			"draft": "Has draft: ",
 			"unpublished": "Unpublished"
+		},
+		"autosave": {
+			"discardDraft": "An autosaved draft is left behind. Discard it?",
+			"draftDiscarded": "The autosaved draft was removed."
 		}
 	},
 	"footer": {
@@ -124,5 +129,9 @@
         },
         "confirm": { "text" : "Confirm" },
         "close": { "text" : "Close" }
-    }
+    },
+	"messages":{
+		"dismiss": { "text": " Dismiss" },
+		"showDismissed": { "text": " Show dismissed" }
+	}
 }

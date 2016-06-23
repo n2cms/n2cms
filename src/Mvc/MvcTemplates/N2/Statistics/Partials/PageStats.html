@@ -1,0 +1,10 @@
+﻿<div class="n2-page-stats" ng-controller="PageStatsCtrl" ng-class="{ loading: stale }">
+	<div class="n2-page-stats-nodata" translate="statistics.nodata" ng-hide="Statistics.Max">No statistical data on this page</div>
+	<table>
+		<tr>
+			<td ng-repeat="v in Statistics.Views"><span><b>{{v.Views}}</b> <time>{{v.Date | date: 'short'}}</time></span><div style="height:{{100*(v.Views/max)}}%"></div></td>
+		</tr>
+	</table>
+	<sup ng-click="resetMax()">{{max}}</sup>
+	<sub>0</sub>
+</div>

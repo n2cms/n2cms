@@ -17,23 +17,15 @@ namespace N2.Web
 		/// <summary>The token used for resolving the management url.</summary>
 		public const string ManagementUrlToken = "{ManagementUrl}";
 		public const string ThemesUrlToken = "{ThemesUrl}";
-        public const string SelectedQueryKeyToken = "{SelectedQueryKey}";
+		public const string SelectedQueryKeyToken = "{SelectedQueryKey}";
 
-		static readonly string[] querySplitter = new[] {"&amp;", Amp};
+		static readonly string[] querySplitter = new[] { "&amp;", Amp };
 		static readonly char[] slashes = new char[] { '/' };
 		static readonly char[] dotsAndSlashes = new char[] { '.', '/' };
 		static string defaultExtension = "";
 		static string defaultDocument = "Default.aspx";
 
-		private static readonly HashSet<string> contentParameters = new HashSet<string>
-		{
-			PathData.ItemQueryKey,
-			PathData.PageQueryKey,
-			"action",
-			"arguments"
-		};
-
-        static Dictionary<string, string> replacements = new Dictionary<string, string> { { ManagementUrlToken, "~/N2" }, { ThemesUrlToken, "~/App_Themes/" }, { SelectedQueryKeyToken, "selected" } };
+		static Dictionary<string, string> replacements = new Dictionary<string, string> { { ManagementUrlToken, "~/N2" }, { ThemesUrlToken, "~/App_Themes/" }, { SelectedQueryKeyToken, "selected" } };
 
 		string scheme;
 		string authority;
@@ -193,7 +185,7 @@ namespace N2.Web
 
 		public Url HostUrl
 		{
-			get { return new Url(scheme, authority, string.Empty, null, null);}
+			get { return new Url(scheme, authority, string.Empty, null, null); }
 		}
 
 		public Url LocalUrl
@@ -207,17 +199,17 @@ namespace N2.Web
 			get { return scheme; }
 		}
 
-        /// <summary>The domain name information.</summary>
-        public string Domain
-        {
-            get { return authority != null ? authority.Split(':')[0] : null; }
-        }
+		/// <summary>The domain name information.</summary>
+		public string Domain
+		{
+			get { return authority != null ? authority.Split(':')[0] : null; }
+		}
 
-        /// <summary>The port information.</summary>
-        public int Port
-        {
-            get { return authority != null ? int.Parse(authority.Split(':').Skip(1).FirstOrDefault() ?? "80") : 80; }
-        }
+		/// <summary>The port information.</summary>
+		public int Port
+		{
+			get { return authority != null ? int.Parse(authority.Split(':').Skip(1).FirstOrDefault() ?? "80") : 80; }
+		}
 
 		/// <summary>The domain name and port information.</summary>
 		public string Authority
@@ -231,15 +223,15 @@ namespace N2.Web
 			get { return path; }
 		}
 
-        public string[] Segments
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(path) || path == "/")
-                    return new string[0];
-                return path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-            }
-        }
+		public string[] Segments
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(path) || path == "/")
+					return new string[0];
+				return path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+			}
+		}
 
 		public string ApplicationRelativePath
 		{
@@ -312,7 +304,7 @@ namespace N2.Web
 			return url;
 		}
 
-		public static implicit operator string(Url u)
+		public static implicit operator string (Url u)
 		{
 			if (u == null)
 				return null;
@@ -417,7 +409,7 @@ namespace N2.Web
 			IDictionary<string, string> queries = GetQueries();
 			if (queries.ContainsKey(key))
 				return queries[key];
-			
+
 			return null;
 		}
 
@@ -431,6 +423,11 @@ namespace N2.Web
 			return ParseQueryString(query);
 		}
 
+		public NameValueCollection GetQueryNameValues()
+		{
+			return ParseQueryString(query).Aggregate(new NameValueCollection(), (seed, current) => { seed.Add(current.Key, current.Value); return seed; });
+		}
+
 		public Url AppendQuery(string key, string value)
 		{
 			return AppendQuery(key, value, true);
@@ -440,7 +437,7 @@ namespace N2.Web
 		{
 			if (unlessNull && value == null)
 				return this;
-				 
+
 			return AppendQuery(key + "=" + HttpUtility.UrlEncode(value));
 		}
 
@@ -458,7 +455,7 @@ namespace N2.Web
 		{
 			if (value == null)
 				return this;
-			
+
 			return AppendQuery(key + "=" + value);
 		}
 
@@ -506,7 +503,7 @@ namespace N2.Web
 						clone.query = string.Join(Amp, queries);
 						return clone;
 					}
-					
+
 					if (queries.Length == 1)
 						clone.query = null;
 					else if (query.Length == 2)
@@ -571,8 +568,8 @@ namespace N2.Web
 		public Url SetFragment(string fragment)
 		{
 			if (fragment == null)
-				return this; 
-			
+				return this;
+
 			return new Url(scheme, authority, path, query, fragment.TrimStart('#'));
 		}
 
@@ -651,7 +648,7 @@ namespace N2.Web
 		{
 			if (string.IsNullOrEmpty(Path) || Path == "/")
 				return PrependSegment(segment, DefaultExtension);
-			
+
 			return PrependSegment(segment, Extension);
 		}
 
@@ -663,19 +660,19 @@ namespace N2.Web
 			return u;
 		}
 
-		public Url UpdateQuery(IDictionary<string,string> queryString)
+		public Url UpdateQuery(IDictionary<string, string> queryString)
 		{
 			Url u = new Url(this);
-			foreach (KeyValuePair<string,string> pair in queryString)
+			foreach (KeyValuePair<string, string> pair in queryString)
 				u = u.SetQueryParameter(pair.Key, pair.Value);
 			return u;
 		}
 
-		public Url UpdateQuery(IDictionary<string,object> queryString)
+		public Url UpdateQuery(IDictionary<string, object> queryString)
 		{
 			Url u = new Url(this);
-			foreach (KeyValuePair<string,object> pair in queryString)
-				if(pair.Value != null)
+			foreach (KeyValuePair<string, object> pair in queryString)
+				if (pair.Value != null)
 					u = u.SetQueryParameter(pair.Key, pair.Value.ToString());
 			return u;
 		}
@@ -762,7 +759,7 @@ namespace N2.Web
 			{
 				if (applicationPath == null)
 				{
-					if(HttpContext.Current == null)
+					if (HttpContext.Current == null)
 						return "/";
 
 					try
@@ -789,9 +786,9 @@ namespace N2.Web
 				var webContext = Context.Current.RequestContext;
 				if (webContext == null)
 					return null;
-				if(webContext.IsWeb)
+				if (webContext.IsWeb)
 				{
-					if(fallbackServerUrl == null)
+					if (fallbackServerUrl == null)
 						fallbackServerUrl = webContext.Url.HostUrl;
 					return webContext.Url.HostUrl;
 				}
@@ -814,26 +811,26 @@ namespace N2.Web
 			return path.Substring(0, index);
 		}
 
-        /// <summary>Gets the file extension from the path (if any).</summary>
-        /// <param name="path">The path to find the extension of.</param>
-        /// <returns>An extension including . or null if no extnesion was found</returns>
-        public static string GetExtension(string path)
-        {
-            int index = path.LastIndexOfAny(dotsAndSlashes);
+		/// <summary>Gets the file extension from the path (if any).</summary>
+		/// <param name="path">The path to find the extension of.</param>
+		/// <returns>An extension including . or null if no extnesion was found</returns>
+		public static string GetExtension(string path)
+		{
+			int index = path.LastIndexOfAny(dotsAndSlashes);
 
-            if (index < 0)
-                return null;
-            if (path[index] == '/')
-                return null;
+			if (index < 0)
+				return null;
+			if (path[index] == '/')
+				return null;
 
-            return path.Substring(index);
-        }
+			return path.Substring(index);
+		}
 
 		/// <summary>Removes the last part from the url segments.</summary>
 		/// <returns></returns>
 		public Url RemoveTrailingSegment(bool maintainExtension)
 		{
-			if(string.IsNullOrEmpty(path) || path == "/")
+			if (string.IsNullOrEmpty(path) || path == "/")
 				return this;
 
 			string newPath = "/";
@@ -861,16 +858,16 @@ namespace N2.Web
 			if (string.IsNullOrEmpty(path) || path == "/" || index < 0)
 				return this;
 
-			if(index == 0)
+			if (index == 0)
 			{
 				int slashIndex = path.IndexOf('/', 1);
-				if(slashIndex < 0)
+				if (slashIndex < 0)
 					return new Url(scheme, authority, "/", query, fragment);
 				return new Url(scheme, authority, path.Substring(slashIndex), query, fragment);
 			}
 
 			string[] segments = PathWithoutExtension.Split(slashes, StringSplitOptions.RemoveEmptyEntries);
-			if(index >= segments.Length)
+			if (index >= segments.Length)
 				return this;
 
 			if (index == segments.Length - 1)
@@ -887,7 +884,7 @@ namespace N2.Web
 		{
 			if (string.IsNullOrEmpty(path))
 				return null;
-			
+
 			int slashIndex = GetLastSignificatSlash(path);
 			return path.Substring(0, slashIndex + 1);
 		}
@@ -937,7 +934,7 @@ namespace N2.Web
 		{
 			if (string.IsNullOrEmpty(url2))
 				return ToAbsolute(url1);
-			if(string.IsNullOrEmpty(url1))
+			if (string.IsNullOrEmpty(url1))
 				return ToAbsolute(url2);
 
 			if (url2.StartsWith("/"))
@@ -960,7 +957,7 @@ namespace N2.Web
 		/// <returns>A dictionary of the query parts.</returns>
 		public static IDictionary<string, string> ParseQueryString(string query)
 		{
-            var dictionary = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+			var dictionary = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 			if (query == null)
 				return dictionary;
 
@@ -1003,7 +1000,7 @@ namespace N2.Web
 		/// <param name="value">The value to replace the token with.</param>
 		public static void SetToken(string token, string value)
 		{
-			if(token == null) throw new ArgumentNullException("key");
+			if (token == null) throw new ArgumentNullException("key");
 
 			if (value != null)
 				replacements[token] = value;
@@ -1019,25 +1016,25 @@ namespace N2.Web
 			if (string.IsNullOrEmpty(urlFormat))
 				return urlFormat;
 
-            //TODO: Use a nicer method for replacing tokens. 
+			//TODO: Use a nicer method for replacing tokens. 
 
-            int maxLevels = 10; // Does work if token values contain other tokens, replacement levels hard limited.
-            for (int level = 0; level < maxLevels; ++level)
-            {
-                bool changed = false;
-                foreach (var kvp in replacements)
-                {
-                    string replaced = urlFormat.Replace(kvp.Key, kvp.Value);
-                    if (replaced != urlFormat)
-                        changed = true;
-                    urlFormat = replaced;
-                }
+			int maxLevels = 10; // Does work if token values contain other tokens, replacement levels hard limited.
+			for (int level = 0; level < maxLevels; ++level)
+			{
+				bool changed = false;
+				foreach (var kvp in replacements)
+				{
+					string replaced = urlFormat.Replace(kvp.Key, kvp.Value);
+					if (replaced != urlFormat)
+						changed = true;
+					urlFormat = replaced;
+				}
 
-                if (!changed)
-                    break; // all resolved
-            }
+				if (!changed)
+					break; // all resolved
+			}
 
-            return ToAbsolute(urlFormat);
+			return ToAbsolute(urlFormat);
 		}
 
 		/// <summary>Formsats this url using replacement tokens.</summary>
@@ -1055,15 +1052,28 @@ namespace N2.Web
 		public Url GetNormalizedContentUrl()
 		{
 			var clonedUrl = new Url(this);
-
+			var contentParameters = GetContentParameters();
 			// Normalize the url remove parameters we don't care about
 			foreach (var queryParameter in GetQueries())
 			{
-				if (!contentParameters.Contains(queryParameter.Key.ToLowerInvariant()))
+				if (!contentParameters.Contains(queryParameter.Key))
 					clonedUrl = RemoveQuery(queryParameter.Key);
 			}
 
 			return clonedUrl;
+		}
+
+		private static HashSet<string> GetContentParameters()
+		{
+			return new HashSet<string>(StringComparer.InvariantCultureIgnoreCase)
+			{
+				PathData.ItemQueryKey,
+				PathData.PageQueryKey,
+				PathData.VersionIndexQueryKey,
+				PathData.VersionKeyQueryKey,
+				"action",
+				"arguments"
+			};
 		}
 	}
 }

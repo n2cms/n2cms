@@ -763,6 +763,14 @@ namespace N2.Tests.Web
         }
 
         [Test]
+        public void CanGet_NameVAlueCollection()
+        {
+            Url u = new Url("/hello.aspx?something=someotherthing");
+            var q = u.GetQueryNameValues()["something"];
+            Assert.That(q, Is.EqualTo("someotherthing"));
+        }
+
+        [Test]
         public void Getting_NonExistantQuery_GivesNull()
         {
             Url u = new Url("/hello.aspx?something=someotherthing");

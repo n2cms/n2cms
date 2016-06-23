@@ -12,7 +12,8 @@ namespace N2.Edit.Workflow
         public static void RegisterItemToSave(this CommandContext context, ContentItem item)
         {
             var itemsToSave = context.GetItemsToSave();
-            itemsToSave.Add(item);
+			if (!itemsToSave.Contains(item))
+				itemsToSave.Add(item);
             context.Parameters[Key] = itemsToSave;
         }
 

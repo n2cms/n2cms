@@ -378,7 +378,7 @@ namespace N2.Edit.Installation
 			    return true;
 
 			/* N2 should detect if item is in trash */
-		    if (Context.Current.Resolve<ITrashHandler>().IsInTrash(item))
+		    if (Find.Closest<ITrashCan>(item) != null)
 			    return true;
 
 		    return false;

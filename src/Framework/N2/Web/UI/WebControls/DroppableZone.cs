@@ -42,14 +42,17 @@ namespace N2.Web.UI.WebControls
                 if (ZoneName.IndexOfAny(new[] {'.', ',', ' ', '\'', '"', '\t', '\r', '\n'}) >= 0) throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
 
                 Panel zoneContainer = AddPanel(this, ZoneName + " dropZone");
-                if (CurrentItem.ID != 0 && !CurrentItem.VersionOf.HasValue)
-                    zoneContainer.Attributes[PartUtilities.PathAttribute] = CurrentItem.Path;
-                else
-                {
-                    zoneContainer.Attributes[PartUtilities.PathAttribute] = Find.ClosestPage(CurrentItem).Path;
-                    zoneContainer.Attributes["data-versionKey"] = CurrentItem.GetVersionKey();
-                    zoneContainer.Attributes["data-versionIndex"] = CurrentItem.VersionIndex.ToString();
-                }
+				if (CurrentItem.ID != 0 && !CurrentItem.VersionOf.HasValue)
+				{
+					zoneContainer.Attributes["data-id"] = CurrentItem.ID.ToString();
+					zoneContainer.Attributes[PartUtilities.PathAttribute] = CurrentItem.Path;
+				}
+				else
+				{
+					zoneContainer.Attributes[PartUtilities.PathAttribute] = Find.ClosestPage(CurrentItem).Path;
+					zoneContainer.Attributes["data-versionKey"] = CurrentItem.GetVersionKey();
+					zoneContainer.Attributes["data-versionIndex"] = CurrentItem.VersionIndex.ToString();
+				}
                 zoneContainer.Attributes[PartUtilities.ZoneAttribute] = ZoneName;
                 zoneContainer.Attributes[PartUtilities.AllowedAttribute] = PartUtilities.GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, Page.User));
                 
@@ -78,14 +81,17 @@ namespace N2.Web.UI.WebControls
 
                 ItemDefinition definition = GetDefinition(item);
                 Panel itemContainer = AddPanel(container, "zoneItem " + definition.Discriminator);
-                if (CurrentItem.ID != 0 && !CurrentItem.VersionOf.HasValue)
-                    itemContainer.Attributes[PartUtilities.PathAttribute] = item.Path;
-                else
-                {
-                    itemContainer.Attributes[PartUtilities.PathAttribute] = Find.ClosestPage(item).Path;
-                    itemContainer.Attributes["data-versionKey"] = item.GetVersionKey();
-                    itemContainer.Attributes["data-versionIndex"] = item.VersionIndex.ToString();
-                }
+				if (CurrentItem.ID != 0 && !CurrentItem.VersionOf.HasValue)
+				{
+					itemContainer.Attributes["data-id"] = item.ID.ToString();
+					itemContainer.Attributes[PartUtilities.PathAttribute] = item.Path;
+				}
+				else
+				{
+					itemContainer.Attributes[PartUtilities.PathAttribute] = Find.ClosestPage(item).Path;
+					itemContainer.Attributes["data-versionKey"] = item.GetVersionKey();
+					itemContainer.Attributes["data-versionIndex"] = item.VersionIndex.ToString();
+				}
                 itemContainer.Attributes[PartUtilities.TypeAttribute] = definition.Discriminator;
                 itemContainer.Attributes["data-sortOrder"] = item.SortOrder.ToString();
                 

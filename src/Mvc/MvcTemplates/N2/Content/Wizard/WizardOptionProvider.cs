@@ -2,11 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 using N2.Definitions;
 using N2.Engine;
+using N2.Edit.Api;
 
 namespace N2.Edit.Wizard
 {
     [Service]
-    public class WizardOptionProvider : IProvider<ToolbarOption>
+	[Service(typeof(ITemplateInfoProvider))]
+	public class WizardOptionProvider : IProvider<ToolbarOption>, ITemplateInfoProvider
     {
         LocationWizard wizard;
         IEditUrlManager editUrlManager;
@@ -28,8 +30,7 @@ namespace N2.Edit.Wizard
 
         public IEnumerable<ToolbarOption> GetAll()
         {
-            return wizard.GetLocations()
-                .Where(m => m.Location != null)
+			return GetLocations()
                 .Select((m, i) => new ToolbarOption
                 {
                     Title = m.Title,
@@ -41,5 +42,29 @@ namespace N2.Edit.Wizard
         }
 
         #endregion
-    }
+
+		public string Area
+		{
+			get { return "Wizard"; }
+		}
+
+		public IEnumerable<TemplateInfo> GetTemplates()
+		{
+			return GetLocations()
+				.Select(ml => new { Location = ml, Definition = ml.GetDefinition(definitions) })
+				.Select(ml => new TemplateInfo(ml.Definition) 
+				{
+					Title = ml.Location.Title, 
+					Description = ml.Location.Description, 
+					EditUrl = editUrlManager.GetEditNewPageUrl(ml.Location, ml.Definition, ml.Location.ZoneName) + "&template=" + ml.Location.ContentTemplate
+				});
+		}
+
+		private IEnumerable<Items.MagicLocation> GetLocations()
+		{
+			return wizard.GetLocations()
+				.Where(m => m.Location != null);
+		}
+
+	}
 }

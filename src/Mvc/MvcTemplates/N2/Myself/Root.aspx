@@ -4,10 +4,8 @@
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" runat="server">
 	<div id="home">
-		<n2:SlidingCurtain ID="sc" runat="server">
-			<n2:ControlPanel runat="server" />
-		</n2:SlidingCurtain>
-		<n2:Zone ID="Zone1" ZoneName="Above" runat="server" />
+		<n2:ControlPanel ID="cp" runat="server" />
+		<n2:Zone ID="ZoneAbove" ZoneName="Above" runat="server" />
 		<table class="columns">
 			<tr>
 				<td class="column" runat="server" id="c1">

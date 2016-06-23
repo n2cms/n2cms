@@ -139,9 +139,11 @@ namespace N2.Details
             ItemEditor itemEditor = sender as ItemEditor;
             IItemEditor parentEditor = ItemUtility.FindInParents<IItemEditor>(itemEditor.Parent);
             itemEditor.CurrentItem = GetChild(parentEditor.CurrentItem);
+			parentEditor.CreatingContext += (s, cc) => cc.RegisterItemToSave(itemEditor.CurrentItem);
         }
 
-        protected virtual ContentItem GetChild(ContentItem item)
+
+		protected virtual ContentItem GetChild(ContentItem item)
         {
             ContentItem childItem = Utility.GetProperty(item, Name) as ContentItem;
             if (childItem == null)
@@ -164,14 +166,13 @@ namespace N2.Details
 
         protected virtual ContentItem CreateChild(ContentItem item, Type childItemType)
         {
-            ContentItem child;
             try
             {
-                child = (ContentItem)System.Activator.CreateInstance(childItemType);
-                child.State = ContentState.New;
-                child.AddTo(item);
-                Activator.NotifyCreated(child);
-            }
+				ContentItem child = Activator.CreateInstance(childItemType, item);
+				child.Name = DefaultChildName;
+				child.ZoneName = DefaultChildZoneName;
+				return child;
+			}
             catch (KeyNotFoundException ex)
             {
                 N2.Engine.Logger.WarnFormat("EditableItemAttribute.CreateChild: No item of the type {0} was found among the item definitions: {0}", childItemType);
@@ -181,10 +182,6 @@ namespace N2.Details
                         childItemType),
                     ex);
             }
-            child.Name = DefaultChildName;
-            child.ZoneName = DefaultChildZoneName;
-            child.AddTo(item);
-            return child;
         }
 
         #endregion

@@ -15,6 +15,7 @@ using N2.Resources;
 using N2.Web.Parts;
 using N2.Web.UI.WebControls;
 using N2.Edit.Versioning;
+using N2.Management.Api;
 
 namespace N2.Web.Mvc.Html
 {
@@ -22,9 +23,13 @@ namespace N2.Web.Mvc.Html
     {
         public static Func<HtmlHelper, ControlPanelHelper> ControlPanelFactory { get; set; }
 
+		static bool? legacyEnabled = null;
         static ControlPanelExtensions()
         {
-            ControlPanelFactory = (html) => new ControlPanelHelper { Html = html };
+            ControlPanelFactory = (html) =>
+				(legacyEnabled ?? (legacyEnabled = html.ContentEngine().Config.Sections.Management.Organize.UseLegacyControlPanel) ?? false)
+					? new LegacyControlPanelHelper(html)
+					: new ControlPanelHelper(html.ContentEngine(), html.CurrentItem(), html.ViewContext.Writer, html.ViewContext.GetResourceStateCollection());
         }
 
         /// <summary>Gets the curent state of the control panel.</summary>
@@ -40,7 +45,10 @@ namespace N2.Web.Mvc.Html
         public static ControlPanelHelper ControlPanel(this HtmlHelper html)
         {
             var cp = ControlPanelFactory(html);
-            if (html.ViewContext.HttpContext.Request["refresh"] == "true")
+
+			if (RegistrationExtensions.GetRegistrationExpression(html) != null)
+				return new EmptyControlPanelHelper();
+			if (html.ViewContext.HttpContext.Request["refresh"] == "true")
                 cp = cp.ForceRefreshNavigation();
             return cp;
         }
@@ -66,246 +74,141 @@ namespace N2.Web.Mvc.Html
             return format.Replace(new RouteValueDictionary(replacements));
         }
 
-        public class ControlPanelHelper : IHtmlString
-        {
-            private bool refreshNavigation = true;
-            private bool forceRefreshNavigation = false;
-            private bool includeJQuery = true;
-            private bool includeJQueryPlugins = true;
-            private bool includeJQueryUi = true;
-            private bool includePartScripts = true;
-            private bool includePartStyles = true;
-            private ContentItem currentItem;
+		public class LegacyControlPanelHelper : ControlPanelHelper
+		{
+			private bool includeJQueryPlugins = true;
+			private bool includeJQueryUi = true;
+			
+			public LegacyControlPanelHelper(HtmlHelper html)
+				: base(html.ContentEngine(), html.CurrentItem(), html.ViewContext.Writer, html.ViewContext.GetResourceStateCollection())
+			{
+				this.Html = html;
+			}
 
-            public HtmlHelper Html { get; set; }
+			public bool IncludeJQueryUi
+			{
+				get { return includeJQueryUi; }
+				set { includeJQueryUi = value; }
+			}
 
-            public ContentItem CurrentItem
-            {
-                get { return currentItem; }
-                set { currentItem = value; }
-            }
+			public bool IncludeJQueryPlugins
+			{
+				get { return includeJQueryPlugins; }
+				set { includeJQueryPlugins = value; }
+			}
 
-            public bool RefreshNavigationOnLoad
-            {
-                get { return refreshNavigation; }
-                set { refreshNavigation = value; }
-            }
+			/// <summary>Is used to instruct the control panel helper to render less javascript and css resources.</summary>
+			/// <param name="jQuery"></param>
+			/// <param name="jQueryPlugins"></param>
+			/// <param name="partScripts"></param>
+			/// <param name="partStyles"></param>
+			/// <returns></returns>
+			[Obsolete("Use Configure(c => c.IncludeJQuery = true)")]
+			public ControlPanelHelper Includes(bool jQuery = true, bool jQueryPlugins = true, bool partScripts = true, bool partStyles = true)
+			{
+				IncludeJQuery = jQuery;
+				IncludeJQueryPlugins = jQueryPlugins;
+				IncludeJQueryUi = jQueryPlugins;
+				IncludePartScripts = partScripts;
+				IncludePartStyles = partStyles;
 
-            public bool ForceRefreshNavigationOnLoad
-            {
-                get { return forceRefreshNavigation; }
-                set { forceRefreshNavigation = value; }
-            }
+				return this;
+			}
 
-            public bool IncludeJQuery
-            {
-                get { return includeJQuery; }
-                set { includeJQuery = value; }
-            }
+			protected override  void AppendControlPanel(TextWriter writer, IEngine engine, ContentItem item)
+			{
+				var state = ControlPanelExtensions.GetControlPanelState(Html);
+				var settings = new
+				{
+					NavigationUrl = engine.ManagementPaths.GetNavigationUrl(item),
+					ManagementUrl = engine.ManagementPaths.GetManagementInterfaceUrl(),
+					Path = item.Path,
+					Plugins = Plugins(Html, item, state),
+					Definitions = Definitions(Html, engine, item, state),
+					Version = typeof(ContentItem).Assembly.GetName().Version.ToString(),
+					Permission = engine.GetContentAdapter<NodeAdapter>(item).GetMaximumPermission(item),
+					VersionIndex = item.VersionIndex,
+					VersionKey = item.GetVersionKey(),
+					Force = ForceRefreshNavigationOnLoad ? "true" : "false",
+					State = item != null ? item.State.ToString() : "NonContent",
+					Mode = GetControlPanelState(Html).ToString()
+				};
 
-            public bool IncludeJQueryUi
-            {
-                get { return includeJQueryUi; }
-                set { includeJQueryUi = value; }
-            }
+				var resources = Html.Resources(writer).Constants();
+				if (IncludeJQuery) resources.JQuery();
+				if (IncludeJQueryPlugins) resources.JQueryPlugins(IncludeJQuery);
+				if (IncludeJQueryUi) resources.JQueryUi(IncludeJQuery);
+				if (IncludePartScripts) resources.PartsJs();
+				if (IncludePartStyles) { resources.PartsCss(); resources.IconsCss(); }
 
-            public bool IncludeJQueryPlugins
-            {
-                get { return includeJQueryPlugins; }
-                set { includeJQueryPlugins = value; }
-            }
+				if (RefreshNavigationOnLoad)
+					resources.HtmlLiteral(formatWithRefresh.Replace(settings));
+				else
+					resources.HtmlLiteral(formatWithoutRefresh.Replace(settings));
 
-            public bool IncludePartScripts
-            {
-                get { return includePartScripts; }
-                set { includePartScripts = value; }
-            }
+				if (state.IsFlagSet(ControlPanelState.DragDrop))
+					resources.JavaScript(UI.WebControls.ControlPanel.DragDropScriptInitialization(item), ScriptOptions.DocumentReady);
+				resources.Render(writer);
+			}
 
-            public bool IncludePartStyles
-            {
-                get { return includePartStyles; }
-                set { includePartStyles = value; }
-            }
+			private static string Plugins(HtmlHelper html, ContentItem item, ControlPanelState state)
+			{
+				ContentItem start = html.StartPage();
+				ContentItem root = html.RootPage();
 
-            /// <summary>Is used to instruct the control panel helper to render less javascript and css resources.</summary>
-            /// <param name="jQuery"></param>
-            /// <param name="jQueryPlugins"></param>
-            /// <param name="partScripts"></param>
-            /// <param name="partStyles"></param>
-            /// <returns></returns>
-            [Obsolete("Use Configure(c => c.IncludeJQuery = true)")]
-            public ControlPanelHelper Includes(bool jQuery = true, bool jQueryPlugins = true, bool partScripts = true, bool partStyles = true)
-            {
-                includeJQuery = jQuery;
-                includeJQueryPlugins = jQueryPlugins;
-                includeJQueryUi = jQueryPlugins;
-                includePartScripts = partScripts;
-                includePartStyles = partStyles;
+				Page p = new Page();
+				foreach (IControlPanelPlugin plugin in html.ContentEngine().Resolve<IPluginFinder>().GetPlugins<IControlPanelPlugin>())
+				{
+					plugin.AddTo(p, new PluginContext(new SelectionUtility(item, null), start, root, state, html.ContentEngine(), html.ViewContext.HttpContext));
+				}
 
-                return this;
-            }
+				using (var sw = new StringWriter())
+				using (var htw = new HtmlTextWriter(sw))
+				{
+					p.RenderControl(htw);
+					return sw.ToString();
+				}
+			}
 
-            /// <summary>Configures the control panel calling the given lambda expression.</summary>
-            /// <param name="config">The configuration expression.</param>
-            /// <returns>The same instance.</returns>
-            public ControlPanelHelper Configure(Action<ControlPanelHelper> config)
-            {
-                config(this);
-                return this;
-            }
+			private static string Definitions(HtmlHelper html, IEngine engine, ContentItem item, ControlPanelState state)
+			{
+				if (state.IsFlagSet(ControlPanelState.DragDrop))
+				{
+					StringBuilder sb = new StringBuilder();
 
-            /// <summary>Is used to instruct the control panel helper not to refresh navigation to the current page.</summary>
-            /// <param name="refreshNavigation"></param>
-            /// <returns></returns>
-            public ControlPanelHelper RefreshNavigation(bool refreshNavigation = true)
-            {
-                this.refreshNavigation = refreshNavigation;
-                return this;
-            }
+					var a = engine.ResolveAdapter<PartsAdapter>(item);
+					foreach (var d in UI.WebControls.ControlPanel.GetPartDefinitions(a, item, null, html.ViewContext.HttpContext.User))
+					{
+						foreach (var t in a.GetTemplates(item, d))
+						{
+							sb.AppendFormat(
+								@"<div id=""{0}"" title=""{1}"" data-type=""{2}"" data-template=""{3}"" class=""{4}"">{5}</div>",
+								/*{0}*/ t.Definition.ToString().Replace('/', '-'),
+								/*{1}*/ t.Description,
+								/*{2}*/ t.Definition.Discriminator,
+								/*{3}*/ t.Name,
+								/*{4}*/ "definition " + t.Definition.Discriminator,
+								/*{5}*/ UI.WebControls.ControlPanel.FormatImageAndText(t.Definition.IconUrl, t.Definition.IconClass, t.Title));
+						}
+					}
 
-            /// <summary>Is used to instruct the control panel helper not to refresh navigation to the current page.</summary>
-            /// <param name="refreshNavigation"></param>
-            /// <returns></returns>
-            public ControlPanelHelper ForceRefreshNavigation(bool forceRefreshNavigation = true)
-            {
-                this.forceRefreshNavigation = forceRefreshNavigation;
-                return this;
-            }
+					if (sb.Length > 0)
+						return @"<div class=""definitions"">" + sb + "</div>";
+				}
+				return "";
+			}
 
-            /// <summary>Sets the selected item control panel plugins are bound to.</summary>
-            /// <param name="currentItem"></param>
-            /// <returns></returns>
-            public ControlPanelHelper Selected(ContentItem currentItem)
-            {
-                this.currentItem = currentItem;
-                return this;
-            }
-            
-            public override string ToString()
-            {
-                using (var tw = new StringWriter())
-                {
-                    WriteTo(tw);
-                    return tw.ToString();
-                }
-            }
-
-            #region IHtmlString Members
-
-            public string ToHtmlString()
-            {
-                return ToString();
-            }
-
-            #endregion
-
-            public void Render()
-            {
-                WriteTo(Html.ViewContext.Writer);
-            }
-
-            public virtual void WriteTo(TextWriter writer)
-            {
-                var engine = Html.ContentEngine();
-
-                if (!Html.ViewContext.HttpContext.User.Identity.IsAuthenticated || !engine.SecurityManager.IsEditor(Html.ViewContext.HttpContext.User))
-                    return;
-                if (RegistrationExtensions.GetRegistrationExpression(Html) != null)
-                    return;
-
-                var item = currentItem ?? Html.CurrentItem() ?? Html.StartPage();
-
-                var state = ControlPanelExtensions.GetControlPanelState(Html);
-                var settings = new
-                {
-                    NavigationUrl = engine.ManagementPaths.GetNavigationUrl(item),
-                    ManagementUrl = engine.ManagementPaths.GetManagementInterfaceUrl(),
-                    Path = item.Path,
-                    Plugins = Plugins(Html, item, state),
-                    Definitions = Definitions(Html, engine, item, state),
-                    Version = typeof(ContentItem).Assembly.GetName().Version.ToString(),
-                    Permission = engine.GetContentAdapter<NodeAdapter>(item).GetMaximumPermission(item),
-                    VersionIndex = item.VersionIndex,
-                    VersionKey = item.GetVersionKey(),
-                    Force = ForceRefreshNavigationOnLoad ? "true" : "false",
-                    State = item != null ? item.State.ToString() : "NonContent",
-                    Mode = GetControlPanelState(Html).ToString()
-                };
-
-                var resources = Html.Resources(writer).Constants();
-                if (includeJQuery) resources.JQuery();
-                if (includeJQueryPlugins) resources.JQueryPlugins(includeJQuery);
-                if (includeJQueryUi) resources.JQueryUi(includeJQuery);
-                if (includePartScripts) resources.PartsJs();
-                if (includePartStyles) { resources.PartsCss(); resources.IconsCss(); }
-
-                if (refreshNavigation)
-                    writer.Write(formatWithRefresh.Replace(settings));
-                else
-                    writer.Write(formatWithoutRefresh.Replace(settings));
-
-                if (state.IsFlagSet(ControlPanelState.DragDrop))
-                    Html.Resources().JavaScript(UI.WebControls.ControlPanel.DragDropScriptInitialization(item), ScriptOptions.DocumentReady);
-            }
-
-            private static string Plugins(HtmlHelper html, ContentItem item, ControlPanelState state)
-            {
-                ContentItem start = html.StartPage();
-                ContentItem root = html.RootPage();
-
-                Page p = new Page();
-                foreach (IControlPanelPlugin plugin in html.ContentEngine().Resolve<IPluginFinder>().GetPlugins<IControlPanelPlugin>())
-                {
-                    plugin.AddTo(p, new PluginContext(new SelectionUtility(item, null), start, root, state, html.ContentEngine(), html.ViewContext.HttpContext));
-                }
-
-                using (var sw = new StringWriter())
-                using (var htw = new HtmlTextWriter(sw))
-                {
-                    p.RenderControl(htw);
-                    return sw.ToString();
-                }
-            }
-
-            private static string Definitions(HtmlHelper html, IEngine engine, ContentItem item, ControlPanelState state)
-            {
-                if (state.IsFlagSet(ControlPanelState.DragDrop))
-                {
-                    StringBuilder sb = new StringBuilder();
-
-                    var a = engine.ResolveAdapter<PartsAdapter>(item);
-                    foreach (var d in UI.WebControls.ControlPanel.GetPartDefinitions(a, item, null, html.ViewContext.HttpContext.User))
-                    {
-                        foreach (var t in a.GetTemplates(item, d))
-                        {
-                            sb.AppendFormat(
-                                @"<div id=""{0}"" title=""{1}"" data-type=""{2}"" data-template=""{3}"" class=""{4}"">{5}</div>",
-                                /*{0}*/ t.Definition.ToString().Replace('/', '-'),
-                                /*{1}*/ t.Description,
-                                /*{2}*/ t.Definition.Discriminator,
-                                /*{3}*/ t.Name,
-                                /*{4}*/ "definition " + t.Definition.Discriminator,
-                                /*{5}*/ UI.WebControls.ControlPanel.FormatImageAndText(t.Definition.IconUrl, t.Definition.IconClass, t.Title));
-                        }
-                    }
-
-                    if (sb.Length > 0)
-                        return @"<div class=""definitions"">" + sb + "</div>";
-                }
-                return "";
-            }
-
-            #region Format
-            static string format1 = @"
+			#region Format
+			static string format1 = @"
 <script type='text/javascript'>//<![CDATA[
 (function($){
     if (!window.n2ctx) return;
 
     n2ctx.select('preview');
     $(document).ready(function () {";
-            static string format2 = @"
+			static string format2 = @"
         n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', permission: '{Permission}', force: {Force}, versionIndex:{VersionIndex}, versionKey:'{VersionKey}', mode: '{Mode}' });";
-            static string format3 = @"
+			static string format3 = @"
         if (n2ctx.hasTop()) $('.complementary').hide();
         else $('.cpView').hide();
                 
@@ -329,9 +232,140 @@ namespace N2.Web.Mvc.Html
     <a href=""javascript:void(0);"" class=""open sc-toggler"" title=""Open"">&raquo;</a>
 </div></div>
 ";
-            static string formatWithRefresh = format1 + format2 + format3;
-            static string formatWithoutRefresh = format1 + format3;
-            #endregion
-        }
+			static string formatWithRefresh = format1 + format2 + format3;
+			static string formatWithoutRefresh = format1 + format3;
+			private HtmlHelper Html;
+
+			#endregion
+		}
+
+		public abstract class ControlPanelHelperBase : IHtmlString
+		{
+			public IEngine Engine { get; set; }
+			public ContentItem CurrentItem { get; set; }
+			public TextWriter Writer { get; set; }
+
+			public virtual string ToHtmlString()
+			{
+				return ToString();
+			}
+
+			public override string ToString()
+			{
+				using (var tw = new StringWriter())
+				{
+					WriteTo(tw);
+					return tw.ToString();
+				}
+			}
+
+			public string Render()
+			{
+				WriteTo(Writer);
+				return "";
+			}
+
+			public abstract void WriteTo(TextWriter writer);
+		}
+
+		internal class EmptyControlPanelHelper : ControlPanelHelper
+		{
+			public override void WriteTo(TextWriter writer)
+			{
+			}
+		}
+
+		public class ControlPanelHelper : ControlPanelHelperBase
+		{
+			internal ControlPanelHelper()
+			{
+			}
+
+			public ControlPanelHelper(IEngine engine, ContentItem contentItem, TextWriter writer, ICollection<string> stateCollection)
+			{
+				Engine = engine;
+				CurrentItem = contentItem;
+				Writer = writer;
+				StateCollection = stateCollection;
+				RefreshNavigationOnLoad = true;
+				IncludeJQuery = true;
+				IncludePartScripts = true;
+				IncludePartStyles = true;
+            }
+
+			public bool RefreshNavigationOnLoad { get; set; }
+
+			public bool ForceRefreshNavigationOnLoad { get; set; }
+
+            public bool IncludeJQuery { get; set; }
+
+			public bool IncludePartScripts { get; set; }
+
+			public bool IncludePartStyles { get; set; }
+
+			public ICollection<string> StateCollection { get; private set; }
+
+			/// <summary>Configures the control panel calling the given lambda expression.</summary>
+			/// <param name="config">The configuration expression.</param>
+			/// <returns>The same instance.</returns>
+			public ControlPanelHelper Configure(Action<ControlPanelHelper> config)
+            {
+                config(this);
+                return this;
+            }
+
+            /// <summary>Is used to instruct the control panel helper not to refresh navigation to the current page.</summary>
+            /// <param name="refreshNavigation"></param>
+            /// <returns></returns>
+            public ControlPanelHelper RefreshNavigation(bool refreshNavigation = true)
+            {
+                this.RefreshNavigationOnLoad = refreshNavigation;
+                return this;
+            }
+
+            /// <summary>Is used to instruct the control panel helper not to refresh navigation to the current page.</summary>
+            /// <param name="refreshNavigation"></param>
+            /// <returns></returns>
+            public ControlPanelHelper ForceRefreshNavigation(bool forceRefreshNavigation = true)
+            {
+                this.ForceRefreshNavigationOnLoad = forceRefreshNavigation;
+                return this;
+            }
+
+            /// <summary>Sets the selected item control panel plugins are bound to.</summary>
+            /// <param name="currentItem"></param>
+            /// <returns></returns>
+            public ControlPanelHelper Selected(ContentItem currentItem)
+            {
+                CurrentItem = currentItem;
+                return this;
+            }
+            
+            public override void WriteTo(TextWriter writer)
+			{
+				if (!Engine.RequestContext.User.Identity.IsAuthenticated || !Engine.SecurityManager.IsEditor(Engine.RequestContext.User))
+					return;
+
+				var item = CurrentItem ?? Engine.UrlParser.CurrentPage ?? Engine.UrlParser.StartPage;
+
+				AppendControlPanel(writer, Engine, item);
+			}
+
+			protected virtual void AppendControlPanel(TextWriter writer, IEngine engine, ContentItem item)
+			{
+                writer.Write("<script>n2 = window.n2 || {};");
+				writer.Write("n2.settings = ");
+				var settings = engine.Resolve<InterfaceBuilder>().GetControlPanelDefinition(engine.RequestContext.HttpContext, item);
+				settings.ToJson(writer);
+				writer.Write(";</script>");
+
+				var resources = new ResourcesExtensions.ResourcesHelper() { StateCollection = StateCollection, Writer = writer };
+				resources = resources.Constants();
+				if (IncludeJQuery) resources = resources.JQuery();
+				if (IncludePartScripts) resources = resources.JavaScript("{ManagementUrl}/App/Preview/PreviewBoostrapper.js");
+                if (IncludePartStyles) resources = resources.IconsCss().StyleSheet("{ManagementUrl}/App/Preview/Preview.css");
+				resources.Render(writer);
+			}
+		}
     }
 }

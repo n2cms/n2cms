@@ -70,7 +70,7 @@ namespace N2.Tests.Web.Parts
             response["redirect"].ShouldBe("/back/to/here?edit=drag&n2versionIndex=1");
             persister.Repository.Count().ShouldBe(initialCount);
             versionRepository.Repository.Count().ShouldBe(1);
-			versionRepository.DeserializeVersion(versionRepository.GetVersion(root)).Children.Single().ShouldBeTypeOf<Items.DataItem>();
+			versionRepository.DeserializeVersion(versionRepository.GetVersion(root)).Children.Single().ShouldBeOfType<Items.DataItem>();
         }
 
         [Test]

@@ -54,36 +54,41 @@ namespace N2.Web.UI
             writer.Write(definition.Discriminator);
             writer.Write("'>");
 
-			WriteCommand(writer, "Edit part", "command edit fa fa-pencil-square", Url.Parse(managementUrls.GetEditExistingItemUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
-            WriteCommand(writer, "Delete part", "command delete fa fa-trash-o", Url.Parse(managementUrls.GetDeleteUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
-            WriteTitle(writer, definition);
+			string editUrl = Url.Parse(managementUrls.GetEditExistingItemUrl(item)).AppendQuery("returnUrl", returnUrl).Encode();
+            WriteTitle(writer, definition, editUrl);
+
+			writer.Write("<span class='commands'>");
+			WriteCommand(writer, "Delete part", "command delete", "fa fa-trash-o", Url.Parse(managementUrls.GetDeleteUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
+			WriteCommand(writer, "Edit part", "command edit", "fa fa-pencil-square", editUrl);
+            WriteCommand(writer, "Move part", "command move", "fa fa-arrows", "#");
+            writer.Write("</span>");
 
             writer.Write("</div>");
         }
 
-        private static void WriteCommand(TextWriter writer, string title, string @class, string url)
+        private static void WriteCommand(TextWriter writer, string title, string @class, string faClass, string url)
         {
-            writer.Write("<a title='" + title + "' class='" + @class + "' href='");
-            writer.Write(url);
-            writer.Write("'></a>");
-        }
+            writer.Write("<a title='" + title + "' class='" + @class + "' href='" + url + "'>");
+            writer.Write("<b class='" + faClass + "'></b>");
+            writer.Write("</a>");
+		}
 
-        private static void WriteTitle(TextWriter writer, ItemDefinition definition)
+        private static void WriteTitle(TextWriter writer, ItemDefinition definition, string editUrl)
         {
             if (string.IsNullOrEmpty(definition.IconUrl))
             {
-                writer.Write("<span class='title'>");
+                writer.Write("<a class='title' href='" + editUrl + "'>");
                 writer.Write("<b class='" + definition.IconClass + "'></b>");
                 writer.Write(definition.Title);
-                writer.Write("</span>");
+                writer.Write("</a>");
             }
             else
             {
-                writer.Write("<span class='title' style='background-image:url(");
+                writer.Write("<a class='title' href='" + editUrl + "' style='background-image:url(");
                 writer.Write(Url.ResolveTokens(definition.IconUrl));
                 writer.Write(");'>");
                 writer.Write(definition.Title);
-                writer.Write("</span>");
+                writer.Write("</a>");
             }
         }
     }

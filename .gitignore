@@ -3,9 +3,11 @@
 
 # Links
 src/WebForms/WebFormsTemplates/N2/
+src/WebForms/WebFormsTemplates/N2
 src/WebForms/WebFormsTemplates/App_Data/SearchIndex/
 src/WebForms/WebFormsTemplates/App_Data/Temp/
 src/Mvc/Dinamico/N2/
+src/Mvc/Dinamico/N2
 src/Mvc/Dinamico/App_Data/SearchIndex/
 src/Mvc/Dinamico/App_Data/Temp/
 src/Mvc/MvcTemplates/App_Data/SearchIndex/
@@ -24,6 +26,7 @@ src/Framework/Search.Remote.Server/App_Data/SearchIndex/
 # User-specific files
 *.suo
 *.user
+/src/.vs
 
 # Build results
 Debug/
@@ -81,3 +84,5 @@ packages/
 src/packages/
 src/Framework/Extensions/x86/
 .DS_Store
+*.jpg
+*.pdf
