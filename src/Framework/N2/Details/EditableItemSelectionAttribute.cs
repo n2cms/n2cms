@@ -39,7 +39,7 @@ namespace N2.Details
         }
 
         public EditableItemSelectionAttribute(Type linkedType, string title, int sortOrder)
-            : this()
+            : this(linkedType)
         {
             Title = title;
             SortOrder = sortOrder;
