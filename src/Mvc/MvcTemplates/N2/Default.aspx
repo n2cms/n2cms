@@ -59,7 +59,7 @@
 	<% } %>
 	<% } %>
 	</asp:PlaceHolder>
-	<base href="/<%= Request.Url.Segments[1] %>" />
+	<base href="<%= Request.Url.AbsolutePath %>" />
 </head>
 <body ng-app="n2" ng-view>
 </body>
