@@ -22,7 +22,7 @@
 
 		<Examples-Folder>$(RootFolder)\examples</Examples-Folder>
 
-		<Version Condition="'$(Version)' == ''">2.9.6.9</Version>
+		<Version Condition="'$(Version)' == ''">2.9.6.10</Version>
 		<DeployPrefix>n2cms_$(Version)_</DeployPrefix>
 		<DeployFolder>$(RootFolder)\output</DeployFolder>
 		<ArtifactsFolder>$(DeployFolder)\buildartifacts</ArtifactsFolder>
