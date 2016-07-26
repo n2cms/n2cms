@@ -41,10 +41,11 @@ namespace N2.Persistence.NH
             if (this.WasInitialized)
                 return FindPages().Where(p => new VisibleFilter().Match(p) && new PublishedFilter().Match(p)).OrderBy(i => i.SortOrder);
 
-            return Session.CreateFilter(this, "where ZoneName is null and Visible = 1 and State = :state order by SortOrder")
-                .SetParameter("state", ContentState.Published)
-                .SetCacheable(true)
-                .List<T>();
+	        return
+		        Session.QueryOver<T>()
+			        .Where(item => item.ZoneName == null && item.Visible && item.State == ContentState.Published)
+			        .OrderBy(item => item.SortOrder).Asc
+			        .List();
         }
 
         public IEnumerable<T> FindPages()
