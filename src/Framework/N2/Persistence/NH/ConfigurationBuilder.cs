@@ -172,11 +172,11 @@ namespace N2.Persistence.NH
                     break;
                 case DatabaseFlavour.MySql:
                     Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.MySqlDataDriver).AssemblyQualifiedName;
-                    Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.PostgreSQLDialect).AssemblyQualifiedName;
+                    Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MySQLDialect).AssemblyQualifiedName;
                     break;
 				case DatabaseFlavour.Postgresql:
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.NpgsqlDriver).AssemblyQualifiedName;
-					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MySQL5Dialect).AssemblyQualifiedName;
+					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.PostgreSQLDialect).AssemblyQualifiedName;
 					break;
 				case DatabaseFlavour.SqLite:
                     Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.SQLite20Driver).AssemblyQualifiedName;
