@@ -270,8 +270,8 @@ n2.preview.directive("n2Preview", ["$http", "$templateCache", "$compile", "Paths
 
 	return {
 		link: function(scope, element){
-			$http.get("/N2/App/Preview/PreviewBar.html", { cache: $templateCache }).success(function (response) {
-				element.html(response);
+		  $http.get(Context.Paths.Management + "App/Preview/PreviewBar.html", { cache: $templateCache }).success(function (response) {
+		    element.html(response);
 				$compile(element.contents())(scope);
 				element.removeClass("n2-loading").addClass("n2-loaded");
 			});
