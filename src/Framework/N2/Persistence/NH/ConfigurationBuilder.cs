@@ -172,9 +172,13 @@ namespace N2.Persistence.NH
                     break;
                 case DatabaseFlavour.MySql:
                     Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.MySqlDataDriver).AssemblyQualifiedName;
-                    Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MySQL5Dialect).AssemblyQualifiedName;
+                    Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.PostgreSQLDialect).AssemblyQualifiedName;
                     break;
-                case DatabaseFlavour.SqLite:
+				case DatabaseFlavour.Postgresql:
+					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.NpgsqlDriver).AssemblyQualifiedName;
+					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MySQL5Dialect).AssemblyQualifiedName;
+					break;
+				case DatabaseFlavour.SqLite:
                     Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.SQLite20Driver).AssemblyQualifiedName;
                     Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.SQLiteDialect).AssemblyQualifiedName;
                     break;
@@ -226,6 +230,8 @@ namespace N2.Persistence.NH
                 return DatabaseFlavour.Oracle;
             if (provider.StartsWith("System.Data.SqlServerCe"))
                 return DatabaseFlavour.SqlCe;
+	        if (provider.StartsWith("Npgsql"))
+		        return DatabaseFlavour.Postgresql;
             if (css.ConnectionString.StartsWith("mongodb:"))
                 throw new ConfigurationErrorsException("Cannot auto-detect MongoDB. This needs to be configured as flavor=\"MongoDB\" in the n2/database config section");
 
