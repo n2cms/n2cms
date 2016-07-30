@@ -28,7 +28,8 @@ public class PageItem : N2.ContentItem
 1. Create a new, empty Web Application Project in Visual Studio 2012 or 2013. 
 2. Go to *Tools > Library Package Manager > Package Manager Console*
 3. In the Package Manager console run the following commands: 
-  ```
+ 
+```
 Install-Package N2CMS.Dinamico
 Install-Package N2CMS.Management
 ```
@@ -41,6 +42,12 @@ Please note, N2CMS supports the following ASP.NET view engines:
 
 Detailed installation instructions are available at: https://github.com/n2cms/n2cms/blob/master/README_SETUP.md
 or in our documentation wiki: https://n2cmsdocs.atlassian.net/wiki/display/N2CMS/Getting+Started+using+N2CMS
+
+**For development ("bleeding edge") packages**, you can add our MyGet feed to your NuGet package manager. Please follow the instructions in NuGet documentation for doing this. Here are the feed URLs:
+
+* NuGet V3 feed URL (Visual Studio 2015+): https://www.myget.org/F/n2cms/api/v3/index.json
+* NuGet V2 feed URL (Visual Studio 2012+): https://www.myget.org/F/n2cms/api/v2
+
 
 
 ----
