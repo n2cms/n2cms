@@ -201,17 +201,18 @@ namespace N2.Edit
         /// <summary>Gets the url to the edit page where to edit an existing item.</summary>
         /// <param name="item">The item to edit.</param>
         /// <returns>The url to the edit page</returns>
-        public virtual string GetEditExistingItemUrl(ContentItem item, string returnUrl = null)
+        public virtual string GetEditExistingItemUrl(ContentItem item, string returnUrl = null, string alternativeEditorPath = null)
         {
             if (item == null)
                 return null;
 
-            var editUrl = EditItemUrl.ToUrl()
-                .ResolveTokens()
+            var editUrl = (alternativeEditorPath ?? EditItemUrl).ToUrl()
+				.ResolveTokens()
                 .SetQueryParameter(SelectionUtility.SelectedQueryKey, item.Path);
 
             if (item.VersionOf.HasValue)
             {
+				editUrl = editUrl.SetQueryParameter(PathData.ItemQueryKey, item.VersionOf.ID.Value);
                 if (item.IsPage)
                     editUrl = editUrl
                         .SetQueryParameter(PathData.VersionIndexQueryKey, item.VersionIndex)
@@ -224,7 +225,8 @@ namespace N2.Edit
             else if (item.ID == 0)
             {
                 var page = Find.ClosestPage(item);
-                if (page != null)
+				editUrl = editUrl.SetQueryParameter(PathData.ItemQueryKey, page.ID);
+				if (page != null)
                     editUrl = editUrl
                         .SetQueryParameter(SelectionUtility.SelectedQueryKey, (page.VersionOf.Value ?? page).Path)
                         .SetQueryParameter(PathData.VersionIndexQueryKey, page.VersionIndex)

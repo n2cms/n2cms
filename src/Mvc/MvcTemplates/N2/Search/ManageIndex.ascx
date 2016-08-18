@@ -30,7 +30,7 @@
         <HeaderTemplate><ul></HeaderTemplate>
         <ItemTemplate>
             <li>
-                <a href="<%# Engine.EditManager.GetEditExistingItemUrl((N2.ContentItem)Eval("Content")) %>">
+                <a href="<%# Engine.ManagementPaths.GetEditExistingItemUrl((N2.ContentItem)Eval("Content"), null, null) %>">
                     <img src="<%# Eval("Content.IconUrl") %>" />
                     <%# Eval("Content.Title") ?? "(empty)" %>
                 </a>

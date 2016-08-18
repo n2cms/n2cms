@@ -27,7 +27,7 @@
 			<asp:BoundField HeaderText="Parts count" DataField="PartsCount" meta:resourceKey="partsCount" />
 			<asp:TemplateField>
 				<ItemTemplate>
-					<asp:HyperLink runat="server" ID="hlEdit" meta:resourceKey="hlEdit" Text="Edit" NavigateUrl='<%# Engine.ManagementPaths.GetEditExistingItemUrl((N2.ContentItem)Eval("Content")) %>' />
+					<asp:HyperLink runat="server" ID="hlEdit" meta:resourceKey="hlEdit" Text="Edit" NavigateUrl='<%# Engine.ManagementPaths.GetEditExistingItemUrl((N2.ContentItem)Eval("Content"), null, null) %>' />
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField>

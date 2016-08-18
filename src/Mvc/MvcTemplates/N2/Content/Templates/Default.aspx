@@ -25,7 +25,7 @@
 				<asp:BoundField DataField="Description" />
 				
 				<asp:TemplateField HeaderText="Template" meta:resourcekey="TemplateFieldResource1"><ItemTemplate>
-					<asp:HyperLink runat="server" NavigateUrl='<%# Edits.GetEditExistingItemUrl((N2.ContentItem)Eval("Original")) + "&returnUrl=" + Request.RawUrl %>' Text="Edit" meta:resourceKey="hlEdit" />
+					<asp:HyperLink runat="server" NavigateUrl='<%# Edits.GetEditExistingItemUrl((N2.ContentItem)Eval("Original"), Request.RawUrl, null) %>' Text="Edit" meta:resourceKey="hlEdit" />
 				</ItemTemplate></asp:TemplateField>
 				<asp:ButtonField CommandName="Delete" Text="Delete" meta:resourcekey="ButtonFieldResource1" />
 			</Columns>

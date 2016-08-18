@@ -435,7 +435,9 @@ namespace N2.Web.UI.WebControls
 
 		private void RedirectToVersionOfSelf(ContentItem versionOfPage)
 		{
-			var url = Engine.ManagementPaths.GetEditExistingItemUrl(versionOfPage.FindPartVersion(ParentItem), Page.Request["returnUrl"]);
+			var url = Engine.ManagementPaths.GetEditExistingItemUrl(versionOfPage.FindPartVersion(ParentItem), Page.Request["returnUrl"], Page.Request.Url.AbsolutePath);
+			//if (Page.Request.Url.AbsolutePath.EndsWith("EditRecursive.aspx"))
+			//	Page.Response.Redirect(Page.Request.Url.AbsolutePath + "?" + url.ToUrl().Query);
 			Page.Response.Redirect(url);
 		}
 

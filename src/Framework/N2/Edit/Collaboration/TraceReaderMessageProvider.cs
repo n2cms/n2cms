@@ -82,9 +82,17 @@ namespace N2.Edit.Collaboration
 				if (messageProvider.enabled && eventType <= messageProvider.reportingLevel)
 				{
 					var titleBody = Split(message);
+					RemoveErrorHandlerTitle(titleBody);
 					messageProvider.Add(new CollaborationMessage { Title = titleBody[0], Text = titleBody[1], Alert = false, Updated = eventCache.DateTime, RequiredPermission = Permission.Administer });
 				}
 				base.TraceEvent(eventCache, source, eventType, id, message);
+			}
+
+			private void RemoveErrorHandlerTitle(string[] titleBody)
+			{
+				var i = titleBody[0].IndexOf("ErrorHandler.Notify: Url: ");
+				if (i >= 0)
+					titleBody[0] = "Error: " + titleBody[0].Substring(i + "ErrorHandler.Notify: Url: ".Length);
 			}
 
 			private string[] Split(string message)
