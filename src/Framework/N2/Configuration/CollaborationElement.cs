@@ -42,5 +42,12 @@ namespace N2.Configuration
 			get { return (System.Diagnostics.TraceEventType)base["errorReportingLevel"]; }
 			set { base["errorReportingLevel"] = value; }
 		}
+
+		[ConfigurationProperty("errorReportingEnabled", DefaultValue = true)]
+		public bool ErrorReportingEnabled
+		{
+			get { return (bool)base["errorReportingEnabled"]; }
+			set { base["errorReportingEnabled"] = value; }
+		}
 	}
 }
