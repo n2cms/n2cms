@@ -168,26 +168,50 @@ namespace N2.Edit.Versioning
 		}
 
         private void Replace(ContentItem currentItem, ContentItem replacementItem)
-        {
-            UpdateValues(currentItem, replacementItem);
+		{
+			UpdateValues(currentItem, replacementItem);
             itemRepository.SaveOrUpdate(currentItem);
 
-            foreach (var removedItem in RemoveRemovedPartsRecursive(currentItem, replacementItem))
+			foreach (var removedItem in RemoveRemovedPartsRecursive(currentItem, replacementItem))
                 itemRepository.Delete(removedItem);
 
-            foreach (var modifiedItem in UpdateModifiedPartsRecursive(currentItem, replacementItem))
+			var reorderedParts = ReorderReorderedPartRecursive(currentItem, replacementItem);
+
+			foreach (var modifiedItem in UpdateModifiedPartsRecursive(currentItem, replacementItem))
                 itemRepository.SaveOrUpdate(modifiedItem);
 
             foreach (var addedItem in AddAddedPartsRecursive(currentItem, replacementItem))
                 itemRepository.SaveOrUpdate(addedItem);
 
-            if (ItemReplacedVersion != null)
+			foreach (var reorderedPart in reorderedParts)
+			{
+				Utility.Insert(reorderedPart, reorderedPart.Parent, "SortOrder");
+				itemRepository.SaveOrUpdate(reorderedPart);
+			}
+
+			if (ItemReplacedVersion != null)
                 ItemReplacedVersion.Invoke(this, new ItemEventArgs(replacementItem));
 
             itemRepository.Flush();
         }
 
-        private void UpdateValues(ContentItem currentItem, ContentItem replacementItem)
+		private IEnumerable<ContentItem> ReorderReorderedPartRecursive(ContentItem currentItem, ContentItem replacementItem)
+		{
+			var reorderedItems = new List<ContentItem>();
+			foreach(var replacingChild in replacementItem.Children.FindParts())
+			{
+				var masterChild = replacingChild.VersionOf.Value;
+				if (masterChild != null && replacingChild.SortOrder != masterChild.SortOrder)
+				{
+					reorderedItems.Add(masterChild);
+					foreach (var masterGrandchild in ReorderReorderedPartRecursive(masterChild, replacingChild))
+						reorderedItems.Add(masterGrandchild);
+				}
+			}
+			return reorderedItems;
+		}
+
+		private void UpdateValues(ContentItem currentItem, ContentItem replacementItem)
         {
             ClearAllDetails(currentItem);
 
