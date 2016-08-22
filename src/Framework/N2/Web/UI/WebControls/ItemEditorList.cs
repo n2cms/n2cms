@@ -376,12 +376,6 @@ namespace N2.Web.UI.WebControls
 			
             if (path.CurrentItem != null && path.CurrentItem != path.CurrentPage)
 			{
-				//var parent = path.CurrentItem.Parent;
-				//var siblings = parent.Children;
-				//var newIndex = siblings.IndexOf(path.CurrentItem) + offset;
-				//if (newIndex >= 0 && newIndex < path.CurrentItem.Parent.Children.Count - 1)
-				//{
-				//	Utility.Insert(path.CurrentItem, parent, newIndex);
 				var parent = path.CurrentItem.Parent;
 				var siblings = GetItems().Select(ci => parent.Children.FirstOrDefault(s => s.VersionOf.Value == ci || s == ci)).ToList();
 				var currentIndex = siblings.IndexOf(path.CurrentItem);
