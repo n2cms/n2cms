@@ -346,7 +346,7 @@ n2.preview.directive("n2PreviewBar", [function () {
 
 n2.preview.directive("n2PreviewParts", [function () {
 	return {
-		controller: function ($scope, $location, Context, Content, ZoneOperator, Reveal) {
+		controller: function ($scope, Context, Content, ZoneOperator, Reveal) {
 			var operator = new ZoneOperator($scope);
 
 			$scope.toggleParts = function () {
