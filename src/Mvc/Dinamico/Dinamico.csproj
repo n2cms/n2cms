@@ -159,6 +159,7 @@
     <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Dinamico\Themes\Default\lib\jquery\jquery-1.10.2.min.map" />
+    <Content Include="Dinamico\Themes\Default\Views\ContentParts\HorizontalList.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Form.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Index.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Submitted.cshtml" />
