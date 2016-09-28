@@ -160,6 +160,7 @@
     <Compile Include="Configuration\HtmlSanitizeElement.cs" />
     <Compile Include="Configuration\OrganizeElement.cs" />
     <Compile Include="Configuration\OutputCacheInvalidationMode.cs" />
+    <Compile Include="Configuration\RavenElement.cs" />
     <Compile Include="Configuration\TargetingCollection.cs" />
     <Compile Include="Configuration\TargetingElement.cs" />
     <Compile Include="Configuration\ExceptionResolutionMode.cs" />

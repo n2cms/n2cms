@@ -147,8 +147,15 @@ namespace N2.Configuration
             set { base["files"] = value; }
         }
 
-        /// <summary>Database file system configuration.</summary>
-        [ConfigurationProperty("isolation")]
+		[ConfigurationProperty("raven")]
+		public RavenElement Raven
+		{
+			get { return (RavenElement)this["raven"]; }
+			set { base["raven"] = value; }
+		}
+
+		/// <summary>Database file system configuration.</summary>
+		[ConfigurationProperty("isolation")]
         public IsolationLevel? Isolation
         {
             get { return (IsolationLevel?)this["isolation"]; }
