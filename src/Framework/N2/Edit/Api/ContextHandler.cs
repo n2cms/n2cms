@@ -26,22 +26,22 @@ namespace N2.Management.Api
 
 		public void ProcessRequest(HttpContextBase context)
 		{
-			switch (context.Request.PathInfo)
+			switch (context.Request.QueryString["mode"])
 			{
-				case "/interface":
+				case "interface":
 					context.Response.WriteJson(engine.Resolve<InterfaceBuilder>().GetInterfaceDefinition(context, Selection));
 					return;
-				case "/full":
+				case "full":
 					context.Response.WriteJson(new
 					{
 						Interface = engine.Resolve<InterfaceBuilder>().GetInterfaceDefinition(context, Selection),
 						Context = engine.Resolve<ContextBuilder>().GetInterfaceContextData(context, Selection)
 					});
 					return;
-				case "/messages":
+				case "messages":
 					context.Response.WriteJson(engine.Resolve<ContextBuilder>().GetMessages(context, Selection));
 					return;
-				case "/status":
+				case "status":
 					var status = engine.Resolve<InstallationManager>().GetStatus();
 					context.Response.WriteJson(new
 					{

@@ -33,7 +33,6 @@
 	<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapTimePickerCssPath)%>" type="text/css" rel="stylesheet" />
 	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapTimePickerJsPath)%>" type="text/javascript"></script>
 	
-
 	<link href="Resources/icons/flags.css" rel="stylesheet" />
 
 	<!--<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularStrapJsPath)%>"></script>-->

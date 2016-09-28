@@ -46,7 +46,7 @@ namespace N2.Tests.Edit.Api
         [Test]
         public void Authority_RepresentsSiteUrl()
         {
-            var definition = builder.GetInterfaceDefinition(new FakeHttpContext("http://localhost/N2/Api/Context.ashx/full?selected=" + item.Path), new SelectionUtility(item, null));
+            var definition = builder.GetInterfaceDefinition(new FakeHttpContext("http://localhost/N2/Api/Context.ashx?mode=full&selected=" + item.Path), new SelectionUtility(item, null));
             definition.Authority.ShouldBe("localhost");
         }
 
@@ -110,7 +110,7 @@ namespace N2.Tests.Edit.Api
         [Test, Ignore]
         public void Site_ShouldBeCurrentSite()
         {
-            var definition = builder.GetInterfaceDefinition(new FakeHttpContext("http://localhost/N2/Api/Context.ashx/full?selected=" + item.Path), new SelectionUtility(item, null));
+            var definition = builder.GetInterfaceDefinition(new FakeHttpContext("http://localhost/N2/Api/Context.ashx?mode=full&selected=" + item.Path), new SelectionUtility(item, null));
             definition.Site.RootItemID.ShouldBe(root.ID);
             definition.Site.StartPageID.ShouldBe(item.ID);
         }
