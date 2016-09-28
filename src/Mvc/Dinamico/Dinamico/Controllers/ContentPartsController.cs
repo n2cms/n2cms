@@ -1,31 +1,26 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using N2.Web.Mvc;
+using Dinamico.Models;
 using N2.Web;
+using N2.Web.Mvc;
 
 namespace Dinamico.Controllers
 {
-    [Controls(typeof(Models.ContentPart))]
-    public class ContentPartsController : ContentController<Models.ContentPart>
-    {
+	[Controls(typeof(ContentPart))]
+	public class ContentPartsController : ContentController<ContentPart>
+	{
+		public override ActionResult Index()
+		{
+			return PartialView(CurrentItem.TemplateKey, CurrentItem);
+		}
+	}
 
-        public override ActionResult Index()
-        {
-            return PartialView((string)CurrentItem.TemplateKey, CurrentItem);
-        }
-
-    }
-
-    [Controls(typeof(Slideshow))]
-    public class SlideshowController : ContentController<Slideshow>
-    {
-        public override ActionResult Index()
-        {
-            return PartialView((string)CurrentItem.TemplateKey, CurrentItem);
-        }
-    }
-
+	[Controls(typeof(Slideshow))]
+	public class SlideshowController : ContentController<Slideshow>
+	{
+		public override ActionResult Index()
+		{
+			return PartialView(CurrentItem.TemplateKey, CurrentItem);
+		}
+	}
 }

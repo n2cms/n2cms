@@ -1,21 +1,17 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using N2.Web.Mvc;
 using Dinamico.Models;
 using N2.Web;
-using N2;
+using N2.Web.Mvc;
 
 namespace Dinamico.Controllers
 {
-    [Controls(typeof(LanguageIntersection))]
-    public class LanguageIntersectionController : ContentController<LanguageIntersection>
-    {
-        public override ActionResult Index()
+	[Controls(typeof(LanguageIntersection))]
+	public class LanguageIntersectionController : ContentController<LanguageIntersection>
+	{
+		public override ActionResult Index()
 		{
-			ContentItem language = Request.SelectLanguage(CurrentItem);
+			var language = Request.SelectLanguage(CurrentItem);
 			if (language != null)
 			{
 				if (language.Url.StartsWith("http"))
