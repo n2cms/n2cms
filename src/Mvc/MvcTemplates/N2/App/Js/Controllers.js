@@ -338,34 +338,43 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, $location, $roo
 
 	var query = $location.search();
 	Context.full(query, function (i) {
-		Paths.initialize(i.Interface.Paths)
-		$scope.Initialization.dispose();
-		$scope.Context.Partials.Management = "App/Partials/Management.html";
-		translateMenuRecursive(i.Interface.MainMenu);
-		translateMenuRecursive(i.Interface.ActionMenu);
-		translateMenuRecursive(i.Interface.ContextMenu);
-		angular.extend($scope.Context, i.Interface);
-		angular.extend($scope.Context, i.Context);
+	  if (typeof i === 'undefined' || typeof i.Interface === 'undefined') {
+	    console.log('i.Interface is undefined', i);
+	  } else {
+	    Paths.initialize(i.Interface.Paths);
+	    $scope.Initialization.dispose();
+	    $scope.Context.Partials.Management = "App/Partials/Management.html";
+	    translateMenuRecursive(i.Interface.MainMenu);
+	    translateMenuRecursive(i.Interface.ActionMenu);
+	    translateMenuRecursive(i.Interface.ContextMenu);
+	    angular.extend($scope.Context, i.Interface);
+	    angular.extend($scope.Context, i.Context);
 
-		if (query.mode == "Organize")
-			$scope.Context.Paths.PreviewUrl = $scope.appendQuery($scope.Context.Paths.PreviewUrl, "edit", "drag");
+	    if (query.mode === "Organize")
+	      $scope.Context.Paths.PreviewUrl = $scope.appendQuery($scope.Context.Paths.PreviewUrl, "edit", "drag");
 
-		$scope.watchChanges("Context.User", function (user) {
-			Eventually(function () {
-				if (user.$saved) {
-					delete user.$saved;
-					return;
-				}
+	    $scope.watchChanges("Context.User",
+	      function(user) {
+	        Eventually(function() {
+	            if (user.$saved) {
+	              delete user.$saved;
+	              return;
+	            }
 
-				Profile.save({}, user, function (data) {
-				});
+	            Profile.save({},
+	              user,
+	              function(data) {
+	              });
 
-			}, 10000);
-		}, true);
-		$scope.saveUserSettings = function () {
-			$scope.Context.User.$saved = true;
-			Profile.save({}, $scope.Context.User, function (data) { });
-		}
+	          },
+	          10000);
+	      },
+	      true);
+	    $scope.saveUserSettings = function() {
+	      $scope.Context.User.$saved = true;
+	      Profile.save({}, $scope.Context.User, function(data) {});
+	    }
+	  }
 	});
 
 	$scope.refreshContext = function (node, versionIndex, keepFlags, callback) {

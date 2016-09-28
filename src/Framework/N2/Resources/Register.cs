@@ -52,7 +52,7 @@ namespace N2.Resources
 		/// <summary>The jQuery version used by N2.</summary>
 		public const string JQueryVersion = "1.12.3";
 		public const string JQueryUiVersion = "1.11.4";
-		public const string AngularJsVersion = "1.5.5";
+		public const string AngularJsVersion = "1.5.8";
 		public const string CkEditorVersion = "4.5.8";
 		public const string DefaultBootstrapVersion = "2.3.2";
 
@@ -63,7 +63,7 @@ namespace N2.Resources
 		public const string DefaultFancyboxCssPath = "//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css";
 		public const string DefaultIconsCssPath = "//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css";
 		public const string DefaultAngularJsRoot = "//cdnjs.cloudflare.com/ajax/libs/angular.js/" + AngularJsVersion + "/";
-		public const string DefaultAngularStrapJsRoot = "//cdnjs.cloudflare.com/ajax/libs/angular-strap/0.7.4/angular-strap.min.js";
+		public const string DefaultAngularStrapJsRoot = "//cdnjs.cloudflare.com/ajax/libs/angular-strap/0.7.8/angular-strap.min.js";
 		public const string DefaultAngularUiJsPath = "//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js";
 		public const string DefaultBootstrapJsPath =  "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/" + DefaultBootstrapVersion + "/js/bootstrap.min.js";
 		public const string DefaultBootstrapCssPath = "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/" + DefaultBootstrapVersion + "/css/bootstrap.min.css";
