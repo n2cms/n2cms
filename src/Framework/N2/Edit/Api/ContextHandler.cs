@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Web;
 using N2.Edit;
 using N2.Edit.Installation;
@@ -32,11 +33,21 @@ namespace N2.Management.Api
 					context.Response.WriteJson(engine.Resolve<InterfaceBuilder>().GetInterfaceDefinition(context, Selection));
 					return;
 				case "full":
-					context.Response.WriteJson(new
+					try
 					{
-						Interface = engine.Resolve<InterfaceBuilder>().GetInterfaceDefinition(context, Selection),
-						Context = engine.Resolve<ContextBuilder>().GetInterfaceContextData(context, Selection)
-					});
+						var Interface = engine.Resolve<InterfaceBuilder>().GetInterfaceDefinition(context, Selection);
+						var Context = engine.Resolve<ContextBuilder>().GetInterfaceContextData(context, Selection);
+						context.Response.WriteJson(new
+						{
+							Interface,
+							Context
+						});
+					}
+					catch (Exception ex)
+					{
+						context.Response.Write(ex.ToString());
+						context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+					}
 					return;
 				case "messages":
 					context.Response.WriteJson(engine.Resolve<ContextBuilder>().GetMessages(context, Selection));
