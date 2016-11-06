@@ -22,9 +22,12 @@ namespace Dinamico.Models
 		/// <summary>
 		///     Image used on the page and on listings.
 		/// </summary>
-		[EditableMediaUpload(PreferredSize = "wide")]
+		[EditableMediaUpload(PreferredSize = "wide", AltSource = "ImageAltText")]
 		[Persistable(Length = 256)] // to minimize select+1
 		public virtual string Image { get; set; }
+
+		[EditableText("Image alt text", 0, ContainerName = Defaults.Containers.Metadata)]
+		public virtual string ImageAltText { get; set; }
 
 		/// <summary>
 		///     Title that replaces the regular title when not empty.

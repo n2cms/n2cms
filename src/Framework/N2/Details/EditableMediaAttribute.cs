@@ -29,6 +29,9 @@ namespace N2.Details
         {
 		}
 
+		/// <summary>Other detail from which to retrieve alt text.</summary>
+		public string AltSource { get; set; }
+
 		/// <summary>Image alt text.</summary>
 		public string Alt
         {
@@ -190,7 +193,7 @@ namespace N2.Details
 				case ImagesUtility.ExtensionGroups.Images:
 				default:
 					var sizes = DisplayableImageAttribute.GetSizes(PreferredSize);
-					DisplayableImageAttribute.WriteImage(item, propertyName, sizes, alt, CssClass, writer);
+					DisplayableImageAttribute.WriteImage(item, propertyName, sizes, (AltSource != null ? item[AltSource] as string : null) ?? alt, CssClass, writer);
 					return;
             }
         }

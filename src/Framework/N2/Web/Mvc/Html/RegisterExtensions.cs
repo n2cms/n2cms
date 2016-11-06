@@ -163,7 +163,12 @@ namespace N2.Web.Mvc.Html
             return builder as IDisplayRenderer;
         }
 
-        public static object Data<T>(this EditableBuilder<T> builder) where T : IEditable
+		public static IHtmlString Hide<T>(this EditableBuilder<T> builder) where T : IEditable
+		{
+			return new HtmlString("");
+		}
+
+		public static object Data<T>(this EditableBuilder<T> builder) where T : IEditable
         {
 			var renderer = builder as IDisplayRenderer;
 			if (renderer == null || renderer.Context == null || renderer.Context.Content == null)
