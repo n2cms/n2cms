@@ -273,6 +273,7 @@
     <Compile Include="Types.cs" />
     <Compile Include="Web\SlugTests.cs" />
     <Compile Include="Web\Targeting\TargetingTests.cs" />
+    <Compile Include="Web\Mvc\RegisterHelperTests.cs" />
     <Compile Include="Web\UrlParser_IUrlSource_VirtualDirectory.cs" />
     <Compile Include="Web\UrlParser_IUrlSource_MultipleSites.cs" />
     <Compile Include="Web\Items\UrlSourcePage.cs" />
