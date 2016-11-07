@@ -23,7 +23,8 @@ namespace N2.Management.Api
 			this.engine = engine;
 		}
 
-		private SelectionUtility Selection => engine.RequestContext.HttpContext.GetSelectionUtility(engine);
+		//private SelectionUtility Selection => engine.RequestContext.HttpContext.GetSelectionUtility(engine);
+		private SelectionUtility Selection { get { return engine.RequestContext.HttpContext.GetSelectionUtility(engine); } }
 
 		public void ProcessRequest(HttpContextBase context)
 		{
