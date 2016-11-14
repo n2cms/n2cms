@@ -14,7 +14,7 @@
 			"unpublished": "Unpublished"
 		},
 		"autosave": {
-			"discardDraft": "An autosaved draft is left behind. Discard it?",
+			"discardDraft": "An autosaved draft is left behind. Click to discard it.",
 			"draftDiscarded": "The autosaved draft was removed."
 		}
 	},
