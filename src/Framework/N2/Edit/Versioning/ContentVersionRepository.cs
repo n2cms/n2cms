@@ -177,7 +177,7 @@ namespace N2.Edit.Versioning
                     if (versionedItem == null)
                         return;
                     versionedItem.AddTo(null);
-					Save(versionedItem);
+					Save(versionedPage);
                 }
                 tx.Commit();
             }

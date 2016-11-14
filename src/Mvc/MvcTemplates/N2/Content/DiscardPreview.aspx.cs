@@ -17,7 +17,7 @@ namespace N2.Edit
 			var published = Selection.SelectedItem.VersionOf.Value;
 			if (published != null)
 			{
-				Engine.Resolve<IVersionManager>().DeleteVersion(Selection.SelectedItem);
+				Engine.Resolve<IVersionManager>().DeleteVersion(Find.ClosestPage(Selection.SelectedItem));
                 Response.Redirect(published.Url.ToUrl().AppendQuery("refresh", true));
 			}
 			else if (Selection.SelectedItem.State <= ContentState.Draft)
