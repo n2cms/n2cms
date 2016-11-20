@@ -93,21 +93,23 @@ namespace N2.Edit.Versioning
         /// <param name="item">The item to update.</param>
         public void UpdateVersion(ContentItem item)
         {
-			if (!item.IsPage)
-				item = Find.ClosestPage(item) ?? item;
+			var page = Find.ClosestPage(item);
 
-            if (item.VersionOf.HasValue)
-                Repository.Save(item, asPreviousVersion: item.State != ContentState.Draft);
-            else
-                itemRepository.SaveOrUpdate(item);
-        }
+			if (item.VersionOf.HasValue)
+				Repository.Save(item, asPreviousVersion: item.State != ContentState.Draft);
+			else if (page != null && page.VersionOf.HasValue)
+				Repository.Save(item, asPreviousVersion: item.State != ContentState.Draft);
+			else
+				// probably a new item that has no presence in n2item
+				itemRepository.SaveOrUpdate(item);
+		}
 
-        /// <summary>Update a page version with another, i.e. save a version of the current item and replace it with the replacement item. Returns a version of the previously published item.</summary>
-        /// <param name="currentItem">The item that will be stored as a previous version.</param>
-        /// <param name="replacementItem">The item that will take the place of the current item using it's ID. Any saved version of this item will not be modified.</param>
-        /// <param name="storeCurrentVersion">Create a copy of the currently published version before overwriting it.</param>
-        /// <returns>A version of the previously published item or the current item when storeCurrentVersion is false.</returns>
-        public virtual ContentItem ReplaceVersion(ContentItem currentItem, ContentItem replacementItem, bool storeCurrentVersion = true)
+		/// <summary>Update a page version with another, i.e. save a version of the current item and replace it with the replacement item. Returns a version of the previously published item.</summary>
+		/// <param name="currentItem">The item that will be stored as a previous version.</param>
+		/// <param name="replacementItem">The item that will take the place of the current item using it's ID. Any saved version of this item will not be modified.</param>
+		/// <param name="storeCurrentVersion">Create a copy of the currently published version before overwriting it.</param>
+		/// <returns>A version of the previously published item or the current item when storeCurrentVersion is false.</returns>
+		public virtual ContentItem ReplaceVersion(ContentItem currentItem, ContentItem replacementItem, bool storeCurrentVersion = true)
         {
             if (currentItem == null)
                 throw new ArgumentNullException("currentItem");

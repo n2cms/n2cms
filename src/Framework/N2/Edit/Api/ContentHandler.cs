@@ -271,13 +271,23 @@ namespace N2.Management.Api
 
 				Update(requestBody, item);
 
-				if (item.ID == 0 && item.VersionOf.HasValue)
+				var page = Find.ClosestPage(item);
+
+				// existing page
+				// draft of existing page
+				// existing part
+				// draft of existing part
+				if (item.VersionOf.HasValue)
+					versions.UpdateVersion(item);
+				else if (page != null && page.VersionOf.HasValue)
 					versions.UpdateVersion(item);
 				else
 					engine.Persister.Save(item);
 			}
 			else
 			{
+				var parent = selected;
+
 				int id;
 				if (requestBody.ContainsKey("ID") && (id = (int)requestBody["ID"]) != 0)
 				{
@@ -285,11 +295,30 @@ namespace N2.Management.Api
 				}
 				else
 				{
-					item = engine.Resolve<IDefinitionManager>().GetDefinition(discriminator).CreateInstance(selected);
+					var definitions = engine.Resolve<IDefinitionManager>();
+					var definition = definitions.GetDefinition(discriminator);
+
+					if (!definition.IsPage)
+					{
+						if (parent.ID != 0 && !parent.VersionOf.HasValue)
+						{
+							parent = versions.GetOrCreateDraft(parent);
+						}
+					}
+
+					var templateKey = context.Request["template"];
+					var zoneName = context.Request["zoneName"];
+
+					item = engine.Resolve<ContentActivator>().CreateInstance(definition.ItemType, parent, templateKey);
 					item.State = ContentState.Draft;
+					item.ZoneName = zoneName;
+					item.AddTo(parent);
 				}
 
 				Update(requestBody, item);
+
+				// new page
+				// new part
 
 				if (item.ID == 0 && (item.VersionOf.HasValue || !item.IsPage))
 					versions.UpdateVersion(item);
@@ -299,8 +328,12 @@ namespace N2.Management.Api
 
 			context.Response.WriteJson(new
 			{
+				EditUrl = engine.ManagementPaths.GetEditExistingItemUrl(item, context.Request["returnUrl"]),
+				PageID = Find.ClosestPage(item)?.ID,
 				ID = item.VersionOf.ID ?? item.ID,
 				VersionIndex = item.VersionIndex,
+				VersionKey = item.GetVersionKey(),
+				Selected = context.Request[PathData.SelectedQueryKey],
 				Path = item.Path,
 				PreviewUrl = item.Url,
 				Permission = engine.ResolveAdapter<NodeAdapter>(item).GetMaximumPermission(item),

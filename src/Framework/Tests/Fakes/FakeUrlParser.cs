@@ -34,12 +34,14 @@ namespace N2.Tests.Fakes
 
 		public Url BuildUrl(ContentItem item)
 		{
-			return string.Join("/", Find.EnumerateParents(item).TakeWhile(ci => !IsRootOrStartPage(ci)).SelectMany(ci => ci.Name));
+			return string.Join("/", Find.EnumerateParents(item).TakeWhile(ci => ci != null && !IsRootOrStartPage(ci)).Select(ci => ci.Name));
 		}
 
 		public bool IsRootOrStartPage(ContentItem item)
 		{
 			return item is IStartPage
+				|| item.Title == "root"
+				|| item.Title == "Start page"
 				|| item.Parent == null;
 		}
 

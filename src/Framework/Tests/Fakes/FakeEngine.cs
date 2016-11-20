@@ -24,7 +24,7 @@ namespace N2.Tests.Fakes
 
         public FakeEngine(params Type[] types)
         {
-            AddComponentInstance<ITypeFinder>(new FakeTypeFinder(types));
+			AddComponentInstance<ITypeFinder>(new FakeTypeFinder(types));
             var definitionManager = TestSupport.SetupDefinitions(types.Where(t => typeof(ContentItem).IsAssignableFrom(t)).ToArray());
             AddComponentInstance<IDefinitionManager>(definitionManager);
             var adapterProvider = new ContentAdapterProvider(this, Resolve<ITypeFinder>());
@@ -225,7 +225,7 @@ namespace N2.Tests.Fakes
             {
                 if (services.ContainsKey(type) == false)
                     throw new InvalidOperationException("No component for service " + type.Name + " registered");
-
+				
                 return services[type];
             }
 

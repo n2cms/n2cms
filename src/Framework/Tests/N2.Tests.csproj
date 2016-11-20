@@ -223,6 +223,8 @@
     <Compile Include="Engine\TypeFinderTests.cs" />
     <Compile Include="Fakes\FakeCacheWrapper.cs" />
     <Compile Include="Fakes\FakeHttpCachePolicy.cs" />
+    <Compile Include="Fakes\FakeLanguageGateway.cs" />
+    <Compile Include="Fakes\FakeNodeAdapter.cs" />
     <Compile Include="Fakes\FakeProvider.cs" />
     <Compile Include="Fakes\FakeUrlParser.cs" />
     <Compile Include="Installation\ImageSizesMigrationTests.cs" />

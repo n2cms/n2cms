@@ -112,7 +112,6 @@ namespace N2.Tests.Fakes
 			ContentType = contentType;
 			this.input = input;
 			contentLength = input.Length;
-
 		}
 	}
 }

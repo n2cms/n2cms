@@ -27,6 +27,7 @@
 		}
 
 		this.saveItem = function (item) {
+			//console.log("saveItem", window.location.search, item);
 			return $.ajax({
 				url: "/N2/Api/Content.ashx/autosave" + window.location.search,
 				type: 'post',
@@ -52,11 +53,15 @@
 					deferred = self.saveItem(item);
 
 				deferred = deferred.then(function (result) {
+					//console.log("saveItem", window.location.search, result);
+
 					$("#" + item.newItemReference).val(result.ID + "." + result.VersionIndex);
 					$(".publish.command").attr("disabled", null);
-					$(".discard.command").attr("href", "DiscardPreview.aspx?n2item=" + result.ID + "&n2versionIndex=" + result.VersionIndex).show();
+					$(".discard.command").attr("href", "DiscardPreview.aspx?" + n2SelectedQueryKey + "=" + result.Selected + "&n2item=" + result.ID + "&n2versionIndex=" + result.VersionIndex + "&n2versionKey=" + result.VersionKey).show();
 					$(".cancel.command").hide();
 					window.n2ctx && n2ctx.update && n2ctx.update({ id: result.ID, path: result.Path, permission: result.Permission, previewUrl: result.PreviewUrl, draft: result.Draft, node: result.Node, autosaved: true });
+
+					history.replaceState(null, null, result.EditUrl);
 				}, function () {
 					$(".publish.command").attr("disabled", null);
 					console.warn("Error auto-saving", item, arguments);
