@@ -270,7 +270,6 @@ namespace N2.Management.Api
 					item = versions.GetOrCreateDraft(item);
 
 				Update(requestBody, item);
-
 				var page = Find.ClosestPage(item);
 
 				// existing page
@@ -329,7 +328,7 @@ namespace N2.Management.Api
 			context.Response.WriteJson(new
 			{
 				EditUrl = engine.ManagementPaths.GetEditExistingItemUrl(item, context.Request["returnUrl"]),
-				PageID = Find.ClosestPage(item)?.ID,
+				PageID = Find.ClosestPage(item)?.VersionOf?.ID ?? Find.ClosestPage(item)?.ID,
 				ID = item.VersionOf.ID ?? item.ID,
 				VersionIndex = item.VersionIndex,
 				VersionKey = item.GetVersionKey(),

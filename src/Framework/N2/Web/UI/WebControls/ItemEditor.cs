@@ -203,7 +203,7 @@ namespace N2.Web.UI.WebControls
 
             Register.StyleSheet(Page, Url.ResolveTokens("{ManagementUrl}/Resources/Css/edit.css"));
 
-			Page.ClientScript.RegisterHiddenField(ClientID + "_autosaved_item_id", Page.Request[ClientID + "_autosaved_item_id"] ?? currentItem.ID.ToString());
+			Page.ClientScript.RegisterHiddenField(ClientID + "_autosaved_url", Page.Request[ClientID + "_autosaved_url"] ?? currentItem.ID.ToString());
 			if (EnableAutoSave)
 			{
 				Register.JavaScript(Page, @"	window.n2autosave && n2autosave.init();", ScriptOptions.DocumentReady);
@@ -249,7 +249,7 @@ namespace N2.Web.UI.WebControls
 					? Find.ClosestPage(CurrentItem).ID.ToString()
 					: "";
 			control.Attributes["data-item-zone"] = CurrentItem.ZoneName;
-			control.Attributes["data-item-reference"] = ClientID + "_autosaved_item_id";
+			control.Attributes["data-item-reference"] = ClientID + "_autosaved_url";
 			return true;
 		}
 
@@ -398,25 +398,16 @@ namespace N2.Web.UI.WebControls
 
             return cc;
         }
-
-		private int[] GetAutosavedIdAndVersion()
-		{
-			var autoSaveReference = Page.Request[ClientID + "_autosaved_item_id"];
-			if (Page.IsPostBack && !string.IsNullOrEmpty(autoSaveReference))
-				return autoSaveReference.Split('.').Select(x => int.Parse(x)).ToArray();
-			return new int[0];
-        }
-
+		
 		public ContentItem GetAutosaveVersion()
 		{
-			var idAndVersion = GetAutosavedIdAndVersion();
-			if (idAndVersion == null && idAndVersion.Length < 1)
+			var value = Page.Request[ClientID + "_autosaved_url"];
+			if (string.IsNullOrEmpty(value))
 				return null;
-			if (idAndVersion[0] == 0)
-				return null;
-			var item = Engine.Persister.Get(idAndVersion[0]);
-			if (item != null && idAndVersion.Length > 1 && idAndVersion[1] != 0)
-				item = Engine.Resolve<IVersionManager>().GetVersion(item, idAndVersion[1]);
+
+			Url editUrl = value;
+			var selection = new SelectionUtility(key => editUrl[key], Engine);
+			var item = selection.ParseSelectionFromRequest();
 			return item;
 		}
 

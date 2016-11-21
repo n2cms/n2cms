@@ -55,7 +55,7 @@
 				deferred = deferred.then(function (result) {
 					//console.log("saveItem", window.location.search, result);
 
-					$("#" + item.newItemReference).val(result.ID + "." + result.VersionIndex);
+					$("#" + item.newItemReference).val(result.EditUrl);
 					$(".publish.command").attr("disabled", null);
 					$(".discard.command").attr("href", "DiscardPreview.aspx?" + n2SelectedQueryKey + "=" + result.Selected + "&n2item=" + result.ID + "&n2versionIndex=" + result.VersionIndex + "&n2versionKey=" + result.VersionKey).show();
 					$(".cancel.command").hide();
