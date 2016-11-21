@@ -8,13 +8,13 @@
 	var uploading = 0;
 	// Initialize the jQuery File Upload widget:
 	$('#fileupload').fileupload({
-		url: "UploadFile.ashx",
+		url: "UploadFile.ashx?ticket=" + ticket + "&selected=" + selected,
 		maxFileSize: maxFileSize,
 		previewMaxWidth: 48,
 		previewMaxHeight: 48,
 		autoUpload: true,
 		sequentialUploads: true,
-		formData: { ticket: ticket, selected: selected },
+		formData: { },
 		add: function (e, data) {
 			$("#uploadcontrols").hide();
 			$("#fileupload").addClass("uploading");
