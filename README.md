@@ -39,6 +39,7 @@ Please note, N2CMS supports the following ASP.NET view engines:
 * ASP.NET MVC + MVC Views ("MVC" template pack)
 * ASP.NET Web Forms
 
+It is NOT ENOUGH to install just the `N2CMS` package. If you use the N2CMS standalone NuGet, you still need either N2CMS.Dinamico or N2CMS.MVC NuGet for it to work properly.
 
 Detailed installation instructions are available at: https://github.com/n2cms/n2cms/blob/master/README_SETUP.md
 or in our documentation wiki: https://n2cmsdocs.atlassian.net/wiki/display/N2CMS/Getting+Started+using+N2CMS
