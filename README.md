@@ -13,6 +13,8 @@ options and unlimited customization options.
 which properties are editable by adding attributes*
 
 ```csharp
+// [RootPage()]  - use this if you want this page type to be a "Root page"
+// [StartPage()] - use this if you want this page type to be a "Start page"
 [PageDefinition(TemplateUrl = "~/my/pageitemtemplate.aspx")]
 public class PageItem : N2.ContentItem
 {
