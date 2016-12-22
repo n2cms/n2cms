@@ -35,6 +35,16 @@ public class PageItem : N2.ContentItem
 Install-Package N2CMS.Dinamico
 Install-Package N2CMS.Management
 ```
+4. Configure database, e.g. SqlLite for small sites:
+
+```
+Install-Package N2CMS.Config.SQLite
+```
+5. Run your Web Application Project and follow on screen advices.
+5.1. Tip on selecting root and start nodes: 
+   StartPage single node is usually good enough for simple sites,
+   LanguageIntersection and StartPage two node configuration is a good choice for multilingual sites.
+
 
 Please note, N2CMS supports the following ASP.NET view engines:
 * ASP.NET MVC + Razor ("Dinamico" template pack)
