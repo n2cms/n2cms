@@ -30,17 +30,15 @@ public class PageItem : N2.ContentItem
 1. Create a new, empty Web Application Project in Visual Studio 2012 or 2013. 
 2. Go to *Tools > Library Package Manager > Package Manager Console*
 3. In the Package Manager console run the following commands: 
- 
-```
-Install-Package N2CMS.Dinamico
-Install-Package N2CMS.Management
-```
+	```
+	Install-Package N2CMS.Dinamico
+	Install-Package N2CMS.Management
+	```
 4. Configure database, e.g. SqlLite for small sites:
-
-```
-Install-Package N2CMS.Config.SQLite
-```
-5. Run your Web Application Project and follow on screen advices.
+	```
+	Install-Package N2CMS.Config.SQLite
+	```
+5. Run your Web Application Project and follow on-screen advice.
 5.1. Tip on selecting root and start nodes: 
    StartPage single node is usually good enough for simple sites,
    LanguageIntersection and StartPage two node configuration is a good choice for multilingual sites.
