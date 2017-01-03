@@ -118,9 +118,9 @@ namespace N2.Persistence.NH
             if (config.Isolation.HasValue)
                 Properties[NHibernate.Cfg.Environment.Isolation] = config.Isolation.ToString();
 
-            foreach (string key in config.HibernateProperties.AllKeys)
+            foreach (NameValueConfigurationElement setting in config.HibernateProperties)
             {
-                Properties[key] = config.HibernateProperties[key].Value;
+	            Properties[setting.Name] = setting.Value;
             }
         }
 
