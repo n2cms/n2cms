@@ -223,7 +223,11 @@ namespace N2.Engine
                 {
                     logger.Error(ex);
                 }
-            }
+				catch (FileNotFoundException ex) // thrown if assembly is excluded in web.config
+				{
+					logger.Error(ex);
+				}
+			}
             return assemblies;
         }
     }
