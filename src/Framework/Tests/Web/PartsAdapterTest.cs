@@ -57,7 +57,7 @@ namespace N2.Tests.Web
             base.SetUp();
 
             CreateDefaultStructure();
-            
+
             ((ContentAdapterProvider)engine.Resolve<IContentAdapterProvider>()).Start();
             dispatcher = engine.Resolve<IContentAdapterProvider>();
         }
@@ -74,7 +74,7 @@ namespace N2.Tests.Web
         public void CanResolve_ZoneAdapter()
         {
             PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
-            
+
             Assert.That(controller, Is.TypeOf(typeof(PageZoneAdapter)));
         }
 
@@ -116,6 +116,20 @@ namespace N2.Tests.Web
             IEnumerable<ItemDefinition> items = controller.GetAllowedDefinitions(pageItem, "Zone1", CreatePrincipal("admin"));
 
             Assert.That(items.Count(), Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void CanResolve_PossibleChildrenWithAuthorization()
+        {
+            PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
+
+            IEnumerable<ItemDefinition> items = controller.GetAllowedDefinitions(pageItem, CreatePrincipal("admin"));
+
+            Assert.That(items.Count(), Is.EqualTo(7));
+
+            items = controller.GetAllowedDefinitions(pageItem, CreatePrincipal("admin", "MyTestRole"));
+
+            Assert.That(items.Count(), Is.EqualTo(8));
         }
 
         protected void CreateDefaultStructure()
