@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using N2.Configuration;
 using N2.Definitions;
 using N2.Edit;
 using N2.Engine;
@@ -47,6 +48,8 @@ namespace N2.Tests.Fakes
             var activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), new ItemNotifier(), proxyFactory);
             AddComponentInstance<ContentActivator>(activator);
             activator.Initialize(definitionManager.GetDefinitions());
+            var editSection = new EditSection();
+            AddComponentInstance<EditSection>(editSection);
         }
 
         #region IEngine Members
