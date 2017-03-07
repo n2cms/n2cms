@@ -179,5 +179,12 @@ namespace N2.Configuration
 			get { return (OrganizeElement)base["organize"]; }
 			set { base["organize"] = value; }
 		}
-	}
+
+        [ConfigurationProperty("autosave")]
+        public AutosaveElement AutosaveElement
+        {
+            get { return (AutosaveElement)base["autosave"]; }
+            set { base["autosave"] = value; }
+        }
+    }
 }

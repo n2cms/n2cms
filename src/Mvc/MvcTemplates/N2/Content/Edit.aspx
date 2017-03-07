@@ -45,7 +45,7 @@
 		    <asp:ValidationSummary ID="vsEdit" runat="server" CssClass="alert alert-warning alert-block alert-margin" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
 		    <asp:CustomValidator ID="cvException" runat="server" Display="None" />
 
-		    <n2:ItemEditor ID="ie" runat="server" EnableAutoSave="true" />
+		    <n2:ItemEditor ID="ie" runat="server"/>
 
 		    <div id="futurePanel" class="modal" tabindex="-1" role="dialog">
 			    <div class="modal-header">

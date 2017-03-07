@@ -24,6 +24,7 @@ using N2.Persistence;
 using N2.Resources;
 using N2.Edit.Versioning;
 using System.Linq;
+using N2.Configuration;
 
 namespace N2.Web.UI.WebControls
 {
@@ -41,6 +42,7 @@ namespace N2.Web.UI.WebControls
         {
             CssClass = "itemEditor";
             Engine = N2.Context.Current;
+            EnableAutoSave = Engine.Resolve<EditSection>().AutosaveElement.Enabled;
         }
 
         public ItemEditor(ContentItem item)

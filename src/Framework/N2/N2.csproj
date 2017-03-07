@@ -151,6 +151,7 @@
     <Compile Include="Collections\IZonedListOfT.cs" />
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
+    <Compile Include="Configuration\AutosaveElement.cs" />
     <Compile Include="Configuration\ChildrenElement.cs" />
     <Compile Include="Configuration\CkEditorElement.cs" />
     <Compile Include="Configuration\ClientElement.cs" />
