@@ -163,6 +163,7 @@ namespace N2.Web.Parts
 				.SelectMany(ci => Definitions.GetAllowedChildren(ci))
 				.Where(d => d.Enabled)
 				.Where(d => d.AllowedIn != Integrity.AllowedZones.None)
+                .WhereAuthorized(Security, user, parentItem)
                 .Distinct();
         }
 
