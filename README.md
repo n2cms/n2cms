@@ -1,3 +1,5 @@
+New: Join the N2CMS chat on Telegram: https://t.me/joinchat/AAAAAA4oUpeYPAMOVGhGuw
+
 ## Welcome to N2CMS
 
 **N2CMS is a lightweight CMS framework.** With just a few strokes of your keyboard a 
