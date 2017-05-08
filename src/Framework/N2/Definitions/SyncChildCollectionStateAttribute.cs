@@ -21,9 +21,9 @@ namespace N2.Definitions
 
         static SyncChildCollectionStateAttribute()
         {
-            LargeCollecetionThreshold = 100;
+            LargeCollectionThreshold = 1000;
         }
-        public static int LargeCollecetionThreshold { get; set; }
+        public static int LargeCollectionThreshold { get; set; }
 
         public void OnSaving(BehaviorContext context)
         {
@@ -108,7 +108,7 @@ namespace N2.Definitions
                 return;
 
             OnSavingChild(context);
-            if (context.Parent.Children.Count >= LargeCollecetionThreshold)
+            if (context.Parent.Children.Count >= LargeCollectionThreshold)
             {
                 context.Parent.ChildState |= CollectionState.IsLarge;
                 context.UnsavedItems.Add(context.Parent);
@@ -130,7 +130,7 @@ namespace N2.Definitions
                 return;
 
             bool isParentAdded = false;
-            if (Is(parent.ChildState, CollectionState.IsLarge) && parent.Children.Count <= LargeCollecetionThreshold)
+            if (Is(parent.ChildState, CollectionState.IsLarge) && parent.Children.Count <= LargeCollectionThreshold)
             {
                 parent.ChildState ^= CollectionState.IsLarge;
                 context.UnsavedItems.Add(parent);
