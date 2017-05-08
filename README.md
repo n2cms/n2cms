@@ -68,7 +68,7 @@ or in our documentation wiki: https://n2cmsdocs.atlassian.net/wiki/display/N2CMS
 
 ----
 
-##API
+## API
 
 You can use the API within your methods and properties to develop advanced content manageable features.
 
@@ -87,7 +87,7 @@ public void DoSomeStuffWithSomeItems(DateTime minDate, DateTime maxDate)
 ```
 There are more API usage examples here: http://n2cms.com/Documentation/Manipulating%20content/Finding%20content.aspx.
 
-##I want this in my project.  Where do I download it?
+## I want this in my project.  Where do I download it?
 
 **Install the Nuget package: http://www.nuget.org/packages/N2CMS/**
 
@@ -119,7 +119,7 @@ You may have to make certain configuration changes when moving the code to a
 hosting provider. Common issues are addressed here:
 http://n2cms.com/wiki/Troubleshooting-site-deployment.aspx
 
-##Clone the Source Code and Contribute to N2CMS
+## Clone the Source Code and Contribute to N2CMS
 
 ### What is here?
 
@@ -148,7 +148,7 @@ consists of N2.dll and the UI management files residing below the /N2/ folder.
 N2 CMS supports many databases, this code is set up to use the SQLite embedded 
 database. You may want to use SQL Server or MySQL in production.
 
-##More Resources and Documentation
+## More Resources and Documentation
 
 * http://n2cms.codeplex.com/releases/ (Download N2 CMS 2.x Developer Documentation)
 * http://n2cms.com/Documentation.aspx
