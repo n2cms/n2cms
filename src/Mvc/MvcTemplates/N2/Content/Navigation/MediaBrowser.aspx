@@ -18,82 +18,12 @@
 <body>
     <div id="fileBrowser-main-div" class="thumbs-div">
 
-        <ul class="nav nav-tabs no-active-outline" id="tabsCtrl">
-            <li role="presentation" class="active"><a id="galleryTab" href="#0"><%= GetLocalResourceString("TabsGallery", "Gallery") %></a></li>
-            <li role="presentation"><a id="uploadTab" href="#1"><%= GetLocalResourceString("TabsUpload", "Upload file") %></a></li>
-        </ul>
-
-        <div id="browser-files-list" class="browser-files-section first browser-files-list">
-
-            <div class="row files-search-cont">
-                <div class="col-sm-8 col-md-6">
-                    <div class="input-group input-group-sm">
-                        <input type="text" id="input-group-q" class="form-control" placeholder="<%= GetLocalResourceString("Search", "Search...") %>" />
-                        <span class="input-group-btn">
-                            <button id="btn-search" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
-                            <button id="btn-search-clean" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span></button>
-                        </span>
-                    </div><!-- /input-group -->
-                </div>
-            </div>
-            <div class="row files-breadcrumb" id="dirs-breadcrumb" data-rootisselectable="<%= mediaBrowserModel.RootIsSelectable %>">
-                <ul>
-                <%  var bc = "/";
-                    foreach (var s in mediaBrowserModel.Breadcrumb) {
-                        bc += (s == "[root]" ? "" : s + "/");%>
-                    <li data-url="<%= bc %>"><%= s %></li>
-                <% } %>
-                </ul>
-            </div>
-
-            <div id="lblMessage" class="bg-warning" style="display:none"></div>
-
-            <% var regIsImage = new Regex(@"^.*\.(jpg|jpeg|gif|png)$", RegexOptions.IgnoreCase);
-               var counter = 0;%>
-            <ul id="browser-files-list-ul" class="files-list" data-path="<%= mediaBrowserModel.Path %>"
-                data-selurl="<%= Request["selectedUrl"]%>"
-                data-baseajax="<%= mediaBrowserModel.HandlerUrl %>" data-mediacontrol="<%= mediaBrowserModel.MediaControl %>"
-                data-ckeditor="<%= mediaBrowserModel.CkEditor %>" data-ckeditorfuncnum="<%= mediaBrowserModel.CkEditorFuncNum %>" data-preferredsize="<%= mediaBrowserModel.PreferredSize %>"
-                data-i18size="<%= GetLocalResourceString("Size", "Size") %>" data-i18date="<%= GetLocalResourceString("DateModified", "Date") %>" data-i18url="<%= GetLocalResourceString("Url", "Url") %>">
-                <% if(mediaBrowserModel.Dirs!=null) foreach (var d in mediaBrowserModel.Dirs) { %>
-                <li data-i="<%= counter++ %>" class="dir" data-url="<%= d.Path %>">
-                    <span class="file-ic glyphicon glyphicon-folder-open"></span>
-                    <label><%= d.Name %></label>
-                </li>
-                <%} %>
-                <% if(mediaBrowserModel.Files!=null) foreach (var f in mediaBrowserModel.Files) {
-                            var img = f.IsImage ? f.Thumb : string.Empty;
-                            %>
-                    <% if(f.IsImage) { %>
-                    <li data-i="<%= counter++ %>" class="file image" data-size="<%= f.Size %>" data-date="<%= f.Date %>" 
-                        data-name="<%= f.Title %>" data-isimage="true" data-url="<%= f.Url %>"
-                        style="background-image:url('<%= img %>');" >
-                        <label><%= f.Title %></label>
-                        <% if (f.Children!=null && f.Children.Count > 0) { %>
-                        <div class="image-sizes">
-                            <em class="<%= string.IsNullOrEmpty(mediaBrowserModel.PreferredSize) ? "selected" : "" %>" data-size="<%= f.Size %>" data-url="<%= f.Url %>">default</em>
-                            <% foreach(var ch in f.Children) { %>
-                            <em class="<%= mediaBrowserModel.PreferredSize==ch.SizeName ? "selected" : "" %>" data-size="<%= ch.Size %>" data-url="<%= ch.Url %>"><%= ch.SizeName %></em>
-                            <%} %>
-                        </div>
-                        <%} %>
-                       </li>
-                    <%} else { %>
-                    <li data-i="<%= counter++ %>" class="file" data-size="<%= f.Size %>" data-date="<%= f.Date %>" data-isimage="false" data-url="<%= f.Url %>"
-                        data-name="<%= f.Title %>">
-                        <span class="file-ic glyphicon glyphicon-file"></span>
-                        <label><%= f.Title %></label>
-                       </li>
-                    <%} %>
-                <%} %>
-            </ul>
-
-        </div>
+        <h1><%= GetLocalResourceString("MediaBrowser", "Media Browser") %></h1>
 
         <div id="browser-upload-file" class="browser-files-section">
             <div class='file-selector-container'>
             
-                <button type="button" id="FileUploadItemId_Btn" class="btn btn-info" data-fire="FileUploadItem"><span class="glyphicon glyphicon-hdd"></span> <%= GetLocalResourceString("SelectFiles", "Select files...") %></button>
+                <button type="button" id="FileUploadItemId_Btn" class="btn btn-info" data-fire="FileUploadItem"><span class="glyphicon glyphicon-hdd"></span> <%= GetLocalResourceString("UploadButton", "Upload...") %></button>
 
                 <div class='file-selector-control'>
                     <input class="file-upload-ajax valid" data-valueid="FileUploadItemId" id="FileUploadItem" multiple="multiple" name="FileUploadItem" type="file" />
@@ -113,6 +43,75 @@
             <div class="file-selector-disallowed">
                 <%= GetLocalResourceString("UploadDisallowedBrowser", "This browser is outdated and cannot upload files using this dialog. Please use a modern browser to get the most out of N2cms") %>
             </div>
+        </div>
+
+        <div id="browser-files-list" class="browser-files-section first browser-files-list">
+
+            <div class="row files-breadcrumb" id="dirs-breadcrumb" data-rootisselectable="<%= mediaBrowserModel.RootIsSelectable %>">
+                <ul>
+                <%  var bc = "/";
+                    foreach (var s in mediaBrowserModel.Breadcrumb) {
+                        bc += (s == "[root]" ? "" : s + "/");%>
+                    <li data-url="<%= bc %>"><span><%= s %></span></li>
+                <% } %>
+                </ul>
+            </div>
+            <div class="row files-search-cont">
+                <div class="col-sm-8 col-md-6">
+                    <div class="input-group input-group-sm">
+                        <input type="text" id="input-group-q" class="form-control" placeholder="<%= GetLocalResourceString("Search", "Search...") %>" />
+                        <span class="input-group-btn">
+                            <button id="btn-search" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                            <button id="btn-search-clean" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+                        </span>
+                    </div><!-- /input-group -->
+                </div>
+            </div>
+
+            <div id="lblMessage" class="bg-warning" style="display:none"></div>
+
+            <% var regIsImage = new Regex(@"^.*\.(jpg|jpeg|gif|png)$", RegexOptions.IgnoreCase);
+               var counter = 0;%>
+            <ul id="browser-files-list-ul" class="files-list" 
+                data-path="<%= mediaBrowserModel.Path %>" 
+                data-rootpath="<%= mediaBrowserModel.RootPath %>" 
+                data-selurl="<%= Request["selectedUrl"]%>"
+                data-baseajax="<%= mediaBrowserModel.HandlerUrl %>" data-mediacontrol="<%= mediaBrowserModel.MediaControl %>"
+                data-ckeditor="<%= mediaBrowserModel.CkEditor %>" data-ckeditorfuncnum="<%= mediaBrowserModel.CkEditorFuncNum %>" data-preferredsize="<%= mediaBrowserModel.PreferredSize %>"
+                data-i18size="<%= GetLocalResourceString("Size", "Size") %>" data-i18date="<%= GetLocalResourceString("DateModified", "Date") %>" data-i18url="<%= GetLocalResourceString("Url", "Url") %>">
+                <% if(mediaBrowserModel.Dirs!=null) foreach (var d in mediaBrowserModel.Dirs) { %>
+                    <li data-i="<%= counter++ %>" class="dir" data-url="<%= d.Path %>"">
+                        <span class="file-ic glyphicon glyphicon-folder-open"></span>
+                        <label><%= d.Name %></label>
+                    </li>
+                <%} %>
+                <% if(mediaBrowserModel.Files!=null) foreach (var f in mediaBrowserModel.Files) {
+                            var img = f.IsImage ? f.Thumb : string.Empty;
+                            %>
+                    <% if(f.IsImage) { %>
+                    <li data-i="<%= counter++ %>" class="file image" data-size="<%= f.Size %>" data-date="<%= f.Date %>" 
+                        data-name="<%= f.Title %>" data-isimage="true" data-url="<%= f.Url %>" 
+                        style="background-image:url('<%= img %>');" >
+                        <label><%= f.Title %></label>
+                        <% if (f.Children!=null && f.Children.Count > 0) { %>
+                        <div class="image-sizes">
+                            <em class="<%= string.IsNullOrEmpty(mediaBrowserModel.PreferredSize) ? "selected" : "" %>" data-size="<%= f.Size %>" data-url="<%= f.Url %>">default</em>
+                            <% foreach(var ch in f.Children) { %>
+                            <em class="<%= mediaBrowserModel.PreferredSize==ch.SizeName ? "selected" : "" %>" data-size="<%= ch.Size %>" data-url="<%= ch.Url %>"><%= ch.SizeName %></em>
+                            <%} %>
+                        </div>
+                        <%} %>
+                       </li>
+                    <%} else { %>
+                    <li data-i="<%= counter++ %>" class="file" data-size="<%= f.Size %>" data-date="<%= f.Date %>" data-isimage="false" data-url="<%= f.Url %>" 
+                        data-name="<%= f.Title %>">
+                        <span class="file-ic glyphicon glyphicon-file"></span>
+                        <label><%= f.Title %></label>
+                       </li>
+                    <%} %>
+                <%} %>
+            </ul>
+
         </div>
 
     </div>
@@ -143,17 +142,10 @@
         var selectableExtensions = '<%= HttpUtility.JavaScriptStringEncode(Request["selectableExtensions"])%>';
         var ticket = '<%= GetEncryptedTicket() %>';
         var maxSize = <%= GetMaxSize() %>;
-        var initialTab = '<%= GetInitialTab() %>';
+        <%--var initialTab = '<%= GetInitialTab() %>';--%>
     </script>
 
 	<script type="text/javascript" src="<%= N2.Web.Url.ResolveTokens(Register.JQueryJsPath)%>"></script>
     <script src="MediaBrowser.js" type="text/javascript"></script>
-    <script>
-        $(function(){
-            if (window.initialTab){
-                $(window.initialTab).click();
-            }
-        })
-    </script>
 </body>
 </html>

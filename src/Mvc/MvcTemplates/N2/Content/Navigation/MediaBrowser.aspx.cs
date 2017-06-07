@@ -53,6 +53,7 @@ namespace N2.Edit.Navigation
                 PreferredSize = preferredSize,
                 Breadcrumb = new string[] { },
                 Path = "",
+                RootPath = "",
                 RootIsSelectable = false
             };
 
@@ -90,6 +91,14 @@ namespace N2.Edit.Navigation
                     }
                 }
 
+                var directory = FS.GetDirectory(mediaBrowserModel.Path);
+                //Try to get root path only if the returned directory contains a Name that contains the virtual path.
+                if (directory != null && !string.IsNullOrWhiteSpace(directory.Name) && !string.IsNullOrWhiteSpace(directory.VirtualPath) && directory.Name.Contains(directory.VirtualPath))
+                {
+                    //Remove the virtual path portion from the Name to get root path.
+                    mediaBrowserModel.RootPath = directory.Name.Split(new[] { directory.VirtualPath }, StringSplitOptions.RemoveEmptyEntries)[0];
+                }
+
                 var breadcrumb = mediaBrowserModel.Path.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 breadcrumb.Insert(0, "[root]");
                 mediaBrowserModel.Breadcrumb = breadcrumb.ToArray();
@@ -113,11 +122,6 @@ namespace N2.Edit.Navigation
 				return -1;
 			}
         }
-
-		protected string GetInitialTab()
-		{
-			return Request["tab"] == "upload" ? "#uploadTab" : null;
-		}
-
+        
     }
 }

@@ -86,3 +86,4 @@ src/Framework/Extensions/x86/
 .DS_Store
 *.jpg
 *.pdf
+/src/Mvc/MvcTemplates/N2/Properties/PublishProfiles

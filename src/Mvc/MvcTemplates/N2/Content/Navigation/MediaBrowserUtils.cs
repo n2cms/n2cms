@@ -56,6 +56,7 @@ namespace N2.Edit.Navigation
         public IList<FileReducedListModel> Files { get; set; }
         public IList<FileSystem.Items.Directory> Dirs { get; set; }
         public string Path { get; set; }
+        public string RootPath { get; set; }
         public string CkEditor { get; set; }
         public string CkEditorFuncNum { get; set; }
         public string MediaControl { get; set; }

@@ -33,10 +33,6 @@
         objs: [],
         list: null,
         listLis: null,
-        tabs: null,
-        tabsCtrl: null,
-        tabsCtrlLis: null,
-        curTab: 0,
         btn: null,
         btnClose: null,
         btnSearch: null,
@@ -58,6 +54,7 @@
         patternInfoFile: "<label>{{i18url}}</label>{{url}}",
         preferredSize: "",
         lastPath: "",
+        rootPath: "",
         divBreadcrumb: null,
         history: { breadcrumb: "", list: "" },
         ajaxUrl: "",
@@ -74,8 +71,6 @@
             if (fbMainDiv === null) return;
 
             me.list = document.getElementById("browser-files-list-ul");
-            me.tabs = document.getElementsByClassName("browser-files-section");
-            me.tabsCtrl = document.getElementById("tabsCtrl");
             me.btn = document.getElementById("btn-select");
             me.btnSearch = document.getElementById("btn-search");
             me.qSearch = document.getElementById("input-group-q");
@@ -102,6 +97,7 @@
             };
             me.preferredSize = me.list.getAttribute("data-preferredsize");
             me.lastPath = me.list.getAttribute("data-path");
+            me.rootPath = me.list.getAttribute("data-rootpath");
             me.selectedUrl = me.list.getAttribute("data-selurl");
 
             if (me.list != null) {
@@ -130,12 +126,7 @@
                 me.ajaxUrl = (fileBrowser.list).getAttribute("data-baseajax");
                 me.selPrevioursUrl();
             }
-
-            if (me.tabsCtrl != null) {
-                me.tabsCtrlLis = (me.tabsCtrl).getElementsByTagName("li"); 
-                jQ(me.tabsCtrl).click(me.showTab);
-            }
-
+            
             jQ(me.btnClose).click(me.closeWindow);
 
             me.initUpload();
@@ -144,34 +135,6 @@
         },
         toggleMainBtn: function (on) {
             !on ? fileBrowser.btn.setAttribute("disabled", "disabled") : fileBrowser.btn.removeAttribute("disabled");
-        },
-        showTab: function (e) {
-            var t = e.target, p;
-            if (t.tagName.toUpperCase() !== "A") { return; }
-            e.stopPropagation();
-            e.preventDefault();
-            p = Number(t.href.split("#")[1]);
-            if (p === fileBrowser.curTab) { return; }
-
-            fileBrowser.showTabNum(p);
-        },
-        showTabNum: function (p) {
-            var ts = fileBrowser.tabsCtrlLis, c = fileBrowser.curTab, tabs = fileBrowser.tabs;
-            //ChangeTab
-            tabs[c].style.display = "none";
-            jQ(ts[c]).removeClass("active");
-            tabs[p].style.display = "block";
-            jQ(ts[p]).addClass("active");
-            fileBrowser.curTab = p;
-
-            //Deselect any
-            if (fileBrowser.cur >= 0) { jQ(fileBrowser.listLis[fileBrowser.cur]).removeClass("selected"); }
-            fileBrowser.showInfo(-1);
-
-            if (p === 1) {
-                (fileBrowser.progressBar).parentNode.style.display = "none";
-                (fileBrowser.progressBar).style.display.width = "0%";
-            }
         },
         selPrevioursUrl: function () {
             var j, k, len, lenk, li,
@@ -308,7 +271,7 @@
             } else {
                 me.toggleMainBtn(true);
                 liDp = (me.listLis)[i];
-                url = liDp.getAttribute("data-url");
+                url = me.rootPath + liDp.getAttribute("data-url"); //absolute url
                 size = Number(liDp.getAttribute("data-size"));
                 date = new Date(liDp.getAttribute("data-date"));
                 dp = {
@@ -398,7 +361,7 @@
                 for (i = 0, len = pathSplitted.length; i < len; i += 1) {
                     if (i > 0 && pathSplitted[i] === "") continue;
                     breadcrumber += i === 0 ? "" : pathSplitted[i] + "/";
-                    breadcrumbUl.push("<li data-url=\"" + breadcrumber + "\">" + pathSplitted[i] + "</li>");
+                    breadcrumbUl.push("<li data-url=\"" + breadcrumber + "\"><span>" + pathSplitted[i] + "</span></li>");
                 }
                 fileBrowser.divBreadcrumb.innerHTML = "<ul>" + breadcrumbUl.join("") + "</ul>";
             }
@@ -562,9 +525,12 @@
                         fileBrowser.lastPath = "";
                         fileBrowser.loadData(lastPath, null);
                         jQ(fileBrowser.progressBar).removeClass("progress-bar-striped");
+                        fileBrowser.lblMessageUpload.innerHTML = "File uploaded.";
+                        fileBrowser.lblMessageUpload.style.display = "block";
                         setTimeout(function () {
-                            fileBrowser.showTabNum(0);
-                        }, 1000);
+                            fileBrowser.lblMessageUpload.innerHTML = "";
+                            fileBrowser.lblMessageUpload.style.display = "none";
+                        }, 3000);
 
                     } else {
                         fileBrowser.lblMessageUpload.innerHTML = result.Message;
