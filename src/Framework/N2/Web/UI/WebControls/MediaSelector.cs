@@ -21,7 +21,6 @@ namespace N2.Web.UI.WebControls
 			ClearButton = new HtmlButton();
 			PopupButton = new HtmlButton();
             ShowButton = new HtmlButton();
-            UploadButton = new HtmlButton();
 		}
 
 		public MediaSelector(string name)
@@ -68,7 +67,6 @@ namespace N2.Web.UI.WebControls
 		public HtmlButton ClearButton { get; private set; }
         public HtmlButton PopupButton { get; private set; }
         public HtmlButton ShowButton { get; private set; }
-		public HtmlButton UploadButton { get; private set; }
         public HtmlGenericControl Buttons { get; private set; }
 
 		protected virtual void RegisterClientScripts()
@@ -98,7 +96,6 @@ namespace N2.Web.UI.WebControls
 			Controls.Add(ClearButton);
 			Controls.Add(Buttons);
 			Buttons.Controls.Add(PopupButton);
-            Buttons.Controls.Add(UploadButton);
 
 			ShowButton.InnerHtml = "<b class='fa fa-eye'></b>";
 			ShowButton.Attributes["title"] = Utility.GetGlobalResourceString("UrlSelector", "View") ?? "View";
@@ -115,9 +112,6 @@ namespace N2.Web.UI.WebControls
 			PopupButton.InnerHtml = ButtonText;
 			PopupButton.Attributes["title"] = Utility.GetGlobalResourceString("UrlSelector", "Select") ?? "Select";
 			PopupButton.Attributes["class"] = "btn popupButton selectorButton";
-			UploadButton.InnerHtml = "<b class='fa fa-upload'></b>";
-			UploadButton.Attributes["title"] = Utility.GetGlobalResourceString("UrlSelector", "Upload") ?? "View";
-			UploadButton.Attributes["class"] = "btn uploadButton";
 		}
 
 		protected override void OnPreRender(EventArgs e)
@@ -132,14 +126,6 @@ namespace N2.Web.UI.WebControls
 													  PreferredSize,
 													  !string.IsNullOrWhiteSpace(SelectableExtensions) ? SelectableExtensions : ImageExtensions
                                                       );
-
-			UploadButton.Attributes["onclick"] = string.Format(OpenPopupFormat,
-													  N2.Web.Url.ResolveTokens(BrowserUrl ?? Engine.ManagementPaths.MediaBrowserUrl.ToUrl().AppendQuery("mc=true").AppendQuery("tab=upload")),
-													  Input.ClientID,
-													  PopupOptions,
-													  PreferredSize,
-													  !string.IsNullOrWhiteSpace(SelectableExtensions) ? SelectableExtensions : ImageExtensions
-													  );
 
 			ClearButton.Attributes["onclick"] = "n2MediaSelection.clearMediaSelector('" + Input.ClientID + "'); return false;";
 
