@@ -92,11 +92,9 @@ namespace N2.Edit.Navigation
                 }
 
                 var directory = FS.GetDirectory(mediaBrowserModel.Path);
-                //Try to get root path only if the returned directory contains a Name that contains the virtual path.
-                if (directory != null && !string.IsNullOrWhiteSpace(directory.Name) && !string.IsNullOrWhiteSpace(directory.VirtualPath) && directory.Name.Contains(directory.VirtualPath))
+                if (directory != null && !string.IsNullOrWhiteSpace(directory.RootPath))
                 {
-                    //Remove the virtual path portion from the Name to get root path.
-                    mediaBrowserModel.RootPath = directory.Name.Split(new[] { directory.VirtualPath }, StringSplitOptions.RemoveEmptyEntries)[0];
+                    mediaBrowserModel.RootPath = directory.RootPath;
                 }
 
                 var breadcrumb = mediaBrowserModel.Path.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries).ToList();
