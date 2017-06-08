@@ -33,7 +33,7 @@ namespace N2.Management.Files.FileSystem.Pages
 
             return sizeName;
         }
-
+        
         public virtual string RemoveImageSize(string fileName)
         {
             int separatorIndex;
@@ -42,6 +42,11 @@ namespace N2.Management.Files.FileSystem.Pages
                 return null;
 
             return fileName.Substring(0, separatorIndex) + fileName.Substring(dotIndex);
+        }
+
+        public string GetResizeSeparator()
+        {
+            return ImageResizeSeparator;
         }
 
         private static bool TryGetSeparatorAndDotIndex(string fileName, out int separatorIndex, out int dotIndex)

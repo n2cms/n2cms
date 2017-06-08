@@ -167,7 +167,7 @@ namespace N2.Edit.Navigation
                 return file.Children.Select(
                     cc => new FileReducedChildrenModel
                     {
-                        SizeName = imageSizes.GetSizeName(cc.Title) ?? GetUnreferencedImageSize(cc.Title),
+                        SizeName = imageSizes.GetSizeName(cc.Title) ?? GetUnreferencedImageSize(cc.Title, imageSizes.GetResizeSeparator()),
                         Url = fsRootPath + cc.Url,
                         Size = (cc as File) != null ? (cc as File).Size : -1
                     }
@@ -201,13 +201,13 @@ namespace N2.Edit.Navigation
             }
         }
 
-        private static string GetUnreferencedImageSize(string title)
+        private static string GetUnreferencedImageSize(string title, string resizeSeparator)
         {
             var ext = VirtualPathUtility.GetExtension(title);
             var filenameWithoutExtension = title.Substring(0, title.LastIndexOf(ext));
-            var arr = filenameWithoutExtension.Split('_');
+            var arr = filenameWithoutExtension.Split(new[] { resizeSeparator }, StringSplitOptions.RemoveEmptyEntries);
             if (arr.Length == 1) return "?";
-            return arr[arr.Length - 1] + "?";
+            return arr[arr.Length - 1];
         }
 
         #endregion
@@ -338,7 +338,7 @@ namespace N2.Edit.Navigation
             {
                 Path = "",
                 Total = files.Count,
-                Files = GetFileReducedList(files, ImageSizes, selectableExtensions, fsRootPath)
+                Files = GetFileReducedList(files, ImageSizes , selectableExtensions, fsRootPath)
             });
 
         }
