@@ -131,20 +131,20 @@ namespace N2.Edit.Navigation
             }
         }
 
-        public static List<FileReducedListModel> GetFileReducedList(List<File> files, Management.Files.FileSystem.Pages.ImageSizeCache imageSizes, string exts = "")
+        public static List<FileReducedListModel> GetFileReducedList(List<File> files, Management.Files.FileSystem.Pages.ImageSizeCache imageSizes, string exts = "", string fsRootPath = "")
         {
             var regIsImage = new Regex(@"^.*\.(jpg|jpeg|gif|png)$", RegexOptions.IgnoreCase);
 
             var ret = files.Select(d => new FileReducedListModel
             {
                 Title = d.Title,
-                Url = d.LocalUrl,
+                Url = fsRootPath + d.LocalUrl,
                 IsImage = regIsImage.IsMatch(d.Title),
-                Thumb = regIsImage.IsMatch(d.Title) ? N2.Web.Drawing.ImagesUtility.GetExistingImagePath(d.LocalUrl, "thumb") : null,
+                Thumb = regIsImage.IsMatch(d.Title) ? fsRootPath + N2.Web.Drawing.ImagesUtility.GetExistingImagePath(d.LocalUrl, "thumb") : null,
                 Size = d.Size,
                 Date = string.Format("{0:s}", d.Created),
                 SCount = d.Children.Count,
-                Children = regIsImage.IsMatch(d.Title) ? GetFileReducedChildren(d, imageSizes) : null
+                Children = regIsImage.IsMatch(d.Title) ? GetFileReducedChildren(d, imageSizes, fsRootPath) : null
             }).ToList();
 
 
@@ -159,7 +159,7 @@ namespace N2.Edit.Navigation
             return ret;
         }
 
-        private static List<FileReducedChildrenModel> GetFileReducedChildren(File file, Management.Files.FileSystem.Pages.ImageSizeCache imageSizes)
+        private static List<FileReducedChildrenModel> GetFileReducedChildren(File file, Management.Files.FileSystem.Pages.ImageSizeCache imageSizes, string fsRootPath = "")
         {
             if (file.Children == null) return null;
             try
@@ -168,7 +168,7 @@ namespace N2.Edit.Navigation
                     cc => new FileReducedChildrenModel
                     {
                         SizeName = imageSizes.GetSizeName(cc.Title) ?? GetUnreferencedImageSize(cc.Title),
-                        Url = cc.Url,
+                        Url = fsRootPath + cc.Url,
                         Size = (cc as File) != null ? (cc as File).Size : -1
                     }
                     ).ToList();
@@ -226,11 +226,12 @@ namespace N2.Edit.Navigation
 
             var selectionTrail = Find.EnumerateParents(selected, null, true).ToList().Where(a => a is AbstractNode).Reverse().ToList();
             var selectedPath = selected.Path;
+            
+            FS = Engine.Resolve<IFileSystem>();
 
             var dir = selected as Directory;
             if (dir == null)
             {
-                FS = Engine.Resolve<IFileSystem>();
                 var uploadDirectories = MediaBrowserUtils.GetAvailableUploadFoldersForAllSites(context, root, selectionTrail, Engine, FS);
                 dirs = new List<Directory>();
                 files = new List<File>();
@@ -239,12 +240,16 @@ namespace N2.Edit.Navigation
                     dirs.Add(updDir.Current as Directory);
                 }
                 selectedPath = "/";
-            } else
+            }
+            else
             {
                 dirs = dir.GetDirectories();
                 files = dir.GetFiles();
             }
 
+            var directory = FS.GetDirectory(selectedPath);
+            var fsRootPath = directory != null && !string.IsNullOrWhiteSpace(directory.RootPath) ? directory.RootPath : "";
+            
             var selectableExtensions = context.Request["exts"];
 
             context.Response.WriteJson(new
@@ -253,7 +258,7 @@ namespace N2.Edit.Navigation
                 Total = dirs.Count + files.Count,
                 Trail = selectionTrail.Select(d => new { d.Title, Url = d.Url }).ToList(),
                 Dirs = dirs.Select(d => new { d.Title, Url = VirtualPathUtility.ToAppRelative(d.LocalUrl).Trim('~') }).ToList(),
-                Files = GetFileReducedList(files.ToList(), ImageSizes, selectableExtensions)
+                Files = GetFileReducedList(files.ToList(), ImageSizes, selectableExtensions, fsRootPath)
             });
         }
 
@@ -311,21 +316,21 @@ namespace N2.Edit.Navigation
                 var unresizedFileName = ImageSizes.RemoveImageSize(file.Name);
                 if (unresizedFileName != null && fileMap.ContainsKey(unresizedFileName))
                 {
-                    fileMap[unresizedFileName].Add(file);
+                    fileMap[unresizedFileName].Add(file); //Add child
 
                     if (ImageSizes.GetSizeName(file.Name) == "icon")
                         file.IsIcon = true;
                 }
                 else
                 {
-                    if (unresizedFileName == null)
-                    {
-                        files.Add(file);
-                        fileMap[file.Name] = file;
-                    }
+                    files.Add(file);
+                    fileMap[file.Name] = file;
                 }
             }
             files.Sort(new TitleComparer<File>());
+
+            var directory = FS.GetDirectory("/");
+            var fsRootPath = directory != null && !string.IsNullOrWhiteSpace(directory.RootPath) ? directory.RootPath : "";
 
             var selectableExtensions = context.Request["exts"];
 
@@ -333,7 +338,7 @@ namespace N2.Edit.Navigation
             {
                 Path = "",
                 Total = files.Count,
-                Files = GetFileReducedList(files, ImageSizes, selectableExtensions)
+                Files = GetFileReducedList(files, ImageSizes, selectableExtensions, fsRootPath)
             });
 
         }

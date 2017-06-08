@@ -746,6 +746,7 @@
 									</xs:all>
 									<xs:attribute name="resizedExtensions" type="xs:string" use="optional" default=".jpg,.jpeg" />
 									<xs:attribute name="resizeUploadedImages" type="xs:boolean" use="optional" default="true" />
+                  <xs:attribute name="resizeSeparator" type="xs:string" use="optional" default="_" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="membership" minOccurs="0">

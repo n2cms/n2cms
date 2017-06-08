@@ -74,7 +74,6 @@
                var counter = 0;%>
             <ul id="browser-files-list-ul" class="files-list" 
                 data-path="<%= mediaBrowserModel.Path %>" 
-                data-rootpath="<%= mediaBrowserModel.RootPath %>" 
                 data-selurl="<%= Request["selectedUrl"]%>"
                 data-baseajax="<%= mediaBrowserModel.HandlerUrl %>" data-mediacontrol="<%= mediaBrowserModel.MediaControl %>"
                 data-ckeditor="<%= mediaBrowserModel.CkEditor %>" data-ckeditorfuncnum="<%= mediaBrowserModel.CkEditorFuncNum %>" data-preferredsize="<%= mediaBrowserModel.PreferredSize %>"

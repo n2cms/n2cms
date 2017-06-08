@@ -53,7 +53,6 @@ namespace N2.Edit.Navigation
                 PreferredSize = preferredSize,
                 Breadcrumb = new string[] { },
                 Path = "",
-                RootPath = "",
                 RootIsSelectable = false
             };
 
@@ -74,10 +73,13 @@ namespace N2.Edit.Navigation
                 var imageSizes = Engine.Resolve<Management.Files.FileSystem.Pages.ImageSizeCache>();
                 if (uploadDirectories.Count == 1 || selectionTrail.Count > 1)
                 {
+                    var directory = FS.GetDirectory(mediaBrowserModel.Path);
+                    var fsRootPath = directory != null && !string.IsNullOrWhiteSpace(directory.RootPath) ? directory.RootPath : "";
+
                     var dir = (selectionTrail.Count > 0 ? selectionTrail.ElementAt(0) : uploadDirectories[0].Current) as Directory;
                     var files = dir.GetFiles().ToList();
                     mediaBrowserModel.Dirs = dir.GetDirectories();
-                    mediaBrowserModel.Files = MediaBrowserHandler.GetFileReducedList(files, imageSizes, selectableExtensions);
+                    mediaBrowserModel.Files = MediaBrowserHandler.GetFileReducedList(files, imageSizes, selectableExtensions, fsRootPath);
                     mediaBrowserModel.Path = System.Web.VirtualPathUtility.ToAppRelative(dir.LocalUrl).Trim('~');
                 }
                 else
@@ -89,12 +91,6 @@ namespace N2.Edit.Navigation
                     {
                         mediaBrowserModel.Dirs.Add(updDir.Current as Directory);
                     }
-                }
-
-                var directory = FS.GetDirectory(mediaBrowserModel.Path);
-                if (directory != null && !string.IsNullOrWhiteSpace(directory.RootPath))
-                {
-                    mediaBrowserModel.RootPath = directory.RootPath;
                 }
 
                 var breadcrumb = mediaBrowserModel.Path.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries).ToList();

@@ -39,7 +39,7 @@ namespace N2.Edit.FileSystem.Items
                     var unresizedFileName = ImageSizes.RemoveImageSize(file.Name);
                     if (unresizedFileName != null && fileMap.ContainsKey(unresizedFileName))
                     {
-                        fileMap[unresizedFileName].Add(file);
+                        fileMap[unresizedFileName].Add(file); //Add child
 
                         if (ImageSizes.GetSizeName(file.Name) == "icon")
                             file.IsIcon = true;

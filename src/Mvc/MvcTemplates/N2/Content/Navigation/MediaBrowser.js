@@ -54,7 +54,6 @@
         patternInfoFile: "<label>{{i18url}}</label>{{url}}",
         preferredSize: "",
         lastPath: "",
-        rootPath: "",
         divBreadcrumb: null,
         history: { breadcrumb: "", list: "" },
         ajaxUrl: "",
@@ -97,7 +96,6 @@
             };
             me.preferredSize = me.list.getAttribute("data-preferredsize");
             me.lastPath = me.list.getAttribute("data-path");
-            me.rootPath = me.list.getAttribute("data-rootpath");
             me.selectedUrl = me.list.getAttribute("data-selurl");
 
             if (me.list != null) {
@@ -271,7 +269,7 @@
             } else {
                 me.toggleMainBtn(true);
                 liDp = (me.listLis)[i];
-                url = me.rootPath + liDp.getAttribute("data-url"); //absolute url
+                url = liDp.getAttribute("data-url");
                 size = Number(liDp.getAttribute("data-size"));
                 date = new Date(liDp.getAttribute("data-date"));
                 dp = {

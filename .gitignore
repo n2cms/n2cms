@@ -87,3 +87,4 @@ src/Framework/Extensions/x86/
 *.jpg
 *.pdf
 /src/Mvc/MvcTemplates/N2/Properties/PublishProfiles
+/.vs
