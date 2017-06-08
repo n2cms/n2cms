@@ -12,10 +12,12 @@ namespace N2.Management.Files.FileSystem.Pages
     public class ImageSizeCache
     {
         public HashSet<string> ImageSizes { get; private set; }
+        private static string ImageResizeSeparator { get; set; }
 
         public ImageSizeCache(ConfigurationManagerWrapper config)
         {
             ImageSizes = new HashSet<string>(config.Sections.Management.Images.Sizes.AllElements.Select(ise => ise.Name), StringComparer.InvariantCultureIgnoreCase);
+            ImageResizeSeparator = config.Sections.Management.Images.ResizeSeparator;
         }
 
         public virtual string GetSizeName(string fileName)
@@ -44,7 +46,7 @@ namespace N2.Management.Files.FileSystem.Pages
 
         private static bool TryGetSeparatorAndDotIndex(string fileName, out int separatorIndex, out int dotIndex)
         {
-            separatorIndex = fileName.LastIndexOf(ImagesUtility.Separator[0]);
+            separatorIndex = fileName.LastIndexOf(ImageResizeSeparator);
             dotIndex = fileName.LastIndexOf('.');
 
             return separatorIndex >= 0 && separatorIndex < dotIndex;

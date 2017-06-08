@@ -22,6 +22,13 @@ namespace N2.Configuration
             set { base["resizedExtensions"] = value; }
         }
 
+        [ConfigurationProperty("resizeSeparator", DefaultValue = "-__-")]
+        public string ResizeSeparator
+        {
+            get { return (string)base["resizeSeparator"]; }
+            set { base["resizeSeparator"] = value; }
+        }
+
         /// <summary>Information about images.</summary>
         [ConfigurationProperty("sizes")]
         public ImageSizesCollection Sizes
