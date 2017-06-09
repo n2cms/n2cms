@@ -57,6 +57,7 @@
     .files-list li.selected .image-sizes { display:block;}
 
 .files-list .dir { background:#a1d4fe; cursor:pointer;} 
+.files-list .dir-create { background:#f2f2f2; cursor:pointer;} 
 .files-list .file.image { background-position:50% 50%; background-size:cover; background-repeat:no-repeat;}
 .files-list li label { position:absolute; bottom:0; left:0; right:0; padding:6px; background:#eee; font-size:80%; 
                           background:#ddd; display:block; margin:0; font-weight:normal; font-size:10px; }
@@ -64,6 +65,7 @@
     .files-list .file.image:hover label { display:block; }
 
     .files-list .dir label { background:none; font-size:12px;}
+    .files-list .dir-create label { font-size:12px; font-weight:bold; }
     .files-list li .file-ic {  position:absolute; top:25px; left:0;right:0; text-align:center; font-size:25px;}
 
     .files-list .image-sizes { padding:7px 10px 0 10px; display:none; z-index:30;}

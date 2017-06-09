@@ -78,6 +78,9 @@ namespace N2.Edit.Navigation
                         case "/uploadFile":
                             WriteUploadFile(context);
                             return;
+                        case "/directory/create":
+                            WriteDirectoryCreate(context);
+                            return;
                     }
                     break;
             }
@@ -442,6 +445,58 @@ namespace N2.Edit.Navigation
             catch (Exception e)
             {
                 context.Response.WriteJson(new { Status = "Error", Message = "Upload failed", Detail = e.Message });
+                return;
+            }
+
+        }
+        
+        private void WriteDirectoryCreate(HttpContext context)
+        {
+            ValidateTicket(context.Request["ticket"]);
+            FS = Engine.Resolve<IFileSystem>();
+
+            var parentDirectory = context.Request["selected"];
+            var selected = new Directory(DirectoryData.Virtual(parentDirectory), null);
+
+            if (string.IsNullOrEmpty(parentDirectory) || !Engine.SecurityManager.IsAuthorized(context.User, selected, N2.Security.Permission.Write))
+            {
+                context.Response.WriteJson(new { Status = "Error", Message = "Not allowed" });
+                return;
+            }
+
+            var name = context.Request["name"];
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                context.Response.WriteJson(new { Status = "Error", Message = "Directory name required" });
+                return;
+            }
+
+            var regex = new Regex("[^a-zA-Z0-9_ ]");
+            name = regex.Replace(name, "");
+            if (name.Length == 0)
+            {
+                context.Response.WriteJson(new { Status = "Error", Message = "Directory name required (Special characters are stripped out)" });
+                return;
+            }
+
+            var newDir = VirtualPathUtility.AppendTrailingSlash(context.Request.ApplicationPath + selected.Url) + name;
+
+            try
+            {
+                if (FS.DirectoryExists(newDir))
+                {
+                    context.Response.WriteJson(new { Status = "Exists", Message = "Directory already exists" });
+                }
+                else
+                {
+                    FS.CreateDirectory(newDir);
+                    context.Response.WriteJson(new { Status = "Ok", Message = "Directory created" });
+                }
+                return;
+            }
+            catch (Exception e)
+            {
+                context.Response.WriteJson(new { Status = "Error", Message = "Create directory failed", Detail = e.Message });
                 return;
             }
 

@@ -179,21 +179,33 @@
                 case "LI": p = e.target;
                 case "IMG":
                 case "SPAN":
-                    type = jQ(p).hasClass("dir") ? 0 : (jQ(p).hasClass("image") ? 1 : 2);
-                    if (type > 0) {
-                        if (jQ(p).hasClass("selected")) {
-                            jQ(p).removeClass("selected");
-                            fileBrowser.showInfo(-1);
-                        } else {
-                            if (fileBrowser.cur >= 0) {
-                                jQ(fileBrowser.listLis[fileBrowser.cur]).removeClass("selected");
-                            }
-                            jQ(p).addClass("selected");
-                            fileBrowser.showInfo(Number(p.getAttribute("data-i")));
+                    type = jQ(p).hasClass("dir-create") ? 0 : (jQ(p).hasClass("dir") ? 1 : (jQ(p).hasClass("image") ? 2 : 3));
+                    switch (type) {
+                        case 0: {
+                            //Create a new folder
+                            fileBrowser.createDirectory(fileBrowser.ajaxUrl, fileBrowser.lastPath);
+                            break;
                         }
-                    } else {
-                        newDir = jQ(p).data("url");
-                        fileBrowser.loadData(newDir, null);
+                        case 1: {
+                            //Open selected the folder
+                            newDir = jQ(p).data("url");
+                            fileBrowser.loadData(newDir, null);
+                            break;
+                        }
+                        default: {
+                            //image/file select
+                            if (jQ(p).hasClass("selected")) {
+                                jQ(p).removeClass("selected");
+                                fileBrowser.showInfo(-1);
+                            } else {
+                                if (fileBrowser.cur >= 0) {
+                                    jQ(fileBrowser.listLis[fileBrowser.cur]).removeClass("selected");
+                                }
+                                jQ(p).addClass("selected");
+                                fileBrowser.showInfo(Number(p.getAttribute("data-i")));
+                            }
+                            break;
+                        }
                     }
                     break;
                 case "EM":
@@ -253,7 +265,7 @@
         },
         clicksBreadcrumbRespond: function(e){
             var t = e.target, newDir, tagName = t.tagName;
-            if (tagName === "LI") {
+            if (tagName === "SPAN") {
                 newDir = t.getAttribute("data-url");
                 fileBrowser.showInfo(-1);
                 fileBrowser.loadData(newDir, null);
@@ -338,7 +350,8 @@
                     "<div class=\"image-sizes\">{{ImageSizes}}</div></li>",
                 patternImgSizes = "<em class=\"{{ClassName}}\" data-size=\"{{Size}}\" data-url=\"{{Url}}\">{{SizeName}}</em>",
                 patternDir = "<li data-i=\"{{i}}\" data-url=\"{{Url}}\" class=\"dir\"><span class=\"file-ic glyphicon glyphicon-folder-open\"></span><label>{{Title}}</label></li>",
-                startI = 0;
+                patternDirCreate = "<li data-i=\"{{i}}\" class=\"dir-create\"><span class=\"file-ic glyphicon glyphicon-folder-open\"></span><label>{{Title}}</label></li>",
+                startI = 1;
 
             fileBrowser.showInfo(-1);
             jQ(fileBrowser.list).removeClass("loading");
@@ -359,17 +372,20 @@
                 for (i = 0, len = pathSplitted.length; i < len; i += 1) {
                     if (i > 0 && pathSplitted[i] === "") continue;
                     breadcrumber += i === 0 ? "" : pathSplitted[i] + "/";
-                    breadcrumbUl.push("<li data-url=\"" + breadcrumber + "\"><span>" + pathSplitted[i] + "</span></li>");
+                    breadcrumbUl.push("<li><span data-url=\"" + breadcrumber + "\">" + pathSplitted[i] + "</span></li>");
                 }
                 fileBrowser.divBreadcrumb.innerHTML = "<ul>" + breadcrumbUl.join("") + "</ul>";
             }
 
+            //Create directory
+            lis.push(parsePropertiesToPattern(patternDirCreate, { Title: "Create a New Folder" }, 0));
+
             //Dirs
             if (data.Dirs) {
                 for (i = 0, len = data.Dirs.length; i < len; i += 1) {
-                    lis.push(parsePropertiesToPattern(patternDir, data.Dirs[i], i));
+                    lis.push(parsePropertiesToPattern(patternDir, data.Dirs[i], i + 1));
                 }
-                startI = len > 0 ? len : 0;
+                startI = len > 0 ? len : startI;
             }
 
             //Files
@@ -390,12 +406,12 @@
                     }
                     lis.push(parsePropertiesToPattern(dpt.IsImage ? patternImg : patternFile, dpt, startI + i));
                 }
-
-                lisHtml = lis.join("");
-                fileBrowser.list.innerHTML = lisHtml;
-                fileBrowser.listLis = jQ(fileBrowser.list).children("li");
-                fileBrowser.cur = -1;
             }
+
+            lisHtml = lis.join("");
+            fileBrowser.list.innerHTML = lisHtml;
+            fileBrowser.listLis = jQ(fileBrowser.list).children("li");
+            fileBrowser.cur = -1;
 
             if (data.Path) {
                 fileBrowser.history = { breadcrumb: fileBrowser.divBreadcrumb.innerHTML, list: lisHtml };
@@ -721,6 +737,40 @@
             });
 
             reqSave.fail(ajaxError);
+
+        },
+        createDirectory: function (ajaxUrl, curDir) {
+            var datas, reqCreate;
+            
+            var name = prompt("Please enter the folder name: (Special characters will be stripped out)");
+            if (name == null) {
+                return;
+            }
+            else if (name == "") {
+                alert("Folder name required!");
+                return;
+            }
+
+            datas = new FormData();
+            datas.append("ticket", window.ticket);
+
+            reqCreate = jQ.ajax({
+                type: "POST",
+                url: ajaxUrl + "/directory/create?selected=" + encodeURI(curDir) + "&name=" + encodeURI(name),
+                contentType: false,
+                processData: false,
+                data: datas,
+            });
+
+            reqCreate.done(function (d) {
+                if (d.Status !== "Ok") {
+                    alert(d.Message);
+                } else {
+                    fileBrowser.loadData(curDir, null);
+                }
+            });
+
+            reqCreate.fail(ajaxError);
 
         },
 

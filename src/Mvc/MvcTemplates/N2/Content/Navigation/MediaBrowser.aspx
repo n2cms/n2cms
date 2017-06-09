@@ -52,7 +52,7 @@
                 <%  var bc = "/";
                     foreach (var s in mediaBrowserModel.Breadcrumb) {
                         bc += (s == "[root]" ? "" : s + "/");%>
-                    <li data-url="<%= bc %>"><span><%= s %></span></li>
+                    <li><span data-url="<%= bc %>"><%= s %></span></li>
                 <% } %>
                 </ul>
             </div>
@@ -78,8 +78,12 @@
                 data-baseajax="<%= mediaBrowserModel.HandlerUrl %>" data-mediacontrol="<%= mediaBrowserModel.MediaControl %>"
                 data-ckeditor="<%= mediaBrowserModel.CkEditor %>" data-ckeditorfuncnum="<%= mediaBrowserModel.CkEditorFuncNum %>" data-preferredsize="<%= mediaBrowserModel.PreferredSize %>"
                 data-i18size="<%= GetLocalResourceString("Size", "Size") %>" data-i18date="<%= GetLocalResourceString("DateModified", "Date") %>" data-i18url="<%= GetLocalResourceString("Url", "Url") %>">
+                <li data-i="<%= counter++ %>" class="dir-create">
+                    <span class="file-ic glyphicon glyphicon-folder-open"></span>
+                    <label>Create a New Folder</label>
+                </li>
                 <% if(mediaBrowserModel.Dirs!=null) foreach (var d in mediaBrowserModel.Dirs) { %>
-                    <li data-i="<%= counter++ %>" class="dir" data-url="<%= d.Path %>"">
+                    <li data-i="<%= counter++ %>" class="dir" data-url="<%= d.Path %>">
                         <span class="file-ic glyphicon glyphicon-folder-open"></span>
                         <label><%= d.Name %></label>
                     </li>
