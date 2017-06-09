@@ -391,7 +391,7 @@
                 for (i = 0, len = data.Dirs.length; i < len; i += 1) {
                     lis.push(parsePropertiesToPattern(patternDir, data.Dirs[i], i + 1));
                 }
-                startI = len > 0 ? len : startI;
+                startI = len + startI;
             }
 
             //Files
@@ -550,7 +550,7 @@
 
                         var msg = result.Message;
                         if (result.hasOwnProperty("Detail") && result.Detail.length)
-                            msg + "<br />" + result.Detail;
+                            msg = msg + "<br />" + result.Detail;
 
                         fileBrowser.lblMessageUpload.innerHTML = msg;
                         fileBrowser.lblMessageUpload.style.display = "block";
@@ -775,7 +775,7 @@
                 if (d.Status !== "Ok") {
                     var msg = d.Message;
                     if (d.hasOwnProperty("Detail") && d.Detail.length)
-                        msg + "\n" + d.Detail;
+                        msg = msg + "\n" + d.Detail;
                     alert(msg);
                 }
 
