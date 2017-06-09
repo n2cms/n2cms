@@ -304,6 +304,16 @@
             }
             (me.divDetails).innerHTML = html;
         },
+        clearListAndShowLoading: function () {
+            //Clear list before loading new list. Shows loading animation.
+            (fileBrowser.list).innerHTML = "";
+            fileBrowser.listLis = [];
+
+            jQ(fileBrowser.list).addClass("loading");
+        },
+        hideListLoading: function () {
+            jQ(fileBrowser.list).removeClass("loading");
+        },
         loadDataSearchClean: function () {
             if ((fileBrowser.qSearch).value !== "") {
                 (fileBrowser.qSearch).value = "";
@@ -326,8 +336,6 @@
             if (fileBrowser.lastSearch === q || !q) { return; }
 
             fileBrowser.lastSearch = q;
-            (fileBrowser.list).innerHTML = "";
-            fileBrowser.listLis = [];
             fileBrowser.loadData(null, q);
             fileBrowser.divBreadcrumb.innerHTML = "*";
         },
@@ -335,7 +343,6 @@
             var me = fileBrowser,
                 ajaxUrl = me.ajaxUrl;
                 
-            jQ(fileBrowser.list).addClass("loading");
             me.api.getData(ajaxUrl, newDir, searchText, window.selectableExtensions, me.repaintList);
         },
         repaintList: function (data) {
@@ -350,11 +357,10 @@
                     "<div class=\"image-sizes\">{{ImageSizes}}</div></li>",
                 patternImgSizes = "<em class=\"{{ClassName}}\" data-size=\"{{Size}}\" data-url=\"{{Url}}\">{{SizeName}}</em>",
                 patternDir = "<li data-i=\"{{i}}\" data-url=\"{{Url}}\" class=\"dir\"><span class=\"file-ic glyphicon glyphicon-folder-open\"></span><label>{{Title}}</label></li>",
-                patternDirCreate = "<li data-i=\"{{i}}\" class=\"dir-create\"><span class=\"file-ic glyphicon glyphicon-folder-open\"></span><label>{{Title}}</label></li>",
+                patternDirCreate = "<li data-i=\"{{i}}\" class=\"dir-create\"><span class=\"file-ic glyphicon glyphicon-folder-plus\"></span><label>{{Title}}</label></li>",
                 startI = 1;
 
             fileBrowser.showInfo(-1);
-            jQ(fileBrowser.list).removeClass("loading");
 
             if (data.Status && data.Status === "Error") {
                 fileBrowser.lblMessage.innerHTML = data.Message;
@@ -516,6 +522,7 @@
                     contentType: false,
                     processData: false,
                     data: datas,
+                    beforeSend: fileBrowser.clearListAndShowLoading
                 });
 
                 function handlerUpload(d) {
@@ -539,13 +546,6 @@
                         fileBrowser.lastPath = "";
                         fileBrowser.loadData(lastPath, null);
                         jQ(fileBrowser.progressBar).removeClass("progress-bar-striped");
-                        fileBrowser.lblMessageUpload.innerHTML = "File uploaded.";
-                        fileBrowser.lblMessageUpload.style.display = "block";
-                        setTimeout(function () {
-                            fileBrowser.lblMessageUpload.innerHTML = "";
-                            fileBrowser.lblMessageUpload.style.display = "none";
-                        }, 3000);
-
                     } else {
                         fileBrowser.lblMessageUpload.innerHTML = result.Message;
                         fileBrowser.lblMessageUpload.style.display = "block";
@@ -554,7 +554,10 @@
                     restoreContext();
                 });
 
-                reqUpload.fail(ajaxError);
+                reqUpload.fail(function () {
+                    fileBrowser.hideListLoading();
+                    ajaxError();
+                });
             }
 
             function chooseOverwriteOptions(er) {
@@ -742,7 +745,7 @@
         createDirectory: function (ajaxUrl, curDir) {
             var datas, reqCreate;
             
-            var name = prompt("Please enter the folder name: (Special characters will be stripped out)");
+            var name = prompt("Please enter the folder name:");
             if (name == null) {
                 return;
             }
@@ -750,7 +753,7 @@
                 alert("Folder name required!");
                 return;
             }
-
+            
             datas = new FormData();
             datas.append("ticket", window.ticket);
 
@@ -760,17 +763,21 @@
                 contentType: false,
                 processData: false,
                 data: datas,
+                beforeSend: fileBrowser.clearListAndShowLoading
             });
 
             reqCreate.done(function (d) {
                 if (d.Status !== "Ok") {
                     alert(d.Message);
-                } else {
-                    fileBrowser.loadData(curDir, null);
                 }
+
+                fileBrowser.loadData(curDir, null);
             });
 
-            reqCreate.fail(ajaxError);
+            reqCreate.fail(function () {
+                fileBrowser.hideListLoading();
+                ajaxError();
+            });
 
         },
 
@@ -795,7 +802,8 @@
 
                 req = jQ.ajax({
                     type: "GET",
-                    url: ajaxRequest
+                    url: ajaxRequest,
+                    beforeSend: fileBrowser.clearListAndShowLoading
                 });
 
                 req.done(function (data) {
@@ -803,6 +811,9 @@
                 });
 
                 req.fail(ajaxError);
+
+                req.always(fileBrowser.hideListLoading);
+
             }//end of getData
 
         }//end of API

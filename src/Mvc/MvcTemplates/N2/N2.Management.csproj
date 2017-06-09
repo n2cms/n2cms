@@ -194,6 +194,7 @@
     <Content Include="Resources\icons\glyphicons.css" />
     <Content Include="Resources\icons\glyphicons.png" />
     <Content Include="Resources\img\arrow-down.png" />
+    <Content Include="Resources\img\folder_plus.gif" />
     <Content Include="Resources\img\grabber.png" />
     <Content Include="Resources\img\logo.png" />
     <Content Include="Resources\img\minus.png" />

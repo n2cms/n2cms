@@ -79,7 +79,7 @@
                 data-ckeditor="<%= mediaBrowserModel.CkEditor %>" data-ckeditorfuncnum="<%= mediaBrowserModel.CkEditorFuncNum %>" data-preferredsize="<%= mediaBrowserModel.PreferredSize %>"
                 data-i18size="<%= GetLocalResourceString("Size", "Size") %>" data-i18date="<%= GetLocalResourceString("DateModified", "Date") %>" data-i18url="<%= GetLocalResourceString("Url", "Url") %>">
                 <li data-i="<%= counter++ %>" class="dir-create">
-                    <span class="file-ic glyphicon glyphicon-folder-open"></span>
+                    <span class="file-ic glyphicon glyphicon-folder-plus"></span>
                     <label>Create a New Folder</label>
                 </li>
                 <% if(mediaBrowserModel.Dirs!=null) foreach (var d in mediaBrowserModel.Dirs) { %>

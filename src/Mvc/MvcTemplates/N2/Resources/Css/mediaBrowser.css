@@ -145,3 +145,8 @@ img.max100 { width: 100%;height: auto;max-width: 300px;border: 3px solid #ddd;pa
     margin: 5px 0;
     padding: 3px 5px;
 }
+
+.glyphicon-folder-plus {
+    background: url(../img/folder_plus.gif) no-repeat center center;
+    height: 30px;
+}

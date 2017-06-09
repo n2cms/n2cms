@@ -470,15 +470,7 @@ namespace N2.Edit.Navigation
                 context.Response.WriteJson(new { Status = "Error", Message = "Directory name required" });
                 return;
             }
-
-            var regex = new Regex("[^a-zA-Z0-9_ ]");
-            name = regex.Replace(name, "");
-            if (name.Length == 0)
-            {
-                context.Response.WriteJson(new { Status = "Error", Message = "Directory name required (Special characters are stripped out)" });
-                return;
-            }
-
+            
             var newDir = VirtualPathUtility.AppendTrailingSlash(context.Request.ApplicationPath + selected.Url) + name;
 
             try
