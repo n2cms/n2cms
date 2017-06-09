@@ -547,7 +547,12 @@
                         fileBrowser.loadData(lastPath, null);
                         jQ(fileBrowser.progressBar).removeClass("progress-bar-striped");
                     } else {
-                        fileBrowser.lblMessageUpload.innerHTML = result.Message;
+
+                        var msg = result.Message;
+                        if (result.hasOwnProperty("Detail") && result.Detail.length)
+                            msg + "<br />" + result.Detail;
+
+                        fileBrowser.lblMessageUpload.innerHTML = msg;
                         fileBrowser.lblMessageUpload.style.display = "block";
                         (fileBrowser.progressBar).parentNode.style.display = "none";
                     }
@@ -768,7 +773,10 @@
 
             reqCreate.done(function (d) {
                 if (d.Status !== "Ok") {
-                    alert(d.Message);
+                    var msg = d.Message;
+                    if (d.hasOwnProperty("Detail") && d.Detail.length)
+                        msg + "\n" + d.Detail;
+                    alert(msg);
                 }
 
                 fileBrowser.loadData(curDir, null);
