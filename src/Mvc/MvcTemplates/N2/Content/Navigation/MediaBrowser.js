@@ -60,6 +60,7 @@
         selectedUrl: "",
         lblMessage: null,
         lblMessageUpload: null,
+        showCreateDirectory: true,
 
         init: function (force) {
             var me = this, fbMainDiv;
@@ -342,7 +343,8 @@
         loadData: function (newDir, searchText) {
             var me = fileBrowser,
                 ajaxUrl = me.ajaxUrl;
-                
+
+            fileBrowser.showCreateDirectory = !Boolean(searchText);
             me.api.getData(ajaxUrl, newDir, searchText, window.selectableExtensions, me.repaintList);
         },
         repaintList: function (data) {
@@ -358,7 +360,7 @@
                 patternImgSizes = "<em class=\"{{ClassName}}\" data-size=\"{{Size}}\" data-url=\"{{Url}}\">{{SizeName}}</em>",
                 patternDir = "<li data-i=\"{{i}}\" data-url=\"{{Url}}\" class=\"dir\"><span class=\"file-ic glyphicon glyphicon-folder-open\"></span><label>{{Title}}</label></li>",
                 patternDirCreate = "<li data-i=\"{{i}}\" class=\"dir-create\"><span class=\"file-ic glyphicon glyphicon-folder-plus\"></span><label>{{Title}}</label></li>",
-                startI = 1;
+                startI = fileBrowser.showCreateDirectory ? 1 : 0;
 
             fileBrowser.showInfo(-1);
 
@@ -384,7 +386,9 @@
             }
 
             //Create directory
-            lis.push(parsePropertiesToPattern(patternDirCreate, { Title: "Create a New Folder" }, 0));
+            if (fileBrowser.showCreateDirectory) {
+                lis.push(parsePropertiesToPattern(patternDirCreate, { Title: "Create a New Folder" }, 0));
+            }
 
             //Dirs
             if (data.Dirs) {
