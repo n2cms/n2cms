@@ -172,7 +172,7 @@
         },
         sel: function (e) {
             var t = e.target, p = e.target.parentNode, tagName = t.tagName.toUpperCase(), type, newDir, dpSize;
-            if (tagName !== "IMG" && tagName !== "LI" && tagName !== "SPAN" && tagName !== "EM") { return; }
+            if (tagName !== "IMG" && tagName !== "LI" && tagName !== "SPAN" && tagName !== "EM" && tagName !== "LABEL") { return; }
 
             e.stopPropagation();
 
@@ -180,6 +180,7 @@
                 case "LI": p = e.target;
                 case "IMG":
                 case "SPAN":
+                case "LABEL":
                     type = jQ(p).hasClass("dir-create") ? 0 : (jQ(p).hasClass("dir") ? 1 : (jQ(p).hasClass("image") ? 2 : 3));
                     switch (type) {
                         case 0: {

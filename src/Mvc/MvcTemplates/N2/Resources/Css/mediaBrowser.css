@@ -2,6 +2,12 @@
 }
 
 /* File Browser */
+h1 {
+    font-weight: bold;
+    border-bottom: 2px solid #ececec;
+    padding-bottom: 15px;
+}
+
 .info-div {
     width: 240px;
     position: absolute;
@@ -58,6 +64,10 @@
 
 .files-list .dir { background:#a1d4fe; cursor:pointer;} 
 .files-list .dir-create { background:#f2f2f2; cursor:pointer;} 
+.files-list .dir label,
+.files-list .dir-create label {
+    cursor:pointer;
+}
 .files-list .file.image { background-position:50% 50%; background-size:cover; background-repeat:no-repeat;}
 .files-list li label { position:absolute; bottom:0; left:0; right:0; padding:6px; background:#eee; font-size:80%; 
                           background:#ddd; display:block; margin:0; font-weight:normal; font-size:10px; }
@@ -75,12 +85,12 @@
 
 
 .browser-files-list { }
-.files-search-cont { padding: 10px 0 !important;background: #f3f3f3;box-sizing: border-box;margin-left: 0;margin-bottom:15px;}
+.files-search-cont { padding: 10px 0 !important;background: #ececec;box-sizing: border-box;margin-left: 0;margin-right:0;margin-bottom:15px;}
     .files-search-cont input { max-width: 100%; }
 
-.files-breadcrumb { padding:10px 20px; background: #f6f6f6; box-sizing: border-box;margin-left: 0; font-size:10px; color:#777;}
+.files-breadcrumb { padding:10px 20px; background: #ececec; box-sizing: border-box;margin-left: 0;margin-right:0; font-size:10px; color:#777;}
 .files-breadcrumb ul { list-style:none; padding:0; margin:0;}
-.files-breadcrumb ul li { float:left; margin-right:3px; cursor:pointer; font-size: 13px;}
+.files-breadcrumb ul li { float:left; margin-right:3px; cursor:pointer; font-size: 15px;}
 .files-breadcrumb ul li span { text-decoration:underline;}
 .files-breadcrumb ul li:after { content:'/'; margin-left:4px;}
 .files-breadcrumb ul li:last-child { cursor:default;}
