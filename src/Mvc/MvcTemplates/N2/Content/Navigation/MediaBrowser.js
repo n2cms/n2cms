@@ -522,17 +522,26 @@
                     contentType: false,
                     processData: false,
                     data: datas,
-                    beforeSend: fileBrowser.clearListAndShowLoading
+                    xhr: function () {
+                        var xhr = new window.XMLHttpRequest();
+                        
+                        //Upload progress
+                        xhr.upload.addEventListener("progress", function (evt) {
+                            if (evt.lengthComputable) {
+                                var per = evt.loaded / evt.total * 100;
+                                (fileBrowser.progressBar).parentNode.style.display = "block";
+                                (fileBrowser.progressBar).style.width = Math.round(per) + "%";
+                                (fileBrowser.progressBar).innerHTML = Math.round(per) + "%";
+                            }
+                        }, false);
+
+                        return xhr;
+                    },
                 });
-
-                function handlerUpload(d) {
-                    var per = d.loaded / d.total * 100;
-                    (fileBrowser.progressBar).parentNode.style.display = "block";
-                    (fileBrowser.progressBar).style.width = Math.round(per) + "%";
-                    (fileBrowser.progressBar).innerHTML = Math.round(per) + "%";
-                }
-
-                reqUpload.progress(handlerUpload, null);
+                
+                reqUpload.progress(function (e) {
+                    handlerUpload(e);
+                }, null);
 
                 reqUpload.done(function (result) {
                     var k, ll, img, lastPath = fileBrowser.lastPath;
@@ -545,7 +554,6 @@
                         e.target.value = "";
                         fileBrowser.lastPath = "";
                         fileBrowser.loadData(lastPath, null);
-                        jQ(fileBrowser.progressBar).removeClass("progress-bar-striped");
                     } else {
 
                         var msg = result.Message;
@@ -554,8 +562,16 @@
 
                         fileBrowser.lblMessageUpload.innerHTML = msg;
                         fileBrowser.lblMessageUpload.style.display = "block";
-                        (fileBrowser.progressBar).parentNode.style.display = "none";
                     }
+
+                    jQ(fileBrowser.progressBar).removeClass("progress-bar-striped");
+
+                    //Hide progress bar after a second
+                    setTimeout(function () {
+                        (fileBrowser.progressBar).parentNode.style.display = "none";
+                        (fileBrowser.progressBar).style.display.width = "0%";
+                    }, 1000);
+
                     restoreContext();
                 });
 
@@ -835,62 +851,3 @@
 
 
 }(jQuery));
-
-//
-//http://stackoverflow.com/questions/19126994/what-is-the-cleanest-way-to-get-the-progress-of-jquery-ajax-request
-//
-(function extendJQueryAjaxWithProgress(window, jQuery, undefined) {
-    var $originalAjax = jQuery.ajax;
-
-    jQuery.ajax = function (url, options) {
-        if (typeof (url) === 'object') {
-            options = url;
-            url = undefined;
-        }
-        options = options || {};
-
-        // Instantiate our own.
-        var xmlHttpReq = jQuery.ajaxSettings.xhr();
-
-        // Make it use our own.
-        options.xhr = function () {
-            return (xmlHttpReq);
-        };
-
-        var $newDeferred = jQuery.Deferred();
-        var $oldPromise = $originalAjax(url, options)
-            .done(function doneWrapper(response, textStatus, jqXhr) {
-                return ($newDeferred.resolveWith(this, arguments));
-            })
-            .fail(function failWrapper(jqXhr, textStatus, error) {
-                return ($newDeferred.rejectWith(this, arguments));
-            })
-            .progress(function progressWrapper() {
-                window.console.warn("Whoa, jQuery started actually using deferred progress to report Ajax progress!");
-                return ($newDeferred.notifyWith(this, arguments));
-            });
-
-        var $newPromise = $newDeferred.promise();
-
-        // Extend our own.
-        $newPromise.progress = function (handlerUp, handlerDown) {
-            // Download progress
-            if (handlerDown)
-                xmlHttpReq.addEventListener('progress', function downloadProgress(evt) {
-                    // window.console.debug( "download_progress", evt );
-                    handlerDown.apply(this, [evt]);
-                }, false);
-
-            // Upload progress
-            if (handlerUp)
-                xmlHttpReq.upload.addEventListener('progress', function uploadProgress(evt) {
-                    // window.console.debug( "upload_progress", evt );
-                    handlerUp.apply(this, [evt]);
-                }, false);
-
-            return (this);
-        };
-
-        return ($newPromise);
-    };
-})(window, jQuery);
