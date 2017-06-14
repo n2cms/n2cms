@@ -47,15 +47,6 @@
 
         <div id="browser-files-list" class="browser-files-section first browser-files-list">
 
-            <div class="row files-breadcrumb" id="dirs-breadcrumb" data-rootisselectable="<%= mediaBrowserModel.RootIsSelectable %>">
-                <ul>
-                <%  var bc = "/";
-                    foreach (var s in mediaBrowserModel.Breadcrumb) {
-                        bc += (s == "[root]" ? "" : s + "/");%>
-                    <li><span data-url="<%= bc %>"><%= s %></span></li>
-                <% } %>
-                </ul>
-            </div>
             <div class="row files-search-cont">
                 <div class="col-sm-8 col-md-6">
                     <div class="input-group input-group-sm">
@@ -66,6 +57,18 @@
                         </span>
                     </div><!-- /input-group -->
                 </div>
+            </div>
+
+            <div class="row files-breadcrumb" id="dirs-breadcrumb" data-rootisselectable="<%= mediaBrowserModel.RootIsSelectable %>">
+                <h3><%= GetLocalResourceString("Folder", "Folder") %>:</h3>
+                <ul>
+                <%  var bc = "/";
+                    foreach (var s in mediaBrowserModel.Breadcrumb) {
+                        bc += (s == "[root]" ? "" : s + "/");%>
+                    <li><span data-url="<%= bc %>"><%= s %></span></li>
+                <% } %>
+                </ul>
+                <p class="back">Back</p>
             </div>
 
             <div id="lblMessage" class="bg-warning" style="display:none"></div>

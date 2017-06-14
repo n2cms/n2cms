@@ -265,12 +265,20 @@
                     break;
             }
         },
-        clicksBreadcrumbRespond: function(e){
-            var t = e.target, newDir, tagName = t.tagName;
+        clicksBreadcrumbRespond: function (e) {
+            var t = e.target, p = e.target.parentNode, newDir, tagName = t.tagName.toUpperCase();
             if (tagName === "SPAN") {
                 newDir = t.getAttribute("data-url");
                 fileBrowser.showInfo(-1);
                 fileBrowser.loadData(newDir, null);
+            }
+            else if (tagName === "P") {
+                var len = jQ(p).find("ul li").length;
+                if (len > 1) {
+                    newDir = jQ(p).find("ul li:nth-child(" + (len - 1) + ") span").data("url");
+                    fileBrowser.showInfo(-1);
+                    fileBrowser.loadData(newDir, null);
+                }
             }
         },
         showInfo: function (i) {
@@ -383,7 +391,12 @@
                     breadcrumber += i === 0 ? "" : pathSplitted[i] + "/";
                     breadcrumbUl.push("<li><span data-url=\"" + breadcrumber + "\">" + pathSplitted[i] + "</span></li>");
                 }
-                fileBrowser.divBreadcrumb.innerHTML = "<ul>" + breadcrumbUl.join("") + "</ul>";
+                if (jQ(fileBrowser.divBreadcrumb).children("ul").length) {
+                    jQ(fileBrowser.divBreadcrumb).children("ul").html(breadcrumbUl.join(""));
+                }
+                else {
+                    fileBrowser.divBreadcrumb.innerHTML = "<ul>" + breadcrumbUl.join("") + "</ul>";
+                }
             }
 
             //Create directory

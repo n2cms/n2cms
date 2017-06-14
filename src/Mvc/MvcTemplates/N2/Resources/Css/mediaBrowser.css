@@ -88,13 +88,15 @@ h1 {
 .files-search-cont { padding: 10px 0 !important;background: #ececec;box-sizing: border-box;margin-left: 0;margin-right:0;margin-bottom:15px;}
     .files-search-cont input { max-width: 100%; }
 
-.files-breadcrumb { padding:10px 20px; background: #ececec; box-sizing: border-box;margin-left: 0;margin-right:0; font-size:10px; color:#777;}
+.files-breadcrumb { padding:0; box-sizing: border-box;margin-left: 0;margin-right:0; margin-bottom:20px; font-size:10px; color:#777; overflow:hidden;}
+.files-breadcrumb h3 { float: left; margin: 4px 5px 0 0; font-size: 15px; font-weight: bold;}
 .files-breadcrumb ul { list-style:none; padding:0; margin:0;}
 .files-breadcrumb ul li { float:left; margin-right:3px; cursor:pointer; font-size: 15px;}
 .files-breadcrumb ul li span { text-decoration:underline;}
 .files-breadcrumb ul li:after { content:'/'; margin-left:4px;}
 .files-breadcrumb ul li:last-child { cursor:default;}
 .files-breadcrumb ul li:last-child span { text-decoration:none;}
+.files-breadcrumb p.back { clear: left; margin: 0; padding: 5px 0 0 0; font-size: 13px; text-decoration: underline; cursor: pointer;}
 
 .no-active-outline a:focus, .no-active-outline a:active { outline: none !important;}
 
@@ -152,7 +154,7 @@ img.max100 { width: 100%;height: auto;max-width: 300px;border: 3px solid #ddd;pa
 		.framed-navbar .navbar-inner .btn { margin: 5px 5px 5px 0; }
 
 .bg-warning {
-    margin: 5px 0;
+    margin: 5px 15px 5px;
     padding: 3px 5px;
 }
 

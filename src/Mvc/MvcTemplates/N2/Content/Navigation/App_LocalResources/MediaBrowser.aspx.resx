@@ -129,6 +129,9 @@
   <data name="ExistingFiles" xml:space="preserve">
     <value>Some files already exist in the server&lt;br /&gt;What do you want to do with them?</value>
   </data>
+  <data name="Folder" xml:space="preserve">
+    <value>Folder</value>
+  </data>
   <data name="LoadMore" xml:space="preserve">
     <value>Load More</value>
   </data>
