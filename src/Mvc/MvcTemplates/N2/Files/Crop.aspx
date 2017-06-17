@@ -5,7 +5,7 @@
     <edit:CancelLink ID="hlCancel" runat="server" CssClass="btn" meta:resourceKey="hlCancel">Close</edit:CancelLink>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" runat="server">
-	<div class="resize">
+	<div class="imageresize">
 		<img id="original" src="<%= originalImagePath %>" />
 		<asp:Label runat="server" meta:resourceKey="lblResize" Text="Drag a rectangle to select new area for this image size" />
 	</div>
