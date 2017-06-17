@@ -175,4 +175,3 @@ You can choose whichever management pack is right for you. Consider the followin
 	  | Deploy incremental uploads, as well as more efficient source control storage as the 
 	  | files are installed separately (not extracted). Additionally, the Zip Virtual Path 
 	  | Provider is not installed, which means that less memory is used by N2CMS.
-

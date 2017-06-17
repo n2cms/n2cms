@@ -105,6 +105,9 @@ After you've installed N2CMS in one of these ways, you will want to update it fr
 of the latest features, security patches, and other updates. If you opted to use the Nuget deployment model, the 
 Nuget packages will be updated periodically, and you can update using the built-in Nuget update mechanism to update 
 your local instance of N2CMS. If you chose the Git deployment model, you can use git pull to get the latest updates 
+<<<<<<< HEAD
+in your own Git repository.
+=======
 in your own Git repository.
 
 Visual Studio Snippets and Templates
@@ -176,3 +179,4 @@ You can choose whichever management pack is right for you. Consider the followin
 	  | files are installed separately (not extracted). Additionally, the Zip Virtual Path 
 	  | Provider is not installed, which means that less memory is used by N2CMS.
 
+>>>>>>> master
