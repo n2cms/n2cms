@@ -40,7 +40,8 @@ namespace N2.Management.Content
             Engine.Resolve<CommandDispatcher>().Save(ctx);
             var returnUrl = ctx.Content.Url.ToUrl()
                 .SetQueryParameter(PathData.VersionIndexQueryKey, ctx.Content.VersionIndex)
-                .SetQueryParameter("edit", "drag");
+                .SetQueryParameter("edit", "drag")
+				.SetQueryParameter("n2reveal", Request["n2reveal"]);
 
             Refresh(Selection.SelectedItem, returnUrl);
         }

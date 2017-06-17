@@ -6,10 +6,11 @@ using N2.Edit;
 using N2.Web.Parts;
 using N2.Engine;
 using System;
+using System.Web;
 
 namespace N2.Web.Mvc.Html
 {
-    public class ZoneHelper
+    public class ZoneHelper : IHtmlString
     {
         private ContentItem currentItem;
         private PartsAdapter partsAdapter;
@@ -78,9 +79,10 @@ namespace N2.Web.Mvc.Html
             }
         }
 
-        public virtual void Render()
+        public virtual string Render()
         {
             Render(Html.ViewContext.Writer);
+			return "";
         }
 
         public virtual void Render(TextWriter writer)
@@ -107,10 +109,15 @@ namespace N2.Web.Mvc.Html
                 writer.Write(w.ToString(TagRenderMode.StartTag));
                 writer.Write(w.InnerHtml);
             }
-            Adapters.ResolveAdapter<PartsAdapter>(model).RenderPart(Html, model);
+            Adapters.ResolveAdapter<PartsAdapter>(model).RenderPart(Html, model, writer);
 
             if (w != null)
                 writer.WriteLine(w.ToString(TagRenderMode.EndTag));
         }
-    }
+
+		string IHtmlString.ToHtmlString()
+		{
+			return ToString();
+		}
+	}
 }

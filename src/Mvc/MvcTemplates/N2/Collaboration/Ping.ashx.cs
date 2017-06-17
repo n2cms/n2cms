@@ -12,14 +12,14 @@ using N2.Management.Api;
 
 namespace N2.Management.Collaboration
 {
-    /// <summary>
-    /// Summary description for Notify
-    /// </summary>
-    public class Ping : IHttpHandler
-    {
+	/// <summary>
+	/// Summary description for Notify
+	/// </summary>
+	public class Ping : IHttpHandler
+	{
 		Logger<Ping> log;
-        public void ProcessRequest(HttpContext context)
-        {
+		public void ProcessRequest(HttpContext context)
+		{
 			try
 			{
 				var activity = context.Request["activity"];
@@ -40,39 +40,43 @@ namespace N2.Management.Collaboration
 				context.Response.ContentType = "application/json";
 				context.Response.WriteJson(new { Runnnig = false });
 			}
-        }
+		}
 
-        private void NotifyViewing(IEngine engine, HttpContextWrapper context)
-        {
-            var selection = new SelectionUtility(context, engine);
-            if (selection.SelectedItem != null)
-                engine.AddActivity(new ManagementActivity { Operation = "View", PerformedBy = context.User.Identity.Name, ID = selection.SelectedItem.ID, Path = selection.SelectedItem.Path });
+		private void NotifyViewing(IEngine engine, HttpContextWrapper context)
+		{
+			var selection = new SelectionUtility(context, engine);
+			if (selection.SelectedItem != null)
+				engine.AddActivity(new ManagementActivity { Operation = "View", PerformedBy = context.User.Identity.Name, ID = selection.SelectedItem.ID, Path = selection.SelectedItem.Path });
 
+			var cctx = CollaborationContext.Create(engine.Resolve<IProfileRepository>(), selection.SelectedItem, context);
 			context.Response.WriteJson(new
 			{
 				Messages = engine.Resolve<ManagementMessageCollector>()
-				.GetMessages(CollaborationContext.Create(engine.Resolve<IProfileRepository>(), selection.SelectedItem, context))
-					.ToList()
+					.GetMessages(cctx)
+					.ToList(),
+				Flags = new FlagData(engine.Resolve<ManagementFlagCollector>().GetFlags(cctx))
 			});
-        }
+		}
 
-        private void NotifyEditing(IEngine engine, HttpContextWrapper context)
-        {
-            var selection = new SelectionUtility(context, engine);
-            if (Convert.ToBoolean(context.Request["changes"]))
-                engine.AddActivity(new ManagementActivity { Operation = "Edit", PerformedBy = context.User.Identity.Name, ID = selection.SelectedItem.ID, Path = selection.SelectedItem.Path });
+		private void NotifyEditing(IEngine engine, HttpContextWrapper context)
+		{
+			var selection = new SelectionUtility(context, engine);
+			if (Convert.ToBoolean(context.Request["changes"]))
+				engine.AddActivity(new ManagementActivity { Operation = "Edit", PerformedBy = context.User.Identity.Name, ID = selection.SelectedItem.ID, Path = selection.SelectedItem.Path });
 
-            var activities = ManagementActivity.GetActivity(engine, selection.SelectedItem);
+			var activities = ManagementActivity.GetActivity(engine, selection.SelectedItem);
+			var cctx = CollaborationContext.Create(engine.Resolve<IProfileRepository>(), selection.SelectedItem, context);
 			var messages = engine.Resolve<N2.Edit.Collaboration.ManagementMessageCollector>()
-				.GetMessages(CollaborationContext.Create(engine.Resolve<IProfileRepository>(), selection.SelectedItem, context))
+				.GetMessages(cctx)
 				.ToList();
-            context.Response.ContentType = "application/json";
-			context.Response.Write(ManagementActivity.ToJson(activities, messages));
-        }
+			var flags = engine.Resolve<ManagementFlagCollector>().GetFlags(cctx).ToList();
+			context.Response.ContentType = "application/json";
+			context.Response.Write(ManagementActivity.ToJson(activities, messages, flags));
+		}
 
-        public bool IsReusable
-        {
-            get { return false; }
-        }
-    }
+		public bool IsReusable
+		{
+			get { return false; }
+		}
+	}
 }

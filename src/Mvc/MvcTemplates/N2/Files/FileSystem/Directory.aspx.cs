@@ -43,6 +43,8 @@ namespace N2.Edit.FileSystem
         private void Reload()
         {
             var dir = Selection.SelectedItem as Directory;
+            if (dir == null) return;
+
             directories = dir.GetDirectories();
             files = dir.GetFiles();
             

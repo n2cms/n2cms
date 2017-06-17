@@ -40,7 +40,9 @@ namespace N2.Edit.Workflow
         public CommandFactory(IPersister persister, ISecurityManager security, IVersionManager versionMaker, IEditUrlManager editUrlManager, IContentAdapterProvider adapters, StateChanger changer)
         {
             this.persister = persister;
-            makeVersionOfMaster = On.Master(new MakeVersionCommand(versionMaker));
+			this.security = security;
+
+			makeVersionOfMaster = On.Master(new MakeVersionCommand(versionMaker));
             replaceMaster = new ReplaceMasterCommand(versionMaker);
             makeVersion = new MakeVersionCommand(versionMaker);
             useNewVersion = new UseDraftCommand(versionMaker);
@@ -50,7 +52,6 @@ namespace N2.Edit.Workflow
             useMaster = new UseMasterCommand();
             clone = new CloneCommand();
             validate = new ValidateCommand();
-            this.security = security;
             save = new SaveCommand(persister);
             draftState = new UpdateContentStateCommand(changer, ContentState.Draft);
             publishedState = new UpdateContentStateCommand(changer, ContentState.Published);

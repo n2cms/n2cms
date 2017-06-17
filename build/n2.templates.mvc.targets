@@ -10,12 +10,7 @@
 	</PropertyGroup>
 
 	<Target Name="Templates-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
-		<Copy SourceFiles="@(Framework-DependencyBinaries)" DestinationFolder="$(Templates-Mvc-SourceFolder)\bin\" />
-		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFiles="$(Templates-Mvc-SourceFolder)\%(RecursiveDir)\%(FileName)%(Extension)" ContinueOnError="true" />
-		
-		<Copy SourceFiles="$(SrcFolder)\Framework\Extensions\bin\$(Configuration)\N2.Extensions.dll;"
-					DestinationFolder="$(Templates-Mvc-SourceFolder)\bin" />
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-SourceFolder)\bin" />
+
 	</Target>
 
 	<Target Name="Templates-Mvc-Build">

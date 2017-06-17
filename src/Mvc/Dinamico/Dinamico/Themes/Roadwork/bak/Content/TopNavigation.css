@@ -1,9 +1,0 @@
-﻿div#nav ul.menudown li { position:relative; }
-	div#nav ul.menudown li.openable a { padding-right:30px; }
-	div#nav ul.menudown li.opened a { padding-right:15px; }
-	div#nav ul.menudown li a.toggler { position:absolute; overflow:hidden; display:block; right:8px; top:22px; height:12px; width:12px; padding:0; border:none; background: transparent url(down.png) no-repeat scroll 50% 50%; }
-	div#nav ul.menudown li a.toggler:hover { text-decoration:none; outline:solid 1px #fff; }
-	div#nav ul.menudown li a.closer { display:none; }
-	div#nav ul.menudown li.opened a.opener { display:none; }
-
-	div#nav ul.menudown li ul { display:none; }

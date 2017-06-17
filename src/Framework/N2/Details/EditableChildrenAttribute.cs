@@ -44,7 +44,11 @@ namespace N2.Details
             set { zoneName = value; }
         }
 
-        public override bool UpdateItem(ContentItem item, Control editor)
+		public string MinimumTypeName { get; set; }
+
+		public string[] AllowedTemplateKeys { get; set; }
+
+		public override bool UpdateItem(ContentItem item, Control editor)
         {
             bool updated = false;
             ItemEditorList listEditor = (ItemEditorList)editor;
@@ -98,7 +102,7 @@ namespace N2.Details
         {
             ItemEditorList listEditor = (ItemEditorList)editor;
             listEditor.ParentItem = item;
-            listEditor.ZoneName = ZoneName;
+            listEditor.ZoneName = ZoneName ?? Name;
 
             // filtering of children by property generic type
             PropertyInfo info = item.GetContentType().GetProperty(Name);
@@ -125,6 +129,9 @@ namespace N2.Details
         {
             ItemEditorList listEditor = new ItemEditorList();
             listEditor.ID = Name;
+			if (!string.IsNullOrEmpty(MinimumTypeName))
+				listEditor.MinimumType = Type.GetType(MinimumTypeName);
+			listEditor.AllowedTemplateKeys = AllowedTemplateKeys;
             listEditor.ParentItem = ItemUtility.FindInParents<IItemEditor>(container).CurrentItem;
             listEditor.Label = Title;
             container.Controls.Add(listEditor);

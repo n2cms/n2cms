@@ -26,7 +26,11 @@ namespace N2.Definitions
             var templates = providers.SelectMany(tp => tp.GetTemplates(contentType)).ToList();
             if (!templates.Any(t => t.ReplaceDefault))
                 return templates;
-            return templates.Where(t => t.Name != null).ToList();
+			return templates.Where(t => t.Name != null)
+				.OrderBy(t => (t.Definition.TemplateKey ?? "Index") == "Index" ? 0 : 1)
+				.ThenBy(t => t.Definition.SortOrder)
+				.ThenBy(t => t.Definition.Title)
+				.ToList();
         }
 
         public virtual TemplateDefinition GetTemplate(Type contentType, string templateKey)
@@ -37,6 +41,16 @@ namespace N2.Definitions
                 .SelectMany(tp => tp.GetTemplates(contentType))
                 .FirstOrDefault(td => string.Equals(td.Name ?? "", templateKey ?? ""));
         }
+
+		public virtual TemplateDefinition GetTemplate(string discriminatorWithTemplateKey)
+		{
+			if (discriminatorWithTemplateKey == null) return null;
+
+			var pair = discriminatorWithTemplateKey.Split('/');
+			var definition = definitions.GetDefinition(pair[0]);
+
+			return GetTemplate(definition.ItemType, pair.Length > 1 ? pair[1] : null);
+		}
 
         public virtual TemplateDefinition GetTemplate(ContentItem item)
         {

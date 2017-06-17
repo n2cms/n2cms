@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="IconHandler.ashx.cs" Class="Management.N2.Resources.IconHandler" %>
+﻿<%@ WebHandler Language="C#" CodeBehind="IconHandler.ashx.cs" Class="N2.Management.Resources.IconHandler" %>

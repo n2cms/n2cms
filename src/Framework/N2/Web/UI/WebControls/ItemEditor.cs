@@ -23,18 +23,26 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Resources;
 using N2.Edit.Versioning;
+using System.Linq;
+using N2.Configuration;
 
 namespace N2.Web.UI.WebControls
 {
     /// <summary>A form that generates an edit interface for content items.</summary>
     public class ItemEditor : WebControl, INamingContainer, IItemEditor, IContentForm<CommandContext>, IPlaceHolderAccessor
     {
+		protected override void LoadViewState(object savedState)
+		{
+			base.LoadViewState(savedState);
+		}
+
         #region Constructor
 
         public ItemEditor()
         {
             CssClass = "itemEditor";
             Engine = N2.Context.Current;
+            EnableAutoSave = Engine.Resolve<EditSection>().AutosaveElement.Enabled;
         }
 
         public ItemEditor(ContentItem item)
@@ -161,6 +169,8 @@ namespace N2.Web.UI.WebControls
             set { ViewState["SaveVersion"] = value; }
         }
 
+		public bool EnableAutoSave { get; set; }
+
         #endregion
 
         #region Methods
@@ -194,7 +204,56 @@ namespace N2.Web.UI.WebControls
 ", ScriptOptions.DocumentReady);
 
             Register.StyleSheet(Page, Url.ResolveTokens("{ManagementUrl}/Resources/Css/edit.css"));
+
+			Page.ClientScript.RegisterHiddenField(ClientID + "_autosaved_url", Page.Request[ClientID + "_autosaved_url"] ?? currentItem.ID.ToString());
+			if (EnableAutoSave)
+			{
+				Register.JavaScript(Page, @"	window.n2autosave && n2autosave.init();", ScriptOptions.DocumentReady);
+
+				TryAddItemReference(this);
+				foreach (var placeholder in placeholders.Values)
+				{
+					if (!TryAddItemReference(placeholder as WebControl))
+						if (placeholder.Controls.Count > 0)
+							TryAddItemReference(placeholder.Controls[0] as WebControl);
+				}
+			}
+			else
+			{
+				TryAddDisabledAutosave(this);
+				foreach (var placeholder in placeholders.Values)
+				{
+					if (!TryAddDisabledAutosave(placeholder as WebControl))
+						if (placeholder.Controls.Count > 0)
+							TryAddDisabledAutosave(placeholder.Controls[0] as WebControl);
+				}
+			}
         }
+
+		private bool TryAddDisabledAutosave(WebControl control)
+		{
+			if (control == null)
+				return false;
+			TryAddItemReference(control);
+			control.Attributes["data-disable-autosave"] = "true";
+			return true;
+		}
+
+		private bool TryAddItemReference(WebControl control)
+		{
+			if (control == null)
+				return false;
+			control.Attributes["data-item"] = CurrentItem.ID.ToString();
+			control.Attributes["data-item-version-key"] = CurrentItem.GetVersionKey();
+			control.Attributes["data-page"] = CurrentItem.IsPage
+				? currentItem.ID.ToString()
+				: Find.ClosestPage(CurrentItem) != null
+					? Find.ClosestPage(CurrentItem).ID.ToString()
+					: "";
+			control.Attributes["data-item-zone"] = CurrentItem.ZoneName;
+			control.Attributes["data-item-reference"] = ClientID + "_autosaved_url";
+			return true;
+		}
 
         protected override void CreateChildControls()
         {
@@ -265,12 +324,13 @@ namespace N2.Web.UI.WebControls
         #region IItemEditor Members
 
         public event EventHandler<ItemEventArgs> Saved;
+		public event Action<object, CommandContext> CreatingContext;
 
-        #endregion
+		#endregion
 
-        #region IBinder<CommandContext> Members
+		#region IBinder<CommandContext> Members
 
-        public N2.Edit.Workflow.CommandContext BinderContext { get; internal set; }
+		public N2.Edit.Workflow.CommandContext BinderContext { get; internal set; }
 
         public bool UpdateObject(N2.Edit.Workflow.CommandContext value)
         {
@@ -331,12 +391,43 @@ namespace N2.Web.UI.WebControls
 
         public CommandContext CreateCommandContext()
         {
-            return new CommandContext(Definition ?? GetDefinition(), CurrentItem, Interfaces.Editing, Page.User, this, new PageValidator<CommandContext>(Page));
+            var cc = new CommandContext(Definition ?? GetDefinition(), CurrentItem, Interfaces.Editing, Page.User, this, new PageValidator<CommandContext>(Page));
+
+			TryReplaceContentWithAutosavedVersion(cc);
+
+			if (CreatingContext != null)
+				CreatingContext(this, cc);
+
+            return cc;
         }
+		
+		public ContentItem GetAutosaveVersion()
+		{
+			var value = Page.Request[ClientID + "_autosaved_url"];
+			if (string.IsNullOrEmpty(value))
+				return null;
+
+			Url editUrl = value;
+			var selection = new SelectionUtility(key => editUrl[key], Engine);
+			var item = selection.ParseSelectionFromRequest();
+			return item;
+		}
+
+		private bool TryReplaceContentWithAutosavedVersion(CommandContext cc)
+		{
+			var item = GetAutosaveVersion();
+			if (item == null)
+				return false;
+			if (cc.Content.ID == 0)
+				cc.Content.AddTo(null);
+			cc.Content = item;
+			return true;
+		}
 
         public void Initialize(string discriminator, string template, ContentItem parent)
         {
             var definition = Engine.Definitions.GetDefinition(discriminator);
+
             if (!string.IsNullOrEmpty(template))
             {
                 var info = Engine.Resolve<ITemplateAggregator>().GetTemplate(definition.ItemType, template);

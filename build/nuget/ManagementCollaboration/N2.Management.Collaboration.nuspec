@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>N2CMS.Management.Collaboration</id>
+    <version>{Version}</version>
+    <title>N2 CMS Collaboration Functionality</title>
+    <authors>Cristian Libardo</authors>
+    <owners>Cristian Libardo</owners>
+    <licenseUrl>http://n2cms.com/Project/License.aspx</licenseUrl>
+    <projectUrl>http://n2cms.com/</projectUrl>
+	<iconUrl>http://n2cms.com/Upload/logo-5.png</iconUrl>
+	<requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Installs the collaboration functionality.</description>
+    <summary></summary>
+    <language>en-US</language>
+    <tags>N2 CMS, Collaboration, Messages, Notifications, Notes</tags>
+		<dependencies>
+			<dependency id="N2CMS.Management" version="{Version}" />
+		</dependencies>
+	</metadata>
+</package>

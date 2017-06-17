@@ -1,11 +1,11 @@
 ﻿@model N2.Web.Slideshow
 
 @{
-	Content.Define(ie => { ie.Title = "Default Slideshow"; });
+	Content.Define(ie => { ie.Definition.Title = "Default Slideshow"; });
 	string uniqueId = Html.UniqueID("cs");
 }
 
-@{ Html.Resources().JavaScript(Url.ThemedContent("~/Scripts/jquery.anythingslider.js")); }
+@Html.Resources().JavaScript(Url.ThemedContent("~/Scripts/jquery.anythingslider.js"))
 
 <div class="@Model.CssClass" id="@uniqueId">
 	@foreach (var img in Model.GetSlideshowImages())

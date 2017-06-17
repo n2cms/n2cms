@@ -81,7 +81,7 @@ namespace N2.Persistence.Search
             doc.Add(Properties.IsPage, item.IsPage.ToString().ToLower(), store: true, analyze: false);
             doc.Add(Properties.Roles, GetRoles(item), store: true, analyze: true);
             doc.Add(Properties.Types, GetTypes(item), store: true, analyze: true);
-            doc.Add(Properties.Language, GetLanguage(item), store: true, analyze: false);
+            doc.Add(Properties.Language, GetLanguage(item), store: true, analyze: true);
             doc.Add(Properties.Visible, item.Visible.ToString().ToLower(), store: true, analyze: false);
             doc.Add(Properties.SortOrder, item.SortOrder, store: true, analyze: false);
 

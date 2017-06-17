@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Configuration;
 using N2.Resources;
 
-// ReSharper disable RedundantNameQualifier
 namespace N2.Configuration
 {
 	public class ResourcesElement : ConfigurationElement
@@ -23,7 +22,7 @@ namespace N2.Configuration
 			get { return (string)base["jQueryJsPath"]; }
 			set { base["jQueryJsPath"] = value; }
 		}
-
+		
 		/// <summary>The path to the included jQuery UI javascript resource.</summary>
 		[ConfigurationProperty("jQueryUiPath", DefaultValue = Register.DefaultJQueryUiJsPath)]
 		public string JQueryUiPath
@@ -158,4 +157,3 @@ namespace N2.Configuration
 		}
 	}
 }
-// ReSharper restore RedundantNameQualifier

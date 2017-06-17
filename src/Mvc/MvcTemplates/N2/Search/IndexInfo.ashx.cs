@@ -14,14 +14,17 @@ namespace N2.Management.Search
     {
         public void ProcessRequest(HttpContext context)
         {
-            if (!N2.Context.Current.SecurityManager.IsAdmin(context.User))
+			var engine = N2.Context.Current;
+
+            if (!engine.SecurityManager.IsAdmin(context.User))
                 throw new N2.Security.PermissionDeniedException();
 
             context.Response.ContentType = "application/json";
             new
             {
-                Statistics = N2.Context.Current.Resolve<IContentIndexer>().GetStatistics(),
-                Status = N2.Context.Current.Resolve<IAsyncIndexer>().GetCurrentStatus()
+				IndexerType = engine.Resolve<IIndexer>().GetType().Name,
+                Statistics = engine.Resolve<IContentIndexer>().GetStatistics(),
+                Status = engine.Resolve<IAsyncIndexer>().GetCurrentStatus()
             }.ToJson(context.Response.Output);
         }
 

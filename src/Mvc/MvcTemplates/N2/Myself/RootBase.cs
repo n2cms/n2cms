@@ -17,7 +17,8 @@ namespace N2.Management.Myself
         Description = "A fallback root page used to organize start pages. This root can be replaced or inherited in a web application project.", 
         SortOrder = 0,
         IconClass = "fa fa-database",
-        TemplateUrl = "{ManagementUrl}/Myself/Root.aspx")]
+        TemplateUrl = "{ManagementUrl}/Myself/Root.aspx",
+		InstallerVisibility = InstallerHint.NeverStartPage)]
     [RestrictParents(AllowedTypes.None)]
     [AvailableZone("Left", "Left")]
     [AvailableZone("Center", "Center")]
@@ -27,7 +28,7 @@ namespace N2.Management.Myself
 	[AvailableZone("Collaboration", "Collaboration")]
     [RecursiveContainer("RootSettings", 120, RequiredPermission = Permission.Administer)]
 	[TabContainer("Search", "Search", 120, ContainerName = "RootSettings")]
-	[TabContainer("Collaboration", "Collaboration", 130, ContainerName = "RootSettings")]
+	//[TabContainer("Collaboration", "Collaboration", 130, ContainerName = "RootSettings")]
     [WithManageableSearch(ContainerName = "Search")]
     [Versionable(AllowVersions.No)]
     [InterfaceFlags(RemovedFlags = new [] { "Management" })]
@@ -38,8 +39,8 @@ namespace N2.Management.Myself
             get { return FindPath(PathData.DefaultAction).GetRewrittenUrl(); }
         }
 
-		[EditableChildren(ContainerName = "Collaboration", ZoneName = "Collaboration")]
-		public virtual IEnumerable<IMessageSource> Messages { get; set; }
+		//[EditableChildren(ContainerName = "Collaboration", ZoneName = "Collaboration")]
+		//public virtual IEnumerable<IMessageSource> Messages { get; set; }
 
 		public IEnumerable<CollaborationMessage> GetMessages(CollaborationContext context)
 		{

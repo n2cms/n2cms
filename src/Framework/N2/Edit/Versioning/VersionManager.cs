@@ -93,18 +93,23 @@ namespace N2.Edit.Versioning
         /// <param name="item">The item to update.</param>
         public void UpdateVersion(ContentItem item)
         {
-            if (item.VersionOf.HasValue)
-                Repository.Save(item);
-            else
-                itemRepository.SaveOrUpdate(item);
-        }
+			var page = Find.ClosestPage(item);
 
-        /// <summary>Update a page version with another, i.e. save a version of the current item and replace it with the replacement item. Returns a version of the previously published item.</summary>
-        /// <param name="currentItem">The item that will be stored as a previous version.</param>
-        /// <param name="replacementItem">The item that will take the place of the current item using it's ID. Any saved version of this item will not be modified.</param>
-        /// <param name="storeCurrentVersion">Create a copy of the currently published version before overwriting it.</param>
-        /// <returns>A version of the previously published item or the current item when storeCurrentVersion is false.</returns>
-        public virtual ContentItem ReplaceVersion(ContentItem currentItem, ContentItem replacementItem, bool storeCurrentVersion = true)
+			if (item.VersionOf.HasValue)
+				Repository.Save(item, asPreviousVersion: item.State != ContentState.Draft);
+			else if (page != null && page.VersionOf.HasValue)
+				Repository.Save(item, asPreviousVersion: item.State != ContentState.Draft);
+			else
+				// probably a new item that has no presence in n2item
+				itemRepository.SaveOrUpdate(item);
+		}
+
+		/// <summary>Update a page version with another, i.e. save a version of the current item and replace it with the replacement item. Returns a version of the previously published item.</summary>
+		/// <param name="currentItem">The item that will be stored as a previous version.</param>
+		/// <param name="replacementItem">The item that will take the place of the current item using it's ID. Any saved version of this item will not be modified.</param>
+		/// <param name="storeCurrentVersion">Create a copy of the currently published version before overwriting it.</param>
+		/// <returns>A version of the previously published item or the current item when storeCurrentVersion is false.</returns>
+		public virtual ContentItem ReplaceVersion(ContentItem currentItem, ContentItem replacementItem, bool storeCurrentVersion = true)
         {
             if (currentItem == null)
                 throw new ArgumentNullException("currentItem");
@@ -156,27 +161,59 @@ namespace N2.Edit.Versioning
             return currentItem;
         }
 
+		public ContentItem GetOrCreateDraft(ContentItem item)
+		{
+			var draft = GetVersionsOf(item, stateFilter: ContentState.Draft).Where(vi => vi.VersionIndex > item.VersionIndex).FirstOrDefault();
+			if (draft != null)
+				return GetVersion(item, draft.VersionIndex);
+			return AddVersion(item, asPreviousVersion: false);
+		}
+
         private void Replace(ContentItem currentItem, ContentItem replacementItem)
-        {
-            UpdateValues(currentItem, replacementItem);
+		{
+			UpdateValues(currentItem, replacementItem);
             itemRepository.SaveOrUpdate(currentItem);
 
-            foreach (var removedItem in RemoveRemovedPartsRecursive(currentItem, replacementItem))
+			foreach (var removedItem in RemoveRemovedPartsRecursive(currentItem, replacementItem))
                 itemRepository.Delete(removedItem);
 
-            foreach (var modifiedItem in UpdateModifiedPartsRecursive(currentItem, replacementItem))
+			var reorderedParts = ReorderReorderedPartRecursive(currentItem, replacementItem);
+
+			foreach (var modifiedItem in UpdateModifiedPartsRecursive(currentItem, replacementItem))
                 itemRepository.SaveOrUpdate(modifiedItem);
 
             foreach (var addedItem in AddAddedPartsRecursive(currentItem, replacementItem))
                 itemRepository.SaveOrUpdate(addedItem);
 
-            if (ItemReplacedVersion != null)
+			foreach (var reorderedPart in reorderedParts)
+			{
+				Utility.Insert(reorderedPart, reorderedPart.Parent, "SortOrder");
+				itemRepository.SaveOrUpdate(reorderedPart);
+			}
+
+			if (ItemReplacedVersion != null)
                 ItemReplacedVersion.Invoke(this, new ItemEventArgs(replacementItem));
 
             itemRepository.Flush();
         }
 
-        private void UpdateValues(ContentItem currentItem, ContentItem replacementItem)
+		private IEnumerable<ContentItem> ReorderReorderedPartRecursive(ContentItem currentItem, ContentItem replacementItem)
+		{
+			var reorderedItems = new List<ContentItem>();
+			foreach(var replacingChild in replacementItem.Children.FindParts())
+			{
+				var masterChild = replacingChild.VersionOf.Value;
+				if (masterChild != null && replacingChild.SortOrder != masterChild.SortOrder)
+				{
+					reorderedItems.Add(masterChild);
+					foreach (var masterGrandchild in ReorderReorderedPartRecursive(masterChild, replacingChild))
+						reorderedItems.Add(masterGrandchild);
+				}
+			}
+			return reorderedItems;
+		}
+
+		private void UpdateValues(ContentItem currentItem, ContentItem replacementItem)
         {
             ClearAllDetails(currentItem);
 
@@ -250,9 +287,10 @@ namespace N2.Edit.Versioning
                     if (!clone.Published.HasValue)
                         clone.Published = Utility.CurrentTime();
                     clone.AddTo(currentItem);
+					replacingChild.VersionOf = clone;
                     RelinkMasterVersion(clone);
                     yield return clone;
-                    masterChild = clone;
+					masterChild = clone;
                 }
                 foreach (var addedPart in AddAddedPartsRecursive(masterChild, replacingChild))
                     yield return addedPart;
@@ -318,16 +356,17 @@ namespace N2.Edit.Versioning
         /// <param name="publishedItem">The item whose versions to get.</param>
         /// <param name="count">The number of versions to get.</param>
         /// <returns>A list of versions of the item.</returns>
-        public virtual IEnumerable<VersionInfo> GetVersionsOf(ContentItem publishedItem, int skip = 0, int take = 1000)
+        public virtual IEnumerable<VersionInfo> GetVersionsOf(ContentItem publishedItem, int skip = 0, int take = 1000, ContentState? stateFilter = null)
         {
             if (publishedItem.ID == 0)
                 return new [] { publishedItem.GetVersionInfo() };
 
 	        var versionQuery = Repository.GetVersions(publishedItem).Select(v => v.GetVersionInfo(Repository))
 		        .Concat(new[] {publishedItem.GetVersionInfo()})
+				.Where(vi => !stateFilter.HasValue || vi.State.IsFlagSet(stateFilter.Value))
 		        .OrderByDescending(i => i.VersionIndex)
 		        .Skip(skip).Take(take);
-
+			
 	        var versionList = new List<VersionInfo>();
 	        foreach (var version in versionQuery)
 	        {
@@ -389,5 +428,5 @@ namespace N2.Edit.Versioning
         public event EventHandler<CancellableDestinationEventArgs> ItemReplacingVersion;
         /// <summary>Occurs before an item is saved</summary>
         public event EventHandler<ItemEventArgs> ItemReplacedVersion;
-    }
+	}
 }

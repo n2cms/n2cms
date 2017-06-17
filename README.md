@@ -1,3 +1,5 @@
+New: Join the N2CMS chat on Telegram: https://t.me/joinchat/AAAAAA4oUpeYPAMOVGhGuw
+
 ## Welcome to N2CMS
 
 **N2CMS is a lightweight CMS framework.** With just a few strokes of your keyboard a 
@@ -13,6 +15,8 @@ options and unlimited customization options.
 which properties are editable by adding attributes*
 
 ```csharp
+// [RootPage()]  - use this if you want this page type to be a "Root page"
+// [StartPage()] - use this if you want this page type to be a "Start page"
 [PageDefinition(TemplateUrl = "~/my/pageitemtemplate.aspx")]
 public class PageItem : N2.ContentItem
 {
@@ -28,24 +32,43 @@ public class PageItem : N2.ContentItem
 1. Create a new, empty Web Application Project in Visual Studio 2012 or 2013. 
 2. Go to *Tools > Library Package Manager > Package Manager Console*
 3. In the Package Manager console run the following commands: 
-  ```
-Install-Package N2CMS.Dinamico
-Install-Package N2CMS.Management
-```
+
+	```
+	Install-Package N2CMS.Dinamico
+	Install-Package N2CMS.Management
+	```
+4. Configure database, e.g. SqlLite for small sites:
+
+	```
+	Install-Package N2CMS.Config.SQLite
+	```
+5. Run your Web Application Project and follow on-screen advice.
+
+6. A tip on selecting root and start nodes: 
+   StartPage single node is usually good enough for simple sites,
+   RootPage and LanguageIntersection two node configuration is a good choice for multilingual sites (add localized StartPages later). 
+
 
 Please note, N2CMS supports the following ASP.NET view engines:
 * ASP.NET MVC + Razor ("Dinamico" template pack)
 * ASP.NET MVC + MVC Views ("MVC" template pack)
 * ASP.NET Web Forms
 
+It is NOT ENOUGH to install just the `N2CMS` package. If you use the N2CMS standalone NuGet, you still need either N2CMS.Dinamico or N2CMS.MVC NuGet for it to work properly.
 
 Detailed installation instructions are available at: https://github.com/n2cms/n2cms/blob/master/README_SETUP.md
 or in our documentation wiki: https://n2cmsdocs.atlassian.net/wiki/display/N2CMS/Getting+Started+using+N2CMS
 
+**For development ("bleeding edge") packages**, you can add our MyGet feed to your NuGet package manager. Please follow the instructions in NuGet documentation for doing this. Here are the feed URLs:
+
+* NuGet V3 feed URL (Visual Studio 2015+): https://www.myget.org/F/n2cms/api/v3/index.json
+* NuGet V2 feed URL (Visual Studio 2012+): https://www.myget.org/F/n2cms/api/v2
+
+
 
 ----
 
-##API
+## API
 
 You can use the API within your methods and properties to develop advanced content manageable features.
 
@@ -64,14 +87,14 @@ public void DoSomeStuffWithSomeItems(DateTime minDate, DateTime maxDate)
 ```
 There are more API usage examples here: http://n2cms.com/Documentation/Manipulating%20content/Finding%20content.aspx.
 
-##I want this in my project.  Where do I download it?
+## I want this in my project.  Where do I download it?
 
 **Install the Nuget package: http://www.nuget.org/packages/N2CMS/**
 
 ##Where do I get more advanced documentation?
 
 ###Reference Documentation
-**On our Confluence wiki:** https://n2cmsdocs.atlassian.net/wiki/display/N2CMS/Getting+Started
+**On our Confluence wiki:** https://n2cmsdocs.atlassian.net/wiki/display/N2CMS/Getting+Started+using+N2CMS
 
 >We know... we need to move this to github wiki or our public site.  We are the cobblers kids.  Would love help if you are interested.  Contact us.
 
@@ -96,7 +119,7 @@ You may have to make certain configuration changes when moving the code to a
 hosting provider. Common issues are addressed here:
 http://n2cms.com/wiki/Troubleshooting-site-deployment.aspx
 
-##Clone the Source Code and Contribute to N2CMS
+## Clone the Source Code and Contribute to N2CMS
 
 ### What is here?
 
@@ -125,7 +148,7 @@ consists of N2.dll and the UI management files residing below the /N2/ folder.
 N2 CMS supports many databases, this code is set up to use the SQLite embedded 
 database. You may want to use SQL Server or MySQL in production.
 
-##More Resources and Documentation
+## More Resources and Documentation
 
 * http://n2cms.codeplex.com/releases/ (Download N2 CMS 2.x Developer Documentation)
 * http://n2cms.com/Documentation.aspx

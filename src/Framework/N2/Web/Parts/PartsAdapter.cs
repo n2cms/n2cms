@@ -163,6 +163,7 @@ namespace N2.Web.Parts
 				.SelectMany(ci => Definitions.GetAllowedChildren(ci))
 				.Where(d => d.Enabled)
 				.Where(d => d.AllowedIn != Integrity.AllowedZones.None)
+                .WhereAuthorized(Security, user, parentItem)
                 .Distinct();
         }
 
@@ -290,7 +291,7 @@ namespace N2.Web.Parts
             }
 
             logger.DebugFormat("Using fallback template rendering for part {0}", part);
-            new LegacyTemplateRenderer(Engine.Resolve<IControllerMapper>()).RenderTemplate(part, html);
+            new LegacyTemplateRenderer(Engine.Resolve<IControllerMapper>()).RenderTemplate(part, html, writer);
         }
 
         public class LegacyTemplateRenderer
@@ -304,7 +305,7 @@ namespace N2.Web.Parts
                 this.controllerMapper = controllerMapper;
             }
 
-            public void RenderTemplate(ContentItem item, HtmlHelper helper)
+            public void RenderTemplate(ContentItem item, HtmlHelper helper, TextWriter writer = null)
             {
                 RouteValueDictionary values = GetRouteValues(helper, item);
 
@@ -316,7 +317,10 @@ namespace N2.Web.Parts
                 {
                     var newPath = currentPath.Clone(currentPath.CurrentPage, item);
                     helper.ViewContext.RouteData.ApplyCurrentPath(newPath);
-                    helper.RenderAction("Index", values);
+					if (writer == null)
+						helper.RenderAction("Index", values);
+					else
+						writer.Write(helper.Action("Index", values));
                 }
                 finally
                 {

@@ -7,7 +7,7 @@ using N2.Security;
 
 namespace N2.Edit.Membership
 {
-    [MembershipToolbarPlugin("ROLES", "roles", "~/N2Extensions/Roles/Roles.aspx", "{ManagementUrl}/Resources/icons/group.png", 111,
+    [MembershipToolbarPlugin("ROLES", "roles", "{ManagementUrl}/Roles/Roles.aspx", "{ManagementUrl}/Resources/icons/group.png", 111,
         ToolTip = "administer roles",
         GlobalResourceClassName = "Toolbar",
         RequiredPermission = Permission.Administer)]

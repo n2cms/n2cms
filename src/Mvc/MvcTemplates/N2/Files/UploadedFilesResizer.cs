@@ -81,9 +81,15 @@ namespace N2.Management.Files
 						files.DeleteFile(resizedPath);
 					}
 
-					using (var destinationStream = files.OpenFile(resizedPath))
+					try
 					{
-						resizer.Resize(sourceStream, new ImageResizeParameters(size.Width, size.Height, size.Mode) { Quality = size.Quality }, destinationStream);
+						using (var destinationStream = files.OpenFile(resizedPath))
+						{
+							resizer.Resize(sourceStream, new ImageResizeParameters(size.Width, size.Height, size.Mode) { Quality = size.Quality }, destinationStream);
+						}
+					}
+					catch
+					{
 					}
 				}
 			}

@@ -44,8 +44,12 @@
 			link: function compile(scope, element, attrs) {
 				element.bind("contextmenu", function (e) {
 					var clickedElements = $(e.target).closest(".item").find(".dropdown-toggle").trigger("click").length;
-					if (clickedElements)
+					if (clickedElements) {
 						e.preventDefault();
+						setTimeout(function () {
+							$(e.target).closest(".item").find(".dropdown-menu li:first-child a").focus();
+						});
+					}
 				});
 			}
 		}
@@ -174,6 +178,12 @@
 							current.Target = "preview";
 						if (!current.Url && current.PreviewUrl)
 							current.Url = current.PreviewUrl;
+						if (current.Url == "#") {
+							element.click(function (e) {
+								e.stopPropagation();
+								e.preventDefault();
+							});
+						}
 
 						unwatchHref && unwatchHref();
 						unwatchHref = watch(current.Url, scope, function(value) { element.attr("href", value || "#"); });
@@ -234,6 +244,26 @@
 			});
 		};
 	});
+
+	module.directive("n2PreviewFrame", function (EbbCallbacks) {
+		return function (scope, element, attr) {
+			var src = scope.appendPreviewOptions(scope.Context.Paths.PreviewUrl);
+			element.prop("src", src);
+			element.prop("id", "page-preview-frame");
+			element.prop("name", "preview");
+
+			element.bind("load", EbbCallbacks(function (e) {
+				try {
+					scope.$apply(function () {
+						var loco = e.target.contentWindow.location;
+						scope.$emit("preiewloaded", { path: loco.pathname, query: loco.search, url: loco.toString() });
+					});
+				} catch (ex) {
+					window.console && console.log("frame access exception", ex);
+				}
+			}, 50));
+		};
+	})
 
 	module.directive("keyup", function ($parse) {
 		return function (scope, element, attr) {
@@ -498,4 +528,165 @@ span.null {color:silver}\
 		}
 	});
 
+	module.factory("Keys", function () {
+		return {
+			esc: 27,
+			left: 37,
+			up: 38,
+			right: 39,
+			down: 40,
+			pageup: 33,
+			pagedown: 34
+		};
+	});
+
+	module.directive("n2KeyboardHome", function (Keys, $parse, $timeout) {
+		return {
+			restrict: "A",
+			link: function (scope, element, attrs) {
+				$timeout(function () {
+					element.focus();
+				}, 100);
+
+				var modelSet = $parse(attrs.ngModel).assign;
+
+				jQuery(document).keydown(function (e) {
+					if (e.keyCode == Keys.esc) {
+						element.focus();
+
+						$timeout(function () {
+							modelSet(scope, "");
+							scope.$eval(attrs.ngChange);
+							scope.$digest();
+						});
+					}
+				})
+			}
+		}
+	});
+
+	module.directive("n2KeyboardStop", function (Keys) {
+		return {
+			restrict: "A",
+			link: function (scope, element, attrs) {
+				var myStopClass = "n2-keyboard-stop-" + attrs.hKeyboardStop;
+				element.addClass("n2-keyboard-stop")
+					.addClass(myStopClass)
+				element.bind("keydown", function (e) {
+					if (e.keyCode == Keys.down || e.keyCode == Keys.up) {
+						var $siblings = jQuery("." + myStopClass + ":visible");
+						var myIndex = $siblings.index(this);
+						if (myIndex > 0 && e.keyCode == Keys.up) {
+							e.preventDefault();
+							$siblings[myIndex - 1].focus();
+						}
+						if (myIndex < $siblings.length - 1 && e.keyCode == Keys.down) {
+							e.preventDefault();
+							$siblings[myIndex + 1].focus();
+						}
+					}
+					if (e.keyCode == Keys.left || e.keyCode == Keys.right) {
+						var columnIndex = parseInt(attrs.hKeyboardStop);
+						var columnQuery = ".n2-keyboard-stop-"
+							+ (e.keyCode == Keys.left ? columnIndex - 1 : columnIndex + 1)
+							+ ":visible";
+
+						var $rows = jQuery(columnQuery);
+						if ($rows.length) {
+							var $actives = $rows.filter(function () { return jQuery(this).parent().is(".active"); });
+
+							if ($actives.length)
+								$actives[0].focus();
+							else
+								$rows[0].focus();
+						}
+					}
+				});
+			}
+		}
+	});
+	
+	module.directive("n2KeyboardMap", function (Keys) {
+		return {
+			restrict: "A",
+			link: function (scope, element, attrs) {
+				element.addClass("n2-keyboard-map");
+				var map = undefined;
+				element.bind("keydown", function (e) {
+					if (!map) map = scope.$eval(attrs.n2KeyboardMap);
+					angular.forEach(Keys, function (code, key) {
+						if (e.keyCode == code) {
+							var $target = element.find(map[key]);
+							if ($target.length) {
+								$target.click();
+								e.stopPropagation();
+							}
+						}
+					});
+				});
+			}
+		}
+	});
+
+	module.directive("n2EventFocus", function ($rootScope) {
+		return {
+			restrict: "A",
+			link: function (scope, element, attrs) {
+				var map = scope.$eval(attrs.n2EventFocus);
+				angular.forEach(map, function (selector, eventName) {
+					$rootScope.$on(eventName, function () {
+						setTimeout(function () {
+							if (!scope.Context.Flags.ContentEdit)
+								if (element.find(selector).siblings(".dropdown.open").length == 0)
+									element.find(selector).focus();
+						});
+					});
+				})
+			}
+		}
+	});
+
+	module.directive("n2BindEscaped", function () {
+		return {
+			restrict: "A",
+			link: function (scope, element, attrs) {
+				var message = scope.$eval(attrs.n2BindEscaped) || "";
+				//message = message
+				//	.replace(/&/g, '&amp;')
+				//	.replace(/"/g, '&quot;')
+				//	.replace(/'/g, '&#39;')
+				//	.replace(/</g, '&lt;')
+				//	.replace(/>/g, '&gt;');
+				//console.log("msg", message, scope.message);
+				element.html(message);
+			}
+		}
+	});
+
+	angular.forEach(["Active", "Loading"], function (key) {
+		var attributeNam = "n2" + key;
+		var cssClass = key.toLowerCase();
+		module.directive(attributeNam, function () {
+			return {
+				restrict: "A",
+				link: function (scope, element, attrs) {
+					scope.$watch(attrs[attributeNam], function (value) { element.toggleClass(cssClass, !!value); })
+				}
+			}
+		});
+	})
+
+	module.directive("n2DelayedActivation", function () {
+		return {
+			restrict: "A",
+			link: function (scope, element, attrs) {
+				scope.$watch(attrs.n2DelayedActivation, function (active) {
+					if (active)
+						setTimeout(function () { element.addClass("active"); })
+					else
+						setTimeout(function () { element.removeClass("active"); }, 200)
+				});
+			}
+		}
+	});
 })(angular.module('n2.directives', ['n2.localization']));

@@ -3,8 +3,8 @@
 
 @{ Content.Define(ie => 
 	   {
-		   ie.Title = "Teaser";
-		   ie.IconUrl = "{IconsUrl}/photo_link.png";
+		   ie.Definition.Title = "Teaser";
+		   ie.Definition.IconUrl = "{IconsUrl}/photo_link.png";
 		   ie.Link("ForwardsTo");
 		   ie.ImageSize("ImageSize", "Image Size").Configure(e => e.DefaultValue = "");
 	   }); }

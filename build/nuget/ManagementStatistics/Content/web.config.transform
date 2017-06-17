@@ -1,0 +1,10 @@
+﻿<configuration>
+  <configSections>
+    <sectionGroup name="n2" type="N2.Configuration.SectionGroup, N2">
+			<section name="statistics" type="N2.Management.Statistics.Configuration.StatisticsSection, N2.Management.Statistics" requirePermission="false" restartOnExternalChanges="true" />
+    </sectionGroup>
+  </configSections>
+  <n2 xmlns="http://n2cms.com/schemas/configuration/v3">
+		<statistics granularity="Day" memoryFlushInterval="Hour" displayedDays="14"></statistics>
+  </n2>
+</configuration>

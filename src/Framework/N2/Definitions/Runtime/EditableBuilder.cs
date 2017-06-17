@@ -14,8 +14,6 @@ namespace N2.Definitions.Runtime
             this.Registration = re;
         }
 
-
-
         private T Current
         {
             get { return Registration.Definition.NamedOperators.OfType<T>().First(no => no.Name == PropertyName); }

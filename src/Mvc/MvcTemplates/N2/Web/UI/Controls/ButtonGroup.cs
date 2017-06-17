@@ -23,8 +23,10 @@ namespace N2.Edit.Web.UI.Controls
 			}
 
 			var engine = Page.GetEngine();
-			writer.Write("<div class='btn-group" + (engine.Config.Sections.Management.IsToolbarOnBottom ? " dropup" : "") + "'>");
-			
+			writer.Write("<div class='btn-group" + (engine.Config.Sections.Management.IsToolbarOnBottom ? " dropup" : "") + "'");
+			writer.Write(">");
+
+			AddOnClientClickBehavior(visibleChildren[0]);
 			visibleChildren[0].CssClass += " btn " + CssClass;
 			visibleChildren[0].RenderControl(writer);
 			
@@ -35,6 +37,7 @@ namespace N2.Edit.Web.UI.Controls
 				for (int i = 1; i < visibleChildren.Count; i++)
 				{
 					writer.Write("<li>");
+					AddOnClientClickBehavior(visibleChildren[i]);
 					visibleChildren[i].RenderControl(writer);
 					writer.Write("</li>");					
 				}
@@ -42,5 +45,13 @@ namespace N2.Edit.Web.UI.Controls
 			}
 			writer.Write("</div>");
 		}
+
+		private void AddOnClientClickBehavior(WebControl actionControl)
+		{
+			if (!string.IsNullOrEmpty(OnClientClick))
+				actionControl.Attributes.Add("onclick", OnClientClick);
+		}
+
+		public string OnClientClick { get; set; }
 	}
 }

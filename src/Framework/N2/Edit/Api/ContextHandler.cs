@@ -1,76 +1,78 @@
-using N2.Collections;
+using System;
+using System.Net;
+using System.Web;
 using N2.Edit;
 using N2.Edit.Installation;
-using N2.Edit.Trash;
-using N2.Edit.Versioning;
 using N2.Engine;
-using N2.Engine.Globalization;
-using N2.Persistence;
 using N2.Web;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Security.Principal;
-using System.Web;
 
 namespace N2.Management.Api
 {
-    [Service(typeof(IApiHandler))]
-    public class ContextHandler : IHttpHandler, IApiHandler
-    {
-        public ContextHandler()
-            : this(Context.Current)
-        {
-        }
+	[Service(typeof(IApiHandler))]
+	public class ContextHandler : IHttpHandler, IApiHandler
+	{
+		private readonly IEngine engine;
 
-        public ContextHandler(IEngine engine)
-        {
-            this.engine = engine;
-        }
+		public ContextHandler()
+			: this(Context.Current)
+		{
+		}
 
-        private IEngine engine;
-        private SelectionUtility Selection { get { return engine.RequestContext.HttpContext.GetSelectionUtility(engine); } }
+		public ContextHandler(IEngine engine)
+		{
+			this.engine = engine;
+		}
 
-        public void ProcessRequest(HttpContext context)
-        {
-            ProcessRequest(context.GetHttpContextBase());
-        }
+		//private SelectionUtility Selection => engine.RequestContext.HttpContext.GetSelectionUtility(engine);
+		private SelectionUtility Selection { get { return engine.RequestContext.HttpContext.GetSelectionUtility(engine); } }
 
-        public void ProcessRequest(HttpContextBase context)
-        {
-            switch (context.Request.PathInfo)
-            {
-                case "/interface":
-                    context.Response.WriteJson(engine.Resolve<InterfaceBuilder>().GetInterfaceDefinition(context, Selection));
-                    return;
-                case "/full":
-                    context.Response.WriteJson(new
-                    {
-                        Interface = engine.Resolve<InterfaceBuilder>().GetInterfaceDefinition(context, Selection),
-                        Context = engine.Resolve<ContextBuilder>().GetInterfaceContextData(context, Selection)
-                    });
+		public void ProcessRequest(HttpContextBase context)
+		{
+			switch (context.Request.QueryString["mode"])
+			{
+				case "interface":
+					context.Response.WriteJson(engine.Resolve<InterfaceBuilder>().GetInterfaceDefinition(context, Selection));
 					return;
-				case "/messages":
+				case "full":
+					try
+					{
+						var Interface = engine.Resolve<InterfaceBuilder>().GetInterfaceDefinition(context, Selection);
+						var Context = engine.Resolve<ContextBuilder>().GetInterfaceContextData(context, Selection);
+						context.Response.WriteJson(new
+						{
+							Interface,
+							Context
+						});
+					}
+					catch (Exception ex)
+					{
+						context.Response.Write(ex.ToString());
+						context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+					}
+					return;
+				case "messages":
 					context.Response.WriteJson(engine.Resolve<ContextBuilder>().GetMessages(context, Selection));
 					return;
-				case "/status":
+				case "status":
 					var status = engine.Resolve<InstallationManager>().GetStatus();
-					context.Response.WriteJson(new {
+					context.Response.WriteJson(new
+					{
 						Running = status.Level == SystemStatusLevel.UpAndRunning,
-						Level = status.Level,
+						status.Level,
 						Message = status.Level == SystemStatusLevel.UpAndRunning ? "All systems nominal" : status.ToStatusString()
 					});
 					return;
-                default:
-                    context.Response.WriteJson(engine.Resolve<ContextBuilder>().GetInterfaceContextData(context, Selection));
-                    return;
-            }
-        }
+				default:
+					context.Response.WriteJson(engine.Resolve<ContextBuilder>().GetInterfaceContextData(context, Selection));
+					return;
+			}
+		}
 
-        public bool IsReusable
-        {
-            get { return false; }
-        }
-    }
+		public void ProcessRequest(HttpContext context)
+		{
+			ProcessRequest(context.GetHttpContextBase());
+		}
+
+		public bool IsReusable => false;
+	}
 }

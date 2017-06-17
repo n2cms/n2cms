@@ -15,6 +15,7 @@ namespace N2.Management.Search
         protected IEngine Engine { get; set; }
         protected IndexStatus Status { get; set; }
         protected IndexStatistics Statistics { get; set; }
+		protected string IndexerType { get; set; }
 
         protected override void OnInit(EventArgs e)
         {
@@ -27,10 +28,12 @@ namespace N2.Management.Search
         {
             Engine.Resolve<IContentIndexer>().Clear();
         }
+
         protected void OnIndex(object sender, CommandEventArgs args)
         {
             Engine.Resolve<IAsyncIndexer>().ReindexDescendants(Engine.Content.Traverse.RootPage.ID, false);
         }
+
         protected void OnReindex(object sender, CommandEventArgs args)
         {
             Engine.Resolve<IAsyncIndexer>().ReindexDescendants(Engine.Content.Traverse.RootPage.ID, true);
@@ -48,8 +51,9 @@ namespace N2.Management.Search
         {
             base.OnPreRender(e);
 
-            Status = Engine.Resolve<IAsyncIndexer>().GetCurrentStatus();
+			IndexerType = Engine.Resolve<IIndexer>().GetType().Name;
+			Status = Engine.Resolve<IAsyncIndexer>().GetCurrentStatus();
             Statistics = Engine.Resolve<IContentIndexer>().GetStatistics();
         }
-    }
+	}
 }

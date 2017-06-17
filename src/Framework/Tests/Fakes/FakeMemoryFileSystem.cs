@@ -32,6 +32,17 @@ namespace N2.Tests.Fakes
             return directories[virtualPath];
         }
 
+        /// <summary>Searches for files in all Upload Directories.</summary>
+        /// <param name="query">The search term</param>
+        /// <param name="uploadDirectories">All Upload Directories</param>
+        /// <returns>An enumeration of files matching the query.</returns>
+        public IEnumerable<FileData> SearchFiles(string query, List<N2.Collections.HierarchyNode<ContentItem>> uploadDirectories)
+        {
+            //Not implemented
+            return null;
+        }
+
+
         public bool FileExists(string virtualPath)
         {
             return files.ContainsKey(virtualPath);

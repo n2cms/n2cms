@@ -23,18 +23,27 @@ namespace N2.Engine
 
             public IEnumerable<Type> GetOrCreateCache(string key, Func<Assembly, IEnumerable<Type>> factory, ref bool factoryInvoked)
             {
-                lock (this)
+                try
                 {
-                    if (!Queries.ContainsKey(key))
+                    lock (this)
                     {
-                        factoryInvoked = true;
-                        var types = factory(Assembly).ToList();
-                        logger.DebugFormat("Recreating cache for key {0}, found {1} types in assembly {2}/{3}", key, types.Count, Assembly, ModuleId);
-                        Queries[key] = types;
-                        return types;
-                    }
-                    else
+                        if (!Queries.ContainsKey(key))
+                        {
+                            factoryInvoked = true;
+                            var types = factory(Assembly).ToList();
+                            logger.DebugFormat("Recreating cache for key {0}, found {1} types in assembly {2}/{3}", key,
+                                types.Count, Assembly, ModuleId);
+                            Queries[key] = types;
+                            return types;
+                        }
                         return Queries[key];
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex);
+                    logger.ErrorFormat("Failed to create cache for key {0}, found {1} types in assembly {2}/{3}", key, 0, Assembly, ModuleId);
+                    return new List<Type>();
                 }
             }
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Web.UI;
 using N2.Web.UI.WebControls;
+using System.Web.UI.WebControls;
 
 namespace N2.Details
 {
@@ -64,8 +65,7 @@ namespace N2.Details
 
         protected override Control AddEditor(Control container)
         {
-            UrlSelector selector = new UrlSelector();
-            selector.ID = this.Name;
+            UrlSelector selector = new UrlSelector(Name);
             selector.AvailableModes = AvailableModes;
             selector.DefaultMode = OpeningMode;
             selector.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
@@ -75,9 +75,16 @@ namespace N2.Details
             return selector;
         }
 
-        #region IRelativityTransformer Members
+		protected override Control AddRequiredFieldValidator(Control container, Control editor)
+		{
+			var validator = (BaseValidator)base.AddRequiredFieldValidator(container, editor);
+			validator.ControlToValidate = ((UrlSelector)editor).Input.ID;
+			return validator;
+		}
 
-        public RelativityMode RelativeWhen { get; set; }
+		#region IRelativityTransformer Members
+
+		public RelativityMode RelativeWhen { get; set; }
 
         string IRelativityTransformer.Rebase(string currentPath, string fromAppPath, string toAppPath)
         {

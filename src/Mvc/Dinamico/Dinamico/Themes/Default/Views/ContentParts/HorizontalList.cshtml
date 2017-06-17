@@ -1,0 +1,47 @@
+﻿@model Dinamico.Models.ContentPart
+@{ Content.Define(re =>
+{
+	re.Definition.Title = "Horizontal List";
+	re.Definition.IconClass = "fa fa-arrows-h";
+	re.Children("Main");
+});
+}
+<div class="row">
+	@{
+		var parts = Content.Traverse.ChildParts("Main").ToList();
+		var mdSize = 2;
+		var lgSize = 1;
+		switch(parts.Count)
+		{
+			case 1:
+				lgSize = 12;
+				mdSize = 12;
+				break;
+			case 2:
+				lgSize = 6;
+				mdSize = 6;
+				break;
+			case 3:
+				lgSize = 4;
+				mdSize = 4;
+				break;
+			case 4:
+				lgSize = 3;
+				mdSize = 3;
+				break;
+			case 5:
+			case 6:
+				lgSize = 2;
+				break;
+			default:
+				break;
+		}
+	}
+	@foreach(var child in parts)
+	{
+	<div class="col-xs-12 col-md-@(mdSize) col-lg-@(lgSize)">
+		@Html.Part(child)
+	</div>
+	}
+
+</div>

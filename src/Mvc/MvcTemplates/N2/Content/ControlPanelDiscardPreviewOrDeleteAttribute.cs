@@ -20,6 +20,7 @@ namespace N2.Edit
             CssClass = "complementary";
             IconClass = "fa fa-trash-o";
             SortOrder = 100;
+			Legacy = true;
         }
 
         public override Control AddTo(Control container, PluginContext context)

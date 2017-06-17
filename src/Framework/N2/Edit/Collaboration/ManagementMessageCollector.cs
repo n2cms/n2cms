@@ -28,6 +28,7 @@ namespace N2.Edit.Collaboration
 			var messages = sources.SelectMany(s => s.GetMessages(context).Select(m => new { m, s }));
 			if (context.LastDismissed > DateTime.MinValue)
 				messages = messages.Where(x => x.m.Updated > context.LastDismissed);
+			messages = messages.Where(m => security.IsAuthorized(context.User, m.m.RequiredPermission));
 			return messages.Select(x => 
 			{ 
 				x.m.Source = x.s.GetInfo();

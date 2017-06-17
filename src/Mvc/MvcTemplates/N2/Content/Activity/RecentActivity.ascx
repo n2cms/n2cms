@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="RecentActivity.ascx.cs" Inherits="N2.Management.Content.Activity.RecentActivity" %>
 <%@ Register TagPrefix="n2" Namespace="N2.Web.UI.WebControls" Assembly="N2" %>
 <%@ Import Namespace="N2.Web" %>
-<n2:Box ID="boxActivity" HeadingText="Recent Activity" CssClass="box activityBox" runat="server" Visible="<%# ShowActivities %>" meta:resourceKey="boxActivity">
+<%--<n2:Box ID="boxActivity" HeadingText="Recent Activity" CssClass="box activityBox" runat="server" Visible="<%# ShowActivities %>" meta:resourceKey="boxActivity">
 </n2:Box>
 <asp:PlaceHolder runat="server" ID="activityTemplatePlaceholder">
 <script type="text/template" id="activityTemplate">
@@ -31,13 +31,6 @@
 		$(document).keyup(function () {
 			isDirty = true;
 		});
-		if (window.tinymce){
-			tinymce.onAddEditor.add(function(mce, ed){
-				ed.onKeyUp.add(function() {
-					isDirty = true;
-				})
-			});
-		}
 		setInterval(function () {
 			if (!$(activityContainer).is(":visible"))
 				return;
@@ -59,4 +52,4 @@
 
 <pre class="alert alert-error" id="errorDisplay" runat="server" Visible="False">
 	<asp:Literal runat="server" ID="errorDisplayText" />
-</pre>
+</pre>--%>

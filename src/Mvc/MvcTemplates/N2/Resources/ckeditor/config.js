@@ -13,8 +13,8 @@ CKEDITOR.editorConfig = function( config ) {
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
 
 		config.uiColor = '#F8F8F8';
-	    config.filebrowserWindowWidth = 300;
-	    config.filebrowserWindowHeight = 600;
+	    config.filebrowserWindowWidth = 600;
+	    config.filebrowserWindowHeight = 500;
 	    config.height = 300;
 
 	// extra allowed content for Twitter Bootstrap styles

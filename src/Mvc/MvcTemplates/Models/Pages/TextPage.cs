@@ -16,8 +16,11 @@ namespace N2.Templates.Mvc.Models.Pages
         SortOrder = 20)]
     public class TextPage : ContentPageBase, IStructuralPage, ISyndicatable
     {
-        [FileAttachment, EditableFileUploadAttribute("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
+        [EditableMedia("Image", 90, ContainerName = Tabs.Content, CssClass = "main", PreferredSize = "original")]
         public virtual string Image { get; set; }
+
+        [EditableMedia("PDF", 92, ContainerName = Tabs.Content, CssClass = "main", Extensions = ".pdf")]
+        public virtual string Pdf { get; set; }
 
         [Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
         public virtual bool Syndicate { get; set; }

@@ -4,6 +4,7 @@ using System.Web.UI;
 using N2.Web;
 using N2.Web.UI.WebControls;
 using N2.Web.Parts;
+using System.Web.UI.WebControls;
 
 namespace N2.Details
 {
@@ -33,8 +34,7 @@ namespace N2.Details
 
         protected override Control AddEditor(Control container)
         {
-            ItemSelector selector = new ItemSelector();
-            selector.ID = Name;
+            ItemSelector selector = new ItemSelector(Name);
             selector.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
             container.Controls.Add(selector);
             return selector;
@@ -60,9 +60,17 @@ namespace N2.Details
             }
             return false;
         }
-        
-        #region IDisplayable Members
-        public override Control AddTo(ContentItem item, string detailName, Control container)
+
+		protected override Control AddRequiredFieldValidator(Control container, Control editor)
+		{
+			var rfv = (RequiredFieldValidator)base.AddRequiredFieldValidator(container, editor);
+			var composite = (ItemSelector)editor;
+			rfv.ControlToValidate = composite.Input.ID;
+			return rfv;
+		}
+
+		#region IDisplayable Members
+		public override Control AddTo(ContentItem item, string detailName, Control container)
         {
             ContentItem linkedItem = item[detailName] as ContentItem;
             if (linkedItem != null)

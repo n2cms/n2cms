@@ -3,8 +3,6 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="Toolbar" runat="server">
     <edit:CancelLink ID="hlCancel" runat="server" CssClass="btn" meta:resourceKey="hlClose">Close</edit:CancelLink>
 </asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="Outside" runat="server">
-</asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
 
 <div class="tabPanel">

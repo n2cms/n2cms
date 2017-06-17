@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" %>
+<%@ Import Namespace="System.IO" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -32,7 +33,6 @@
 	<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapTimePickerCssPath)%>" type="text/css" rel="stylesheet" />
 	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapTimePickerJsPath)%>" type="text/javascript"></script>
 	
-
 	<link href="Resources/icons/flags.css" rel="stylesheet" />
 
 	<!--<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularStrapJsPath)%>"></script>-->
@@ -59,6 +59,7 @@
 	<% } %>
 	<% } %>
 	</asp:PlaceHolder>
+	<base href="<%= Request.Url.AbsolutePath %>" />
 </head>
 <body ng-app="n2" ng-view>
 </body>
@@ -69,7 +70,7 @@
 	protected string GetLocalizationPath()
 	{
 		var culture = System.Threading.Thread.CurrentThread.CurrentUICulture;
-		var languagePreferenceList = new[] { culture.ToString(), culture.TwoLetterISOLanguageName };
+		var languagePreferenceList = new[] {culture.ToString(), culture.TwoLetterISOLanguageName};
 		foreach (var languageCode in languagePreferenceList)
 		{
 			var path = N2.Web.Url.ResolveTokens("{ManagementUrl}/App/i18n/" + languageCode + ".js.ashx");
@@ -78,4 +79,22 @@
 		}
 		return "App/i18n/en.js.ashx";
 	}
+
+	protected override void OnLoad(EventArgs e)
+	{
+		var path = N2.Web.Url.ResolveTokens("{ManagementUrl}/web.config");
+		if (System.Web.Hosting.HostingEnvironment.VirtualPathProvider.FileExists(path))
+		{
+			using (var stream = System.Web.Hosting.HostingEnvironment.VirtualPathProvider.GetFile(path).Open())
+			using (var reader = new StreamReader(stream))
+			{
+				var webConfig = reader.ReadToEnd();
+				if (!webConfig.Contains("ApiHandlerDispatcher"))
+				{
+					throw new ConfigurationErrorsException("Missing reference to ApiHandlerDispatcher, the N2.Management web.config file is invalid!");
+				}
+			}
+		}
+	}
+
 </script>

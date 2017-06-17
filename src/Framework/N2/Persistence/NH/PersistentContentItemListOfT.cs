@@ -38,21 +38,27 @@ namespace N2.Persistence.NH
 
         public IEnumerable<T> FindNavigatablePages()
         {
-            if (this.WasInitialized)
-                return FindPages().Where(p => new VisibleFilter().Match(p) && new PublishedFilter().Match(p)).OrderBy(i => i.SortOrder);
+            //if (this.WasInitialized)
+            return FindPages().Where(p => new VisibleFilter().Match(p) && new PublishedFilter().Match(p)).OrderBy(i => i.SortOrder);
 
-            return Session.CreateFilter(this, "where ZoneName is null and Visible = 1 and State = :state order by SortOrder")
-                .SetParameter("state", ContentState.Published)
-                .SetCacheable(true)
-                .List<T>();
-        }
+			//      return
+			//       Session.QueryOver<T>()
+			//		.Where(item => item.ZoneName == null && item.Visible && item.State == ContentState.Published)
+			//        .OrderBy(item => item.SortOrder).Asc
+			//		.List<T>();
 
-        public IEnumerable<T> FindPages()
+			// TODO: investigate this possible solution
+			//ContentItem child = null;
+			//		.JoinAlias(p => p.Children, () => child)
+			//		.WhereRestrictionOn(() => child.ID)
+		}
+
+		public IEnumerable<T> FindPages()
         {
-            if (this.WasInitialized)
-                return this.Where(i => i.ZoneName == null).OrderBy(i => i.SortOrder);
+            //if (this.WasInitialized)
+            return this.Where(i => i.ZoneName == null).OrderBy(i => i.SortOrder);
 
-            return Session.CreateFilter(this, "where ZoneName is null order by SortOrder").SetCacheable(true).List<T>();
+            //return Session.CreateFilter(this, "where ZoneName is null order by SortOrder").SetCacheable(true).List<T>();
         }
 
         public IEnumerable<T> FindParts()

@@ -144,8 +144,11 @@
 								<xs:complexType>
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
 									<xs:attribute name="duration" type="xs:integer" use="optional" />
+									<xs:attribute name="slidingExpiration" type="xs:time" use="optional" />
 									<xs:attribute name="varyByParam" type="xs:string" use="optional" />
-									<xs:attribute name="cacheProfile" type="xs:boolean" use="optional" />
+									<xs:attribute name="varyByHeaders" type="xs:string" use="optional" />
+									<xs:attribute name="varyByCustom" type="xs:string" use="optional" />
+									<xs:attribute name="cacheProfile" type="xs:string" use="optional" />
 									<xs:attribute name="invalidateOnChangesTo" use="optional" default="Page">
 										<xs:simpleType>
 											<xs:restriction base="xs:string">
@@ -162,12 +165,23 @@
 							<xs:element name="resources" minOccurs="0">
 								<xs:complexType>
 									<xs:attribute name="debug" type="xs:boolean" use="optional" default="false" />
-									<xs:attribute name="angularRoot" type="xs:string" use="optional" />
-									<xs:attribute name="twitterBootstrapRoot" type="xs:string" use="optional" />
-									<xs:attribute name="jQueryPath" type="xs:string" use="optional" />
+									<xs:attribute name="angularJsRoot" type="xs:string" use="optional" />
+									<xs:attribute name="bootstrapJsPath" type="xs:string" use="optional" />
+									<xs:attribute name="bootstrapCssPath" type="xs:string" use="optional" />
+									<xs:attribute name="jQueryJsPath" type="xs:string" use="optional" />
 									<xs:attribute name="jQueryUiPath" type="xs:string" use="optional" />
+									<xs:attribute name="angularUiJsPath" type="xs:string" use="optional" />
+									<xs:attribute name="angularStrapJsPath" type="xs:string" use="optional" />
+									<xs:attribute name="iconsCssPath" type="xs:string" use="optional" />
 									<xs:attribute name="jQueryPluginsPath" type="xs:string" use="optional" />
-									<xs:attribute name="ckEditorPath" type="xs:string" use="optional" />
+									<xs:attribute name="ckEditorJsPath" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="previewResources" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="angularJsRoot" type="xs:string" use="optional" />
+									<xs:attribute name="jQueryJsPath" type="xs:string" use="optional" />
+									<xs:attribute name="iconsCssPath" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="vpp" minOccurs="0">
@@ -610,32 +624,6 @@
                   <xs:attribute name="overwriteLanguage" type="xs:string" use="optional" default="en" />
 								</xs:complexType>
 							</xs:element>
-							<!--<xs:element name="tinyMCE" minOccurs="0">
-								<xs:complexType>
-									<xs:all>
-										<xs:element name="settings">
-											<xs:complexType>
-												<xs:sequence>
-													<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
-													<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
-														<xs:complexType>
-															<xs:attribute name="key" type="xs:string" use="required"/>
-														</xs:complexType>
-													</xs:element>
-													<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
-														<xs:complexType>
-															<xs:attribute name="key" type="xs:string" use="required" />
-															<xs:attribute name="value" type="xs:string" use="required" />
-														</xs:complexType>
-													</xs:element>
-												</xs:sequence>
-											</xs:complexType>
-										</xs:element>
-									</xs:all>
-									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
-									<xs:attribute name="cssUrl" type="xs:string" use="optional" />
-								</xs:complexType>
-							</xs:element>-->
 							<xs:element name="nameEditor" minOccurs="0">
 								<xs:complexType>
 									<xs:all>
@@ -782,6 +770,30 @@
 									<xs:attribute name="newItemUrl" type="xs:string" use="optional" />
 									<xs:attribute name="deleteItemUrl" type="xs:string" use="optional" />
                   <xs:attribute name="ensureLocalhostPreviewUrls" type="xs:boolean" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="collaboration" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="activityTrackingEnabled" type="xs:boolean" use="optional" />
+									<xs:attribute name="pingInterval" type="xs:int" use="optional" />
+									<xs:attribute name="pingPath" type="xs:string" use="optional" />
+									<xs:attribute name="errorReportingLevel" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Critical"/>
+												<xs:enumeration value="Error"/>
+												<xs:enumeration value="Warning"/>
+												<xs:enumeration value="Information"/>
+												<xs:enumeration value="Verbose"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="errorReportingEnabled" type="xs:boolean" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="organize" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="useLegacyControlPanel" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
 						</xs:all>

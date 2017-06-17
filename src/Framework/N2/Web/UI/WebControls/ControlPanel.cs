@@ -116,6 +116,9 @@ jQuery(document).ready(function(){{
 
         protected override void CreateChildControls()
         {
+			if (!Engine.Config.Sections.Management.Organize.UseLegacyControlPanel)
+				return;
+
             ControlPanelState state = GetState(Page.GetEngine());
 
             if (state.IsFlagSet(ControlPanelState.Hidden))
@@ -197,9 +200,9 @@ jQuery(document).ready(function(){{
             else
                 availableDefinitions = GetPossibleDefinitions(adapter, pageZones, user);
 
-            return from x in availableDefinitions
-                orderby x ascending, x.Title ascending
-                select x;
+			return availableDefinitions
+				.OrderBy(d => d.SortOrder)
+				.ThenBy(d => d.Title);
         }
 
         private static List<ItemDefinition> GetPossibleDefinitions(PartsAdapter adapter, IEnumerable<Zone> pageZones, IPrincipal user)
@@ -261,6 +264,13 @@ jQuery(document).ready(function(){{
 
         protected override void Render(HtmlTextWriter writer)
         {
+			if (!Engine.Config.Sections.Management.Organize.UseLegacyControlPanel)
+			{
+				var cph = new Mvc.Html.ControlPanelExtensions.ControlPanelHelper(Engine, CurrentItem, writer, Page.Items["StateCollection"] as HashSet<string> ?? (Page.Items["StateCollection"] = new HashSet<string>()) as HashSet<string>);
+				cph.Render();
+                return;
+            }
+
             IDictionary<string, IList<string>> arrays = GetArrays(Page);
             writer.WriteLineNoTabs(@"<script type='text/javascript'>//<!--");
             if (arrays.Count > 0)
@@ -302,7 +312,7 @@ jQuery(document).ready(function(){{
             writer.Write("<div class='controlPanel state" + CurrentItem.State.ToString() + "'>");
             base.Render(writer);
             writer.Write("</div>");
-        }
+		}
 
         #endregion
 

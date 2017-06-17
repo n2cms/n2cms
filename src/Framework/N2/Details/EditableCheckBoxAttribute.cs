@@ -13,7 +13,8 @@ namespace N2.Details
         public EditableCheckBoxAttribute()
             : base("", typeof(CheckBox), "Checked", 0)
         {
-        }
+			ClientAdapter = "n2autosave.checkbox";
+		}
 
         /// <summary>Creates a new instance of the checkbox editable attribute.</summary>
         /// <param name="checkBoxText">The text on the checkbox.</param>
@@ -22,6 +23,7 @@ namespace N2.Details
             : base(string.Empty, typeof (CheckBox), "Checked", sortOrder)
         {
             CheckBoxText = checkBoxText;
+			ClientAdapter = "n2autosave.checkbox";
         }
 
         /// <summary>Gets or sets the text on the checkbox. This differs from the title property since the text is after the checkbox.</summary>

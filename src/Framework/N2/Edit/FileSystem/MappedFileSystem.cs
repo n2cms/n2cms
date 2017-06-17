@@ -4,6 +4,7 @@ using System.IO;
 using System.Web;
 using N2.Engine;
 using System.Threading;
+using System.Linq;
 
 namespace N2.Edit.FileSystem
 {
@@ -27,7 +28,7 @@ namespace N2.Edit.FileSystem
 
         public FileData GetFile(string virtualPath)
         {
-            FileInfo info = new FileInfo(MapPath(virtualPath));
+            var info = new FileInfo(MapPath(virtualPath));
             return GetFile(virtualPath, info);
         }
 
@@ -76,6 +77,43 @@ namespace N2.Edit.FileSystem
                 VirtualPath = virtualPath
             };
         }
+
+        /// <summary>Searches for files in all Upload Directories.</summary>
+        /// <param name="query">The search term</param>
+        /// <param name="uploadDirectories">All Upload Directories</param>
+        /// <returns>An enumeration of files matching the query.</returns>
+        public virtual IEnumerable<FileData> SearchFiles(string query, List<Collections.HierarchyNode<ContentItem>> uploadDirectories)
+        {
+            if (query.IndexOf('*') < 0) { query = "*" + query + "*"; }
+
+            var resultFilenames = new List<string>();
+            var resultFileData = new List<FileData>();
+
+            foreach (var dir in uploadDirectories)
+            {
+                var d = System.Web.Hosting.HostingEnvironment.MapPath(HttpContext.Current.Request.ApplicationPath + dir.Current.Path);
+
+                //Returns Absolute Paths
+                var results = Directory.GetFiles(d, query, SearchOption.AllDirectories);
+
+                //Rebase to VirtualPaths
+                resultFilenames.AddRange(results.ToList().Select(p => p.Replace(d, dir.Current.Url).Replace('\\','/')));
+            }
+
+            foreach(var virtualPath in resultFilenames)
+            {
+                if (string.IsNullOrEmpty(virtualPath)) continue;
+
+                var f = GetFile(virtualPath);
+                if (f == null) continue;
+
+                resultFileData.Add(f);
+            }
+
+            return resultFileData;
+            
+        }
+
 
         public bool FileExists(string virtualPath)
         {
@@ -263,6 +301,14 @@ namespace N2.Edit.FileSystem
         protected virtual string MapPath(string virtualPath)
         {
             return System.Web.Hosting.HostingEnvironment.MapPath(virtualPath);
+        }
+
+        protected virtual string AbsolutePathToVirtual(string absolutePath)
+        {
+            var hs = System.Web.Hosting.HostingEnvironment.MapPath(HttpContext.Current.Request.ApplicationPath);
+            if (absolutePath.IndexOf(hs) != 0) return null;
+
+            return ("/" + absolutePath.Substring(hs.Length).Replace('\\', '/')).Replace("//", "/");
         }
 
         private static T GetSafely<K, T>(K value, Func<K, T> getter)

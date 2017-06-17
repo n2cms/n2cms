@@ -35,7 +35,7 @@ namespace N2.Persistence.Sources
             return p;
         }
 
-        public static Query From(ContentItem parent)
+		public static Query From(ContentItem parent)
         {
             return new Query { Parent = parent };
         }
@@ -65,5 +65,10 @@ namespace N2.Persistence.Sources
                 return false;
             return true;
         }
-    }
+
+		public Query Clone()
+		{
+			return (Query)MemberwiseClone();
+		}
+	}
 }

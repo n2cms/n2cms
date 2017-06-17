@@ -105,4 +105,78 @@ After you've installed N2CMS in one of these ways, you will want to update it fr
 of the latest features, security patches, and other updates. If you opted to use the Nuget deployment model, the 
 Nuget packages will be updated periodically, and you can update using the built-in Nuget update mechanism to update 
 your local instance of N2CMS. If you chose the Git deployment model, you can use git pull to get the latest updates 
+<<<<<<< HEAD
 in your own Git repository.
+=======
+in your own Git repository.
+
+Visual Studio Snippets and Templates
+====================================
+
+The downloadable packages on Codeplex contains a number of templates and snippets which are useful 
+when developing N2 sites.
+
+	You need to update the path with your own version of Visual Studio. For example, if you are using Visual Studio 2008 
+	you need to substitute in 2008 for 2010 in the paths below.
+
+Snippets are copied to [Documents]\Visual Studio 2010\Code Snippets\Visual C#\My Code Snippets. Once the 
+snippets have been placed here they can be invoked from Visual Studio by their name and tapping tab twice 
+(e.g. n2propfta [tab] [tab]). This will expand a property with an editable attribute. Available snippets include:
+
+	* n2prop.snippet
+	* n2propcb.snippet
+	* n2propenum.snippet
+	* n2propfta.snippet
+	* n2propimage.snippet
+	* n2proptb.snippet
+	* n2propuc.snippet
+	* n2propurl.snippet
+
+Installing Visual Studio Item Templates
+---------------------------------------
+
+The snippets folder also contains some Visual Studio Item Templates that appears when adding new items in Visual Studio. 
+Copy them from the Snippets folder in the template package zip to 
+[Documents]\Visual Studio 2010\Templates\ItemTemplates\Visual C#. The item templates creates a content class and a 
+corresponding template or controller. Available templates:
+
+	* N2 Item Template.zip
+	* N2 Page Template.zip
+	* N2 Page Controller.zip
+
+Installing IntelliSense Documentation for Visual Studio
+-------------------------------------------------------
+
+The IntelliSense documentation should be installed automatically. If it is not installed, check for ~/bin/N2.xml. 
+This enables code documentation during IntelliSense operations and hovering in Visual Studio. 
+
+Installing N2CMS NuGet Packages
+===============================
+
+First, download the release and extract to a path such as C:\\N2Packages (this example path is used below)
+
+	* Compiled N2CMS Releases are available here https://github.com/n2cms/n2cms/releases
+
+Next, decide whether you want to use the ZIP or NOZIP management packs.
+
+	| *Before doing anything listed on this page* 
+	| Back up your project before installing or uninstalling any N2CMS nuget packages.
+	| Realize that N2CMS will not work on Web Site projects. You must install N2CMS in a Web Application project.
+
+Which management pack should I choose?
+--------------------------------------
+
+You can choose whichever management pack is right for you. Consider the following benefits and drawbacks.
+
+	* | The benefit of the ZIP management pack is that it is a single file for the N2 Management 
+	  | Interface. However, if you store your website in a source control depot (e.g. Git repo), 
+	  | you end up with a lot of bloat as the ~5 MB N2.zip file gets upgraded over time. You also 
+	  | need to upload the entire N2.zip when you update it.
+	  |
+
+	* | The benefit of the NOZIP management pack is that you can take advantage of Web 
+	  | Deploy incremental uploads, as well as more efficient source control storage as the 
+	  | files are installed separately (not extracted). Additionally, the Zip Virtual Path 
+	  | Provider is not installed, which means that less memory is used by N2CMS.
+
+>>>>>>> master

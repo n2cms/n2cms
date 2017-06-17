@@ -1,5 +1,6 @@
 using N2.Resources;
 using N2.Definitions;
+using System;
 
 namespace N2.Web.UI.WebControls
 {
@@ -8,16 +9,21 @@ namespace N2.Web.UI.WebControls
     {
         public FileSelector()
         {
-            this.CssClass = "fileSelector selector";
             this.DefaultMode = UrlSelectorMode.Files;
             this.AvailableModes = UrlSelectorMode.Files;
             this.SelectableTypes = typeof(IFileSystemFile).Name;
             BrowserUrl = N2.Web.Url.Parse(Engine.ManagementPaths.EditTreeUrl).AppendQuery("location=filesselection");
         }
 
-        protected override void RegisterClientScripts()
+		protected override void CreateChildControls()
+		{
+			base.CreateChildControls();
+			this.Input.CssClass = "fileSelector selector";
+		}
+
+		protected override void RegisterClientScripts()
         {
-            Page.JavaScript("$('#" + ClientID + "').n2autocomplete({ filter: 'io', selectableTypes:'" + SelectableTypes + "', selectableExtensions:'" + SelectableExtensions + "' });", ScriptPosition.Bottom, ScriptOptions.DocumentReady | ScriptOptions.ScriptTags);
+            Page.JavaScript("$('#" + Input.ClientID + "').n2autocomplete({ filter: 'io', selectableTypes:'" + SelectableTypes + "', selectableExtensions:'" + SelectableExtensions + "' });", ScriptPosition.Bottom, ScriptOptions.DocumentReady | ScriptOptions.ScriptTags);
         }
 
         public static string ImageExtensions = ".bmp,.gif,.png,.jpg,.jpeg,.ico";

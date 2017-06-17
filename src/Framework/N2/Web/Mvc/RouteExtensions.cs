@@ -60,6 +60,12 @@ namespace N2.Web.Mvc
         {
             data.Values[ContentRoute.ControllerKey] = controllerName;
             data.Values[ContentRoute.ActionKey] = actionName;
+
+            if (path.Argument != null)
+            {
+                data.Values[ContentRoute.IdKey] = path.Argument;
+            }
+
             return data.ApplyCurrentPath(path);
         }
 

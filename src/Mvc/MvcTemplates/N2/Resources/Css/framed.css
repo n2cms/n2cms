@@ -1,8 +1,12 @@
 ﻿/* FRAMED */
+body,label,input,textarea { font-size:15px; }
 a img,
 .command img{ margin-right:1px; vertical-align:middle; }
 .nav-tabs > li > a { border-radius:0 !important; }
 .framed .tab-content { overflow:visible; }
+/*body { background-color:#f0f0f0;}
+.nav-tabs { margin-bottom:0; }
+.tab-content{ background-color:#fff; padding:10px; }*/
 td,th { vertical-align:top; }
 h1 { font-size:1.6em; margin-top:0; font-family: Segoe UI, Georgia, sans-serif; }
 h2 { font-size:1.4em; font-family: Segoe UI, Georgia, sans-serif; }
@@ -226,7 +230,7 @@ body.framed #nav a span.zone { display:none }
 body.framed #nav a:hover span.zone { display:inline; background-color:#ddd; color:#fff; padding:0 1px; }
 body.framed #nav span.draft { vertical-align:middle; height:16px; width:16px; background:transparent url(../../Resources/icons/bullet_orange.png) no-repeat 50% 0; display:inline-block; }
 
-#futurePanel { top:50px; right:50%; margin-right:-200px; }
+#futurePanel { top:50px; right:50%; margin-right:-200px; display:none; }
 	.dropdown-backdrop { background-color: rgba(0, 0, 0, 0.25) }
 
 /* located in demo.css and creates a little calendar icon
@@ -318,10 +322,19 @@ input.dp-applied {
 		}
 
 .itemListEditor { margin:20px 0 0 0; clear:both; }
-	.itemListEditor .item { position:relative; border: dotted 1px #DDC; margin-top: 10px;}
-		.itemListEditor .item h3 { font-weight:normal; color:#999; margin:0; padding:10px; }
-		.itemListEditor .item .delete { position:absolute; top:2px; right:5px; padding:1px 1px 1px 5px; }
+	.itemListEditor .item-editor-list-items { margin-top:5px; padding: 20px; background: #f5f5f5 }
+	.itemListEditor .item-editor-list-items.items-count-0 { display:none; }
+	.itemListEditor * { transition: all .1s ease-in; }
+	.itemListEditor .item { position:relative; margin-top: 20px; background: #fff; }
+		.itemListEditor .item .editDetail:last-of-type { margin-bottom:0; }
+	.itemListEditor .item:first-of-type { margin-top: 0; }
+		.itemListEditor .item h3 { font-weight:normal; margin:0; padding:0 10px; background: rgba(24, 160, 222, 0.5); color:#fff; text-shadow: 0 0 5px rgba(0, 0, 0, .25) }
+		.itemListEditor .item:hover h3 { background: rgba(24, 160, 222, 1);  }
+		.itemListEditor .item .controls { position:absolute; top:0; right:0; }
+			.itemListEditor .item .controls a { color:#fff; display:inline-block; padding:10px; }
+			.itemListEditor .item .controls a:hover { background: rgba(255, 255, 255, .1) }
 		.itemListEditor .itemEditor { padding:10px; }
+	.itemListEditor .addArea { margin-top: 1px; }
         
 .focused
 {
@@ -342,3 +355,26 @@ input.dp-applied {
 }
 
 /* jquery ui css fix */
+
+.custom-transltaions label {
+	display:inline;
+}
+.custom-transltaions label span {
+	display:inline-block;
+	width: 200px;
+}
+
+.red { color:red; }
+.green { color:green; }
+.dodgerblue { color:dodgerblue; }
+.orange { color:orange; }
+.yellow { color:yellow; }
+
+
+.framed .help { color:#0088cc; opacity:.2; transition: all linear 1s; }
+.framed .editDetail .help { opacity:0; }
+.framed .editDetail:hover .help,
+.framed h1:hover .help { opacity:.5; }
+.framed .help:hover { opacity:1 !important; }
+.framed .tooltip p:last-of-type { margin-bottom:0; }
+.framed .popover { width: 400px; }

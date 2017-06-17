@@ -1,17 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace N2.Collections
 {
     /// <summary>
     /// A list of content items. Provides easier access to filtering and sorting.
     /// </summary>
-    public class ItemList : ItemList<ContentItem>
-    {
-        /// <summary>Initializes an empty instance of the ItemList class.</summary>
-        public ItemList()
-        {
-        }
+	[DebuggerDisplay("ItemList: Count = {Count}")]
+	public class ItemList : ItemList<ContentItem>
+	{
+		/// <summary>Initializes an empty instance of the ItemList class.</summary>
+		public ItemList()
+		{
+		}
 
         /// <summary>Initializes an instance of the ItemList class with the supplied items.</summary>
         public ItemList(IEnumerable<ContentItem> items)

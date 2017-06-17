@@ -389,7 +389,7 @@ namespace N2.Collections
                 return typed;
 
             if (item.VersionOf.HasValue)
-                return Closest<T>(item.VersionOf);
+                return Closest<T>(item.VersionOf.Value);
 
             return Closest<T>(item.Parent);
         }

@@ -15,6 +15,7 @@ namespace N2.Web.UI.WebControls
             UrlEncode = false;
             IconClass = "fa fa-th-large";
             Target = Targets.Top;
+			Legacy = true;
         }
 
         public override System.Web.UI.Control AddTo(System.Web.UI.Control container, PluginContext context)

@@ -3,8 +3,6 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Toolbar" runat="server">
 </asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="Outside" runat="server">
-</asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
 	<fieldset>
 		<legend>Test messages</legend>

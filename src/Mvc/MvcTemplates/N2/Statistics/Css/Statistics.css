@@ -1,0 +1,13 @@
+﻿.n2-page-stats { position:relative; }
+	.n2-page-stats table { height: 50px; list-style-type:none; border-top: solid 1px #eee; margin: 0; width:100%; }
+		.n2-page-stats table td { vertical-align: bottom; position:relative; }
+			.n2-page-stats table td span { display:none; text-align: right; }
+				.n2-page-stats table td span b { min-width:20px; display:inline-block }
+				.n2-page-stats table td span time { min-width:120px; display:inline-block }
+			.n2-page-stats table td:hover span { display:block; position:absolute; right:0; top:100%; background-color:#fff; padding: 5px; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); }
+			.n2-page-stats table td div { background-color: #3aaee3; position: absolute; bottom: 0; width: 100%;}
+	.n2-page-stats sup { position:absolute; top: 2px; right: 2px; opacity:.5; margin-top: 4px; display:block; cursor:pointer; text-shadow: 0 0 2px rgba(255, 255, 255, .5) }
+	.n2-page-stats sub { position:absolute; bottom: 7px; right: 2px; opacity:.5; display:none; text-shadow: 0 0 2px rgba(255, 255, 255, .5) }
+	.n2-page-stats:hover sub { display:block; }
+.n2-page-stats.loading { opacity:.1; }
+	.n2-page-stats .n2-page-stats-nodata { position:absolute; text-align:center; width:100%; font-style:italic; margin-top: 15px; }

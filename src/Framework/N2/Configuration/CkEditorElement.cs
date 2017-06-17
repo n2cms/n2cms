@@ -11,7 +11,7 @@ namespace N2.Configuration
     /// </summary>
     public class CkEditorElement : ConfigurationElement
     {
-        [ConfigurationProperty("ckConfigJsPath")]
+        [ConfigurationProperty("ckConfigJsPath", DefaultValue = "{ManagementUrl}/Resources/ckeditor/config.js")]
         public string ConfigJsPath
         {
             get { return (string)base["ckConfigJsPath"]; }
@@ -46,7 +46,7 @@ namespace N2.Configuration
             set { base["advancedMenus"] = value; }
         }
 
-        [ConfigurationProperty("allowedContent")]
+        [ConfigurationProperty("allowedContent", DefaultValue = true)]
         public bool? AllowedContent
         {
             get { return (bool?)base["allowedContent"]; }

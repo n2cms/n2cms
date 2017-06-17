@@ -53,14 +53,15 @@ namespace N2.Details
         private string useStylesSet = string.Empty;
 
         public EditableFreeTextAreaAttribute()
-            : base(null, 100)
+            : this(null, 100)
         {
         }
 
         public EditableFreeTextAreaAttribute(string title, int sortOrder)
             : base(title, sortOrder)
         {
-        }
+			ClientAdapter = "n2autosave.ckeditor";
+		}
 
         public EditorModeSetting EditorMode
         {

@@ -15,5 +15,6 @@ namespace N2.Edit.Collaboration
 		public string Text { get; set; }
 		public DateTime Updated { get; set; }
 		public SourceInfo Source { get; set; }
+		public Security.Permission RequiredPermission { get; set; }
 	}
 }

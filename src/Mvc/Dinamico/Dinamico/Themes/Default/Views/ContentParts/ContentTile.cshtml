@@ -32,8 +32,8 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
     Content.Define(ie =>
     {
-        ie.Title = "Content Tile";
-        ie.IconUrl = "{IconsUrl}/brick.png";
+        ie.Definition.Title = "Content Tile";
+        ie.Definition.IconUrl = "{IconsUrl}/brick.png";
         ie.Enum("Float", typeof(N2.Web.BlockAlignment))
             .DefaultValue(N2.Web.BlockAlignment.Middle);
 

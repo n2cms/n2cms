@@ -83,6 +83,7 @@ namespace N2.Persistence.Search
                     { "Roles", new WhitespaceAnalyzer() },
                     { "State", new WhitespaceAnalyzer() },
                     { "IsPage", new WhitespaceAnalyzer() },
+                    { "Language", new SimpleAnalyzer() }
                 });
         }
 

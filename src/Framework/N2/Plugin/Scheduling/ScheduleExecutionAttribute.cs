@@ -87,9 +87,11 @@ namespace N2.Plugin.Scheduling
                 case TimeUnit.Seconds:
                     return new TimeSpan(0, 0, interval);
                 case TimeUnit.Minutes:
-                    return new TimeSpan(0, interval, 0);
-                case TimeUnit.Hours:
-                    return new TimeSpan(interval, 0, 0);
+					return new TimeSpan(0, interval, 0);
+				case TimeUnit.Hours:
+					return new TimeSpan(interval, 0, 0);
+				case TimeUnit.Days:
+					return new TimeSpan(interval, 0, 0, 0);
                 default:
                     throw new NotImplementedException("Unknown time unit: " + unit);
             }

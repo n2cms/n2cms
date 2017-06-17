@@ -9,6 +9,7 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Persistence.Proxying;
 using N2.Security;
+using N2.Resources;
 
 namespace N2.Details
 {
@@ -172,6 +173,9 @@ namespace N2.Details
             set { sortOrder = value; }
         }
 
+		/// <summary>Name of a client function which will be invoked to perform client operations such as change tracking and auto-save.</summary>
+		public string ClientAdapter { get; set; }
+
         /// <summary>Adds a label and an editor to a panel.</summary>
         /// <param name="container">The container onto which the panel is added.</param>
         /// <returns>A reference to the addeed editor.</returns>
@@ -181,6 +185,10 @@ namespace N2.Details
             Control panel = AddPanel(container);
             Label label = AddLabel(panel);
             Control editor = AddEditor(panel);
+			if (!string.IsNullOrEmpty(ClientAdapter))
+			{
+				panel.Page.JavaScript(string.Format("window.n2autosave && n2autosave.register('{0}', '{1}', '{2}')", editor.ClientID, Name, ClientAdapter), ScriptOptions.DocumentReady);
+			}
             if (label != null && editor != null && !string.IsNullOrEmpty(editor.ID))
                 label.AssociatedControlID = editor.ID;
 

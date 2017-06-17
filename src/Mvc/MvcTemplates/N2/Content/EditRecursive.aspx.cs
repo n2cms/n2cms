@@ -23,7 +23,7 @@ namespace N2.Management.Content
         {
             base.OnInit(e);
 
-            foreach (var a in Find.EnumerateParents(Selection.SelectedItem, null, true))
+            foreach (var a in Find.EnumerateParents(Selection.SelectedItem, null, includeSelf: true, useMasterVersion: false))
             {
                 var ie = new ItemEditor();
                 phAncestors.Controls.Add(ie);

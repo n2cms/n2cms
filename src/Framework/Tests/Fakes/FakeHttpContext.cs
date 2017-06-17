@@ -21,6 +21,8 @@ namespace N2.Tests.Fakes
             foreach (var q in url.GetQueries())
                 request.query[q.Key] = q.Value;
             request.rawUrl = url.PathAndQuery;
+			if (url.Path.IndexOf(".ashx/") > 0)
+				request.pathInfo = url.Path.Substring(url.Path.IndexOf(".ashx/") + 5);
         }
         public Hashtable items = new Hashtable();
         public override System.Collections.IDictionary Items

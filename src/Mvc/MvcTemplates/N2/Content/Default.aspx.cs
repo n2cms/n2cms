@@ -15,6 +15,7 @@ namespace N2.Edit
             Target = Targets.Top;
             RequiredPermission = Permission.Read;
             IconClass = "fa fa-eye-slash";
+			Legacy = true;
         }
 
         protected override N2.Web.Url GetNavigateUrl(PluginContext context)
@@ -38,7 +39,8 @@ namespace N2.Edit
     [ControlPanelLink("cpView", "{ManagementUrl}/Resources/icons/application_side_contract.png", "{Selected.Url}", "View", -60, ControlPanelState.Visible, 
         CssClass = "",
         Target = Targets.Top,
-        IconClass = "fa fa-eye")]
+        IconClass = "fa fa-eye",
+		Legacy = true)]
     public partial class Default : Web.EditPage
     {
         private readonly Engine.Logger<Default> logger;

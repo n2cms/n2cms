@@ -19,5 +19,6 @@ namespace N2.Web.UI.WebControls
         IDictionary<string, Control> AddedEditors { get; }
 
         event EventHandler<ItemEventArgs> Saved;
+		event Action<object, Edit.Workflow.CommandContext> CreatingContext;
     }
 }

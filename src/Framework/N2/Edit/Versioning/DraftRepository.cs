@@ -14,7 +14,6 @@ namespace N2.Edit.Versioning
         public int ItemID { get; set; }
         public DateTime Saved { get; set; }
         public string SavedBy { get; set; }
-
         public int VersionIndex { get; set; }
     }
 

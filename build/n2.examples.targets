@@ -22,7 +22,7 @@
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Examples-CS-SourceFolder)\wwwroot\bin" />
 
 		<Message Text="Skipping mklink (folder exists): $(Examples-CS-SourceFolder)\wwwroot\N2\" Condition="Exists('$(Examples-CS-SourceFolder)\wwwroot\N2\')" />
-		<Exec Command="mklink /D $(Examples-CS-SourceFolder)\wwwroot\N2\ $(EditFolder)\" Condition="!Exists('$(Examples-CS-SourceFolder)\wwwroot\N2\')" ContinueOnError="true" />
+		<Exec Command="mklink /D $(Examples-CS-SourceFolder)\wwwroot\N2\ $(EditDevFolder)\" Condition="!Exists('$(Examples-CS-SourceFolder)\wwwroot\N2\')" ContinueOnError="true" />
 		<MSBuild Projects="n2.proj" Targets="CopyManagementFilesToManagementFilesDestination" Properties="ManagementFilesDestination=$(Examples-CS-SourceFolder)\wwwroot\N2" Condition="!Exists('$(Examples-CS-SourceFolder)\wwwroot\N2\')" />
 	</Target>
 	<Target Name="Examples-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">

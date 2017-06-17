@@ -167,9 +167,9 @@ namespace N2.Tests.Collections
         [Test]
         public void Combination_OfChildrenStates_PagesAndParts_ForLargeCollection()
         {
-            using (new Scope(() => SyncChildCollectionStateAttribute.LargeCollecetionThreshold = 100))
+            using (new Scope(() => SyncChildCollectionStateAttribute.LargeCollectionThreshold = 100))
             {
-                SyncChildCollectionStateAttribute.LargeCollecetionThreshold = 1;
+                SyncChildCollectionStateAttribute.LargeCollectionThreshold = 1;
 
                 persister.Save(new FirstItem { Name = "child0", Parent = root }); // persist first to invoke added
 
@@ -353,7 +353,7 @@ namespace N2.Tests.Collections
             var child1 = CreateOneItem<FirstItem>(0, "child1", root);
             try
             {
-                SyncChildCollectionStateAttribute.LargeCollecetionThreshold = 3;
+                SyncChildCollectionStateAttribute.LargeCollectionThreshold = 3;
 
                 persister.Save(child1);
 
@@ -364,7 +364,7 @@ namespace N2.Tests.Collections
             }
             finally
             {
-                SyncChildCollectionStateAttribute.LargeCollecetionThreshold = 100;
+                SyncChildCollectionStateAttribute.LargeCollectionThreshold = 100;
             }
         }
 
@@ -374,7 +374,7 @@ namespace N2.Tests.Collections
             var child1 = CreateOneItem<FirstItem>(0, "child1", root);
             try
             {
-                SyncChildCollectionStateAttribute.LargeCollecetionThreshold = 3;
+                SyncChildCollectionStateAttribute.LargeCollectionThreshold = 3;
 
                 persister.Save(child1);
                 persister.Save(new FirstItem { Parent = root, State = ContentState.Published });
@@ -384,7 +384,7 @@ namespace N2.Tests.Collections
             }
             finally
             {
-                SyncChildCollectionStateAttribute.LargeCollecetionThreshold = 100;
+                SyncChildCollectionStateAttribute.LargeCollectionThreshold = 100;
             }
         }
 
@@ -394,7 +394,7 @@ namespace N2.Tests.Collections
             var child1 = CreateOneItem<FirstItem>(0, "child1", root);
             try
             {
-                SyncChildCollectionStateAttribute.LargeCollecetionThreshold = 3;
+                SyncChildCollectionStateAttribute.LargeCollectionThreshold = 3;
 
                 persister.Save(child1);
                 persister.Save(new FirstItem { Parent = root, State = ContentState.Published });
@@ -406,7 +406,7 @@ namespace N2.Tests.Collections
             }
             finally
             {
-                SyncChildCollectionStateAttribute.LargeCollecetionThreshold = 100;
+                SyncChildCollectionStateAttribute.LargeCollectionThreshold = 100;
             }
         }
     }

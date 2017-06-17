@@ -19,7 +19,6 @@ namespace N2.Configuration
             ServerValidate = serverValidate;
         }
 
-
         /// <summary>The name used to reference this element.</summary>
         [ConfigurationProperty("name", IsRequired = true, IsKey = true)]
         public string Name

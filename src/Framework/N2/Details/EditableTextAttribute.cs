@@ -47,9 +47,8 @@ namespace N2.Details
         private bool readOnly = false;
 
         public EditableTextAttribute()
-            : base(null, 50)
+            : this(null, 50)
         {
-            IsIndexable = true;
         }
 
         /// <summary>Initializes a new instance of the EditableTextBoxAttribute class.</summary>
@@ -59,7 +58,8 @@ namespace N2.Details
             : base(title, sortOrder)
         {
             IsIndexable = true;
-        }
+			ClientAdapter = "n2autosave.input";
+		}
 
         #region Properties
 

@@ -1,3 +1,5 @@
-@IF NOT EXIST %windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe @ECHO COULDN'T FIND MSBUILD: %windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe (Is .NET 4 installed?)
+path "C:\Program Files (x86)\MSBuild\14.0\Bin\";%windir%\Microsoft.NET\Framework\v4.0.30319;%PATH%
 
-%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe n2.proj /maxcpucount /p:VisualStudioVersion=12.0 %*
+@IF NOT EXIST MSBuild.exe @ECHO COULDN'T FIND MSBUILD (Is .NET 4 installed?)
+
+msbuild n2.proj /maxcpucount %*

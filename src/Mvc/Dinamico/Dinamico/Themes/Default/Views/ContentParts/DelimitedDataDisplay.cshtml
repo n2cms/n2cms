@@ -32,8 +32,8 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @{
     Content.Define(ie =>
         {
-            ie.Title = "Delimited Data Display";
-            ie.IconUrl = "{IconsUrl}/table.png";
+            ie.Definition.Title = "Delimited Data Display";
+            ie.Definition.IconUrl = "{IconsUrl}/table.png";
             ie.Text("Data").Configure(f => { f.Rows = 10; f.Columns = 60; f.TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine; });
             ie.Text("Delimiter").Required().DefaultValue(",").Configure(f => f.MaxLength = 2);
             ie.CheckBox("Headers", "First row contains headers").DefaultValue(false);

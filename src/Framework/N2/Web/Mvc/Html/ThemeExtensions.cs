@@ -20,7 +20,7 @@ namespace N2.Web.Mvc.Html
 
         public static string ThemedStyleSheet(this HtmlHelper html, string stylePath)
         {
-            return N2.Resources.Register.StyleSheet(html.ViewContext.HttpContext.GetResourceStateCollection(), ResolveThemedContent(html.ViewContext.RequestContext, HostingEnvironment.VirtualPathProvider, stylePath));
+            return N2.Resources.Register.StyleSheet(html.ViewContext.GetResourceStateCollection(), ResolveThemedContent(html.ViewContext.RequestContext, HostingEnvironment.VirtualPathProvider, stylePath));
         }
 
         private static string ResolveThemedContent(RequestContext requestContext, VirtualPathProvider vpp, string contentPath)

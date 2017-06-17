@@ -26,11 +26,20 @@ namespace N2.Definitions
 
         public static IEnumerable<TemplateDefinition> AllowedBelow(this IEnumerable<TemplateDefinition> allTemplates, ItemDefinition parentDefinition, ContentItem parentItem, IDefinitionManager definitions)
         {
+			if (allTemplates == null) yield break;
+
             foreach (var template in allTemplates)
             {
                 if (IsAllowed(null, template.Definition, parentItem, parentDefinition, definitions))
                     yield return template;
             }
+        }
+
+		public static IEnumerable<TemplateDefinition> WhereAllowed(this IEnumerable<TemplateDefinition> allTemplates, ContentItem parentItem, string zoneName, IPrincipal user, IDefinitionManager definitions, ISecurityManager security)
+        {
+            return allTemplates.AllowedBelow(definitions.GetDefinition(parentItem), parentItem, definitions)
+                .Where(t => t.Definition.IsAllowedInZone(zoneName))
+                .Where(t => security.IsAuthorized(t.Definition, user, parentItem));
         }
 
         private static bool IsAllowed(ContentItem childItem, ItemDefinition childDefinition, ContentItem parentItem, ItemDefinition parentDefinition, IDefinitionManager definitions)
