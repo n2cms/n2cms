@@ -5,38 +5,27 @@
     <edit:CancelLink ID="hlCancel" runat="server" CssClass="btn" meta:resourceKey="hlCancel">Close</edit:CancelLink>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" runat="server">
-	<div class="imageresize">
+	<div class="resize">
 		<img id="original" src="<%= originalImagePath %>" />
-		<asp:Label runat="server" meta:resourceKey="lblResize" Text="Drag a rectangle to select new area for this image size" />
+        <div>
+		    <asp:Label runat="server" meta:resourceKey="lblResize" Text="Drag a rectangle to select new area for this image size" />
+        </div>
 	</div>
 	<input id="x" name="x" type="hidden" />
 	<input id="y" name="y" type="hidden" />
 	<input id="w" name="w" type="hidden" />
 	<input id="h" name="h" type="hidden" />
 	<script>
-		jQuery(function ($) {
-			var max = {w:<%= size.Width %>, h: <%= size.Height %>};
-			$("#original").Jcrop($.extend(<%= settings %>, {
-				onChange: function(e){
-					for(var k in e)
-						$("#" + k).val(e[k]);
-					if(e.w && e.h)
-						$(".save").removeAttr("disabled");
-					else
-						$(".save").attr("disabled", "disabled");
-
-					if(e.w < max.w) {
-						$(document.body).addClass("resize-warning");
-					} else {
-						$(document.body).removeClass("resize-warning");
-					}
-				}
-			}));
-			$(document).click(function(){
-				$(".resize span").fadeOut();
-				$(document).unbind("click");
-			});
-			$(".save").attr("disabled", "disabled");
-		});
+	    jQuery(function ($) {
+            $("#original").cropper($.extend(<%= settings %>, {
+                viewMode: 1,
+                crop: function (e) {
+                    $("#x").val(e.x);
+                    $("#y").val(e.y);
+                    $("#w").val(e.width);
+                    $("#h").val(e.height);
+                }
+	        }));
+	    });
 	</script>
 </asp:Content>
