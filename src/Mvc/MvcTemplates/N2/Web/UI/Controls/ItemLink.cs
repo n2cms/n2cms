@@ -19,6 +19,8 @@ namespace N2.Edit.Web.UI.Controls
 
         public string InterfaceUrl { get; set; }
 
+        public string ParentQueryString { get; set; }
+
         public bool ShowIcon { get; set; }
 
         protected override void OnPreRender(EventArgs e)
@@ -41,7 +43,10 @@ namespace N2.Edit.Web.UI.Controls
                 this.NavigateUrl = N2.Context.Current.GetContentAdapter<NodeAdapter>(item).GetPreviewUrl(item);
             else
                 this.NavigateUrl = InterfaceUrl.ResolveUrlTokens().ToUrl().AppendSelection(item);
-
+            
+            if (!string.IsNullOrEmpty(ParentQueryString))
+                this.NavigateUrl = string.Format("{0}{1}{2}", this.NavigateUrl, this.NavigateUrl.Contains("?") ? "&" : "?", ParentQueryString);
+            
             var title = string.IsNullOrEmpty(item.Title) ? N2.Context.Current.Definitions.GetDefinition(item).Title : item.Title;
 
             if (!ShowIcon)

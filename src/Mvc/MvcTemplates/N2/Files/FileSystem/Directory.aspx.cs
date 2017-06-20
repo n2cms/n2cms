@@ -14,6 +14,10 @@ namespace N2.Edit.FileSystem
 {
     public partial class Directory1 : EditPage
     {
+        protected bool IsMultiUpload;
+        protected string ParentQueryString = "";
+        private string targetType, targetProperty, targetID, targetDomain, targetZone = "" ;
+
         protected override void RegisterToolbarSelection()
         {
             string script = GetToolbarSelectScript("preview");
@@ -29,15 +33,37 @@ namespace N2.Edit.FileSystem
         {
             base.OnInit(e);
 
+            IsMultiUpload = !string.IsNullOrEmpty(Request.QueryString["TargetType"]);
+
             Page.StyleSheet("{ManagementUrl}/Files/Css/Files.css");
 
             ancestors = Find.EnumerateParents(Selection.SelectedItem, null, true).Where(a => a is AbstractNode).Reverse();
 
+            btnDelete.Enabled = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, N2.Security.Permission.Publish);
+            hlEdit.NavigateUrl = Engine.ManagementPaths.GetEditExistingItemUrl(Selection.SelectedItem);
+
+            // EditableMultiUploadButtonAttribute
+            if (IsMultiUpload)
+            {
+                targetType = Request.QueryString["TargetType"];
+                targetProperty = Request.QueryString["TargetProperty"];
+                targetID = Request.QueryString["TargetID"];
+                targetZone = Request.QueryString["TargetZone"];
+                targetDomain = Request.QueryString["TargetDomain"];
+
+                if (!string.IsNullOrEmpty(targetType) && !string.IsNullOrEmpty(targetProperty) && !string.IsNullOrEmpty(targetID))
+                {
+                    ParentQueryString = string.Format("TargetType={0}&TargetProperty={1}&TargetID={2}{3}{4}", targetType, targetProperty, targetID, string.IsNullOrEmpty(targetZone) ? "" : "&TargetZone=" + targetZone, string.IsNullOrEmpty(targetDomain) ? "" : "&TargetDomain=" + targetDomain);
+                }
+
+                hlCancel.NavigateUrl = string.Format("~/N2/Content/Edit.aspx?n2item={0}&view=draft", targetID);
+                btnDelete.Visible = hlEdit.Visible = false;
+                btnAdd.Visible = hlCancel.Visible = true;
+            }
+
             Reload();
 
             Refresh(Selection.SelectedItem, ToolbarArea.Navigation, force: false);
-            btnDelete.Enabled = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, N2.Security.Permission.Publish);
-            hlEdit.NavigateUrl = Engine.ManagementPaths.GetEditExistingItemUrl(Selection.SelectedItem);
         }
 
         private void Reload()
@@ -57,6 +83,44 @@ namespace N2.Edit.FileSystem
         {
             Delete(Request.Form["directory"], directories.Select(f => f.Url), Engine.Resolve<IFileSystem>().DeleteDirectory);
             Delete(Request.Form["file"], files.Select(f => f.Url), Engine.Resolve<IFileSystem>().DeleteFile);
+        }
+
+        public void OnAddCommand(object sender, CommandEventArgs args)
+        {
+            targetType = Request.QueryString["TargetType"];
+            targetProperty = Request.QueryString["TargetProperty"];
+            targetID = Request.QueryString["TargetID"];
+            targetZone = Request.QueryString["TargetZone"] ?? "";
+            targetDomain = Request.QueryString["TargetDomain"] ?? "";
+
+            var item = Find.Items.Where.ID.Eq(int.Parse(targetID)).Select().FirstOrDefault();
+            
+            var selectedFiles = Request.Form["file"];
+            var allowed = files.Select(f => f.Url);
+
+            if (string.IsNullOrEmpty(selectedFiles))
+                return;
+
+            var items = selectedFiles.Split(',');
+
+            string[] partType = Request.QueryString["TargetType"].Split(',');
+
+            foreach (string file in items.Select(i => i.TrimEnd('/')).Intersect(allowed.Select(a => a.TrimEnd('/'))))
+            {
+                var newPart = (ContentItem)Activator.CreateInstance(partType[0], partType[1]).Unwrap();
+
+                newPart["Photo"] = targetDomain + file;
+                newPart.State = ContentState.Published; //item.State;
+                newPart.Title = "";
+                newPart.ZoneName = targetZone;
+                newPart.VersionIndex = item.VersionIndex;
+                newPart.Parent = item;
+                
+                N2.Context.Persister.Save(newPart);
+                N2.Context.Persister.Save(item);
+            }
+
+            Response.Redirect(string.Format("~/N2/Content/Edit.aspx?n2item={0}&view=draft", targetID));
         }
 
         private void Delete(string itemsToDelete, IEnumerable<string> allowed, Action<string> deleteAction)

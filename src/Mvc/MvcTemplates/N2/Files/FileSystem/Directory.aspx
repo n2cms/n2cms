@@ -5,7 +5,10 @@
 <asp:Content ContentPlaceHolderID="Toolbar" runat="server">
 	<edit:ButtonGroup runat="server" CssClass="btn btn-danger">
 		<asp:LinkButton ID="btnDelete" runat="server" Text="Delete selected" CssClass="command primary-action" OnCommand="OnDeleteCommand" OnClientClick="return confirm('Delete selected files and folders?');" meta:resourceKey="btnDelete" />
+        <asp:LinkButton ID="btnAdd" runat="server" Text="Add selected" CssClass="command primary-action" OnCommand="OnAddCommand" OnClientClick="return confirm('Add selected files?');" meta:resourceKey="btnAdd" Visible="false"/>
 		<asp:HyperLink ID="hlEdit" runat="server" Text="Edit" CssClass="command edit" meta:resourceKey="hlEdit" />
+        <asp:HyperLink ID="hlCancel" runat="server" Text="Close" CssClass="btn" meta:resourceKey="hlCancel" Visible="false"/>
+        
 	</edit:ButtonGroup>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" runat="server">	
@@ -16,10 +19,12 @@
 			    <ItemTemplate>
 				    <div class="file">
 					    <label>
-						    <input name="directory" value="<%# Eval("Path") %>" type="checkbox" />
+                            <%if (!IsMultiUpload) { %>
+						        <input name="directory" value="<%# Eval("Path") %>" type="checkbox" />
+                            <%} %>
 						    <asp:Image ImageUrl='<%# Eval("IconUrl") %>' runat="server" />
 					    </label>
-						<edit:ItemLink DataSource="<%# Container.DataItem %>" InterfaceUrl="Directory.aspx" runat="server" />
+						<edit:ItemLink DataSource="<%# Container.DataItem %>" InterfaceUrl="Directory.aspx" ParentQueryString='<%# ParentQueryString %>' runat="server" />
 				    </div>
 			    </ItemTemplate>
 		    </asp:Repeater>
