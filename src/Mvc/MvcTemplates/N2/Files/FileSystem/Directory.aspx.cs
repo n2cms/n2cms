@@ -103,14 +103,14 @@ namespace N2.Edit.FileSystem
 
             var items = selectedFiles.Split(',');
 
-            string[] partType = Request.QueryString["TargetType"].Split(',');
+            string[] partType = targetType.Split(',');
 
             foreach (string file in items.Select(i => i.TrimEnd('/')).Intersect(allowed.Select(a => a.TrimEnd('/'))))
             {
                 var newPart = (ContentItem)Activator.CreateInstance(partType[0], partType[1]).Unwrap();
 
-                newPart["Photo"] = targetDomain + file;
-                newPart.State = ContentState.Published; //item.State;
+                newPart[targetProperty] = targetDomain + file;
+                newPart.State = ContentState.Published;
                 newPart.Title = "";
                 newPart.ZoneName = targetZone;
                 newPart.VersionIndex = item.VersionIndex;
