@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Edit.Web;
 using N2.Web.Drawing;
@@ -10,6 +8,7 @@ using N2.Resources;
 using N2.Edit.FileSystem;
 using N2.Configuration;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 
 namespace N2.Management.Files
@@ -36,21 +35,20 @@ namespace N2.Management.Files
             originalImagePath = fs.GetExistingImagePath(baseImagePath, "original");
 
             size = sizes.FirstOrDefault(s => s.Name == imageSize);
-
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             Page.JQuery();
             Page.StyleSheet("{ManagementUrl}/Files/Css/Files.css");
-            Page.StyleSheet("{ManagementUrl}/Files/Css/jquery.jCrop.min.css");
-            Page.JavaScript("{ManagementUrl}/Files/Js/jquery.jCrop.min.js");
+            Page.StyleSheet("{ManagementUrl}/Files/Js/cropper/cropper.min.css");
+            Page.JavaScript("{ManagementUrl}/Files/Js/cropper/cropper.min.js");
 
             if (size != null)
             {
                 var s = new Dictionary<string, object>();
                 if (size.Mode == ImageResizeMode.Fill)
-                    s["aspectRatio"] = (int)(size.Width / size.Height);
+                    s["aspectRatio"] = (float)size.Width / (float)size.Height;
 
                 settings = N2.Web.WebExtensions.ToJson(s);
             }
@@ -58,10 +56,10 @@ namespace N2.Management.Files
 
         protected void OnSaveCommand(object sender, CommandEventArgs args)
         {
-            int x = int.Parse(Request["x"]);
-            int y = int.Parse(Request["y"]);
-            int w = int.Parse(Request["w"]);
-            int h = int.Parse(Request["h"]);
+            int x = (int)Math.Round(float.Parse(Request["x"], CultureInfo.InvariantCulture));
+            int y = (int)Math.Round(float.Parse(Request["y"], CultureInfo.InvariantCulture));
+            int w = (int)Math.Round(float.Parse(Request["w"], CultureInfo.InvariantCulture));
+            int h = (int)Math.Round(float.Parse(Request["h"], CultureInfo.InvariantCulture));
 
             using (var input = GetInputStream(fs, originalImagePath))
             using (var output = fs.OpenFile(Selection.SelectedItem.Url))
