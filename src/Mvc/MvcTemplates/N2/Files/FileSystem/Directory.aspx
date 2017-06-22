@@ -12,7 +12,9 @@
 	</edit:ButtonGroup>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" runat="server">	
-	<h1><% foreach (N2.ContentItem node in ancestors) { %>/<a href="<%= Url.Parse("Directory.aspx").AppendSelection(node) %>"><%= node.Title %></a><% } %></h1>
+	<h1><% foreach (N2.ContentItem node in ancestors) {
+                var url = Url.Parse("Directory.aspx").AppendSelection(node);
+        %>/<a href="<%= string.Format("{0}{1}{2}", url, string.IsNullOrEmpty(ParentQueryString) ? "" : url.ToString().Contains("?") ? "&" : "?", ParentQueryString) %>"><%= node.Title %></a><% } %></h1>
 	<div class="tabPanel" data-flag="Unclosable">
         <div class="directory cf">
 		    <asp:Repeater ID="rptDirectories" runat="server">
