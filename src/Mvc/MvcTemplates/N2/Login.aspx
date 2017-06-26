@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
 	<title>Log in</title>
+	<meta name="robots" content="noindex"/>
 	<asp:PlaceHolder runat="server">
 		<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.JQueryJsPath)  %>" type="text/javascript"></script>
 		<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath) %>" type="text/css" rel="stylesheet" />
