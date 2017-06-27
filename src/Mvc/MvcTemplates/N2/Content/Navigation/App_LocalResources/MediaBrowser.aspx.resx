@@ -132,6 +132,9 @@
   <data name="LoadMore" xml:space="preserve">
     <value>Load More</value>
   </data>
+  <data name="MediaBrowser" xml:space="preserve">
+    <value>Media Browser</value>
+  </data>
   <data name="Search" xml:space="preserve">
     <value>Search...</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="TabsUpload" xml:space="preserve">
     <value>Upload file</value>
+  </data>
+  <data name="UploadButton" xml:space="preserve">
+    <value>Upload...</value>
   </data>
   <data name="UploadDisallowedBrowser" xml:space="preserve">
     <value>This browser is outdated and cannot upload files using this dialog. Please use a modern browser to get the most out of N2cms</value>

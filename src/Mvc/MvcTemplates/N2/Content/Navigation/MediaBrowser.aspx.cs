@@ -2,7 +2,6 @@
 using N2.Configuration;
 using N2.Edit.FileSystem;
 using N2.Edit.FileSystem.Items;
-using N2.Resources;
 using N2.Web;
 using System;
 using System.Collections.Generic;
@@ -37,7 +36,7 @@ namespace N2.Edit.Navigation
             var selectionTrail = new List<ContentItem>();
 
             var ckEditor = Request["ckEditor"];
-            var ckEditorFuncNum = Request[ "ckEditorFuncNum"];
+            var ckEditorFuncNum = Request["ckEditorFuncNum"];
             var mediaCtrl = Request["mediaControl"];
             var preferredSize = Request["preferredSize"];
             var selectableExtensions = Request["selectableExtensions"];
@@ -53,9 +52,9 @@ namespace N2.Edit.Navigation
                 PreferredSize = preferredSize,
                 Breadcrumb = new string[] { },
                 Path = "",
+                RootPath = "",
                 RootIsSelectable = false
             };
-
 
             if (selected is AbstractNode)
             {
@@ -74,10 +73,14 @@ namespace N2.Edit.Navigation
                 if (uploadDirectories.Count == 1 || selectionTrail.Count > 1)
                 {
                     var dir = (selectionTrail.Count > 0 ? selectionTrail.ElementAt(0) : uploadDirectories[0].Current) as Directory;
+                    mediaBrowserModel.Path = System.Web.VirtualPathUtility.ToAppRelative(dir.LocalUrl).Trim('~');
+
+                    var directory = FS.GetDirectory(mediaBrowserModel.Path);
+                    var fsRootPath = directory != null && !string.IsNullOrWhiteSpace(directory.RootPath) ? directory.RootPath : "";
+
                     var files = dir.GetFiles().ToList();
                     mediaBrowserModel.Dirs = dir.GetDirectories();
-                    mediaBrowserModel.Files = MediaBrowserHandler.GetFileReducedList(files, imageSizes, selectableExtensions);
-                    mediaBrowserModel.Path = System.Web.VirtualPathUtility.ToAppRelative(dir.LocalUrl).Trim('~');
+                    mediaBrowserModel.Files = MediaBrowserHandler.GetFileReducedList(files, imageSizes, selectableExtensions, fsRootPath);
                 }
                 else
                 {
@@ -93,31 +96,24 @@ namespace N2.Edit.Navigation
                 var breadcrumb = mediaBrowserModel.Path.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 breadcrumb.Insert(0, "[root]");
                 mediaBrowserModel.Breadcrumb = breadcrumb.ToArray();
-           }
-
+            }
         }
 
-		protected string GetEncryptedTicket()
-		{
-			return FormsAuthentication.Encrypt(new FormsAuthenticationTicket("SecureUpload-" + Guid.NewGuid(), false, 60));
+        protected string GetEncryptedTicket()
+        {
+            return FormsAuthentication.Encrypt(new FormsAuthenticationTicket("SecureUpload-" + Guid.NewGuid(), false, 60));
         }
 
-		protected int GetMaxSize()
-		{
-			try
-			{
-				return (ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection) != null ? (ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection).MaxRequestLength : -1;
-			}
-			catch
-			{
-				return -1;
-			}
+        protected int GetMaxSize()
+        {
+            try
+            {
+                return (ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection) != null ? (ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection).MaxRequestLength : -1;
+            }
+            catch
+            {
+                return -1;
+            }
         }
-
-		protected string GetInitialTab()
-		{
-			return Request["tab"] == "upload" ? "#uploadTab" : null;
-		}
-
     }
 }
