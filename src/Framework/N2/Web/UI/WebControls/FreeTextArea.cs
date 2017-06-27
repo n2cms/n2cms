@@ -190,8 +190,8 @@ namespace N2.Web.UI.WebControls
                     break;
             }
 
-            foreach (NameValueConfigurationElement setting in customConfig)
-		         overrides[setting.Name] = setting.Value;
+            foreach (KeyValueConfigurationElement setting in customConfig)
+		         overrides[setting.Key] = setting.Value;
 
             return ToJsonString(overrides);
         }
