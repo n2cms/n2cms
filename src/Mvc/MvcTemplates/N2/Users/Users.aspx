@@ -18,7 +18,7 @@
 			<asp:HyperLinkField DataNavigateUrlFields="UserName" 
 				DataNavigateUrlFormatString="Password.aspx?user={0}" Text="password" 
 				meta:resourcekey="HyperLinkColumnResource1" />
-			<asp:ButtonField Text="delete" CommandName="Delete"  
+			<asp:ButtonField Text="delete" CommandName="Delete" ItemStyle-CssClass="deleteLink"
 				meta:resourcekey="ButtonColumnResource1" runat="server" />
 			<asp:TemplateField runat="server">
 				<ItemTemplate>
@@ -33,4 +33,10 @@
 	<asp:ObjectDataSource ID="odsUsers" runat="server" TypeName="N2.Edit.Membership.UsersSource"
 		EnablePaging="True" SelectMethod="GetUsers" SelectCountMethod="GetUsersCount"
 		MaximumRowsParameterName="max" StartRowIndexParameterName="start" DeleteMethod="DeleteUser" />
+    
+    <script type="text/javascript"> 
+        $(".deleteLink").click(function() {
+            return confirm('Are you sure?');
+        });
+    </script>
 </asp:Content>
