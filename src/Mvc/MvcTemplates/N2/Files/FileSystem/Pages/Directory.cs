@@ -12,6 +12,7 @@ namespace N2.Edit.FileSystem.Items
         InstallerVisibility = InstallerHint.NeverRootOrStartPage,
         SortOrder = 2015)]
     [RestrictParents(typeof(AbstractDirectory))]
+    [RestrictChildren(typeof(Directory), typeof(File))]
     [WithEditableName(Focus = true)]
     [N2.Web.Template("info", "{ManagementUrl}/Files/FileSystem/Directory.aspx")]
     [N2.Web.Template("upload", "{ManagementUrl}/Files/FileSystem/Upload.aspx")]
@@ -166,6 +167,5 @@ namespace N2.Edit.FileSystem.Items
             injector.FulfilDependencies(node);
             return node;
         }
-
     }
 }
