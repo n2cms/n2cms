@@ -1,4 +1,7 @@
-﻿/* clearfix */
+﻿/* BOBIT BUSINESS MEDIA ICONS*/
+@import "bbm-icons.css";
+
+/* clearfix */
 .cf:after,
 .editDetail:after,
 .tree li:after { content:"."; display:block; height:0; clear:both; visibility:hidden; }
@@ -93,3 +96,5 @@ body.framed .toolbar .rightAligned{
 .alert-danger {
 	border-color: #b94a48;
 }
+
+
