@@ -384,6 +384,7 @@
     <Content Include="Installation\UpgradeVersion.ashx" />
     <Content Include="Resources\Js\jquery-1.11.0.min.map" />
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\Framework\AssemblyVersion.cs">

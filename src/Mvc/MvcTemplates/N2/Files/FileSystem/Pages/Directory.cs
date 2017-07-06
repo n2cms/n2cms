@@ -8,7 +8,7 @@ using N2.Management.Api;
 namespace N2.Edit.FileSystem.Items
 {
     [PageDefinition("Directory",
-        IconClass = "fa fa-folder-close",
+        IconClass = "fa fa-folder-o",
         InstallerVisibility = InstallerHint.NeverRootOrStartPage,
         SortOrder = 2015)]
     [RestrictParents(typeof(AbstractDirectory))]
@@ -63,7 +63,7 @@ namespace N2.Edit.FileSystem.Items
             get
             {
                 if (base.GetFiles().Count > 0)
-                    return "fa fa-folder-open";
+                    return "fa fa-folder-open-o";
                 return base.IconClass;
             }
         }
