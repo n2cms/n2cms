@@ -190,6 +190,7 @@
     <Content Include="Resources\Css\mediaBrowser.css" />
     <Content Include="Resources\Css\n2.css" />
     <Content Include="Resources\Css\smoothness\images\animated-overlay.gif" />
+    <Content Include="Resources\icons\bbm-icons.png" />
     <Content Include="Resources\icons\default.html" />
     <Content Include="Resources\icons\glyphicons.css" />
     <Content Include="Resources\icons\glyphicons.png" />
