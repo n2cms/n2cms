@@ -38,7 +38,7 @@
 	<!--<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularStrapJsPath)%>"></script>-->
 
 	<script src="Resources/js/n2.js"></script>
-	<link rel="stylesheet" href="Resources/css/n2.css">
+	<link rel="stylesheet" href="Resources/css/n2.css?v=07102017">
 
 	<script src="<%= GetLocalizationPath()%>"></script>
 	<script src="App/Js/Services.js"></script>
