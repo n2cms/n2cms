@@ -160,7 +160,7 @@ namespace N2.Web.UI.WebControls
 
             try
             {
-                if (itemEditor.AddedEditors.ContainsKey(TitleEditorName))
+                if (itemEditor.AddedEditors.ContainsKey(TitleEditorName) && itemEditor.CurrentItem.Name==null)
                 {
                     Control tbTitle = itemEditor.AddedEditors[TitleEditorName];
                     if (tbTitle == null)
@@ -222,19 +222,35 @@ namespace N2.Web.UI.WebControls
         public void Validate()
         {
             ContentItem currentItem = ItemUtility.FindCurrentItem(Parent);
-
+            //throw (new Exception());
             if (currentItem != null)
             {
                 if (!string.IsNullOrEmpty(Text))
                 {
+                    
+                    
                     // Ensure that the chosen name is locally unique
                     if (!N2.Context.IntegrityManager.IsLocallyUnique(Text, currentItem))
                     {
-                        //Another item with the same parent and the same name was found 
-                        ErrorMessage = string.Format(UniqueNameErrorFormat, Text);
-                        IsValid = false;
-                        return;
-                    }
+                        bool unique = false;
+                        for (int i = 1; i < 100; i++)
+                        {
+                            string newText = string.Format("{0}-{1}", Text, i.ToString());
+                            if (N2.Context.IntegrityManager.IsLocallyUnique(newText, currentItem))
+                            {
+                                this.Text = newText;
+                                unique = true;
+                                break;
+                            }
+                        }
+                        if (!unique)
+                        {
+                            //Another item with the same parent and the same name was found 
+                            ErrorMessage = string.Format(UniqueNameErrorFormat, Text);
+                            IsValid = false;
+                            return;
+                        }
+                    }   
 
                     // Ensure that the path isn't longer than 260 characters
                     if (currentItem.Parent != null && (currentItem.Parent.Url.Length > 248 || currentItem.Parent.Url.Length + Text.Length > 260))
