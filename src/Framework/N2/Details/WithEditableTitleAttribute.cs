@@ -36,6 +36,7 @@ namespace N2.Details
             Required = true;
 			ClientAdapter = "n2autosave.input";
         }
+        public bool ReadOnly { get; set; }
 
         public bool Focus
         {
@@ -71,6 +72,8 @@ namespace N2.Details
             tb.MaxLength = 250;
             tb.CssClass = "titleEditor input-xxlarge";
             tb.Placeholder(GetLocalizedText("FromDatePlaceholder") ?? Placeholder);
+            
+            tb.Enabled = !ReadOnly;
             container.Controls.Add(tb);
             return tb;
         }
