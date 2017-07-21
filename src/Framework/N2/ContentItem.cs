@@ -157,6 +157,7 @@ namespace N2
 		private string title;
 		private string name;
 		private string zoneName;
+        private bool notExpandable;
 		private string templateKey;
 		private int? translationKey;
 		private ContentItem parent;
@@ -217,7 +218,15 @@ namespace N2
 			set { title = value; }
 		}
 
-		private static char[] invalidCharacters = {'%', '?', '&', '/', ':'};
+        /// <summary>Gets or sets Expandable option.</summary>
+		[NonInterceptable]
+        public virtual bool NotExpandable
+        {
+            get { return notExpandable; }
+            set { notExpandable = value; }
+        }
+
+        private static char[] invalidCharacters = {'%', '?', '&', '/', ':'};
 
 		/// <summary>
 		///     Gets or sets the item's name. This is used to compute the item's url and can be used to uniquely identify the

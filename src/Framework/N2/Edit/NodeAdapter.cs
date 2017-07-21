@@ -210,7 +210,7 @@ namespace N2.Edit
 		/// <returns>An enumeration of the children.</returns>
 		public virtual IEnumerable<ContentItem> GetChildren(ContentItem parent, string userInterface)
 		{
-			return GetChildren(new Query { Parent = parent, Interface = userInterface });
+            return GetChildren(new Query { Parent = parent, Interface = userInterface });
 		}
 
 		/// <summary>Gets the children of the given item for the given user interface.</summary>
@@ -219,7 +219,8 @@ namespace N2.Edit
 		/// <returns>An enumeration of the children.</returns>
 		public virtual IEnumerable<ContentItem> GetChildren(Query query)
 		{
-			IEnumerable<ContentItem> children = GetNodeChildren(query);
+            
+            IEnumerable<ContentItem> children = GetNodeChildren(query);
 
 			foreach (var child in children)
 				yield return child;
@@ -268,7 +269,10 @@ namespace N2.Edit
 		/// <returns>True when there are children.</returns>
 		public virtual bool HasChildren(Query query)
 		{
-			return Sources.HasChildren(query);
+            if (query.Parent.NotExpandable)
+                return false;
+            else
+			    return Sources.HasChildren(query);
 		}
 
 		/// <summary>Gets the url used from the management UI when previewing an item.</summary>
