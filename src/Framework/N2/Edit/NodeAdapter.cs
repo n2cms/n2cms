@@ -280,8 +280,13 @@ namespace N2.Edit
 		/// <returns>An url to preview the item.</returns>
 		public virtual string GetPreviewUrl(ContentItem item)
 		{
-			string url = ManagementPaths.GetPreviewUrl(item);
-			return String.IsNullOrEmpty(url) ? ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Empty.aspx") : url;
+            
+            string url = ManagementPaths.GetPreviewUrl(item);
+            if (item.NotExpandable)
+                url = string.Format("/post-list{0}",url);
+
+            return String.IsNullOrEmpty(url) ? ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Empty.aspx") : url;
+            
 		}
 
 		/// <summary>Gets the url used from the management UI when previewing an item.</summary>
