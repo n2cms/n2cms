@@ -219,7 +219,8 @@ namespace N2.Edit
 		/// <returns>An enumeration of the children.</returns>
 		public virtual IEnumerable<ContentItem> GetChildren(Query query)
 		{
-            
+            if (query.Parent.NotExpandable)
+                yield break;
             IEnumerable<ContentItem> children = GetNodeChildren(query);
 
 			foreach (var child in children)
