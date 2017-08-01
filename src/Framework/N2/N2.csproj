@@ -165,10 +165,12 @@
     <Compile Include="Definitions\DefinitionEventArgs.cs" />
     <Compile Include="Definitions\IChildrenSorter.cs" />
     <Compile Include="Definitions\IPlaceholder.cs" />
+    <Compile Include="Details\EditableBooleanAttribute.cs" />
     <Compile Include="Details\EditableDropDownWithValidationAttribute.cs" />
     <Compile Include="Details\EditableFileContentSelector.cs" />
     <Compile Include="Details\EditableHtmlElementAttribute.cs" />
     <Compile Include="Details\EditableMediaAttribute.cs" />
+    <Compile Include="Details\EditableRadioListAttribute.cs" />
     <Compile Include="Details\WithEditableTranslationsAttribute.cs" />
     <Compile Include="Edit\Api\ContentHandlerAttribute.cs" />
     <Compile Include="Edit\Api\ContentHandlerBase.cs" />

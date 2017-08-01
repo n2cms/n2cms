@@ -21,7 +21,7 @@ namespace N2.Details
         /// Creates a new instance of the WithEditableAttribute class with default values.
         /// </summary>
         public WithEditableTitleAttribute()
-            : this("Title", -20) 
+            : this("Title", -20)
         {
         }
 
@@ -35,8 +35,11 @@ namespace N2.Details
         {
             Required = true;
 			ClientAdapter = "n2autosave.input";
+            Visible = true;
         }
         public bool ReadOnly { get; set; }
+
+        public bool Visible { get; set; }
 
         public bool Focus
         {
@@ -72,10 +75,27 @@ namespace N2.Details
             tb.MaxLength = 250;
             tb.CssClass = "titleEditor input-xxlarge";
             tb.Placeholder(GetLocalizedText("FromDatePlaceholder") ?? Placeholder);
-            
+
+            if (!Visible)
+            {
+                tb.CssClass += " hidden";
+            }
+
             tb.Enabled = !ReadOnly;
             container.Controls.Add(tb);
             return tb;
+        }
+
+        protected override Label AddLabel(Control container)
+        {
+            if (Visible)
+            {
+                return base.AddLabel(container);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         #region IWritingDisplayable Members

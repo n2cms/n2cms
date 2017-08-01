@@ -246,3 +246,7 @@ div.tagsinput div { display:block; float: left; }
 		background-color:#eee;
 	}
 	.ui-helper-hidden-accessible { display:none; }
+
+.hidden {
+    display:none !important;
+}
