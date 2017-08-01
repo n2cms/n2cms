@@ -32,6 +32,20 @@ namespace N2.Configuration
             set { base["overwriteFormatTags"] = value; }
         }
 
+        [ConfigurationProperty("overwriteBasicToolBar")]
+        public string OverwriteBasicToolBar
+        {
+            get { return (string)base["overwriteBasicToolBar"]; }
+            set { base["overwriteBasicToolBar"] = value; }
+        }
+
+        [ConfigurationProperty("overwriteStandardToolBar")]
+        public string OverwriteStandardToolBar
+        {
+            get { return (string)base["overwriteStandardToolBar"]; }
+            set { base["overwriteStandardToolBar"] = value; }
+        }
+
         [ConfigurationProperty("contentsCssPath")]
         public string ContentsCssPath
         {
