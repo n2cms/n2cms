@@ -169,6 +169,7 @@
     <Compile Include="Details\EditableFileContentSelector.cs" />
     <Compile Include="Details\EditableHtmlElementAttribute.cs" />
     <Compile Include="Details\EditableMediaAttribute.cs" />
+    <Compile Include="Details\EditableMultiUploadButtonAttribute.cs" />
     <Compile Include="Details\WithEditableTranslationsAttribute.cs" />
     <Compile Include="Edit\Api\ContentHandlerAttribute.cs" />
     <Compile Include="Edit\Api\ContentHandlerBase.cs" />

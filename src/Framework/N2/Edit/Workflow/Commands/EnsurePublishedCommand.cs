@@ -15,7 +15,7 @@ namespace N2.Edit.Workflow.Commands
                     state.Content.Published = Utility.CurrentTime();
             }
 
-			if (state.Content.Expires.HasValue)
+			if (state.Content.Expires.HasValue && state.Content.Expires.Value <= Utility.CurrentTime())
 				state.Content.Expires = null;
         }
     }
