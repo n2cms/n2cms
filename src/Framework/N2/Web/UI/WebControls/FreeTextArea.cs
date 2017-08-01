@@ -9,6 +9,8 @@ using N2.Configuration;
 using N2.Resources;
 using N2.Web.Tokens;
 using N2.Details;
+using N2.Edit;
+using N2.Definitions;
 
 namespace N2.Web.UI.WebControls
 {
@@ -22,6 +24,8 @@ namespace N2.Web.UI.WebControls
         string configJsPath = string.Empty;
         string overwriteStylesSet = string.Empty;
         string overwriteFormatTags = string.Empty;
+        string overwriteBasicToolBar = string.Empty;
+        string overwriteStandardToolBar = string.Empty;
         string overwriteLanguage = string.Empty;
         private EditorModeSetting editorMode = EditorModeSetting.Standard;
         private string additionalFormats = string.Empty;
@@ -72,14 +76,29 @@ namespace N2.Web.UI.WebControls
         {
             base.OnInit(e);
 
+            var selection = new SelectionUtility(this, Context.GetEngine());
+            ContentItem item = selection.SelectedItem;
+            var start = Find.ClosestOf<IStartPage>(item);
+
             var config = N2.Context.Current.Resolve<EditSection>();
             if (config != null)
             {
-                configJsPath = Url.ResolveTokens(config.CkEditor.ConfigJsPath);
+                if (start != null && HostingEnvironment.VirtualPathProvider.FileExists("/Content/CKeditor/" + start.ID.ToString() + ".js"))
+                {
+                    configJsPath = "/Content/CKeditor/" + start.ID.ToString() + ".js";
+                }
+                else
+                {
+                    configJsPath = Url.ResolveTokens(config.CkEditor.ConfigJsPath);
+                }
+                
                 overwriteStylesSet = Url.ResolveTokens(config.CkEditor.OverwriteStylesSet);
                 overwriteFormatTags = config.CkEditor.OverwriteFormatTags;
+                overwriteBasicToolBar = config.CkEditor.OverwriteBasicToolBar;
+                overwriteStandardToolBar = config.CkEditor.OverwriteStandardToolBar;
                 overwriteLanguage = config.CkEditor.OverwriteLanguage;
                 contentCssUrl = Url.ResolveTokens(config.CkEditor.ContentsCssPath);
+                //{ManagementUrl}/Resources/Css/editor.css
                 advancedMenues = config.CkEditor.AdvancedMenus;
                 allowedContent = config.CkEditor.AllowedContent;
                 customConfig = config.CkEditor.Settings ?? new KeyValueConfigurationCollection();
@@ -183,10 +202,16 @@ namespace N2.Web.UI.WebControls
             switch (editorMode)
             {
                 case EditorModeSetting.Basic:
-                    overrides["toolbar"] = "[{ name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] }, '/', { name: 'basicstyles', items : [ 'Bold','Italic','Underline' ] },{ name: 'paragraph', items : [ 'NumberedList','BulletedList' ] }]";
+                    if (!string.IsNullOrEmpty(overwriteBasicToolBar))
+                        overrides["toolbar"] = overwriteBasicToolBar;
+                    else
+                        overrides["toolbar"] = "[{ name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] }, '/', { name: 'basicstyles', items : [ 'Bold','Italic','Underline' ] },{ name: 'paragraph', items : [ 'NumberedList','BulletedList' ] }]";
                     break;
                 case EditorModeSetting.Standard:
-                    overrides["toolbar"] = "[{ name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] }, { name: 'links', items : [ 'Link','Unlink','Anchor' ] }, { name: 'insert', items : [ 'Image','Table','HorizontalRule','SpecialChar' ] },{ name: 'tools', items : [ 'Maximize'] }, { name: 'document', items : [ 'Source'] }, '/', { name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] }, { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote' ] },{ name: 'styles', items : [ 'Styles','Format' ] }]";
+                    if (!string.IsNullOrEmpty(overwriteStandardToolBar))
+                        overrides["toolbar"] = overwriteStandardToolBar;
+                    else
+                        overrides["toolbar"] = "[{ name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] }, { name: 'links', items : [ 'Link','Unlink','Anchor' ] }, { name: 'insert', items : [ 'Image','Table','HorizontalRule','SpecialChar' ] },{ name: 'tools', items : [ 'Maximize'] }, { name: 'document', items : [ 'Source'] }, '/', { name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] }, { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote' ] },{ name: 'styles', items : [ 'Styles','Format' ] }]";
                     break;
             }
 
