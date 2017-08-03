@@ -158,7 +158,8 @@ namespace N2
 		private string name;
 		private string zoneName;
         private bool notExpandable;
-		private string templateKey;
+        private string groupingProperty = "";
+        private string templateKey;
 		private int? translationKey;
 		private ContentItem parent;
 		private DateTime created;
@@ -224,6 +225,13 @@ namespace N2
         {
             get { return notExpandable; }
             set { notExpandable = value; }
+        }
+
+        [NonInterceptable]
+        public virtual string GroupingProperty
+        {
+            get { return groupingProperty; }
+            set { groupingProperty = value; }
         }
 
         private static char[] invalidCharacters = {'%', '?', '&', '/', ':'};

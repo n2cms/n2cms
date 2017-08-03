@@ -115,6 +115,21 @@ namespace N2.Definitions
 
         private IEnumerable<ContentItem> ChildrenByAlphabeticalIndex(IEnumerable<ContentItem> previousChildren, Query query, GroupFactoryDelegate childFactory)
         {
+            if (!string.IsNullOrEmpty(query.Parent.GroupingProperty))
+            {
+                string property = query.Parent.GroupingProperty;
+
+                try
+                {
+                    return GroupByWithMinSize(previousChildren, c => (c.Details[property] == null || string.IsNullOrEmpty(c.Details[property].ToString())) ? '-' : c.Details[property].ToString().ToUpper().FirstOrDefault())
+                        .Select(g => childFactory(query.Parent, g.Key.ToString(), "virtual-grouping/" + g.Key, () => g));
+                }
+                catch 
+                {
+                    
+                }
+            }
+
             if (AllowDirectQuery)
             {
                 var letters = query.Parent.Children.Select(query.AsParameters(), "Title")
@@ -169,6 +184,7 @@ namespace N2.Definitions
 
         private IEnumerable<ContentItem> ChildrenByYear(IEnumerable<ContentItem> previousChildren, Query query, GroupFactoryDelegate childFactory)
         {
+
             if (AllowDirectQuery)
             {
                 var years = query.Parent.Children
