@@ -23,6 +23,8 @@ namespace N2.Definitions
         {
             GroupBy = groupBy;
             AllowDirectQuery = true;
+            GroupingPropertyName = "Title";
+            SortChildren = SortChildren.Ascending;
             PageSize = 25;
             StartPagingTreshold = 100;
             DaysBeforeArchived = 365;
@@ -41,10 +43,12 @@ namespace N2.Definitions
         public int PageSize { get; set; }
         public int DaysBeforeArchived { get; set; }
         public bool AllowDirectQuery { get; set; }
-		/// <summary>
-		/// Minimum size for a single group. If there aren't enough similar items to form a group, then those items won't be grouped and will instead be shown individually (alongside any other groups).
-		/// </summary>
-		public int MinGroupSize { get; set; }
+        public string GroupingPropertyName { get; set; }
+        public SortChildren SortChildren { get; set; }
+        /// <summary>
+        /// Minimum size for a single group. If there aren't enough similar items to form a group, then those items won't be grouped and will instead be shown individually (alongside any other groups).
+        /// </summary>
+        public int MinGroupSize { get; set; }
 
         public IEnumerable<ContentItem> FilterChildren(IEnumerable<ContentItem> previousChildren, Query query, GroupFactoryDelegate groupFactory)
         {
@@ -58,6 +62,8 @@ namespace N2.Definitions
                     return ChildrenUntilTresholdThenPages(previousChildren, query, groupFactory);
                 case GroupChildrenMode.PublishedYear:
                     return ChildrenByYear(previousChildren, query, groupFactory);
+                case GroupChildrenMode.ByProperty:
+                    return ChildrenByProperty(previousChildren, query, groupFactory);
                 case GroupChildrenMode.PublishedYearMonth:
                     return ChildrenByYearMonth(previousChildren, query, groupFactory);
                 case GroupChildrenMode.PublishedYearMonthDay:
@@ -113,11 +119,28 @@ namespace N2.Definitions
                 .Select(g => childFactory(query.Parent, Map.GetOrCreateDefinition(g.Key).Title, "virtual-grouping/" + g.Key.FullName, () => g));
         }
 
+        private IEnumerable<ContentItem> ChildrenByProperty(IEnumerable<ContentItem> previousChildren, Query query, GroupFactoryDelegate childFactory)
+        {
+            
+            
+            string property = GroupingPropertyName;
+            var groupData = GroupByWithMinSize(previousChildren, c => (c.Details[property] == null || string.IsNullOrEmpty(c.Details[property].ToString())) ? "[Empty]" : c.Details[property].ToString())
+                     .Select(g => childFactory(query.Parent, g.Key.ToString(), "virtual-grouping/" + g.Key, () => g));
+
+            if (SortChildren== SortChildren.Ascending)
+                return groupData.OrderBy(g => g.Title);
+            else
+                return groupData.OrderByDescending(g => g.Title);
+
+            
+
+        }
+
         private IEnumerable<ContentItem> ChildrenByAlphabeticalIndex(IEnumerable<ContentItem> previousChildren, Query query, GroupFactoryDelegate childFactory)
         {
-            if (!string.IsNullOrEmpty(query.Parent.GroupingProperty))
+            if (!string.IsNullOrEmpty(GroupingPropertyName) && GroupingPropertyName != "Title")
             {
-                string property = query.Parent.GroupingProperty;
+                string property = GroupingPropertyName;
 
                 try
                 {
@@ -201,6 +224,9 @@ namespace N2.Definitions
                 .Select(g => childFactory(query.Parent, g.Key, "virtual-grouping/" + g.Key, () => g));
         }
 
+
+        
+
         private IEnumerable<ContentItem> ChildrenUntilTresholdThenPages(IEnumerable<ContentItem> previousChildren, Query query, GroupFactoryDelegate childFactory)
         {
             if (AllowDirectQuery)
@@ -265,5 +291,11 @@ namespace N2.Definitions
         {
             Map = dependency;
         }
+    }
+
+    public enum SortChildren
+    {
+        Ascending,
+        Descending
     }
 }

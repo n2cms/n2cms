@@ -16,6 +16,7 @@ namespace N2.Definitions
         ZoneName,
         Pages,
         PagesAfterTreshold,
-        RecentWithArchive
+        RecentWithArchive,
+        ByProperty
     }
 }
