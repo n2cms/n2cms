@@ -17,8 +17,10 @@ namespace N2.Details
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableImageUploadAttribute : EditableMediaAttribute
-	{
-		public EditableImageUploadAttribute()
+    {
+        public bool ShowThumbnail { get; set; }
+
+        public EditableImageUploadAttribute()
 			: this(null, 41)
 		{
 		}
@@ -26,28 +28,25 @@ namespace N2.Details
 		public EditableImageUploadAttribute(string title, int sortOrder = 41)
 			: base(title, sortOrder)
 		{
+            ShowThumbnail = false;
 		}
-	}
+
+        public override void UpdateEditor(ContentItem item, Control editor)
+        {
+            var composite = (SelectingMediaControl)editor;
+            composite.SelectorControl.ShowThumbnail = ShowThumbnail;
+
+            base.UpdateEditor(item, editor);
+        }
+
+
+        protected override Control AddEditor(Control container)
+        {
+            var composite = (SelectingMediaControl)base.AddEditor(container);
+            composite.SelectorControl.ShowThumbnail = ShowThumbnail;
+
+            return composite;
+        }
+
+    }
 }
-//		EditableFileUploadAttribute, IRelativityTransformer, IWritingDisplayable, IDisplayable
-//    {
-//        public EditableImageUploadAttribute()
-//            : this(null, 41)
-//        {
-//        }
-
-//        public EditableImageUploadAttribute(string title, int sortOrder)
-//            : base(title, sortOrder)
-//        {
-//        }
-
-//        protected override Control AddEditor(Control container)
-//        {
-//            SelectingUploadCompositeControl control = (SelectingUploadCompositeControl)base.AddEditor(container);
-//            control.SelectorControl.SelectableExtensions = FileSelector.ImageExtensions;
-//            control.SelectorControl.SelectableTypes = typeof(N2.Definitions.IFileSystemFile).Name;
-//            control.SelectorControl.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
-//            return control;
-//        }
-//    }
-//}

@@ -62,12 +62,30 @@ var n2MediaSelection = (function () {
         var input = document.getElementById(inputId);
         input.value = "";
         showHideViewerButton(inputId, false);
+
+        var thumbnail = document.getElementById(inputId + "_thumbnail");
+        if (thumbnail) {
+            thumbnail.innerHTML = "";
+            thumbnail.style.display = "none";
+        }
     }
 
     function setMediaSelectorValue(inputId, val) {
         var input = document.getElementById(inputId);
         input.value = val;
         showHideViewerButton(inputId, val);
+
+        var thumbnail = document.getElementById(inputId + "_thumbnail");
+        if (thumbnail) {
+            while (thumbnail.firstChild) {
+                thumbnail.removeChild(thumbnail.firstChild);
+            }
+
+            var img = new Image();
+            img.src = val + "?v=" + (new Date().getTime());
+            thumbnail.appendChild(img);
+            thumbnail.style.display = "";
+        }
     }
 
     function showMediaSelectorOverlay(inputId) {

@@ -5,6 +5,8 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System;
 using N2.Engine;
+using System.Linq;
+using System.IO;
 
 namespace N2.Web.UI.WebControls
 {
@@ -21,13 +23,17 @@ namespace N2.Web.UI.WebControls
 			ClearButton = new HtmlButton();
 			PopupButton = new HtmlButton();
             ShowButton = new HtmlButton();
-		}
+            ThumbnailButton = new HtmlButton();
+
+            ShowThumbnail = false;
+        }
 
 		public MediaSelector(string name)
 			: this()
 		{
 			Input.ID = name + "_input";
-		}
+            ThumbnailButton.ID = Input.ID + "_thumbnail";
+        }
 
 		/// <summary>File extensions that may be selected using this selector.</summary>
 		public string SelectableExtensions { get; set; }
@@ -40,7 +46,24 @@ namespace N2.Web.UI.WebControls
         public virtual string Url
         {
             get { return Input.Text; }
-            set { Input.Text = value; }
+            set {
+                Input.Text = value;
+
+                if (ShowThumbnail)
+                {
+                    var ext = Path.GetExtension(value);
+                    if (!string.IsNullOrWhiteSpace(ext) && ImageExtensions.Split(new[] { ',' }).Contains(ext))
+                    {
+                        ThumbnailButton.InnerHtml = string.Format("<img src='{0}'/>", value);
+                        ThumbnailButton.Attributes["style"] = "";
+                    }
+                    else
+                    {
+                        ThumbnailButton.InnerHtml = "";
+                        ThumbnailButton.Attributes["style"] = "display:none;";
+                    }
+                }
+            }
         }
 
         /// <summary>Format for the javascript invoked when the open popup button is clicked.</summary>
@@ -67,9 +90,12 @@ namespace N2.Web.UI.WebControls
 		public HtmlButton ClearButton { get; private set; }
         public HtmlButton PopupButton { get; private set; }
         public HtmlButton ShowButton { get; private set; }
+        public HtmlButton ThumbnailButton { get; private set; }
+        public bool ShowThumbnail { get; set; }
         public HtmlGenericControl Buttons { get; private set; }
 
-		protected virtual void RegisterClientScripts()
+
+        protected virtual void RegisterClientScripts()
         {
             Page.JavaScript("n2MediaSelection.initializeEditableMedia();", 
                 ScriptPosition.Bottom, ScriptOptions.DocumentReady);
@@ -90,14 +116,19 @@ namespace N2.Web.UI.WebControls
 			base.CreateChildControls();
 
 			Attributes["class"] = "mediaSelector selector input-append";
-
+            
+            Controls.Add(ThumbnailButton);
             Controls.Add(ShowButton);
             Controls.Add(Input);
 			Controls.Add(ClearButton);
 			Controls.Add(Buttons);
 			Buttons.Controls.Add(PopupButton);
 
-			ShowButton.InnerHtml = "<b class='fa fa-eye'></b>";
+            ThumbnailButton.Attributes["class"] = "thumbnail";
+            ThumbnailButton.Attributes["title"] = Utility.GetGlobalResourceString("UrlSelector", "View") ?? "View";
+            ThumbnailButton.Attributes["style"] = "display:none"; //Hide the thumbnail initially. Only show when url is set.
+
+            ShowButton.InnerHtml = "<b class='fa fa-eye'></b>";
 			ShowButton.Attributes["title"] = Utility.GetGlobalResourceString("UrlSelector", "View") ?? "View";
 			ShowButton.Attributes["class"] = "revealer showLayoverButton";
 
@@ -129,7 +160,7 @@ namespace N2.Web.UI.WebControls
 
 			ClearButton.Attributes["onclick"] = "n2MediaSelection.clearMediaSelector('" + Input.ClientID + "'); return false;";
 
-            ShowButton.Attributes["onclick"] = "n2MediaSelection.showMediaSelectorOverlay('" + Input.ClientID + "'); return false;";
+            ShowButton.Attributes["onclick"] = ThumbnailButton.Attributes["onclick"] = "n2MediaSelection.showMediaSelectorOverlay('" + Input.ClientID + "'); return false;";
         }
 
         /// <summary>Renders and tag and the open popup window button.</summary>

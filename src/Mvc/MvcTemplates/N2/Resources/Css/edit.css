@@ -78,6 +78,8 @@ body.rightExpanded #content { margin-right:265px; }
 	.framed .editDetail .mediaSelector .showLayoverButton { position:absolute; margin:5px; border:none; background-color:transparent; z-index:999 }
 	.framed .clearButton { margin:-8px 0 0 -25px; border:none; background-color:transparent; z-index:999 }
 	.framed .selectorButtons { vertical-align:middle; height:30px; margin-bottom:10px; display:inline-block; }
+	.framed .editDetail .thumbnail { display: block; margin: 0 0 5px 0; max-width: 200px; max-height: 200px; }
+	.framed .editDetail .thumbnail img { display: block; width: 100%; height: 100%; }
 	.framed .editDetail .revealer { opacity:.15; position:relative; }
 	.framed .editDetail:hover .selectorButtons,
 	.framed .editDetail:hover .revealer { opacity:1; transition: opacity .5s ease-in-out; -moz-transition: opacity .5s ease-in-out; -webkit-transition: opacity .5s ease-in-out; }
