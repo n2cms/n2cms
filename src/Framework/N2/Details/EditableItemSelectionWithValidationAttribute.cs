@@ -1,10 +1,12 @@
 using N2.Definitions;
 using N2.Edit;
+using N2.Web.UI.WebControls;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using Parameter = N2.Persistence.Parameter;
 using ParameterCollection = N2.Persistence.ParameterCollection;
@@ -19,7 +21,7 @@ namespace N2.Details
     ///     public virtual IEnumerable&gt;ContentItem&lt; Links { get; set; }
     /// </example>
     [AttributeUsage(AttributeTargets.Property)]
-    public class EditableItemSelectionAttribute : EditableDropDownAttribute
+    public class EditableItemSelectionWithValidationAttribute : EditableDropDownWithValidationAttribute
     {
         public Type LinkedType { get; set; }
         public Type ExcludedType { get; set; }
@@ -27,7 +29,7 @@ namespace N2.Details
         public bool ListItemsBelowCurrentStartPageOnly { get; set; }
         public EditableItemSelectionFilter Include { get; set; }
 
-        public EditableItemSelectionAttribute()
+        public EditableItemSelectionWithValidationAttribute()
         {
             LinkedType = typeof(ContentItem);
             ExcludedType = typeof(ISystemNode);
@@ -36,13 +38,13 @@ namespace N2.Details
             Include = EditableItemSelectionFilter.Pages;
         }
 
-        public EditableItemSelectionAttribute(Type linkedType)
+        public EditableItemSelectionWithValidationAttribute(Type linkedType)
             : this()
         {
             LinkedType = linkedType;
         }
 
-        public EditableItemSelectionAttribute(Type linkedType, string title, int sortOrder)
+        public EditableItemSelectionWithValidationAttribute(Type linkedType, string title, int sortOrder)
             : this(linkedType)
         {
             Title = title;
@@ -91,8 +93,14 @@ namespace N2.Details
 
             var items = Engine.Content.Search.Repository.Select(query, "ID", "Title");
 
-            return items.Select(row => new ListItem((string)row["Title"], row["ID"].ToString()))
-                .ToArray();
+            var listItems = items.Select(row => new ListItem((string)row["Title"], row["ID"].ToString())).ToList();
+
+            if (Required)
+            {
+                listItems.Insert(0, new ListItem("- Select -", "0"));
+            }
+
+            return listItems.ToArray();
         }
 
         private bool Is(EditableItemSelectionFilter filter)
@@ -182,6 +190,37 @@ namespace N2.Details
             {
                 DisplayableAnchorAttribute.GetLinkBuilder(item, referencedItem, propertyName, null, null).WriteTo(writer);
             }
+        }
+
+        /// <summary>Adds a required field validator.</summary>
+        /// <param name="container">The container control for this validator.</param>
+        /// <param name="editor">The editor control to validate.</param>
+        protected override Control AddRequiredFieldValidator(Control container, Control editor)
+        {
+            var composite = (DropDownListWithValidation)editor;
+            if (composite == null)
+                return null;
+
+            var cv = new CustomValidator()
+            {
+                ID = Name + "_cv",
+                ControlToValidate = composite.ID,
+                Display = ValidatorDisplay.Dynamic,
+                Text = GetLocalizedText("RequiredText") ?? RequiredText,
+                ErrorMessage = GetLocalizedText("RequiredMessage") ?? RequiredMessage
+            };
+
+            cv.ServerValidate += (object source, ServerValidateEventArgs args) =>
+            {
+                if (string.IsNullOrWhiteSpace(composite.SelectedValue) || composite.SelectedValue.Equals("0"))
+                {
+                    args.IsValid = false;
+                }
+            };
+
+            editor.Controls.Add(cv);
+
+            return cv;
         }
     }
 }
