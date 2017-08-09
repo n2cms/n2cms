@@ -284,7 +284,7 @@ namespace N2.Edit
             
             string url = ManagementPaths.GetPreviewUrl(item);
             if (item.NotExpandable)
-                url = string.Format("/{0}/post-list/{1}/{2}", item.ID, item.Parent.Name, item.Name);
+                url = string.Format("/{0}/post-list/{1}", item.ID, item.Name);
 
             return String.IsNullOrEmpty(url) ? ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Empty.aspx") : url;
             
