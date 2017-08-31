@@ -92,7 +92,12 @@ namespace N2.Edit
             {
                 try
                 {
-                    EnsureAuthorization(Permission.Publish);
+                    var authorization = Permission.Publish;
+                    if (selectedItem.ID == 0)
+                    {
+                        authorization = ppPermitted.RequiredPermission = Permission.Administer;
+                    }
+                    EnsureAuthorization(authorization);
                 }
                 catch (Exception ex)
                 {

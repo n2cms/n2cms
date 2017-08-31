@@ -21,7 +21,7 @@
 			    <ItemTemplate>
 				    <div class="file">
 					    <label>
-                            <%if (!IsMultiUpload) { %>
+                            <%if (!IsMultiUpload && IsAllowed) { %>
 						        <input name="directory" value="<%# Eval("Path") %>" type="checkbox" />
                             <%} %>
 						    <asp:Image ImageUrl='<%# Eval("IconUrl") %>' runat="server" />
@@ -35,7 +35,9 @@
 			    <ItemTemplate>
 				    <div class="file">
 					    <label style='<%# ImageBackgroundStyle((string)Eval("LocalUrl")) %>'>
-						    <input name="file" value="<%# Eval("LocalUrl") %>" type="checkbox" />
+                            <%if (IsAllowed) { %>
+                                <input name="file" value="<%# Eval("LocalUrl") %>" type="checkbox" />
+                            <% } %>
 					    </label>
 						<edit:ItemLink DataSource="<%# Container.DataItem %>" InterfaceUrl="File.aspx" runat="server" />
 				    </div>
