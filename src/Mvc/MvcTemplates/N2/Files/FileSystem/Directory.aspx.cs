@@ -42,7 +42,7 @@ namespace N2.Edit.FileSystem
             selected = Request.QueryString["selected"];
             useDefaultUploadDirectory = Request.QueryString["useDefaultUploadDirectory"];
 
-            if (!string.IsNullOrEmpty(selected) && useDefaultUploadDirectory.ToLower() == "true")
+            if (!string.IsNullOrEmpty(selected) && useDefaultUploadDirectory != null && useDefaultUploadDirectory.ToLower() == "true")
             {
                 //Find and/or create default upload directory for templated content.
                 IFileSystem FS = Engine.Resolve<IFileSystem>();
