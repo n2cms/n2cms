@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using N2.Edit.FileSystem;
 
 namespace N2.Details
 {
@@ -16,6 +18,7 @@ namespace N2.Details
         private string targetDomain = null;
         private string rootFolder = "/upload/";
         private string targetID = "";
+        private bool useDefaultUploadDirectory = false;
 
         /// <summary>
         /// Fully Qualified Assembly name and type with name space found in typeof(Type).AssemblyQualifiedName eg. "AssemblyName,Namespace.Type"
@@ -53,6 +56,12 @@ namespace N2.Details
             set { targetDomain = value; }
         }
 
+        public bool UseDefaultUploadDirectory
+        {
+            get { return useDefaultUploadDirectory; }
+            set { useDefaultUploadDirectory = value; }
+        }
+
         protected override Control AddEditor(Control container)
         {
             HyperLink btn = new HyperLink();
@@ -73,7 +82,16 @@ namespace N2.Details
             {
                 targetID = item.ID > 0 ? item.ID.ToString() : item.VersionOf.ID.ToString();
 
-                btn.NavigateUrl = string.Format("/N2/Files/FileSystem/Directory.aspx?selected={0}&TargetType={1}&TargetProperty={2}&TargetID={3}&TargetZone={4}&TargetDomain={5}", RootFolder, TargetType, TargetProperty, targetID, targetZoneName, targetDomain);
+                string defaultUploadDirectoryPath = RootFolder;
+                if (UseDefaultUploadDirectory)
+                {
+                    var start = Find.ClosestOf<Definitions.IStartPage>(item);
+                    Type itemType = item.GetContentType();
+
+                    defaultUploadDirectoryPath = string.Format("{0}{1}/content/{2}", RootFolder.ToLower(), start.Title.ToLower().Trim().Replace(" ", "-"), itemType.Name.ToLower().Trim().Replace(" ", "-"));
+                } 
+
+                btn.NavigateUrl = string.Format("/N2/Files/FileSystem/Directory.aspx?selected={0}&TargetType={1}&TargetProperty={2}&TargetID={3}&TargetZone={4}&TargetDomain={5}&useDefaultUploadDirectory={6}", defaultUploadDirectoryPath, TargetType, TargetProperty, targetID, targetZoneName, targetDomain, UseDefaultUploadDirectory.ToString());
             }
         }
 

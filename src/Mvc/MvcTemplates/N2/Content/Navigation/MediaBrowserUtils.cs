@@ -64,6 +64,7 @@ namespace N2.Edit.Navigation
         public string HandlerUrl { get; set; }
         public string[] Breadcrumb { get; set; }
         public bool RootIsSelectable { get; set; }
+        public string DefaultDirectoryPath { get; set; }
     }
 
     public class FileReducedListModel

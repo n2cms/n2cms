@@ -20,6 +20,8 @@ namespace N2.Details
     {
         public bool ShowThumbnail { get; set; }
 
+        public bool UseDefaultUploadDirectory { get; set; }
+
         public EditableImageUploadAttribute()
 			: this(null, 41)
 		{
@@ -44,6 +46,8 @@ namespace N2.Details
         {
             var composite = (SelectingMediaControl)base.AddEditor(container);
             composite.SelectorControl.ShowThumbnail = ShowThumbnail;
+
+            composite.SelectorControl.UseDefaultUploadDirectory = UseDefaultUploadDirectory;
 
             return composite;
         }

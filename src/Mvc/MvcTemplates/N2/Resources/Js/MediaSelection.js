@@ -2,13 +2,14 @@ var n2MediaSelection = (function () {
 
     var editableMediaControls = {};
 
-    function openMediaSelectorPopup(popupUrl, tbId, popupOptions, preferredSize, availableExtensions) {
+    function openMediaSelectorPopup(popupUrl, tbId, popupOptions, preferredSize, availableExtensions, defaultDirectoryPath) {
 	    var tb = document.getElementById(tbId);
 	    window.open(popupUrl
 			    + '&tbid=' + tbId
 			    + '&preferredSize=' + preferredSize
 			    + '&selectedUrl=' + encodeURIComponent(tb.value)
-			    + '&selectableExtensions=' + availableExtensions,
+                + '&selectableExtensions=' + availableExtensions
+                + '&defaultDirectoryPath=' + defaultDirectoryPath,
 	    null,
 	    popupOptions);
     }

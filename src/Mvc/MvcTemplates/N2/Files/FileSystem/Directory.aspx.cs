@@ -9,6 +9,9 @@ using N2.Web.Drawing;
 using System.Configuration;
 using System.Web.Configuration;
 using N2.Web;
+using System.Web;
+using N2.Edit.Navigation;
+using N2.Collections;
 
 namespace N2.Edit.FileSystem
 {
@@ -16,7 +19,7 @@ namespace N2.Edit.FileSystem
     {
         protected bool IsMultiUpload;
         protected string ParentQueryString = "";
-        private string targetType, targetProperty, targetID, targetDomain, targetZone = "" ;
+        private string targetType, targetProperty, targetID, targetDomain, targetZone, selected, useDefaultUploadDirectory = "";
 
         protected override void RegisterToolbarSelection()
         {
@@ -34,6 +37,67 @@ namespace N2.Edit.FileSystem
             base.OnInit(e);
 
             IsMultiUpload = !string.IsNullOrEmpty(Request.QueryString["TargetType"]);
+            selected = Request.QueryString["selected"];
+            useDefaultUploadDirectory = Request.QueryString["useDefaultUploadDirectory"];
+
+            if (!string.IsNullOrEmpty(selected) && useDefaultUploadDirectory.ToLower() == "true")
+            {
+                //Find and/or create default upload directory for templated content.
+                IFileSystem FS = Engine.Resolve<IFileSystem>();
+                var host = Engine.Resolve<IHost>();
+                var rootItem = Engine.Persister.Get(host.DefaultSite.RootItemID);
+                var root = new HierarchyNode<ContentItem>(rootItem);
+                var selectionTrail = new List<ContentItem>();
+
+                var uploadDirectories = MediaBrowserUtils.GetAvailableUploadFoldersForAllSites(Context, root, selectionTrail, Engine, FS);
+
+                if (uploadDirectories.Count == 1)
+                {
+                    var dir = uploadDirectories[0].Current as Directory;
+
+                    if (!string.IsNullOrWhiteSpace(selected))
+                    {
+                        var segments = (selected.Split(new[] { '/' }, 4, StringSplitOptions.RemoveEmptyEntries));
+                        if (segments.Length == 4)
+                        {
+                            var siteName = segments[1];
+                            var uploadSiteFolder = dir.GetDirectories().FirstOrDefault(d => d.Name == siteName.ToLower());
+                            if (uploadSiteFolder == null)
+                            {
+                                var newDir = VirtualPathUtility.AppendTrailingSlash(Request.ApplicationPath + dir.LocalUrl) + siteName.ToLower();
+                                FS.CreateDirectory(newDir);
+                                uploadSiteFolder = dir.GetDirectories().FirstOrDefault(d => d.Name == siteName.ToLower());
+                            }
+
+                            var contentName = segments[2];
+                            var uploadSiteContentFolder = uploadSiteFolder.GetDirectories().FirstOrDefault(d => d.Name == contentName.ToLower());
+                            if (uploadSiteContentFolder == null)
+                            {
+                                var newDir = VirtualPathUtility.AppendTrailingSlash(Request.ApplicationPath + uploadSiteFolder.LocalUrl) + contentName.ToLower();
+                                FS.CreateDirectory(newDir);
+                                uploadSiteContentFolder = uploadSiteFolder.GetDirectories().FirstOrDefault(d => d.Name == contentName.ToLower());
+                            }
+
+                            var templateName = segments[3];
+                            var uploadSiteContentTemplateFolder = uploadSiteContentFolder.GetDirectories().FirstOrDefault(d => d.Name == templateName.ToLower());
+                            if (uploadSiteContentTemplateFolder == null)
+                            {
+                                var newDir = VirtualPathUtility.AppendTrailingSlash(Request.ApplicationPath + uploadSiteContentFolder.LocalUrl) + templateName.ToLower();
+                                FS.CreateDirectory(newDir);
+                                uploadSiteContentTemplateFolder = uploadSiteContentFolder.GetDirectories().FirstOrDefault(d => d.Name == templateName.ToLower());
+
+                                Selection.SelectedItem = uploadSiteContentTemplateFolder;
+                            }
+                            else
+                            {
+                                Selection.SelectedItem = uploadSiteContentTemplateFolder;
+                            }
+
+                        }
+                    }
+                }
+            }
+            
 
             Page.StyleSheet("{ManagementUrl}/Files/Css/Files.css");
 

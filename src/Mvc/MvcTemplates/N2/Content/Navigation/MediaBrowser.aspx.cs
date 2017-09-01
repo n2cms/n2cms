@@ -11,6 +11,7 @@ using System.Linq;
 using System.Web.Configuration;
 using System.Web.Security;
 using System.Web.UI.HtmlControls;
+using System.Web;
 
 namespace N2.Edit.Navigation
 {
@@ -42,6 +43,7 @@ namespace N2.Edit.Navigation
             var preferredSize = Request["preferredSize"];
             var selectableExtensions = Request["selectableExtensions"];
             var selectedUrl = Request["selectedUrl"];
+            var defaultDirectoryPath = Request["defaultDirectoryPath"];
             var mediaBrowserHandler = new MediaBrowserHandler();
 
             mediaBrowserModel = new MediaBrowserModel
@@ -53,7 +55,8 @@ namespace N2.Edit.Navigation
                 PreferredSize = preferredSize,
                 Breadcrumb = new string[] { },
                 Path = "",
-                RootIsSelectable = false
+                RootIsSelectable = false,
+                DefaultDirectoryPath = defaultDirectoryPath
             };
 
 
@@ -77,6 +80,50 @@ namespace N2.Edit.Navigation
                     var fsRootPath = directory != null && !string.IsNullOrWhiteSpace(directory.RootPath) ? directory.RootPath : "";
 
                     var dir = (selectionTrail.Count > 0 ? selectionTrail.ElementAt(0) : uploadDirectories[0].Current) as Directory;
+
+
+                    //Find and/or create default upload directory for templated content.
+                    if (!string.IsNullOrWhiteSpace(mediaBrowserModel.DefaultDirectoryPath))
+                    {
+                        var segments = (mediaBrowserModel.DefaultDirectoryPath.Split(new[] { '/' }, 3, StringSplitOptions.RemoveEmptyEntries));
+                        if (segments.Length == 3)
+                        {
+                            var siteName = segments[0];
+                            var uploadSiteFolder = dir.GetDirectories().FirstOrDefault(d => d.Name == siteName.ToLower());
+                            if (uploadSiteFolder == null)
+                            {
+                                var newDir = VirtualPathUtility.AppendTrailingSlash(Request.ApplicationPath + dir.LocalUrl) + siteName.ToLower();
+                                FS.CreateDirectory(newDir);
+                                uploadSiteFolder = dir.GetDirectories().FirstOrDefault(d => d.Name == siteName.ToLower());
+                            }
+
+                            var contentName = segments[1];
+                            var uploadSiteContentFolder = uploadSiteFolder.GetDirectories().FirstOrDefault(d => d.Name == contentName.ToLower());
+                            if (uploadSiteContentFolder == null)
+                            {
+                                var newDir = VirtualPathUtility.AppendTrailingSlash(Request.ApplicationPath + uploadSiteFolder.LocalUrl) + contentName.ToLower();
+                                FS.CreateDirectory(newDir);
+                                uploadSiteContentFolder = uploadSiteFolder.GetDirectories().FirstOrDefault(d => d.Name == contentName.ToLower());
+                            }
+
+                            var templateName = segments[2];
+                            var uploadSiteContentTemplateFolder = uploadSiteContentFolder.GetDirectories().FirstOrDefault(d => d.Name == templateName.ToLower());
+                            if (uploadSiteContentTemplateFolder == null)
+                            {
+                                var newDir = VirtualPathUtility.AppendTrailingSlash(Request.ApplicationPath + uploadSiteContentFolder.LocalUrl) + templateName.ToLower();
+                                FS.CreateDirectory(newDir);
+                                uploadSiteContentTemplateFolder = uploadSiteContentFolder.GetDirectories().FirstOrDefault(d => d.Name == templateName.ToLower());
+
+                                dir = uploadSiteContentTemplateFolder;
+                            }
+                            else
+                            {
+                                dir = uploadSiteContentTemplateFolder;
+                            }
+                        } 
+                    }
+                    
+
                     var files = dir.GetFiles().ToList();
                     mediaBrowserModel.Dirs = dir.GetDirectories();
                     mediaBrowserModel.Files = MediaBrowserHandler.GetFileReducedList(files, imageSizes, selectableExtensions, fsRootPath);
