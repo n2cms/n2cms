@@ -112,7 +112,7 @@ namespace N2.Web.UI.WebControls
 
             EnsureChildControls();
 
-            Page.JavaScript("{ManagementUrl}/Resources/Js/MediaSelection.js");
+            Page.JavaScript("{ManagementUrl}/Resources/Js/MediaSelection.js?v=09012017");
         }
 
 		protected override void CreateChildControls()
