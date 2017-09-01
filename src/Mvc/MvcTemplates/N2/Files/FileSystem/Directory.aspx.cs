@@ -9,6 +9,7 @@ using N2.Web.Drawing;
 using System.Configuration;
 using System.Web.Configuration;
 using N2.Web;
+using N2.Configuration;
 
 namespace N2.Edit.FileSystem
 {
@@ -38,8 +39,11 @@ namespace N2.Edit.FileSystem
             Page.StyleSheet("{ManagementUrl}/Files/Css/Files.css");
 
             ancestors = Find.EnumerateParents(Selection.SelectedItem, null, true).Where(a => a is AbstractNode).Reverse();
-            
-            IsAllowed = btnDelete.Enabled = btnDelete.Visible = hlEdit.Visible = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, N2.Security.Permission.Administer);
+
+            var config = new ConfigurationManagerWrapper();
+            var authorization = config.Sections.Management.UploadFolders.RequiredPermissionToDelete;
+
+            IsAllowed = btnDelete.Enabled = btnDelete.Visible = hlEdit.Visible = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, authorization);
             hlEdit.NavigateUrl = Engine.ManagementPaths.GetEditExistingItemUrl(Selection.SelectedItem);
 
             // EditableMultiUploadButtonAttribute

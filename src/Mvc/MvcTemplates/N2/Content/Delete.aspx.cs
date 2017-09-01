@@ -9,6 +9,7 @@ using N2.Persistence;
 using N2.Edit.Versioning;
 using System.Linq;
 using N2.Definitions;
+using N2.Configuration;
 
 namespace N2.Edit
 {
@@ -95,7 +96,8 @@ namespace N2.Edit
                     var authorization = Permission.Publish;
                     if (selectedItem.ID == 0)
                     {
-                        authorization = ppPermitted.RequiredPermission = Permission.Administer;
+                        var config = new ConfigurationManagerWrapper();
+                        authorization = ppPermitted.RequiredPermission = config.Sections.Management.UploadFolders.RequiredPermissionToDelete;
                     }
                     EnsureAuthorization(authorization);
                 }
