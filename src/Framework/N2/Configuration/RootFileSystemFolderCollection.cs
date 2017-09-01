@@ -1,6 +1,7 @@
 namespace N2.Configuration
 {
-	using System;
+    using N2.Security;
+    using System;
 	using System.Configuration;
 	using System.Text.RegularExpressions;
 
@@ -28,7 +29,17 @@ namespace N2.Configuration
 			set { base["uploadsBlacklistExpression"] = value; }
 		}
 
-		public bool IsTrusted(string filename)
+        [ConfigurationProperty("requiredPermissionToDelete", DefaultValue = Permission.Publish)]
+        public Permission RequiredPermissionToDelete
+        {
+            get {
+                Permission p;
+                return Enum.TryParse(base["requiredPermissionToDelete"].ToString(), out p) ? p : Permission.Publish;
+            }
+            set { base["requiredPermissionToDelete"] = value; }
+        }
+
+        public bool IsTrusted(string filename)
 		{
 			if (!string.IsNullOrEmpty(UploadsWhitelistExpression))
 				return Regex.IsMatch(filename, UploadsWhitelistExpression, RegexOptions.IgnoreCase);

@@ -13,11 +13,13 @@ using System.Web;
 using N2.Edit.Navigation;
 using N2.Collections;
 
+using N2.Configuration;
+
 namespace N2.Edit.FileSystem
 {
     public partial class Directory1 : EditPage
     {
-        protected bool IsMultiUpload;
+        protected bool IsMultiUpload, IsAllowed;
         protected string ParentQueryString = "";
         private string targetType, targetProperty, targetID, targetDomain, targetZone, selected, useDefaultUploadDirectory = "";
 
@@ -103,7 +105,10 @@ namespace N2.Edit.FileSystem
 
             ancestors = Find.EnumerateParents(Selection.SelectedItem, null, true).Where(a => a is AbstractNode).Reverse();
 
-            btnDelete.Enabled = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, N2.Security.Permission.Publish);
+            var config = new ConfigurationManagerWrapper();
+            var authorization = config.Sections.Management.UploadFolders.RequiredPermissionToDelete;
+
+            IsAllowed = btnDelete.Enabled = btnDelete.Visible = hlEdit.Visible = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, authorization);
             hlEdit.NavigateUrl = Engine.ManagementPaths.GetEditExistingItemUrl(Selection.SelectedItem);
 
             // EditableMultiUploadButtonAttribute
