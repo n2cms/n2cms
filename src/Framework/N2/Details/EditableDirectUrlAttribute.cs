@@ -100,7 +100,6 @@ namespace N2.Details
         protected override void AddValidation(Control container, Control editor)
         {
             base.AddValidation(container, editor);
-
             var cv = new CustomValidator();
             cv.ID = Name + "_cv";
             cv.ControlToValidate = editor.ID;
@@ -111,7 +110,8 @@ namespace N2.Details
                 var url = ((TextBox)editor).Text.Trim('/');
                 url = Engine.RequestContext.Url.HostUrl.Append(url);
                 var existing = Engine.UrlParser.FindPath(url);
-                if (!existing.IsEmpty() && existing.CurrentItem != new SelectionUtility(container, Engine).SelectedItem)
+                var selItem = new SelectionUtility(container, Engine).SelectedItem;
+                if (!existing.IsEmpty() && existing.CurrentItem != selItem && (selItem.VersionOf.ID) != existing.ID)
                 {
                     args.IsValid = false;
                     cv.ErrorMessage = string.Format(GetLocalizedText("UniqueUrlMessage") ?? UniqueUrlMessage, GetLocalizedText("Title") ?? Title, existing.CurrentItem.Title, existing.CurrentItem.ID);
