@@ -75,9 +75,8 @@ namespace N2.Details
             btn.CausesValidation = false;
             btn.Text = Title;
             btn.Command += (s, a) => {
-                var selection = new SelectionUtility(HttpContext.Current, Engine);
-                ContentItem item = selection.SelectedItem;
-
+                ContentItem item = FindItem((Control)s);
+                
                 Control editor = btn;
 
                 var parentEditor = ItemUtility.FindInParents<ItemEditor>(editor);
@@ -116,7 +115,21 @@ namespace N2.Details
                 HttpContext.Current.Response.Redirect(navigateUrl);
             };
             container.Controls.Add(btn);
+
             return btn;
+        }
+
+        private ContentItem FindItem(Control sender)
+        {
+            if (sender.Parent == null)
+                return null;
+
+            if (sender.Parent.GetType() == typeof(ItemEditor))
+            {
+                return ((ItemEditor)sender.Parent).CurrentItem;
+            }
+
+            return FindItem(sender.Parent);
         }
 
         protected override Label AddLabel(Control container)
