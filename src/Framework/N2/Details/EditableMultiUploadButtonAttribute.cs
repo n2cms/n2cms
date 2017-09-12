@@ -75,17 +75,15 @@ namespace N2.Details
             btn.CausesValidation = false;
             btn.Text = Title;
             btn.Command += (s, a) => {
-                ContentItem item = FindItem((Control)s);
+                ContentItem item = FindTopEditor((Control)s).CurrentItem;
                 
-                Control editor = btn;
-
-                var parentEditor = ItemUtility.FindInParents<ItemEditor>(editor);
+                var parentEditor = ItemUtility.FindInParents<ItemEditor>(container);
                 var parentVersion = parentEditor.GetAutosaveVersion()
                     ?? item;
 
                 var path = EnsureDraft(parentVersion);
 
-                UpdateItemFromTopEditor(path, editor);
+                UpdateItemFromTopEditor(path, container);
 
                 if (path.CurrentPage.ID == 0 && path.CurrentPage.VersionOf.HasValue)
                 {
@@ -118,20 +116,7 @@ namespace N2.Details
 
             return btn;
         }
-
-        private ContentItem FindItem(Control sender)
-        {
-            if (sender.Parent == null)
-                return null;
-
-            if (sender.Parent.GetType() == typeof(ItemEditor))
-            {
-                return ((ItemEditor)sender.Parent).CurrentItem;
-            }
-
-            return FindItem(sender.Parent);
-        }
-
+        
         protected override Label AddLabel(Control container)
         {
             return null;
