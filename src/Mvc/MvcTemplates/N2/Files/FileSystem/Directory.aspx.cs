@@ -14,6 +14,8 @@ using N2.Edit.Navigation;
 using N2.Collections;
 
 using N2.Configuration;
+using N2.Edit.Versioning;
+using N2.Persistence;
 
 namespace N2.Edit.FileSystem
 {
@@ -21,7 +23,7 @@ namespace N2.Edit.FileSystem
     {
         protected bool IsMultiUpload, IsAllowed;
         protected string ParentQueryString = "";
-        private string targetType, targetProperty, targetID, targetDomain, targetZone, selected, useDefaultUploadDirectory = "";
+        private string targetType, targetProperty, targetID, targetDomain, targetZone, selected, useDefaultUploadDirectory, versionIndex, versionKey = "";
 
         protected override void RegisterToolbarSelection()
         {
@@ -40,7 +42,7 @@ namespace N2.Edit.FileSystem
 
             IsMultiUpload = !string.IsNullOrEmpty(Request.QueryString["TargetType"]);
             selected = Request.QueryString["selected"];
-            useDefaultUploadDirectory = Request.QueryString["useDefaultUploadDirectory"];
+            useDefaultUploadDirectory = Request.QueryString["UseDefaultUploadDirectory"];
 
             if (!string.IsNullOrEmpty(selected) && useDefaultUploadDirectory != null && useDefaultUploadDirectory.ToLower() == "true")
             {
@@ -119,13 +121,33 @@ namespace N2.Edit.FileSystem
                 targetID = Request.QueryString["TargetID"];
                 targetZone = Request.QueryString["TargetZone"];
                 targetDomain = Request.QueryString["TargetDomain"];
+                versionIndex = Request.QueryString["VersionIndex"] ?? "";
+                versionKey = Request.QueryString["VersionKey"] ?? "";
 
                 if (!string.IsNullOrEmpty(targetType) && !string.IsNullOrEmpty(targetProperty) && !string.IsNullOrEmpty(targetID))
                 {
-                    ParentQueryString = string.Format("TargetType={0}&TargetProperty={1}&TargetID={2}{3}{4}", targetType, targetProperty, targetID, string.IsNullOrEmpty(targetZone) ? "" : "&TargetZone=" + targetZone, string.IsNullOrEmpty(targetDomain) ? "" : "&TargetDomain=" + targetDomain);
+                    ParentQueryString = string.Format("TargetType={0}&TargetProperty={1}&TargetID={2}{3}{4}{5}{6}", 
+                        targetType, targetProperty, targetID, 
+                        string.IsNullOrEmpty(targetZone) ? "" : "&TargetZone=" + targetZone, 
+                        string.IsNullOrEmpty(targetDomain) ? "" : "&TargetDomain=" + targetDomain,
+                        string.IsNullOrEmpty(versionIndex) ? "" : "&VersionIndex=" + versionIndex,
+                        string.IsNullOrEmpty(versionKey) ? "" : "&VersionKey=" + versionKey
+                    );
                 }
 
-                hlCancel.NavigateUrl = string.Format("~/N2/Content/Edit.aspx?n2item={0}&view=draft", targetID);
+                //Get item by id.
+                ContentItem item = Find.Items.Where.ID.Eq(int.Parse(targetID)).Select().First();
+
+                //Get a specific version of the item if version index and key are provided.
+                if (!string.IsNullOrWhiteSpace(versionIndex) && !string.IsNullOrWhiteSpace(versionKey))
+                {
+                    var cvr = Engine.Resolve<ContentVersionRepository>();
+                    item = cvr.ParseVersion(versionIndex, versionKey, item);
+                }
+
+                var navigateUrl = Engine.ManagementPaths.GetEditExistingItemUrl(item);
+                hlCancel.NavigateUrl = navigateUrl;
+
                 btnDelete.Visible = hlEdit.Visible = false;
                 btnAdd.Visible = hlCancel.Visible = true;
             }
@@ -161,9 +183,19 @@ namespace N2.Edit.FileSystem
             targetID = Request.QueryString["TargetID"];
             targetZone = Request.QueryString["TargetZone"] ?? "";
             targetDomain = Request.QueryString["TargetDomain"] ?? "";
+            versionIndex = Request.QueryString["VersionIndex"] ?? "";
+            versionKey = Request.QueryString["VersionKey"] ?? "";
 
-            var item = Find.Items.Where.ID.Eq(int.Parse(targetID)).Select().FirstOrDefault();
-            
+            //Get item by id.
+            ContentItem item = Find.Items.Where.ID.Eq(int.Parse(targetID)).Select().First();
+
+            //Get a specific version of the item if version index and key are provided.
+            if (!string.IsNullOrWhiteSpace(versionIndex) && !string.IsNullOrWhiteSpace(versionKey))
+            {
+                var cvr = Engine.Resolve<ContentVersionRepository>();
+                item = cvr.ParseVersion(versionIndex, versionKey, item);
+            }
+
             var selectedFiles = Request.Form["file"];
             var allowed = files.Select(f => f.Url);
 
@@ -184,12 +216,21 @@ namespace N2.Edit.FileSystem
                 newPart.ZoneName = targetZone;
                 newPart.VersionIndex = item.VersionIndex;
                 newPart.Parent = item;
-                
-                N2.Context.Persister.Save(newPart);
-                N2.Context.Persister.Save(item);
+
+                newPart.AddTo(item, targetZone);
             }
 
-            Response.Redirect(string.Format("~/N2/Content/Edit.aspx?n2item={0}&view=draft", targetID));
+            if (item.ID == 0 && item.VersionOf.HasValue)
+            {
+                var cvr = Engine.Resolve<ContentVersionRepository>();
+                cvr.Save(item);
+            }
+            else
+            {
+                Engine.Persister.SaveRecursive(item);
+            }
+
+            Response.Redirect(Engine.ManagementPaths.GetEditExistingItemUrl(item));
         }
 
         private void Delete(string itemsToDelete, IEnumerable<string> allowed, Action<string> deleteAction)

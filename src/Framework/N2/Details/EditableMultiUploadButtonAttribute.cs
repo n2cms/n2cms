@@ -7,6 +7,13 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Edit.FileSystem;
+using N2.Web.UI;
+using N2.Web.UI.WebControls;
+using N2.Edit.Versioning;
+using N2.Persistence;
+using N2.Web;
+using N2.Web.Parts;
+using N2.Edit;
 
 namespace N2.Details
 {
@@ -64,8 +71,50 @@ namespace N2.Details
 
         protected override Control AddEditor(Control container)
         {
-            HyperLink btn = new HyperLink();
+            LinkButton btn = new LinkButton();
+            btn.CausesValidation = false;
             btn.Text = Title;
+            btn.Command += (s, a) => {
+                var selection = new SelectionUtility(HttpContext.Current, Engine);
+                ContentItem item = selection.SelectedItem;
+
+                Control editor = btn;
+
+                var parentEditor = ItemUtility.FindInParents<ItemEditor>(editor);
+                var parentVersion = parentEditor.GetAutosaveVersion()
+                    ?? item;
+
+                var path = EnsureDraft(parentVersion);
+
+                UpdateItemFromTopEditor(path, editor);
+
+                if (path.CurrentPage.ID == 0 && path.CurrentPage.VersionOf.HasValue)
+                {
+                    var cvr = Engine.Resolve<ContentVersionRepository>();
+                    cvr.Save(path.CurrentPage);
+                }
+                else
+                {
+                    Engine.Persister.SaveRecursive(path.CurrentPage);
+                }
+
+                var verIndex = path.CurrentPage.VersionIndex;
+                var verKey = path.CurrentPage.GetVersionKey();
+
+                targetID = item.ID > 0 ? item.ID.ToString() : item.VersionOf.ID.ToString();
+
+                string defaultUploadDirectoryPath = RootFolder;
+                if (UseDefaultUploadDirectory)
+                {
+                    var start = Find.ClosestOf<Definitions.IStartPage>(item);
+                    Type itemType = item.GetContentType();
+
+                    defaultUploadDirectoryPath = string.Format("{0}{1}/content/{2}", RootFolder.ToLower(), start.Title.ToLower().Trim().Replace(" ", "-"), itemType.Name.ToLower().Trim().Replace(" ", "-"));
+                }
+
+                var navigateUrl = string.Format("/N2/Files/FileSystem/Directory.aspx?selected={0}&TargetType={1}&TargetProperty={2}&TargetID={3}&TargetZone={4}&TargetDomain={5}&UseDefaultUploadDirectory={6}&VersionIndex={7}&VersionKey={8}", defaultUploadDirectoryPath, TargetType, TargetProperty, targetID, targetZoneName, targetDomain, UseDefaultUploadDirectory.ToString(), verIndex, verKey);
+                HttpContext.Current.Response.Redirect(navigateUrl);
+            };
             container.Controls.Add(btn);
             return btn;
         }
@@ -77,27 +126,42 @@ namespace N2.Details
 
         public override void UpdateEditor(ContentItem item, Control editor)
         {
-            HyperLink btn = editor as HyperLink;
-            if (btn != null)
-            {
-                targetID = item.ID > 0 ? item.ID.ToString() : item.VersionOf.ID.ToString();
-
-                string defaultUploadDirectoryPath = RootFolder;
-                if (UseDefaultUploadDirectory)
-                {
-                    var start = Find.ClosestOf<Definitions.IStartPage>(item);
-                    Type itemType = item.GetContentType();
-
-                    defaultUploadDirectoryPath = string.Format("{0}{1}/content/{2}", RootFolder.ToLower(), start.Title.ToLower().Trim().Replace(" ", "-"), itemType.Name.ToLower().Trim().Replace(" ", "-"));
-                } 
-
-                btn.NavigateUrl = string.Format("/N2/Files/FileSystem/Directory.aspx?selected={0}&TargetType={1}&TargetProperty={2}&TargetID={3}&TargetZone={4}&TargetDomain={5}&useDefaultUploadDirectory={6}", defaultUploadDirectoryPath, TargetType, TargetProperty, targetID, targetZoneName, targetDomain, UseDefaultUploadDirectory.ToString());
-            }
+            
         }
 
         public override bool UpdateItem(ContentItem item, Control editor)
         {
             return true;
+        }
+
+
+        private PathData EnsureDraft(ContentItem item)
+        {
+            var page = Find.ClosestPage(item);
+
+            if (page.ID == 0)
+                return new PathData(page, item);
+
+            var cvr = Engine.Resolve<ContentVersionRepository>();
+            var vm = Engine.Resolve<IVersionManager>();
+            var path = PartsExtensions.EnsureDraft(vm, cvr, "", item.GetVersionKey(), item);
+
+            return path;
+        }
+
+        private void UpdateItemFromTopEditor(PathData path, Control parent)
+        {
+            var editor = FindTopEditor(parent);
+            var draftOfTopEditor = path.CurrentPage.FindPartVersion(editor.CurrentItem);
+            editor.UpdateObject(new Edit.Workflow.CommandContext(editor.Definition, draftOfTopEditor, Interfaces.Editing, HttpContext.Current.User));
+        }
+
+        private ItemEditor FindTopEditor(Control parent)
+        {
+            var editor = ItemUtility.FindInParents<ItemEditor>(parent);
+            if (editor == null)
+                return null;
+            return FindTopEditor(editor.Parent) ?? editor;
         }
     }
 }
