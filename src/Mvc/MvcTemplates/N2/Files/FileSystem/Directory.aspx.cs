@@ -220,7 +220,7 @@ namespace N2.Edit.FileSystem
                 newPart.AddTo(item, targetZone);
             }
 
-            if (item.ID == 0 && item.VersionOf.HasValue)
+            if (item.ID != 0 || item.VersionOf.HasValue)
             {
                 var cvr = Engine.Resolve<ContentVersionRepository>();
                 cvr.Save(item);

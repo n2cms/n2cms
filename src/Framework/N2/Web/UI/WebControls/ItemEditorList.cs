@@ -227,11 +227,15 @@ namespace N2.Web.UI.WebControls
             };
             button.Command += (s, a) =>
             {
-				var parentEditor = ItemUtility.FindInParents<ItemEditor>(Parent);
-				var parentVersion = parentEditor.GetAutosaveVersion()
-					?? ParentItem;
-
-				var path = EnsureDraft(parentVersion);
+                var parentEditor = ItemUtility.FindInParents<ItemEditor>(Parent);
+                var autoSaveVersion = parentEditor.GetAutosaveVersion();
+                if (autoSaveVersion != null && autoSaveVersion.VersionOf.Value != null)
+                {
+                    //Posted back item has all the latest updates. Discard the auto-saved version if exists.
+                    Engine.Resolve<IVersionManager>().DeleteVersion(Find.ClosestPage(autoSaveVersion));
+                }
+                
+                var path = EnsureDraft(ParentItem);
 
 				UpdateItemFromTopEditor(path);
 
