@@ -35,7 +35,7 @@
 			    <ItemTemplate>
 				    <div class="file">
 					    <label style='<%# ImageBackgroundStyle((string)Eval("LocalUrl")) %>'>
-                            <%if (IsAllowed) { %>
+                            <%if (IsMultiUpload || IsAllowed) { %>
                                 <input name="file" value="<%# Eval("LocalUrl") %>" type="checkbox" />
                             <% } %>
 					    </label>
