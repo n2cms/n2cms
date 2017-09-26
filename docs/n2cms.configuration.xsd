@@ -650,6 +650,7 @@
 									<xs:attribute name="whitespaceReplacement" type="xs:string" use="optional" />
 									<xs:attribute name="toLower" type="xs:boolean" use="optional" />
 									<xs:attribute name="showKeepUpdated" type="xs:boolean" use="optional" />
+                  <xs:attribute name="keepUpdatedDefaultValue" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="defaultDirectory" minOccurs="0">

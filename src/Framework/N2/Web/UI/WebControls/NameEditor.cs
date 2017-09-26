@@ -20,6 +20,7 @@ namespace N2.Web.UI.WebControls
         private CheckBox keepUpdated = new CheckBox();
         private TextBox editor = new TextBox();
         private bool? showKeepUpdated;
+        private bool? keepUpdatedDefaultValue;
         private char? whitespaceReplacement;
         private bool? toLower;
         private string prefix = string.Empty;
@@ -79,6 +80,12 @@ namespace N2.Web.UI.WebControls
             set { showKeepUpdated = value; }
         }
 
+        public bool? KeepUpdatedDefaultValue
+        {
+            get { return keepUpdatedDefaultValue; }
+            set { keepUpdatedDefaultValue = value; }
+        }
+
         public string UniqueNameErrorFormat
         {
             get { return uniqueNameErrorFormat; }
@@ -126,6 +133,7 @@ namespace N2.Web.UI.WebControls
             NameEditorElement config = new NameEditorElement();
             config.WhitespaceReplacement = '-';
             config.ShowKeepUpdated = true;
+            config.KeepUpdatedDefaultValue = true;
             config.ToLower = true;
             return config;
         }
@@ -142,7 +150,7 @@ namespace N2.Web.UI.WebControls
             Controls.Add(editor);
 
             keepUpdated.ID = "ku";
-            keepUpdated.Checked = true;
+            keepUpdated.Checked = false; //Initially unchecked. It gets updated on load via jquery.n2name.js
             keepUpdated.CssClass = "keepUpdated";
             Controls.Add(keepUpdated);
 
@@ -160,22 +168,23 @@ namespace N2.Web.UI.WebControls
 
             try
             {
-                if (itemEditor.AddedEditors.ContainsKey(TitleEditorName) && itemEditor.CurrentItem.Name==null)
+                if (itemEditor.AddedEditors.ContainsKey(TitleEditorName))
                 {
                     Control tbTitle = itemEditor.AddedEditors[TitleEditorName];
                     if (tbTitle == null)
                         return;
 
-                    keepUpdated.Visible = ShowKeepUpdated ?? Config.ShowKeepUpdated;
-
+                    //Setting Visible false removes it from DOM so keepUpdated is kept visible here. It is hidden via js.
                     string titleID = tbTitle.ClientID;
                     string nameID = editor.ClientID;
                     char whitespaceReplacement = (WhitespaceReplacement ?? Config.WhitespaceReplacement);
                     string toLower = (ToLower ?? Config.ToLower).ToString().ToLower();
+                    string keepUpdatedDefaultValue = (KeepUpdatedDefaultValue ?? Config.KeepUpdatedDefaultValue).ToString().ToLower();
                     string replacements = GetReplacementsJson();
-                    string keepUpdatedBoxID = (ShowKeepUpdated ?? Config.ShowKeepUpdated) ? keepUpdated.ClientID : "";
-                    string s = string.Format("jQuery('#{0}').n2name({{nameId:'{0}', titleId:'{1}', whitespaceReplacement:'{2}', toLower:{3}, replacements:{4}, keepUpdatedBoxId:'{5}'}});",
-                        nameID, titleID, whitespaceReplacement, toLower, replacements, keepUpdatedBoxID);
+                    string keepUpdatedBoxID = keepUpdated.ClientID;
+                    string showKeepUpdated = (ShowKeepUpdated ?? Config.ShowKeepUpdated).ToString().ToLower();
+                    string s = string.Format("jQuery('#{0}').n2name({{nameId:'{0}', titleId:'{1}', whitespaceReplacement:'{2}', toLower:{3}, replacements:{4}, keepUpdatedBoxId:'{5}', keepUpdatedDefaultValue:{6}, showKeepUpdated:{7}}});",
+                        nameID, titleID, whitespaceReplacement, toLower, replacements, keepUpdatedBoxID, keepUpdatedDefaultValue, showKeepUpdated);
                     Page.ClientScript.RegisterStartupScript(typeof(NameEditor), "UpdateScript", s, true);
                 }
             }
@@ -222,13 +231,11 @@ namespace N2.Web.UI.WebControls
         public void Validate()
         {
             ContentItem currentItem = ItemUtility.FindCurrentItem(Parent);
-            //throw (new Exception());
+            
             if (currentItem != null)
             {
                 if (!string.IsNullOrEmpty(Text))
                 {
-                    
-                    
                     // Ensure that the chosen name is locally unique
                     if (!N2.Context.IntegrityManager.IsLocallyUnique(Text, currentItem))
                     {

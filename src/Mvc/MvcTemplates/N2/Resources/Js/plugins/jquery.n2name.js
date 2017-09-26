@@ -43,8 +43,8 @@ var n2Name = (function ($) {
         });
 	};
 
-	function updateName(titleid, nameid, whitespace, tolower, replacements, checkboxid) {
-		if (checkboxid && document.getElementById(checkboxid).checked) {
+    function updateName(titleid, nameid, whitespace, tolower, replacements, checkboxid) {
+        if (checkboxid && document.getElementById(checkboxid).checked) {
 			getName(titleid, nameid, whitespace, tolower, replacements, checkboxid, function callback(name) {
 				document.getElementById(nameid).value = name;
 			});
@@ -77,21 +77,25 @@ var n2Name = (function ($) {
 		if (options.keepUpdatedBoxId) {
 			var $ku = $(this).siblings(".keepUpdated");
 
-			$ku.click(function (e, stop) {
-				var $cb = $(this).find('input');
-				$cb.prop("checked", !$cb.prop("checked"));
-				checkboxHandler.call(this);
-				invokeUpdateName();
-			});
+            $ku.click(function (e, stop) {
+                var $cb = $(this).find('input');
+                $cb.prop("checked", !$cb.prop("checked"));
+                checkboxHandler.call(this);
+                invokeUpdateName();
+            });
+
+            if (!options.showKeepUpdated) {
+                $ku.hide();
+            }
 
 			$("#" + options.titleId).keyup(invokeUpdateName);
 
 			getName(options.titleId, options.nameId, options.whitespaceReplacement, options.toLower, options.replacements, options.keepUpdatedBoxId, function callback(expected) {
-				var actual = $("#" + options.nameId).attr("value");
-				if (!expected || !actual || (expected == actual))
-					$ku.each(checkboxHandler)
-				else
-					$ku.trigger('click');
+                var actual = $("#" + options.nameId).attr("value");
+                if (options.keepUpdatedDefaultValue || !expected || !actual)
+                    $ku.trigger('click');
+                else
+                    $ku.each(checkboxHandler);
 			});
 		}
 	};
