@@ -75,17 +75,21 @@ namespace N2.Details
             btn.CausesValidation = false;
             btn.Text = Title;
             btn.Command += (s, a) => {
-                ContentItem item = FindTopEditor((Control)s).CurrentItem;
+                ContentItem item = FindTopEditor(container).CurrentItem;
                 
                 var parentEditor = ItemUtility.FindInParents<ItemEditor>(container);
-                var parentVersion = parentEditor.GetAutosaveVersion()
-                    ?? item;
+                var autoSaveVersion = parentEditor.GetAutosaveVersion();
+                if (autoSaveVersion != null && autoSaveVersion.VersionOf.Value != null)
+                {
+                    //Posted back item has all the latest updates. Discard the auto-saved version if exists.
+                    Engine.Resolve<IVersionManager>().DeleteVersion(Find.ClosestPage(autoSaveVersion));
+                }
 
-                var path = EnsureDraft(parentVersion);
+                var path = EnsureDraft(item);
 
                 UpdateItemFromTopEditor(path, container);
 
-                if (path.CurrentPage.ID == 0 && path.CurrentPage.VersionOf.HasValue)
+                if (path.CurrentPage.ID != 0 || path.CurrentPage.VersionOf.HasValue)
                 {
                     var cvr = Engine.Resolve<ContentVersionRepository>();
                     cvr.Save(path.CurrentPage);

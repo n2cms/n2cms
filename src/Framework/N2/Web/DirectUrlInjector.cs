@@ -46,7 +46,7 @@ namespace N2.Web
             for (int i = segments.Length; i >= applicationSegments; i--)
             {
                 var partialUrl = "/" + string.Join("/", segments, 0, i);
-                foreach (var item in repository.Find((Parameter.Like("DirectUrl", partialUrl).Detail() & Parameter.Equal("State", ContentState.Published)).Take(host.Sites.Count + 1)))
+                foreach (var item in repository.Find((Parameter.Like("DirectUrl", partialUrl).Detail()).Take(host.Sites.Count + 1)))
                 {
                     if (i >= segments.Length)
                     {

@@ -28,6 +28,14 @@ namespace N2.Configuration
             set { base["showKeepUpdated"] = value; }
         }
 
+        /// <summary>Boolean value whether to update name automatically or not by default.</summary>
+        [ConfigurationProperty("keepUpdatedDefaultValue", DefaultValue = true)]
+        public bool KeepUpdatedDefaultValue
+        {
+            get { return (bool)base["keepUpdatedDefaultValue"]; }
+            set { base["keepUpdatedDefaultValue"] = value; }
+        }
+
         /// <summary>Collection of regex replacements for the name title to name editor.</summary>
         [ConfigurationProperty("replacements")]
         public PatternValueCollection Replacements

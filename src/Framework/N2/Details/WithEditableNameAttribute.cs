@@ -17,6 +17,7 @@ namespace N2.Details
         private char? whitespaceReplacement = '-';
         private bool? toLower;
         private bool? showKeepUpdated;
+        private bool? keepUpdatedDefaultValue;
         private string keepUpdatedText = "";
         private string keepUpdatedToolTip = "Keep the name up to date";
 
@@ -56,6 +57,13 @@ namespace N2.Details
         {
             get { return showKeepUpdated; }
             set { showKeepUpdated = value; }
+        }
+
+        /// <summary>Boolean value whether to update name automatically or not by default.</summary>
+        public bool? KeepUpdatedDefaultValue
+        {
+            get { return keepUpdatedDefaultValue; }
+            set { keepUpdatedDefaultValue = value; }
         }
 
         /// <summary>The text on the keep updated check box.</summary>
@@ -127,6 +135,7 @@ namespace N2.Details
             ne.WhitespaceReplacement = WhitespaceReplacement;
             ne.ToLower = ToLower;
             ne.ShowKeepUpdated = ShowKeepUpdated;
+            ne.KeepUpdatedDefaultValue = KeepUpdatedDefaultValue;
             ne.KeepUpdated.Text = KeepUpdatedText;
             ne.KeepUpdated.ToolTip = KeepUpdatedToolTip;
             ne.Placeholder(GetLocalizedText("FromDatePlaceholder") ?? Placeholder);
