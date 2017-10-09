@@ -26,9 +26,23 @@ namespace N2.Collections
 
         /// <summary>Filters by access.</summary>
         /// <returns>A filter.</returns>
+        public ItemFilter AccessibleUnpiblished()
+        {
+            return AccessibleUnpiblished(engine().Resolve<IWebContext>().User, engine().SecurityManager);
+        }
+
+        /// <summary>Filters by access.</summary>
+        /// <returns>A filter.</returns>
         public ItemFilter Accessible(IPrincipal user, ISecurityManager security)
         {
             return new AllFilter(new AccessFilter(user, security), new PublishedFilter());
+        }
+
+        /// <summary>Filters by access all states.</summary>
+        /// <returns>A filter.</returns>
+        public ItemFilter AccessibleUnpiblished(IPrincipal user, ISecurityManager security)
+        {
+            return new AllFilter(new AccessFilter(user, security));
         }
 
         /// <summary>Filters by access and pages.</summary>
