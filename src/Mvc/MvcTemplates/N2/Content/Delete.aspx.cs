@@ -32,6 +32,17 @@ namespace N2.Edit
         {
             selectedItem = Selection.ParseSelectionFromRequest();
 
+            //prevents the inadvertant deletion of the parent BBM ContentContainer while user is adding a post, 
+            //then clicks the trashcan when they really want to cancel.
+            if(selectedItem != null && selectedItem.Parent != null)
+            {
+                var type = selectedItem.Parent.GetContentType();
+                if(type.Name == "ContentContainer")
+                {
+                    selectedItem = null;
+                }
+            }
+
             if (selectedItem != null)
             {
                 itemsToDelete.CurrentItem = selectedItem;
