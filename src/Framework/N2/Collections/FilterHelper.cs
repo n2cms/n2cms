@@ -26,9 +26,9 @@ namespace N2.Collections
 
         /// <summary>Filters by access.</summary>
         /// <returns>A filter.</returns>
-        public ItemFilter AccessibleUnpiblished()
+        public ItemFilter AccessibleUnpublished()
         {
-            return AccessibleUnpiblished(engine().Resolve<IWebContext>().User, engine().SecurityManager);
+            return AccessibleUnpublished(engine().Resolve<IWebContext>().User, engine().SecurityManager);
         }
 
         /// <summary>Filters by access.</summary>
@@ -40,7 +40,7 @@ namespace N2.Collections
 
         /// <summary>Filters by access all states.</summary>
         /// <returns>A filter.</returns>
-        public ItemFilter AccessibleUnpiblished(IPrincipal user, ISecurityManager security)
+        public ItemFilter AccessibleUnpublished(IPrincipal user, ISecurityManager security)
         {
             return new AllFilter(new AccessFilter(user, security));
         }

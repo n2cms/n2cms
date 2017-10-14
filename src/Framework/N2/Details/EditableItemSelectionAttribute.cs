@@ -26,6 +26,7 @@ namespace N2.Details
         public int SearchTreshold { get; set; }
         public bool ListItemsBelowCurrentStartPageOnly { get; set; }
         public EditableItemSelectionFilter Include { get; set; }
+        public bool ShowUnpublish { get; set; }
 
         public EditableItemSelectionAttribute()
         {
@@ -33,6 +34,7 @@ namespace N2.Details
             ExcludedType = typeof(ISystemNode);
             SearchTreshold = 10;
             ListItemsBelowCurrentStartPageOnly = false;
+            ShowUnpublish = false;
             Include = EditableItemSelectionFilter.Pages;
         }
 
@@ -67,7 +69,10 @@ namespace N2.Details
 
         protected override ListItem[] GetListItems()
         {
-            ParameterCollection query = Parameter.Equal("State", ContentState.Published);
+            ParameterCollection query = new ParameterCollection();
+
+            if (!ShowUnpublish)
+                query &= Parameter.Equal("State", ContentState.Published);
 
             if (ListItemsBelowCurrentStartPageOnly)
             {
