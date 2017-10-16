@@ -13,6 +13,14 @@
 		<asp:CustomValidator ID="cvRemoved" Text="Can't delete item that is not available. It may have been deleted or renamed in another window." runat="server" CssClass="alert alert-error alert-margin" meta:resourceKey="cvRemoved" Display="Dynamic" />
 		<asp:CustomValidator ID="cvDelete" runat="server" CssClass="alert alert-margin" meta:resourceKey="cvDelete" Display="Dynamic" />
 		<asp:CustomValidator ID="cvException" runat="server" CssClass="alert alert-error alert-margin" Display="Dynamic" />
+        <asp:CustomValidator ID="cvVerifyDelete" runat="server" CssClass="alert alert-error alert-margin" Display="Dynamic"/>
+
+    <fieldset id="verifyDelete" runat="server" visible="false" style="padding:8px; margin-bottom:10px">
+        <label for="txtVerifyDelete" style="color: red;">YOU ARE ABOUT TO DELETE AN ITEM WITH CHILDREN. PLEASE VERIFY THAT YOU WANT TO DELETE THIS ITEM BY TYPING YES:</label>
+		<asp:TextBox ID="txtVerifyDelete" Columns="3" runat="server" meta:resourceKey="txtVerifyDelete" />
+		<div style="padding: 5px;">
+	</fieldset>
+
 	<fieldset id="referencingItems" runat="server" style="padding:8px; margin-bottom:10px">
 		<legend><asp:CheckBox ID="chkAllow" Checked="true" AutoPostBack="true" OnCheckedChanged="chkAllow_OnCheckedChanged" runat="server" Text="Delete and break references" meta:resourceKey="chkAllow" /></legend>
 		<div style="padding: 5px;">

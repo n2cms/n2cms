@@ -32,15 +32,10 @@ namespace N2.Edit
         {
             selectedItem = Selection.ParseSelectionFromRequest();
 
-            //prevents the inadvertant deletion of the parent BBM ContentContainer while user is adding a post, 
-            //then clicks the trashcan when they really want to cancel.
-            if(selectedItem != null && selectedItem.Parent != null)
+            // this is here to help prevent inadvertant deletion of items, when the user would really rather cancel.
+            if(selectedItem != null && selectedItem.Children.Count() > 0)
             {
-                var type = selectedItem.Parent.GetContentType();
-                if(type.Name == "ContentContainer")
-                {
-                    selectedItem = null;
-                }
+                verifyDelete.Visible = true;
             }
 
             if (selectedItem != null)
@@ -143,12 +138,22 @@ namespace N2.Edit
 
         protected void OnDeleteClick(object sender, EventArgs e)
         {
+            if (selectedItem != null && selectedItem.Children.Count() > 0)
+            {
+                if (txtVerifyDelete.Text.ToLower().Trim() != "yes")
+                {
+                    cvVerifyDelete.IsValid = false;
+                    cvVerifyDelete.Text = "You must enter 'yes' to delete this item with children.";
+                    return;
+                }
+            }
+
             var item = selectedItem;
             var parent = item.Parent;
             try
             {
                 bool versionablePart = !item.IsPage
-                    && Engine.Definitions.GetDefinition(item).IsVersionable();
+                && Engine.Definitions.GetDefinition(item).IsVersionable();
 
                 if (versionablePart)
                 {

@@ -67,6 +67,33 @@ namespace N2.Edit {
         protected global::System.Web.UI.WebControls.CustomValidator cvException;
         
         /// <summary>
+        /// cvVerifyDelete control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator cvVerifyDelete;
+        
+        /// <summary>
+        /// verifyDelete control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl verifyDelete;
+        
+        /// <summary>
+        /// txtVerifyDelete control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtVerifyDelete;
+        
+        /// <summary>
         /// referencingItems control.
         /// </summary>
         /// <remarks>
