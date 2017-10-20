@@ -74,6 +74,11 @@ namespace N2.Web
             if (!string.IsNullOrEmpty(url.Authority))
             {
                 var site = host.GetSite(item);
+                if (site == null)
+                {
+                    var sp = Context.Current.UrlParser.StartPage;
+                    site = host.GetSite(sp);
+                }
                 if (!string.IsNullOrEmpty(site.Authority) && !site.Is(url.Authority))
                     return false;
             }
