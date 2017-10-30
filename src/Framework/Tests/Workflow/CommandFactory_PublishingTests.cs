@@ -85,6 +85,42 @@ namespace N2.Tests.Workflow
             Assert.That(item.Children[1], Is.EqualTo(child));
         }
 
+        [Test]
+        public void Expires_IsClearedIfExpiresHasPassed()
+        {
+            item.Expires = N2.Utility.CurrentTime().AddDays(-1);
+            var context = new CommandContext(definitions.GetDefinition(item.GetContentType()), item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+            var command = CreateCommand(context);
+            dispatcher.Execute(command, context);
+
+            Assert.That(context.Content.Expires, Is.Null);
+        }
+
+        [Test]
+        public void Expires_IsNotClearedIfExpiresInFuture()
+        {
+            var expireDate = N2.Utility.CurrentTime().AddDays(10);
+            item.Expires = expireDate;
+            var context = new CommandContext(definitions.GetDefinition(item.GetContentType()), item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+            var command = CreateCommand(context);
+            dispatcher.Execute(command, context);
+
+            Assert.That(context.Content.Expires, Is.EqualTo(expireDate));
+        }
+
+        [Test]
+        public void Expires_IsNotClearedIfExpiresHasPassedButIsEdited()
+        {
+            var expireDate = N2.Utility.CurrentTime().AddDays(-1);
+            item.Expires = expireDate;
+            var context = new CommandContext(definitions.GetDefinition(item.GetContentType()), item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+            context.Parameters.Add("UpdatedDetailsKey", new System.Collections.Generic.List<string> { "Expires" });
+            var command = CreateCommand(context);
+            dispatcher.Execute(command, context);
+
+            Assert.That(context.Content.Expires, Is.EqualTo(expireDate));
+        }
+
         //What's the point, really?
         //[Test]
         //public void Sets_PublishedDate()
