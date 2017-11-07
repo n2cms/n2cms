@@ -18,15 +18,26 @@ namespace N2.Details
 	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableMediaUploadAttribute : EditableMediaAttribute
 	{
-		public EditableMediaUploadAttribute()
+        public bool UseDefaultUploadDirectory { get; set; }
+
+        public EditableMediaUploadAttribute()
 			: this(null, 41)
 		{
 		}
 
-		public EditableMediaUploadAttribute(string title, int sortOrder = 41)
+        public EditableMediaUploadAttribute(string title, int sortOrder = 41)
 			: base(title, sortOrder)
 		{
-			Extensions = MediaSelector.AudioExtensions + "," + MediaSelector.ImageExtensions + "," + MediaSelector.MovieExtensions;
+			Extensions = MediaSelector.AudioExtensions + "," + MediaSelector.ImageExtensions + "," + MediaSelector.MovieExtensions + "," + MediaSelector.DocumentExtensions;
 		}
-	}
+
+        protected override Control AddEditor(Control container)
+        {
+            var composite = (SelectingMediaControl)base.AddEditor(container);
+
+            composite.SelectorControl.UseDefaultUploadDirectory = UseDefaultUploadDirectory;
+
+            return composite;
+        }
+    }
 }
