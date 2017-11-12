@@ -15,7 +15,6 @@ namespace N2.Edit.Versioning
         public virtual DateTime? FuturePublish { get; set; }
         public virtual DateTime? Expires { get; set; }
 		public virtual int VersionIndex { get; set; }
-		public virtual int PartsCount { get; set; }
         public virtual string SavedBy { get; set; }
 
         public virtual ContentItem Content { get { return ContentFactory(); } }

@@ -206,8 +206,7 @@ namespace N2.Edit.Versioning
 				    SavedBy = version.SavedBy,
 				    State = version.State,
 				    Title = version.Title,
-				    VersionIndex = version.VersionIndex,
-				    PartsCount = version.ItemCount - 1
+				    VersionIndex = version.VersionIndex
 			    };
 		    }
 		    catch (Exception ex)
@@ -223,8 +222,7 @@ namespace N2.Edit.Versioning
 				    iv.State = version.State;
 				    iv.Title = version.Title;
 				    iv.VersionIndex = version.VersionIndex;
-				    iv.PartsCount = version.ItemCount - 1;
-
+				    
 				    if (version.Master.ID != null)
 					    iv.ID = version.Master.ID.Value;
 				    else
@@ -243,7 +241,6 @@ namespace N2.Edit.Versioning
 		    int pc = 0;
 		    try
 		    {
-			    pc = N2.Find.EnumerateChildren(version, includeSelf: false, useMasterVersion: false).Count();
 			    return new VersionInfo
 			    {
 				    ID = version.ID,
@@ -254,8 +251,7 @@ namespace N2.Edit.Versioning
 				    SavedBy = version.SavedBy,
 				    State = version.State,
 				    Title = version.Title,
-				    VersionIndex = version.VersionIndex,
-				    PartsCount = pc
+				    VersionIndex = version.VersionIndex
 			    };
 			}
 			catch (Exception ex)
@@ -271,7 +267,6 @@ namespace N2.Edit.Versioning
 					iv.State = version.State;
 					iv.Title = version.Title;
 					iv.VersionIndex = version.VersionIndex;
-					iv.PartsCount = pc;
 					iv.ID = version.ID;
 				}
 				else

@@ -57,7 +57,7 @@ namespace N2.Tests.Edit
 			var activator = engine.Resolve<ContentActivator>();
 			var versionRepository = TestSupport.CreateVersionRepository(ref persister, ref activator, new Type[] { typeof(ContentHandlerTestsPage), typeof(ContentHandlerTestsPart) });
 			engine.AddComponentInstance<ContentVersionRepository>(versionRepository);
-			engine.AddComponentInstance<VersionManager>(versionManager = TestSupport.SetupVersionManager(engine.Persister, versionRepository));
+			engine.AddComponentInstance<IVersionManager>(versionManager = TestSupport.SetupVersionManager(engine.Persister, versionRepository));
 			(engine.Resolve<IContentAdapterProvider>() as N2.Plugin.IAutoStart).Start();
 			engine.Resolve<IContentAdapterProvider>().ResolveAdapter<N2.Edit.NodeAdapter>(typeof(ContentItem)).Engine = engine;
 			engine.AddComponentInstance(new HtmlSanitizer(new N2.Configuration.HostSection()));
