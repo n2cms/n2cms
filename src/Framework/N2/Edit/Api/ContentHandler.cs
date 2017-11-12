@@ -261,7 +261,7 @@ namespace N2.Management.Api
 			var requestBody = context.GetOrDeserializeRequestStreamJsonDictionary<object>();
 			var discriminator = EditExtensions.GetDiscriminator(context.Request);
 
-			var versions = engine.Resolve<VersionManager>();
+			var versions = engine.Resolve<IVersionManager>();
 			ContentItem item;
 			if (string.IsNullOrEmpty(discriminator))
 			{
