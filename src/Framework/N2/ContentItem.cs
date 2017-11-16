@@ -158,6 +158,7 @@ namespace N2
 		private string name;
 		private string zoneName;
         private bool notExpandable;
+        private bool useCustomPreviewUrl;
         private string templateKey;
 		private int? translationKey;
 		private ContentItem parent;
@@ -226,7 +227,12 @@ namespace N2
             set { notExpandable = value; }
         }
 
-
+        [NonInterceptable]
+        public virtual bool UseCustomPreviewUrl
+        {
+            get { return useCustomPreviewUrl; }
+            set { useCustomPreviewUrl = value; }
+        }
 
         private static char[] invalidCharacters = {'%', '?', '&', '/', ':'};
 
