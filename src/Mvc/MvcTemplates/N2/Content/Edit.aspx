@@ -9,7 +9,7 @@
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
-    <edit:buttongroup cssclass="btn-primary" runat="server" onclientclick="return !n2ctx.isFlagged('ShutdownEditing') || confirm('Editing is currently disabled. If you continue right now changes may be lost. Do you want to continue?')">
+    <edit:buttongroup cssclass="btn-primary" runat="server"  onclientclick="disableSaving(); return !n2ctx.isFlagged('ShutdownEditing') || confirm('Editing is currently disabled. If you continue right now changes may be lost. Do you want to continue?')">
 		<asp:LinkButton ID="btnSavePublish" data-icon-class="fa fa-play-circle" 
 			OnCommand="OnPublishCommand" runat="server" 
 			CssClass="command iconed publish" 
@@ -88,7 +88,10 @@
     
     <script type="text/javascript">
 
-    $(document).ready(function () {
+        $(document).ready(function () {
+            console.log(n2ctx);
+            n2ctx.disableSaving = false;
+
         // future publish
         $("#futurePanel").hide().click(function (e) {
             e.stopPropagation();
@@ -132,7 +135,22 @@
             $(this).attr("title", "");
             $(this).tooltip({ html: true, title: (title ? "<h6>" + title + "</h6>" : "") + (content ? "<p>" + content + "</p>"  : "")});
         });
+
     });
+
+        //disable controls
+        function disableSaving() {
+        if (n2ctx.disableSaving) return false;
+        else {
+            n2ctx.disableSaving = true;
+            console.log(n2ctx);
+            $('#<%=btnSavePublish.ClientID%>').attr("disabled", "disabled").addClass('disabled');
+            $('#<%=btnPreview.ClientID%>').attr("disabled", "disabled").addClass('disabled');
+            $('#<%=btnSaveUnpublished.ClientID%>').attr("disabled", "disabled").addClass('disabled');
+            $('#<%=hlFuturePublish.ClientID%>').attr("disabled", "disabled").addClass('disabled');
+            $('#<%=btnUnpublish.ClientID%>').attr("disabled", "disabled").addClass('disabled');
+        }
+    }
 
 	</script>
     
