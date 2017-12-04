@@ -108,9 +108,13 @@ namespace N2.Edit.FileSystem
             ancestors = Find.EnumerateParents(Selection.SelectedItem, null, true).Where(a => a is AbstractNode).Reverse();
 
             var config = new ConfigurationManagerWrapper();
-            var authorization = config.Sections.Management.UploadFolders.RequiredPermissionToDelete;
+            var authorizationToDelete = config.Sections.Management.UploadFolders.RequiredPermissionToDelete;
+            var authorizationToModify = config.Sections.Management.UploadFolders.RequiredPermissionToModify; //Edit (Rename Directory), copy, paste
 
-            IsAllowed = btnDelete.Enabled = btnDelete.Visible = hlEdit.Visible = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, authorization);
+            IsAllowed = btnDelete.Enabled = btnDelete.Visible = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, authorizationToDelete);
+            hlEdit.Visible = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, authorizationToModify);
+
+
             hlEdit.NavigateUrl = Engine.ManagementPaths.GetEditExistingItemUrl(Selection.SelectedItem);
 
             // EditableMultiUploadButtonAttribute

@@ -79,6 +79,7 @@
                               <xs:attribute name="uploadsWhitelistExression" type="xs:string"/>
                               <xs:attribute name="uploadsBlacklistExression" type="xs:string"/>
                               <xs:attribute name="requiredPermissionToDelete" type="xs:string" use="optional" default="Publish" />
+                              <xs:attribute name="requiredPermissionToModify" type="xs:string" use="optional" default="Publish" />
                             </xs:complexType>
 													</xs:element>
 												</xs:all>

@@ -39,6 +39,18 @@ namespace N2.Configuration
             set { base["requiredPermissionToDelete"] = value; }
         }
 
+        [ConfigurationProperty("requiredPermissionToModify", DefaultValue = Permission.Publish)]
+        public Permission RequiredPermissionToModify
+        {
+            get
+            {
+                Permission p;
+                return Enum.TryParse(base["requiredPermissionToModify"].ToString(), out p) ? p : Permission.Publish;
+            }
+            set { base["requiredPermissionToModify"] = value; }
+        }
+
+
         public bool IsTrusted(string filename)
 		{
 			if (!string.IsNullOrEmpty(UploadsWhitelistExpression))

@@ -15,6 +15,7 @@ using N2.Web.UI.WebControls;
 using N2.Edit.Activity;
 using N2.Management.Activity;
 using N2.Edit.AutoPublish;
+using N2.Configuration;
 
 namespace N2.Edit
 {
@@ -110,7 +111,13 @@ namespace N2.Edit
 			if (!IsPostBack)
 				RegisterSetupToolbarScript(Selection.SelectedItem);
 
-			base.OnLoad(e);
+            if (Selection.SelectedItem.ID == 0 && Request["discriminator"] == null) 
+            {
+                var config = new ConfigurationManagerWrapper();
+                ppPermitted.RequiredPermission = config.Sections.Management.UploadFolders.RequiredPermissionToModify;
+            }
+
+            base.OnLoad(e);
 		}
 
 		protected override void OnPreRender(EventArgs e)

@@ -2,6 +2,7 @@ using System;
 using N2.Security;
 using N2.Edit.Activity;
 using N2.Management.Activity;
+using N2.Configuration;
 
 namespace N2.Edit
 {
@@ -93,7 +94,15 @@ namespace N2.Edit
 
         private void PerformCopy(N2.ContentItem newItem)
         {
-            EnsureAuthorization(Permission.Write);
+            var authorizationToWrite = Permission.Write;
+
+            if (newItem.ID == 0 && Selection.MemorizedItem.ID == 0)
+            {
+                var config = new ConfigurationManagerWrapper();
+                authorizationToWrite =  config.Sections.Management.UploadFolders.RequiredPermissionToModify;
+            }
+
+            EnsureAuthorization(authorizationToWrite);
             EnsureAuthorization(Selection.MemorizedItem, Permission.Read);
 
             var persister = Engine.Persister;
