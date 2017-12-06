@@ -110,8 +110,9 @@ namespace N2.Edit
 
 			if (!IsPostBack)
 				RegisterSetupToolbarScript(Selection.SelectedItem);
-
-            if (Selection.SelectedItem.ID == 0 && Request["discriminator"] == null) 
+            
+            //Limit non-admins from renaming Directory items
+            if (Selection.SelectedItem.ID == 0 && Selection.SelectedItem.GetType() == typeof(FileSystem.Items.Directory) && Request["discriminator"] == null) 
             {
                 var config = new ConfigurationManagerWrapper();
                 ppPermitted.RequiredPermission = config.Sections.Management.UploadFolders.RequiredPermissionToModify;

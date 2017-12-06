@@ -96,7 +96,9 @@ namespace N2.Edit
         {
             var authorizationToWrite = Permission.Write;
 
-            if (newItem.ID == 0 && Selection.MemorizedItem.ID == 0)
+            //Limit non-admins from copy/paste items in uploads folder
+            if ((Selection.MemorizedItem.GetType() == typeof(FileSystem.Items.Directory) || Selection.MemorizedItem.GetType() == typeof(FileSystem.Items.File)) 
+                    && Selection.MemorizedItem.ID == 0)
             {
                 var config = new ConfigurationManagerWrapper();
                 authorizationToWrite =  config.Sections.Management.UploadFolders.RequiredPermissionToModify;
