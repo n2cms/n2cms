@@ -10,13 +10,13 @@
         <title>Navigation</title>
         <asp:PlaceHolder runat="server">
 		<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath) %>" type="text/css" rel="stylesheet" />
-		<link rel="stylesheet" type="text/css" href="<%= MapCssUrl("all.css")%>" />
+		<link rel="stylesheet" type="text/css" href="<%= MapCssUrl("all.css") %>" />
 	    <link rel="stylesheet" type="text/css" href="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.IconsCssPath) %>" />
 		<link rel="stylesheet" type="text/css" href="<%= MapCssUrl("framed.css")%>" />
 		<link rel="stylesheet" type="text/css" href="<%= MapCssUrl("tree.css")%>" />
 		</asp:PlaceHolder>
-		<script src="../../Resources/Js/ContextMenu.js?v2" type="text/javascript" ></script>
-		<script src="Tree.js" type="text/javascript"></script>
+		<script src="../../Resources/Js/ContextMenu.js?v"+<%=Register.ScriptVersion %> type="text/javascript" ></script>
+		<script src="Tree.js?v="+<%=Register.ScriptVersion %> type="text/javascript"></script>
     </head>
 <body class="tree framed noneSelected noPermission">
 	<form id="form1" runat="server">

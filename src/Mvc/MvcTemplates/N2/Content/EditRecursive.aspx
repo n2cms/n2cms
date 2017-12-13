@@ -4,7 +4,7 @@
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
-	<link rel="stylesheet" href="<%= MapCssUrl("edit.css") +"?v="+ Register.CssVersion%>" type="text/css" />
+	<link rel="stylesheet" href="<%= MapCssUrl("edit.css")%>" type="text/css" />
 </asp:Content>
 
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">

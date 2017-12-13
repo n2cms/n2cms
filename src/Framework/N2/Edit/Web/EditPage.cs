@@ -196,7 +196,7 @@ namespace N2.Edit.Web
 
         protected string MapCssUrl(string cssFileName)
         {
-            return Url.ResolveTokens("{ManagementUrl}/Resources/Css/" + cssFileName);
+            return Url.ResolveTokens("{ManagementUrl}/Resources/Css/" + cssFileName) + "?v=" + Register.CssVersion;
         }
 
         #region Refresh Methods
