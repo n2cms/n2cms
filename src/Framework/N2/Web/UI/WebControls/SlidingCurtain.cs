@@ -21,7 +21,7 @@ namespace N2.Web.UI.WebControls
 
         public string ScriptUrl
         {
-            get { return (string)(ViewState["ScriptUrl"] ?? "{ManagementUrl}/Resources/Js/parts.js"); }
+            get { return (string)(ViewState["ScriptUrl"] ?? "{ManagementUrl}/Resources/Js/parts.js")+"?v="+Register.ScriptVersion; }
             set { ViewState["ScriptUrl"] = value; }
         }
 
@@ -30,7 +30,7 @@ namespace N2.Web.UI.WebControls
         /// </summary>
 		public string StyleSheetUrl
         {
-            get { return (string)(ViewState["StyleSheetUrl"] ?? "{ManagementUrl}/Resources/Css/Parts.css"); }
+            get { return (string)(ViewState["StyleSheetUrl"] ?? "{ManagementUrl}/Resources/Css/Parts.css") + "?v=" + Register.CssVersion;}
             set { ViewState["StyleSheetUrl"] = value; }
         }
 

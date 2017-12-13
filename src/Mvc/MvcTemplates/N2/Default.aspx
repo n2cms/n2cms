@@ -33,12 +33,12 @@
 	<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapTimePickerCssPath)%>" type="text/css" rel="stylesheet" />
 	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapTimePickerJsPath)%>" type="text/javascript"></script>
 	
-	<link href="Resources/icons/flags.css" rel="stylesheet" />
+	<link href="Resources/icons/flags.css?v=<%=N2.Resources.Register.CssVersion%>" rel="stylesheet" />
 
 	<!--<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularStrapJsPath)%>"></script>-->
 
-	<script src="Resources/js/n2.js"></script>
-	<link rel="stylesheet" href="Resources/css/n2.css?v=07102017">
+	<script src="Resources/js/n2.js?v=<%=N2.Resources.Register.ScriptVersion%>"></script>
+	<link rel="stylesheet" href="Resources/css/n2.css?v=<%=N2.Resources.Register.CssVersion%>">
 
 	<script src="<%= GetLocalizationPath()%>"></script>
 	<script src="App/Js/Services.js"></script>

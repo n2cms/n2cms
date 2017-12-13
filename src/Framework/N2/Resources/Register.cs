@@ -55,8 +55,10 @@ namespace N2.Resources
 		public const string AngularJsVersion = "1.5.8";
 		public const string CkEditorVersion = "4.5.8";
 		public const string DefaultBootstrapVersion = "2.3.2";
+		public const string ScriptVersion = "20171212";
+		public const string CssVersion = "20171212";
 
-		public const string DefaultFlagsCssPath = "{ManagementUrl}/Resources/icons/flags.css";
+		public const string DefaultFlagsCssPath = "{ManagementUrl}/Resources/icons/flags.css?v="+CssVersion;
 		public const string DefaultJQueryJsPath = "//code.jquery.com/jquery-" + JQueryVersion + ".min.js";
 		public const string DefaultJQueryUiJsPath = "//code.jquery.com/ui/" + JQueryUiVersion + "/jquery-ui.min.js";
 		public const string DefaultFancyboxJsPath = "//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js";
@@ -496,7 +498,7 @@ namespace N2.Resources
 
 		internal static void FrameInteraction(this Page page)
 		{
-			JavaScript(page, "{ManagementUrl}/Resources/Js/frameInteraction.js");
+			JavaScript(page, "{ManagementUrl}/Resources/Js/frameInteraction.js?v="+ ScriptVersion);
 		}
 	}
 }

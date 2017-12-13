@@ -97,7 +97,7 @@ namespace N2.Edit.Web
             if (themeCookie != null && !string.IsNullOrEmpty(themeCookie.Value))
                 theme = themeCookie.Value;
 
-            Register.StyleSheet(this, Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/Css/themes/" + theme));
+            Register.StyleSheet(this, Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/Css/themes/" + theme)+"?v="+Register.CssVersion);
         }
 
         private void SetupAspNetTheming()

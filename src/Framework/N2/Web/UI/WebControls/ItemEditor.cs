@@ -203,7 +203,7 @@ namespace N2.Web.UI.WebControls
     $('#outside .box').n2expandableBox({ opener: 'h4', opened: '.box-inner' });
 ", ScriptOptions.DocumentReady);
 
-            Register.StyleSheet(Page, Url.ResolveTokens("{ManagementUrl}/Resources/Css/edit.css"));
+            Register.StyleSheet(Page, Url.ResolveTokens("{ManagementUrl}/Resources/Css/edit.css")+"?v="+Register.CssVersion);
 
 			Page.ClientScript.RegisterHiddenField(ClientID + "_autosaved_url", Page.Request[ClientID + "_autosaved_url"] ?? currentItem.ID.ToString());
 			if (EnableAutoSave)

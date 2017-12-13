@@ -1,9 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/N2/Content/Framed.master" AutoEventWireup="true" CodeBehind="EditSingle.aspx.cs" Inherits="N2.Management.Content.EditSingle" meta:resourcekey="PageResource1" %>
 <%@ Import namespace="N2"%>
+<%@ Import Namespace="N2.Resources" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
-		<link rel="stylesheet" href="<%= MapCssUrl("edit.css") %>" type="text/css" />
+		<link rel="stylesheet" href="<%= MapCssUrl("edit.css")+"?v="+ Register.CssVersion %>" type="text/css" />
 </asp:Content>
 
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">

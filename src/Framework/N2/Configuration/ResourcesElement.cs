@@ -85,14 +85,14 @@ namespace N2.Configuration
 			set { base["fancyboxCssPath"] = value; }
 		}
 
-		[ConfigurationProperty("partsJsPath", DefaultValue = "{ManagementUrl}/Resources/Js/parts.js?v=" + Register.JQueryVersion)]
+		[ConfigurationProperty("partsJsPath", DefaultValue = "{ManagementUrl}/Resources/Js/parts.js?v=" + Register.ScriptVersion)]
 		public string PartsJsPath
 		{
 			get { return (string)base["partsJsPath"]; }
 			set { base["partsJsPath"] = value; }
 		}
 
-		[ConfigurationProperty("partsCssPath", DefaultValue = "{ManagementUrl}/Resources/Css/parts.css?v=" + Register.JQueryVersion)]
+		[ConfigurationProperty("partsCssPath", DefaultValue = "{ManagementUrl}/Resources/Css/parts.css?v=" + Register.CssVersion)]
 		public string PartsCssPath
 		{
 			get { return (string)base["partsCssPath"]; }

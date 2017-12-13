@@ -40,19 +40,19 @@ namespace N2.Web.UI.WebControls
         /// <summary>Gets or sets the url to a style sheet added to the page when editing.</summary>
         public string StyleSheetUrl
         {
-            get { return (string) (ViewState["StyleSheetUrl"] ?? "{ManagementUrl}/Resources/Css/edit.css"); }
+            get { return (string) (ViewState["StyleSheetUrl"] ?? "{ManagementUrl}/Resources/Css/edit.css"+ Register.CssVersion); }
             set { ViewState["StyleSheetUrl"] = value; }
         }
 
         public string DragDropScriptUrl
         {
-            get { return (string) (ViewState["DragDropScriptUrl"] ?? "{ManagementUrl}/Resources/Js/parts.js"); }
+            get { return (string) (ViewState["DragDropScriptUrl"] ?? "{ManagementUrl}/Resources/Js/parts.js"+ Register.ScriptVersion); }
             set { ViewState["DragDropScriptUrl"] = value; }
         }
 
         public string DragDropStyleSheetUrl
         {
-            get { return (string) (ViewState["DragDropStyleSheetUrl"] ?? "{ManagementUrl}/Resources/Css/Parts.css"); }
+            get { return (string) (ViewState["DragDropStyleSheetUrl"] ?? "{ManagementUrl}/Resources/Css/Parts.css"+ Register.CssVersion); }
             set { ViewState["DragDropStyleSheetUrl"] = value; }
         }
 

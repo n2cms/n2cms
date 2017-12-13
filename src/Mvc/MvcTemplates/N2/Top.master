@@ -8,8 +8,8 @@
 	<meta name="robots" content="noindex, nofollow" />
 	<title>N2</title>
 	<asp:PlaceHolder runat="server">
-		<link rel="stylesheet" href="<%= ResolveUrl("Resources/Css/all.css") %>" type="text/css" />
-		<link rel="stylesheet" href="<%= ResolveUrl("Resources/Css/default.css") %>" type="text/css" />
+		<link rel="stylesheet" href="<%= ResolveUrl("Resources/Css/all.css")+"?v="+N2.Resources.Register.CssVersion %>" type="text/css" />
+		<link rel="stylesheet" href="<%= ResolveUrl("Resources/Css/default.css")+"?v="+N2.Resources.Register.CssVersion %>" type="text/css" />
 		<!--[if IE 6]>
 	<link rel="stylesheet" href="<%= ResolveUrl("Resources/Css/IE6.css") %>" type="text/css" />
 	<![endif]-->
