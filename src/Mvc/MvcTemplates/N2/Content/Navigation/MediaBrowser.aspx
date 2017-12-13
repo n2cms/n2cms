@@ -152,6 +152,6 @@
     </script>
 
 	<script type="text/javascript" src="<%= N2.Web.Url.ResolveTokens(Register.JQueryJsPath)%>"></script>
-    <script src="MediaBrowser.js?v="+<%=Register.ScriptVersion %> type="text/javascript"></script>
+    <script src="MediaBrowser.js?v=<%=Register.ScriptVersion%>" type="text/javascript"></script>
 </body>
 </html>
