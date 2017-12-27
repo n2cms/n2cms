@@ -82,6 +82,7 @@ namespace N2.Details
                 var selection = new SelectionUtility(HttpContext.Current, Engine);
                 ContentItem item = selection.SelectedItem;
                 var startPage = Find.ClosestOf<IStartPage>(item);
+                startPage = startPage.VersionOf ?? startPage;
 
                 query &= Parameter.Below(startPage);
             }
