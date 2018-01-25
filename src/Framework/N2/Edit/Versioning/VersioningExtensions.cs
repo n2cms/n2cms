@@ -244,7 +244,7 @@ namespace N2.Edit.Versioning
 		    int pc = 0;
 		    try
 		    {
-			    pc = N2.Find.EnumerateChildren(version, includeSelf: false, useMasterVersion: false).Count();
+			    //pc = N2.Find.EnumerateChildren(version, includeSelf: false, useMasterVersion: false).Count();
 			    return new VersionInfo
 			    {
 				    ID = version.ID,
