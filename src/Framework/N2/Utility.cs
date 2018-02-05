@@ -378,9 +378,9 @@ namespace N2
 
 			if ((item.Parent != null) && (item.Parent == newParent))
 			{
-				var previousIndex = newParent.Children.IndexOf(item);
-				if (previousIndex < index)
+				if (index == newParent.Children.Count)
 					--index;
+
 				MoveToIndex(item.Parent.Children, item, index);
 			}
 			else
