@@ -158,7 +158,7 @@ namespace N2
 		private string name;
 		private string zoneName;
         private bool notExpandable;
-        private bool useCustomPreviewUrl;
+        private string useCustomPreviewUrl;
         private string templateKey;
 		private int? translationKey;
 		private ContentItem parent;
@@ -228,7 +228,7 @@ namespace N2
         }
 
         [NonInterceptable]
-        public virtual bool UseCustomPreviewUrl
+        public virtual string UseCustomPreviewUrl
         {
             get { return useCustomPreviewUrl; }
             set { useCustomPreviewUrl = value; }

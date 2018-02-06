@@ -282,8 +282,8 @@ namespace N2.Edit
 		public virtual string GetPreviewUrl(ContentItem item)
 		{
             string url = ManagementPaths.GetPreviewUrl(item);
-            if (item.UseCustomPreviewUrl)
-                url = string.Format("/{0}/post-list/{1}", item.ID, item.Name);
+            if (!string.IsNullOrWhiteSpace(item.UseCustomPreviewUrl))
+                url = item.UseCustomPreviewUrl;
             
             return String.IsNullOrEmpty(url) ? ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Empty.aspx") : url;
             
