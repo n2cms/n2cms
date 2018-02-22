@@ -510,6 +510,7 @@
 						<xs:attribute name="caching" type="xs:boolean" use="optional" />
 						<xs:attribute name="tryLocatingHbmResources" type="xs:boolean" use="optional" />
 						<xs:attribute name="cacheProviderClass" type="xs:string" use="optional" />
+            <xs:attribute name="cacheExpiration" type="xs:string" use="optional"/>
 						<xs:attribute name="sqlCacheDependency" type="xs:string" use="optional" />
 						<xs:attribute name="cacheRegion" type="xs:string" use="optional" />
 						<xs:attribute name="connectionStringName" type="xs:string" use="optional" />

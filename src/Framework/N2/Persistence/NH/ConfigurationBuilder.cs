@@ -243,6 +243,7 @@ namespace N2.Persistence.NH
             Properties[NHibernate.Cfg.Environment.UseSecondLevelCache] = config.Caching.ToString();
             Properties[NHibernate.Cfg.Environment.UseQueryCache] = config.Caching.ToString();
             Properties[NHibernate.Cfg.Environment.CacheProvider] = config.CacheProviderClass;
+            Properties[NHibernate.Cfg.Environment.CacheDefaultExpiration] = config.CacheExpiration;
         }
 
         #region Properties
