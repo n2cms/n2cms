@@ -161,8 +161,10 @@ namespace N2.Web.UI.WebControls
                 ContentItem item = selection.SelectedItem;
                 var start = Find.ClosestOf<IStartPage>(item);
                 Type itemType = item.GetContentType();
-
-                defaultUploadDirectoryPath = string.Format("{0}/content/{1}", start.Title.ToLower().Trim().Replace(" ","-"), itemType.Name.ToLower().Trim().Replace(" ", "-"));
+                if(start != null)
+                    defaultUploadDirectoryPath = string.Format("{0}/content/{1}", start.Title.ToLower().Trim().Replace(" ","-"), itemType.Name.ToLower().Trim().Replace(" ", "-"));
+                else
+                    defaultUploadDirectoryPath = string.Format("/");
             }
 
             PopupButton.Attributes["onclick"] = string.Format(OpenPopupFormat,
