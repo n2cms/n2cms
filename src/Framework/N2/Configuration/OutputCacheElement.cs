@@ -29,8 +29,8 @@ namespace N2.Configuration
 		[ConfigurationProperty("varyByHeader", DefaultValue = "")]
 		public string VaryByHeader
 		{
-			get { return (string)base["varyByCustom"]; }
-			set { base["varyByCustom"] = value; }
+			get { return (string)base["varyByHeader"]; }
+			set { base["varyByHeader"] = value; }
 		}
 
 		[ConfigurationProperty("varyByCustom", DefaultValue = "")]

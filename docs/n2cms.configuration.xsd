@@ -148,7 +148,7 @@
 									<xs:attribute name="duration" type="xs:integer" use="optional" />
 									<xs:attribute name="slidingExpiration" type="xs:time" use="optional" />
 									<xs:attribute name="varyByParam" type="xs:string" use="optional" />
-									<xs:attribute name="varyByHeaders" type="xs:string" use="optional" />
+									<xs:attribute name="varyByHeader" type="xs:string" use="optional" />
 									<xs:attribute name="varyByCustom" type="xs:string" use="optional" />
 									<xs:attribute name="cacheProfile" type="xs:string" use="optional" />
 									<xs:attribute name="invalidateOnChangesTo" use="optional" default="Page">
