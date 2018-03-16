@@ -297,6 +297,8 @@ namespace NHibernate.Caches.SysCache2
             //if no custome settings are specified
             string connectionName = null;
             string connectionString = null;
+            string expirationString = null;
+            var defaultExpiration = defaultRelativeExpiration;
 
             if (additionalProperties != null)
             {
@@ -309,6 +311,26 @@ namespace NHibernate.Caches.SysCache2
                 if (additionalProperties.ContainsKey(Environment.ConnectionString))
                 {
                     connectionString = additionalProperties[Environment.ConnectionString];
+                }
+
+                if (additionalProperties.ContainsKey(Environment.CacheDefaultExpiration))
+                {
+                    expirationString = additionalProperties[Environment.CacheDefaultExpiration];
+                }
+
+                if (!string.IsNullOrEmpty(expirationString))
+                {
+                    try
+                    {
+                        var seconds = Convert.ToInt32(expirationString);
+                        defaultExpiration = TimeSpan.FromSeconds(seconds);
+                        log.DebugFormat("default expiration value: {0}", seconds);
+                    }
+                    catch (Exception ex)
+                    {
+                        log.ErrorFormat("error parsing expiration value '{0}'", expirationString);
+                        throw new ArgumentException($"could not parse expiration '{expirationString}' as a number of seconds", ex);
+                    }
                 }
             }
 
@@ -348,7 +370,7 @@ namespace NHibernate.Caches.SysCache2
             //use the default expiration of no expiration was set
             if (_relativeExpiration.HasValue == false && _timeOfDayExpiration.HasValue == false)
             {
-                _relativeExpiration = defaultRelativeExpiration;
+                _relativeExpiration = defaultExpiration;
 
                 if (log.IsDebugEnabled)
                 {
