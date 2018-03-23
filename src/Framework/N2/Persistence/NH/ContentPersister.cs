@@ -46,7 +46,8 @@ namespace N2.Persistence
         public virtual ContentItem Get(int id)
         {
             ContentItem item = sources.Get(id);
-            if (ItemLoaded != null)
+            // Upload folder 
+            if (item != null && ItemLoaded != null)
             {
                 return Invoke(ItemLoaded, new ItemEventArgs(item)).AffectedItem; 
             }
