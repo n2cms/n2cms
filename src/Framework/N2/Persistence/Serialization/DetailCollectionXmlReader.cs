@@ -60,7 +60,7 @@ namespace N2.Persistence.Serialization
             }
             else if (type == typeof(Enum))
             {
-                if (meta != null)
+                if (!string.IsNullOrEmpty(meta))
                 {
                     collection.Add(ContentDetail.New(
                         collection.EnclosingItem,
