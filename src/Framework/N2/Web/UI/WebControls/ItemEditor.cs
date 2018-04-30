@@ -348,6 +348,8 @@ namespace N2.Web.UI.WebControls
                 foreach (string detailName in modifiedDetails)
                     BinderContext.GetUpdatedDetails().Add(detailName);
                 BinderContext.RegisterItemToSave(value.Content);
+                if (Saved != null)
+                    Saved.Invoke(this, new ItemEventArgs(value.Content));
                 return true;
             }
             finally
