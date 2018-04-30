@@ -45,8 +45,10 @@ namespace N2.Details
         public EditableDirectUrlAttribute()
             : this(null, 100)
         {
+            EnableMultiHosts = false;
         }
 
+        public bool EnableMultiHosts { get; set; }
 
         public string UniqueUrlText { get; set; }
 
@@ -107,10 +109,18 @@ namespace N2.Details
             cv.Text = GetLocalizedText("UniqueUrlText") ?? UniqueUrlText;
             cv.ServerValidate += (object source, ServerValidateEventArgs args) =>
             {
-                var url = ((TextBox)editor).Text.Trim('/');
-                url = Engine.RequestContext.Url.HostUrl.Append(url);
-                var existing = Engine.UrlParser.FindPath(url);
+                var url = ((TextBox)editor).Text.TrimEnd('/');
                 var selItem = new SelectionUtility(container, Engine).SelectedItem;
+                var site = Engine.Host.GetSite(selItem);
+                if (EnableMultiHosts && site != null && !string.IsNullOrWhiteSpace(site.Authority))
+                {
+                    url = new Web.Url("http", site.Authority, url);
+                }
+                else
+                {
+                    url = Engine.RequestContext.Url.HostUrl.Append(url.TrimStart('/'));
+                }
+                var existing = Engine.UrlParser.FindPath(url);
                 if (!existing.IsEmpty() && existing.CurrentItem != selItem && (selItem.VersionOf.ID) != existing.ID)
                 {
                     args.IsValid = false;
