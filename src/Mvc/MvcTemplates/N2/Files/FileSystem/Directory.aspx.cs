@@ -216,24 +216,26 @@ namespace N2.Edit.FileSystem
 
                 newPart[targetProperty] = targetDomain + file;
                 newPart.State = ContentState.Published;
-                newPart.Title = "";
+                newPart.Title = partType[1].Split('.').Last();
                 newPart.ZoneName = targetZone;
                 newPart.VersionIndex = item.VersionIndex;
                 newPart.Parent = item;
 
                 newPart.AddTo(item, targetZone);
+                
+            
+			    if ((item.ID != 0 && item.State != ContentState.New) || item.VersionOf.HasValue)
+			    {
+				    var cvr = Engine.Resolve<ContentVersionRepository>();
+				    cvr.Save(item);
+			    }
+                else
+                { 
+                    //I am the only version and I am New. Save the current page instead of creating a version of me.
+				    Engine.Persister.SaveRecursive(item);
+                }
             }
-
-            if (item.ID != 0 || item.VersionOf.HasValue)
-            {
-                var cvr = Engine.Resolve<ContentVersionRepository>();
-                cvr.Save(item);
-            }
-            else
-            {
-                Engine.Persister.SaveRecursive(item);
-            }
-
+            
             Response.Redirect(Engine.ManagementPaths.GetEditExistingItemUrl(item));
         }
 

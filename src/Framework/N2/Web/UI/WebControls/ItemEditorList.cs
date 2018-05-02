@@ -242,19 +242,25 @@ namespace N2.Web.UI.WebControls
 				ContentItem item = CreateItem(template.Definition);
 				item.AddTo(path.CurrentItem, ZoneName);
 				Utility.UpdateSortOrder(path.CurrentItem.Children).ToList();
+                
+                //Fill the Title with Type Name if empty.
+                if (string.IsNullOrEmpty(item.Title))
+                {
+                    item.Title = template.Definition.Discriminator;
+                }
 
-				if (path.CurrentPage.ID != 0 || path.CurrentPage.VersionOf.HasValue)
+				if ((path.CurrentPage.ID != 0 && path.CurrentPage.State != ContentState.New) || path.CurrentPage.VersionOf.HasValue)
 				{
 					var cvr = Engine.Resolve<ContentVersionRepository>();
 					cvr.Save(path.CurrentPage);
-
-					RedirectToVersionOfSelf(path.CurrentPage);
 				}
-				else
-				{
+                else
+                { 
+                    //I am the only version and I am New. Save the current page instead of creating a version of me.
 					Engine.Persister.SaveRecursive(path.CurrentPage);
-					RedirectToVersionOfSelf(path.CurrentPage);
-				}
+                }
+
+		        RedirectToVersionOfSelf(path.CurrentPage);
 			};
             container.Controls.Add(button);
             return button;
@@ -356,8 +362,24 @@ namespace N2.Web.UI.WebControls
 				UpdateItemFromTopEditor(path);
 
 				path.CurrentItem.AddTo(null);
-				var cvr = Engine.Resolve<ContentVersionRepository>();
-				cvr.Save(path.CurrentPage);
+                
+				if ((path.CurrentPage.ID != 0 && path.CurrentPage.State != ContentState.New) || path.CurrentPage.VersionOf.HasValue)
+				{
+					var cvr = Engine.Resolve<ContentVersionRepository>();
+					cvr.Save(path.CurrentPage);
+
+                    //No need to delete the part here because it creates a version without the part attached to the page.
+				}
+                else
+                {
+                    //I am the only version and I am New. 
+
+                    //Delete the part
+                    Engine.Persister.Delete(path.CurrentItem);
+
+                    //Save the current page instead of creating a version of me.
+					Engine.Persister.SaveRecursive(path.CurrentPage);
+                }
 			}
 
 			RedirectToVersionOfSelf(path.CurrentPage);
@@ -395,9 +417,17 @@ namespace N2.Web.UI.WebControls
 					Utility.UpdateSortOrder(parent.Children).ToList();
 
 					UpdateItemFromTopEditor(path);
-
-					var cvr = Engine.Resolve<ContentVersionRepository>();
-					cvr.Save(path.CurrentPage);
+                    
+				    if ((path.CurrentPage.ID != 0 && path.CurrentPage.State != ContentState.New) || path.CurrentPage.VersionOf.HasValue)
+				    {
+					    var cvr = Engine.Resolve<ContentVersionRepository>();
+					    cvr.Save(path.CurrentPage);
+				    }
+                    else
+                    {
+                        //I am the only version and I am New. //Save the current page instead of creating a version of me.
+					    Engine.Persister.SaveRecursive(path.CurrentPage);
+                    }
 				}
 			}
 
@@ -432,7 +462,7 @@ namespace N2.Web.UI.WebControls
 		{
 			var page = Find.ClosestPage(item);
 
-			if (page.ID == 0)
+			if (page.ID == 0 || page.State == ContentState.New)
 				return new PathData(page, item);
 
 			var cvr = Engine.Resolve<ContentVersionRepository>();
