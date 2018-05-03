@@ -222,16 +222,14 @@ namespace N2.Edit.FileSystem
                 newPart.Parent = item;
 
                 newPart.AddTo(item, targetZone);
-                
-            
-			    if ((item.ID != 0 && item.State != ContentState.New) || item.VersionOf.HasValue)
-			    {
+
+                if (item.VersionOf.HasValue)
+                { 
 				    var cvr = Engine.Resolve<ContentVersionRepository>();
 				    cvr.Save(item);
-			    }
+                }
                 else
                 { 
-                    //I am the only version and I am New. Save the current page instead of creating a version of me.
 				    Engine.Persister.SaveRecursive(item);
                 }
             }

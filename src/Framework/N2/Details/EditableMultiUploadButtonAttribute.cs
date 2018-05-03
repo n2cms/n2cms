@@ -89,14 +89,13 @@ namespace N2.Details
 
                 UpdateItemFromTopEditor(path, container);
                 
-				if ((path.CurrentPage.ID != 0 && path.CurrentPage.State != ContentState.New) || path.CurrentPage.VersionOf.HasValue)
-				{
+                if (path.CurrentPage.VersionOf.HasValue)
+                { 
 					var cvr = Engine.Resolve<ContentVersionRepository>();
 					cvr.Save(path.CurrentPage);
-				}
+                }
                 else
                 { 
-                    //I am the only version and I am New. Save the current page instead of creating a version of me.
 					Engine.Persister.SaveRecursive(path.CurrentPage);
                 }
 
@@ -142,7 +141,8 @@ namespace N2.Details
         {
             var page = Find.ClosestPage(item);
             
-			if (page.ID == 0 || page.State == ContentState.New)
+            //New/Draft master version or a version of an item
+			if (page.ID == 0 || (!page.VersionOf.HasValue && (page.State == ContentState.New || page.State == ContentState.Draft)))
                 return new PathData(page, item);
 
             var cvr = Engine.Resolve<ContentVersionRepository>();
