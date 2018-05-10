@@ -314,6 +314,7 @@
 										</xs:element>
 									</xs:sequence>
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+                  <xs:attribute name="runWhileDebuggerAttached" type="xs:boolean" use="optional" />
 									<xs:attribute name="asyncActions" type="xs:boolean" use="optional" />
 									<xs:attribute name="interval" type="xs:integer" use="optional" />
 									<xs:attribute name="keepAlive" type="xs:boolean" use="optional" />
