@@ -31,15 +31,16 @@ namespace N2.Edit
         protected override void OnInit(EventArgs e)
         {
             selectedItem = Selection.ParseSelectionFromRequest();
-
-            // this is here to help prevent inadvertant deletion of items, when the user would really rather cancel.
-            if(selectedItem != null && selectedItem.Children.Count() > 0)
-            {
-                verifyDelete.Visible = true;
-            }
-
+            
             if (selectedItem != null)
             {
+                // this is here to help prevent inadvertant deletion of items, when the user would really rather cancel.
+                if (selectedItem.Children != null && selectedItem.Children.OfType<IPage>().Any())
+                {
+                    verifyDelete.Visible = true;
+                    verifyDeleteLabel.InnerHtml = $"<strong style=\"color:red;\">WARNING!</strong> This item is of type <strong style=\"color:red;\">{selectedItem.GetContentType().Name}</strong> and contains <strong style=\"color:red;\">{selectedItem.Children.OfType<IPage>().Count()} Pages</strong> which will also be deleted.<br/><span style=\"color:red;\">Are you sure you want to delete this?</span> Please verify that you want to delete this item and all of its children pages by typing its type name below:<br/><br/><em class=\"unselectable\">{selectedItem.GetContentType().Name}</em></br>";
+                }
+
                 itemsToDelete.CurrentItem = selectedItem;
                 itemsToDelete.DataBind();
 
@@ -138,18 +139,16 @@ namespace N2.Edit
 
         protected void OnDeleteClick(object sender, EventArgs e)
         {
-            if (selectedItem != null && selectedItem.Children.Count() > 0)
-            {
-                if (txtVerifyDelete.Text.ToLower().Trim() != "yes")
-                {
-                    cvVerifyDelete.IsValid = false;
-                    cvVerifyDelete.Text = "You must enter 'yes' to delete this item with children.";
-                    return;
-                }
-            }
-
             var item = selectedItem;
             var parent = item.Parent;
+
+            if (verifyDelete.Visible && txtVerifyDelete.Text.ToLower().Trim() != item.GetContentType().Name.ToLower().Trim())
+            {
+                cvVerifyDelete.IsValid = false;
+                cvVerifyDelete.Text = $"You must enter the title of the item, <em class=\"unselectable\">{item.Title}</em>, to delete this item and all of its pages inside.";
+                return;
+            }
+
             try
             {
                 bool versionablePart = !item.IsPage
