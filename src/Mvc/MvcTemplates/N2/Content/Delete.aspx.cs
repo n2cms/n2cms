@@ -145,7 +145,7 @@ namespace N2.Edit
             if (verifyDelete.Visible && txtVerifyDelete.Text.ToLower().Trim() != item.GetContentType().Name.ToLower().Trim())
             {
                 cvVerifyDelete.IsValid = false;
-                cvVerifyDelete.Text = $"You must enter the title of the item, <em class=\"unselectable\">{item.Title}</em>, to delete this item and all of its pages inside.";
+                cvVerifyDelete.Text = $"You must enter the type of the item, <em class=\"unselectable\">{item.GetContentType().Name}</em>, to delete this item and all of its pages inside.";
                 return;
             }
 
