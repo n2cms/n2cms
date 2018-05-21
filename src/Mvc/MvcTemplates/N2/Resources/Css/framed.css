@@ -387,3 +387,7 @@ input.dp-applied {
 .framed .help:hover { opacity:1 !important; }
 .framed .tooltip p:last-of-type { margin-bottom:0; }
 .framed .popover { width: 400px; }
+
+.open>.dropdown-menu {
+    margin-bottom: 50px;
+}
