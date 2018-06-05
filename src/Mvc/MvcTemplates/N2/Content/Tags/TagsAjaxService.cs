@@ -5,17 +5,16 @@ using System.Web;
 using N2.Engine;
 using N2.Web;
 using N2.Edit;
-using N2.Web.UI;
 
 namespace N2.Management.Content.Tags
 {
     [Service(typeof(IAjaxService))]
     public class TagsAjaxService : IAjaxService
     {
-        private Persistence.TagsRepository tags;
-        private IEngine engine;
+        private readonly Persistence.TagsRepository tags;
+        private readonly IEngine engine;
 
-        public TagsAjaxService(N2.Persistence.TagsRepository tags, IEngine engine)
+        public TagsAjaxService(Persistence.TagsRepository tags, IEngine engine)
         {
             this.tags = tags;
             this.engine = engine;
@@ -40,7 +39,7 @@ namespace N2.Management.Content.Tags
         {
             string tagName = context.Request["tagName"];
             string term = context.Request["term"];
-            
+
             var selection = new SelectionUtility(context, engine);
             var startPage = engine.Content.Traverse.ClosestStartPage(selection.SelectedItem);
 
@@ -49,7 +48,9 @@ namespace N2.Management.Content.Tags
             var json = allTags
                 .Where(t => t.StartsWith(term, StringComparison.InvariantCultureIgnoreCase))
                 .Select(t => new { label = t })
+                .ToList()
                 .ToJson();
+
             context.Response.ContentType = "application/json";
             context.Response.Write(json);
         }
