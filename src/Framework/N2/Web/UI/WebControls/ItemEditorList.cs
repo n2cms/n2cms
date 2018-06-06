@@ -13,6 +13,7 @@ using N2.Web.Parts;
 using N2.Collections;
 using System.Web.UI.HtmlControls;
 using N2.Edit.Versioning;
+using N2.Edit.Workflow;
 
 namespace N2.Web.UI.WebControls
 {
@@ -229,10 +230,10 @@ namespace N2.Web.UI.WebControls
             {
                 var parentEditor = ItemUtility.FindInParents<ItemEditor>(Parent);
                 var autoSaveVersion = parentEditor.GetAutosaveVersion();
-                if (autoSaveVersion != null && autoSaveVersion.VersionOf.Value != null)
+                if (autoSaveVersion != null)
                 {
                     //Posted back item has all the latest updates. Discard the auto-saved version if exists.
-                    Engine.Resolve<IVersionManager>().DeleteVersion(Find.ClosestPage(autoSaveVersion));
+                    N2.Context.Current.Persister.Delete(autoSaveVersion);
                 }
                 
                 var path = EnsureDraft(ParentItem);
@@ -242,19 +243,24 @@ namespace N2.Web.UI.WebControls
 				ContentItem item = CreateItem(template.Definition);
 				item.AddTo(path.CurrentItem, ZoneName);
 				Utility.UpdateSortOrder(path.CurrentItem.Children).ToList();
-
-				if (path.CurrentPage.ID != 0 || path.CurrentPage.VersionOf.HasValue)
-				{
+                
+                //Fill the Title with Type Name if empty.
+                if (string.IsNullOrEmpty(item.Title))
+                {
+                    item.Title = template.Definition.Discriminator;
+                }
+                
+                if (path.CurrentPage.VersionOf.HasValue)
+                { 
 					var cvr = Engine.Resolve<ContentVersionRepository>();
 					cvr.Save(path.CurrentPage);
-
-					RedirectToVersionOfSelf(path.CurrentPage);
-				}
-				else
-				{
+                }
+                else
+                { 
 					Engine.Persister.SaveRecursive(path.CurrentPage);
-					RedirectToVersionOfSelf(path.CurrentPage);
-				}
+                }
+
+		        RedirectToVersionOfSelf(path.CurrentPage);
 			};
             container.Controls.Add(button);
             return button;
@@ -356,8 +362,19 @@ namespace N2.Web.UI.WebControls
 				UpdateItemFromTopEditor(path);
 
 				path.CurrentItem.AddTo(null);
-				var cvr = Engine.Resolve<ContentVersionRepository>();
-				cvr.Save(path.CurrentPage);
+                
+                if (path.CurrentPage.VersionOf.HasValue)
+                { 
+					var cvr = Engine.Resolve<ContentVersionRepository>();
+					cvr.Save(path.CurrentPage);
+                }
+                else
+                { 
+                    //Delete the part
+                    Engine.Persister.Delete(path.CurrentItem);
+
+					Engine.Persister.SaveRecursive(path.CurrentPage);
+                }
 			}
 
 			RedirectToVersionOfSelf(path.CurrentPage);
@@ -395,9 +412,16 @@ namespace N2.Web.UI.WebControls
 					Utility.UpdateSortOrder(parent.Children).ToList();
 
 					UpdateItemFromTopEditor(path);
-
-					var cvr = Engine.Resolve<ContentVersionRepository>();
-					cvr.Save(path.CurrentPage);
+                    
+                    if (path.CurrentPage.VersionOf.HasValue)
+                    { 
+					    var cvr = Engine.Resolve<ContentVersionRepository>();
+					    cvr.Save(path.CurrentPage);
+                    }
+                    else
+                    { 
+					    Engine.Persister.SaveRecursive(path.CurrentPage);
+                    }
 				}
 			}
 
@@ -432,7 +456,8 @@ namespace N2.Web.UI.WebControls
 		{
 			var page = Find.ClosestPage(item);
 
-			if (page.ID == 0)
+            //New/Draft master version or a version of an item
+			if (page.ID == 0 || (!page.VersionOf.HasValue && (page.State == ContentState.New || page.State == ContentState.Draft)))
 				return new PathData(page, item);
 
 			var cvr = Engine.Resolve<ContentVersionRepository>();

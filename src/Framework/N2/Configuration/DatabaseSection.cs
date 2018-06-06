@@ -50,6 +50,14 @@ namespace N2.Configuration
             set { base["cacheRegion"] = value; }
         }
 
+        /// <summary>The cache expiration to use.</summary>
+        [ConfigurationProperty("cacheExpiration", DefaultValue = "300")]
+        public string CacheExpiration
+        {
+            get { return (string)base["cacheExpiration"]; }
+            set { base["cacheExpiration"] = value; }
+        }
+
         /// <summary>The name of the sql dependency to use for cache invalidation.</summary>
         /// <remarks>This setting must be enabled in SQL Server using aspnet_regsql.exe.</remarks>
         [ConfigurationProperty("sqlCacheDependency")]

@@ -152,7 +152,18 @@ namespace N2.Edit
 		protected void OnPreviewCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = ie.CreateCommandContext();
-			Commands.Save(ctx);
+
+            if (ctx.Content.VersionOf.HasValue)
+            {
+			    var draftOfTopEditor = ctx.Content.FindPartVersion(CurrentItem);
+			    ie.UpdateObject(new CommandContext(ie.Definition, draftOfTopEditor, Interfaces.Editing, Context.User));
+
+                Repository.Save(ctx.Content);
+            }
+            else
+            {
+                Commands.Save(ctx);
+            }
 
 			var page = Find.ClosestPage(ctx.Content);
 			Url previewUrl = Engine.GetContentAdapter<NodeAdapter>(page).GetPreviewUrl(page);
@@ -167,7 +178,18 @@ namespace N2.Edit
 		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = ie.CreateCommandContext();
-			Commands.Save(ctx);
+
+            if (ctx.Content.VersionOf.HasValue)
+            {
+			    var draftOfTopEditor = ctx.Content.FindPartVersion(CurrentItem);
+			    ie.UpdateObject(new CommandContext(ie.Definition, draftOfTopEditor, Interfaces.Editing, Context.User));
+
+                Repository.Save(ctx.Content);
+            }
+            else
+            {
+                Commands.Save(ctx);
+            }
 
 			Url redirectTo = ManagementPaths.GetEditExistingItemUrl(ctx.Content);
 			if (!string.IsNullOrEmpty(Request["returnUrl"]))
@@ -399,8 +421,19 @@ namespace N2.Edit
 			// The database will end up with two new rows in the detail table.
 			// On row pointing to the master and one to the latest/new version.
 			var cc = ie.CreateCommandContext();
-			Commands.Save(cc);
 
+            if (cc.Content.VersionOf.HasValue)
+            {
+			    var draftOfTopEditor = cc.Content.FindPartVersion(CurrentItem);
+			    ie.UpdateObject(new CommandContext(ie.Definition, draftOfTopEditor, Interfaces.Editing, Context.User));
+
+                Repository.Save(cc.Content);
+            }
+            else
+            {
+                Commands.Save(cc);
+            }
+            
 			if (dpFuturePublishDate.SelectedDate.HasValue)
 			{
 				Engine.Resolve<PublishScheduledAction>().MarkForFuturePublishing(cc.Content, dpFuturePublishDate.SelectedDate.Value);

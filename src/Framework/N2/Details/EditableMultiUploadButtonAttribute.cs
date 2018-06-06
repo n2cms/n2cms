@@ -79,7 +79,7 @@ namespace N2.Details
                 
                 var parentEditor = ItemUtility.FindInParents<ItemEditor>(container);
                 var autoSaveVersion = parentEditor.GetAutosaveVersion();
-                if (autoSaveVersion != null && autoSaveVersion.VersionOf.Value != null)
+                if (autoSaveVersion != null)
                 {
                     //Posted back item has all the latest updates. Discard the auto-saved version if exists.
                     Engine.Resolve<IVersionManager>().DeleteVersion(Find.ClosestPage(autoSaveVersion));
@@ -88,15 +88,15 @@ namespace N2.Details
                 var path = EnsureDraft(item);
 
                 UpdateItemFromTopEditor(path, container);
-
-                if (path.CurrentPage.ID != 0 || path.CurrentPage.VersionOf.HasValue)
-                {
-                    var cvr = Engine.Resolve<ContentVersionRepository>();
-                    cvr.Save(path.CurrentPage);
+                
+                if (path.CurrentPage.VersionOf.HasValue)
+                { 
+					var cvr = Engine.Resolve<ContentVersionRepository>();
+					cvr.Save(path.CurrentPage);
                 }
                 else
-                {
-                    Engine.Persister.SaveRecursive(path.CurrentPage);
+                { 
+					Engine.Persister.SaveRecursive(path.CurrentPage);
                 }
 
                 var verIndex = path.CurrentPage.VersionIndex;
@@ -140,8 +140,9 @@ namespace N2.Details
         private PathData EnsureDraft(ContentItem item)
         {
             var page = Find.ClosestPage(item);
-
-            if (page.ID == 0)
+            
+            //New/Draft master version or a version of an item
+			if (page.ID == 0 || (!page.VersionOf.HasValue && (page.State == ContentState.New || page.State == ContentState.Draft)))
                 return new PathData(page, item);
 
             var cvr = Engine.Resolve<ContentVersionRepository>();

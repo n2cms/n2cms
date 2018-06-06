@@ -282,11 +282,7 @@ namespace N2.Edit
 		public virtual string GetPreviewUrl(ContentItem item)
 		{
             string url = ManagementPaths.GetPreviewUrl(item);
-            if (!string.IsNullOrWhiteSpace(item.UseCustomPreviewUrl))
-                url = item.UseCustomPreviewUrl;
-            
             return String.IsNullOrEmpty(url) ? ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Empty.aspx") : url;
-            
 		}
 
 		/// <summary>Gets the url used from the management UI when previewing an item.</summary>

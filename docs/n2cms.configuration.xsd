@@ -148,7 +148,7 @@
 									<xs:attribute name="duration" type="xs:integer" use="optional" />
 									<xs:attribute name="slidingExpiration" type="xs:time" use="optional" />
 									<xs:attribute name="varyByParam" type="xs:string" use="optional" />
-									<xs:attribute name="varyByHeaders" type="xs:string" use="optional" />
+									<xs:attribute name="varyByHeader" type="xs:string" use="optional" />
 									<xs:attribute name="varyByCustom" type="xs:string" use="optional" />
 									<xs:attribute name="cacheProfile" type="xs:string" use="optional" />
 									<xs:attribute name="invalidateOnChangesTo" use="optional" default="Page">
@@ -314,6 +314,7 @@
 										</xs:element>
 									</xs:sequence>
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+                  <xs:attribute name="runWhileDebuggerAttached" type="xs:boolean" use="optional" />
 									<xs:attribute name="asyncActions" type="xs:boolean" use="optional" />
 									<xs:attribute name="interval" type="xs:integer" use="optional" />
 									<xs:attribute name="keepAlive" type="xs:boolean" use="optional" />
@@ -510,6 +511,7 @@
 						<xs:attribute name="caching" type="xs:boolean" use="optional" />
 						<xs:attribute name="tryLocatingHbmResources" type="xs:boolean" use="optional" />
 						<xs:attribute name="cacheProviderClass" type="xs:string" use="optional" />
+            <xs:attribute name="cacheExpiration" type="xs:string" use="optional"/>
 						<xs:attribute name="sqlCacheDependency" type="xs:string" use="optional" />
 						<xs:attribute name="cacheRegion" type="xs:string" use="optional" />
 						<xs:attribute name="connectionStringName" type="xs:string" use="optional" />

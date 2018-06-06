@@ -82,6 +82,9 @@ namespace N2.Details
                 var selection = new SelectionUtility(HttpContext.Current, Engine);
                 ContentItem item = selection.SelectedItem;
                 var startPage = Find.ClosestOf<IStartPage>(item);
+                if (startPage == null)
+                    return new ListItem[] { }; //No startpage found. Return empty list. 
+
                 if (startPage.VersionOf.HasValue)
                     startPage = startPage.VersionOf.Value;
 

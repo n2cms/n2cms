@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Specialized;
+using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -45,8 +46,26 @@ namespace N2.Edit
                     //Using FormsAuthentication.RedirectFromLoginPage crashes the Azure dev fabric load balancer (dfloadbalancer.exe).
                     //Switching up the logic to set the cookie and redirect here with endResponse set to TRUE fixes the glitch. 
                     //FormsAuthentication.RedirectFromLoginPage(Login1.UserName, Login1.RememberMeSet);
-                    FormsAuthentication.SetAuthCookie(Login1.UserName, Login1.RememberMeSet);
+
+                    if (Login1.RememberMeSet)
+                    {
+                        //Create persistent cookie that has a longer expiration time than stated in web.config when Remember me is checked off
+                        FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
+                        Login1.UserName,
+                        Login1.RememberMeSet,
+                        52560000);
+
+                        string encryptTicket = FormsAuthentication.Encrypt(ticket);
+                        Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encryptTicket));
+                    }
+                    else
+                    {
+                        //timeout defaults to web.config value
+                        FormsAuthentication.SetAuthCookie(Login1.UserName, Login1.RememberMeSet);
+                    }
+                    
                     string returnUrl = FormsAuthentication.GetRedirectUrl(Login1.UserName, Login1.RememberMeSet);
+
                     Response.Redirect(returnUrl, true);
                 }
             }

@@ -16,7 +16,7 @@
         <asp:CustomValidator ID="cvVerifyDelete" runat="server" CssClass="alert alert-error alert-margin" Display="Dynamic"/>
 
     <fieldset id="verifyDelete" runat="server" visible="false" style="padding:8px; margin-bottom:10px">
-        <label for="txtVerifyDelete" style="color: red;">YOU ARE ABOUT TO DELETE AN ITEM WITH CHILDREN. PLEASE VERIFY THAT YOU WANT TO DELETE THIS ITEM BY TYPING YES:</label>
+        <label for="txtVerifyDelete" id="verifyDeleteLabel" runat="server"></label>
 		<asp:TextBox ID="txtVerifyDelete" Columns="3" runat="server" meta:resourceKey="txtVerifyDelete" />
 		<div style="padding: 5px;">
 	</fieldset>

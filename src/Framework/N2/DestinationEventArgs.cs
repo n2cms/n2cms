@@ -26,6 +26,7 @@ namespace N2
     public class DestinationEventArgs : ItemEventArgs
     {
         private ContentItem destination;
+        private ContentItem origin;
 
         /// <summary>Creates a new instance of the DestinationEventArgs.</summary>
         /// <param name="affectedItem">The item associated with these arguments.</param>
@@ -36,10 +37,27 @@ namespace N2
             this.destination = destination;
         }
 
+        /// <summary>Creates a new instance of the DestinationEventArgs.</summary>
+        /// <param name="affectedItem">The item associated with these arguments.</param>
+        /// <param name="destination">The destination for the event with these arguments.</param>
+        /// <param name="origin">The origin for the event with these arguments.</param>
+        public DestinationEventArgs(ContentItem affectedItem, ContentItem destination, ContentItem origin)
+            : base(affectedItem)
+        {
+            this.destination = destination;
+            this.origin = origin;
+        }
+
         /// <summary>Gets the destination for the event with these arguments.</summary>
         public ContentItem Destination
         {
             get { return destination; }
         }   
+
+        /// <summary>Gets the origin for the event with these arguments.</summary>
+        public ContentItem Origin
+        {
+            get { return origin; }
+        } 
     }
 }

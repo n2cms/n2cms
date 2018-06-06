@@ -9,6 +9,12 @@ namespace N2
     {
         private bool cancel;
         private Func<ContentItem, ContentItem, ContentItem> finalAction;
+        
+        public CancellableDestinationEventArgs(ContentItem item, ContentItem destination, ContentItem origin, Func<ContentItem, ContentItem, ContentItem> finalAction)
+            : base(item, destination, origin)
+        {
+            this.finalAction = finalAction;
+        }
 
         public CancellableDestinationEventArgs(ContentItem item, ContentItem destination, Func<ContentItem, ContentItem, ContentItem> finalAction)
             : base(item, destination)

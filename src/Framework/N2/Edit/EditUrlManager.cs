@@ -76,6 +76,9 @@ namespace N2.Edit
         {
             try
             {
+                if (!string.IsNullOrWhiteSpace(selectedItem.UseCustomPreviewUrl))
+                    return selectedItem.UseCustomPreviewUrl;
+
                 // If hostname == localhost, then don't use custom hostnames in the management navigation tree
                 if (ensureLocalhostPreviewUrls && HttpContext.Current != null && HttpContext.Current.Request.Url.Host == "localhost")
                     return selectedItem.FindPath(PathData.DefaultAction).GetRewrittenUrl();

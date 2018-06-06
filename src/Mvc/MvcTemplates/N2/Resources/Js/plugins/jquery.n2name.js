@@ -92,7 +92,7 @@ var n2Name = (function ($) {
 
 			getName(options.titleId, options.nameId, options.whitespaceReplacement, options.toLower, options.replacements, options.keepUpdatedBoxId, function callback(expected) {
                 var actual = $("#" + options.nameId).attr("value");
-                if (options.keepUpdatedDefaultValue || !expected || !actual)
+                if (options.keepUpdatedDefaultValue && (!expected || !actual))
                     $ku.trigger('click');
                 else
                     $ku.each(checkboxHandler);

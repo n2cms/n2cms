@@ -561,7 +561,7 @@ namespace N2
 		{
 			if ((handler != null) && (VersionsTriggersEvents || !source.VersionOf.HasValue))
 			{
-				var args = new CancellableDestinationEventArgs(source, destination, finalAction);
+				var args = new CancellableDestinationEventArgs(source, destination, source.Parent, finalAction);
 
 				handler.Invoke(sender, args);
 
@@ -576,7 +576,7 @@ namespace N2
 
 			var result2 = finalAction(source, destination);
 			if (postHandler != null)
-				postHandler(sender, new DestinationEventArgs(result2, destination));
+				postHandler(sender, new DestinationEventArgs(result2, destination, source.Parent));
 			return result2;
 		}
 

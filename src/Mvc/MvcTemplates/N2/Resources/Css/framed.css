@@ -1,4 +1,13 @@
 ﻿/* FRAMED */
+
+*.unselectable {
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+}
+
 body,label,input,textarea { font-size:15px; }
 a img,
 .command img{ margin-right:1px; vertical-align:middle; }
@@ -378,3 +387,7 @@ input.dp-applied {
 .framed .help:hover { opacity:1 !important; }
 .framed .tooltip p:last-of-type { margin-bottom:0; }
 .framed .popover { width: 400px; }
+
+.open>.dropdown-menu {
+    margin-bottom: 50px;
+}
