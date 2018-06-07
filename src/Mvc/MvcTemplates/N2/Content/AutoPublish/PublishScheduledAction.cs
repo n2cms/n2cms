@@ -9,6 +9,7 @@ using N2.Edit.Workflow;
 using N2.Edit.Versioning;
 using N2.Engine;
 using N2.Web;
+using N2.Edit.Web;
 
 namespace N2.Edit.AutoPublish
 {
@@ -16,7 +17,7 @@ namespace N2.Edit.AutoPublish
     [ScheduleExecution(30, TimeUnit.Seconds)]
     public class PublishScheduledAction : ScheduledAction
     {
-        readonly IErrorNotifier errorHandler;
+        private readonly Engine.Logger<FileSiteMapProvider> logger;
         private ContentVersionRepository versionRepository;
         private IVersionManager versioner;
         private IPersister persister;
@@ -92,7 +93,7 @@ namespace N2.Edit.AutoPublish
                 }
                 catch (Exception ex)
                 {
-                    errorHandler.Notify(ex);
+                    logger.Error(ex);
                 }
             }
           }
