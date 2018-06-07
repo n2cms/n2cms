@@ -8,6 +8,7 @@ using N2.Security;
 using N2.Edit.Workflow;
 using N2.Edit.Versioning;
 using N2.Engine;
+using N2.Web;
 
 namespace N2.Edit.AutoPublish
 {
@@ -15,6 +16,7 @@ namespace N2.Edit.AutoPublish
     [ScheduleExecution(30, TimeUnit.Seconds)]
     public class PublishScheduledAction : ScheduledAction
     {
+        readonly IErrorNotifier errorHandler;
         private ContentVersionRepository versionRepository;
         private IVersionManager versioner;
         private IPersister persister;
@@ -82,9 +84,16 @@ namespace N2.Edit.AutoPublish
             var scheduledForAutoPublish = versionRepository.GetVersionsScheduledForPublish(Utility.CurrentTime()).ToList();
             foreach (var version in scheduledForAutoPublish)
             {
-                var scheduledVersion = versionRepository.DeserializeVersion(version);
-                scheduledVersion["FuturePublishDate"] = null;
-                versioner.Publish(persister, scheduledVersion);
+                try
+                {
+                    var scheduledVersion = versionRepository.DeserializeVersion(version);
+                    scheduledVersion["FuturePublishDate"] = null;
+                    versioner.Publish(persister, scheduledVersion);
+                }
+                catch (Exception ex)
+                {
+                    errorHandler.Notify(ex);
+                }
             }
           }
     }
