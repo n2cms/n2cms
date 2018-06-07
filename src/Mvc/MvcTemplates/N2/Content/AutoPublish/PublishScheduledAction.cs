@@ -17,7 +17,7 @@ namespace N2.Edit.AutoPublish
     [ScheduleExecution(30, TimeUnit.Seconds)]
     public class PublishScheduledAction : ScheduledAction
     {
-        private readonly Engine.Logger<FileSiteMapProvider> logger;
+        private readonly Engine.Logger<PublishScheduledAction> logger;
         private ContentVersionRepository versionRepository;
         private IVersionManager versioner;
         private IPersister persister;
