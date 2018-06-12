@@ -14,10 +14,9 @@
 			OnCommand="OnPublishCommand" runat="server" 
 			CssClass="command iconed publish" 
 			meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
-
+        <asp:LinkButton ID="btnSaveUnpublished" data-icon-class="fa fa-save" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain iconed save" meta:resourceKey="btnSaveUnpublished">Save</asp:LinkButton>
 		<asp:LinkButton ID="btnPreview" data-icon-class="fa fa-eye" OnCommand="OnPreviewCommand" runat="server" CssClass="command plain iconed preview"
 			meta:resourceKey="btnPreview">Save and preview</asp:LinkButton>
-		<asp:LinkButton ID="btnSaveUnpublished" data-icon-class="fa fa-save" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain iconed save" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
 		<asp:HyperLink ID="hlFuturePublish" data-icon-class="fa fa-clock-o" NavigateUrl="#futurePanel" CssClass="command plain iconed future hidden-action" runat="server" meta:resourceKey="hlSavePublishInFuture">Save and publish version in future</asp:HyperLink>
 		<asp:LinkButton ID="btnUnpublish" data-icon-class="fa fa-stop" OnCommand="OnUnpublishCommand" runat="server" CssClass="command plain iconed unpublish hidden-action" meta:resourceKey="btnUnpublish">Unpublish</asp:LinkButton>
 	</edit:buttongroup>

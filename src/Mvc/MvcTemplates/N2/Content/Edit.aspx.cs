@@ -98,7 +98,7 @@ namespace N2.Edit
 			btnPreview.Visible = isVersionable && isWritableByUser;
 			btnSaveUnpublished.Visible = isVersionable && isWritableByUser;
 			hlFuturePublish.Visible = isVersionable && isPublicableByUser;
-			btnUnpublish.Visible = isExisting && isPublicableByUser && ie.CurrentItem.IsPublished();
+			btnUnpublish.Visible = isVersionable && isPublicableByUser;
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -170,7 +170,13 @@ namespace N2.Edit
 			if (Request["edit"] == "drag")
 				previewUrl = previewUrl.SetQueryParameter("edit", "drag");
 
-			Engine.AddActivity(new ManagementActivity { Operation = "Preview", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
+            if (ctx.Content.VersionOf.HasValue)
+            {
+                var item = ie.CurrentItem;
+                previewUrl = previewUrl.SetQueryParameter(PathData.VersionIndexQueryKey, item.VersionIndex);
+            }
+
+            Engine.AddActivity(new ManagementActivity { Operation = "Preview", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
 
 			HandleResult(ctx, Request["returnUrl"], previewUrl);
 		}
@@ -190,8 +196,8 @@ namespace N2.Edit
             {
                 Commands.Save(ctx);
             }
-
-			Url redirectTo = ManagementPaths.GetEditExistingItemUrl(ctx.Content);
+         
+            Url redirectTo = ManagementPaths.GetEditExistingItemUrl(ctx.Content);
 			if (!string.IsNullOrEmpty(Request["returnUrl"]))
 				redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
 
@@ -200,10 +206,14 @@ namespace N2.Edit
 
 		protected void OnUnpublishCommand(object sender, CommandEventArgs e)
 		{
-			var item = ie.CurrentItem;
-			item.State = ContentState.Unpublished;
-			Engine.Persister.Save(item);
-			Refresh(item, ToolbarArea.Both);
+            var ctx = ie.CreateCommandContext();
+            Commands.Unpublish(ctx);
+
+            //Log user activity
+            Engine.AddActivity(new ManagementActivity { Operation = "Unpublish", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
+
+            var item = ie.CurrentItem;
+            Refresh(item, ToolbarArea.Both);
 		}
 
 		protected void OnSaveFuturePublishCommand(object sender, CommandEventArgs e)

@@ -72,6 +72,13 @@ namespace N2.Edit.Workflow
             Execute(commandFactory.GetSaveCommand(context), context);
         }
 
+        /// <summary>Unpublishes the data specified by the provided context.</summary>
+        /// <param name="context">Contains data and information used to for unpublishing an item.</param>
+        public virtual void Unpublish(CommandContext context)
+        {
+            Execute(commandFactory.GetUnpublishCommand(context), context);
+        }
+
         /// <summary>Invoked before a command is executed.</summary>
         public EventHandler<CommandProcessEventArgs> CommandExecuting;
 

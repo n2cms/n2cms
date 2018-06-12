@@ -18,6 +18,11 @@ namespace N2.Edit.Workflow
         /// <returns>A command that when executed will save an item.</returns>
         CompositeCommand GetSaveCommand(CommandContext context);
 
+        /// <summary>Gets the command used to unpublish an item.</summary>
+        /// <param name="context">The command context used to determine which command to return.</param>
+        /// <returns>A command that when executed will unpublish an item.</returns>
+        CompositeCommand GetUnpublishCommand(CommandContext context);
+
         /// <summary>Invoked before returning a command to be executed.</summary>
         event EventHandler<CommandCreatedEventArgs> CreatedCommand;
     }

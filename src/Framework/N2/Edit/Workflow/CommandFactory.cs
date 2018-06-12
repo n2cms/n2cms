@@ -30,6 +30,7 @@ namespace N2.Edit.Workflow
         SaveCommand save;
         UpdateContentStateCommand draftState;
         UpdateContentStateCommand publishedState;
+        UpdateContentStateCommand unpublishedState;
         ActiveContentSaveCommand saveActiveContent;
         MoveToPositionCommand moveToPosition;
         EnsureNotPublishedCommand unpublishedDate;
@@ -55,6 +56,7 @@ namespace N2.Edit.Workflow
             save = new SaveCommand(persister);
             draftState = new UpdateContentStateCommand(changer, ContentState.Draft);
             publishedState = new UpdateContentStateCommand(changer, ContentState.Published);
+            unpublishedState = new UpdateContentStateCommand(changer, ContentState.Unpublished);
             saveActiveContent = new ActiveContentSaveCommand();
             moveToPosition = new MoveToPositionCommand();
             unpublishedDate = new EnsureNotPublishedCommand();
@@ -89,6 +91,28 @@ namespace N2.Edit.Workflow
             // has never been published before (remove old version)
             return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, replaceMaster, delete, useMaster, publishedState, moveToPosition, ensurePublishedDate, save, updateReferences);
             
+            throw new NotSupportedException();
+        }
+
+        public virtual CompositeCommand GetUnpublishCommand(CommandContext context)
+        {
+            var item = context.Content;
+
+            if (item is IActiveContent)
+                return Compose("Unpublish", Authorize(Permission.Publish), validate, saveActiveContent);
+
+            // Is the master
+            if (!item.VersionOf.HasValue)
+            {
+                if (item.ID == 0)
+                    return Compose("Unpublish", Authorize(Permission.Publish), validate, updateObject, unpublishedState, save, updateReferences);
+
+                return Compose("Unpublish", Authorize(Permission.Publish), validate, MakeVersionIfPublished(item), updateObject, unpublishedState, save, updateReferences);
+            }
+
+            // Is a version
+            return Compose("Unpublish", Authorize(Permission.Publish), validate, updateObject, replaceMaster, delete, useMaster, unpublishedState, save, updateReferences);
+
             throw new NotSupportedException();
         }
 
