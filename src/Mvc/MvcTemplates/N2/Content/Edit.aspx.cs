@@ -176,6 +176,17 @@ namespace N2.Edit
                 previewUrl = previewUrl.SetQueryParameter(PathData.VersionIndexQueryKey, item.VersionIndex);
             }
 
+            //Items that have no versions (first version) and are drafts, will be updated to unpublished state
+            //  in order for Save and Preview to be able to work cross sites
+            if(!ctx.Content.VersionOf.HasValue && ctx.Content.VersionIndex == 0)
+            {
+                var item = ie.CurrentItem;
+                item.State = ContentState.Unpublished;
+                Engine.Persister.Save(item);
+            }
+
+            previewUrl = previewUrl.SetQueryParameter("Preview", "true");
+           
             Engine.AddActivity(new ManagementActivity { Operation = "Preview", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
 
 			HandleResult(ctx, Request["returnUrl"], previewUrl);
