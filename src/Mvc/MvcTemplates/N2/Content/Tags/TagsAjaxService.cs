@@ -37,6 +37,8 @@ namespace N2.Management.Content.Tags
 
         public void Handle(HttpContextBase context)
         {
+            //throw new Exception();
+
             string tagName = context.Request["tagName"];
             string term = context.Request["term"];
 
@@ -46,7 +48,7 @@ namespace N2.Management.Content.Tags
             var allTags = engine.Resolve<CacheWrapper>()
                 .GetOrCreate<IEnumerable<string>>("Tags" + startPage, () => tags.FindTags(startPage, tagName));
             var json = allTags
-                .Where(t => t.StartsWith(term, StringComparison.InvariantCultureIgnoreCase))
+                .Where(t => t.ToLower().Contains(term))
                 .Select(t => new { label = t })
                 .ToList()
                 .ToJson();
