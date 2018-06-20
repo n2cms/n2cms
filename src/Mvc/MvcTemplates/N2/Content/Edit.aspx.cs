@@ -207,7 +207,16 @@ namespace N2.Edit
             {
                 Commands.Save(ctx);
             }
-         
+
+            //Items that have no versions (first version) and are drafts, will be updated to unpublished state
+            //  so that when saving and viewing the item, it will work cross sites
+            if (!ctx.Content.VersionOf.HasValue && ctx.Content.VersionIndex == 0)
+            {
+                var item = ie.CurrentItem;
+                item.State = ContentState.Unpublished;
+                Engine.Persister.Save(item);
+            }
+
             Url redirectTo = ManagementPaths.GetEditExistingItemUrl(ctx.Content);
 			if (!string.IsNullOrEmpty(Request["returnUrl"]))
 				redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
