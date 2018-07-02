@@ -14,9 +14,9 @@
 	    <link rel="stylesheet" type="text/css" href="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.IconsCssPath) %>" />
 		<link rel="stylesheet" type="text/css" href="<%= MapCssUrl("framed.css")%>" />
 		<link rel="stylesheet" type="text/css" href="<%= MapCssUrl("tree.css")%>" />
-		</asp:PlaceHolder>
 		<script src="../../Resources/Js/ContextMenu.js?v=<%=Register.ScriptVersion %>" type="text/javascript" ></script>
 		<script src="Tree.js?v=<%=Register.ScriptVersion %>" type="text/javascript"></script>
+		</asp:PlaceHolder>
     </head>
 <body class="tree framed noneSelected noPermission">
 	<form id="form1" runat="server">
