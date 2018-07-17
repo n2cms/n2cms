@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using N2.Edit;
+using N2.Edit.Versioning;
+using N2.Persistence;
+using N2.Resources;
+using N2.Web;
+using N2.Web.Parts;
+using N2.Web.UI;
+using N2.Web.UI.WebControls;
+using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using N2.Edit.FileSystem;
-using N2.Web.UI;
-using N2.Web.UI.WebControls;
-using N2.Edit.Versioning;
-using N2.Persistence;
-using N2.Web;
-using N2.Web.Parts;
-using N2.Edit;
 
 namespace N2.Details
 {
@@ -71,9 +67,13 @@ namespace N2.Details
 
         protected override Control AddEditor(Control container)
         {
+            ((Page)HttpContext.Current.CurrentHandler).JavaScript("{ManagementUrl}/Resources/Js/LoadingModal.js?v="+Register.ScriptVersion);
+
             LinkButton btn = new LinkButton();
             btn.CausesValidation = false;
             btn.Text = Title;
+            btn.OnClientClick = "n2LoadingModal.openModal()";
+            btn.CssClass = "btnLoadingModal";
             btn.Command += (s, a) => {
                 ContentItem item = FindTopEditor(container).CurrentItem;
                 
@@ -117,7 +117,7 @@ namespace N2.Details
                 HttpContext.Current.Response.Redirect(navigateUrl);
             };
             container.Controls.Add(btn);
-
+            
             return btn;
         }
         

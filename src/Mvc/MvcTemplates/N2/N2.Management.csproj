@@ -223,6 +223,7 @@
     <Content Include="Resources\jQuery-File-Upload-8.5.0\js\jquery.iframe-transport.js" />
     <Content Include="Resources\jQuery-File-Upload-8.5.0\js\main.js" />
     <Content Include="Resources\jQuery-File-Upload-8.5.0\js\vendor\jquery.ui.widget.js" />
+    <Content Include="Resources\Js\LoadingModal.js" />
     <Content Include="Resources\Js\MediaSelection.js" />
     <Content Include="Resources\Js\plugins\hogan-2.0.0.js" />
     <Content Include="Resources\Js\plugins\n2.autosave.js" />
