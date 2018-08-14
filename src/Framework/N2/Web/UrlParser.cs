@@ -128,7 +128,7 @@ namespace N2.Web
                 }
             }
 
-            data.Ignore = !IgnoreExisting(webContext.HttpContext.Request.PhysicalPath);
+            data.Ignore = !IgnoreExisting(webContext.HttpContext.Request);
             data = UseItemIfAvailable(item, data);
             return data;
         }
@@ -151,7 +151,7 @@ namespace N2.Web
             return StartPage;
         }
 
-        bool IgnoreExisting(string physicalPath)
+        bool IgnoreExisting(System.Web.HttpRequestBase request)
         {
             // N2 has a history of requiring the start page's template to be located at /Default.aspx.
             // Since a previous version this is no longer required with the consequence of /Default.aspx
@@ -159,7 +159,7 @@ namespace N2.Web
             // behaviour access to the default document (/ or /Default.aspx) will be rewritten to which-
             // ever template the current start page specifies. The previous behaviour can be restored
             // by configuring n2 to ignore existing files.
-            return ignoreExistingFiles || (!File.Exists(physicalPath) && !Directory.Exists(physicalPath));
+            return ignoreExistingFiles || (!File.Exists(request.PhysicalPath) && !Directory.Exists(request.PhysicalPath));
         }
 
         bool IsDefaultDocument(string path)
