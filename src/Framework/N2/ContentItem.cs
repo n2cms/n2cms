@@ -1131,7 +1131,9 @@ namespace N2
 			if (source.id.ToString() != source.name)
 				destination.name = source.name;
 			destination.alteredPermissions = source.alteredPermissions;
-			destination.created = source.created;
+            destination.published = source.published;
+            destination.expires = source.expires;
+            destination.created = source.created;
 			destination.updated = source.updated;
 			destination.templateKey = source.templateKey;
 			destination.visible = source.visible;
@@ -1378,8 +1380,8 @@ namespace N2
 		#region IUpdatable<ContentItem> Members
 
 		void IUpdatable<ContentItem>.UpdateFrom(ContentItem source)
-		{
-			CloneFields(source, this, false, false);
+        {
+            CloneFields(source, this, false, false);
 			CloneDetails(source, this);
 			ClearMissingDetails(source, this);
 			CloneAutoProperties(source, this);
