@@ -570,13 +570,16 @@ namespace N2.Management.Api
 		{
 			var q = N2.Persistence.Search.Query.Parse(context.Request);
 			var result = engine.Content.Search.Text.Search(q);
-
+            
 			context.Response.WriteJson(new
 			{
 				Total = result.Total,
-				Hits = result
-					.Where(i => engine.SecurityManager.IsAuthorized(i, context.User))
-					.Select(i => engine.GetContentAdapter<NodeAdapter>(i).GetTreeNode(i))
+				Hits = result.Hits
+					.Where(i => i.Content != null 
+                        && (i.Content.Parent == null || !(i.Content.Parent is ITrashCan))
+                        && engine.SecurityManager.IsAuthorized(i.Content, context.User)
+                        )
+					.Select(i => engine.GetContentAdapter<NodeAdapter>(i.Content).GetTreeNode(i.Content))
 					.ToList()
 			});
 		}
