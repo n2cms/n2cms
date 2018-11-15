@@ -712,6 +712,9 @@
                                 if (!fileBrowser.continueUploadInit) {
                                     jQ(fileBrowser.divLayoverContinueBtn).click(continueUpload);
                                     fileBrowser.continueUploadInit = true;
+                                } else {
+                                    jQ(fileBrowser.divLayoverContinueBtn).off("click");
+                                    jQ(fileBrowser.divLayoverContinueBtn).click(continueUpload);
                                 }
                             } else {
                                 sendFilesToServer();
