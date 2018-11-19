@@ -30,9 +30,7 @@ namespace Dinamico.Controllers
 			if (bool.TryParse(Convert.ToString(TempData["FormSubmit"]), out formSubmit) && formSubmit)
 				return PartialView("Submitted");
 
-			if (CurrentItem.GetTokens("Form").Any(dt => dt.Is("FormSubmit")))
-				return PartialView("Form");
-			return PartialView();
+			return CurrentItem.GetTokens("Form").Any(dt => dt.Is("FormSubmit")) ? PartialView("Form") : PartialView();
 		}
 
 		public ActionResult Submit(FormCollection collection)
@@ -81,6 +79,22 @@ namespace Dinamico.Controllers
 						name = token.GetOptionalInputName(0, 1);
 						var value = collection[name];
 						sw.WriteLine(name + ": " + value);
+
+						// Assumption: any custom form input tokens with type=email are to be added to the reply-to list.
+						if (components.Length >= 2 && string.Equals(components[1], "email", StringComparison.InvariantCultureIgnoreCase)
+							&& !string.IsNullOrWhiteSpace(value))
+						{
+							try
+							{
+								var address = new MailAddress(value);
+								// Prevent values with spaces from being interpreted as valid (see https://stackoverflow.com/a/1374644)
+								if (value == address.Address)
+								{
+									mm.ReplyToList.Add(address);
+								}
+							}
+							catch (FormatException) { }
+						}
 					}
 				}
 
