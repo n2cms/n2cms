@@ -22,7 +22,7 @@ namespace N2.Details
         private string rootFolder = "/upload/";
         private string targetID = "";
         private bool useDefaultUploadDirectory = false;
-
+        
         /// <summary>
         /// Fully Qualified Assembly name and type with name space found in typeof(Type).AssemblyQualifiedName eg. "AssemblyName,Namespace.Type"
         /// </summary>
@@ -110,7 +110,8 @@ namespace N2.Details
                     var start = Find.ClosestOf<Definitions.IStartPage>(item);
                     Type itemType = item.GetContentType();
 
-                    defaultUploadDirectoryPath = string.Format("{0}{1}/content/{2}", RootFolder.ToLower(), start.Title.ToLower().Trim().Replace(" ", "-"), itemType.Name.ToLower().Trim().Replace(" ", "-"));
+                    var slug = N2.Context.Current.Resolve<Slug>();
+                    defaultUploadDirectoryPath = string.Format("{0}{1}/content/{2}", RootFolder.ToLower(), slug.Create(start.Title), slug.Create(itemType.Name));
                 }
 
                 var navigateUrl = string.Format("/N2/Files/FileSystem/Directory.aspx?selected={0}&TargetType={1}&TargetProperty={2}&TargetID={3}&TargetZone={4}&TargetDomain={5}&UseDefaultUploadDirectory={6}&VersionIndex={7}&VersionKey={8}", defaultUploadDirectoryPath, TargetType, TargetProperty, targetID, targetZoneName, targetDomain, UseDefaultUploadDirectory.ToString(), verIndex, verKey);

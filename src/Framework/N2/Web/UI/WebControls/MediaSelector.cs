@@ -82,7 +82,7 @@ namespace N2.Web.UI.WebControls
 			get { return engine ?? N2.Context.Current; }
 			set { engine = value; }
 		}
-
+        
 		/// <summary>Text on the button used to open the popup.</summary>
 		public string ButtonText
         {
@@ -161,8 +161,11 @@ namespace N2.Web.UI.WebControls
                 ContentItem item = selection.SelectedItem;
                 var start = Find.ClosestOf<IStartPage>(item);
                 Type itemType = item.GetContentType();
-                if(start != null)
-                    defaultUploadDirectoryPath = string.Format("{0}/content/{1}", start.Title.ToLower().Trim().Replace(" ","-"), itemType.Name.ToLower().Trim().Replace(" ", "-"));
+                if (start != null)
+                {
+                    var slug = N2.Context.Current.Resolve<Slug>();
+                    defaultUploadDirectoryPath = string.Format("{0}/content/{1}", slug.Create(start.Title), slug.Create(itemType.Name));
+                }
                 else
                     defaultUploadDirectoryPath = string.Format("/");
             }
