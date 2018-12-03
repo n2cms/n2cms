@@ -164,7 +164,7 @@ namespace N2.Web.UI.WebControls
                 if (start != null)
                 {
                     var slug = N2.Context.Current.Resolve<Slug>();
-                    defaultUploadDirectoryPath = string.Format("{0}/content/{1}", slug.Create(start.Title), slug.Create(itemType.Name));
+                    defaultUploadDirectoryPath = string.Format("{0}/content/{1}", start.Name, slug.Create(itemType.Name));
                 }
                 else
                     defaultUploadDirectoryPath = string.Format("/");

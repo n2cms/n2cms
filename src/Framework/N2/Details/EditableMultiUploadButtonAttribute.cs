@@ -111,7 +111,7 @@ namespace N2.Details
                     Type itemType = item.GetContentType();
 
                     var slug = N2.Context.Current.Resolve<Slug>();
-                    defaultUploadDirectoryPath = string.Format("{0}{1}/content/{2}", RootFolder.ToLower(), slug.Create(start.Title), slug.Create(itemType.Name));
+                    defaultUploadDirectoryPath = string.Format("{0}{1}/content/{2}", RootFolder.ToLower(), start.Name, slug.Create(itemType.Name));
                 }
 
                 var navigateUrl = string.Format("/N2/Files/FileSystem/Directory.aspx?selected={0}&TargetType={1}&TargetProperty={2}&TargetID={3}&TargetZone={4}&TargetDomain={5}&UseDefaultUploadDirectory={6}&VersionIndex={7}&VersionKey={8}", defaultUploadDirectoryPath, TargetType, TargetProperty, targetID, targetZoneName, targetDomain, UseDefaultUploadDirectory.ToString(), verIndex, verKey);
