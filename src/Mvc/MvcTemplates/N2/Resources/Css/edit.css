@@ -71,6 +71,7 @@ body.rightExpanded #content { margin-right:265px; }
 .framed .selector  { width:530px; }
 .framed .textEditor { width:530px; }
 .framed .textEditorReadOnly { width:426px; opacity:.5; }
+.framed .copyTextEditorReadOnly { width:530px; cursor:pointer; color:#555; }
 .framed .titleEditor { font-size:1.5em; height: 1.5em; }
 .framed .itemEditor .itemEditor .titleEditor { font-size:1.1em; }
 .urlSelector { white-space:nowrap; }

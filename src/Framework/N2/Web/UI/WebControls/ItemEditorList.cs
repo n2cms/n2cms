@@ -1,19 +1,18 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using N2.Collections;
 using N2.Definitions;
 using N2.Edit;
+using N2.Edit.Versioning;
 using N2.Engine;
 using N2.Persistence;
+using N2.Resources;
 using N2.Web.Parts;
-using N2.Collections;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using N2.Edit.Versioning;
-using N2.Edit.Workflow;
+using System.Web.UI.WebControls;
 
 namespace N2.Web.UI.WebControls
 {
@@ -216,6 +215,8 @@ namespace N2.Web.UI.WebControls
 
         private LinkButton CreateButton(Control container, TemplateDefinition template)
         {
+            ((Page)HttpContext.Current.CurrentHandler).JavaScript("{ManagementUrl}/Resources/Js/LoadingModal.js?v="+Register.ScriptVersion);
+
             var button = new LinkButton
             {
 				ID = "iel" + ID + "_" + template.Definition.GetDiscriminatorWithTemplateKey().Replace('/', '_'),
@@ -224,7 +225,8 @@ namespace N2.Web.UI.WebControls
                     : string.Format("<img src='{0}' alt='ico'/>{1}", template.Definition.IconUrl, template.Definition.Title),
                 ToolTip = template.Definition.ToolTip,
                 CausesValidation = false,
-                CssClass = "addButton"
+                CssClass = "addButton btnLoadingModal",
+                OnClientClick = "n2LoadingModal.openModal()"
             };
             button.Command += (s, a) =>
             {
@@ -263,6 +265,7 @@ namespace N2.Web.UI.WebControls
 		        RedirectToVersionOfSelf(path.CurrentPage);
 			};
             container.Controls.Add(button);
+            
             return button;
         }
 

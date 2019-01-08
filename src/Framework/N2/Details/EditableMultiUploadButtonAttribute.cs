@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using N2.Edit;
+using N2.Edit.Versioning;
+using N2.Persistence;
+using N2.Resources;
+using N2.Web;
+using N2.Web.Parts;
+using N2.Web.UI;
+using N2.Web.UI.WebControls;
+using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using N2.Edit.FileSystem;
-using N2.Web.UI;
-using N2.Web.UI.WebControls;
-using N2.Edit.Versioning;
-using N2.Persistence;
-using N2.Web;
-using N2.Web.Parts;
-using N2.Edit;
 
 namespace N2.Details
 {
@@ -26,7 +22,7 @@ namespace N2.Details
         private string rootFolder = "/upload/";
         private string targetID = "";
         private bool useDefaultUploadDirectory = false;
-
+        
         /// <summary>
         /// Fully Qualified Assembly name and type with name space found in typeof(Type).AssemblyQualifiedName eg. "AssemblyName,Namespace.Type"
         /// </summary>
@@ -71,9 +67,13 @@ namespace N2.Details
 
         protected override Control AddEditor(Control container)
         {
+            ((Page)HttpContext.Current.CurrentHandler).JavaScript("{ManagementUrl}/Resources/Js/LoadingModal.js?v="+Register.ScriptVersion);
+
             LinkButton btn = new LinkButton();
             btn.CausesValidation = false;
             btn.Text = Title;
+            btn.OnClientClick = "n2LoadingModal.openModal()";
+            btn.CssClass = "btnLoadingModal";
             btn.Command += (s, a) => {
                 ContentItem item = FindTopEditor(container).CurrentItem;
                 
@@ -110,14 +110,15 @@ namespace N2.Details
                     var start = Find.ClosestOf<Definitions.IStartPage>(item);
                     Type itemType = item.GetContentType();
 
-                    defaultUploadDirectoryPath = string.Format("{0}{1}/content/{2}", RootFolder.ToLower(), start.Title.ToLower().Trim().Replace(" ", "-"), itemType.Name.ToLower().Trim().Replace(" ", "-"));
+                    var slug = N2.Context.Current.Resolve<Slug>();
+                    defaultUploadDirectoryPath = string.Format("{0}{1}/content/{2}", RootFolder.ToLower(), start.Name, slug.Create(itemType.Name));
                 }
 
                 var navigateUrl = string.Format("/N2/Files/FileSystem/Directory.aspx?selected={0}&TargetType={1}&TargetProperty={2}&TargetID={3}&TargetZone={4}&TargetDomain={5}&UseDefaultUploadDirectory={6}&VersionIndex={7}&VersionKey={8}", defaultUploadDirectoryPath, TargetType, TargetProperty, targetID, targetZoneName, targetDomain, UseDefaultUploadDirectory.ToString(), verIndex, verKey);
                 HttpContext.Current.Response.Redirect(navigateUrl);
             };
             container.Controls.Add(btn);
-
+            
             return btn;
         }
         

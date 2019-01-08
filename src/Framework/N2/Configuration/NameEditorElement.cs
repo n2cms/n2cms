@@ -43,5 +43,14 @@ namespace N2.Configuration
             get { return (PatternValueCollection)base["replacements"]; }
             set { base["replacements"] = value; }
         }
+        
+        /// <summary>Gets or sets the maximum allowed length of URL.</summary>
+        [ConfigurationProperty("maxUrlLength", DefaultValue = 260)]
+        public int MaxUrlLength
+        {
+            get { return (int)base["maxUrlLength"]; }
+            set { base["maxUrlLength"] = value; }
+        }
+
     }
 }

@@ -363,7 +363,7 @@
                     "data-name=\"{{Title}}\"><span class=\"file-ic glyphicon glyphicon-file\"></span> " +
                     "<label>{{Title}}</label></li>",
                 patternImg = "<li data-i=\"{{i}}\" class=\"file image\" data-size=\"{{Size}}\" data-date=\"{{Date}}\" data-url=\"{{Url}}\" " +
-                    "data-name=\"{{Title}}\" data-isimage=\"true\" data-scount=\"{{SCount}}\"  style=\"background-image:url('{{Thumb}}');\" > " +
+                    "data-name=\"{{Title}}\" data-isimage=\"true\" data-scount=\"{{SCount}}\"  style=\"background-image:url('{{Thumb}}?v={{Date}}');\" > " +
                     "<label>{{Title}}</label> " +
                     "<div class=\"image-sizes\">{{ImageSizes}}</div></li>",
                 patternImgSizes = "<em class=\"{{ClassName}}\" data-size=\"{{Size}}\" data-url=\"{{Url}}\">{{SizeName}}</em>",
@@ -712,6 +712,9 @@
                                 if (!fileBrowser.continueUploadInit) {
                                     jQ(fileBrowser.divLayoverContinueBtn).click(continueUpload);
                                     fileBrowser.continueUploadInit = true;
+                                } else {
+                                    jQ(fileBrowser.divLayoverContinueBtn).off("click");
+                                    jQ(fileBrowser.divLayoverContinueBtn).click(continueUpload);
                                 }
                             } else {
                                 sendFilesToServer();

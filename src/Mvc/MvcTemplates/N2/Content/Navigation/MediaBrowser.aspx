@@ -93,11 +93,12 @@
                 <%} %>
                 <% if(mediaBrowserModel.Files!=null) foreach (var f in mediaBrowserModel.Files) {
                             var img = f.IsImage ? f.Thumb : string.Empty;
+                            var backgroundImg = f.IsImage ? string.Format("{0}?v={1}",img, f.Date) : string.Empty;
                             %>
                     <% if(f.IsImage) { %>
                     <li data-i="<%= counter++ %>" class="file image" data-size="<%= f.Size %>" data-date="<%= f.Date %>" 
                         data-name="<%= f.Title %>" data-isimage="true" data-url="<%= f.Url %>" 
-                        style="background-image:url('<%= img %>');" >
+                        style="background-image:url('<%= backgroundImg %>');" >
                         <label><%= f.Title %></label>
                         <% if (f.Children!=null && f.Children.Count > 0) { %>
                         <div class="image-sizes">

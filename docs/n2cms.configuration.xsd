@@ -654,6 +654,7 @@
 									<xs:attribute name="toLower" type="xs:boolean" use="optional" />
 									<xs:attribute name="showKeepUpdated" type="xs:boolean" use="optional" />
                   <xs:attribute name="keepUpdatedDefaultValue" type="xs:boolean" use="optional" />
+                  <xs:attribute name="maxUrlLength" type="xs:int" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="defaultDirectory" minOccurs="0">

@@ -26,7 +26,7 @@ namespace N2.Web.UI.WebControls
         private string prefix = string.Empty;
         private string suffix = string.Empty;
         private string uniqueNameErrorFormat = "Another item already has the name '{0}'.";
-        private string nameTooLongErrorFormat = "Name too long, the full url cannot exceed 250 characters: {0}";
+        private string nameTooLongErrorFormat = "Name too long, the full url cannot exceed {0} characters: {1}";
         private string invalidCharactersErrorFormat = "Invalid characters in path. Only english alphanumerical characters allowed.";
 
         /// <summary>Constructs the name editor.</summary>
@@ -135,6 +135,7 @@ namespace N2.Web.UI.WebControls
             config.ShowKeepUpdated = true;
             config.KeepUpdatedDefaultValue = true;
             config.ToLower = true;
+            config.MaxUrlLength = 260;
             return config;
         }
 
@@ -259,10 +260,10 @@ namespace N2.Web.UI.WebControls
                         }
                     }   
 
-                    // Ensure that the path isn't longer than 260 characters
-                    if (currentItem.Parent != null && (currentItem.Parent.Url.Length > 248 || currentItem.Parent.Url.Length + Text.Length > 260))
+                    // Ensure that the path isn't longer than max length
+                    if (currentItem.Parent != null && currentItem.Parent.Url.Length + Text.Length > Config.MaxUrlLength)
                     {
-                        ErrorMessage = string.Format(NameTooLongErrorFormat, Text);
+                        ErrorMessage = string.Format(NameTooLongErrorFormat, Config.MaxUrlLength, Text);
                         IsValid = false;
                         return;
                     }

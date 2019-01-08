@@ -133,11 +133,19 @@ namespace N2.Edit
 		protected void OnPublishCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = ie.CreateCommandContext();
-			Commands.Publish(ctx);
 
-			Engine.AddActivity(new ManagementActivity { Operation = "Publish", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
+            try
+            {
+                Commands.Publish(ctx);
 
-			HandleResult(ctx, Request["returnUrl"], Engine.GetContentAdapter<NodeAdapter>(ctx.Content).GetPreviewUrl(ctx.Content));
+                Engine.AddActivity(new ManagementActivity { Operation = "Publish", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
+
+                HandleResult(ctx, Request["returnUrl"], Engine.GetContentAdapter<NodeAdapter>(ctx.Content).GetPreviewUrl(ctx.Content));
+            }
+            catch(N2Exception ex)
+            {
+                SetErrorMessage(cvException, ex);
+            }
 		}
 
 		private void ApplySortInfo(CommandContext ctx)
@@ -153,87 +161,109 @@ namespace N2.Edit
 		{
 			var ctx = ie.CreateCommandContext();
 
-            if (ctx.Content.VersionOf.HasValue)
+            try
             {
-			    var draftOfTopEditor = ctx.Content.FindPartVersion(CurrentItem);
-			    ie.UpdateObject(new CommandContext(ie.Definition, draftOfTopEditor, Interfaces.Editing, Context.User));
+                if (ctx.Content.VersionOf.HasValue)
+                {
+                    var draftOfTopEditor = ctx.Content.FindPartVersion(CurrentItem);
+                    ie.UpdateObject(new CommandContext(ie.Definition, draftOfTopEditor, Interfaces.Editing, Context.User));
 
-                Repository.Save(ctx.Content);
+                    Repository.Save(ctx.Content);
+                }
+                else
+                {
+                    Commands.Save(ctx);
+                }
+
+                var page = Find.ClosestPage(ctx.Content);
+                Url previewUrl = Engine.GetContentAdapter<NodeAdapter>(page).GetPreviewUrl(page);
+                if (Request["edit"] == "drag")
+                    previewUrl = previewUrl.SetQueryParameter("edit", "drag");
+
+                if (ctx.Content.VersionOf.HasValue)
+                {
+                    var item = ie.CurrentItem;
+                    previewUrl = previewUrl.SetQueryParameter(PathData.VersionIndexQueryKey, item.VersionIndex);
+                }
+
+                //Items that have no versions (first version) and are drafts, will be updated to unpublished state
+                //  in order for Save and Preview to be able to work cross sites
+                if (!ctx.Content.VersionOf.HasValue && ctx.Content.VersionIndex == 0)
+                {
+                    var item = ie.CurrentItem;
+                    item.State = ContentState.Unpublished;
+                    Engine.Persister.Save(item);
+                }
+
+                previewUrl = previewUrl.SetQueryParameter("Preview", "true");
+
+                Engine.AddActivity(new ManagementActivity { Operation = "Preview", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
+
+                HandleResult(ctx, Request["returnUrl"], previewUrl);
             }
-            else
+            catch (N2Exception ex)
             {
-                Commands.Save(ctx);
+                SetErrorMessage(cvException, ex);
             }
+        }
 
-			var page = Find.ClosestPage(ctx.Content);
-			Url previewUrl = Engine.GetContentAdapter<NodeAdapter>(page).GetPreviewUrl(page);
-			if (Request["edit"] == "drag")
-				previewUrl = previewUrl.SetQueryParameter("edit", "drag");
+        protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
+        {
+            var ctx = ie.CreateCommandContext();
 
-            if (ctx.Content.VersionOf.HasValue)
+            try
             {
-                var item = ie.CurrentItem;
-                previewUrl = previewUrl.SetQueryParameter(PathData.VersionIndexQueryKey, item.VersionIndex);
-            }
+                if (ctx.Content.VersionOf.HasValue)
+                {
+                    var draftOfTopEditor = ctx.Content.FindPartVersion(CurrentItem);
+                    ie.UpdateObject(new CommandContext(ie.Definition, draftOfTopEditor, Interfaces.Editing, Context.User));
 
-            //Items that have no versions (first version) and are drafts, will be updated to unpublished state
-            //  in order for Save and Preview to be able to work cross sites
-            if(!ctx.Content.VersionOf.HasValue && ctx.Content.VersionIndex == 0)
+                    Repository.Save(ctx.Content);
+                }
+                else
+                {
+                    Commands.Save(ctx);
+                }
+
+                //Items that have no versions (first version) and are drafts, will be updated to unpublished state
+                //  so that when saving and viewing the item, it will work cross sites
+                if (!ctx.Content.VersionOf.HasValue && ctx.Content.VersionIndex == 0)
+                {
+                    var item = ie.CurrentItem;
+                    item.State = ContentState.Unpublished;
+                    Engine.Persister.Save(item);
+                }
+
+                Url redirectTo = ManagementPaths.GetEditExistingItemUrl(ctx.Content);
+                if (!string.IsNullOrEmpty(Request["returnUrl"]))
+                    redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
+
+                HandleResult(ctx, redirectTo);
+            }
+            catch (N2Exception ex)
             {
-                var item = ie.CurrentItem;
-                item.State = ContentState.Unpublished;
-                Engine.Persister.Save(item);
+                SetErrorMessage(cvException, ex);
             }
-
-            previewUrl = previewUrl.SetQueryParameter("Preview", "true");
-           
-            Engine.AddActivity(new ManagementActivity { Operation = "Preview", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
-
-			HandleResult(ctx, Request["returnUrl"], previewUrl);
-		}
-
-		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
-		{
-			var ctx = ie.CreateCommandContext();
-
-            if (ctx.Content.VersionOf.HasValue)
-            {
-			    var draftOfTopEditor = ctx.Content.FindPartVersion(CurrentItem);
-			    ie.UpdateObject(new CommandContext(ie.Definition, draftOfTopEditor, Interfaces.Editing, Context.User));
-
-                Repository.Save(ctx.Content);
-            }
-            else
-            {
-                Commands.Save(ctx);
-            }
-
-            //Items that have no versions (first version) and are drafts, will be updated to unpublished state
-            //  so that when saving and viewing the item, it will work cross sites
-            if (!ctx.Content.VersionOf.HasValue && ctx.Content.VersionIndex == 0)
-            {
-                var item = ie.CurrentItem;
-                item.State = ContentState.Unpublished;
-                Engine.Persister.Save(item);
-            }
-
-            Url redirectTo = ManagementPaths.GetEditExistingItemUrl(ctx.Content);
-			if (!string.IsNullOrEmpty(Request["returnUrl"]))
-				redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
-
-			HandleResult(ctx, redirectTo);
-		}
+        }
 
 		protected void OnUnpublishCommand(object sender, CommandEventArgs e)
 		{
             var ctx = ie.CreateCommandContext();
-            Commands.Unpublish(ctx);
 
-            //Log user activity
-            Engine.AddActivity(new ManagementActivity { Operation = "Unpublish", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
+            try
+            {
+                Commands.Unpublish(ctx);
 
-            var item = ie.CurrentItem;
-            Refresh(item, ToolbarArea.Both);
+                //Log user activity
+                Engine.AddActivity(new ManagementActivity { Operation = "Unpublish", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
+
+                var item = ie.CurrentItem;
+                Refresh(item, ToolbarArea.Both);
+            }
+            catch(N2Exception ex)
+            {
+                SetErrorMessage(cvException, ex);
+            }
 		}
 
 		protected void OnSaveFuturePublishCommand(object sender, CommandEventArgs e)
@@ -241,12 +271,19 @@ namespace N2.Edit
 			Validate();
 			if (IsValid)
 			{
-				ContentItem savedVersion = SaveVersionForFuturePublishing();
+                try
+                {
+                    ContentItem savedVersion = SaveVersionForFuturePublishing();
 
-				Engine.AddActivity(new ManagementActivity { Operation = "FuturePublish", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
+                    Engine.AddActivity(new ManagementActivity { Operation = "FuturePublish", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
 
-				Url redirectUrl = ManagementPaths.GetEditExistingItemUrl(savedVersion);
-				Response.Redirect(redirectUrl.AppendQuery("refresh=true"));
+                    Url redirectUrl = ManagementPaths.GetEditExistingItemUrl(savedVersion);
+                    Response.Redirect(redirectUrl.AppendQuery("refresh=true"));
+                }
+                catch (N2Exception ex)
+                {
+                    SetErrorMessage(cvException, ex);
+                }
 			}
 		}
 
