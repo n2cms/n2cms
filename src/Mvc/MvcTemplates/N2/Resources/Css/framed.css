@@ -391,3 +391,9 @@ input.dp-applied {
 .open>.dropdown-menu {
     margin-bottom: 50px;
 }
+
+/* BOOTSTRAP OVERRIDES */
+.addArea .btn-group .dropdown-menu {
+    position: relative;
+    float: none;
+}
