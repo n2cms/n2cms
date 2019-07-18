@@ -57,7 +57,7 @@ namespace N2.Web
                     else
                     {
                         // try to find subpath
-                        var remainder = string.Join("/", segments, i, segments.Length - applicationSegments);
+                        var remainder = string.Join("/", segments, i, segments.Length - i);
                         var child = item.GetChild(remainder);
                         if (child != null)
                         {
