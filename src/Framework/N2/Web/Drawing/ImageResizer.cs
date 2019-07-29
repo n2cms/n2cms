@@ -88,8 +88,8 @@ namespace N2.Web.Drawing
             if (imageStream == null) throw new ArgumentNullException("imageStream");
 
             using (Bitmap original = new Bitmap(imageStream))
+            using (var ms = new MemoryStream())
             {
-                var ms = new MemoryStream();
                 Resize(original, parameters, ms);
                 return ms.GetBuffer();
             }
