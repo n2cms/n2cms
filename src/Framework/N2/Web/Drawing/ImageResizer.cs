@@ -89,11 +89,9 @@ namespace N2.Web.Drawing
 
             using (Bitmap original = new Bitmap(imageStream))
             {
-                using (var ms = new MemoryStream())
-                {
-                    Resize(original, parameters, ms);
-                    return ms.GetBuffer();
-                }
+                var ms = new MemoryStream();
+                Resize(original, parameters, ms);
+                return ms.GetBuffer();
             }
         }
 
@@ -223,13 +221,11 @@ namespace N2.Web.Drawing
         {
             if (format == PixelFormat.Indexed)
                 format = PixelFormat.Format24bppRgb;
-            using (Bitmap temp = new Bitmap(resized.Width, resized.Height, format))
-            {
-                var g = Graphics.FromImage(temp);
-                g.DrawImage(resized, new Rectangle(0, 0, temp.Width, temp.Height), 0, 0, resized.Width, resized.Height, GraphicsUnit.Pixel);
-                resized = temp;
-                return g;
-            }
+            Bitmap temp = new Bitmap(resized.Width, resized.Height, format);
+            var g = Graphics.FromImage(temp);
+            g.DrawImage(resized, new Rectangle(0, 0, temp.Width, temp.Height), 0, 0, resized.Width, resized.Height, GraphicsUnit.Pixel);
+            resized = temp;
+            return g;
         }
 
         public static Rectangle GetFillDestinationRectangle(Size original, Size resized)
