@@ -177,6 +177,8 @@
 									<xs:attribute name="iconsCssPath" type="xs:string" use="optional" />
 									<xs:attribute name="jQueryPluginsPath" type="xs:string" use="optional" />
 									<xs:attribute name="ckEditorJsPath" type="xs:string" use="optional" />
+                  <xs:attribute name="adminCSSFile" type="xs:string" use="optional" />
+                  <xs:attribute name="adminCMSName" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="previewResources" minOccurs="0">

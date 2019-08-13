@@ -11,7 +11,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>N2 Management</title>
+	<title><%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AdminCMSName)%></title>
 	<meta name="viewport" content="width=device-width">
 
 	<script type="text/javascript" src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.JQueryJsPath)%>"></script>
@@ -22,7 +22,7 @@
 	<script type="text/javascript" src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularJsRoot + "angular-route.js")%>"></script>
 	<script type="text/javascript" src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularUiJsPath)%>"></script>
 	<script type="text/javascript" src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularStrapJsPath)%>"></script>
-
+    
 	<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath)%>" type="text/css" rel="stylesheet" />
 	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapJsPath)%>" type="text/javascript"></script>
 
@@ -39,6 +39,7 @@
 
 	<script src="Resources/js/n2.js?v=<%=N2.Resources.Register.ScriptVersion%>"></script>
 	<link rel="stylesheet" href="Resources/css/n2.css?v=<%=N2.Resources.Register.CssVersion%>">
+    <link rel="stylesheet" href="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AdminCSSFile)%>" />
 
 	<script src="<%= GetLocalizationPath()%>"></script>
 	<script src="App/Js/Services.js"></script>

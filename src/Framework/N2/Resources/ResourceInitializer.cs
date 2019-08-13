@@ -35,8 +35,10 @@ namespace N2.Resources
 			Register.AngularJsRoot = configFactory.Sections.Web.Resources.AngularJsRoot;
 			Register.AngularStrapJsPath = configFactory.Sections.Web.Resources.AngularStrapJsPath;
 			Register.AngularUiJsPath = configFactory.Sections.Web.Resources.AngularUiJsPath;
+            Register.AdminCMSName = configFactory.Sections.Web.Resources.AdminCMSName;
+            Register.AdminCSSFile = configFactory.Sections.Web.Resources.AdminCSSFile;
 
-			Register.CkEditorJsPath = configFactory.Sections.Web.Resources.CkEditorPath;
+            Register.CkEditorJsPath = configFactory.Sections.Web.Resources.CkEditorPath;
 
 			Register.FancyboxJsPath = configFactory.Sections.Web.Resources.FancyboxJsPath;
 			Register.FancyboxCssPath = configFactory.Sections.Web.Resources.FancyboxCssPath;

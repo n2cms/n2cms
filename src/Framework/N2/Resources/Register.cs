@@ -22,7 +22,9 @@ namespace N2.Resources
 		{
 			AngularJsRoot = DefaultAngularJsRoot;
 			AngularStrapJsPath = DefaultAngularStrapJsRoot;
-			BootstrapCssPath = DefaultBootstrapCssPath;
+            AdminCMSName = DefaultAdminCMSName;
+            AdminCSSFile = DefaultAdminCSSFile;
+            BootstrapCssPath = DefaultBootstrapCssPath;
 			BootstrapJsPath = DefaultBootstrapJsPath;
 			BootstrapDatePickerJsPath = DefaultBootstrapDatePickerJsPath;
 			BootstrapTimePickerJsPath = DefaultBootstrapTimePickerJsPath;
@@ -66,7 +68,9 @@ namespace N2.Resources
 		public const string DefaultIconsCssPath = "//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css";
 		public const string DefaultAngularJsRoot = "//cdnjs.cloudflare.com/ajax/libs/angular.js/" + AngularJsVersion + "/";
 		public const string DefaultAngularStrapJsRoot = "//cdnjs.cloudflare.com/ajax/libs/angular-strap/0.7.8/angular-strap.min.js";
-		public const string DefaultAngularUiJsPath = "//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js";
+        public const string DefaultAdminCSSFile = "/admin.css";
+        public const string DefaultAdminCMSName = "Bobit Business Media CMS";
+        public const string DefaultAngularUiJsPath = "//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js";
 		public const string DefaultBootstrapJsPath =  "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/" + DefaultBootstrapVersion + "/js/bootstrap.min.js";
 		public const string DefaultBootstrapCssPath = "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/" + DefaultBootstrapVersion + "/css/bootstrap.min.css";
 
@@ -130,7 +134,10 @@ namespace N2.Resources
 		public static string FancyboxCssPath { get; set; }
 
 		public static string AngularStrapJsPath { get; set; }
-		public static string AngularUiJsPath { get; set; }
+        public static string AdminCSSFile { get; set; }
+        public static string AdminCMSName { get; set; }
+
+        public static string AngularUiJsPath { get; set; }
 		public static string BootstrapDatePickerCssPath { get; set; }
 		public static string BootstrapDatePickerJsPath { get; set; }
 		public static string BootstrapTimePickerCssPath { get; set; }
