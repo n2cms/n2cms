@@ -58,10 +58,19 @@ namespace N2.Edit.AutoPublish
                 .ToList();
             for (int i = 0; i < implicitExpire.Count; i++)
             {
-                // reset status on expired items
-                var item = implicitExpire[i];
-                changer.ChangeTo(item, ContentState.Unpublished);
-                persister.Save(item);
+                try
+                {
+                    // reset status on expired items
+                    var item = implicitExpire[i];
+                    changer.ChangeTo(item, ContentState.Unpublished);
+                    persister.Save(item);
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                        ex = ex.InnerException;
+                    logger.Error(ex);
+                }
             }
         }
 
@@ -73,10 +82,19 @@ namespace N2.Edit.AutoPublish
                 .ToList();
             for (int i = 0; i < implicitAutoPublish.Count; i++)
             {
-                // saving the master version for auto-publish will be eventually become published without this, but we want to update the state
-                var item = implicitAutoPublish[i];
-                changer.ChangeTo(item, ContentState.Published);
-                persister.Save(item);
+                try
+                {
+                    // saving the master version for auto-publish will be eventually become published without this, but we want to update the state
+                    var item = implicitAutoPublish[i];
+                    changer.ChangeTo(item, ContentState.Published);
+                    persister.Save(item);
+                }
+                catch (Exception ex)
+                {
+                    while (ex.InnerException != null)
+                        ex = ex.InnerException;
+                    logger.Error(ex);
+                }
             }
         }
 
@@ -93,6 +111,8 @@ namespace N2.Edit.AutoPublish
                 }
                 catch (Exception ex)
                 {
+                    while (ex.InnerException != null)
+                        ex = ex.InnerException;
                     logger.Error(ex);
                 }
             }
