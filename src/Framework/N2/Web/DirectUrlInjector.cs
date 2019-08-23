@@ -71,17 +71,11 @@ namespace N2.Web
 
         private bool TryApplyFoundItem(Url url, PageNotFoundEventArgs e, ContentItem item)
         {
-            if (!string.IsNullOrEmpty(url.Authority))
-            {
-                var site = host.GetSite(item);
-                if (site == null)
-                {
-                    var sp = Context.Current.UrlParser.StartPage;
-                    site = host.GetSite(sp);
-                }
-                if (!string.IsNullOrEmpty(site.Authority) && !site.Is(url.Authority))
-                    return false;
-            }
+			var currentSite = host.CurrentSite; //get site by host in current url; if not found it returns DefaultSite
+            var itemSite = host.GetSite(item); //get site by the item found with path in current url
+            //if itemSite is null then we would try getting site by url but that would be the same as current site above so in that case we just consider match success and fall through.
+            if (itemSite != null && currentSite.StartPageID != itemSite.StartPageID)
+                return false;
 
             e.AffectedItem = item;
             if (e.AffectedPath != null)
