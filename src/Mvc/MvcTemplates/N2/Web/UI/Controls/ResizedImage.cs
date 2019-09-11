@@ -62,5 +62,19 @@ namespace N2.Edit.Web.UI.Controls
             url = url.AppendQuery("m", mode.ToString());
             return url;
         }
-    }
+
+		/// <summary>
+		/// Fill custom url for resizing with image name and extension
+		/// </summary>
+		/// <param name="customResizeUrl">Custom Url with {0} for image url, and {1} for image extension</param>
+		/// <param name="imageUrl">The image to resize</param>
+		/// <returns></returns>
+		public static string GetCustomResizedImageUrl(string customResizeUrl, string imageUrl)
+		{
+			string imageExtension = VirtualPathUtility.GetExtension(Url.PathPart(imageUrl));
+			string imageUrlWithoutExtension = imageUrl.Replace(imageExtension, string.Empty);
+
+			return string.Format(customResizeUrl, imageUrlWithoutExtension, imageExtension);
+		}
+	}
 }
