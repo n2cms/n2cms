@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Web;
 using System.Web.UI.WebControls;
 using N2.Web;
@@ -9,16 +10,27 @@ namespace N2.Edit.Web.UI.Controls
     public class ResizedImage : Image
     {
         static Url ImageHandlerUrl = N2.Context.Current.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Files/Resize.ashx");
+		// Example <add key="DetailImageResizeUrl" value="https://example.com{0}-__-200x300-tc{1}" />
+		protected readonly string DetailImageResizeUrl = ConfigurationManager.AppSettings["DetailImageResizeUrl"] ?? "";
 
-        public int MaxWidth { get; set; }
+		public int MaxWidth { get; set; }
         public int MaxHeight { get; set; }
         public string Hash { get; set; }
 
         public override void RenderBeginTag(System.Web.UI.HtmlTextWriter writer)
         {
-            Url url = GetResizedImageUrl(ImageUrl, MaxWidth, MaxHeight);
-            if (!string.IsNullOrEmpty(Hash))
-                url = url.AppendQuery("hash", Hash);
+			Url url;
+			if (!String.IsNullOrEmpty(DetailImageResizeUrl))
+			{
+				url = GetCustomResizedImageUrl(DetailImageResizeUrl, ImageUrl);
+				//hash is making problem with s3 do not include it
+			}
+			else
+			{
+				url = GetResizedImageUrl(ImageUrl, MaxWidth, MaxHeight);
+				if (!string.IsNullOrEmpty(Hash))
+					url = url.AppendQuery("hash", Hash);
+			}
             writer.AddAttribute("src", url);
             base.RenderBeginTag(writer);
         }
