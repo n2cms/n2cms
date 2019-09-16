@@ -11,9 +11,9 @@
         <asp:PlaceHolder runat="server">
 		<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapCssPath) %>" type="text/css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="<%= MapCssUrl("all.css") %>" />
-	    <link rel="stylesheet" type="text/css" href="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.IconsCssPath) %>" />
 		<link rel="stylesheet" type="text/css" href="<%= MapCssUrl("framed.css")%>" />
 		<link rel="stylesheet" type="text/css" href="<%= MapCssUrl("tree.css")%>" />
+        <script  src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.IconsCssPath) %>" type="text/javascript"></script>
 		<script src="../../Resources/Js/ContextMenu.js?v=<%=Register.ScriptVersion %>" type="text/javascript" ></script>
 		<script src="Tree.js?v=<%=Register.ScriptVersion %>" type="text/javascript"></script>
 		</asp:PlaceHolder>

@@ -127,10 +127,9 @@ jQuery(document).ready(function(){{
                 return;
             }
 
-            Register.StyleSheet(Page, Register.DefaultIconsCssPath);
+			Register.JavaScript(Page, Register.DefaultIconsCssPath);
 
-
-            if (state.IsFlagSet(ControlPanelState.Visible))
+			if (state.IsFlagSet(ControlPanelState.Visible))
                 AppendDefinedTemplate(VisibleHeaderTemplate, this);
             if (state.IsFlagSet(ControlPanelState.DragDrop))
                 AppendDefinedTemplate(DragDropHeaderTemplate, this);

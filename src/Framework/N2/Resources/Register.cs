@@ -65,7 +65,7 @@ namespace N2.Resources
 		public const string DefaultJQueryUiJsPath = "//code.jquery.com/ui/" + JQueryUiVersion + "/jquery-ui.min.js";
 		public const string DefaultFancyboxJsPath = "//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js";
 		public const string DefaultFancyboxCssPath = "//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css";
-		public const string DefaultIconsCssPath = "//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css";
+		public const string DefaultIconsCssPath = "https://kit.fontawesome.com/786a666894.js";
 		public const string DefaultAngularJsRoot = "//cdnjs.cloudflare.com/ajax/libs/angular.js/" + AngularJsVersion + "/";
 		public const string DefaultAngularStrapJsRoot = "//cdnjs.cloudflare.com/ajax/libs/angular-strap/0.7.8/angular-strap.min.js";
         public const string DefaultAdminCSSFile = "/admin.css";
