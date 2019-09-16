@@ -403,3 +403,11 @@ input.dp-applied {
     position: relative;
     float: none;
 }
+
+.btn-separate {
+	margin: 0 18px 0 20px;
+}
+
+.navbar-fixed-bottom .btn-group.dropup.open > .dropdown-menu {
+	margin-bottom: 0;
+}

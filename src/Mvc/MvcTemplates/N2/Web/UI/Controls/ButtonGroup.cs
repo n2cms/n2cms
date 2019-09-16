@@ -11,6 +11,7 @@ namespace N2.Edit.Web.UI.Controls
 	public class ButtonGroup : Control
 	{
 		public string CssClass { get; set; }
+		public string ButtonGroupName { get; set; }
 
 		protected override void Render(HtmlTextWriter writer)
 		{
@@ -23,27 +24,60 @@ namespace N2.Edit.Web.UI.Controls
 			}
 
 			var engine = Page.GetEngine();
-			writer.Write("<div class='btn-group" + (engine.Config.Sections.Management.IsToolbarOnBottom ? " dropup" : "") + "'");
-			writer.Write(">");
 
-			AddOnClientClickBehavior(visibleChildren[0]);
-			visibleChildren[0].CssClass += " btn " + CssClass;
-			visibleChildren[0].RenderControl(writer);
-			
-			if (visibleChildren.Count > 1)
+			//Generate button group with caret
+			if (String.IsNullOrEmpty(ButtonGroupName))
 			{
-				writer.Write("<a href='#' class='btn " + CssClass + " dropdown-toggle' data-toggle='dropdown'><span class='caret'></span></a>");
-				writer.Write("<ul class='dropdown-menu'>");
-				for (int i = 1; i < visibleChildren.Count; i++)
+				writer.Write("<div class='btn-group" + (engine.Config.Sections.Management.IsToolbarOnBottom ? " dropup" : "") + "'");
+				writer.Write(">");
+
+				AddOnClientClickBehavior(visibleChildren[0]);
+				visibleChildren[0].CssClass += " btn " + CssClass;
+				visibleChildren[0].RenderControl(writer);
+
+				if (visibleChildren.Count > 1)
 				{
-					writer.Write("<li>");
-					AddOnClientClickBehavior(visibleChildren[i]);
-					visibleChildren[i].RenderControl(writer);
-					writer.Write("</li>");					
+					writer.Write("<a href='#' class='btn " + CssClass + " dropdown-toggle' data-toggle='dropdown'><span class='caret'></span></a>");
+
+					writer.Write("<ul class='dropdown-menu'>");
+					for (int i = 1; i < visibleChildren.Count; i++)
+					{
+						writer.Write("<li>");
+						AddOnClientClickBehavior(visibleChildren[i]);
+						visibleChildren[i].RenderControl(writer);
+						writer.Write("</li>");
+					}
+					writer.Write("</ul>");
 				}
-				writer.Write("</ul>");
+				writer.Write("</div>");
 			}
-			writer.Write("</div>");
+			else // generate separate named button with options on first place
+			{
+				writer.Write("<div class='btn-group" + (engine.Config.Sections.Management.IsToolbarOnBottom ? " dropup" : "") + "'");
+				writer.Write(">");
+
+				if (visibleChildren.Count > 1)
+				{
+					writer.Write("<a href='#' class='btn btn-options " + CssClass + " dropdown-toggle' data-toggle='dropdown'>" + ButtonGroupName + "</a>");
+
+					writer.Write("<ul class='dropdown-menu'>");
+					for (int i = 1; i < visibleChildren.Count; i++)
+					{
+						writer.Write("<li>");
+						AddOnClientClickBehavior(visibleChildren[i]);
+						visibleChildren[i].RenderControl(writer);
+						writer.Write("</li>");
+					}
+					writer.Write("</ul>");
+				}
+				writer.Write("</div>");
+
+				AddOnClientClickBehavior(visibleChildren[0]);
+				visibleChildren[0].CssClass += " btn btn-separate " + CssClass;
+				visibleChildren[0].RenderControl(writer);
+
+			}
+
 		}
 
 		private void AddOnClientClickBehavior(WebControl actionControl)
