@@ -11,7 +11,8 @@ namespace N2.Edit.Web.UI.Controls
 	public class ButtonGroup : Control
 	{
 		public string CssClass { get; set; }
-		public string ButtonGroupName { get; set; }
+		public bool SeparateOptionsButton { get; set; }
+		public string Text { get; set; }
 
 		protected override void Render(HtmlTextWriter writer)
 		{
@@ -26,7 +27,7 @@ namespace N2.Edit.Web.UI.Controls
 			var engine = Page.GetEngine();
 
 			//Generate button group with caret
-			if (String.IsNullOrEmpty(ButtonGroupName))
+			if (!SeparateOptionsButton)
 			{
 				writer.Write("<div class='btn-group" + (engine.Config.Sections.Management.IsToolbarOnBottom ? " dropup" : "") + "'");
 				writer.Write(">");
@@ -53,12 +54,13 @@ namespace N2.Edit.Web.UI.Controls
 			}
 			else // generate separate named button with options on first place
 			{
+				string optionsButtonName = String.IsNullOrEmpty(Text) ? "Save Options" : Text;
 				writer.Write("<div class='btn-group" + (engine.Config.Sections.Management.IsToolbarOnBottom ? " dropup" : "") + "'");
 				writer.Write(">");
 
 				if (visibleChildren.Count > 1)
 				{
-					writer.Write("<a href='#' class='btn btn-options " + CssClass + " dropdown-toggle' data-toggle='dropdown'>" + ButtonGroupName + "</a>");
+					writer.Write("<a href='#' class='btn btn-options " + CssClass + " dropdown-toggle' data-toggle='dropdown'>" + optionsButtonName + "</a>");
 
 					writer.Write("<ul class='dropdown-menu'>");
 					for (int i = 1; i < visibleChildren.Count; i++)

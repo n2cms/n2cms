@@ -120,7 +120,7 @@
   <data name="btnSave.Text" xml:space="preserve">
     <value>Save and publish</value>
   </data>
-  <data name="btnSaveOptions.ButtonGroupName" xml:space="preserve">
+  <data name="btnSaveOptions.Text" xml:space="preserve">
     <value>Save Options</value>
   </data>
   <data name="btnSave.ToolTip" xml:space="preserve">
