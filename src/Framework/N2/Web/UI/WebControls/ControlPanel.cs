@@ -128,7 +128,6 @@ jQuery(document).ready(function(){{
             }
             
 			Register.StyleSheet(Page, Register.DefaultIconsCssPath);
-			Register.JavaScript(Page, Register.DefaultIconsJsPath);
 
 			if (state.IsFlagSet(ControlPanelState.Visible))
                 AppendDefinedTemplate(VisibleHeaderTemplate, this);

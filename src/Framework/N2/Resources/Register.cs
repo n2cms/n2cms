@@ -35,7 +35,6 @@ namespace N2.Resources
 			FancyboxCssPath = DefaultFancyboxCssPath;
 			FancyboxJsPath = DefaultFancyboxJsPath;
 			IconsCssPath = DefaultIconsCssPath;
-			IconsJsPath = DefaultIconsJsPath;
 			JQueryJsPath = DefaultJQueryJsPath;
 			JQueryUiPath = DefaultJQueryUiJsPath;
 			JQueryPluginsPath = DefaultJQueryPluginsPath;
@@ -67,7 +66,6 @@ namespace N2.Resources
 		public const string DefaultFancyboxJsPath = "//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js";
 		public const string DefaultFancyboxCssPath = "//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css";
 		public const string DefaultIconsCssPath = "//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css";
-		public const string DefaultIconsJsPath = "//kit.fontawesome.com/786a666894.js";
 		public const string DefaultAngularJsRoot = "//cdnjs.cloudflare.com/ajax/libs/angular.js/" + AngularJsVersion + "/";
 		public const string DefaultAngularStrapJsRoot = "//cdnjs.cloudflare.com/ajax/libs/angular-strap/0.7.8/angular-strap.min.js";
         public const string DefaultAdminCSSFile = "/admin.css";
@@ -128,7 +126,6 @@ namespace N2.Resources
 
 		/// <summary>The path to the icon css classes.</summary>
 		public static string IconsCssPath { get; set; }
-		public static string IconsJsPath { get; set; }
 
 		/// <summary>The path to Fancybox JS library.</summary>
 		public static string FancyboxJsPath { get; set; }

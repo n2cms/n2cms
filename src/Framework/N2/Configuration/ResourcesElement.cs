@@ -170,12 +170,5 @@ namespace N2.Configuration
 			get { return (string)base["iconsCssPath"]; }
 			set { base["iconsCssPath"] = value; }
 		}
-
-		[ConfigurationProperty("iconsJsPath", DefaultValue = N2.Resources.Register.DefaultIconsJsPath)]
-		public string IconsJsPath
-		{
-			get { return (string)base["iconsJsPath"]; }
-			set { base["iconsJsPath"] = value; }
-		}
 	}
 }

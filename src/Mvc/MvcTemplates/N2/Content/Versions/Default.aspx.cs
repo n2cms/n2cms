@@ -37,7 +37,6 @@ namespace N2.Edit.Versions
             publishedItem = Selection.SelectedItem.VersionOf.Value ?? Selection.SelectedItem;
 
             Page.StyleSheet(Register.IconsCssPath);
-			Page.JavaScript(Register.IconsJsPath);
 
             base.OnInit(e);
         }
