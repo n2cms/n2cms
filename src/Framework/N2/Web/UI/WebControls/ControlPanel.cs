@@ -126,8 +126,9 @@ jQuery(document).ready(function(){{
                 AppendDefinedTemplate(HiddenTemplate, this);
                 return;
             }
-
-			Register.JavaScript(Page, Register.DefaultIconsCssPath);
+            
+			Register.StyleSheet(Page, Register.DefaultIconsCssPath);
+			Register.JavaScript(Page, Register.DefaultIconsJsPath);
 
 			if (state.IsFlagSet(ControlPanelState.Visible))
                 AppendDefinedTemplate(VisibleHeaderTemplate, this);

@@ -54,6 +54,7 @@ namespace N2.Resources
 			Register.BootstrapTimePickerJsPath = configFactory.Sections.Web.Resources.BootstrapTimePickerJsPath;
 
 			Register.IconsCssPath = configFactory.Sections.Web.Resources.IconsCssPath;
+			Register.IconsJsPath = configFactory.Sections.Web.Resources.IconsJsPath;
 		}
 
 		public void Stop()
