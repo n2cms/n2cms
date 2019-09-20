@@ -1,4 +1,4 @@
-<%@ Master MasterPageFile="../Simple.master" Language="C#" AutoEventWireup="true" CodeBehind="Framed.master.cs" Inherits="N2.Edit.Framed" meta:resourceKey="FramedResource" %>
+<%@ Master MasterPageFile="../Simple.master" Language="C#" AutoEventWireup="true" CodeBehind="Framed.Master.cs" Inherits="N2.Edit.Framed" meta:resourceKey="FramedResource" %>
 <%@ Import Namespace="N2.Web.Mvc.Html" %>
 
 <asp:Content ContentPlaceHolderID="Head" runat="server">

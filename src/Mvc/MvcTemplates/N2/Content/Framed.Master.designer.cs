@@ -9,6 +9,7 @@
 
 namespace N2.Edit {
     
+    
     public partial class Framed {
         
         /// <summary>
