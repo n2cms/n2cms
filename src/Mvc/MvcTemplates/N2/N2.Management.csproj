@@ -574,12 +574,12 @@
     </Compile>
     <Compile Include="Content\Versions\VersionInfo.cs" />
     <Compile Include="Content\Wizard\WizardOptionProvider.cs" />
-    <Compile Include="Content\Framed.master.cs">
-      <DependentUpon>Framed.master</DependentUpon>
+    <Compile Include="Content\Framed.Master.cs">
+      <DependentUpon>Framed.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Content\Framed.master.designer.cs">
-      <DependentUpon>Framed.master</DependentUpon>
+    <Compile Include="Content\Framed.Master.designer.cs">
+      <DependentUpon>Framed.Master</DependentUpon>
     </Compile>
     <Compile Include="Content\Globalization\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -1195,7 +1195,7 @@
     <Content Include="Content\App_LocalResources\ItemInfo.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Content\Framed.master" />
+    <Content Include="Content\Framed.Master" />
     <Content Include="Content\Navigation\ContextMenu.ascx" />
     <Content Include="Content\Navigation\Search.aspx" />
     <Content Include="Content\Navigation\Tree.aspx" />
