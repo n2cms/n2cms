@@ -8,6 +8,7 @@ using N2.Edit.Web;
 using N2.Resources;
 using N2.Web.Drawing;
 using System.Web;
+using System.Configuration;
 
 namespace N2.Edit.FileSystem
 {
@@ -186,5 +187,10 @@ namespace N2.Edit.FileSystem
             if (size > KiB) return string.Format("{0:0.0} KB", size / KiB);
             return string.Format("{0} B", size);
         }
-    }
+
+		protected string GetS3BucketURL()
+		{
+			return ConfigurationManager.AppSettings["S3.BucketURL"] ?? "";
+		}
+	}
 }
