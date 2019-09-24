@@ -9,6 +9,7 @@ using N2.Resources;
 using N2.Web.Drawing;
 using System.Web;
 using System.Configuration;
+using System.Security.Policy;
 
 namespace N2.Edit.FileSystem
 {
@@ -18,7 +19,12 @@ namespace N2.Edit.FileSystem
 
 		private IFileSystem Fs;
 
-        protected override void OnInit(EventArgs e)
+		protected string CustomImagePath { get; set; }
+		protected string CustomDetilResizePattern { get; set; }
+		protected bool UseCustomResizing { get; set; }
+		protected string DetilImageResizeUrl { get; set; }
+
+		protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
@@ -52,7 +58,15 @@ namespace N2.Edit.FileSystem
                 }
 
                 Ancestors = Find.EnumerateParents(Selection.SelectedItem, null, true).Where(a => a is AbstractNode).Reverse();
-                DataBind();
+				CustomImagePath = config.Images.CustomImagePath;
+				CustomDetilResizePattern = config.Images.CustomDetailResizePattern;
+				UseCustomResizing = config.Images.UseCustomResizing;
+				DetilImageResizeUrl = "";
+				if (UseCustomResizing) 
+					DetilImageResizeUrl = CustomImagePath + CustomDetilResizePattern; ;
+
+
+				DataBind();
                 LoadSizes();
                 Refresh(Selection.SelectedItem, ToolbarArea.Navigation, force: false);
             }
@@ -188,9 +202,6 @@ namespace N2.Edit.FileSystem
             return string.Format("{0} B", size);
         }
 
-		protected string GetS3BucketURL()
-		{
-			return ConfigurationManager.AppSettings["S3.BucketURL"] ?? "";
-		}
+
 	}
 }

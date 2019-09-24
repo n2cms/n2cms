@@ -22,16 +22,15 @@
 	<h1><% foreach (N2.ContentItem node in Ancestors) { %>/<a href="<%= Url.Parse(node is N2.Definitions.IFileSystemDirectory ? "Directory.aspx" : "File.aspx").AppendSelection(node) %>"><%= node.Title %></a><% } %></h1>
 
 	<div class="tabPanel" data-flag="Unclosable">
-	<a href="<%= GetS3BucketURL()%><%=SelectedItem.Url %>">
+	<a href="<%= CustomImagePath%><%=SelectedItem.Url %>">
 		<img src="<%= N2.Web.Url.ToAbsolute(Selection.SelectedItem.IconUrl) %>" alt="icon" />
 		<%= SelectedItem.Title %>
 		(<%= GetFileSize(SelectedFile.Size) %>)
 	</a>
 
-
 	<div class="fileContents">
 		<asp:TextBox ID="txtContent" runat="server" CssClass="fileContents" Visible="false" TextMode="MultiLine" />
-		<edit:ResizedImage MaxHeight="200" MaxWidth="300" ImageUrl="<%# SelectedFile.LocalUrl %>" runat="server" Hash="<%# SelectedFile.Updated.ToString() %>" />
+		<edit:ResizedImage MaxHeight="200" MaxWidth="300" ImageUrl="<%# SelectedFile.LocalUrl %>" runat="server" Hash="<%# SelectedFile.Updated.ToString() %>" DetailImageResizeUrl="<%# DetilImageResizeUrl%>"/>
 	</div>
 	</div>
 

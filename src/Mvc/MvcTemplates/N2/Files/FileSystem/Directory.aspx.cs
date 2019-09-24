@@ -24,9 +24,9 @@ namespace N2.Edit.FileSystem
 		protected bool IsMultiUpload, IsAllowed;
 		protected string ParentQueryString = "";
 		private string targetType, targetProperty, targetID, targetDomain, targetZone, selected, useDefaultUploadDirectory, versionIndex, versionKey = "";
-
-		// Example <add key="ThumbnailImageResizeUrl" value="https://example.com{0}-__-100x100-tc{1}" />
-		private readonly string ThumbnailImageResizeUrl = ConfigurationManager.AppSettings["ThumbnailImageResizeUrl"];
+		protected string CustomImagePath { get; set; }
+		protected string CustomThumbResizePattern { get; set; }
+		protected bool UseCustomResizing { get; set; }
 
 		protected override void RegisterToolbarSelection()
 		{
@@ -114,6 +114,9 @@ namespace N2.Edit.FileSystem
 			var authorizationToDelete = config.Sections.Management.UploadFolders.RequiredPermissionToDelete;
 			var authorizationToModify = config.Sections.Management.UploadFolders.RequiredPermissionToModify; //Edit (Rename Directory), copy, paste
 
+			CustomImagePath = config.Sections.Management.Images.CustomImagePath;
+			CustomThumbResizePattern = config.Sections.Management.Images.CustomThumbResizePattern;
+			UseCustomResizing = config.Sections.Management.Images.UseCustomResizing;
 			IsAllowed = btnDelete.Enabled = btnDelete.Visible = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, authorizationToDelete);
 			hlEdit.Visible = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, authorizationToModify);
 
@@ -259,8 +262,9 @@ namespace N2.Edit.FileSystem
 			if (!ImagesUtility.IsImagePath(url))
 				return "";
 
-			if (!string.IsNullOrWhiteSpace(ThumbnailImageResizeUrl))
+			if (UseCustomResizing && !string.IsNullOrWhiteSpace(CustomThumbResizePattern) && !string.IsNullOrWhiteSpace(CustomImagePath))
 			{
+				var ThumbnailImageResizeUrl = CustomImagePath + CustomThumbResizePattern;
 				return string.Format("background-image:url({0})", N2.Edit.Web.UI.Controls.ResizedImage.GetCustomResizedImageUrl(ThumbnailImageResizeUrl, url));
 			}
 			else

@@ -10,14 +10,14 @@ namespace N2.Edit.Web.UI.Controls
     public class ResizedImage : Image
     {
         static Url ImageHandlerUrl = N2.Context.Current.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Files/Resize.ashx");
-		// Example <add key="DetailImageResizeUrl" value="https://example.com{0}-__-200x300-tc{1}" />
-		protected readonly string DetailImageResizeUrl = ConfigurationManager.AppSettings["DetailImageResizeUrl"] ?? "";
 
 		public int MaxWidth { get; set; }
         public int MaxHeight { get; set; }
         public string Hash { get; set; }
+		public string DetailImageResizeUrl { get; set; }
 
-        public override void RenderBeginTag(System.Web.UI.HtmlTextWriter writer)
+
+		public override void RenderBeginTag(System.Web.UI.HtmlTextWriter writer)
         {
 			Url url;
 			if (!String.IsNullOrEmpty(DetailImageResizeUrl))
