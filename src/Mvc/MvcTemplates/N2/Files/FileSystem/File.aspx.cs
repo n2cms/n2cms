@@ -20,9 +20,9 @@ namespace N2.Edit.FileSystem
 		private IFileSystem Fs;
 
 		protected string CustomImagePath { get; set; }
-		protected string CustomDetilResizePattern { get; set; }
+		protected string CustomDetailResizePattern { get; set; }
 		protected bool UseCustomResizing { get; set; }
-		protected string DetilImageResizeUrl { get; set; }
+		protected string DetailImageResizeUrl { get; set; }
 
 		protected override void OnInit(EventArgs e)
         {
@@ -59,11 +59,11 @@ namespace N2.Edit.FileSystem
 
                 Ancestors = Find.EnumerateParents(Selection.SelectedItem, null, true).Where(a => a is AbstractNode).Reverse();
 				CustomImagePath = config.Images.CustomImagePath;
-				CustomDetilResizePattern = config.Images.CustomDetailResizePattern;
+				CustomDetailResizePattern = config.Images.CustomDetailResizePattern;
 				UseCustomResizing = config.Images.UseCustomResizing;
-				DetilImageResizeUrl = "";
-				if (UseCustomResizing) 
-					DetilImageResizeUrl = CustomImagePath + CustomDetilResizePattern; ;
+				DetailImageResizeUrl = "";
+				if (UseCustomResizing)
+					DetailImageResizeUrl = CustomImagePath + CustomDetailResizePattern; ;
 
 
 				DataBind();
