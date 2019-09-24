@@ -15,7 +15,9 @@
 		.container { width:400px; position:absolute; top:50%; left:50%; margin-top:-100px; margin-left:-200px; }
 		label { margin-right:10px; }
 	</style>
-    <link rel="stylesheet" href="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AdminCSSFile)%>" />
+	<asp:PlaceHolder runat="server">
+        <link rel="stylesheet" href="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AdminCSSFile)%>" />
+	</asp:PlaceHolder>
 </head>
 <body class="edit login">
 	<form id="form1" runat="server">
