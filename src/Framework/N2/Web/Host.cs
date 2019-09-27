@@ -160,8 +160,8 @@ namespace N2.Web
                         throw new ConfigurationErrorsException("Upload path configured for site '" + configElement.Name + "' cannot be empty.");
                     s.UploadFolders.Add(new FileSystemRoot(folder, s));
                 }
-	            foreach (NameValueConfigurationElement setting in configElement.Settings)
-		            s.Settings[setting.Name] = setting.Value;
+	            foreach (KeyValueConfigurationElement setting in configElement.Settings)
+		            s.Settings[setting.Key] = setting.Value;
                 sites.Add(s);
             }
             return sites;
