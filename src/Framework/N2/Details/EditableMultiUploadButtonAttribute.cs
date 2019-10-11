@@ -65,7 +65,9 @@ namespace N2.Details
             set { useDefaultUploadDirectory = value; }
         }
 
-        protected override Control AddEditor(Control container)
+		public string ReturnTabId { get; set; }
+
+		protected override Control AddEditor(Control container)
         {
             ((Page)HttpContext.Current.CurrentHandler).JavaScript("{ManagementUrl}/Resources/Js/LoadingModal.js?v="+Register.ScriptVersion);
 
@@ -114,7 +116,9 @@ namespace N2.Details
                     defaultUploadDirectoryPath = string.Format("{0}{1}/content/{2}", RootFolder.ToLower(), start.Name, slug.Create(itemType.Name));
                 }
 
-                var navigateUrl = string.Format("/N2/Files/FileSystem/Directory.aspx?selected={0}&TargetType={1}&TargetProperty={2}&TargetID={3}&TargetZone={4}&TargetDomain={5}&UseDefaultUploadDirectory={6}&VersionIndex={7}&VersionKey={8}", defaultUploadDirectoryPath, TargetType, TargetProperty, targetID, targetZoneName, targetDomain, UseDefaultUploadDirectory.ToString(), verIndex, verKey);
+				ReturnTabId = container.Closest(c => c is TabPanel)?.ClientID;
+
+				var navigateUrl = string.Format("/N2/Files/FileSystem/Directory.aspx?selected={0}&TargetType={1}&TargetProperty={2}&TargetID={3}&TargetZone={4}&TargetDomain={5}&UseDefaultUploadDirectory={6}&VersionIndex={7}&VersionKey={8}&ReturnTab={9}", defaultUploadDirectoryPath, TargetType, TargetProperty, targetID, targetZoneName, targetDomain, UseDefaultUploadDirectory.ToString(), verIndex, verKey, ReturnTabId);
                 HttpContext.Current.Response.Redirect(navigateUrl);
             };
             container.Controls.Add(btn);

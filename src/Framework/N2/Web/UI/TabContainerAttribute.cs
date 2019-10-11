@@ -32,6 +32,7 @@ namespace N2.Web.UI
         string tabText;
         bool registerTabCss;
         string cssClass;
+		string tabRedirectAfterSave;
 
         public TabContainerAttribute(string name)
             : base(name, 0)
@@ -62,15 +63,22 @@ namespace N2.Web.UI
             set { cssClass = value; }
         }
 
-        /// <summary>Adds the tab panel to a parent container and returns it.</summary>
-        /// <param name="container">The parent container onto which to add the container defined by this interface.</param>
-        /// <returns>The newly added tab panel.</returns>
-        public override Control AddTo(Control container)
+		public string TabRedirectAfterSave {
+			get { return tabRedirectAfterSave; }
+			set { tabRedirectAfterSave = value; }
+		}
+
+		/// <summary>Adds the tab panel to a parent container and returns it.</summary>
+		/// <param name="container">The parent container onto which to add the container defined by this interface.</param>
+		/// <returns>The newly added tab panel.</returns>
+		public override Control AddTo(Control container)
         {
             TabPanel p = new TabPanel();
             p.ID = Name;
             p.TabText = GetLocalizedText("TabText") ?? TabText;
             p.RegisterTabCss = registerTabCss;
+			p.TabRedirectAfterSave = tabRedirectAfterSave;
+
             if (string.IsNullOrEmpty(CssClass))
             {
                 p.CssClass = "tabPanel primaryTabs";

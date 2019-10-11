@@ -30,6 +30,8 @@ namespace N2.Web.UI.WebControls
         /// <summary>Displays this tab when the page is loaded.</summary>
         public bool Selected { get; set; }
 
+		public string TabRedirectAfterSave { get; set; }
+
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -47,6 +49,10 @@ namespace N2.Web.UI.WebControls
                 writer.AddAttribute("data-tab-text", TabText);
             if (Selected)
                 writer.AddAttribute("data-tab-selected", "true");
+			if (!string.IsNullOrEmpty(TabRedirectAfterSave))
+			{
+				writer.AddAttribute("data-tab-redirect", TabRedirectAfterSave);
+			}
 
             base.AddAttributesToRender(writer);
         }

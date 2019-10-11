@@ -66,9 +66,13 @@
 
 	// creates a tab element
 	n2tabs.createTab = function (containerQuery, tabContents, index) {
-		var li = "<li>";
+		var redirectTab = tabContents.getAttribute("data-tab-redirect");
+		if (redirectTab !== null) {
+			redirectTab = "data-tab-redirect = " + redirectTab;
+		} else redirectTab = "";
+		var li = "<li " + redirectTab +">";
 		if (index == 0)
-			li = "<li class='first'>";
+			li = "<li class='first' " + redirectTab +">";
 
 		var a = "<a href='"
 			+ (tabContents.getAttribute("data-tab-href") || ("#" + tabContents.id))

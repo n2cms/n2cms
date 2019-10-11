@@ -14,7 +14,7 @@
 			OnCommand="OnPublishCommand" runat="server" 
 			CssClass="command iconed publish" 
 			meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
-        <asp:LinkButton ID="btnSaveUnpublished" data-icon-class="fa fa-save" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain iconed save" meta:resourceKey="btnSaveUnpublished">Save</asp:LinkButton>
+        <asp:LinkButton ID="btnSaveUnpublished" data-icon-class="fa fa-save" OnClientClick="StoreActiveTab()" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain iconed save" meta:resourceKey="btnSaveUnpublished">Save</asp:LinkButton>
 		<asp:LinkButton ID="btnPreview" data-icon-class="fa fa-eye" OnCommand="OnPreviewCommand" runat="server" CssClass="command plain iconed preview"
 			meta:resourceKey="btnPreview">Save and preview</asp:LinkButton>
 		<asp:HyperLink ID="hlFuturePublish" data-icon-class="fa fa-clock-o" NavigateUrl="#futurePanel" CssClass="command plain iconed future hidden-action" runat="server" meta:resourceKey="hlSavePublishInFuture">Save and publish version in future</asp:HyperLink>
@@ -73,6 +73,7 @@
     </div>
 
 	</edit:permissionpanel>
+    <asp:HiddenField id= "selectedTab" value="" runat="server" ClientIDMode="Static"></asp:HiddenField>
 
         <%--  	
     <table>
@@ -148,8 +149,14 @@
             $('#<%=btnSaveUnpublished.ClientID%>').attr("disabled", "disabled").addClass('disabled');
             $('#<%=hlFuturePublish.ClientID%>').attr("disabled", "disabled").addClass('disabled');
             $('#<%=btnUnpublish.ClientID%>').attr("disabled", "disabled").addClass('disabled');
+            }
         }
-    }
+        function StoreActiveTab() {
+            //Send hash to the server through hidden field
+            if (window.location.hash) {
+                $('#selectedTab').val(window.location.hash);
+            }
+        }
 
 	</script>
     
