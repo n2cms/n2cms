@@ -21,7 +21,7 @@ namespace N2.Edit.FileSystem.Items
         string localUrl;
         string originalName;
 
-        //public override bool NotExpandable { get { return true; } }
+        public override bool NotExpandable { get { return true; } }
 
         public Directory()
         {
