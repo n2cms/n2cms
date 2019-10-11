@@ -16,6 +16,7 @@ using N2.Edit.Activity;
 using N2.Management.Activity;
 using N2.Edit.AutoPublish;
 using N2.Configuration;
+using N2.Web.UI;
 
 namespace N2.Edit
 {
@@ -129,7 +130,6 @@ namespace N2.Edit
 		}
 
 
-
 		protected void OnPublishCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = ie.CreateCommandContext();
@@ -210,7 +210,6 @@ namespace N2.Edit
         protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
         {
             var ctx = ie.CreateCommandContext();
-
             try
             {
                 if (ctx.Content.VersionOf.HasValue)
@@ -234,16 +233,26 @@ namespace N2.Edit
                     Engine.Persister.Save(item);
                 }
 
-                Url redirectTo = ManagementPaths.GetEditExistingItemUrl(ctx.Content);
+				Url redirectTo = ManagementPaths.GetEditExistingItemUrl(ctx.Content);
                 if (!string.IsNullOrEmpty(Request["returnUrl"]))
                     redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
 
-                HandleResult(ctx, redirectTo);
-            }
+				//Check if tab redirection needed 
+				if (!String.IsNullOrWhiteSpace(selectedTab.Value))
+				{
+					var tabName = selectedTab.Value.Split('_').Last();
+					var tabContainerDefinition = ctx.Definition.Containers.Where(c =>c is TabContainerAttribute && c.Name == tabName).FirstOrDefault();
+					if (tabContainerDefinition != null && !String.IsNullOrWhiteSpace((tabContainerDefinition as TabContainerAttribute).TabRedirectAfterSave))
+					{
+						redirectTo = redirectTo+ "#"+ie.ClientID +"_"+ (tabContainerDefinition as TabContainerAttribute).TabRedirectAfterSave;
+					}
+				}
+				HandleResult(ctx, redirectTo);
+			}
             catch (N2Exception ex)
             {
                 SetErrorMessage(cvException, ex);
-            }
+			}
         }
 
 		protected void OnUnpublishCommand(object sender, CommandEventArgs e)

@@ -27,6 +27,7 @@ namespace N2.Edit.FileSystem
 		protected string CustomImagePath { get; set; }
 		protected string CustomThumbResizePattern { get; set; }
 		protected bool UseCustomResizing { get; set; }
+		protected string ReturnTabId { get; set; }
 
 		protected override void RegisterToolbarSelection()
 		{
@@ -133,6 +134,9 @@ namespace N2.Edit.FileSystem
 				targetDomain = Request.QueryString["TargetDomain"];
 				versionIndex = Request.QueryString["VersionIndex"] ?? "";
 				versionKey = Request.QueryString["VersionKey"] ?? "";
+				ReturnTabId = Request.QueryString["ReturnTab"] ?? "";
+				if (!string.IsNullOrEmpty(ReturnTabId))
+					ReturnTabId = "#" + ReturnTabId;
 
 				if (!string.IsNullOrEmpty(targetType) && !string.IsNullOrEmpty(targetProperty) && !string.IsNullOrEmpty(targetID))
 				{
@@ -146,7 +150,7 @@ namespace N2.Edit.FileSystem
 				}
 
 				//Get item by id.
-				ContentItem item = Find.Items.Where.ID.Eq(int.Parse(targetID)).Select().First();
+					ContentItem item = Find.Items.Where.ID.Eq(int.Parse(targetID)).Select().First();
 
 				//Get a specific version of the item if version index and key are provided.
 				if (!string.IsNullOrWhiteSpace(versionIndex) && !string.IsNullOrWhiteSpace(versionKey))
@@ -155,7 +159,7 @@ namespace N2.Edit.FileSystem
 					item = cvr.ParseVersion(versionIndex, versionKey, item);
 				}
 
-				var navigateUrl = Engine.ManagementPaths.GetEditExistingItemUrl(item);
+				var navigateUrl = Engine.ManagementPaths.GetEditExistingItemUrl(item) + ReturnTabId;
 				hlCancel.NavigateUrl = navigateUrl;
 
 				btnDelete.Visible = hlEdit.Visible = false;
@@ -195,6 +199,9 @@ namespace N2.Edit.FileSystem
 			targetDomain = Request.QueryString["TargetDomain"] ?? "";
 			versionIndex = Request.QueryString["VersionIndex"] ?? "";
 			versionKey = Request.QueryString["VersionKey"] ?? "";
+			ReturnTabId = Request.QueryString["ReturnTab"] ?? "";
+			if (!string.IsNullOrEmpty(ReturnTabId))
+				ReturnTabId = "#" + ReturnTabId;
 
 			//Get item by id.
 			ContentItem item = Find.Items.Where.ID.Eq(int.Parse(targetID)).Select().First();
@@ -240,7 +247,7 @@ namespace N2.Edit.FileSystem
 				}
 			}
 
-			Response.Redirect(Engine.ManagementPaths.GetEditExistingItemUrl(item));
+			Response.Redirect(Engine.ManagementPaths.GetEditExistingItemUrl(item)+ ReturnTabId);
 		}
 
 		private void Delete(string itemsToDelete, IEnumerable<string> allowed, Action<string> deleteAction)
