@@ -444,7 +444,19 @@ namespace N2.Management.Api
 			var selectedItem = Selection.SelectedItem;
 			var filter = engine.EditManager.GetEditorFilter(context.User);
 			var structure = ApiExtensions.BuildBranchStructure(filter, engine.Resolve<IContentAdapterProvider>(), selectedItem, root);
-			return ApiExtensions.CreateNode(structure, engine.Resolve<IContentAdapterProvider>(), filter);
+
+            //var uploadFolder = structure.Children.Where(x => x.Current.Path == "/upload/").FirstOrDefault();
+            //Option 1: set non expandable on the Upload directory in the structure still traverse to the selected item
+            //if (uploadFolder != null)
+            //    uploadFolder.Current.NotExpandable = true;
+            //Option 2: remove upload folder will not traverse but upload folder will not be into tree
+            //if (uploadFolder != null)
+            //    structure.Children.Remove(UploadFolderSource);
+            //Option 3: remove children of upload folder will execute fast but we will lost expand arrow in the tree 
+            //if (uploadFolder != null)
+            //    structure.Children.Remove(UploadFolderSource);
+
+            return ApiExtensions.CreateNode(structure, engine.Resolve<IContentAdapterProvider>(), filter);
 		}
 
 		private IEnumerable<TokenDefinition> GetTokens(HttpContextBase context)

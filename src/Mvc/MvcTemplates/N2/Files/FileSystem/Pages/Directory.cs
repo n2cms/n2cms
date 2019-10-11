@@ -21,6 +21,8 @@ namespace N2.Edit.FileSystem.Items
         string localUrl;
         string originalName;
 
+        public override bool NotExpandable { get { return true; } }
+
         public Directory()
         {
         }
@@ -28,6 +30,7 @@ namespace N2.Edit.FileSystem.Items
         public Directory(DirectoryData directory, ContentItem parent)
         {
             Parent = parent;
+            
 
             originalName = directory.Name;
             Name = directory.Name;
