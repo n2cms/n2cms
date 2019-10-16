@@ -120,6 +120,21 @@ namespace N2.Edit.Navigation
                             {
                                 dir = uploadSiteContentTemplateFolder;
                             }
+
+                            var monthName = DateTime.Now.ToString("yyyy-MM");
+                            var uploadSiteContentTemplateMonthFolder = uploadSiteContentTemplateFolder.GetDirectories().FirstOrDefault(d => d.Name == monthName.ToLower());
+                            if (uploadSiteContentTemplateMonthFolder == null)
+                            {
+                                var newDir = VirtualPathUtility.AppendTrailingSlash(Request.ApplicationPath + uploadSiteContentTemplateFolder.LocalUrl) + monthName.ToLower();
+                                FS.CreateDirectory(newDir);
+                                uploadSiteContentTemplateMonthFolder = uploadSiteContentTemplateFolder.GetDirectories().FirstOrDefault(d => d.Name == monthName.ToLower());
+
+                                dir = uploadSiteContentTemplateMonthFolder;
+                            }
+                            else
+                            {
+                                dir = uploadSiteContentTemplateMonthFolder;
+                            }
                         } 
                     }
                     

@@ -101,7 +101,22 @@ namespace N2.Edit.FileSystem
 								Selection.SelectedItem = uploadSiteContentTemplateFolder;
 							}
 
-						}
+                            var monthName = DateTime.Now.ToString("yyyy-MM");
+                            var uploadSiteContentTemplateMonthFolder = uploadSiteContentTemplateFolder.GetDirectories().FirstOrDefault(d => d.Name == monthName.ToLower());
+                            if (uploadSiteContentTemplateMonthFolder == null)
+                            {
+                                var newDir = VirtualPathUtility.AppendTrailingSlash(Request.ApplicationPath + uploadSiteContentTemplateFolder.LocalUrl) + monthName.ToLower();
+                                FS.CreateDirectory(newDir);
+                                uploadSiteContentTemplateMonthFolder = uploadSiteContentTemplateFolder.GetDirectories().FirstOrDefault(d => d.Name == monthName.ToLower());
+
+                                Selection.SelectedItem = uploadSiteContentTemplateMonthFolder;
+                            }
+                            else
+                            {
+                                Selection.SelectedItem = uploadSiteContentTemplateMonthFolder;
+                            }
+
+                        }
 					}
 				}
 			}
