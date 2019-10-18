@@ -150,17 +150,17 @@ namespace N2.Edit.FileSystem
 				versionIndex = Request.QueryString["VersionIndex"] ?? "";
 				versionKey = Request.QueryString["VersionKey"] ?? "";
 				ReturnTabId = Request.QueryString["ReturnTab"] ?? "";
-				if (!string.IsNullOrEmpty(ReturnTabId))
-					ReturnTabId = "#" + ReturnTabId;
+			
 
 				if (!string.IsNullOrEmpty(targetType) && !string.IsNullOrEmpty(targetProperty) && !string.IsNullOrEmpty(targetID))
 				{
-					ParentQueryString = string.Format("TargetType={0}&TargetProperty={1}&TargetID={2}{3}{4}{5}{6}",
+					ParentQueryString = string.Format("TargetType={0}&TargetProperty={1}&TargetID={2}{3}{4}{5}{6}{7}",
 						targetType, targetProperty, targetID,
 						string.IsNullOrEmpty(targetZone) ? "" : "&TargetZone=" + targetZone,
 						string.IsNullOrEmpty(targetDomain) ? "" : "&TargetDomain=" + targetDomain,
 						string.IsNullOrEmpty(versionIndex) ? "" : "&VersionIndex=" + versionIndex,
-						string.IsNullOrEmpty(versionKey) ? "" : "&VersionKey=" + versionKey
+						string.IsNullOrEmpty(versionKey) ? "" : "&VersionKey=" + versionKey,
+						string.IsNullOrEmpty(ReturnTabId) ? "" : "&ReturnTab=" + ReturnTabId
 					);
 				}
 
@@ -174,7 +174,9 @@ namespace N2.Edit.FileSystem
 					item = cvr.ParseVersion(versionIndex, versionKey, item);
 				}
 
-				var navigateUrl = Engine.ManagementPaths.GetEditExistingItemUrl(item) + ReturnTabId;
+				var navigateUrl = Engine.ManagementPaths.GetEditExistingItemUrl(item);
+				if (!string.IsNullOrEmpty(ReturnTabId)) navigateUrl = "#" + ReturnTabId;
+
 				hlCancel.NavigateUrl = navigateUrl;
 
 				btnDelete.Visible = hlEdit.Visible = false;
