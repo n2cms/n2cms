@@ -17,17 +17,22 @@ namespace N2.Web
         private IUrlParser parser;
         private IContentItemRepository repository;
         private IDefinitionManager definitions;
+        private bool enabled;
 
-        public DirectUrlInjector(IHost host, IUrlParser parser, IContentItemRepository repository, IDefinitionManager definitions)
+        public DirectUrlInjector(IHost host, IUrlParser parser, IContentItemRepository repository, IDefinitionManager definitions, Configuration.EngineSection config)
         {
             this.host = host;
             this.parser = parser;
             this.repository = repository;
             this.definitions = definitions;
+            this.enabled = config.DirectUrlInjector.Enabled;
         }
 
         void parser_BuildingUrl(object sender, UrlEventArgs e)
         {
+            if (!enabled)
+                return;
+
             var source = e.AffectedItem as IUrlSource;
             if (source == null || e.AffectedItem.ID == 0)
                 return;
@@ -40,6 +45,9 @@ namespace N2.Web
 
         void parser_PageNotFound(object sender, PageNotFoundEventArgs e)
         {
+            if (!enabled)
+                return;
+
             Url url = e.Url;
             var segments = url.Path.Trim('~', '/').Split('/');
             var applicationSegments = Url.ApplicationPath.Count(c => c == '/');

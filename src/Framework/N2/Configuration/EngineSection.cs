@@ -76,6 +76,14 @@ namespace N2.Configuration
             set { base["scheduler"] = value; }
         }
 
+        /// <summary>DirectUrlInjector related configuration.</summary>
+        [ConfigurationProperty("directUrlInjector")]
+        public DirectUrlInjectorElement DirectUrlInjector
+        {
+            get { return (DirectUrlInjectorElement)base["directUrlInjector"]; }
+            set { base["directUrlInjector"] = value; }
+        }
+
         /// <summary>A collection of services that are registered in the container before the default ones. This is a place through which core services can be replaced.</summary>
         [ConfigurationProperty("components")]
         public ComponentCollection Components

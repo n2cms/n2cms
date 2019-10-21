@@ -324,6 +324,11 @@
 									<xs:attribute name="executeOnMachineNamed" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
+              <xs:element name="directUrlInjector" minOccurs="0">
+                <xs:complexType>
+                  <xs:attribute name="enabled" type="xs:boolean" use="optional" />
+                </xs:complexType>
+              </xs:element>
 							<xs:element name="components" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
