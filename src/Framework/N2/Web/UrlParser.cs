@@ -61,6 +61,12 @@ namespace N2.Web
             set { Url.DefaultDocument = value; }
         }
 
+        /// <summary>Get the original web request</summary>
+        public string WebContextUrl
+        {
+            get { return webContext != null ? webContext.Url.ToString() : string.Empty; }
+        }
+
         [Obsolete("Use FindPath")]
         /// <summary>Finds the path associated with an url.</summary>
         /// <param name="url">The url to the template to locate.</param>
