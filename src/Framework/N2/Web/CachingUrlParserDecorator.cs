@@ -59,6 +59,12 @@ namespace N2.Web
             get { return webContext.CurrentPage ?? (webContext.CurrentPage = FindPath(webContext.Url).CurrentPage); }
         }
 
+        /// <summary>Get the original web request</summary>
+        public string WebContextUrl
+        {
+            get { return webContext != null ? webContext.Url.ToString() : string.Empty; }
+        }
+
         public TimeSpan SlidingExpiration
         {
             get { return slidingExpiration; }
