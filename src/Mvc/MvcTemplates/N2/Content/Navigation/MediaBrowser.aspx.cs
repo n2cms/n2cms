@@ -25,8 +25,10 @@ namespace N2.Edit.Navigation
         public const int TakeDefault = 40;
         public const string AjaxMediaBrowserRetriever = "MediaBrowserHandler.ashx";
         public MediaBrowserModel mediaBrowserModel;
+		protected string CustomThumbResizePattern { get; set; }
+		protected bool UseCustomResizing { get; set; }
 
-        protected override void OnInit(EventArgs e)
+		protected override void OnInit(EventArgs e)
         {
             FS = Engine.Resolve<IFileSystem>();
             Config = Engine.Resolve<ConfigurationManagerWrapper>().Sections.Management;
@@ -158,7 +160,11 @@ namespace N2.Edit.Navigation
                 var breadcrumb = mediaBrowserModel.Path.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 breadcrumb.Insert(0, "[root]");
                 mediaBrowserModel.Breadcrumb = breadcrumb.ToArray();
-           }
+				
+				var config = new ConfigurationManagerWrapper();
+				CustomThumbResizePattern = config.Sections.Management.Images.CustomThumbResizePattern;
+				UseCustomResizing = config.Sections.Management.Images.UseCustomResizing;
+			}
 
         }
 
@@ -178,6 +184,24 @@ namespace N2.Edit.Navigation
 				return -1;
 			}
         }
+
+		protected string GetBackgroundImg(FileReducedListModel f)
+		{
+			var backgroundImg = string.Empty;
+			if (f.IsImage)
+			{
+				if (UseCustomResizing && !string.IsNullOrWhiteSpace(CustomThumbResizePattern))
+				{
+					backgroundImg= Web.UI.Controls.ResizedImage.GetCustomResizedImageUrl(CustomThumbResizePattern, f.Url);
+				}
+				else
+				{
+					backgroundImg = f.Thumb;
+				}
+				backgroundImg = string.Format("{0}?v={1}", backgroundImg, f.Date);
+			}
+			return backgroundImg;
+		}
         
     }
 }
