@@ -13,6 +13,7 @@ using System.Web.Script.Serialization;
 using System.Collections.Specialized;
 using System.Web.Security;
 using System.Collections;
+using N2.Configuration;
 
 namespace N2.Edit.Navigation
 {
@@ -28,7 +29,11 @@ namespace N2.Edit.Navigation
         protected N2.Management.Files.FileSystem.Pages.ImageSizeCache ImageSizes { get { return Engine.Resolve<Management.Files.FileSystem.Pages.ImageSizeCache>(); } }
         private SelectionUtility Selection { get { return Engine.RequestContext.HttpContext.GetSelectionUtility(Engine); } }
         protected IEngine Engine;
-        protected ContentItem GetSelectedItem(NameValueCollection queryString)
+		private static ConfigurationManagerWrapper config = new ConfigurationManagerWrapper();
+		private static readonly string CustomThumbResizePattern = config.Sections.Management.Images.CustomThumbResizePattern;
+		private static readonly bool UseCustomResizing = config.Sections.Management.Images.UseCustomResizing;
+
+		protected ContentItem GetSelectedItem(NameValueCollection queryString)
         {
             string path = queryString[SelectionUtility.SelectedQueryKey];
             return N2.Context.Current.Resolve<N2.Edit.Navigator>().Navigate(path);
@@ -143,7 +148,7 @@ namespace N2.Edit.Navigation
                 Title = d.Title,
                 Url = fsRootPath + d.LocalUrl,
                 IsImage = regIsImage.IsMatch(d.Title),
-                Thumb = regIsImage.IsMatch(d.Title) ? fsRootPath + N2.Web.Drawing.ImagesUtility.GetExistingImagePath(d.LocalUrl, "thumb") : null,
+                Thumb = regIsImage.IsMatch(d.Title) ? fsRootPath + GetResizedImageUrl(d.LocalUrl) : null,
                 Size = d.Size,
                 Date = string.Format("{0:s}", d.Created),
                 SCount = d.Children.Count,
@@ -212,6 +217,17 @@ namespace N2.Edit.Navigation
             if (arr.Length == 1) return "?";
             return arr[arr.Length - 1];
         }
+
+		private static string GetResizedImageUrl(string url)
+		{
+			if (UseCustomResizing && !string.IsNullOrWhiteSpace(CustomThumbResizePattern))
+			{
+				return Web.UI.Controls.ResizedImage.GetCustomResizedImageUrl(CustomThumbResizePattern, url);
+			}
+			else { 
+				return N2.Web.Drawing.ImagesUtility.GetExistingImagePath(url, "thumb");
+			}
+		}
 
         #endregion
 

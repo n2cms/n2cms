@@ -190,15 +190,7 @@ namespace N2.Edit.Navigation
 			var backgroundImg = string.Empty;
 			if (f.IsImage)
 			{
-				if (UseCustomResizing && !string.IsNullOrWhiteSpace(CustomThumbResizePattern))
-				{
-					backgroundImg= Web.UI.Controls.ResizedImage.GetCustomResizedImageUrl(CustomThumbResizePattern, f.Url);
-				}
-				else
-				{
-					backgroundImg = f.Thumb;
-				}
-				backgroundImg = string.Format("{0}?v={1}", backgroundImg, f.Date);
+				backgroundImg = string.Format("{0}?v={1}", f.Thumb, f.Date);
 			}
 			return backgroundImg;
 		}
