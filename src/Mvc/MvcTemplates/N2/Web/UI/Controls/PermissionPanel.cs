@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI;
 using N2.Web.UI;
 using N2.Security;
+using N2.Web;
 
 namespace N2.Edit.Web.UI.Controls
 {
@@ -44,7 +45,9 @@ namespace N2.Edit.Web.UI.Controls
             var item = new SelectionUtility(this, Page.GetEngine()).SelectedItem;
             if (!Page.GetEngine().SecurityManager.IsAuthorized(Page.User, item, RequiredPermission))
             {
-                cv.IsValid = false;
+				var message = "User:" + Page.User.Identity.Name + "  Item:" + item.GetType().Name + "_" + item.ID + "_" + item.Title + "  RequiredPremission:" + RequiredPermission + " AlteredPermissions:" + item.AlteredPermissions;
+				Page.GetEngine().Resolve<IErrorNotifier>().Notify(new UnauthorizedAccessException(message));
+				cv.IsValid = false;
                 cv.RenderControl(writer);
             }
             else
