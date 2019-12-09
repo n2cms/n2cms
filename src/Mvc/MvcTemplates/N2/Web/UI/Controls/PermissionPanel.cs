@@ -7,6 +7,7 @@ using System.Web.UI;
 using N2.Web.UI;
 using N2.Security;
 using N2.Web;
+using System.Security.Principal;
 
 namespace N2.Edit.Web.UI.Controls
 {
@@ -45,7 +46,13 @@ namespace N2.Edit.Web.UI.Controls
 			var item = new SelectionUtility(this, Page.GetEngine()).SelectedItem;
 			if (!Page.GetEngine().SecurityManager.IsAuthorized(Page.User, item, RequiredPermission))
 			{
-				var message = "User: " + Page.User.Identity.Name + "(" + GetUserRoles(Page.User.Identity.Name) + ")" + "  Item:" + item.GetType().Name + "_" + item.ID + "_" + item.Title + ",  RequiredPremission:" + RequiredPermission + ", AlteredPermissions:" + item.AlteredPermissions + " , Write_Roles: (" + GetRolesForPermission(item, Permission.Write) + ")" + " , Publish_Roles: (" + GetRolesForPermission(item, Permission.Publish) + ")"+" , Admin_Roles: (" + GetRolesForPermission(item, Permission.Administer) + ")";
+				var message = "User: " + Page.User.Identity.Name + "(" + GetUserRoles(Page.User.Identity.Name) + ")" +
+							"  Item:" + item.GetType().Name + "_" + item.ID + "_" + item.State + "_" + item.Title + 
+							",  RequiredPremission:" + RequiredPermission + ", AlteredPermissions:" + 
+							item.AlteredPermissions + " , Write_Roles: (" + GetRolesForPermission(item, Permission.Write) + ")" + 
+							" , Publish_Roles: (" + GetRolesForPermission(item, Permission.Publish) + ")"+
+							" , Admin_Roles: (" + GetRolesForPermission(item, Permission.Administer) + ")"+
+							GetAdditionalInfo(item, Page.User);
 				Page.GetEngine().Resolve<IErrorNotifier>().Notify(new UnauthorizedAccessException(message));
 				cv.IsValid = false;
 				cv.RenderControl(writer);
@@ -69,20 +76,25 @@ namespace N2.Edit.Web.UI.Controls
 			return string.Join<string>(",", userRoles).ToString();
 		}
 
-		//private Permission GetItemRemapPermissions(ContentItem item, Permission permission)
-		//{
-		//	foreach (PermissionRemapAttribute remap in item.GetContentType().GetCustomAttributes(typeof(PermissionRemapAttribute), true))
-		//		permission = remap.Remap(permission);
-
-		//	return permission;
-		//}
-
 		private string GetRolesForPermission(ContentItem item, Permission permission) 
 		{
 			var roles = DynamicPermissionMap.GetRoles(item, permission);
 			if (roles !=null && roles.Any())
 				return string.Join(",",roles);
 			else return "";
+		}
+
+		private string GetAdditionalInfo(ContentItem item, IPrincipal user)
+		{
+			var detailsPublished = item.DetailCollections.Where(x => x.Name.StartsWith("AuthorizedRoles_Publish")).ToList();
+			var detailsWriters = item.DetailCollections.Where(x => x.Name.StartsWith("AuthorizedRoles_Write")).ToList();
+			string msg = "";
+			if (detailsPublished.Count > 0) { msg += " Detail_Published:" + detailsPublished[0].Count().ToString(); }
+			if (detailsWriters.Count > 0) { msg += " Detail_Writers:" + detailsWriters[0].Count().ToString(); }
+			
+			msg += " Item version:" + item.VersionIndex;
+			msg += " User is authorized to access an item:" + Page.GetEngine().SecurityManager.IsAuthorized(item, user).ToString();
+			return msg;
 		}
 	}
 }
