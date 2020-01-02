@@ -37,7 +37,7 @@ namespace N2.Details
         public EditableTagsAttribute()
         {
             PersistAs = PropertyPersistenceLocation.DetailCollection;
-            AutocompleteUrl = "{ManagementUrl}/tags.n2.ashx";
+            AutocompleteUrl = "{ManagementUrl}/tags.n2.ashx?action=tags";
         }
 
         public string AutocompleteUrl { get; set; }
@@ -63,7 +63,6 @@ namespace N2.Details
 
             tb.Attributes["data-autocomplete-url"] = AutocompleteUrl.ToUrl()
                 .AppendQuery("tagName", Name)
-                .AppendQuery("action=tags")
                 .AppendQuery("selected", item.Path)
                 .ResolveTokens();
             tb.Attributes["data-selected"] = item.Path;
