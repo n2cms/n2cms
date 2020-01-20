@@ -29,6 +29,7 @@ namespace N2.Details
         public bool ListItemsBelowCurrentStartPageOnly { get; set; }
         public EditableItemSelectionFilter Include { get; set; }
         public bool ShowUnpublish { get; set; }
+        public bool SortListByTitle { get; set; }
 
         public EditableItemSelectionWithValidationAttribute()
         {
@@ -38,6 +39,7 @@ namespace N2.Details
             ListItemsBelowCurrentStartPageOnly = false;
             Include = EditableItemSelectionFilter.Pages;
             ShowUnpublish = false;
+            SortListByTitle = false;
         }
 
         public EditableItemSelectionWithValidationAttribute(Type linkedType)
@@ -105,7 +107,11 @@ namespace N2.Details
             var items = Engine.Content.Search.Repository.Select(query, "ID", "Title");
 
             var listItems = items.Select(row => new ListItem((string)row["Title"], row["ID"].ToString())).ToList();
-
+            
+            if (SortListByTitle)
+            {
+                listItems.Sort((item1, item2) => item1.Text.CompareTo(item2.Text));
+            }
             if (Required)
             {
                 listItems.Insert(0, new ListItem("- Select -", "0"));
