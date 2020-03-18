@@ -22,7 +22,7 @@
 			ng-repeat="item in primaryNavigation"
 			ng-class="{ dropdown : item.Children.length, selected: isFlagged(item.Current.SelectedBy) }"
 			ng-include src="item.Current.TemplateUrl || 'App/Partials/MenuNode.html'"
-			ng-show="isDisplayable(item)">
+			ng-show="isDisplayable(item) && Context.CurrentItem.MetaInformation.system.ToolTip !== 'Directory' && Context.CurrentItem.MetaInformation.system.ToolTip !== 'File'">
 		</li>
 	</ul>
 
