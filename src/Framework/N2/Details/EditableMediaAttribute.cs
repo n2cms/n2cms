@@ -135,6 +135,23 @@ namespace N2.Details
             return rfv;
         }
 
+        protected override Control AddRegularExpressionValidator(Control container, Control editor)
+        {
+            var composite = (SelectingMediaControl)editor;
+            if (composite == null) return null;
+
+            RegularExpressionValidator rev = new RegularExpressionValidator();
+            rev.ID = Name + "_rev";
+            rev.ControlToValidate = composite.SelectorControl.Input.ID;
+            rev.ValidationExpression = ValidationExpression;
+            rev.Display = ValidatorDisplay.Dynamic;
+            rev.Text = GetLocalizedText("ValidationText") ?? ValidationText;
+            rev.ErrorMessage = GetLocalizedText("ValidationMessage") ?? ValidationMessage;
+            container.Controls.Add(rev);
+
+            return rev;
+        }
+
         #region IDisplayable Members
 
         public override Control AddTo(ContentItem item, string detailName, Control container)
