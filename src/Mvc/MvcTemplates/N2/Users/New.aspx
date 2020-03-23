@@ -9,7 +9,7 @@
         <div class="warning">Adding a new user is supported for classic Membership only. See "logout and register as a new user". </div>
     <% } else { %>
 	<asp:CreateUserWizard ID="createUserWizard" runat="server" 
-		OnCreatedUser="createUserWizard_CreatedUser" 
+		OnCreatedUser="createUserWizard_CreatedUser"
 		OnContinueButtonClick="createUserWizard_FinishButtonClick" 
 		LoginCreatedUser="False" meta:resourcekey="createUserWizardResource1">
 		<WizardSteps>
@@ -43,6 +43,11 @@
 						</div>
 						<asp:ObjectDataSource ID="odsRoles" runat="server" TypeName="N2.Edit.Membership.RolesSource" SelectMethod="GetAllRoles" />
 					</div>
+					<br />
+					<span style="color:red">
+					   <asp:Literal ID="ErrorMessage" runat="server" EnableViewState="False" ></asp:Literal>
+					</span>
+					<br />
 				</ContentTemplate>
 			</asp:CreateUserWizardStep>
 			<asp:CompleteWizardStep runat="server">
