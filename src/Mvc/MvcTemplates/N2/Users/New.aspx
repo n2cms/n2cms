@@ -43,6 +43,11 @@
 						</div>
 						<asp:ObjectDataSource ID="odsRoles" runat="server" TypeName="N2.Edit.Membership.RolesSource" SelectMethod="GetAllRoles" />
 					</div>
+					<br />
+					<span style="color:red">
+					   <asp:Literal ID="ErrorMessage" runat="server" EnableViewState="False" ></asp:Literal>
+					</span>
+					<br />
 				</ContentTemplate>
 			</asp:CreateUserWizardStep>
 			<asp:CompleteWizardStep runat="server">
