@@ -65,8 +65,9 @@ namespace N2.Edit.FileSystem.Items
         {
             get
             {
-                if (base.GetFiles().Count > 0)
-                    return "fa fa-folder-open-o";
+                //Commenting this out because GetFiles call can be costly.
+                //if (base.GetFiles().Count > 0)
+                //    return "fa fa-folder-open-o";
                 return base.IconClass;
             }
         }
