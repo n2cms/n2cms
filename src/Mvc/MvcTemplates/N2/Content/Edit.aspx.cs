@@ -257,22 +257,26 @@ namespace N2.Edit
 
 		protected void OnUnpublishCommand(object sender, CommandEventArgs e)
 		{
-            var ctx = ie.CreateCommandContext();
+			Validate();
+			if (IsValid)
+			{
+				var ctx = ie.CreateCommandContext();
 
-            try
-            {
-                Commands.Unpublish(ctx);
+				try
+				{
+					Commands.Unpublish(ctx);
 
-                //Log user activity
-                Engine.AddActivity(new ManagementActivity { Operation = "Unpublish", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
+					//Log user activity
+					Engine.AddActivity(new ManagementActivity { Operation = "Unpublish", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
 
-                var item = ie.CurrentItem;
-                Refresh(item, ToolbarArea.Both);
-            }
-            catch(N2Exception ex)
-            {
-                SetErrorMessage(cvException, ex);
-            }
+					var item = ie.CurrentItem;
+					Refresh(item, ToolbarArea.Both);
+				}
+				catch (N2Exception ex)
+				{
+					SetErrorMessage(cvException, ex);
+				}
+			}
 		}
 
 		protected void OnSaveFuturePublishCommand(object sender, CommandEventArgs e)
