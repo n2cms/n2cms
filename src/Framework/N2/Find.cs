@@ -10,18 +10,17 @@
 
 #endregion
 
-using System;
-using System.Linq;
 using N2.Linq;
 using N2.Persistence;
 using N2.Persistence.NH;
+using System.Linq;
 
 namespace N2
 {
-	/// <summary>
-	///     Provides easy access to finder and commonly used items.
-	/// </summary>
-	public sealed class Find : GenericFind<ContentItem, ContentItem>
+    /// <summary>
+    ///     Provides easy access to finder and commonly used items.
+    /// </summary>
+    public sealed class Find : GenericFind<ContentItem, ContentItem>
 	{
 		public static SessionContext NH
 		{

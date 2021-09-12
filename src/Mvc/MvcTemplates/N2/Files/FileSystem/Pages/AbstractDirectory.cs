@@ -95,6 +95,9 @@ namespace N2.Edit.FileSystem.Items
         [Obsolete("Use GetChildPagesUnfiltered to get the directories and files below this element.")]
 		public override ItemList GetChildren(ItemFilter filter)
         {
+            if (NotExpandable)
+                return new ItemList();
+
             ItemList items = new ItemList();
             items.AddRange(filter.Pipe(GetDirectories()));
             items.AddRange(filter.Pipe(GetFiles()));
@@ -107,8 +110,11 @@ namespace N2.Edit.FileSystem.Items
 		/// </summary>
 		/// <returns>ItemList of files and directories within this AbstractDirectory.</returns>
 		public override ItemList GetChildPagesUnfiltered()
-		{
-			var items = new ItemList();
+        {
+            if (NotExpandable)
+                return new ItemList();
+
+            var items = new ItemList();
 			items.AddRange(GetDirectories());
 			items.AddRange(GetFiles());
 			return items;

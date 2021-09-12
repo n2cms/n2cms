@@ -53,7 +53,7 @@ namespace N2.Web.UI.WebControls
                 if (ShowThumbnail)
                 {
                     var ext = Path.GetExtension(value);
-                    if (!string.IsNullOrWhiteSpace(ext) && ImageExtensions.Split(new[] { ',' }).Contains(ext))
+                    if (!string.IsNullOrWhiteSpace(ext) && ImageExtensions.Split(new[] { ',' }).Contains(ext.ToLower()))
                     {
                         ThumbnailButton.InnerHtml = string.Format("<img src='{0}'/>", value);
                         ThumbnailButton.Attributes["style"] = "";
