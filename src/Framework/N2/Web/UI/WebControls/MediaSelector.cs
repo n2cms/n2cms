@@ -67,13 +67,16 @@ namespace N2.Web.UI.WebControls
             }
         }
 
-        /// <summary>Path to a default upload directory for templated content</summary>
+        /// <summary>Use default upload directory for templated content.</summary>
         public bool UseDefaultUploadDirectory { get; set; }
+
+        /// <summary>Define directory path to use initially when opening media browser.</summary>
+        public string InitialPath { get; set; }
 
         /// <summary>Format for the javascript invoked when the open popup button is clicked.</summary>
         protected virtual string OpenPopupFormat
         {
-            get { return "n2MediaSelection.openMediaSelectorPopup('{0}', '{1}', '{2}', '{3}', '{4}', '{5}'); return false;"; }
+            get { return "n2MediaSelection.openMediaSelectorPopup('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}'); return false;"; }
         }
 
 		private IEngine engine;
@@ -154,7 +157,7 @@ namespace N2.Web.UI.WebControls
             base.OnPreRender(e);
             RegisterClientScripts();
 
-            string defaultUploadDirectoryPath = "";
+            string defaultDirectoryPath = "";
             if (UseDefaultUploadDirectory)
             {
                 var selection = new SelectionUtility(this, Context.GetEngine());
@@ -164,10 +167,10 @@ namespace N2.Web.UI.WebControls
                 if (start != null)
                 {
                     var slug = N2.Context.Current.Resolve<Slug>();
-                    defaultUploadDirectoryPath = string.Format("{0}/content/{1}", start.Name, slug.Create(itemType.Name));
+                    defaultDirectoryPath = string.Format("{0}/content/{1}", start.Name, slug.Create(itemType.Name));
                 }
                 else
-                    defaultUploadDirectoryPath = string.Format("/");
+                    defaultDirectoryPath = string.Format("/");
             }
 
             PopupButton.Attributes["onclick"] = string.Format(OpenPopupFormat,
@@ -176,7 +179,8 @@ namespace N2.Web.UI.WebControls
 													  PopupOptions,
 													  PreferredSize,
 													  !string.IsNullOrWhiteSpace(SelectableExtensions) ? SelectableExtensions : ImageExtensions,
-                                                      defaultUploadDirectoryPath
+                                                      defaultDirectoryPath,
+                                                      InitialPath
                                                       );
 
 			ClearButton.Attributes["onclick"] = "n2MediaSelection.clearMediaSelector('" + Input.ClientID + "'); return false;";

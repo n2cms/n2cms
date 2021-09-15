@@ -2,14 +2,15 @@ var n2MediaSelection = (function () {
 
     var editableMediaControls = {};
 
-    function openMediaSelectorPopup(popupUrl, tbId, popupOptions, preferredSize, availableExtensions, defaultDirectoryPath) {
+    function openMediaSelectorPopup(popupUrl, tbId, popupOptions, preferredSize, availableExtensions, defaultDirectoryPath, path) {
 	    var tb = document.getElementById(tbId);
 	    window.open(popupUrl
 			    + '&tbid=' + tbId
 			    + '&preferredSize=' + preferredSize
 			    + '&selectedUrl=' + encodeURIComponent(tb.value)
                 + '&selectableExtensions=' + availableExtensions
-                + '&defaultDirectoryPath=' + defaultDirectoryPath,
+                + '&defaultDirectoryPath=' + defaultDirectoryPath
+                + '&path=' + encodeURIComponent(path),
 	    null,
 	    popupOptions);
     }

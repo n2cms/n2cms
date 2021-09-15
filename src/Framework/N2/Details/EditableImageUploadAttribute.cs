@@ -20,6 +20,7 @@ namespace N2.Details
     {
         public bool ShowThumbnail { get; set; }
 
+        /// <summary>Use default upload directory for templated content.</summary>
         public bool UseDefaultUploadDirectory { get; set; }
 
         public EditableImageUploadAttribute()
@@ -48,9 +49,17 @@ namespace N2.Details
             composite.SelectorControl.ShowThumbnail = ShowThumbnail;
 
             composite.SelectorControl.UseDefaultUploadDirectory = UseDefaultUploadDirectory;
+            composite.SelectorControl.InitialPath = GetInitialPath(container);
 
             return composite;
         }
 
+        /// <summary>
+        /// Default initial path is set to empty string. Override this method to set initial path.
+        /// </summary>
+        protected virtual string GetInitialPath(Control container)
+        {
+            return "";
+        }
     }
 }
