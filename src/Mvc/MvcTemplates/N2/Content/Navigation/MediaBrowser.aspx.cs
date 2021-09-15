@@ -25,10 +25,10 @@ namespace N2.Edit.Navigation
         public const int TakeDefault = 40;
         public const string AjaxMediaBrowserRetriever = "MediaBrowserHandler.ashx";
         public MediaBrowserModel mediaBrowserModel;
-		protected string CustomThumbResizePattern { get; set; }
-		protected bool UseCustomResizing { get; set; }
+        protected string CustomThumbResizePattern { get; set; }
+        protected bool UseCustomResizing { get; set; }
 
-		protected override void OnInit(EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
             FS = Engine.Resolve<IFileSystem>();
             Config = Engine.Resolve<ConfigurationManagerWrapper>().Sections.Management;
@@ -40,12 +40,13 @@ namespace N2.Edit.Navigation
             var selectionTrail = new List<ContentItem>();
 
             var ckEditor = Request["ckEditor"];
-            var ckEditorFuncNum = Request[ "ckEditorFuncNum"];
+            var ckEditorFuncNum = Request["ckEditorFuncNum"];
             var mediaCtrl = Request["mediaControl"];
             var preferredSize = Request["preferredSize"];
             var selectableExtensions = Request["selectableExtensions"];
             var selectedUrl = Request["selectedUrl"];
             var defaultDirectoryPath = Request["defaultDirectoryPath"];
+            var path = Request["path"] ?? "";
             var mediaBrowserHandler = new MediaBrowserHandler();
 
             mediaBrowserModel = new MediaBrowserModel
@@ -56,7 +57,7 @@ namespace N2.Edit.Navigation
                 HandlerUrl = AjaxMediaBrowserRetriever,
                 PreferredSize = preferredSize,
                 Breadcrumb = new string[] { },
-                Path = "",
+                Path = path,
                 RootIsSelectable = false,
                 DefaultDirectoryPath = defaultDirectoryPath
             };
@@ -137,9 +138,29 @@ namespace N2.Edit.Navigation
                             {
                                 dir = uploadSiteContentTemplateMonthFolder;
                             }
-                        } 
+                        }
                     }
-                    
+                    else if (string.IsNullOrWhiteSpace(mediaBrowserModel.Path) == false)
+                    {
+                        //Create directory at the defined path if it doesn't already exist.
+                        var uploadPath = mediaBrowserModel.Path;
+                        if (FS.DirectoryExists(uploadPath) == false)
+                            FS.CreateDirectory(uploadPath);
+
+                        var segments = mediaBrowserModel.Path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                        if (segments.Count > 0 && dir.Name.Equals(segments.First(), StringComparison.OrdinalIgnoreCase))
+                            segments.RemoveAt(0);//current directory matches the first segment so skip it.
+
+                        foreach (var seg in segments)
+                        {
+                            var segDir = dir.GetDirectories().FirstOrDefault(d => d.Name.Equals(seg.Trim(), StringComparison.OrdinalIgnoreCase));
+                            if (segDir == null)
+                                break;
+
+                            dir = segDir;
+                        }
+                    }
+
 
                     var files = dir.GetFiles().ToList();
                     mediaBrowserModel.Dirs = dir.GetDirectories();
@@ -160,40 +181,40 @@ namespace N2.Edit.Navigation
                 var breadcrumb = mediaBrowserModel.Path.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 breadcrumb.Insert(0, "[root]");
                 mediaBrowserModel.Breadcrumb = breadcrumb.ToArray();
-				
-				var config = new ConfigurationManagerWrapper();
-				CustomThumbResizePattern = config.Sections.Management.Images.CustomThumbResizePattern;
-				UseCustomResizing = config.Sections.Management.Images.UseCustomResizing;
-			}
+
+                var config = new ConfigurationManagerWrapper();
+                CustomThumbResizePattern = config.Sections.Management.Images.CustomThumbResizePattern;
+                UseCustomResizing = config.Sections.Management.Images.UseCustomResizing;
+            }
 
         }
 
-		protected string GetEncryptedTicket()
-		{
-			return FormsAuthentication.Encrypt(new FormsAuthenticationTicket("SecureUpload-" + Guid.NewGuid(), false, 60));
+        protected string GetEncryptedTicket()
+        {
+            return FormsAuthentication.Encrypt(new FormsAuthenticationTicket("SecureUpload-" + Guid.NewGuid(), false, 60));
         }
 
-		protected int GetMaxSize()
-		{
-			try
-			{
-				return (ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection) != null ? (ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection).MaxRequestLength : -1;
-			}
-			catch
-			{
-				return -1;
-			}
+        protected int GetMaxSize()
+        {
+            try
+            {
+                return (ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection) != null ? (ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection).MaxRequestLength : -1;
+            }
+            catch
+            {
+                return -1;
+            }
         }
 
-		protected string GetBackgroundImg(FileReducedListModel f)
-		{
-			var backgroundImg = string.Empty;
-			if (f.IsImage)
-			{
-				backgroundImg = string.Format("{0}?v={1}", f.Thumb, f.Date);
-			}
-			return backgroundImg;
-		}
-        
+        protected string GetBackgroundImg(FileReducedListModel f)
+        {
+            var backgroundImg = string.Empty;
+            if (f.IsImage)
+            {
+                backgroundImg = string.Format("{0}?v={1}", f.Thumb, f.Date);
+            }
+            return backgroundImg;
+        }
+
     }
 }
