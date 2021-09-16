@@ -59,7 +59,7 @@ namespace N2.Resources
 		public const string CkEditorVersion = "4.5.8";
 		public const string DefaultBootstrapVersion = "2.3.2";
 		public const string ScriptVersion = "202109141021";
-		public const string CssVersion = "2019091305120";
+		public const string CssVersion = "202109141021";
 
 		public const string DefaultFlagsCssPath = "{ManagementUrl}/Resources/icons/flags.css?v="+CssVersion;
 		public const string DefaultJQueryJsPath = "//code.jquery.com/jquery-" + JQueryVersion + ".min.js";
