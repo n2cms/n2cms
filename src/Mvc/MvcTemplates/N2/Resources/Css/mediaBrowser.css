@@ -60,7 +60,7 @@ h1 {
     box-shadow: 0 0 20px -5px #2a77bd inset;
 }
     .files-list li.selected label { display:none !important;}
-    .files-list li.selected .image-sizes { display:block;}
+    .files-list li.selected .image-sizes { display:block; height:100%; overflow-y:scroll;  }
 
 .files-list .dir { background:#a1d4fe; cursor:pointer;} 
 .files-list .dir-create { background:#f2f2f2; cursor:pointer;} 
