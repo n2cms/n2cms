@@ -40,7 +40,7 @@
 		fail: function (e, data) {
 			$("#fileupload").removeClass("uploading");
 			$("#uploadcontrols").slideDown("fast");
-			$("#uploadcontrols").prepend("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button>Failed uploading " + data.filename + "</div>");
+			$("#uploadcontrols").prepend("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button>Failed uploading " + data.filename + ". " + data.errorThrown + "</div>");
 		}
 	});
 };

@@ -38,7 +38,7 @@
 <script src="fileupload/js/locale.js"></script><!-- The localization script -->
 <script src="fileupload/js/main.js"></script><!-- The main application script -->
 --%>
-<script src="FileUpload.js"></script>
+<script src="FileUpload.js?v=202110011428"></script>
 
 <script type="text/javascript">
     var maxFileSize = <%= maxFileSize %>;
