@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -224,7 +225,8 @@ namespace N2.Details
                 ControlToValidate = composite.ID,
                 Display = ValidatorDisplay.Dynamic,
                 Text = GetLocalizedText("RequiredText") ?? RequiredText,
-                ErrorMessage = GetLocalizedText("RequiredMessage") ?? RequiredMessage
+                ErrorMessage = GetLocalizedText("RequiredMessage") ?? RequiredMessage,
+                ClientValidationFunction = "CheckRequired_"+ composite.ID
             };
 
             cv.ServerValidate += (object source, ServerValidateEventArgs args) =>
@@ -235,8 +237,22 @@ namespace N2.Details
                 }
             };
 
-            editor.Controls.Add(cv);
+            container.Controls.Add(cv);
 
+            //Client side validation 
+            var scriptStr = new StringBuilder();
+            scriptStr.Append("<script>function CheckRequired_"+ composite.ID + "(sender, args)");
+            scriptStr.Append("{var ddl = document.getElementById('");
+            scriptStr.Append(composite.ClientID);
+            scriptStr.Append(@"');
+            if (ddl.options[ddl.selectedIndex].value =='0') {
+                args.IsValid = false;
+             }
+             else { args.IsValid = true;} } 
+            </script>");
+
+            var page = (Page)HttpContext.Current.CurrentHandler;
+            ScriptManager.RegisterStartupScript(page, typeof(Page), "ValidationFunction"+composite.ID, scriptStr.ToString(), false);
             return cv;
         }
     }
