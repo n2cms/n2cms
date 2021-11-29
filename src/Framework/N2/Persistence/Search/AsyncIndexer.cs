@@ -206,24 +206,25 @@ namespace N2.Persistence.Search
                 return;
 
             string title = itemX.Title;
-			IndexableDocument document = null;
+            string itemType = itemX.GetType().Name;
+            IndexableDocument document = null;
 			if (indexer.IsIndexable(itemX))
 				document = indexer.CreateDocument(itemX);
 
             Execute(new Work
                 {
-                    Name = "Reindex #" + itemID + " (affectsChildren = " + affectsChildren + ")",
+                    Name = "Reindex #" + itemID + "["+ itemType +"]" + "(affectsChildren = " + affectsChildren + ")",
                     Action = () =>
                     {
                         // update the index
 						if (document != null)
 						{
-							currentWork = "Indexing " + title + " #" + itemID;
+							currentWork = "Indexing: ["+ itemType +"] " + " #" + itemID+" " + title ;
 							indexer.Update(document);
 						}
 						else
 						{
-							currentWork = "Skipping " + title + " #" + itemID;
+							currentWork = "Skipping: ["+ itemType +"] " + " #" + itemID +" "+ title ;
 						}
 
                         if (affectsChildren)

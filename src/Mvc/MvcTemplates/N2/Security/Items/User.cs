@@ -9,6 +9,7 @@ using N2.Engine;
 using N2.Edit;
 using N2.Web;
 using N2.Management;
+using N2.Persistence.Search;
 
 namespace N2.Security.Items
 {
@@ -16,6 +17,7 @@ namespace N2.Security.Items
     [RestrictParents(typeof (UserList))]
     [Throwable(AllowInTrash.No)]
     [Versionable(AllowVersions.No)]
+    [Indexable(IsIndexable = false)]
     public class User : ManagementItem, IInjectable<ISecurityManager>
     {
         private ISecurityManager security;

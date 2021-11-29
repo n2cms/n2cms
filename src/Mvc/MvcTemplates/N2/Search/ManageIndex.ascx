@@ -9,18 +9,18 @@
         </tr><tr>
             <th><asp:Label runat="server" Text="Worker count" /></th><td id="WorkerCount"><%= Status.WorkerCount %></td>
         </tr><tr>
-            <th><asp:Label runat="server" Text="Current work" /></th><td id="CurrentWork"><%= Status.CurrentWork %></td>
-        </tr><tr>
             <th><asp:Label runat="server" Text="Queue size" /></th><td id="ErrorQueueCount"><%= Status.QueueSize %></td>
+        </tr><tr>
+            <th><asp:Label runat="server" Text="Current work" /></th><td id="CurrentWork"><%= Status.CurrentWork %></td>
         </tr>
     </table>
+    <textarea name="Indexed_elements" ID="workDone" multiple style="width: 700px" rows="10" readonly>  </textarea>
 </fieldset>
 
 <fieldset><legend>Maintenance</legend>
     <asp:Button ID="btnClear" OnCommand="OnClear" runat="server" Text="Purge index" />
     <asp:Button ID="btnIndex" OnCommand="OnIndex" runat="server" Text="Schedule index of all content" />
 </fieldset>
-
 <fieldset><legend>Search</legend>
 <asp:Panel DefaultButton="btnSearch" runat="server">
     <asp:TextBox ID="txtSearch" runat="server" />
@@ -44,6 +44,7 @@
 <script type="text/javascript">
 	$(document).ready(function () {
 		var checkInterval = <%= Status.WorkerCount > 0 ? 2000 : 10000 %>;
+        var rowNo = 1;
 		function recheckIndex() {
 			setTimeout(function(){
 				$.getJSON('<%= N2.Web.Url.ResolveTokens("{ManagementUrl}/Search/IndexInfo.ashx") %>', function (data) {
@@ -52,6 +53,10 @@
 					$("#WorkerCount").text(data.Status.WorkerCount);
 					$("#CurrentWork").text(data.Status.CurrentWork);
 					$("#ErrorQueueCount").text(data.Status.QueueSize);
+                    if (data.Status.CurrentWork.startsWith("Indexing")){
+                        $("#workDone").append(rowNo +' '+ data.Status.CurrentWork+'\n');
+                        rowNo++;
+                    }
 					recheckIndex();
 				});
 			}, checkInterval);
