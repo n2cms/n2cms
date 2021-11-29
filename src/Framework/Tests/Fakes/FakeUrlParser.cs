@@ -32,6 +32,8 @@ namespace N2.Tests.Fakes
 			get { throw new NotImplementedException(); }
 		}
 
+		public string WebContextUrl => throw new NotImplementedException();
+
 		public Url BuildUrl(ContentItem item)
 		{
 			return string.Join("/", Find.EnumerateParents(item).TakeWhile(ci => ci != null && !IsRootOrStartPage(ci)).Select(ci => ci.Name));

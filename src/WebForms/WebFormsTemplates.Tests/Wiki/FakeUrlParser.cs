@@ -39,7 +39,9 @@ namespace N2.Templates.Tests.Wiki
             get { throw new NotImplementedException(); }
         }
 
-        public Url BuildUrl(ContentItem item)
+		public string WebContextUrl => throw new NotImplementedException();
+
+		public Url BuildUrl(ContentItem item)
         {
             Url url = "/" + item.Name + ".aspx";
             foreach (ContentItem parent in N2.Templates.Find.EnumerateParents(item))

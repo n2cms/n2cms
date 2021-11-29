@@ -18,7 +18,8 @@ namespace N2.Tests.Web
         {
             base.SetUp();
             base.parser = parser = TestSupport.Setup(persister, wrapper, host);
-            injector = new DirectUrlInjector(host, parser, repository, TestSupport.SetupDefinitions(typeof(UrlSourcePage), typeof(DataItem)));
+            var config = new N2.Configuration.EngineSection();
+            injector = new DirectUrlInjector(host, parser, repository, TestSupport.SetupDefinitions(typeof(UrlSourcePage), typeof(DataItem)), config);
             injector.Start();
             
             CreateDefaultStructure();
