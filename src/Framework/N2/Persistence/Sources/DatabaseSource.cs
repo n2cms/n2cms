@@ -6,6 +6,7 @@ using N2.Web;
 using System.Diagnostics;
 using N2.Collections;
 using N2.Engine;
+using N2.Edit.Versioning;
 
 namespace N2.Persistence.Sources
 {
@@ -117,28 +118,42 @@ namespace N2.Persistence.Sources
 
         public override void Delete(ContentItem item)
         {
+            var versionRepository = Engine.Resolve<ContentVersionRepository>();
             using (var tx = repository.BeginTransaction())
             {
-                // delete inbound references, these would cuase fk violation in the database
-                repository.RemoveReferencesToRecursive(item);
+                try
+                {
+                    // delete inbound references, these would cuase fk violation in the database
+                    repository.RemoveReferencesToRecursive(item);
+                    DeleteRecursive(item, versionRepository);
 
-                DeleteRecursive(item);
-
-                tx.Commit();
+                    tx.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tx.Rollback();
+                    logger.Error(ex);
+                    throw;
+                }
             }
         }
 
-        private void DeleteRecursive(ContentItem itemToDelete)
+        private void DeleteRecursive(ContentItem itemToDelete, ContentVersionRepository versionRepository)
         {
             using (logger.Indent())
             {
                 foreach (ContentItem child in itemToDelete.Children.ToList())
-                    DeleteRecursive(child);
+                    DeleteRecursive(child, versionRepository);
             }
 
             itemToDelete.AddTo(null);
+			logger.InfoFormat("Deleting {0}", itemToDelete);
 
-            logger.InfoFormat("Deleting {0}", itemToDelete);
+            //Delete item versions
+            var itemVersions = versionRepository.GetVersions(itemToDelete).ToArray();
+            foreach (var version in itemVersions)
+                versionRepository.Repository.Delete(version);
+            //Delete item
             repository.Delete(itemToDelete);
         }
 

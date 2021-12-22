@@ -149,6 +149,11 @@ namespace N2.Edit.Versioning
             return item.VersionOf.Value ?? item;
         }
 
+        private static int? GetMasterID(ContentItem item)
+        {
+            return item.VersionOf.Value != null ? item.VersionOf.Value.ID : item.VersionOf.ID;
+        }
+
         public void Delete(ContentItem item)
         {
 			if (item == null)
@@ -158,7 +163,15 @@ namespace N2.Edit.Versioning
             {
                 if (item.IsPage)
                 {
-                    Repository.Delete(Repository.Find(Parameter.Equal("Master.ID", GetMaster(item).ID) & Parameter.Equal("VersionIndex", item.VersionIndex)).ToArray());
+                    if (item.VersionOf.Value != null)
+                    {
+                        Repository.Delete(Repository.Find(Parameter.Equal("Master.ID", GetMaster(item).ID) & Parameter.Equal("VersionIndex", item.VersionIndex)).ToArray());
+                    }
+					else
+					{
+                        //If no Master item --> delete all versions
+                        Repository.Delete(Repository.Find(Parameter.Equal("Master.ID", GetMasterID(item))).ToArray());
+                    }
                     tx.Commit();
                 }
                 else

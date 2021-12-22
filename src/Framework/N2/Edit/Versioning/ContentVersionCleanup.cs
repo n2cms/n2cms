@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using N2.Plugin;
 using N2.Persistence;
+using N2.Engine;
 
 namespace N2.Edit.Versioning
 {
+    //[Service]
+    //Not in use - versions are deleted even if item deletion fails
     public class ContentVersionCleanup : IAutoStart
     {
         private IItemNotifier notifier;
@@ -16,8 +19,6 @@ namespace N2.Edit.Versioning
         {
             this.notifier = notifier;
             this.repository = repository;
-
-
         }
 
         public void Start()

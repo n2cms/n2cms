@@ -107,8 +107,16 @@ namespace N2.Edit.AutoPublish
                 {
                     var scheduledVersion = versionRepository.DeserializeVersion(version);
                     scheduledVersion["FuturePublishDate"] = null;
-                    versioner.Publish(persister, scheduledVersion);
-                }
+                    if (scheduledVersion.VersionOf.HasValue && scheduledVersion.VersionOf.Value != null)
+                    {
+                        versioner.Publish(persister, scheduledVersion);
+                    }
+					else
+					{
+                        //Delete versions if master item doesn't exists
+                        versioner.DeleteVersion(scheduledVersion);
+                    }
+				}
                 catch (Exception ex)
                 {
                     while (ex.InnerException != null)
