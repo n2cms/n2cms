@@ -22,7 +22,7 @@
 	<h1><% foreach (N2.ContentItem node in Ancestors) { %>/<a href="<%= Url.Parse(node is N2.Definitions.IFileSystemDirectory ? "Directory.aspx" : "File.aspx").AppendSelection(node) %>"><%= node.Title %></a><% } %></h1>
 
 	<div class="tabPanel" data-flag="Unclosable">
-	<a href="<%= CustomImagePath%><%=SelectedItem.Url %>">
+	<a href="<%= CustomImagePath%><%=SelectedItem.Url %>" title="<%=SelectedItem.Title %>">
 		<img src="<%= N2.Web.Url.ToAbsolute(Selection.SelectedItem.IconUrl) %>" alt="icon" />
 		<%= SelectedItem.Title %>
 		(<%= GetFileSize(SelectedFile.Size) %>)

@@ -411,3 +411,36 @@ input.dp-applied {
 .navbar-fixed-bottom .btn-group.dropup.open > .dropdown-menu {
 	margin-bottom: 0;
 }
+
+/*** Upload ***/
+.upload-folder.directory .file {
+	max-width: 48%;
+	width: 100%;
+	margin-right: 1%;
+	margin-bottom: 20px;
+}
+
+.upload-folder.directory .file label {
+	height: 60px;
+	background-position: left;
+}
+
+/*** Browse Media ***/
+.media-browser.files-list li:first-child {
+	width: 100%;
+}
+
+.media-browser.files-list li.file.image {
+	max-width: 46%;
+	width: 100%;
+	background-size: 50%;
+}
+
+.media-browser.files-list li.dir {
+	max-width: 46%;
+	width: 100%;
+}
+
+.media-browser.files-list .file.image label {
+	display: unset;
+}

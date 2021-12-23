@@ -10,7 +10,7 @@
 
 	<link href="<%=  N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapDatePickerCssPath) %>" type="text/css" rel="stylesheet" />
 	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.BootstrapDatePickerJsPath)  %>" type="text/javascript"></script>
-
+		
 	<link href="<%= ResolveUrl("../Resources/icons/flags.css")+"?v="+ N2.Resources.Register.CssVersion %>" rel="stylesheet" />
 	<link href="<%= ResolveClientUrl("../Resources/Css/all.css")+"?v="+ N2.Resources.Register.CssVersion  %>" type="text/css" rel="stylesheet" />
 	<link href="<%= ResolveClientUrl("../Resources/Css/framed.css")+"?v="+ N2.Resources.Register.CssVersion  %>" type="text/css" rel="stylesheet" />
