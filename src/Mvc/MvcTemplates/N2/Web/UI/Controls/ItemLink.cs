@@ -61,6 +61,8 @@ namespace N2.Edit.Web.UI.Controls
             {
                 Text = string.Format("<img src='{0}' alt='{1}' /> {2}", item.IconUrl.ResolveUrlTokens(), item.GetContentType().Name, title);
             }
+
+            Attributes.Add("title", title);
         }
     }
 }

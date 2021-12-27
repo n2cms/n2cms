@@ -2,6 +2,12 @@
 <%@ Register TagPrefix="edit" TagName="FileUpload" Src="FileUpload.ascx" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <%@ Import Namespace="N2.Web" %>
+
+<asp:Content ContentPlaceHolderID="Head" runat="server">
+	<%--Upgrading default version of bootstrap breaks the cms layout. Newer version added as needed.--%>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+</asp:Content>
+
 <asp:Content ContentPlaceHolderID="Toolbar" runat="server">
 	<edit:ButtonGroup runat="server" CssClass="btn btn-danger">
 		<asp:LinkButton ID="btnDelete" runat="server" Text="Delete selected" CssClass="command primary-action" OnCommand="OnDeleteCommand" OnClientClick="return confirm('Delete selected files and folders?');" meta:resourceKey="btnDelete" />
@@ -11,12 +17,29 @@
         
 	</edit:ButtonGroup>
 </asp:Content>
-<asp:Content ContentPlaceHolderID="Content" runat="server">	
-	<h1><% foreach (N2.ContentItem node in ancestors) {
+<asp:Content ContentPlaceHolderID="Content" runat="server">
+	<h1 style="float:left;margin-top:0;"><% foreach (N2.ContentItem node in ancestors) {
                 var url = Url.Parse("Directory.aspx").AppendSelection(node);
         %>/<a href="<%= string.Format("{0}{1}{2}", url, string.IsNullOrEmpty(ParentQueryString) ? "" : url.ToString().Contains("?") ? "&" : "?", ParentQueryString) %>"><%= node.Title %></a><% } %></h1>
+	<span class="input-group-btn" style="text-align:right;padding:0 10px 10px 0;">
+        <button id="btn-view-grid" class="btn btn-default" type="button" title="Grid View"><span class="glyphicon glyphicon-th"></span></button>
+        <button id="btn-view-list" class="btn btn-default" type="button" title="List View"><span class="glyphicon glyphicon-list"></span></button>
+		<script>
+			$(function () {
+				$("#btn-view-grid").click(function (e) {
+					e.preventDefault();
+					$("#directory-container").removeClass('upload-folder');
+				});
+				$("#btn-view-list").click(function (e) {
+					e.preventDefault();
+					$("#directory-container").addClass('upload-folder');
+				});
+			});
+		</script>
+    </span>
+	<div style="clear:both;"></div>
 	<div class="tabPanel" data-flag="Unclosable">
-        <div class="directory cf">
+        <div id="directory-container" class="directory cf">
 		    <asp:Repeater ID="rptDirectories" runat="server">
 			    <ItemTemplate>
 				    <div class="file">

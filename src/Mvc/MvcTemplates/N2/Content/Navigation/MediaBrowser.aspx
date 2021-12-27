@@ -9,6 +9,8 @@
     <head runat="server">
         <title>Media Browser - N2</title>
         <asp:PlaceHolder runat="server">
+	    <script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.JQueryJsPath)  %>" type="text/javascript"></script>
+        <%--Upgrading default version of bootstrap breaks the cms layout. Newer version added as needed.--%>
 		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="<%= MapCssUrl("framed.css")%>" />
 		<link rel="stylesheet" type="text/css" href="<%= MapCssUrl("mediaBrowser.css")%>" />
@@ -57,6 +59,22 @@
                         </span>
                     </div><!-- /input-group -->
                 </div>
+                <span class="input-group-btn" style="text-align:right;padding:0 10px 0 0;">
+                    <button id="btn-view-grid" class="btn btn-default" type="button" title="Grid View"><span class="glyphicon glyphicon-th"></span></button>
+                    <button id="btn-view-list" class="btn btn-default" type="button" title="List View"><span class="glyphicon glyphicon-list"></span></button>
+		            <script>
+                        $(function () {
+                            $("#btn-view-grid").click(function (e) {
+                                e.preventDefault();
+                                $("#browser-files-list-ul").removeClass('media-browser');
+                            });
+                            $("#btn-view-list").click(function (e) {
+                                e.preventDefault();
+                                $("#browser-files-list-ul").addClass('media-browser');
+                            });
+                        });
+		            </script>
+                </span>
             </div>
 
             <div class="row files-breadcrumb" id="dirs-breadcrumb" data-rootisselectable="<%= mediaBrowserModel.RootIsSelectable %>">
