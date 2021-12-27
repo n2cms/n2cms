@@ -13,7 +13,11 @@ namespace N2.Security
             base.Start();
 
             N2.Web.Url.SetToken(LoginPageUrlToken,          "{ManagementUrl}/Login.aspx");
-            N2.Web.Url.SetToken(LogoutPageUrlToken,         "{ManagementUrl}/Login.aspx?logout=true");
+            string logoutUrl = System.Configuration.ConfigurationManager.AppSettings["N2.logout.url"];
+            if (!string.IsNullOrEmpty(logoutUrl))
+                N2.Web.Url.SetToken(LogoutPageUrlToken, logoutUrl);
+            else 
+                N2.Web.Url.SetToken(LogoutPageUrlToken,         "{ManagementUrl}/Login.aspx?logout=true");
 
             N2.Web.Url.SetToken(ManageUserPageUrlToken,     "{ManagementUrl}/Myself/EditPassword.aspx");
             N2.Web.Url.SetToken(EditPasswordPageUrlToken,   "{ManagementUrl}/Myself/EditPassword.aspx");
