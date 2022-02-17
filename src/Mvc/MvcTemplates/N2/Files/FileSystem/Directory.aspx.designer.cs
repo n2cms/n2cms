@@ -49,6 +49,15 @@ namespace N2.Edit.FileSystem {
         protected global::System.Web.UI.WebControls.HyperLink hlCancel;
         
         /// <summary>
+        /// ppPermitted control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Edit.Web.UI.Controls.PermissionPanel ppPermitted;
+        
+        /// <summary>
         /// rptDirectories control.
         /// </summary>
         /// <remarks>
@@ -65,14 +74,5 @@ namespace N2.Edit.FileSystem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptFiles;
-        
-        /// <summary>
-        /// ppPermitted control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::N2.Edit.Web.UI.Controls.PermissionPanel ppPermitted;
     }
 }

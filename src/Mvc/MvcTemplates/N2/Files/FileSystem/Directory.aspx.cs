@@ -16,6 +16,8 @@ using N2.Collections;
 using N2.Configuration;
 using N2.Edit.Versioning;
 using N2.Persistence;
+using N2.Definitions;
+using N2.Edit;
 
 namespace N2.Edit.FileSystem
 {
@@ -297,6 +299,17 @@ namespace N2.Edit.FileSystem
 			}
 		}
 
+        protected string GetEditUrl()
+        {
+            if (Selection.SelectedItem == null) throw new ArgumentNullException("selected");
 
-	}
+            ContentItem parent = Selection.SelectedItem;
+
+            Url url = Url.ResolveTokens("{ManagementUrl}/Content/Edit.aspx");
+            url = url.AppendQuery(SelectionUtility.SelectedQueryKey, parent.Path);
+            url = url.AppendQuery("discriminator", "Directory");      
+            return url.AppendQuery("returnUrl", Request["returnUrl"]);
+        }
+
+    }
 }
